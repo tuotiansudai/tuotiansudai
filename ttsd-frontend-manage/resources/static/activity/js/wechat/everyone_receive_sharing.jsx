@@ -59,8 +59,7 @@ function countTimePop(str) {
         }
     }
 }
-
-countTimePop('2018-4-16 12:21:30');
+countTimePop($("#countDown").data("countDown"));
 
 
 

@@ -105,18 +105,19 @@ $('.handle_btn').on('click',(e) => {
         $('.cashBack_popModal').show();
     }
     else {
-        location.href = '/activity/invite-help/wechat/sharing';
+        location.href = '/activity/invite-help/wechat/'+ e.currentTarget.dataset.helpId + '/invest/help';
     }
 
 });
 
 // 活动二 人人可领10元现金
 $('.everyone_detail').on('click',() => {
+    location.href = '/activity/invite-help//wechat/everyone/help/detail';
     if (!isMobile()) {
         $('.help_popModal').show();
     }
     else {
-        location.href = '/activity/invite-help/wechat/sharing1';
+        location.href = '/activity/invite-help/wechat/everyone/help/detail';
     }
 });
 

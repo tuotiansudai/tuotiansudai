@@ -18,8 +18,8 @@ setTimeout(function () {
         fillColor: "rgba(251,233,197,.47)"
     };
     function getPercentLight() {
-        let currentPer = 200;
-        let percentArr= [100,200,300,400,500,1000];
+        let currentPer = $("#cycle").data("mycash");
+        let percentArr = $("#cycle").data("cashchain").split(",");
         for (let i = 0;i < percentArr.length;i++) {
             let item = percentArr[i];
             if (currentPer < item) {
@@ -106,7 +106,7 @@ function countTimePop(str) {
     }
 }
 
-countTimePop('2018-4-16 12:21:30');
+countTimePop($("#countDown").data("countDown"));
 
 
 

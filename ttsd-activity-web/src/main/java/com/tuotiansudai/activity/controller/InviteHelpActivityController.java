@@ -59,6 +59,14 @@ public class InviteHelpActivityController {
         return null;
     }
 
+    @RequestMapping(value = "/wechat/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
+    public ModelAndView wechatInviteHelpDetail(@PathVariable long id) {
+        ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_sharing");
+        String loginName = LoginUserInfo.getLoginName();
+        modelAndView.addAllObjects(inviteHelpActivityService.investHelpDetail(id, loginName));
+        return modelAndView;
+    }
+
     @RequestMapping(path = "/create/everyone/help", method = RequestMethod.GET)
     @ResponseBody
     public String createEveryoneHelp(HttpServletRequest request) {
@@ -74,15 +82,26 @@ public class InviteHelpActivityController {
     @ResponseBody
     public Map<String, Object> everyoneHelpDetail(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = "chenzhonghui";
         if (loginName != null || openId != null) {
             return inviteHelpActivityService.everyoneHelpDetail(loginName, openId);
         }
         return null;
     }
 
-    @RequestMapping(path = "/wechat/{id:^\\d+$}/invest/help/", method = RequestMethod.GET)
-    public ModelAndView wechatInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
+    @RequestMapping(value = "/wechat/everyone/help/detail", method = RequestMethod.GET)
+    public ModelAndView wechatEveryoneHelpDetail(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("/wechat/everyone_receive_sharing");
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        String loginName = LoginUserInfo.getLoginName();
+        if (loginName != null || openId != null) {
+            modelAndView.addAllObjects(inviteHelpActivityService.everyoneHelpDetail(loginName, openId));
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help/", method = RequestMethod.GET)
+    public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");
@@ -97,8 +116,8 @@ public class InviteHelpActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/wechat/{id:^\\d+$}/everyone/help/", method = RequestMethod.GET)
-    public ModelAndView wechatEveryoneHelpDetail(@PathVariable long id, HttpServletRequest request){
+    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/everyone/help/", method = RequestMethod.GET)
+    public ModelAndView wechatShareEveryoneHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");

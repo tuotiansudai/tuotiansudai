@@ -107,6 +107,7 @@
                                                         <td class="overTime"
                                                             data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
                                                         <td class="handle_btn"
+                                                            data-help-id="${invest.id}"
                                                             data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
                                                             去邀请
                                                         </td>
@@ -137,6 +138,7 @@
                                                         <td class="overTime"
                                                             data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
                                                         <td class="handle_btn"
+                                                            data-help-id="${invest.id}"
                                                             data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
                                                             去邀请
                                                         </td>
@@ -151,7 +153,7 @@
                                             </div>
                                         </#if>
                                     </div>
-                                    <div class="see_more">查看更多></div>
+                                    <div class="see_more"><#if investHelp!?size gt 3>查看更多</#if></div>
                                     <div class="see_less" style="display: none">收起></div>
                                 </div>
                                 <div class="no_login no_login1">
@@ -191,7 +193,7 @@
                                         <div class="rightPic"></div>
                                     </div>
                                     <div class="content">
-                                        <#if rewardRecords?if_exists?size!=0>
+                                        <#if rewardRecords!?size!=0>
                                             <div>
                                                 <#list rewardRecords as record>
                                                     <p>用户${record.mobile}，获取${(record.reward/100)?string('0.00')}元现金</p>
