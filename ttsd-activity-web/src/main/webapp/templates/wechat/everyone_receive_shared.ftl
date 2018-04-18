@@ -75,6 +75,9 @@
     <div class="desc">4. 本活动所发放的现金奖励可提现，用户可在pc端“我的账户”或APP端“我的”中进行查看，未绑定过银行卡的用户，需完成绑卡后方可查看和提现；</div>
     <div class="desc">5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</div>
 </div>
+<div class="wechat_share_tip">
+    <div class="tip_icon"></div>
+</div>
     <#include "../module/login-tip.ftl" />
 <script>
     wx.ready(function () {

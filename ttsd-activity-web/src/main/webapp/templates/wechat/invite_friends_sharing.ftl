@@ -110,6 +110,9 @@
     <div class="desc">6.截止发放时间为止，如果助力好友未登录拓天速贷并进行实名认证，将无法收到奖励；</div>
     <div class="desc">7.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</div>
 </div>
+<div class="wechat_share_tip">
+    <div class="tip_icon"></div>
+</div>
 
     <#include "../module/login-tip.ftl" />
 <script>

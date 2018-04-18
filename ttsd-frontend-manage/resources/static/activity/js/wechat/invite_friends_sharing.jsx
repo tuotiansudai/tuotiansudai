@@ -49,10 +49,20 @@ setTimeout(function () {
     $('canvas').css('width',12 * parseInt(fontSize) + 'px');
     $('canvas').css('height',12 * parseInt(fontSize) + 'px');
 
-    $('.invite_friends_btn').on('click',() => {
-        alert('请点击右上角分享按钮');
-    });
 },0);
+
+$('.invite_friends_btn').on('click',() => {
+    if(is_wechat()) {
+        $('.wechat_share_tip').show();
+    }
+    else {
+        alert('请点击浏览器分享');
+    }
+});
+
+$('.wechat_share_tip').on('click',function () {
+   $(this).hide();
+});
 
 $('.rules').on('click',() => {
     $('.flex_rules').show();
@@ -107,6 +117,13 @@ function countTimePop(str) {
 }
 
 countTimePop($("#countDown").data("countDown"));
+
+
+function is_wechat(){
+    return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
+}
+
+
 
 
 
