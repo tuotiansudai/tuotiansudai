@@ -5,7 +5,16 @@ commonFun.calculationFun(document,window);
 let timer;
 
 $('.invite_friends_btn').on('click',() => {
-    alert(1)
+    if(!is_wechat()) {
+        $('.wechat_share_tip').show();
+    }
+    else {
+        alert('请点击浏览器分享');
+    }
+});
+
+$('.wechat_share_tip').on('click',function () {
+    $(this).hide();
 });
 
 $('.rules').on('click',() => {
@@ -61,6 +70,10 @@ function countTimePop(str) {
 }
 
 countTimePop('2018-4-16 12:21:30');
+
+function is_wechat(){
+    return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
+}
 
 
 

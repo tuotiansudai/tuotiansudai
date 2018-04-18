@@ -8,10 +8,26 @@ $('.help_rightNow').on('click',function () {
         layer.msg('助力已结束');
         return;
     }
-    alert(1)
+    else {
+        if(is_wechat()) {
+            $('.wechat_share_tip').show();
+        }
+        else {
+            alert('请点击浏览器分享');
+        }
+    }
 });
 $('.help_too').on('click',() => {
-    alert(2)
+    if(is_wechat()) {
+        $('.wechat_share_tip').show();
+    }
+    else {
+        alert('请点击浏览器分享');
+    }
+});
+
+$('.wechat_share_tip').on('click',function () {
+    $(this).hide();
 });
 
 $('.withdraw_cash').on('click',() => {
@@ -72,6 +88,10 @@ function countTimePop(str) {
 }
 
 countTimePop('2018-4-17 12:21:30');
+
+function is_wechat(){
+    return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
+}
 
 
 
