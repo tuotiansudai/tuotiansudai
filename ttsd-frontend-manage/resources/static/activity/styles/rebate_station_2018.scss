@@ -225,6 +225,7 @@ h2,h4 {
                   }
                   .see_more, .see_less {
                     width: 100px;
+                    height: 30px;
                     margin: 25px auto 40px auto;
                     color: #460c07;
                     cursor: pointer;
@@ -1541,52 +1542,6 @@ h2,h4 {
             font-size: 40px;
             color: #d70921;
           }
-          .countDown_wrapper {
-            display: none;
-            width: 300px;
-            height: 82px;
-            font-size: 0;
-            background: url("../images/2018/rebate-station/countDown_wrapper.png") no-repeat;
-            background-size: contain;
-            overflow: hidden;
-            .time_num_wrapper {
-              width: 300px;
-              height: 36px;
-              text-align: center;
-              .time_num {
-                display: inline-block;
-                margin-top: 20px;
-                width: 25px;
-                height: 36px;
-                line-height: 36px;
-                text-align: center;
-                font-size: 30px;
-                color: #fff;
-                background: #373737;
-                border-radius: 3px;
-                &.hour1,  &.minutes1,  &.seconds1{
-                  margin-right: 1px;
-                }
-              }
-              .icon {
-                margin: 0 3px;
-                font-size: 30px;
-                color: #373737;
-              }
-            }
-          }
-          .time_over {
-            display: none;
-            width: 300px;
-            height: 82px;
-            line-height: 82px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #565353;
-            background: url("../images/2018/rebate-station/countDown_over.png") no-repeat;
-            background-size: contain;
-          }
         }
       }
       .friends {
@@ -1594,63 +1549,6 @@ h2,h4 {
         font-size: 14px;
         top: 350px;
         left: 30px;
-      }
-    }
-  }
-  .close_btn {
-    position: absolute;
-    top: -33px;
-    right: -33px;
-    width: 50px;
-    height: 50px;
-    background: url("../images/2018/rebate-station/close_btn.png") no-repeat;
-    background-size: contain;
-  }
-
-  .list_tip_text {
-    position: absolute;
-    bottom: 70px;
-    color: #a7988d;
-    font-size: 18px;
-    font-weight: bold;
-    width: 700px;
-    text-align: center;
-  }
-  .friend_list {
-    position: absolute;
-    left: 23px;
-    bottom: 23px;
-    width: 654px;
-    height: 128px;
-    font-size: 14px;
-    color: #ae5f24;
-    overflow-y: scroll;
-    .list_item {
-      height: 42px;
-      line-height: 42px;
-      .portrait {
-        position: relative;
-        top: -2px;
-        display: inline-block;
-        margin: 0 15px 0 100px;
-        width: 36px;
-        height: 36px;
-        background: url("../images/2018/rebate-station/default_portrait.png") no-repeat;
-        background-size: contain;
-        border-radius: 50%;
-        vertical-align: middle;
-      }
-      .nickName {
-        width: 250px;
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        vertical-align: middle;
-      }
-      .finish_time {
-        display: inline-block;
-        vertical-align: middle;
       }
     }
   }

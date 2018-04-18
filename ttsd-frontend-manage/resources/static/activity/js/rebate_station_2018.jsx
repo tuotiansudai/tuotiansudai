@@ -66,8 +66,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        noLogged();
-        // alreadyLogged();
+        // noLogged();
+        alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {
@@ -85,6 +85,7 @@ $('.login_btn').on('click', () => {
 });
 
 $('.see_more').on('click',() => {
+    if (!$('.see_more').html()) return;
     $('.table_container').addClass('table_auto');
     $('.see_more').hide();
     $('.see_less').show();
@@ -104,7 +105,7 @@ $('.handle_btn').on('click',(e) => {
         $('.cashBack_popModal').show();
     }
     else {
-        alert(1)
+        location.href = '/activity/invite-help/wechat/sharing';
     }
 
 });
@@ -115,7 +116,7 @@ $('.everyone_detail').on('click',() => {
         $('.help_popModal').show();
     }
     else {
-        alert(2)
+        location.href = '/activity/invite-help/wechat/sharing1';
     }
 });
 
@@ -250,6 +251,7 @@ function countDownList(domElement) {
                 if (leftTime <= 1) {
                     clearInterval(timer);
                     $this.html('助力结束');
+                    $this.siblings('.handle_btn').html('查看详情');
                     return;
                 }
                 h = Math.floor(leftTime/60/60%24);
@@ -262,6 +264,7 @@ function countDownList(domElement) {
                 leftTime--;
             }else {
                 $this.html('助力结束');
+                $this.siblings('.handle_btn').html('查看详情');
             }
         }
     });
@@ -272,6 +275,28 @@ countDownList('.overTime');
 
 if ($('.part1').find('.help_list').find('.already_login').find('p').length > 2) {
     scrollUp($('.part1').find('.help_list').find('.already_login'));
+}
+
+function getPageInfo() {
+    commonFun.useAjax({
+        type: 'GET',
+        url: '/activity/year-end-awards/ranking/' + date
+    }, function (data) {
+        if (data.status) {
+            if (_.isNull(data.records) || data.records.length == 0) {
+                $contentRanking.html('');
+                showMoreData(data.records.length);
+                return;
+            }
+            //获取模版内容
+            let ListTpl = $('#tplTable').html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(ListTpl);
+            let html = render(data);
+            $contentRanking.html(html);
+            showMoreData(data.records.length);
+        }
+    });
 }
 
 
