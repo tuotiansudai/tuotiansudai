@@ -134,7 +134,7 @@
                                                     <#list investHelp as invest>
                                                     <tr>
                                                         <td>${(invest.investAmount/100)?string('0.00')}</td>
-                                                        <td>${(invest.reward/100)?string('0.00')}</td>
+                                                        <#--<td>${(invest.reward/100)?string('0.00')}</td>-->
                                                         <td class="overTime"
                                                             data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
                                                         <td class="handle_btn"
@@ -346,8 +346,8 @@
 </div>
 <div class="help_popModal">
     <div class="content">
-        <div class="join_num">您已成功邀请<span class="strong">0</span>人</div>
-        <div class="get_cash">获得返现<span class="strong">0.00</span>元</div>
+        <div class="join_num">您已成功邀请<span class="strong"><span class="invite_count"></span></span>人</div>
+        <div class="get_cash">获得返现<span class="strong"><span class="invite_reward"></span></span>元</div>
         <div class="duration_time">活动有效期：05.02-05.31</div>
         <div class="invite_weachat">
             <div class="desc_text">使用微信扫一扫<br/>邀请好友助力得现金奖励</div>
@@ -355,32 +355,32 @@
         <div class="active_one_pop"></div>
         <div class="friends">已助力好友</div>
         <div class="list_tip_text" style="display: none">您还没有获得好友助力，快去邀请吧</div>
-        <div class="friend_list">
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
+        <div class="friend_list" style="display: none">
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
         </div>
         <div class="close_btn"></div>
     </div>
@@ -391,8 +391,8 @@
         <div class="title">
             <div class="left_topIcon"></div>
             <div class="text">
-                <div>您已经获得<span class="strong">500.00元</span>助力现金奖励</div>
-                <div>还差8个好友助力即可得到<span class="strong">1000.00元</span>现金奖励</div>
+                <div>您已经获得<span class="strong"><span class="has_get"></span>元</span>助力现金奖励</div>
+                <div class="differ_friends" style="display: none">还差<span class="differ_count"></span>个好友助力即可得到<span class="strong"><span class="differ_amount"></span>元</span>现金奖励</div>
             </div>
             <div class="right_topIcon"></div>
         </div>
@@ -401,27 +401,27 @@
                 <div class="light_line"></div>
             </div>
             <div class="circle_wrapper circle1_wrapper">
-                <div class="circle circle1">100</div>
+                <div class="circle circle1"></div>
                 <div class="person_num">2人</div>
             </div>
             <div class="circle_wrapper circle2_wrapper">
-                <div class="circle circle2">200</div>
+                <div class="circle circle2"></div>
                 <div class="person_num">5人</div>
             </div>
             <div class="circle_wrapper circle3_wrapper">
-                <div class="circle circle3">300</div>
+                <div class="circle circle3"></div>
                 <div class="person_num">18人</div>
             </div>
             <div class="circle_wrapper circle4_wrapper">
-                <div class="circle circle4">400</div>
+                <div class="circle circle4"></div>
                 <div class="person_num">58人</div>
             </div>
             <div class="circle_wrapper circle5_wrapper">
-                <div class="circle circle5">500</div>
+                <div class="circle circle5"></div>
                 <div class="person_num">88人</div>
             </div>
             <div class="circle_wrapper circle6_wrapper">
-                <div class="circle circle6">1000</div>
+                <div class="circle circle6"></div>
                 <div class="person_num">108人</div>
             </div>
         </div>
@@ -448,33 +448,33 @@
             </div>
         </div>
         <div class="friends">已助力好友</div>
-        <div class="list_tip_text">您还没有获得好友助力，快去邀请吧</div>
+        <div class="list_tip_text" style="display: none">您还没有获得好友助力，快去邀请吧</div>
         <div class="friend_list" style="display: none">
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
-            <div class="list_item">
-                <div class="portrait"></div>
-                <div class="nickName">昵称00</div>
-                <div class="finish_time">2018.05.05 12:12:12</div>
-            </div>
+            <#--<div class="list_item">-->
+                <#--<img class="portrait" src=""/>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
+            <#--<div class="list_item">-->
+                <#--<div class="portrait"></div>-->
+                <#--<div class="nickName">昵称00</div>-->
+                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
+            <#--</div>-->
         </div>
         <div class="close_btn"></div>
     </div>
