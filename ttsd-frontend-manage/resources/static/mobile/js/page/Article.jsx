@@ -71,12 +71,22 @@ class Article extends React.Component {
 					}
 					<section className="content" dangerouslySetInnerHTML={{ __html: this.state.data.content }}>
 					</section>
+
+					{Number(this.props.location.query.isShowLikeCount)!==0&&
 					<section className="info clearfix">
 						<div className="pull-left readed">阅读：{this.state.data.readCount}</div>
 						<Praise className="pull-right" likeCount={this.state.data.likeCount} id={this.state.data.articleId}></Praise>
 					</section>
+
+					}
+
 				</article>
-				<a className="back-link" onTouchTap={this.goTo.bind(this)} data-href="#/media-center"></a>
+				{
+                    Number(this.props.location.query.isShowLikeCount)?
+					<a className="back-link" onTouchTap={this.goTo.bind(this)} data-href="#/media-center"></a>:
+						<a className="back-link" onTouchTap={this.goTo.bind(this)} data-href="#/knowledge-center"></a>
+				}
+
 			</div>
 		);
 	}
