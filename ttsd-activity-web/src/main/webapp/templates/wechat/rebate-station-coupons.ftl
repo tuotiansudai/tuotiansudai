@@ -1,61 +1,15 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.rebate_station_coupons}" pageJavascript="${js.rebate_station_coupons}"  title="520元开工红包">
-<div class="top_container">
-    <div class="nickName">昵称</div>
-    <div class="rules"></div>
-</div>
-<div class="content_text">
-    <div class="title"></div>
-    <div class="desc">
-        <div class="total">投资金额：<span class="strong">10000.00元</span></div>
-        <div class="profit">该笔投资已经获得<span class="strong">500.00元现金</span></div>
-        <div class="differ">还差15个好友助力即可得到<span class="strong">xxx.xx元现金</span></div>
+<@global.main pageCss="${css.rebate_station_coupons}" pageJavascript="${js.rebate_station_coupons}"  title="扫码赠0.5%加息券">
+<div class="container" data-get="false" data-success="" data-start-time="2018/4/16 20:00" data-over-time="2018/4/20 20:00">
+    <div class="tip_text" style="display: none">
+        <div>您已经领取</div>
+        <div>加息券已发放至您的账户</div>
     </div>
-    <div class="percent_wrapper">
-        <div id="cycle"></div>
-        <div class="percent percent1">100<br/>元</div>
-        <div class="percent percent2">200<br/>元</div>
-        <div class="percent percent3">300<br/>元</div>
-        <div class="percent percent4">400<br/>元</div>
-        <div class="percent percent5">500<br/>元</div>
-        <div class="percent percent6">1000<br/>元</div>
-        <div class="invite_friends_btn"></div>
-        <div class="text text1">2人</div>
-        <div class="text text2">8人</div>
-        <div class="text text3">18人</div>
-        <div class="text text4">58人</div>
-        <div class="text text5">88人</div>
-        <div class="text text6">108人</div>
-    </div>
-    <div class="countDown_time_wrapper">
-        <span class="text">倒计时：</span>
-        <div class="pic_wrapper">
-            <div class="time_num_wrapper">
-                <div class="time_num hour1"></div>
-                <div class="time_num hour2"></div>
-                <span class="icon">:</span>
-                <div class="time_num minutes1"></div>
-                <div class="time_num minutes2"></div>
-                <span class="icon">:</span>
-                <div class="time_num seconds1"></div>
-                <div class="time_num seconds2"></div>
-            </div>
-        </div>
-        <div class="time_over">已结束</div>
-    </div>
-    <div class="invited_friends_container">
-        <div class="title"></div>
-        <div class="content"></div>
-    </div>
-</div>
-<div class="flex_rules">
-    <div class="close_rules"></div>
-    <div class="desc first_desc">1:活动期间，用户分享活动链接至微信群/朋友圈/任意好友，邀请好友为您助力，分享后24小时内的好友助力有效。</div>
-    <div class="desc">2:每多邀请1人点击，可获得0.2元现金奖励，最高可获得10元现金奖励。</div>
-    <div class="desc">3:奖励将于用户成功分享24小时后统一发放到账户，可全部提现。</div>
-    <div class="desc">4. 本活动所发放的现金奖励可提现，用户可在pc端“我的账户”或APP端“我的”中进行查看，未绑定过银行卡的用户，需完成绑卡后方可查看和提现；</div>
-    <div class="desc">5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</div>
+    <div class="handle_btn"></div>
+    <div class="content"></div>
+    <div class="single_coupon single_coupon1"></div>
+    <div class="single_coupon single_coupon2"></div>
 </div>
     <#include "../module/login-tip.ftl" />
 <script>
