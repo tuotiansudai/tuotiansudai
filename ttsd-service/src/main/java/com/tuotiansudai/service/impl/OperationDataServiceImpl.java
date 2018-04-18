@@ -144,7 +144,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
                 .map(LoanRepayModel::getLoanId)
                 .distinct()
-                .map(s -> loanerDetailsMapper.getByLoanId(s).getLoginName())
+                .map(s -> loanerDetailsMapper.getByLoanId(s))
+                .filter(loanerDetail -> loanerDetail != null)
                 .distinct()
                 .count()));
 
@@ -189,12 +190,13 @@ public class OperationDataServiceImpl implements OperationDataService {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endDate);
         operationDataDto.setOperationDays(calOperationTime(endDate));
         operationDataDto.setSumLoanerCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT));
+        operationDataDto.setSumExpectedAmount(redisWrapperClient.hget(redisInfoPublishKey,REDIS_SUM_EXPECTED_AMOUNT));
         operationDataDto.setUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_USERS_COUNT)));
         operationDataDto.setSumLoanCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT));
         operationDataDto.setSumLoanAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_AMOUNT));
         operationDataDto.setSumOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT));
-        operationDataDto.setAmountOverDueRate(redisWrapperClient.hget(redisInfoPublishKey,REDIS_AMOUNT_OVER_DUE_RATE));
-        operationDataDto.setLoanOverDueRate(redisWrapperClient.hget(redisInfoPublishKey,REDIS_LOAN_OVER_DUE_RATE));
+        operationDataDto.setAmountOverDueRate(redisWrapperClient.hget(redisInfoPublishKey, REDIS_AMOUNT_OVER_DUE_RATE));
+        operationDataDto.setLoanOverDueRate(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOAN_OVER_DUE_RATE));
         operationDataDto.setInvestUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT)));
         operationDataDto.setTradeAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_TRADE_AMOUNT));
         operationDataDto.setLoanerOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_AMOUNT));
@@ -229,8 +231,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT, operationDataDto.getSumLoanCount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT, operationDataDto.getSumLoanerCount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_EXPECTED_AMOUNT, operationDataDto.getSumExpectedAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey,REDIS_AMOUNT_OVER_DUE_RATE,operationDataDto.getAmountOverDueRate(),timeout);
-        redisWrapperClient.hset(redisInfoPublishKey,REDIS_LOAN_OVER_DUE_RATE,operationDataDto.getLoanOverDueRate(),timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_AMOUNT_OVER_DUE_RATE, operationDataDto.getAmountOverDueRate(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOAN_OVER_DUE_RATE, operationDataDto.getLoanOverDueRate(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT, operationDataDto.getSumOverDueAmount(), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_USERS_COUNT, Long.toString(operationDataDto.getUsersCount()), timeout);
         redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_COUNT, operationDataDto.getLoanerOverDueCount(), timeout);
