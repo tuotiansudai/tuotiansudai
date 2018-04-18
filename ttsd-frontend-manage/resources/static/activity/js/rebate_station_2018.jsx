@@ -277,6 +277,28 @@ if ($('.part1').find('.help_list').find('.already_login').find('p').length > 2) 
     scrollUp($('.part1').find('.help_list').find('.already_login'));
 }
 
+function getPageInfo() {
+    commonFun.useAjax({
+        type: 'GET',
+        url: '/activity/year-end-awards/ranking/' + date
+    }, function (data) {
+        if (data.status) {
+            if (_.isNull(data.records) || data.records.length == 0) {
+                $contentRanking.html('');
+                showMoreData(data.records.length);
+                return;
+            }
+            //获取模版内容
+            let ListTpl = $('#tplTable').html();
+            // 解析模板, 返回解析后的内容
+            let render = _.template(ListTpl);
+            let html = render(data);
+            $contentRanking.html(html);
+            showMoreData(data.records.length);
+        }
+    });
+}
+
 
 
 
