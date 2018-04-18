@@ -104,7 +104,7 @@ public class InviteHelpActivityScheduler {
                 if (weChatHelpModel.getLoginName() == null || weChatHelpModel.getReward() <= 0) {
                     return;
                 }
-                if (!redisWrapperClient.exists(MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, weChatHelpModel.getId()))) {
+                if (!redisWrapperClient.exists(MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, weChatHelpModel.getLoginName()))) {
                     try {
                         sendEveryoneHelpCashToCreator(weChatHelpModel);
                         weChatHelpModel.setCashBack(true);
@@ -139,7 +139,7 @@ public class InviteHelpActivityScheduler {
 
     private void sendEveryoneHelpCashToCreator(WeChatHelpModel weChatHelpModel) {
         logger.info("[Invite_Help_Activity] everyone help {} send creator cash start, user:{}, cash:{}", weChatHelpModel.getId(), weChatHelpModel.getLoginName(), weChatHelpModel.getReward());
-        String key = MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, String.valueOf(weChatHelpModel.getId()));
+        String key = MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, weChatHelpModel.getLoginName());
         TransferCashDto transferCashDto = new TransferCashDto(weChatHelpModel.getLoginName(), String.valueOf(IdGenerator.generate()), String.valueOf(weChatHelpModel.getReward()),
                 UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
         try {

@@ -42,7 +42,7 @@
             </div>
             <div class="time_over">已结束</div>
         </div>
-        <div class="withdraw_cash"></div>
+        <div class="withdraw_cash" id="helpId" data-help-id="${helpModel.id}"></div>
     </#if>
     <div class="invited_friends_container">
         <div class="title">已助力好友（共<#if helpModel??>${helpModel.helpUserCount}<#else>0</#if>人）</div>

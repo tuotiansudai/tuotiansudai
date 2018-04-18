@@ -82,7 +82,7 @@ public class InviteHelpActivityController {
     @ResponseBody
     public Map<String, Object> everyoneHelpDetail(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        String loginName = "chenzhonghui";
+        String loginName = LoginUserInfo.getLoginName();
         if (loginName != null || openId != null) {
             return inviteHelpActivityService.everyoneHelpDetail(loginName, openId);
         }
@@ -141,14 +141,9 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
     public ModelAndView wechatWithDraw(@PathVariable long id, HttpServletRequest request){
-        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activity/invite-help/everyone/help/detail");
-        }
-
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
-            request.getSession().setAttribute("channel", "weixin_rebateCheer");
+            request.getSession().setAttribute("channel", "weixin_rebateCheerActivity");
             return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/%s/withdraw", id));
         }
         inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
