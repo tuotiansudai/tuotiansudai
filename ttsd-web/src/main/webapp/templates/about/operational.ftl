@@ -27,7 +27,7 @@
                         <p>累计为用户赚取</p>
                     </li>
                     <li>
-                        <p><em id="investUsersCount"></em>元</p>
+                        <p><em id="investUsersCount"></em>人</p>
                         <p>累计投资用户数</p>
                     </li>
                 </ul>
@@ -96,23 +96,23 @@
             <div class="data-wrap">
                 <ul class="clearfix">
                     <li>
-                        <p><em id="sumLoanerCount"></em>元</p>
+                        <p><em id="sumLoanerCount"></em>人</p>
                         <p>借款人数</p>
                     </li>
                     <li>
-                        <p><em id="sumExpectedAmount"></em>笔</p>
+                        <p><em id="sumExpectedAmount"></em>元</p>
                         <p>待偿金额</p>
                     </li>
                     <li>
-                        <p><em id="sumOverDueAmount"></em>人</p>
+                        <p><em id="sumOverDueAmount"></em>元</p>
                         <p>逾期金额</p>
                     </li>
                     <li>
-                        <p><em id="loanOverDueRate"></em>元</p>
+                        <p><em id="loanOverDueRate"></em>%</p>
                         <p>项目逾期率</p>
                     </li>
                     <li>
-                        <p><em id="amountOverDueRate"></em>元</p>
+                        <p><em id="amountOverDueRate"></em>%</p>
                         <p>金额逾期率</p>
                     </li>
                 </ul>
@@ -150,11 +150,11 @@
                 <span class="line"></span>
                 <ul class="clearfix">
                     <li class="loan">
-                        <p><em id="loanerOverDueCount">3333，3333</em>元</p>
+                        <p><em id="loanerOverDueCount"></em>次</p>
                         <p>借款人平台逾期次数</p>
                     </li>
                     <li class="loan">
-                        <p><em id="loanerOverDueAmount">3333，3333</em>笔</p>
+                        <p><em id="loanerOverDueAmount"></em>元</p>
                         <p>平台逾期总金额</p>
                     </li>
                 </ul>

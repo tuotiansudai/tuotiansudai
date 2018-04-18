@@ -323,6 +323,92 @@ function dateFomater(datetime) {
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');
     let commonFun=require('publicJs/commonFun');
+    //团队介绍环形图
+
+    if($('.team-introduction').length){
+        //年龄分布 环形图
+        let ageDistributionArr = [{name:'25岁以下  49%',scale:0.49},{name:'30~40岁   32%',scale:0.32},{name:'26~30岁  19%',scale:0.19}];
+        var optionAgeDistribution = loadEcharts.ChartOptionTemplates.AnnularOption(ageDistributionArr,
+            {
+                tooltip: {
+                formatter: '员工年龄'+'<br/>{b} ',
+                show: true,
+                enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+        });
+        optionAgeDistribution.series[0].center = ['50%', '40%'];
+        var  optAgeDistribution = loadEcharts.ChartConfig('ageDistribution', optionAgeDistribution);
+        loadEcharts.RenderChart(optAgeDistribution);
+        //学历分布
+        let educationalDistributionArr = [{name:'大专及本科  88%',scale:0.88},{name:'硕士及以上  5%',scale:0.05},{name:'其他  7%',scale:0.07}];
+        var optionEducationalDistribution = loadEcharts.ChartOptionTemplates.AnnularOption(educationalDistributionArr,
+            {
+                tooltip: {
+                    formatter: '员工学历'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+            });
+        optionEducationalDistribution.series[0].center = ['50%', '40%'];
+        var  optEducatioEnalDistribution = loadEcharts.ChartConfig('educationalDistribution', optionEducationalDistribution);
+        loadEcharts.RenderChart(optEducatioEnalDistribution);
+
+        //技术及风控团队员工学历分布
+        let technologyEducationalArr = [{name:'本科  80%',scale:0.8},{name:'硕士及以上  10%',scale:0.1},{name:'专科  10%',scale:0.1}];
+        var optionTechnologyEducational = loadEcharts.ChartOptionTemplates.AnnularOption(technologyEducationalArr,
+            {
+                tooltip: {
+                    formatter: '技术及风控团队员工学历'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+            });
+        optionTechnologyEducational.series[0].center = ['50%', '40%'];
+        var  optTechnologyEducational = loadEcharts.ChartConfig('technologyEducational', optionTechnologyEducational);
+        loadEcharts.RenderChart(optTechnologyEducational);
+
+        //技术及风控团队员工工作年限分布
+        let technologyWorkingLifeArr = [{name:'3年以下  22%',scale:0.22},{name:'3-5年  39%',scale:0.39},{name:'6-10年  31%',scale:0.31},{name:'10年以上  8%',scale:0.08}];
+        var optionTechnologyWorkingLife = loadEcharts.ChartOptionTemplates.AnnularOption(technologyWorkingLifeArr,
+            {
+                tooltip: {
+                    formatter: '技术及风控团队员工工作年限'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+            });
+        optionTechnologyWorkingLife.series[0].center = ['50%', '40%'];
+        var  optTechnologyWorkingLife = loadEcharts.ChartConfig('technologyWorkingLife', optionTechnologyWorkingLife);
+        loadEcharts.RenderChart(optTechnologyWorkingLife);
+        //点击前后按钮
+        var pageIndex = 0;
+        var perWidth = 310*2+20*2;
+        var $carouselBox = $('#carouselBox');
+
+        $('.prevBtn').click(function(){
+            pageIndex--;
+            if(pageIndex <= 0) {
+                pageIndex = 0;
+            }
+            $carouselBox.animate({
+                'left':-pageIndex*perWidth
+            });
+        })
+        $('.nextBtn').click(function(){
+            pageIndex ++;
+            if(pageIndex >= 1) {
+                pageIndex = 1;
+            }
+            $carouselBox.animate({
+                'left':-pageIndex*perWidth
+            });
+        })
+    }
+
     if (!$("#dataRecord").length) {
         return;
     }
@@ -348,8 +434,8 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
          $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
          $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
-         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate,2));//项目逾期率
-         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate,2));//金额逾期率
+         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
+         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
 
         $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
         $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
