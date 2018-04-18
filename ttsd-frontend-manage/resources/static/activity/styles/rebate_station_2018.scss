@@ -263,7 +263,7 @@ h2,h4 {
                       position: relative;
                       top: -2px;
                       width: 560px;
-                      height: 190px;
+                      max-height: 190px;
                       margin: 0 auto;
                       padding: 20px 20px 20px 50px;
                       line-height: 50px;
@@ -642,41 +642,41 @@ h2,h4 {
         position: absolute;
         top: 100px;
         left: 0;
-        width: 50px;
+        width: 70px;
         height: 75px;
         .person_num {
-          font-size: 18px;
+          font-size: 16px;
           text-align: center;
           color: #c88f61;
         }
         &.circle1_wrapper {
-          top: -17px;
+          top: -27px;
           left: -25px;
         }
         &.circle2_wrapper {
-          top: -17px;
-          left: $percentWidth * 0.2 - 25px;
+          top: -27px;
+          left: $percentWidth * 0.2 - 35px;
         }
         &.circle3_wrapper {
-          top: -17px;
-          left: $percentWidth * 0.4 - 25px;
+          top: -27px;
+          left: $percentWidth * 0.4 - 35px;
         }
         &.circle4_wrapper {
-          top: -17px;
-          left: $percentWidth * 0.6 - 25px;
+          top: -27px;
+          left: $percentWidth * 0.6 - 35px;
         }
         &.circle5_wrapper {
-          top: -17px;
-          left: $percentWidth * 0.8 - 25px;
+          top: -27px;
+          left: $percentWidth * 0.8 - 35px;
         }
         &.circle6_wrapper {
-          top: -17px;
-          left: $percentWidth - 25px;
+          top: -27px;
+          left: $percentWidth - 35px;
         }
         .circle {
-          width: 50px;
-          height: 50px;
-          line-height: 50px;
+          width: 70px;
+          height: 70px;
+          line-height: 70px;
           text-align: center;
           border-radius: 50%;
           background: #ccbea6;
@@ -817,8 +817,6 @@ h2,h4 {
       margin: 0 15px 0 100px;
       width: 36px;
       height: 36px;
-      background: url("../images/2018/rebate-station/default_portrait.png") no-repeat;
-      background-size: contain;
       border-radius: 50%;
       vertical-align: middle;
     }

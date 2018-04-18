@@ -3,15 +3,143 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/plugins/jquery.qrcode.min');
 require('publicJs/login_tip');
 let sourceKind = globalFun.parseURL(location.href);
+let url = location.href;
 let timer;
+
+let data = {
+    'myCashChain': [1.00,200.00,300.00,350.00,1500.11],
+    'nextNode': 6,
+    'nextAmount': 25000,// 分
+    'helpFriends': [
+        {
+            id: 1,
+            openId: '1111222aaa',
+            nickName: "朱坤",
+            headImgUrl: '',
+            createdTime: '2018-04-13 18:39:58',
+            updatedTime: '2018-04-13 18:39:58'
+        }
+    ],
+    'helpModel': {
+        id: 1,
+        loadnId: 22222222,
+        investAmount: 222,
+        annualizedAmount: 500,
+        loginName: 'chenzhonghui',
+        userName: '陈忠辉',
+        mobile: 1881111111,
+        openId: null,
+        type: 'INVEST_HELP',
+        helpUerCount: 2,
+        reward: 100,
+        startTime: '2018-04-13 17:39:58',
+        endTime: '2018-04-13 17:39:58',
+        cashBack: false
+
+    }
+};
+
+let data1 = {
+    "drawEndTime": "2018-04-20 18:46:42",
+    "helpModel": {
+        "id": 2,
+        "loanId": 0,
+        "investId": 0,
+        "investAmount": 0,
+        "annualizedAmount": 0,
+        "loginName": "chenzhonghui",
+        "userName": "陈忠慧",
+        "mobile": "18245135693",
+        "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRxE",
+        "type": "EVERYONE_HELP",
+        "helpUserCount": 10,
+        "reward": 2000,
+        "startTime": "2018-04-18 18:46:42",
+        "endTime": "2018-04-19 18:46:42",
+        "cashBack": false
+    },
+    "helpFriends": [
+        {
+            "id": 1,
+            "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRxE",
+            "nickName": "朱坤",
+            "headImgUrl": "http://thirdwx.qlogo.cn/mmopen/FicVOq4OuXKhoKUF7uaHDgZdS5ZibPl69lfJljElNG2xU8oCtLW5aJHKSxmEicsZuRqsnRVkKeQicLlK6IsuL35GqQma3bgqVficI/132",
+            "createdTime": "2018-04-13 18:39:58",
+            "updatedTime": "2018-04-13 18:41:00"
+        },
+        {
+            "id": 2,
+            "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRx1",
+            "nickName": "NICAI",
+            "headImgUrl": "http://thirdwx.qlogo.cn/mmopen/FicVOq4OuXKhoKUF7uaHDgZdS5ZibPl69lfJljElNG2xU8oCtLW5aJHKSxmEicsZuRqsnRVkKeQicLlK6IsuL35GqQma3bgqVficI/132",
+            "createdTime": "2018-04-12 10:00:00",
+            "updatedTime": "2018-04-12 10:00:00"
+        }
+    ]
+};
+
+
+getList(data,'.cashBack_popModal');
+getList(data1,'.help_popModal');
+getPercentLight(data,'.cashBack_popModal');
+
+
+// commonFun.useAjax({
+//     type: 'GET',
+//     url: '/activity/year-end-awards/ranking/' + date
+// }, function (data) {
+//     getList(data);
+//     getPercentLight(data);
+// });
 
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
 
-function getPercentLight() {
-    let currentPer = 500;
-    let percentArr= [100,200,300,400,500,1000];
+
+function getList(data,parent) {
+    if (parent == '.help_popModal') {
+        $('.invite_count').html(data.helpModel.helpUserCount);
+        $('.invite_reward').html(data.helpModel.reward / 100);
+    }
+    let list = data.helpFriends;
+    if (!list.length) {
+        $(parent).find('.list_tip_text').show();
+        return;
+    }
+    let dom = '';
+    $(parent).find('.friend_list').show();
+    list.forEach((item) => {
+        let headImgUrl = item.headImgUrl;
+        if (!item.headImgUrl) {
+            headImgUrl = '../../../activity/images/default_portrait.png';
+        }
+        dom += `
+             <div class="list_item">
+                <img class="portrait" src="${headImgUrl}" />
+                <div class="nickName">${item.nickName}</div>
+                <div class="finish_time">${item.createdTime}</div>
+            </div>
+        `
+    });
+    $(parent).find('.friend_list').html(dom);
+}
+
+
+function getPercentLight(data) {
+    if (data.nextNode) {
+        $('.differ_count').html(data.nextNode);
+        $('.differ_amount').html(data.nextAmount / 100);
+        $('.differ_friends').show();
+    }
+    let has_get = data.helpModel.reward / 100;
+    $('.has_get').html(has_get);
+    let currentPer = has_get;
+    let percentArr= data.myCashChain;
+    for (let j = 0;j < percentArr.length;j++) {
+        let circleName = '.circle' + (j + 1);
+        $(circleName).html(percentArr[j]);
+    }
     for (let i = 0;i < percentArr.length;i++) {
         let item = percentArr[i];
         if (currentPer < item) {
@@ -35,10 +163,8 @@ function getPercentLight() {
     }
 }
 
-getPercentLight();
-
 $('.active_one').qrcode({
-    text: 'http://www.baidu.com',
+    text: url,
     width: 200,
     height: 200,
     colorDark : '#000000',
@@ -46,7 +172,7 @@ $('.active_one').qrcode({
 });
 
 $('.active_one_pop').qrcode({
-    text: 'http://www.baidu.com',
+    text: url,
     width: 140,
     height: 126,
     colorDark : '#000000',
@@ -54,7 +180,7 @@ $('.active_one_pop').qrcode({
 });
 
 $('.active_two').qrcode({
-    text: 'http://www.baidu.com',
+    text: url,
     width: 140,
     height: 126,
     colorDark : '#000000',
@@ -183,15 +309,6 @@ function scrollUp(domName,time=1000) {
     up();
 }
 
-function formatTime(time) {
-    let currentTime = new Date(time);
-    let year = currentTime.getFullYear();
-    let month = currentTime.getMonth() + 1;
-    let day = currentTime.getDate();
-    month < 10 ? '0' + month : month;
-    day < 10 ? '0' + day : day;
-    return year + '.' + month + '.' + day;
-}
 
 function countTimePop(str) {
     $('.countDown_wrapper').show();
@@ -277,27 +394,9 @@ if ($('.part1').find('.help_list').find('.already_login').find('p').length > 2) 
     scrollUp($('.part1').find('.help_list').find('.already_login'));
 }
 
-function getPageInfo() {
-    commonFun.useAjax({
-        type: 'GET',
-        url: '/activity/year-end-awards/ranking/' + date
-    }, function (data) {
-        if (data.status) {
-            if (_.isNull(data.records) || data.records.length == 0) {
-                $contentRanking.html('');
-                showMoreData(data.records.length);
-                return;
-            }
-            //获取模版内容
-            let ListTpl = $('#tplTable').html();
-            // 解析模板, 返回解析后的内容
-            let render = _.template(ListTpl);
-            let html = render(data);
-            $contentRanking.html(html);
-            showMoreData(data.records.length);
-        }
-    });
-}
+
+
+
 
 
 
