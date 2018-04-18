@@ -181,8 +181,8 @@ h2,h4 {
                     }
                   }
                   .table_container {
-                    height: 153px;
-                    overflow: hidden;
+                    max-height: 294px;
+                    overflow-y: scroll;
                     &.table_auto {
                       height: auto;
                     }
@@ -1005,8 +1005,8 @@ h2,h4 {
                       }
                     }
                     .table_container {
-                      height: 6.9rem;
-                      overflow: hidden;
+                      max-height: 13.7rem;
+                      overflow-y: scroll;
                       &.table_auto {
                         height: auto;
                       }
@@ -1089,7 +1089,7 @@ h2,h4 {
                         position: relative;
                         top: -2px;
                         width: 13.15rem;
-                        height: 4.45rem;
+                        height: 4.4rem;
                         margin: 0 auto;
                         padding: .5rem .7rem .7rem .9rem;
                         line-height: 1.2rem;
