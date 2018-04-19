@@ -246,7 +246,7 @@
                                     </div>
                                     <div class="already_login">
                                         <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
-                                                class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
+                                                class="strong everyone_detail invite_everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
                                     </div>
 
                                     <div class="no_login">
@@ -272,8 +272,8 @@
                                 <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span
                                         class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，
                                 </div>
-                                <div class="strong everyone_detail" style="cursor: pointer">查看邀请详情></div>
-                                <div class="invite_friends_help"></div>
+                                <div class="strong everyone_detail invite_everyone_detail" style="cursor: pointer">查看邀请详情></div>
+                                <div class="invite_friends_help invite_everyone_detail"></div>
                             </div>
                             <div class="no_login">
                                 <div class="login_btn"></div>
@@ -301,7 +301,7 @@
                             </p>
                             <p>即可<span class="strong">获得0.5%加息券2张</span>，每人限领一次。</p>
                         </div>
-                        <div class="content"></div>
+                        <img class="content" src="../../../activity/images/add_rates_wechat.png" />
                     </div>
                 </div>
             </div>

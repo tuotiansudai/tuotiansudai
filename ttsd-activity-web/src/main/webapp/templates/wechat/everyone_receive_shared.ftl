@@ -78,8 +78,8 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '拓天HR给你一个开工红包', // 分享标题
-            desc: '无红包，不开工！', // 分享描述
+            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            desc: '我在拓天速贷app发现了一个助力得现金奖励的活动，快来参加吧！', // 分享描述
             link: '${webServer}/we-chat/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
@@ -89,7 +89,7 @@
         });
 
         wx.onMenuShareTimeline({
-            title: '拓天HR给你一个开工红包', // 分享标题
+            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
             link: '${webServer}/we-chat/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
