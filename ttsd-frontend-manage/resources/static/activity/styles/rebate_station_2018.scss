@@ -474,7 +474,6 @@ h2,h4 {
 }
 .no_login2 {
   text-align: center;
-  margin-top: 50px;
   font-size: 26px;
   color: #a7988d;
 }
@@ -1106,7 +1105,7 @@ h2,h4 {
                         position: relative;
                         top: -2px;
                         width: 13.15rem;
-                        height: 4.4rem;
+                        max-height: 4.4rem;
                         margin: 0 auto;
                         padding: .5rem .7rem .7rem .9rem;
                         line-height: 1.2rem;
@@ -1318,7 +1317,6 @@ h2,h4 {
       }
     }
     .no_login2 {
-      margin-top: .7rem;
       font-size: .65rem;
       color: #a7988d;
       text-align: center;

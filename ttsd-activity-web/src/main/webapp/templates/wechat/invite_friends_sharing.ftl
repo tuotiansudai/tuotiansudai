@@ -18,7 +18,7 @@
     <div class="percent_wrapper">
         <div id="cycle" data-cashchain="${myCashChain?join(',')}" data-mycash="${(helpModel.reward/100)?string('0.00')}"></div>
         <#list myCashChain as chain>
-            <div class="percent percent${chain_index + 1}">${chain}<br/>元</div>
+            <div class="percent percent${chain_index + 1}">${chain}</div>
         </#list>
         <div class="invite_friends_btn"></div>
         <div class="text text1">2人</div>
