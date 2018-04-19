@@ -251,3 +251,26 @@
   }
 
 }
+
+.compliance-index {
+  position: relative;
+  .invest-tip-wrap {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: 10px;
+    left: 10px;
+    margin-left: 0;
+
+    .invest-tip {
+      width: 170px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      background: rgba(0,0,0,0.25);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+  }
+}
