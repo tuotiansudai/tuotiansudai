@@ -13,7 +13,7 @@
                 <div>您的朋友${helpModel.userName}邀请你助力，</div>
                 <div>共同瓜分最高<span class="strong">${(helpModel.reward/100)?string('0.00')}元现金</span></div>
             </div>
-            <div class="help_rightNow"></div>
+            <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
         </div>
     <#else>
         <div class="no_shared">
