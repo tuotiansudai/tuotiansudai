@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.MobileEncryptor;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.WeChatClient;
@@ -80,10 +81,10 @@ public class InviteHelpActivityService {
 
     public Map<String, Object> investHelpDetail(long id, String loginName){
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
+        Map<String, Object> map = new HashMap<>();
         if (weChatHelpModel != null && weChatHelpModel.getLoginName().equals(loginName)) {
-            Map<String, Object> map = new HashMap<>();
-            List<Long> myCashChain = new ArrayList<>();
-            rates.forEach(rate -> myCashChain.add((long) (weChatHelpModel.getAnnualizedAmount() * rate.getRate())));
+            List<String> myCashChain = new ArrayList<>();
+            rates.forEach(rate -> myCashChain.add(AmountConverter.convertCentToString((long) (weChatHelpModel.getAnnualizedAmount() * rate.getRate()))));
             map.put("myCashChain", myCashChain);
             Optional<Rates> optional = rates.stream().filter(rates -> rates.getMinNum() > weChatHelpModel.getHelpUserCount()).findFirst();
             if (optional.isPresent()){
@@ -94,7 +95,7 @@ public class InviteHelpActivityService {
             map.put("helpModel", weChatHelpModel);
             return map;
         }
-        return null;
+        return map;
     }
 
     @Transactional
@@ -134,21 +135,27 @@ public class InviteHelpActivityService {
     }
 
     public Map<String, Object> everyoneHelpDetail(String loginName, String openId){
-        List<WeChatHelpModel> list = new ArrayList<>();
+        List<WeChatHelpModel> list;
         Map<String, Object> map = new HashMap<>();
         if (loginName != null) {
             list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
+
         } else {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openId);
             if (weChatUserModel.isBound()){
                 list = weChatHelpMapper.findByUserAndHelpType(weChatUserModel.getLoginName(), null, WeChatHelpType.EVERYONE_HELP);
+                UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
+                map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
             }else{
                 list = weChatHelpMapper.findByUserAndHelpType(null, openId, WeChatHelpType.EVERYONE_HELP);
-                map.put("nickName", weChatUserInfoMapper.findByOpenId(openId).getNickName());
+                map.put("name", weChatUserInfoMapper.findByOpenId(openId).getNickName());
             }
         }
         if (list.size() > 0){
-            map.put("model", list.get(0));
+            map.put("helpModel", list.get(0));
+            map.put("drawEndTime", new DateTime(list.get(0).getEndTime()).plusDays(1).toDate());
             map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(list.get(0).getId()));
         }
         return map;

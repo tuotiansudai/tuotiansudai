@@ -65,7 +65,7 @@
         <if test="openId !=null and openId !=''">
             and openId = #{openId}
         </if>
-        ORDER by start_time desc
+        ORDER by help_user_count desc
     </select>
 
     <select id="findByLoanId" parameterType="map" resultMap="weChatHelpModel">

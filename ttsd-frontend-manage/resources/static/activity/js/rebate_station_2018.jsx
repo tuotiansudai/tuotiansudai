@@ -79,19 +79,6 @@ let data1 = {
 };
 
 
-getList(data,'.cashBack_popModal');
-getList(data1,'.help_popModal');
-getPercentLight(data,'.cashBack_popModal');
-
-
-// commonFun.useAjax({
-//     type: 'GET',
-//     url: '/activity/year-end-awards/ranking/' + date
-// }, function (data) {
-//     getList(data);
-//     getPercentLight(data);
-// });
-
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
@@ -192,8 +179,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        // noLogged();
-        alreadyLogged();
+        noLogged();
+        // alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {
@@ -228,10 +215,17 @@ $('.handle_btn').on('click',(e) => {
     let overTime = e.currentTarget.dataset.overtime;
     countTimePop(overTime);
     if (!isMobile()) {
+        commonFun.useAjax({
+            type: 'GET',
+            url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
+        }, function (data) {
+            getList(data,'.cashBack_popModal');
+            getPercentLight(data);
+        });
         $('.cashBack_popModal').show();
     }
     else {
-        location.href = '/activity/invite-help/wechat/sharing';
+        location.href = '/activity/invite-help/wechat/'+ e.currentTarget.dataset.helpId + '/invest/help';
     }
 
 });
@@ -239,10 +233,21 @@ $('.handle_btn').on('click',(e) => {
 // 活动二 人人可领10元现金
 $('.everyone_detail').on('click',() => {
     if (!isMobile()) {
+        commonFun.useAjax({
+            type: 'GET',
+            url: '/activity/invite-help/everyone/help/detail'
+        }, function (data) {
+            $('.userName').html(data.name);
+            if(data.helpModel){
+                getList(data,'.help_popModal');
+            }else{
+                $('#helpPopText').show();
+            }
+        });
         $('.help_popModal').show();
     }
     else {
-        location.href = '/activity/invite-help/wechat/sharing1';
+        location.href = '/activity/invite-help/wechat/everyone/help/detail';
     }
 });
 

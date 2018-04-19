@@ -13,6 +13,10 @@ $('.invite_friends_btn').on('click',() => {
     }
 });
 
+$('.withdraw_cash').on('click',function () {
+    location.href = '/activity/invite-help/wechat/'+ $("#helpId").data("helpId") +'/withdraw';
+});
+
 $('.wechat_share_tip').on('click',function () {
     $(this).hide();
 });
@@ -68,8 +72,7 @@ function countTimePop(str) {
         }
     }
 }
-
-countTimePop('2018-4-16 12:21:30');
+countTimePop($("#countDown").data("countDown"));
 
 function is_wechat(){
     return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";

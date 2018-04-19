@@ -3,24 +3,23 @@
 <@global.main pageCss="${css.invite_friends_sharing}" pageJavascript="${js.invite_friends_sharing}"  title="拓天速贷-好友助力得现金">
 
 <div class="top_container">
-    <div class="nickName">昵称</div>
+    <div class="nickName">${helpModel.userName}</div>
     <div class="rules"></div>
 </div>
 <div class="content_text">
     <div class="title"></div>
     <div class="desc">
-        <div class="total">投资金额：<span class="strong">10000.00元</span></div>
-        <div class="profit">该笔投资已经获得<span class="strong">500.00元现金</span></div>
-        <div class="differ">还差15个好友助力即可得到<span class="strong">xxx.xx元现金</span></div>
+        <div class="total">投资金额：<span class="strong">${(helpModel.investAmount/100)?string('0.00')}元</span></div>
+        <div class="profit">该笔投资已经获得<span class="strong">${(helpModel.reward/100)?string('0.00')}元现金</span></div>
+        <#if nextNode??>
+            <div class="differ">还差${nextNode}个好友助力即可得到<span class="strong">${(nextAmount/100)?string('0.00')}元现金</span>
+            </div></#if>
     </div>
     <div class="percent_wrapper">
-        <div id="cycle"></div>
-        <div class="percent percent1">100<br/>元</div>
-        <div class="percent percent2">200<br/>元</div>
-        <div class="percent percent3">300<br/>元</div>
-        <div class="percent percent4">400<br/>元</div>
-        <div class="percent percent5">500<br/>元</div>
-        <div class="percent percent6">1000<br/>元</div>
+        <div id="cycle" data-cashchain="${myCashChain?join(',')}" data-mycash="${(helpModel.reward/100)?string('0.00')}"></div>
+        <#list myCashChain as chain>
+            <div class="percent percent${chain_index + 1}">${chain}<br/>元</div>
+        </#list>
         <div class="invite_friends_btn"></div>
         <div class="text text1">2人</div>
         <div class="text text2">8人</div>
@@ -30,7 +29,7 @@
         <div class="text text6">108人</div>
     </div>
     <div class="countDown_time_wrapper">
-        <span class="text">倒计时：</span>
+        <span class="text" id="countDown" data-count-down="${helpModel.endTime?string('yyyy-MM-dd HH:mm:ss')}">倒计时：</span>
         <div class="pic_wrapper">
             <div class="time_num_wrapper">
                 <div class="time_num hour1"></div>
@@ -46,66 +45,21 @@
         <div class="time_over">已结束</div>
     </div>
     <div class="invited_friends_container">
-        <div class="title">已助力好友（共12人）</div>
+        <div class="title">已助力好友（共${helpModel.helpUserCount}人）</div>
         <div class="content">
-            <div class="list" style="display: none">
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
+            <#if helpFriends!?if_exists?size !=0 >
+                <div class="list">
+                    <#list helpFriends as friend>
+                        <div class="list_item">
+                            <div class="portrait"></div>
+                            <div class="nickName">${friend.nickName}</div>
+                            <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
+                        </div>
+                    </#list>
                 </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-            </div>
-            <div class="no_help">您还没有获得好友助力，快去邀请吧</div>
+            <#else>
+                <div class="no_help">您还没有获得好友助力，快去邀请吧</div>
+            </#if>
         </div>
     </div>
 </div>
