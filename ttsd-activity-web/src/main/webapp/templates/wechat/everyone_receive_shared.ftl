@@ -26,7 +26,7 @@
         </div>
     </#if>
     <div class="countDown_time_wrapper">
-        <span class="text" id="countDown" data-count-down="${helpModel.endTime?string('yyyy-MM-dd HH:mm:ss')}">倒计时：</span>
+        <span class="text" id="countDown" data-countdown="${helpModel.endTime?string('yyyy-MM-dd HH:mm:ss')}">倒计时：</span>
         <div class="pic_wrapper">
             <div class="time_num_wrapper">
                 <div class="time_num hour1"></div>
