@@ -47,58 +47,38 @@ public class SiteMapRedisWrapperClient {
     }
 
     public boolean exists(final String key) {
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.exists(key);
-            }
-        });
+        return execute(jedis -> jedis.exists(key));
     }
 
     public Long hset(final String key, final String hkey, final String value) {
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hset(key, hkey, value);
-            }
-        });
+        return execute(jedis -> jedis.hset(key, hkey, value));
     }
 
     public Long hset(final String key, final String hkey, final String value, final int lifeSecond) {
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                jedis.expire(key, lifeSecond);
-                return jedis.hset(key, hkey, value);
-            }
+        return execute(jedis -> {
+            jedis.expire(key, lifeSecond);
+            return jedis.hset(key, hkey, value);
         });
     }
 
     public String hget(final String key, final String hkey) {
-        return execute(new JedisAction<String>() {
-            @Override
-            public String action(Jedis jedis) {
-                return jedis.hget(key, hkey);
-            }
-        });
+        return execute(jedis -> jedis.hget(key, hkey));
     }
 
     public Map<String, String> hgetAll(final String key) {
-        return execute(new JedisAction<Map<String, String>>() {
-            @Override
-            public Map<String, String> action(Jedis jedis) {
-                return jedis.hgetAll(key);
-            }
-        });
+        return execute(jedis -> jedis.hgetAll(key));
     }
 
     public boolean hexists(final String key, final String field) {
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.hexists(key, field);
-            }
-        });
+        return execute(jedis -> jedis.hexists(key, field));
+    }
+
+    public String get(final String key) {
+        return execute(jedis -> jedis.get(key));
+    }
+
+    public String set(final String key, final String value) {
+        return execute(jedis -> jedis.set(key, value));
     }
 
     protected Jedis getJedis(int db) {

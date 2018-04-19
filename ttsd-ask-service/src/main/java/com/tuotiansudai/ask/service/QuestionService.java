@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -28,6 +29,11 @@ public class QuestionService {
 
     @Autowired
     private AskRestClient askRestClient;
+
+    @Autowired
+    private BaiDuMaWebMasterService baiDuMaWebMasterService;
+
+    private static final String urlTemplate = "https://tuotiansudai.com/ask/question/%s";
 
     public QuestionResultDataDto createQuestion(QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
@@ -50,6 +56,7 @@ public class QuestionService {
     public void approve(List<Long> questionIds) {
         try {
             askRestClient.approveQuestion(questionIds);
+            baiDuMaWebMasterService.sendBaiDuWebMaster(questionIds.stream().map(questionId -> String.format(urlTemplate,String.valueOf(questionId))).collect(Collectors.toList()));
         } catch (Exception e) {
             logger.error("approve questions failed", e);
         }
