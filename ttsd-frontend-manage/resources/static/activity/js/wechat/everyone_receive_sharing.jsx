@@ -14,7 +14,7 @@ $('.invite_friends_btn').on('click',() => {
 });
 
 $('.withdraw_cash').on('click',function () {
-    location.href = '/activity/invite-help/wechat/'+ $("#helpId").data("helpId") +'/withdraw';
+    location.href = '/activity/invite-help/true/wechat/'+ $("#helpId").data("helpId") +'/withdraw';
 });
 
 $('.wechat_share_tip').on('click',function () {

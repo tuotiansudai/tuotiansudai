@@ -93,6 +93,7 @@ public class InviteHelpActivityService {
             }
             map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()));
             map.put("helpModel", weChatHelpModel);
+            map.put("drawEndTime", new DateTime(weChatHelpModel.getEndTime()).plusDays(1).toDate());
             return map;
         }
         return map;

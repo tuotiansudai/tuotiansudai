@@ -4,9 +4,9 @@ let sourceKind = globalFun.parseURL(location.href);
 commonFun.calculationFun(document,window);
 let timer;
 
-$('.help_rightNow').on('click',() => {
+$('.help_rightNow').on('click',(e) => {
     if(is_wechat()) {
-        $('.wechat_share_tip').show();
+
     }
     else {
         alert('请点击浏览器分享');
@@ -15,7 +15,7 @@ $('.help_rightNow').on('click',() => {
 
 $('.help_too').on('click',() => {
     if(is_wechat()) {
-        $('.wechat_share_tip').show();
+        location.href= '/activity/invite-help/everyone/help/detail';
     }
     else {
         alert('请点击浏览器分享');
@@ -78,7 +78,7 @@ function countTimePop(str) {
     }
 }
 
-countTimePop('2018-4-16 12:21:30');
+countTimePop($("#countDown").data("countDown"));
 
 function is_wechat(){
     return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";

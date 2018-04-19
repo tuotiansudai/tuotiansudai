@@ -2,28 +2,31 @@
 
 <@global.main pageCss="${css.everyone_receive_shared}" pageJavascript="${js.everyone_receive_shared}"  title="拓天速贷人人可领10元现金">
 <div class="top_container">
-    <div class="nickName">昵称</div>
+    <div class="nickName">${name}</div>
     <div class="rules"></div>
 </div>
 <div class="content_text">
     <div class="title"></div>
-    <div class="no_shared" style="display: none">
-        <div class="desc">
-            <div>您的朋友xxx邀请你帮他助力</div>
+    <#if !isHelp>
+        <div class="no_shared">
+            <div class="desc">
+                <div>您的朋友${name}邀请你帮他助力</div>
+            </div>
+            <div class="help_rightNow" id="helpId" data-help-id="${helpModel.id}"></div>
+            <div class="help_too"></div>
         </div>
-        <div class="help_rightNow"></div>
-        <div class="help_too"></div>
-    </div>
-    <div class="has_shared">
-        <div class="desc">
-            <div class="joined">您已经参与了助力</div>
-            <div>您的好友已经获得<span class="strong">26位</span>好友助力</div>
-            <div>获得了<span class="strong">5.2元</span>助力现金奖励</div>
+    <#else >
+        <div class="has_shared">
+            <div class="desc">
+                <div class="joined">您已经参与了助力</div>
+                <div>您的好友已经获得<span class="strong">${${helpModel.helpUserCount}}位</span>好友助力</div>
+                <div>获得了<span class="strong">${(helpModel.reward/100)?string('0.00')}元</span>助力现金奖励</div>
+            </div>
+            <div class="help_too"></div>
         </div>
-        <div class="help_too"></div>
-    </div>
+    </#if>
     <div class="countDown_time_wrapper">
-        <span class="text">倒计时：</span>
+        <span class="text" id="countDown" data-count-down="${helpModel.endTime?string('yyyy-MM-dd HH:mm:ss')}">倒计时：</span>
         <div class="pic_wrapper">
             <div class="time_num_wrapper">
                 <div class="time_num hour1"></div>
@@ -39,31 +42,24 @@
         <div class="time_over">已结束</div>
     </div>
     <div class="invited_friends_container">
-        <div class="title">已助力好友（共12人）</div>
+        <div class="title">已助力好友（共${helpModel.helpUserCount}人）</div>
         <div class="content">
-            <div class="list" style="display: none">
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
+            <#if helpFriends??>
+                <div class="list">
+                    <#list helpFriends as friend>
+                        <div class="list_item">
+                            <div class="portrait"></div>
+                            <div class="nickName">${friend.nickName}</div>
+                            <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
+                        </div>
+                    </#list>
                 </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-                <div class="list_item">
-                    <div class="portrait"></div>
-                    <div class="nickName">昵称00</div>
-                    <div class="finish_time">2018.05.05 12:12:12</div>
-                </div>
-            </div>
-            <div class="no_help">您还没有获得好友助力，快去邀请吧</div>
+                <#if helpFriends?size == 0>
+                    <div class="no_help">还没有获得好友助力</div>
+                </#if>
+            <#else>
+                <div class="no_help">还没有获得好友助力</div>
+            </#if>
         </div>
     </div>
 </div>

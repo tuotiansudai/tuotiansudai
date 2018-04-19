@@ -100,9 +100,9 @@ public class InviteHelpActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help/", method = RequestMethod.GET)
+    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
-        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        String openId = "asdasda";
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");
         }
@@ -111,12 +111,12 @@ public class InviteHelpActivityController {
             return new ModelAndView(String.format("redirect:/activity/wechat/invite-help/%s/invest/help", id));
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat/invite-help-detail");
+        ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_shared");
         modelAndView.addAllObjects(inviteHelpActivityService.weChatInvestHelpDetail(id, openId));
         return modelAndView;
     }
 
-    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/everyone/help/", method = RequestMethod.GET)
+    @RequestMapping(path = "/wechat/share/{id:^\\d+$}/everyone/help", method = RequestMethod.GET)
     public ModelAndView wechatShareEveryoneHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)){
@@ -127,7 +127,7 @@ public class InviteHelpActivityController {
             return new ModelAndView("redirect:/activity/invite-help/wechat/everyone/help/detail");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat/everyone-help-detail");
+        ModelAndView modelAndView = new ModelAndView("/wechat/everyone_receive_shared");
         modelAndView.addAllObjects(inviteHelpActivityService.weChatEveryoneHelpDetail(id, openId));
         return modelAndView;
     }
@@ -139,14 +139,16 @@ public class InviteHelpActivityController {
         return !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && !Strings.isNullOrEmpty(openId) && inviteHelpActivityService.clickHelp(id, openId);
     }
 
-    @RequestMapping(path = "/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
-    public ModelAndView wechatWithDraw(@PathVariable long id, HttpServletRequest request){
+    @RequestMapping(path = "/{isOwn}/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
+    public ModelAndView wechatWithDraw(@PathVariable boolean isOwn, @PathVariable long id, HttpServletRequest request){
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
             request.getSession().setAttribute("channel", "weixin_rebateCheerActivity");
             return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/%s/withdraw", id));
         }
-        inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
+        if (isOwn){
+            inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
+        }
         return new ModelAndView("redirect:/account");
     }
 

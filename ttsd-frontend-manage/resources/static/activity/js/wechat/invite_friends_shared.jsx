@@ -31,7 +31,7 @@ $('.wechat_share_tip').on('click',function () {
 });
 
 $('.withdraw_cash').on('click',() => {
-    location.href = '/m/account';
+    location.href= '/activity/invite-help/false/wechat/' + e.currentTarget.dataset.helpId + '/withdraw';
 });
 
 $('.rules').on('click',() => {
@@ -87,7 +87,7 @@ function countTimePop(str) {
     }
 }
 
-countTimePop('2018-4-17 12:21:30');
+countTimePop($("#countDown").data("countDown"));
 
 function is_wechat(){
     return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
