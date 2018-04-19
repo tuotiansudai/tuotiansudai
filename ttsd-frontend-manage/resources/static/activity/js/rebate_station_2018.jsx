@@ -179,8 +179,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        noLogged();
-        // alreadyLogged();
+       // noLogged();
+         alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {
@@ -260,6 +260,8 @@ $('.close_btn').on('click',function () {
     $('.seconds1').html('');
     $('.seconds2').html('');
    $(this).parent().parent().hide();
+   $(this).siblings('.percent_wrapper').find('.light').removeClass('light');
+   $(this).siblings('.percent_wrapper').find('.light_line').css('width',0);
 });
 
 function alreadyLogged() {
