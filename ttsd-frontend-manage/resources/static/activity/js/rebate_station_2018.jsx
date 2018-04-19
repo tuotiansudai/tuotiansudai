@@ -84,14 +84,6 @@ getList(data1,'.help_popModal');
 getPercentLight(data,'.cashBack_popModal');
 
 
-// commonFun.useAjax({
-//     type: 'GET',
-//     url: '/activity/year-end-awards/ranking/' + date
-// }, function (data) {
-//     getList(data);
-//     getPercentLight(data);
-// });
-
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
@@ -228,6 +220,13 @@ $('.handle_btn').on('click',(e) => {
     let overTime = e.currentTarget.dataset.overtime;
     countTimePop(overTime);
     if (!isMobile()) {
+        commonFun.useAjax({
+            type: 'GET',
+            url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
+        }, function (data) {
+            getList(data,'.cashBack_popModal');
+            getPercentLight(data);
+        });
         $('.cashBack_popModal').show();
     }
     else {
@@ -239,6 +238,12 @@ $('.handle_btn').on('click',(e) => {
 // 活动二 人人可领10元现金
 $('.everyone_detail').on('click',() => {
     if (!isMobile()) {
+        commonFun.useAjax({
+            type: 'GET',
+            url: '/activity/invite-help/everyone/help/detail'
+        }, function (data) {
+            getList(data,'.help_popModal');
+        });
         $('.help_popModal').show();
     }
     else {
