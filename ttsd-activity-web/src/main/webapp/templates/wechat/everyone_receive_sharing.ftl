@@ -69,11 +69,12 @@
 </div>
     <#include "../module/login-tip.ftl" />
 <script>
+
     wx.ready(function () {
         wx.onMenuShareAppMessage({
             title: '拓天HR给你一个开工红包', // 分享标题
             desc: '无红包，不开工！', // 分享描述
-            link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/activity/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
             },
@@ -83,7 +84,7 @@
 
         wx.onMenuShareTimeline({
             title: '拓天HR给你一个开工红包', // 分享标题
-            link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/activity/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
