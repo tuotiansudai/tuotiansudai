@@ -371,7 +371,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         loadEcharts.RenderChart(optTechnologyEducational);
 
         //技术及风控团队员工工作年限分布
-        let technologyWorkingLifeArr = [{name:'3年以下  22%',scale:0.22},{name:'3-5年  39%',scale:0.39},{name:'6-10年  31%',scale:0.31},{name:'10年以上  8%',scale:0.08}];
+        let technologyWorkingLifeArr = [{name:'3年以下  22%',scale:0.22},{name:'3-5年  39%',scale:0.39},{name:'6-10年    31%',scale:0.31},{name:'10年以上  8%',scale:0.08}];
         var optionTechnologyWorkingLife = loadEcharts.ChartOptionTemplates.AnnularOption(technologyWorkingLifeArr,
             {
                 tooltip: {
@@ -379,7 +379,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
                     show: true,
                     enterable:true
                 },
-                color: ['#32cd32', '#da70d6', '#86cffa']
+                color: ['#32cd32', '#da70d6', '#86cffa',"#ff7e50"]
             });
         optionTechnologyWorkingLife.series[0].center = ['50%', '40%'];
         var  optTechnologyWorkingLife = loadEcharts.ChartConfig('technologyWorkingLife', optionTechnologyWorkingLife);
