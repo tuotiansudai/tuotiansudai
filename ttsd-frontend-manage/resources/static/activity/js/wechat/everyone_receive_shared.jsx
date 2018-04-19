@@ -4,12 +4,29 @@ let sourceKind = globalFun.parseURL(location.href);
 commonFun.calculationFun(document,window);
 let timer;
 
-$('.help_rightNow').on('click',(e) => {
-    if(is_wechat()) {
-
+$('.help_rightNow').on('click',function () {
+    if ($(this).hasClass('no_click')) {
+        layer.msg('助力已结束');
+        return;
     }
     else {
-        alert('请点击浏览器分享');
+        if(is_wechat()) {
+            commonFun.useAjax({
+                type: 'GET',
+                url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help' // todo
+            }, function (data) {
+                if (data) {
+                    layer.msg('助力成功');
+                    setTimeout(() => {ocation.reload();},3000)
+                }
+                else {
+                    layer.msg('助力失败');
+                }
+            });
+        }
+        else {
+            alert('请点击浏览器分享');
+        }
     }
 });
 
@@ -72,6 +89,7 @@ function countTimePop(str) {
         }
         else {
             clearInterval(timer);
+            $('.help_rightNow').removeClass('help_rightNow').addClass('no_click');
             $('.pic_wrapper').hide();
             $('.time_over').show();
         }
