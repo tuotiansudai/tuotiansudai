@@ -12,7 +12,7 @@ var node_modules = path.resolve(__dirname, 'node_modules');
 var HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
-var commonStaticServer = process.env.STATIC_SERVER || 'http://192.168.60.231:3008';
+var commonStaticServer = process.env.STATIC_SERVER || 'http://localhost:3008';
 if (!commonStaticServer.endsWith('/')) {
     commonStaticServer += '/'
 }

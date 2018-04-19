@@ -12,14 +12,14 @@
             <div class="desc">
                 <div>您的朋友${name}邀请你帮他助力</div>
             </div>
-            <div class="help_rightNow" id="helpId" data-help-id="${helpModel.id}"></div>
+            <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
             <div class="help_too"></div>
         </div>
     <#else >
         <div class="has_shared">
             <div class="desc">
                 <div class="joined">您已经参与了助力</div>
-                <div>您的好友已经获得<span class="strong">${${helpModel.helpUserCount}}位</span>好友助力</div>
+                <div>您的好友已经获得<span class="strong">${helpModel.helpUserCount}位</span>好友助力</div>
                 <div>获得了<span class="strong">${(helpModel.reward/100)?string('0.00')}元</span>助力现金奖励</div>
             </div>
             <div class="help_too"></div>
