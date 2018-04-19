@@ -99,7 +99,7 @@ function countTimePop(str) {
     }
 }
 
-countTimePop($("#countDown").data("countDown"));
+countTimePop($("#countDown").data("countdown"));
 
 function is_wechat(){
     return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
