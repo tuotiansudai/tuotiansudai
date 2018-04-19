@@ -405,8 +405,10 @@ function countDownList(domElement) {
 countDownList('.overTime');
 
 
-if ($('.part1').find('.help_list').find('.already_login').find('p').length > 2) {
-    scrollUp($('.part1').find('.help_list').find('.already_login'));
+
+
+if ($('.part1').find('.help_list').find('.my_help_list').find('p').length > 2) {
+    scrollUp($('.part1').find('.help_list').find('.my_help_list'));
 }
 
 
