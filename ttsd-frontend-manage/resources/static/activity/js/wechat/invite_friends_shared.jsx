@@ -12,11 +12,11 @@ $('.help_rightNow').on('click',function () {
         if(is_wechat()) {
             commonFun.useAjax({
                 type: 'GET',
-                url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help' // todo
+                url: '/activity/invite-help/click-help/'+ $("#nowHelpId").data('helpId')
             }, function (data) {
                 if (data) {
                     layer.msg('助力成功');
-                    setTimeout(() => {ocation.reload();},3000)
+                    setTimeout(() => {location.reload();},3000)
                 }
                 else {
                     layer.msg('助力失败');
@@ -30,7 +30,8 @@ $('.help_rightNow').on('click',function () {
 });
 $('.help_too').on('click',() => {
     if(is_wechat()) {
-        $('.wechat_share_tip').show();
+        // $('.wechat_share_tip').show();
+        location.href = "/activity/invite-help/wechat/everyone/help/detail";
     }
     else {
         alert('请点击浏览器分享');
@@ -41,7 +42,7 @@ $('.wechat_share_tip').on('click',function () {
     $(this).hide();
 });
 
-$('.withdraw_cash').on('click',() => {
+$('.withdraw_cash').on('click',(e) => {
     location.href= '/activity/invite-help/false/wechat/' + e.currentTarget.dataset.helpId + '/withdraw';
 });
 

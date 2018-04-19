@@ -67,17 +67,6 @@ public class InviteHelpActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/create/everyone/help", method = RequestMethod.GET)
-    @ResponseBody
-    public String createEveryoneHelp(HttpServletRequest request) {
-        String loginName = LoginUserInfo.getLoginName();
-        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if ((loginName != null || openId != null) && !inviteHelpActivityService.isCreateEveryoneHelp(loginName, openId)) {
-            return inviteHelpActivityService.createEveryoneHelp(loginName, LoginUserInfo.getMobile(), openId);
-        }
-        return null;
-    }
-
     @RequestMapping(path = "/everyone/help/detail", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> everyoneHelpDetail(HttpServletRequest request) {
@@ -102,7 +91,7 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
-        String openId = "asdasda";
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");
         }
@@ -144,7 +133,7 @@ public class InviteHelpActivityController {
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
             request.getSession().setAttribute("channel", "weixin_rebateCheerActivity");
-            return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/wechat/%s/withdraw", id));
+            return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
         }
         if (isOwn){
             inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());

@@ -100,7 +100,7 @@ public class InviteHelpActivityService {
     }
 
     @Transactional
-    public String createEveryoneHelp(String loginName, String mobile, String openId){
+    public WeChatHelpModel createEveryoneHelp(String loginName, String openId){
         if (activityInviteHelpStartTime.after(new Date()) || activityInviteHelpEndTime.before(new Date())){
             return null;
         }
@@ -108,7 +108,9 @@ public class InviteHelpActivityService {
         WeChatHelpModel weChatHelpModel = new WeChatHelpModel(WeChatHelpType.EVERYONE_HELP, new Date(), DateTime.now().plusDays(1).toDate());
         if (loginName != null) {
             weChatHelpModel.setLoginName(loginName);
-            weChatHelpModel.setMobile(mobile);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            weChatHelpModel.setMobile(userModel.getMobile());
+            weChatHelpModel.setUserName(userModel.getUserName());
         } else {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openId);
             if (weChatUserModel.isBound()) {
@@ -124,7 +126,7 @@ public class InviteHelpActivityService {
         }
         weChatHelpMapper.create(weChatHelpModel);
         redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
-        return String.valueOf(weChatHelpModel.getId());
+        return weChatHelpModel;
     }
 
     public WeChatHelpModel everyoneHelp(String loginName) {
@@ -158,7 +160,10 @@ public class InviteHelpActivityService {
             map.put("helpModel", list.get(0));
             map.put("drawEndTime", new DateTime(list.get(0).getEndTime()).plusDays(1).toDate());
             map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(list.get(0).getId()));
+        }else{
+            map.put("helpModel", this.createEveryoneHelp(loginName, openId));
         }
+
         return map;
     }
 
