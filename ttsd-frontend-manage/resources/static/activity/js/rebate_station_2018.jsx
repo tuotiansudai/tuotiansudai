@@ -5,6 +5,7 @@ require('publicJs/login_tip');
 let sourceKind = globalFun.parseURL(location.href);
 let url = location.href;
 let timer;
+let timer1;
 
 let data = {
     'myCashChain': [1.00,200.00,300.00,350.00,1500.11],
@@ -373,15 +374,15 @@ function countDownList(domElement) {
         let end = new Date($this.data('overtime')).getTime();
         let now = new Date().getTime();
         let leftTime = (end - now)/1000;
-        timerCount();
-        timer = setInterval(() => {
-            timerCount();
+        timer1Count();
+        timer1 = setInterval(() => {
+            timer1Count();
         },1000);
-        function timerCount() {
+        function timer1Count() {
             let h,m,s;
             if(leftTime > 0) {
                 if (leftTime <= 1) {
-                    clearInterval(timer);
+                    clearInterval(timer1);
                     $this.html('助力结束');
                     $this.siblings('.handle_btn').html('查看详情');
                     return;

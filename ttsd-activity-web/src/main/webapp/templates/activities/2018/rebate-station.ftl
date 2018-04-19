@@ -105,10 +105,10 @@
                                                         <td>${invest.helpUserCount}</td>
                                                         <td>${(invest.reward/100)?string('0.00')}</td>
                                                         <td class="overTime"
-                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
+                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td class="handle_btn"
                                                             data-help-id="${invest.id}"
-                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
+                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
                                                             去邀请
                                                         </td>
                                                     </tr>
@@ -136,10 +136,10 @@
                                                         <td>${(invest.investAmount/100)?string('0.00')}</td>
                                                         <#--<td>${(invest.reward/100)?string('0.00')}</td>-->
                                                         <td class="overTime"
-                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}></td>
+                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td class="handle_btn"
                                                             data-help-id="${invest.id}"
-                                                            data-overtime=${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}>
+                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
                                                             去邀请
                                                         </td>
                                                     </tr>
