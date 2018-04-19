@@ -289,7 +289,7 @@
                                     <dd>
                                         <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
                                             推荐您开通免密投资
-                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i>
+                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，投资快人一步"></i>
                                         </a>
                                     </dd>
                                 </#if>

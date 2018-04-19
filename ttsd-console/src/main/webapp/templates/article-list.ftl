@@ -1,7 +1,7 @@
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="article-list.js" headLab="content-manage" sideLab="articleMan" title="理财圈列表">
+<@global.main pageCss="" pageJavascript="article-list.js" headLab="content-manage" sideLab="articleMan" title="投资圈列表">
 
 <!-- content area begin -->
 <div class="col-md-10">
