@@ -205,7 +205,7 @@
                                             </div>
                                         </#if>
                                     </div>
-                                    <div class="invest_cash_btn"></div>
+                                    <div class="state_btn"></div>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +231,7 @@
                                 <p><span class="strong">人</span>点击，可获得<span class="strong">0.2元现金</span>奖励，最高可获得<span
                                         class="strong">10元现金</span>奖励。</p>
                             </div>
-                            <div class="already_login">
+                            <div>
                                 <div class="content">
                                     <div class="person_pic"></div>
                                     <div class="weachat_wrapper">
@@ -244,16 +244,23 @@
                                         </div>
                                         <div>邀请好友助力得现金奖励</div>
                                     </div>
-                                    <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
-                                            class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
+                                    <div class="already_login">
+                                        <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
+                                                class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
+                                        <div class="login_btn"></div>
+                                    </div>
+
+                                    <div class="no_login">
+                                        <div class="login_btn"></div>
+                                    </div>
                                     <div class="end_time">活动有效期：05.02-05.31</div>
                                 </div>
                             </div>
-                            <div class="no_login">
-                                <div class="login_btn"></div>
-                                <div class="login_text">登录后可查看分享链接</div>
-                                <div class="duration_time">活动有效期：05.02-05.31</div>
-                            </div>
+                            <#--<div class="no_login">-->
+                                <#--<div class="login_btn"></div>-->
+                                <#--<div class="login_text">登录后可查看分享链接</div>-->
+                                <#--<div class="duration_time">活动有效期：05.02-05.31</div>-->
+                            <#--</div>-->
                         </div>
                         <div class="part2_mobile">
                             <div class="title">
