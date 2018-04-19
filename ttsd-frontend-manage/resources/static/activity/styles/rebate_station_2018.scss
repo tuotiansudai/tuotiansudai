@@ -277,13 +277,18 @@ h2,h4 {
                         margin-bottom: 0;
                       }
                     }
-                    .invest_cash_btn {
+                    .state_btn {
                       margin: 27px auto auto auto;
                       width: 294px;
                       height: 97px;
-                      background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
-                      background-size: contain;
                       cursor: pointer;
+                      &.invest_cash_btn {
+                        background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
+                        background-size: contain;
+                      }
+                      &.login_now {
+
+                      }
                     }
                   }
                 }
@@ -467,8 +472,6 @@ h2,h4 {
   }
 }
 .no_login2 {
-  font-size: 20px;
-  color: #582e28;
   text-align: center;
   margin-top: 50px;
   font-size: 26px;
@@ -483,12 +486,25 @@ h2,h4 {
       margin: 40px auto 10px auto;
       width: 294px;
       height: 97px;
-      background: url("../images/2018/rebate-station/login_btn_icon.png") no-repeat;
+      background: url("../images/2018/rebate-station/login_now.png") no-repeat;
       background-size: contain;
       cursor: pointer;
     }
     .login_text {
       margin-bottom: 30px;
+    }
+  }
+  .already_login {
+    font-size: 20px;
+    color: #582e28;
+    text-align: center;
+    .login_btn {
+      margin: 40px auto 10px auto;
+      width: 294px;
+      height: 97px;
+      background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
+      background-size: contain;
+      cursor: pointer;
     }
   }
 }
@@ -1103,13 +1119,18 @@ h2,h4 {
                           margin-bottom: 0;
                         }
                       }
-                      .invest_cash_btn {
+                      .state_btn {
                         margin: .6rem auto auto auto;
                         width: 7.35rem;
                         height: 2.45rem;
-                        background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
-                        background-size: contain;
                         cursor: pointer;
+                        &.invest_cash_btn {
+                          background: url("../images/2018/rebate-station/invest_cash_btn.png") no-repeat;
+                          background-size: contain;
+                        }
+                        &.login_now {
+
+                        }
                       }
                     }
                   }

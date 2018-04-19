@@ -176,26 +176,34 @@ $('.active_two').qrcode({
 
 $.when(commonFun.isUserLogin())
     .done(function () {
+        $('.state_btn').addClass('invest_cash_btn');
         alreadyLogged();
     })
     .fail(function(){
-       // noLogged();
-         alreadyLogged();
+        $('.state_btn').addClass('login_now');
+       noLogged();
+       //   alreadyLogged();
     });
 
-$('.invest_cash_btn').on('click', () => {
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            location.href = '/loan-list';
-        })
-        .fail(function(){
-            toLogin();
-        });
+$('.help_list').on('click','.invest_cash_btn', () => {
+    if ($(document).width() < 790) {
+        location.href = 'm/loan-list';
+    }
+    else {
+        location.href = '/loan-list';
+    }
+
 });
 
 $('.login_btn').on('click', () => {
     toLogin();
 });
+
+
+$('.help_list').on('click','.login_now', () => {
+    toLogin();
+});
+
 
 $('.see_more').on('click',() => {
     if (!$('.see_more').html()) return;
