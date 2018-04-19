@@ -26,8 +26,7 @@ $('.get_it_now').on('click',function () {
         layer.msg('活动已结束');
     }
     else {
-        layer.msg('领取成功');
-        //location.href = '/activity/start-work/draw';
+        location.href = '/activity/invite-help/draw';
     }
 
 });

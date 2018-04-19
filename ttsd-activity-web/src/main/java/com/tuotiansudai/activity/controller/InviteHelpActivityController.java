@@ -1,14 +1,12 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.activity.service.InviteHelpActivityService;
 import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.service.WeChatService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -145,9 +141,9 @@ public class InviteHelpActivityController {
     public ModelAndView startWorkActivityWechat(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activity/invite-help");
+            return new ModelAndView("redirect:/activities/2018/rebate-station");
         }
-        ModelAndView modelAndView = new ModelAndView("/wechat/invite-help");
+        ModelAndView modelAndView = new ModelAndView("/wechat/rebate-station-coupons");
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
         String loginName = LoginUserInfo.getLoginName();
@@ -161,7 +157,7 @@ public class InviteHelpActivityController {
     public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activity/invite-help");
+            return new ModelAndView("redirect:/activities/2018/rebate-station");
         }
         boolean duringActivities = activityWeChatService.duringActivities(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT);
         if (!duringActivities) {
@@ -176,7 +172,7 @@ public class InviteHelpActivityController {
             return new ModelAndView("/error/404");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/wechat/invite-help");
+        ModelAndView modelAndView = new ModelAndView("/wechat/rebate-station-coupons");
         boolean drewCoupon = activityWeChatService.drewCoupon(loginName, WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT);
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);

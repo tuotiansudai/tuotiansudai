@@ -183,9 +183,14 @@ public class InviteHelpActivityService {
             return null;
         }
 
+        String name = weChatHelpModel.getUserName() == null ? weChatHelpModel.getLoginName() : weChatHelpModel.getUserName();
+        if (name == null){
+            name = weChatUserInfoMapper.findByOpenId(weChatHelpModel.getOpenId()).getNickName();
+        }
+
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("model", weChatHelpModel)
-                .put("nickName", weChatUserInfoMapper.findByOpenId(openId).getNickName())
+                .put("helpModel", weChatHelpModel)
+                .put("name", name)
                 .put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()))
                 .put("isHelp", weChatHelpInfoMapper.findByOpenId(openId, weChatHelpModel.getId()) != null)
                 .build());
@@ -278,10 +283,4 @@ public class InviteHelpActivityService {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         return openId.equals(weChatHelpModel.getOpenId()) || (!Strings.isNullOrEmpty(loginName) && loginName.equals(weChatHelpModel.getLoginName()));
     }
-
-    public boolean isCreateEveryoneHelp(String loginName, String openId) {
-        return weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP).size() +
-                weChatHelpMapper.findByUserAndHelpType(null, openId, WeChatHelpType.EVERYONE_HELP).size() > 0;
-    }
-
 }

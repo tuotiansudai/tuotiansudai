@@ -12,14 +12,14 @@
             <div class="desc">
                 <div>您的朋友${name}邀请你帮他助力</div>
             </div>
-            <div class="help_rightNow" id="helpId" data-help-id="${helpModel.id}"></div>
+            <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
             <div class="help_too"></div>
         </div>
     <#else >
         <div class="has_shared">
             <div class="desc">
                 <div class="joined">您已经参与了助力</div>
-                <div>您的好友已经获得<span class="strong">${${helpModel.helpUserCount}}位</span>好友助力</div>
+                <div>您的好友已经获得<span class="strong">${helpModel.helpUserCount}位</span>好友助力</div>
                 <div>获得了<span class="strong">${(helpModel.reward/100)?string('0.00')}元</span>助力现金奖励</div>
             </div>
             <div class="help_too"></div>
@@ -78,9 +78,9 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '拓天HR给你一个开工红包', // 分享标题
-            desc: '无红包，不开工！', // 分享描述
-            link: '${webServer}/activity/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            desc: '我在拓天速贷app发现了一个助力得现金奖励的活动，快来参加吧！', // 分享描述
+            link: '${webServer}/we-chat/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
             },
@@ -89,8 +89,8 @@
         });
 
         wx.onMenuShareTimeline({
-            title: '拓天HR给你一个开工红包', // 分享标题
-            link: '${webServer}/activity/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            link: '${webServer}/we-chat/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
