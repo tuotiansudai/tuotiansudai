@@ -247,7 +247,6 @@
                                     <div class="already_login">
                                         <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
                                                 class="strong everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
-                                        <div class="login_btn"></div>
                                     </div>
 
                                     <div class="no_login">
