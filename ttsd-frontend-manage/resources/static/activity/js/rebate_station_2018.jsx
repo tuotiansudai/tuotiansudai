@@ -179,8 +179,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        noLogged();
-         //alreadyLogged();
+       // noLogged();
+         alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {

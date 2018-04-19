@@ -10,7 +10,18 @@ $('.help_rightNow').on('click',function () {
     }
     else {
         if(is_wechat()) {
-            $('.wechat_share_tip').show();
+            commonFun.useAjax({
+                type: 'GET',
+                url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help' // todo
+            }, function (data) {
+                if (data) {
+                    layer.msg('助力成功');
+                    setTimeout(() => {ocation.reload();},3000)
+                }
+                else {
+                    layer.msg('助力失败');
+                }
+            });
         }
         else {
             alert('请点击浏览器分享');

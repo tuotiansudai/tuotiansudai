@@ -248,6 +248,13 @@ body {
     }
   }
 }
+.help_rightNow, .no_click{
+  margin: .3rem auto;
+  width: 12.125rem;
+  height: 3.65rem;
+  background: url("../../images/2018/rebate-station/help_rightnow.png") no-repeat;
+  background-size: contain;
+}
 .wechat_share_tip {
   display: none;
   position: fixed;
