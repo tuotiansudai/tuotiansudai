@@ -346,15 +346,15 @@
 </div>
 <div class="help_popModal">
     <div class="content">
-        <div class="join_num">您已成功邀请<span class="strong"><span class="invite_count"></span></span>人</div>
-        <div class="get_cash">获得返现<span class="strong"><span class="invite_reward"></span></span>元</div>
+        <div class="join_num">您已成功邀请<span class="strong"><span class="invite_count">0</span></span>人</div>
+        <div class="get_cash">获得返现<span class="strong"><span class="invite_reward">0.00</span></span>元</div>
         <div class="duration_time">活动有效期：05.02-05.31</div>
         <div class="invite_weachat">
             <div class="desc_text">使用微信扫一扫<br/>邀请好友助力得现金奖励</div>
         </div>
         <div class="active_one_pop"></div>
         <div class="friends">已助力好友</div>
-        <div class="list_tip_text" style="display: none">您还没有获得好友助力，快去邀请吧</div>
+        <div class="list_tip_text" style="display: none" id="helpPopText">您还没有获得好友助力，快去邀请吧</div>
         <div class="friend_list" style="display: none">
             <#--<div class="list_item">-->
                 <#--<div class="portrait"></div>-->

@@ -79,11 +79,6 @@ let data1 = {
 };
 
 
-getList(data,'.cashBack_popModal');
-getList(data1,'.help_popModal');
-getPercentLight(data,'.cashBack_popModal');
-
-
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
@@ -184,8 +179,8 @@ $.when(commonFun.isUserLogin())
         alreadyLogged();
     })
     .fail(function(){
-        // noLogged();
-        alreadyLogged();
+        noLogged();
+        // alreadyLogged();
     });
 
 $('.invest_cash_btn').on('click', () => {
@@ -242,7 +237,12 @@ $('.everyone_detail').on('click',() => {
             type: 'GET',
             url: '/activity/invite-help/everyone/help/detail'
         }, function (data) {
-            getList(data,'.help_popModal');
+            $('.userName').html(data.name);
+            if(data.helpModel){
+                getList(data,'.help_popModal');
+            }else{
+                $('#helpPopText').show();
+            }
         });
         $('.help_popModal').show();
     }

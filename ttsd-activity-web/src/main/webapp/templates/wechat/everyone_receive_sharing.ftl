@@ -3,17 +3,7 @@
 <@global.main pageCss="${css.everyone_receive_sharing}" pageJavascript="${js.everyone_receive_sharing}"  title="拓天速贷人人可领10元现金">
 <div class="top_container">
     <div class="nickName">
-        <#if helpModel??>
-            <#if helpModel.userName??>
-                ${helpModel.userName}
-            <#elseif helpModel.mobile??>
-                ${helpModel.mobile}
-            </#if>
-        <#else>
-            <#if nickName??>
-                ${nickName}
-            </#if>
-        </#if>
+         ${name!}
     </div>
     <div class="rules"></div>
 </div>

@@ -139,13 +139,18 @@ public class InviteHelpActivityService {
         Map<String, Object> map = new HashMap<>();
         if (loginName != null) {
             list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
+
         } else {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openId);
             if (weChatUserModel.isBound()){
                 list = weChatHelpMapper.findByUserAndHelpType(weChatUserModel.getLoginName(), null, WeChatHelpType.EVERYONE_HELP);
+                UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
+                map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
             }else{
                 list = weChatHelpMapper.findByUserAndHelpType(null, openId, WeChatHelpType.EVERYONE_HELP);
-                map.put("nickName", weChatUserInfoMapper.findByOpenId(openId).getNickName());
+                map.put("name", weChatUserInfoMapper.findByOpenId(openId).getNickName());
             }
         }
         if (list.size() > 0){
