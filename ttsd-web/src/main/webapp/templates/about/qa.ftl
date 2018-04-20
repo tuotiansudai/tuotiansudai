@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="常见问题" title="拓天速贷解答_专业的P2P理财_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P理财/网络贷款用户,提供大量P2P理财/网络贷款知识,满足有相同或类似投资问题的用户需求.">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="常见问题" title="拓天速贷解答_专业的P2P投资_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P投资/网络贷款用户,提供大量P2P投资/网络贷款知识,满足有相同或类似投资问题的用户需求.">
 <div class="about-us-container" id="WhetherApp">
 	<h2 class="column-title"><em>常见问题</em></h2>
 	<div class="common-problem clearfix" id="problemListFrame">
@@ -85,7 +85,7 @@
                 会员礼包：每月发放投资红包，588、688、788、888元随机派送<br/>
                 服务费折扣：平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%<br/>
                 贵宾专线：贵宾级客服服务，投资问题，意见建议专享直达<br/>
-                专享理财顾问：发标时间，平台活动，理财顾问第一时间通知到您<br/>
+                专享投资顾问：发标时间，平台活动，投资顾问第一时间通知到您<br/>
                 生日福利：V5专享，平台将会在会员生日时送上神秘礼包<br/>
                 注：会员权益会不断提升，敬请期待。
             </dd>

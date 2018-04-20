@@ -249,7 +249,7 @@ if($questionDetailTag.length) {
                 commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
-                        $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
+                        $formAnswer.find('.answer').next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                     }
                 }
                 else {
@@ -356,11 +356,11 @@ if($createQuestion.length) {
                 commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
-                        $question.next().show().text('您输入的内容不能包含敏感词');
+                        $question.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                         return;
                     }
                     if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
-                        $addition.next().show().text('您输入的内容不能包含敏感词');
+                        $addition.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                     }
                 }
                 else {

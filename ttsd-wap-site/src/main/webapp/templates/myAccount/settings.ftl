@@ -42,7 +42,7 @@
 <div id="turnOnNoPassword" class="pad " style="display: none;">
     <form name="turnOnNoPasswordInvestForm" >
         <b class="pop-title">开通免密支付</b>
-        <span>理财快人一步，专享快速购买标的的便捷体验</span>
+        <span>投资快人一步，专享快速购买标的的便捷体验</span>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
