@@ -68,6 +68,8 @@ public class InviteHelpActivityService {
     public List<WeChatHelpModel> sendRewardRecord(){
         List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(null, null, WeChatHelpType.INVEST_HELP);
         List<WeChatHelpModel> sendCashList = list.stream().filter(WeChatHelpModel::isCashBack).collect(Collectors.toList());
+        sendCashList = sendCashList.stream().sorted(Comparator.comparing(WeChatHelpModel::getReward).reversed()).collect(Collectors.toList());
+        sendCashList = sendCashList.size() > 6 ? sendCashList.subList(0, 6) : sendCashList;
         sendCashList.forEach(weChatHelpModel -> weChatHelpModel.setMobile(MobileEncryptor.encryptMiddleMobile(weChatHelpModel.getMobile())));
         return sendCashList;
     }
@@ -76,7 +78,9 @@ public class InviteHelpActivityService {
         if (loginName == null){
             return null;
         }
-        return weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.INVEST_HELP);
+        List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.INVEST_HELP);
+        list = list.stream().sorted(Comparator.comparing(WeChatHelpModel::getStartTime).reversed()).collect(Collectors.toList());
+        return list;
     }
 
     public Map<String, Object> investHelpDetail(long id, String loginName){
@@ -183,7 +187,7 @@ public class InviteHelpActivityService {
             return null;
         }
 
-        String name = weChatHelpModel.getUserName() == null ? weChatHelpModel.getLoginName() : weChatHelpModel.getUserName();
+        String name = weChatHelpModel.getUserName() == null ? weChatHelpModel.getMobile() : weChatHelpModel.getUserName();
         if (name == null){
             name = weChatUserInfoMapper.findByOpenId(weChatHelpModel.getOpenId()).getNickName();
         }

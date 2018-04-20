@@ -7,7 +7,7 @@
         <div class="panel-body">
             <a class="btn btn-default btn-primary"
                href="/activity-console/activity-manage/invite-help/invest-reward-list" role="button">投资奖励</a>
-            <a class="btn btn-default btn-primary"
+            <a class="btn btn-default"
                href="/activity-console/activity-manage/invite-help/share-reward-list" role="button">分享奖励</a>
         </div>
     </div>

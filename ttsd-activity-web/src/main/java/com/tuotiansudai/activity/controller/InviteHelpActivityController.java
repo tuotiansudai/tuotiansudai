@@ -134,7 +134,7 @@ public class InviteHelpActivityController {
         if (isOwn){
             inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());
         }
-        return new ModelAndView("redirect:/account");
+        return new ModelAndView("redirect:/m/account");
     }
 
     @RequestMapping(path = "/wechat", method = RequestMethod.GET)

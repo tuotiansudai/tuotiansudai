@@ -3,7 +3,7 @@
 <@global.main pageCss="${css.invite_friends_sharing}" pageJavascript="${js.invite_friends_sharing}"  title="拓天速贷-好友助力得现金">
 
 <div class="top_container">
-    <div class="nickName">${helpModel.userName}</div>
+    <div class="nickName">${helpModel.userName!}</div>
     <div class="rules"></div>
 </div>
 <div class="content_text">
@@ -12,8 +12,8 @@
         <div class="total">投资金额：<span class="strong">${(helpModel.investAmount/100)?string('0.00')}元</span></div>
         <div class="profit">该笔投资已经获得<span class="strong">${(helpModel.reward/100)?string('0.00')}元现金</span></div>
         <#if nextNode??>
-            <div class="differ">还差${nextNode}个好友助力即可得到<span class="strong">${(nextAmount/100)?string('0.00')}元现金</span>
-            </div></#if>
+            <div class="differ">还差${nextNode}个好友助力即可得到<span class="strong">${(nextAmount/100)?string('0.00')}元现金</span></div>
+        </#if>
     </div>
     <div class="percent_wrapper">
         <div id="cycle" data-cashchain="${myCashChain?join(',')}" data-mycash="${(helpModel.reward/100)?string('0.00')}"></div>
@@ -51,8 +51,12 @@
                 <div class="list">
                     <#list helpFriends as friend>
                         <div class="list_item">
-                            <div class="portrait"></div>
-                            <div class="nickName">${friend.nickName}</div>
+                            <#if friend.headImgUrl??>
+                                <img class="portrait" src="${friend.headImgUrl!}" />
+                            <#else >
+                                <div class="portrait"></div>
+                            </#if>
+                            <div class="nickName">${friend.nickName!}</div>
                             <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
                         </div>
                     </#list>
