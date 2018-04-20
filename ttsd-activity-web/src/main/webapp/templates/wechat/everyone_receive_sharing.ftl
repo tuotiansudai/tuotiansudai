@@ -38,7 +38,10 @@
         <div class="title">已助力好友（共<#if helpModel??>${helpModel.helpUserCount}<#else>0</#if>人）</div>
         <div class="content">
             <#if helpFriends??>
-                <div class="list">
+                <#if helpFriends?size == 0>
+                    <div class="no_help">您还没有获得好友助力，快去邀请吧</div>
+                <#else>
+                    <div class="list">
                         <#list helpFriends as friend>
                             <div class="list_item">
                                 <#if friend.headImgUrl??>
@@ -50,9 +53,7 @@
                                 <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
                             </div>
                         </#list>
-                </div>
-                <#if helpFriends?size == 0>
-                    <div class="no_help">您还没有获得好友助力，快去邀请吧</div>
+                    </div>
                 </#if>
             <#else>
                 <div class="no_help">您还没有获得好友助力，快去邀请吧</div>

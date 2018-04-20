@@ -153,7 +153,7 @@
                                             </div>
                                         </#if>
                                     </div>
-                                    <div class="see_more"><#if investHelp!?size gt 5>查看更多</#if></div>
+                                    <div class="see_more"><#if investHelp!?size gt 5>查看更多></#if></div>
                                     <div class="see_less" style="display: none">收起></div>
                                 </div>
                                 <div class="no_login no_login1">
@@ -245,7 +245,7 @@
                                         <div>邀请好友助力得现金奖励</div>
                                     </div>
                                     <div class="already_login">
-                                        <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，<span
+                                        <div class="news">您已成功邀请<#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人，获得返现<#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元，<span
                                                 class="strong everyone_detail invite_everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
                                     </div>
 

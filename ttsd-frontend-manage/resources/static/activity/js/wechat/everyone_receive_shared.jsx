@@ -17,7 +17,7 @@ $('.help_rightNow').on('click',function () {
             }, function (data) {
                 if (data) {
                     layer.msg('助力成功');
-                    setTimeout(() => {location.reload();},3000)
+                    setTimeout(() => {location.reload();},1000)
                 }
                 else {
                     layer.msg('助力失败');
@@ -87,7 +87,7 @@ function countTimePop(str) {
     }
 }
 
-countTimePop($("#countDown").data("countdown"));
+countTimePop($("#countDown").data("countdown").replace(/-/g,'/'));
 
 function is_wechat(){
     return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
