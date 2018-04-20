@@ -123,6 +123,11 @@ public class LoanerControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.data.records[1].expectedRepayAmount").value("0.16"))
                 .andExpect(jsonPath("$.data.records[1].actualRepayAmount").value("0.13"));
     }
+    @Test
+    public void testAA(){
+        List<LoanRepayModel>  models = loanRepayMapper.findNotCompleteLoanRepay();
+        System.out.println(models.stream().map(LoanRepayModel::getLoanId).distinct().count());
+    }
 
     private HttpSession getHttpSession(UserModel userModel, List<Role> roles) throws Exception {
         HttpSession session = mockMvc.perform(post("/"))
@@ -146,6 +151,8 @@ public class LoanerControllerTest extends BaseControllerTest {
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         return session;
     }
+
+
 
     @Test
     public void shouldGetRepayingLoanerLoanData() throws Exception {

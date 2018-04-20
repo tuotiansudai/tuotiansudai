@@ -1,0 +1,139 @@
+body {
+  background: #ffe074 url("../../images/account/risk_bottom.png") no-repeat bottom center;
+  background-size: 100%;
+}
+.problem-list {
+  width: 5.76rem;
+  margin: .3rem auto;
+  position: relative;
+  dl {
+    position: absolute;
+    width: 5.76rem;
+    height: 8.3rem;
+    background: #fff;
+    border-radius: .24rem;
+    box-sizing: border-box;
+    color: #525252;
+    font-size: .34rem;
+    dt {
+      padding:  0.3rem 0.4rem;
+      line-height: .44rem;
+    }
+    dd {
+      color: #808080;
+      font-size: .3rem;
+      border-bottom: 1px solid #e5e5e5;
+      padding: .3rem;
+      &.long {
+        line-height: .44rem;
+      }
+      &.active {
+        background: #fff896;
+      }
+    }
+    &.part-one {
+      z-index: 8;
+    }
+    &.part-two {
+      z-index: 7;
+
+        dd {
+          line-height: .4rem;
+        }
+
+    }
+    &.part-three {
+      z-index: 6;
+    }
+    &.part-four {
+      z-index: 5;
+      dd {
+        line-height: .4rem;
+      }
+    }
+    &.part-five {
+      z-index: 4;
+    }
+    &.part-six {
+      z-index: 3;
+    }
+    &.part-seven {
+      z-index: 2;
+    }
+    &.part-last {
+      z-index: 1;
+    }
+    .small-decorate {
+      position: absolute;
+      &.small-decorate-right {
+        width: 1.3rem;
+        height: .74rem;
+        right: -0.8rem;
+        top: .3rem;
+        background: #ffe074 url("../../images/account/right_top.png") no-repeat;
+        background-size: contain;
+      }
+      &.small-decorate-left {
+        width: 0.95rem;
+        height: .72rem;
+        left: -0.4rem;
+        bottom: .24rem;
+        background: #ffe074 url("../../images/account/left_bot.png") no-repeat;
+        background-size: 100%;
+      }
+    }
+
+  }
+
+
+}
+//结果页
+.estimate-result {
+  .result-bg {
+    margin: .5rem auto;
+    width: 4.82rem;
+    height: 4.3rem;
+    box-sizing: border-box;
+    background: #ffe074 url("../../images/account/result_bg.png") no-repeat bottom center;
+    background-size: 100%;
+    line-height: 1.2rem;
+    text-align: center;
+    color: #525252;
+    font-size: .34rem;
+    padding-top: .9rem;
+    strong {
+      color: #ff473c;
+      font-size: .5rem;
+    }
+
+  }
+
+}
+.estimate-text {
+  font-size: .3rem;
+  color: #551818;
+  line-height: .5rem;
+  padding: 0 .4rem;
+}
+.link-item {
+  margin-top: .5rem;
+  a {
+    display: block;
+    width: 6.2rem;
+    height: .84rem;
+    border-radius: .42rem;
+    font-size: .3rem;
+    color: #fff;
+    line-height: .84rem;
+    text-align: center;
+    margin: .4rem auto;
+
+    &.to-risk {
+      color: #ff473c;
+      border: 1px solid #ff473c;
+    }
+    &.to-invest {
+      background: #ff473c;
+    }
+  }
+}

@@ -47,6 +47,7 @@
     flex-direction: column;
     justify-content: space-around;
     flex: 4;
+    width: 100%;
     span {
       &.title {
         font-size: 17px;
@@ -54,8 +55,9 @@
         text-align: center;
         line-height: 25px;
         position: relative;
-        top: -13px;
+        top: 0px;
       }
+
       &.summary-box {
         b {
           font-size: 48px;
@@ -257,7 +259,7 @@
   background: #fff;
 }
 .account-summary {
-  height:156px!important;
+  height:200px!important;
   .collection {
     padding-top: 5px;
   }
@@ -1580,4 +1582,42 @@
 .success-info-tip {
   padding: 0;
 }
+.risk-tip {
+  width: 100%;
+  height: 32px;
+  background: rgba(255,176,0,0.9);
+  text-align: center;
+  position: relative;
+  .risk-type {
+    color: #FF473C;
+  }
+  em {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background: url("../../images/closeBtn.png") no-repeat;
+    background-size: 100%;
+    right: 5px;
+    top: 9px;
+  }
+}
 
+//技术服务费
+.related-expenses {
+
+  span {
+    position: relative;
+    padding-right: 22px;
+    .icon-mark {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      background: url("../../images/icon_tip.png") no-repeat;
+      background-size: 100%;
+      right: 0px;
+      top: 14px;
+      cursor: pointer;
+    }
+  }
+
+}

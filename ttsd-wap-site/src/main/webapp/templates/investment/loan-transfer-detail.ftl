@@ -14,7 +14,7 @@
             </span>
             <span class="summary-box">
                 <b>15<i>%</i></b>
-                <em>预期年化收益</em>
+                <em>约定年化利率</em>
             </span>
         </div>
 

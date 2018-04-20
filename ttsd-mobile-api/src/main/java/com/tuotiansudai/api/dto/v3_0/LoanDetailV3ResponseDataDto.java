@@ -4,6 +4,7 @@ package com.tuotiansudai.api.dto.v3_0;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.EvidenceResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ExtraLoanRateDto;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.PledgeType;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +22,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;//标的名称
+
+    @ApiModelProperty(value = "标的介绍", example = "标的介绍")
+    private String loanIntroduce;//标的介绍
 
     @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;//还款方式代码
@@ -160,6 +164,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "万元收益", example = "1000")
     private String interestPerTenThousands;
 
+    @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
+    private String estimate;
+
     public Long getLoanId() {
         return loanId;
     }
@@ -182,6 +189,14 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
+    }
+
+    public String getLoanIntroduce() {
+        return loanIntroduce;
+    }
+
+    public void setLoanIntroduce(String loanIntroduce) {
+        this.loanIntroduce = loanIntroduce;
     }
 
     public String getRepayTypeCode() {
@@ -542,6 +557,14 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     public void setInterestPerTenThousands(String interestPerTenThousands) {
         this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public String getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 
     public boolean isNonTransferable() {

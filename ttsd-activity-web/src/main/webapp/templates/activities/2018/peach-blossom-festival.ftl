@@ -1,6 +1,8 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.peach_blossom_festival_2018}" pageJavascript="${js.peach_blossom_festival_2018}" activeNav="" activeLeftNav="" title="假日投资_夺魁英雄榜_拓天速贷" keywords="拓天速贷,投资大礼包,返现奖励,实物大奖" description='拓天速贷4月活动,活动期间关注"拓天速贷服务号",380元投资大礼包带回家,每逢国家法定假日,投资"0.6%返现"标签项目可获得返现奖励,累计投资即可夺魁英雄榜赢取实物大奖.'>
-<div class="spring-banner">
+<div class="spring-banner compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+
 </div>
 <div class="activity-wrap-main" id="peach_blossom">
     <div class="activity-page-frame " id="activityPageFrame">

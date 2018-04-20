@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.model.LoanDetailsModel;
 import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,6 +31,10 @@ public class LoanCreateDetailsRequestDto {
 
     private String rewardRate;
 
+    private Estimate estimate;
+
+    private String introduce;
+
     public LoanCreateDetailsRequestDto() {
     }
 
@@ -43,6 +48,8 @@ public class LoanCreateDetailsRequestDto {
         this.disableCoupon = loanDetailsModel.getDisableCoupon();
         this.grantReward = loanDetailsModel.getGrantReward();
         this.rewardRate = String.valueOf(loanDetailsModel.getRewardRate());
+        this.estimate = loanDetailsModel.getEstimate();
+        this.introduce = loanDetailsModel.getIntroduce();
     }
 
     public boolean getNonTransferable() {
@@ -123,5 +130,21 @@ public class LoanCreateDetailsRequestDto {
 
     public void setRewardRate(String rewardRate) {
         this.rewardRate = rewardRate;
+    }
+
+    public Estimate getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(Estimate estimate) {
+        this.estimate = estimate;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 }

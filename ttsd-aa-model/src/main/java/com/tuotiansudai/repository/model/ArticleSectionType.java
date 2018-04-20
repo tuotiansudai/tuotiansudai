@@ -3,7 +3,8 @@ package com.tuotiansudai.repository.model;
 public enum  ArticleSectionType {
     PLATFORM_ACTIVITY("平台活动"),
     PLATFORM_NEWS("平台新闻"),
-    INDUSTRY_NEWS("行业资讯");
+    INDUSTRY_NEWS("行业资讯"),
+    KNOWLEDGE("网贷知识");
 
     private String articleSectionTypeName;
 

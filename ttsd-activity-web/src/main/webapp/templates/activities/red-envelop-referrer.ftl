@@ -62,7 +62,7 @@
         <div class="benefit-box">
             <dl class="benefit-column">
                 <dt>预期收益高</dt>
-                <dd>预期年化收益<i>10%-13%</i></dd>
+                <dd>约定年化利率<i>10%-13%</i></dd>
             </dl>
             <dl class="benefit-column">
                 <dt>交易模式安全</dt>

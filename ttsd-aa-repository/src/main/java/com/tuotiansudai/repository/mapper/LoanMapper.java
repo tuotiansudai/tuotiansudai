@@ -107,4 +107,7 @@ public interface LoanMapper {
 
     LoanModel findZeroShoppingActivityByTime(@Param(value = "activityStartTime") Date activityStartTime,
                                              @Param(value = "activityEndTime") Date activityEndTime);
+
+    List<LoanModel> findSuccessLoanOutLoan();
+
 }

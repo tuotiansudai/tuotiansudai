@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDto {
 
@@ -62,6 +63,9 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
 
     @ApiModelProperty(value = "截止倒计时", example = "100")
     private String countdown;
+
+    @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
+    private String estimate;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -207,6 +211,14 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
 
     public void setCountdown(String countdown) {
         this.countdown = countdown;
+    }
+
+    public String getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 
     public TransferApplicationDetailResponseDataDto(TransferApplicationDetailDto transferApplicationDetailDto) {

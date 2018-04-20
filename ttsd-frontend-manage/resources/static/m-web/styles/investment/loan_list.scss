@@ -50,6 +50,7 @@
 .menu-category {
   background: #FF473C;
   height: 44px;
+  position: relative;
  span {
    a {
      color: #fff;
@@ -172,4 +173,21 @@
 }
 .target-category-box.newer-experience {
   padding-bottom:18px;
+}
+
+.notice-tip-btn {
+  position: absolute;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  background: url("../../images/share/icon_exclamation.png") no-repeat;
+  background-size: contain;
+}
+.tip-content {
+  padding: 0 20px;
+}
+.tip-square-box .pop-title {
+  padding-bottom: 17px;
+  padding-top: 23px;
 }

@@ -31,7 +31,7 @@
                     <span class="intro-three"></span>
                 </p>
                 <p class="name-item">稳健安全</p>
-                <p>预期年化收益8%～11%<br />房/车抵押债权安全系数高</p>
+                <p>约定年化利率8%～11%<br />房/车抵押债权安全系数高</p>
             </dd>
         </dl>
     </div>

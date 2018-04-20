@@ -9,6 +9,9 @@
             <a href="javascript:void(0);"><i class="icon-help"></i></a>
         </#if>
         <div class="collection">
+    <#if loan.estimate??>
+            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loan.estimate}</i>的用户<em id="closeRisk"></em></span>
+    </#if>
             <span class="title">
 
                     <#if loan.activity?string("true","false") == "true">
@@ -111,6 +114,10 @@
         <li>
             <label>还款方式</label>
             <span>${loan.type.repayType}</span>
+        </li>
+        <li class="related-expenses" data-expenses="${investFeeRate*100}">
+            <label>相关费用</label>
+            <span>${investFeeRate*100}%技术服务费<em class="icon-mark" id="relatedTip"></em></span>
         </li>
         <li>
             <label>发布日期</label>

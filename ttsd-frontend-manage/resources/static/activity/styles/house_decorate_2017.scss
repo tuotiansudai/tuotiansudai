@@ -569,8 +569,17 @@
 
 }
 
-
+.compliance-banner {
+  .invest-tip {
+    margin-right: -376px;
+  }
+}
 @media screen and (min-width: 710px) and (max-width:1024px){
+  .compliance-banner {
+    .invest-tip {
+      bottom: 13px;
+    }
+  }
   .page-width {
     width:96%;
   }

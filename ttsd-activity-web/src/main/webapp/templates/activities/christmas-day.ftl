@@ -31,7 +31,7 @@
                         <div class="gift-box">
                             <em class="icon-balloon">1重礼</em>
                             <b class="sub-title-one">专享标加息0.5%</b>
-                            专享标在现有预期年化收益基础上<i>加息0.5%</i>。
+                            专享标在现有约定年化利率基础上<i>加息0.5%</i>。
                         </div>
 
                         <div class="gift-box">

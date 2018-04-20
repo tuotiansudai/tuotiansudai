@@ -2,6 +2,20 @@
   width:100%;
   margin:0;
 }
+.compliance-banner {
+  .invest-tip {
+    color: #666;
+    line-height: 40px;
+  }
+}
+.compliance-banner {
+  .invest-tip {
+    bottom: 30px;
+    @media screen and(max-width: 1024px){
+      bottom: 10px;
+    }
+  }
+}
 .invest-achievement-container{
   background:#e5f2ff;
   .container-model{

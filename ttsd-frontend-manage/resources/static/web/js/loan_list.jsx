@@ -54,4 +54,11 @@ $loanListBox.find('.pagination span[data-url]').on('click',function(event) {
         location.href = $(target).data('url');
     }
 });
+//显示隐藏安全性管理告知
+$('#noticeBtn').on('mouseover',function () {
+    $('.notice-tips').show();
+})
+$('#noticeBtn').on('mouseout',function () {
+    $('.notice-tips').hide();
+})
 

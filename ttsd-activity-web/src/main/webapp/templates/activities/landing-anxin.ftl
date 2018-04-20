@@ -1,6 +1,8 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.anxin_landing}" pageJavascript="" activeNav="" activeLeftNav="" title="牵手CFCA_安全保障体系_拓天速贷" keywords="CFCA,电子签章,安心签,安全保障体系" description="拓天速贷安全保障体系再升级,牵手CFCA电子签章为每一位投资用户的投资合同安全加码,拓天速贷携手安心签为您的投资保驾护航.">
-<div class="tour-slide"></div>
+<div class="tour-slide compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 
 <div class="landing-safety-frame clearfix">
 

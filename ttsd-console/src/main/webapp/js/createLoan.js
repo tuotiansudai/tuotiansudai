@@ -4,15 +4,15 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
             'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
 
-        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate'];
+        var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate', 'estimate', 'introduce'];
 
-        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose'];
+        var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose', 'source'];
 
         var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
 
         var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
 
-        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc']
+        var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc'];
 
         var pledgeHouseParam = ['pledgeLocation', 'estimateAmount', 'pledgeLoanAmount', 'square', 'propertyCardId', 'propertyRightCertificateId', 'estateRegisterId', 'authenticAct'];
 
@@ -441,6 +441,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                         return false;
                     }
                 }
+
+                if($('input[name="estimate"]:checked').length == 0) {
+                    showErrorMessage('项目适合用户未选择', $('input[name="estimate"]'));
+                }
             },
             callback: function (data) {
                 return false;
@@ -613,7 +617,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         var generateRequestParams = function (requestParams) {
             var requestData = {};
             var arrPledgeInfo = [];
-            var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,select,textarea');
+            var inputElements = $('form input[type="text"],input[type="hidden"],input[type="checkbox"]:checked,input[type="radio"]:checked,select,textarea');
             $.each(requestParams, function (attr, param) {
                 requestData[attr] = {};
                 inputElements.each(function (index, element) {

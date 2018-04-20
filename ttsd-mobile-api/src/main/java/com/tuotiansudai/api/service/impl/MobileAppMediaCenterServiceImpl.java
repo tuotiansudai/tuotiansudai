@@ -13,7 +13,6 @@ import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterService{
-    @Autowired
-    private LicaiquanArticleMapper licaiquanArticleMapper;
+public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterService {
+
     @Value("${common.static.server}")
     private String domainName;
+
+    @Autowired
+    private LicaiquanArticleMapper licaiquanArticleMapper;
+
     @Autowired
     private LiCaiQuanArticleService liCaiQuanArticleService;
 
@@ -35,16 +37,16 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
         List<LicaiquanArticleModel> liCaiQuanArticleModels = licaiquanArticleMapper.findCarouselArticle();
         List<MediaArticleResponseDataDto> records = Lists.newArrayList();
         MediaArticleListResponseDataDto mediaArticleListResponseDataDto = new MediaArticleListResponseDataDto();
-        if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
+        if (CollectionUtils.isNotEmpty(liCaiQuanArticleModels)) {
             records = convertModel2Dto(liCaiQuanArticleModels);
         }
 
-        mediaArticleListResponseDataDto.setTotalCount(liCaiQuanArticleModels == null?0:liCaiQuanArticleModels.size());
+        mediaArticleListResponseDataDto.setTotalCount(liCaiQuanArticleModels == null ? 0 : liCaiQuanArticleModels.size());
         mediaArticleListResponseDataDto.setIndex(1);
         mediaArticleListResponseDataDto.setPageSize(10);
         mediaArticleListResponseDataDto.setArticleList(records);
 
-        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto();
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(mediaArticleListResponseDataDto);
@@ -52,11 +54,11 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     }
 
     @Override
-    public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType,int index,int pageSize) {
+    public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType, int index, int pageSize) {
         int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(articleSectionType);
         List<MediaArticleResponseDataDto> records = Lists.newArrayList();
-        List<LicaiquanArticleModel> liCaiQuanArticleModels  = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, (index-1)*pageSize, pageSize);
-        if(CollectionUtils.isNotEmpty(liCaiQuanArticleModels)){
+        List<LicaiquanArticleModel> liCaiQuanArticleModels = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, (index - 1) * pageSize, pageSize);
+        if (CollectionUtils.isNotEmpty(liCaiQuanArticleModels)) {
             records = convertModel2Dto(liCaiQuanArticleModels);
         }
 
@@ -71,7 +73,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
         baseResponseDto.setData(mediaArticleListResponseDataDto);
         return baseResponseDto;
     }
-    public List<MediaArticleResponseDataDto> convertModel2Dto(List<LicaiquanArticleModel> liCaiQuanArticleModels){
+
+    public List<MediaArticleResponseDataDto> convertModel2Dto(List<LicaiquanArticleModel> liCaiQuanArticleModels) {
 
         return Lists.transform(liCaiQuanArticleModels, new Function<LicaiquanArticleModel, MediaArticleResponseDataDto>() {
             @Override
@@ -91,8 +94,8 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     public BaseResponseDto<MediaArticleResponseDataDto> obtainArticleContent(long articleId) {
         LicaiquanArticleModel liCaiQuanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
         MediaArticleResponseDataDto mediaArticleResponseDataDto = new MediaArticleResponseDataDto(liCaiQuanArticleModel);
-        mediaArticleResponseDataDto.setShowPicture(domainName  + liCaiQuanArticleModel.getShowPicture());
-        mediaArticleResponseDataDto.setThumbPicture(domainName  + liCaiQuanArticleModel.getThumb());
+        mediaArticleResponseDataDto.setShowPicture(domainName + liCaiQuanArticleModel.getShowPicture());
+        mediaArticleResponseDataDto.setThumbPicture(domainName + liCaiQuanArticleModel.getThumb());
         mediaArticleResponseDataDto.setLikeCount(liCaiQuanArticleService.getLikeCount(liCaiQuanArticleModel.getId()));
         mediaArticleResponseDataDto.setReadCount(liCaiQuanArticleService.getReadCount(liCaiQuanArticleModel.getId()));
         BaseResponseDto<MediaArticleResponseDataDto> baseResponseDto = new BaseResponseDto<>();

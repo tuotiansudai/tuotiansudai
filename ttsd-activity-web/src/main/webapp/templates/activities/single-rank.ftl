@@ -2,9 +2,10 @@
 
 <@global.main pageCss="${css.single_rank}" pageJavascript="${js.single_rank}" activeNav="" activeLeftNav="" title="'单笔'狂欢场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,抽奖,体验金,红包奖励" description="拓天周年庆-'单笔'狂欢场活动,活动期间每单笔投资满1万元以上,即可获得体验金奖励及一次抽奖机会,最高可获68888元体验金奖励及投资红包,100%中奖,实物大奖送不停.">
 <div class="single-rank-container" id="singleRank">
-	<div class="top-item" id="topImg">
+	<div class="top-item compliance-banner" id="topImg">
 		<img src="" width="100%" class="media-pc">
 		<img src="" width="100%" class="media-phone">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
 	</div>
 	<div class="wp clearfix">
 		<div class="reg-tag-current" style="display: none">
