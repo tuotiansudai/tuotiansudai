@@ -80,7 +80,6 @@ function countTimePop(str) {
     let end = new Date(str).getTime();
     let now = new Date().getTime();
     let leftTime = (end-now)/1000;
-    alert(str)
     timerCount();
     timer = setInterval(() => {
         timerCount();
