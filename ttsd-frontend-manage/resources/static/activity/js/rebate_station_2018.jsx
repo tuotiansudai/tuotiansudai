@@ -40,46 +40,6 @@ let data = {
     }
 };
 
-let data1 = {
-    "drawEndTime": "2018-04-20 18:46:42",
-    "helpModel": {
-        "id": 2,
-        "loanId": 0,
-        "investId": 0,
-        "investAmount": 0,
-        "annualizedAmount": 0,
-        "loginName": "chenzhonghui",
-        "userName": "陈忠慧",
-        "mobile": "18245135693",
-        "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRxE",
-        "type": "EVERYONE_HELP",
-        "helpUserCount": 10,
-        "reward": 2000,
-        "startTime": "2018-04-18 18:46:42",
-        "endTime": "2018-04-19 18:46:42",
-        "cashBack": false
-    },
-    "helpFriends": [
-        {
-            "id": 1,
-            "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRxE",
-            "nickName": "朱坤",
-            "headImgUrl": "http://thirdwx.qlogo.cn/mmopen/FicVOq4OuXKhoKUF7uaHDgZdS5ZibPl69lfJljElNG2xU8oCtLW5aJHKSxmEicsZuRqsnRVkKeQicLlK6IsuL35GqQma3bgqVficI/132",
-            "createdTime": "2018-04-13 18:39:58",
-            "updatedTime": "2018-04-13 18:41:00"
-        },
-        {
-            "id": 2,
-            "openId": "oTq6DwECk6MRYlhZhvj_hnDrKRx1",
-            "nickName": "NICAI",
-            "headImgUrl": "http://thirdwx.qlogo.cn/mmopen/FicVOq4OuXKhoKUF7uaHDgZdS5ZibPl69lfJljElNG2xU8oCtLW5aJHKSxmEicsZuRqsnRVkKeQicLlK6IsuL35GqQma3bgqVficI/132",
-            "createdTime": "2018-04-12 10:00:00",
-            "updatedTime": "2018-04-12 10:00:00"
-        }
-    ]
-};
-
-
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
@@ -131,7 +91,7 @@ function getPercentLight(data) {
     }
     for (let i = 0;i < percentArr.length;i++) {
         let item = percentArr[i];
-        if (currentPer < item) {
+        if (parseFloat(currentPer) < parseFloat(item)) {
             let index = percentArr.indexOf(item) - 1;
             $('.light_line').css('width',20 * index + '%');
             for(let j = 1; j < index + 2;j++) {
@@ -141,7 +101,7 @@ function getPercentLight(data) {
             return;
         }
         else {
-            if (currentPer > percentArr[percentArr.length - 1]) {
+            if (parseFloat(currentPer) >= parseFloat(percentArr[percentArr.length - 1])) {
                 $('.light_line').css('width','100%');
                 for(let j = 1; j < 7;j++) {
                     let lightCircle = 'circle' + j;
@@ -183,8 +143,7 @@ $.when(commonFun.isUserLogin())
     })
     .fail(function(){
         $('.state_btn').addClass('login_now');
-       noLogged();
-       //   alreadyLogged();
+        noLogged();
     });
 
 $('.help_list').on('click','.invest_cash_btn', () => {
@@ -205,7 +164,6 @@ $('.login_btn').on('click', () => {
 $('.help_list').on('click','.login_now', () => {
     toLogin();
 });
-
 
 $('.see_more').on('click',() => {
     if (!$('.see_more').html()) return;
@@ -269,9 +227,11 @@ $('.close_btn').on('click',function () {
     $('.minutes2').html('');
     $('.seconds1').html('');
     $('.seconds2').html('');
-   $(this).parent().parent().hide();
-   $(this).siblings('.percent_wrapper').find('.light').removeClass('light');
-   $(this).siblings('.percent_wrapper').find('.light_line').css('width',0);
+    $(this).parent().parent().hide();
+    $(this).siblings('.percent_wrapper').find('.light').removeClass('light');
+    $(this).siblings('.percent_wrapper').find('.light_line').css('width',0);
+    $(this).siblings('.friend_list').hide();
+    $(this).siblings('.list_tip_text').hide();
 });
 
 function alreadyLogged() {

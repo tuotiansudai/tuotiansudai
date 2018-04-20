@@ -22,7 +22,7 @@ setTimeout(function () {
         let percentArr = $("#cycle").data("cashchain").split(",");
         for (let i = 0;i < percentArr.length;i++) {
             let item = percentArr[i];
-            if (currentPer < item) {
+            if (parseFloat(currentPer) < parseFloat(item)) {
                 let index = percentArr.indexOf(item) - 1;
                 opts2.percent = 100 / 6 * index;
                 for(let j = 1; j < index + 2;j++) {
@@ -32,7 +32,7 @@ setTimeout(function () {
                 return;
             }
             else {
-                if (currentPer >= percentArr[percentArr.length - 1]) {
+                if (parseFloat(currentPer) >= parseFloat(percentArr[percentArr.length - 1])) {
                     opts2.percent = '100';
                     for(let j = 1; j < 7;j++) {
                         let lightCircle = 'percent' + j;
