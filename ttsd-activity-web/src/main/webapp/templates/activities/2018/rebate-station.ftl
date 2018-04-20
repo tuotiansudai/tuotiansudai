@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.rebate_station_2018}" pageJavascript="${js.rebate_station_2018}" activeNav="" activeLeftNav="" title="加息不打烊_活动中心_拓天速贷" keywords="拓天速贷,开工红包,实物奖励,全场加息,体验金奖励" description='拓天速贷加息不打烊活动,活动期间微信关注"拓天速贷服务号"即可领取520元开工红包,周五投资额外享受年化投资额的0.5%返现奖励,用户累计年化投资可兑换实物奖励与体验金奖励.'>
+<@global.main pageCss="${css.rebate_station_2018}" pageJavascript="${js.rebate_station_2018}" activeNav="" activeLeftNav="" title="返利加油站_助力返现_拓天速贷" keywords="拓天速贷,邀请好友,助力返现,现金奖励" description='拓天速贷返利加油站活动,活动期间用户分享投资后专属助力链接至微信群/朋友圈/任意好友,邀请好友助力返现,好友助力后可平分现金奖励,分享活动链接,呼朋唤友向钱冲.'>
 <div class="rebate-station-banner">
     <div class="invest_btn"></div>
 </div>
