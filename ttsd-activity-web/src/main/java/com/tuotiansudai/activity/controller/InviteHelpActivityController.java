@@ -59,7 +59,11 @@ public class InviteHelpActivityController {
     public ModelAndView wechatInviteHelpDetail(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_sharing");
         String loginName = LoginUserInfo.getLoginName();
-        modelAndView.addAllObjects(inviteHelpActivityService.investHelpDetail(id, loginName));
+        Map<String, Object> map = inviteHelpActivityService.investHelpDetail(id, loginName);
+        if (map.isEmpty()){
+            return new ModelAndView("/activities/2018/rebate-station");
+        }
+        modelAndView.addAllObjects(map);
         return modelAndView;
     }
 
