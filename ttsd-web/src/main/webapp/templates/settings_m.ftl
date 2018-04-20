@@ -21,7 +21,7 @@
             <a><i class="icon-more"></i></a>
         </li>
         <li id="riskEstimate">
-            <label for="perName">风险测评33333</label>
+            <label for="perName">风险测评</label>
     <#if !estimate??>
         <a>评估一下更了解自己哦！<i class="icon-more"></i></a>
     <#else>

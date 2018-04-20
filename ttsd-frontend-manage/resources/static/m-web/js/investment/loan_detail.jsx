@@ -22,6 +22,7 @@ let commonFun = require('publicJs/commonFun');
 
 let isEstimate = $buyDetail.data('estimate');
 let isEstimateTransfer  = $transferDetail.data('estimate');
+
 //领优惠券
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -535,7 +536,7 @@ $('#investSubmit').on('click', function(event) {
                 } else {
                    // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                     if(noPasswordInvest){
-
+alert('nopassword')
                         if(!isEstimate){
                             //风险测评
                             commonFun.CommonLayerTip({
@@ -562,6 +563,29 @@ $('#investSubmit').on('click', function(event) {
                             sendSubmitRequest()
                         }
                     }else {
+                        if(!isEstimate){
+                            //风险测评
+                            commonFun.CommonLayerTip({
+                                btn: ['确定','取消'],
+                                area:['280px', '230px'],
+                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            },function() {
+                                layer.closeAll();
+                                location.href = '/m/risk-estimate'
+
+                            },function () {
+                                commonFun.useAjax({
+                                    url: '/risk-estimate',
+                                    data: {answers: ['-1']},
+                                    type: 'POST'
+                                },function(data) {
+                                    layer.closeAll();
+                                    $investForm.submit();
+                                });
+                            })
+                            $('.layui-layer-content').css('height','180px')
+                            return false;
+                        }
                         $investForm.submit();
                     }
                 }
@@ -646,7 +670,7 @@ $transferSubmit.on('click',function (e) {
             //判断是否需要弹框登陆
             location.href = '/m/login'
         })
-        .done(function() {alert(isEstimateTransfer)
+        .done(function() {
             submitData();
         });
 })
