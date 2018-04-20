@@ -1,6 +1,6 @@
 <#import "macro/global_m.ftl" as global>
 <@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要投资" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
-<div class="my-account-content experience-amount" id="experienceAmount" style="display: none">
+<div class="my-account-content experience-amount" id="experienceAmount" style="display: none" data-estimate="${estimate?string('true', 'false')}">
     <div class="account-summary">
         <div style="height: 44px;line-height: 44px;font-size: 17px; width: 100%;text-align: center;">
             <a class="go-back-container" id="goBack_experienceAmount" href="javascript:history.go(-1)" style="top: 6px;">
@@ -9,6 +9,7 @@
             <span class="title">${loan.name}</span>
         </div>
         <div class="collection">
+            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">保守型</i>的用户<em id="closeRisk"></em></span>
             <span class="summary-box">
                 <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                     <i>%</i></b>

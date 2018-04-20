@@ -20,7 +20,7 @@
                     </li>
                     <li>
                         <p><em id="usersCount"></em>人</p>
-                        <p>注册投资用户数</p>
+                        <p>累计注册用户数</p>
                     </li>
                     <li>
                         <p><em id="earn_total_amount"></em>元</p>

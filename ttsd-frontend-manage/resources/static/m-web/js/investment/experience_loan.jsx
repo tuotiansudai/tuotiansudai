@@ -2,6 +2,8 @@ require('mWebStyle/investment/experience_loan.scss');
 require('webJs/plugins/autoNumeric');
 let commonFun= require('publicJs/commonFun');
 let $experience_balance = $('#experience_balance');
+let isEstimate = $('#experienceAmount').data('estimate');
+
 
 // 关闭按钮
 let $close_btn = $('#close_btn');
@@ -148,7 +150,19 @@ function getAmount() {
     }
     return amount;
 }
-
+function experSubmit() {
+    commonFun.useAjax({
+        type:'POST',
+        url: '/experience-invest',
+        data:"loanId=1&amount="+getInvestAmount
+    },function(response) {
+        let data = response.data;
+        if (data.status) {
+            pushHistory('#investmentSuc');
+            localStorage.setItem('getInvestAmount',$experience_balance.val());
+        }
+    });
+}
 $('#submitBtn').on('click',(event) => {
     event.preventDefault();
     $.when(commonFun.isUserLogin())
@@ -168,17 +182,32 @@ $('#submitBtn').on('click',(event) => {
                 });
                 return;
             }
-            commonFun.useAjax({
-                type:'POST',
-                url: '/experience-invest',
-                data:"loanId=1&amount="+getInvestAmount
-            },function(response) {
-                let data = response.data;
-                if (data.status) {
-                    pushHistory('#investmentSuc');
-                    localStorage.setItem('getInvestAmount',$experience_balance.val());
-                }
-            });
+            if(!isEstimate){
+                //风险测评
+                commonFun.CommonLayerTip({
+                    btn: ['确定','取消'],
+                    area:['280px', '230px'],
+                    content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                },function() {
+                    layer.closeAll();
+                    location.href = '/m/risk-estimate'
+
+                },function () {
+                    commonFun.useAjax({
+                        url: '/risk-estimate',
+                        data: {answers: ['-1']},
+                        type: 'POST'
+                    },function(data) {
+                        layer.closeAll();
+                        experSubmit();
+                    });
+                })
+                $('.layui-layer-content').css("cssText", "height:180px !important;")
+                return false;
+            }else {
+                experSubmit()
+            }
+
 
         })
         .fail(function () {
@@ -189,3 +218,11 @@ $('#submitBtn').on('click',(event) => {
 $('#goBack_per').click(function () {
     history.go(-1)
 })
+
+if($('#closeRisk').length){
+    $('#closeRisk').on('click',function () {
+        $(this).parent().hide();
+        $('.account-summary').css("cssText", "height:156px !important;");
+    })
+
+}

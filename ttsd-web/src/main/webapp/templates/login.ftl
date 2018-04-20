@@ -8,7 +8,7 @@
                 <#--<a href="/register/user" class="register">免费注册</a>-->
             <#--</div>-->
                 <h3 id="green"><span class="welcome_text">欢迎登录拓天速贷</span><a href="/register/user" class="register">免费注册</a></h3>
-            <form class="form-login" id="formLogin"  data-redirect-url="${redirect}">
+            <form class="form-login" id="formLogin"  data-redirect-url="${redirect}" autocomplete="off">
                 <label>
                     <input validate class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号" maxlength="25"/>
                 </label>

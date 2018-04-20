@@ -3,15 +3,16 @@
 
 <div class="home-page-container" id="homePageContainer">
     <div class="banner-box">
-        <div id="bannerBox" class="banner-box-inner">
-            <ul class="banner-img-list compliance-index">
+        <div id="bannerBox" class="banner-box-inner compliance-index">
+            <div class="invest-tip-wrap"><div class="invest-tip">市场有风险，投资需谨慎！</div></div>
+            <ul class="banner-img-list">
                 <#list bannerList as banner>
                     <li>
                         <a href="${banner.url}" target="_blank"
                            <#if banner.url == 'http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1'>rel="nofollow"</#if>>
                             <img src="${commonStaticServer}${banner.webImageUrl}" data-app-img="${commonStaticServer}${banner.appImageUrl}" alt="${banner.title}">
                         </a>
-                       <div class="invest-tip-wrap"><div class="invest-tip">市场有风险，投资需谨慎！</div></div>
+
                     </li>
                 </#list>
             </ul>
