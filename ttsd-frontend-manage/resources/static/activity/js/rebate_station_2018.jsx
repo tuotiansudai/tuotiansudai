@@ -102,6 +102,7 @@ function getList(data,parent) {
         if (!item.headImgUrl) {
             headImgUrl = '../../../activity/images/default_portrait.png';
         }
+        item.nickName = item.nickName ? item.nickName : '';
         dom += `
              <div class="list_item">
                 <img class="portrait" src="${headImgUrl}" />

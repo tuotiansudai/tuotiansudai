@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${css.everyone_receive_shared}" pageJavascript="${js.everyone_receive_shared}"  title="拓天速贷人人可领10元现金">
 <div class="top_container">
-    <div class="nickName">${name}</div>
+    <div class="nickName">${name!}</div>
     <div class="rules"></div>
 </div>
 <div class="content_text">
@@ -10,7 +10,7 @@
     <#if !isHelp>
         <div class="no_shared">
             <div class="desc">
-                <div>您的朋友${name}邀请你帮他助力</div>
+                <div>您的朋友${name!}邀请你帮他助力</div>
             </div>
             <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
             <div class="help_too"></div>
@@ -48,8 +48,12 @@
                 <div class="list">
                     <#list helpFriends as friend>
                         <div class="list_item">
-                            <div class="portrait"></div>
-                            <div class="nickName">${friend.nickName}</div>
+                            <#if friend.headImgUrl??>
+                                <img class="portrait" src="${friend.headImgUrl!}" />
+                            <#else >
+                                <div class="portrait"></div>
+                            </#if>
+                            <div class="nickName">${friend.nickName!}</div>
                             <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
                         </div>
                     </#list>

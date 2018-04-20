@@ -5,7 +5,7 @@
 <div class="col-md-10">
     <div class="panel panel-default">
         <div class="panel-body">
-            <a class="btn btn-default btn-primary"
+            <a class="btn btn-default"
                href="/activity-console/activity-manage/invite-help/invest-reward-list" role="button">投资奖励</a>
             <a class="btn btn-default btn-primary"
                href="/activity-console/activity-manage/invite-help/share-reward-list" role="button">分享奖励</a>
@@ -30,6 +30,7 @@
                 <th>昵称</th>
                 <th>助力人数</th>
                 <th>获得现金奖励</th>
+                <th>是否发放奖励</th>
             </tr>
             </thead>
             <tbody>
@@ -41,6 +42,13 @@
                     <td>${item.nickName!}</td>
                     <td>${item.helpUserCount}</td>
                     <td>${(item.reward/100)?string('0.00')}</td>
+                    <td>
+                        <#if item.cashBack>
+                            已发放
+                        <#else >
+                            未发放
+                        </#if>
+                    </td>
                 </tr>
                 <#else>
                 <tr>

@@ -41,8 +41,12 @@
                 <div class="list">
                         <#list helpFriends as friend>
                             <div class="list_item">
-                                <div class="portrait"></div>
-                                <div class="nickName">${friend.nickName}</div>
+                                <#if friend.headImgUrl??>
+                                    <img class="portrait" src="${friend.headImgUrl!}" />
+                                <#else >
+                                    <div class="portrait"></div>
+                                </#if>
+                                <div class="nickName">${friend.nickName!}</div>
                                 <div class="finish_time">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
                             </div>
                         </#list>
