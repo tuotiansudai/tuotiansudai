@@ -50,6 +50,7 @@
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>
     </#if>
+    <#include "../pageLayout/baidu-webmaster.ftl"/>
 </head>
 <body>
 

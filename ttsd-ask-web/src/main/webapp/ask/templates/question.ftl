@@ -87,7 +87,7 @@
     </#if>
 
 <#--ad-->
-    <div class="ad-answer"><a href="https://tuotiansudai.com/activity/share-reward" target="_blank"></a></div>
+    <div class="ad-answer"><a href="https://tuotiansudai.com/activity/invite-friend" target="_blank"></a></div>
 
     <#if answers.data.records?has_content>
         <div class="border-ask-box clearfix margin-top-10">

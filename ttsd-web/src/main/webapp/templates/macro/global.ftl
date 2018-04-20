@@ -103,6 +103,7 @@
     </#if>
     <!-- growing io -->
     <#include "../pageLayout/growing-io.ftl"/>
+    <#include "../pageLayout/baidu-webmaster.ftl"/>
 
 </head>
 <body>

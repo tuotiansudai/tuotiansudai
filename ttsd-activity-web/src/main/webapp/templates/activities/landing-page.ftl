@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
+<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="拓天速贷_新手注册送1000元投资红包_拓天速贷官网" keywords="拓天速贷,新手注册，1000元投资红包,6888元体验金,3%加息劵" description="拓天速贷新手注册送1000元投资红包,新人独享11%高息新手标,首次投资可获得3%加息券,新用户注册送6888元体验金,为广大投资用户提供多元化的投资选择和优质的综合理财服务.">
 
 <div class="landingContainerBox">
     <div class="landing-container">
