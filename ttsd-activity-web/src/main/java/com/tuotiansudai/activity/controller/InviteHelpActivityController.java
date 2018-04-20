@@ -1,6 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.activity.service.InviteHelpActivityService;
 import com.tuotiansudai.enums.WeChatDrawCoupon;
@@ -48,20 +49,21 @@ public class InviteHelpActivityController {
     @RequestMapping(value = "/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> inviteHelpDetail(@PathVariable long id) {
-        String loginName = LoginUserInfo.getLoginName();
-        if (loginName != null) {
-            return inviteHelpActivityService.investHelpDetail(id, loginName);
-        }
-        return null;
+        WeChatHelpModel weChatHelpModel = inviteHelpActivityService.getHelpModel(id);
+        return inviteHelpActivityService.investHelpDetail(weChatHelpModel);
     }
 
     @RequestMapping(value = "/wechat/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatInviteHelpDetail(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_sharing");
         String loginName = LoginUserInfo.getLoginName();
-        Map<String, Object> map = inviteHelpActivityService.investHelpDetail(id, loginName);
+        WeChatHelpModel weChatHelpModel = inviteHelpActivityService.getHelpModel(id);
+        Map<String, Object> map = inviteHelpActivityService.investHelpDetail(weChatHelpModel);
         if (map.isEmpty()){
             return new ModelAndView("/activities/2018/rebate-station");
+        }
+        if (loginName == null || !weChatHelpModel.getLoginName().equals(loginName)){
+            return new ModelAndView(String.format("redirect:/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/%s/invest/help", id));
         }
         modelAndView.addAllObjects(map);
         return modelAndView;
@@ -97,7 +99,7 @@ public class InviteHelpActivityController {
         }
 
         if (inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id)){
-            return new ModelAndView(String.format("redirect:/activity/wechat/invite-help/%s/invest/help", id));
+            return new ModelAndView(String.format("redirect:/activity/invite-help/%s/invest/help", id));
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_shared");
