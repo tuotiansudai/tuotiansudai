@@ -181,8 +181,8 @@ h2,h4 {
                     }
                   }
                   .table_container {
-                    max-height: 294px;
-                    overflow-y: scroll;
+                    height: 294px;
+                    overflow-y: hidden;
                     &.table_auto {
                       height: auto;
                     }
@@ -1021,8 +1021,8 @@ h2,h4 {
                       }
                     }
                     .table_container {
-                      max-height: 13.7rem;
-                      overflow-y: scroll;
+                      height: 13.7rem;
+                      overflow: hidden;
                       &.table_auto {
                         height: auto;
                       }
