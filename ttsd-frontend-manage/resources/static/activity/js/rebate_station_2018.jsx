@@ -329,7 +329,7 @@ function scrollUp(domName,time=1000) {
 function countTimePop(str) {
     $('.countDown_wrapper').show();
     $('.time_over').hide();
-    let end = new Date(str).getTime();
+    let end = new Date(str.replace(/-/g,'/')).getTime();
     let now = new Date().getTime();
     let leftTime = (end-now)/1000;
     timerCount();
@@ -371,7 +371,7 @@ function countTimePop(str) {
 function countDownList(domElement) {
     return $(domElement).each(function () {
         let $this = $(this);
-        let end = new Date($this.data('overtime')).getTime();
+        let end = new Date($this.data('overtime').replace(/-/g,'/')).getTime();
         let now = new Date().getTime();
         let leftTime = (end - now)/1000;
         timer1Count();

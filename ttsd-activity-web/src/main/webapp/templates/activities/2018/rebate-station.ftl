@@ -153,7 +153,7 @@
                                             </div>
                                         </#if>
                                     </div>
-                                    <div class="see_more"><#if investHelp!?size gt 5>查看更多</#if></div>
+                                    <div class="see_more"><#if investHelp!?size gt 5>查看更多></#if></div>
                                     <div class="see_less" style="display: none">收起></div>
                                 </div>
                                 <div class="no_login no_login1">

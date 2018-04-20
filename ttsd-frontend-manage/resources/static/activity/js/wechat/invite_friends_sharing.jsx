@@ -80,6 +80,7 @@ function countTimePop(str) {
     let end = new Date(str).getTime();
     let now = new Date().getTime();
     let leftTime = (end-now)/1000;
+    alert(str)
     timerCount();
     timer = setInterval(() => {
         timerCount();
@@ -115,8 +116,7 @@ function countTimePop(str) {
         }
     }
 }
-
-countTimePop($("#countDown").data("countdown"));
+countTimePop($("#countDown").data("countdown").replace(/-/g,'/'));
 
 
 function is_wechat(){
