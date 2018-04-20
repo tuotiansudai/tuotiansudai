@@ -194,7 +194,7 @@ public class InviteHelpActivityService {
 
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("helpModel", weChatHelpModel)
-                .put("name", name)
+                .put("name", name == null ? "" : name)
                 .put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()))
                 .put("isHelp", weChatHelpInfoMapper.findByOpenId(openId, weChatHelpModel.getId()) != null)
                 .build());
