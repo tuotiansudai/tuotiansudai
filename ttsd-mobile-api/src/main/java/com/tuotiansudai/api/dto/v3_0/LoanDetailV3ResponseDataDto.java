@@ -103,7 +103,7 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "分享标题", example = "拓天速贷引领投资热，开启互金新概念")
     private String title;
 
-    @ApiModelProperty(value = "分享内容", example = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！")
+    @ApiModelProperty(value = "分享内容", example = "个人经营借款投资项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！")
     private String content;
 
     @ApiModelProperty(value = "借款天数", example = "360")

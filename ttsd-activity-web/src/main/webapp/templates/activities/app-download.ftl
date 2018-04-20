@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.download_app}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
+<@global.main pageCss="${css.download_app}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_投资客户端_拓天速贷" keywords="拓天速贷,APP投资,移动客户端,网络投资,P2P投资,拓天速贷APP" description="拓天速贷手机客户端为投资,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融投资服务。">
 
 <div class="download-container">
     <div class="download-one">

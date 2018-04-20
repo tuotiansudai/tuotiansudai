@@ -7,6 +7,7 @@ import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
+import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.rest.client.AskRestClient;
@@ -41,7 +42,19 @@ public class QuestionService {
             return dataDto;
         }
         dataDto.setCaptchaValid(true);
+
+        String questionSensitive = SensitiveWordsFilter.matchSensitiveWords(questionRequestDto.getQuestion());
+        if (questionSensitive != null) {
+            dataDto.setSensitiveWord(questionSensitive);
+            return dataDto;
+        }
         dataDto.setQuestionSensitiveValid(true);
+
+        String additionSensitive = SensitiveWordsFilter.matchSensitiveWords(questionRequestDto.getAddition());
+        if (additionSensitive != null) {
+            dataDto.setSensitiveWord(additionSensitive);
+            return dataDto;
+        }
         dataDto.setAdditionSensitiveValid(true);
 
         try {

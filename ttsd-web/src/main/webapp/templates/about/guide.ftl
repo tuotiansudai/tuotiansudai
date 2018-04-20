@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
 
 <div class="new-guide-container" id="pageGuide">
     <ul class="quick-top-link page-width">
