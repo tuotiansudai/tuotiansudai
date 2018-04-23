@@ -37,7 +37,8 @@ public enum UserBillBusinessType {
     CREDIT_LOAN_RECHARGE("信用贷账户充值"),
     CREDIT_LOAN_OUT("信用贷放款"),
     CREDIT_LOAN_REPAY("信用贷还款"),
-    LUXURY_STAGE_PURCHASE("分期首付"),
+    LUXURY_STAGE_PURCHASE("分期首付+第一期月供"),
+    LUXURY_STAGE_DOWN_PAYMENT("分期首付"),
     LUXURY_STAGE_REPAY("分期还款"),
     PAYROLL("代发工资"),
     ;
