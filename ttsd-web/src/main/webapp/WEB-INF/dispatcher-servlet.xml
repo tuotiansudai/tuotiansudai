@@ -51,6 +51,7 @@
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
     <mvc:resources mapping="/favicon.ico" location="/favicon.ico"/>
     <mvc:resources mapping="/MP_verify_tAISeNgSQ4egUaw1.txt" location="/MP_verify_tAISeNgSQ4egUaw1.txt"/>
+    <mvc:resources mapping="/MP_verify_Rh1oMSHvp9pZiZtv.txt" location="/MP_verify_Rh1oMSHvp9pZiZtv.txt"/>
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.config.freemarker.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>

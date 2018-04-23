@@ -66,6 +66,7 @@
         <intercept-url pattern="/upload/**" access="permitAll()"/>
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
         <intercept-url pattern="/MP_verify_tAISeNgSQ4egUaw1.txt" access="permitAll()"/>
+        <intercept-url pattern="/MP_verify_Rh1oMSHvp9pZiZtv.txt" access="permitAll()"/>
         <intercept-url pattern="/favicon.ico" access="permitAll()"/>
 
         <intercept-url pattern="/isLogin" access="permitAll()"/>

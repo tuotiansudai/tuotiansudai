@@ -83,10 +83,13 @@ public class InviteHelpActivityService {
         return list;
     }
 
-    public Map<String, Object> investHelpDetail(long id, String loginName){
-        WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
+    public WeChatHelpModel getHelpModel(long id){
+        return weChatHelpMapper.findById(id);
+    }
+
+    public Map<String, Object> investHelpDetail(WeChatHelpModel weChatHelpModel){
         Map<String, Object> map = new HashMap<>();
-        if (weChatHelpModel != null && weChatHelpModel.getLoginName().equals(loginName)) {
+        if (weChatHelpModel != null) {
             List<String> myCashChain = new ArrayList<>();
             rates.forEach(rate -> myCashChain.add(AmountConverter.convertCentToString((long) (weChatHelpModel.getAnnualizedAmount() * rate.getRate()))));
             map.put("myCashChain", myCashChain);
@@ -129,7 +132,8 @@ public class InviteHelpActivityService {
             }
         }
         weChatHelpMapper.create(weChatHelpModel);
-        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+//        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusHours(2).toString("yyyy-MM-dd HH:mm:ss"));
         return weChatHelpModel;
     }
 
@@ -176,7 +180,7 @@ public class InviteHelpActivityService {
         if (weChatHelpModel == null){
             return null;
         }
-        Map<String, Object> map = this.investHelpDetail(id, weChatHelpModel.getLoginName());
+        Map<String, Object> map = this.investHelpDetail(weChatHelpModel);
         map.put("isHelp", weChatHelpInfoMapper.findByOpenId(openId, weChatHelpModel.getId()) != null);
         return map;
     }
