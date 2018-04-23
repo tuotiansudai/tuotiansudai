@@ -47,7 +47,8 @@ public class LoanOutSuccessInviteHelpMessageConsumer implements MessageConsumer 
             logger.error("[标的放款MQ] LoanOutSuccess_InviteHelpActivity json convert LoanOutSuccessMessage is fail, message:{}", message);
             return;
         }
-        redisWrapperClient.hset(INVEST_HELP_WAIT_SEND_CASH, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+//        redisWrapperClient.hset(INVEST_HELP_WAIT_SEND_CASH, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.hset(INVEST_HELP_WAIT_SEND_CASH, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().plusMinutes(30).toString("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

@@ -132,7 +132,8 @@ public class InviteHelpActivityService {
             }
         }
         weChatHelpMapper.create(weChatHelpModel);
-        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+//        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusHours(2).toString("yyyy-MM-dd HH:mm:ss"));
         return weChatHelpModel;
     }
 
