@@ -140,7 +140,7 @@
             <#--没有实名认证-->
             <div class="detail-word">
                 <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元 <br/>
-                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即立即认证>></a>
+                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即认证>></a>
                 <div class="pad-m-tb" style="padding-left:50px;">
                     <button type="button" class="btn-normal close-free">确认</button>
                 </div>
