@@ -89,7 +89,7 @@ public class QuestionService {
             return new QuestionDto(questionModel,
                     questionModel.getLoginName().equalsIgnoreCase(loginName) ? questionModel.getMobile() : MobileEncoder.encode(Strings.isNullOrEmpty(questionModel.getFakeMobile()) ? questionModel.getMobile() : questionModel.getFakeMobile()));
         } catch (RestException e) {
-            logger.error("get question fail, ", e);
+            logger.warn("get question fail, ", e);
             return null;
         }
     }
