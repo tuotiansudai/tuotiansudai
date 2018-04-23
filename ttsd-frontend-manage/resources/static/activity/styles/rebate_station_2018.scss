@@ -597,8 +597,8 @@ h2,h4 {
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 600px;
-    height: 570px;
+    width: 700px;
+    height: 560px;
     font-size: 25px;
     color: #ae5f24;
     background: url("../images/2018/rebate-station/backCash_popModal.png") no-repeat;
@@ -646,7 +646,7 @@ h2,h4 {
       width: 500px;
       margin: 0 auto;
       .line {
-        margin: 40px auto auto auto;
+        margin: 30px auto auto auto;
         width: 500px;
         height: 16px;
         background: #ccbea6;
@@ -662,43 +662,44 @@ h2,h4 {
         width: 70px;
         height: 75px;
         .person_num {
-          font-size: 16px;
+          width: 60px;
+          font-size: 14px;
           text-align: center;
           color: #c88f61;
         }
         &.circle1_wrapper {
-          top: -27px;
+          top: -22px;
           left: -25px;
         }
         &.circle2_wrapper {
-          top: -27px;
+          top: -22px;
           left: $percentWidth * 0.2 - 35px;
         }
         &.circle3_wrapper {
-          top: -27px;
+          top: -22px;
           left: $percentWidth * 0.4 - 35px;
         }
         &.circle4_wrapper {
-          top: -27px;
+          top: -22px;
           left: $percentWidth * 0.6 - 35px;
         }
         &.circle5_wrapper {
-          top: -27px;
+          top: -22px;
           left: $percentWidth * 0.8 - 35px;
         }
         &.circle6_wrapper {
-          top: -27px;
+          top: -22px;
           left: $percentWidth - 35px;
         }
         .circle {
-          width: 70px;
-          height: 70px;
-          line-height: 70px;
+          width: 60px;
+          height: 60px;
+          line-height: 60px;
           text-align: center;
           border-radius: 50%;
           background: #ccbea6;
           color: #fff;
-          font-size: 18px;
+          font-size: 15px;
           font-weight: normal;
           &.light {
             background: #f0081e;
@@ -707,10 +708,12 @@ h2,h4 {
       }
     }
     .mid_content {
-      margin: 55px auto auto 75px;
+      margin: 0 auto auto 75px;
       overflow: hidden;
       .invite_weachat {
-        position: relative;
+        position: absolute;
+        right: 75px;
+        bottom: 145px;
         display: inline-block;
         width: 160px;
         height: 199px;
@@ -734,10 +737,10 @@ h2,h4 {
       }
       .countDownTime {
         display: inline-block;
-        margin: 10px auto auto 90px;
+        margin: 57px auto auto 5px;
         vertical-align: top;
         .title {
-          font-size: 40px;
+          font-size: 30px;
           color: #d70921;
         }
         .countDown_wrapper {
@@ -818,22 +821,22 @@ h2,h4 {
 .friend_list {
   position: absolute;
   left: 23px;
-  bottom: 23px;
+  bottom: 16px;
   width: 654px;
-  height: 128px;
+  height: 114px;
   font-size: 14px;
   color: #ae5f24;
   overflow-y: auto;
   .list_item {
-    height: 42px;
-    line-height: 42px;
+    height: 37px;
+    line-height: 37px;
     .portrait {
       position: relative;
       top: -2px;
       display: inline-block;
       margin: 0 15px 0 100px;
-      width: 36px;
-      height: 36px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       vertical-align: middle;
     }
