@@ -228,6 +228,7 @@ h2,h4 {
                     height: 30px;
                     margin: 25px auto 40px auto;
                     color: #460c07;
+                    text-align: center;
                     cursor: pointer;
                   }
                   .help_list {
@@ -596,8 +597,8 @@ h2,h4 {
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 700px;
-    height: 664px;
+    width: 600px;
+    height: 570px;
     font-size: 25px;
     color: #ae5f24;
     background: url("../images/2018/rebate-station/backCash_popModal.png") no-repeat;
@@ -1021,10 +1022,13 @@ h2,h4 {
                       }
                     }
                     .table_container {
-                      height: 13.7rem;
+                      height: 13.5rem;
                       overflow: hidden;
                       &.table_auto {
                         height: auto;
+                      }
+                      &.table_none {
+                        height: 7rem;
                       }
                     }
                     .cashBack_list {
@@ -1337,236 +1341,6 @@ h2,h4 {
       }
       .login_text {
         margin-bottom: .75rem;
-      }
-    }
-  }
-  .help_popModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,.5);
-    z-index: 999;
-    .content {
-      position: fixed;
-      top:0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      margin: auto;
-      width: 700px;
-      height: 532px;
-      font-size: 25px;
-      color: #b46a33;
-      background: url("../images/2018/rebate-station/help_popModal.png") no-repeat;
-      background-size: contain;
-      .strong {
-        color: #ea1331;
-      }
-      .join_num {
-        position: absolute;
-        top: 190px;
-        left: 100px;
-      }
-      .get_cash {
-        position: absolute;
-        top: 230px;
-        left: 100px;
-      }
-      .duration_time {
-        font-size: 20px;
-        position: absolute;
-        top: 273px;
-        left: 100px;
-      }
-      .invite_weachat {
-        width: 160px;
-        height: 199px;
-        position: absolute;
-        top: 145px;
-        right: 100px;
-        background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
-        background-size: contain;
-        .desc_text {
-          position: absolute;
-          bottom: 5px;
-          width: 160px;
-          color: #fff;
-          font-size: 12px;
-          line-height: 15px;
-          text-align: center;
-        }
-      }
-      .active_one_pop {
-        position: absolute;
-        top: 153px;
-        right: 110px
-      }
-      .friends {
-        position: absolute;
-        font-size: 14px;
-        top: 350px;
-        left: 30px;
-      }
-    }
-  }
-  .cashBack_popModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,.5);
-    z-index: 999;
-    .content {
-      position: fixed;
-      top:0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      margin: auto;
-      width: 700px;
-      height: 664px;
-      font-size: 25px;
-      color: #ae5f24;
-      background: url("../images/2018/rebate-station/backCash_popModal.png") no-repeat;
-      background-size: contain;
-      .strong {
-        font-size: 20px;
-        color: #ea1331;
-      }
-      .userName {
-        font-size: 20px;
-        font-weight: bold;
-        margin: 25px auto 10px 50px;
-      }
-      .title {
-        padding: 0 30px;
-        font-size: 14px;
-        text-align: center;
-        .left_topIcon {
-          display: inline-block;
-          width: 110px;
-          height: 27px;
-          background: url("../images/2018/rebate-station/left_topIcon.png") no-repeat;
-          background-size: contain;
-          vertical-align: middle;
-        }
-        .text {
-          position: relative;
-          top: -2px;
-          display: inline-block;
-          line-height: 20px;
-          text-align: center;
-          vertical-align: middle;
-        }
-        .right_topIcon {
-          display: inline-block;
-          width: 110px;
-          height: 27px;
-          background: url("../images/2018/rebate-station/right_topIcon.png") no-repeat;
-          background-size: contain;
-          vertical-align: middle;
-        }
-      }
-      .percent_wrapper {
-        position: relative;
-        width: 500px;
-        margin: 0 auto;
-        .line {
-          margin: 45px auto auto auto;
-          width: 500px;
-          height: 16px;
-          background: #ccbea6;
-          .light_line {
-            height: 16px;
-            background: #f0081e;
-          }
-        }
-        .circle {
-          position: absolute;
-          width: 50px;
-          height: 50px;
-          line-height: 50px;
-          text-align: center;
-          border-radius: 50%;
-          background: #ccbea6;
-          color: #fff;
-          font-size: 18px;
-          font-weight: normal;
-          &.light {
-            background: #f0081e;
-          }
-          &.circle1 {
-            top: -17px;
-            left: -25px;
-          }
-          &.circle2 {
-            top: -17px;
-            left: $percentWidth * 0.2 - 25px;
-          }
-          &.circle3 {
-            top: -17px;
-            left: $percentWidth * 0.4 - 25px;
-          }
-          &.circle4 {
-            top: -17px;
-            left: $percentWidth * 0.6 - 25px;
-          }
-          &.circle5 {
-            top: -17px;
-            left: $percentWidth * 0.8 - 25px;
-          }
-          &.circle6 {
-            top: -17px;
-            left: $percentWidth - 25px;
-          }
-        }
-      }
-      .mid_content {
-        margin: 45px auto auto 75px;
-        overflow: hidden;
-        .invite_weachat {
-          position: relative;
-          display: inline-block;
-          width: 160px;
-          height: 199px;
-          background: url("../images/2018/rebate-station/invite_weachat.png") no-repeat;
-          background-size: contain;
-          font-size: 12px;
-          .desc_text {
-            position: absolute;
-            bottom: 5px;
-            width: 160px;
-            color: #fff;
-            font-size: 12px;
-            line-height: 15px;
-            text-align: center;
-          }
-          .active_two {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-          }
-        }
-        .countDownTime {
-          display: inline-block;
-          margin: 10px auto auto 90px;
-          vertical-align: top;
-          .title {
-            font-size: 40px;
-            color: #d70921;
-          }
-        }
-      }
-      .friends {
-        margin: 40px auto auto 30px;
-        font-size: 14px;
-        top: 350px;
-        left: 30px;
       }
     }
   }
