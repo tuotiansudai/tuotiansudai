@@ -52,6 +52,7 @@ public class WeChatClient {
                     .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.normal.repay.success.id"))
                     .put(WeChatMessageType.INVEST_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.invest.success.id"))
                     .put(WeChatMessageType.LOAN_OUT_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.loan.out.success.id"))
+                    .put(WeChatMessageType.LOAN_COMPLETE, ETCDConfigReader.getReader().getValue("wechat.loan.complete.notify.id"))
                     .build());
 
     private static String APP_ID = ETCDConfigReader.getReader().getValue("wechat.appId");

@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class WeChatMessageNotifyConsumer implements MessageConsumer {
@@ -44,6 +46,10 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     private WithdrawMapper withdrawMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\,')}")
+    private List<String> loanCompleteNotifyUser;
 
     private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
 
@@ -69,6 +75,8 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
             }
             if (weChatMessageNotify.getWeChatMessageType() == WeChatMessageType.LOAN_OUT_SUCCESS) {
                 this.loanOutMessageNotify(weChatMessageNotify);
+            } else if (weChatMessageNotify.getWeChatMessageType() == WeChatMessageType.LOAN_COMPLETE) {
+                this.loanCompleteMessageNotify(weChatMessageNotify);
             } else {
                 String openId = fetchOpenId(weChatMessageNotify.getLoginName());
                 if (openId == null) {
@@ -88,6 +96,33 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     private String fetchOpenId(String loginName) {
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(s -> s.isBound()).findFirst();
         return optional.map(o -> o.getOpenid()).orElse(null);
+    }
+
+    private void loanCompleteMessageNotify(WeChatMessageNotify weChatMessageNotify) {
+        if (weChatMessageNotify.getBusinessId() == null) {
+            logger.info("[MQ WeChatMessageNotify] type:{} BusinessId is null",
+                    weChatMessageNotify.getWeChatMessageType());
+            return;
+        }
+        LoanModel loanModel = loanMapper.findById(weChatMessageNotify.getBusinessId());
+        List<String> notifyLoginNames = loanCompleteNotifyUser.stream()
+                .filter(mobile -> userMapper.findByLoginNameOrMobile(mobile) != null)
+                .map(mobile -> userMapper.findByLoginNameOrMobile(mobile).getLoginName())
+                .collect(Collectors.toList());
+
+        notifyLoginNames.stream()
+                .forEach(s -> weChatClient.sendTemplateMessage(WeChatMessageType.LOAN_COMPLETE, Maps.newHashMap(ImmutableMap.<String, String>builder()
+                        .put("openid", fetchOpenId(s))
+                        .put("first", String.format("%s满标通知（运营内部）。", loanModel.getName()))
+                        .put("keyword1", convertCentToTenThousandString(loanModel.getLoanAmount()))
+                        .put("keyword2", "已满标")
+                        .put("keyword3", new DateTime(loanModel.getRaisingCompleteTime()).toString("yyyy-MM-dd HH:mm"))
+                        .put("remark", String.format("%s上线的%s天投资项目已满，30分钟内将完成复核。",
+                                new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm"),
+                                loanModel.getDuration()))
+                        .build())));
+
+
     }
 
     private void loanOutMessageNotify(WeChatMessageNotify weChatMessageNotify) {

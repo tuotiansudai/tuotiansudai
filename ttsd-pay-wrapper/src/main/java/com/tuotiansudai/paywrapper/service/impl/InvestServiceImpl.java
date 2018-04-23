@@ -626,6 +626,10 @@ public class InvestServiceImpl implements InvestService {
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
         smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
+
+        mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanId));
+
+
     }
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
