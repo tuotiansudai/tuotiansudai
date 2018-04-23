@@ -162,7 +162,7 @@ public class LuxuryStageRepayService {
                         new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
                                 Long.parseLong(orderId),
                                 amount,
-                                period == 1 ? UserBillBusinessType.LUXURY_STAGE_PURCHASE : UserBillBusinessType.LUXURY_STAGE_REPAY,
+                                period == 0 ? UserBillBusinessType.LUXURY_STAGE_PURCHASE : UserBillBusinessType.LUXURY_STAGE_REPAY,
                                 null,
                                 null));
 
