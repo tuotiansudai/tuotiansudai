@@ -48,7 +48,7 @@
                             ~ <@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
                         </#if>%</i>
                     </span>
-                    <em>预计年化收益</em>
+                    <em>约定年化利率</em>
                 </li>
                 <li>
                     <span>

@@ -119,14 +119,13 @@
                 </div> <#-- .container-block end tag -->
                 <div class="row related-expenses clearfix">
                     <span class="title">相关费用：</span>
-                    <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会
-                    收取${investFeeRate*100}%技术服务费。</span>
+                    <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${investFeeRate*100}%技术服务费。</span>
                 </div>
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span> </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  <#else><span id="riskTips" class="risk-tips">稳健型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为稳健型的用户</i></span></#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -364,7 +363,7 @@
                                 <div class="row">
                                     <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
-                                            <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
+                                            <div class="col-md-4"><div class="col-md-3">${key}：</div><div class="col-md-9">${loan.loanerDetail[key]}</div></div>
                                         </#if>
                                     </#list>
                                 </div>

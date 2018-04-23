@@ -210,6 +210,7 @@ fancybox(function() {
         'cyclic'        : false,
         'showCloseButton':true,
         'showNavArrows' : true,
+        "loop":false,
         'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
             return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
         }
@@ -540,7 +541,7 @@ $('#nameList').click(function () {
         title:'实际控制人与持股5%以上的股东名单',
         closeBtn: 1,
         area: ['600px', '280px'],
-        shadeClose: true,
+        shadeClose: false,
         content: $('#nameListPop')
     });
 });
@@ -553,6 +554,6 @@ $('#userAgreement').click(function () {
         shadeClose: false,
         scrollbar: true,
         skin:'register-skin',
-        content: $('.service-box')
+        content: $('.user-register')
     });
 });
