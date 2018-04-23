@@ -412,7 +412,7 @@
             </div>
             <div class="circle_wrapper circle2_wrapper">
                 <div class="circle circle2"></div>
-                <div class="person_num">5人</div>
+                <div class="person_num">8人</div>
             </div>
             <div class="circle_wrapper circle3_wrapper">
                 <div class="circle circle3"></div>

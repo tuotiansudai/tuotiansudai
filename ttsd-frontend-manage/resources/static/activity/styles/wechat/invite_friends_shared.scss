@@ -208,10 +208,11 @@ body {
     background: #f13939;
     border-radius: .25rem;
     .list {
+      box-sizing: border-box;
       margin: 0 auto;
       width: 16.6rem;
-      max-height: 15rem;
-      padding: 1rem 0 0 0;
+      max-height: 16.5rem;
+      padding: 1rem 0 .5rem 0;
       background: #ffebc2;
       border-radius: .25rem;
       overflow-y: scroll;
@@ -219,14 +220,12 @@ body {
       .list_item {
         height: 1.5rem;
         line-height: 1.5rem;
+        text-align: center;
         color: #ae5f24;
-        //&:last-child {
-        //  margin-bottom: .5rem;
-        //}
         .portrait {
           position: relative;
           display: inline-block;
-          margin: 0 .5rem 0 2.5rem;
+          //margin: 0 .5rem 0 2.5rem;
           width: 1.25rem;
           height: 1.25rem;
           background: url("../../images/2018/rebate-station/default_portrait.png") no-repeat;

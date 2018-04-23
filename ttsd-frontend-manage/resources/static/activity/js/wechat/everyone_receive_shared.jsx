@@ -25,7 +25,7 @@ $('.help_rightNow').on('click',function () {
             });
         }
         else {
-            alert('请点击浏览器分享');
+            alert('请在微信中分享');
         }
     }
 });

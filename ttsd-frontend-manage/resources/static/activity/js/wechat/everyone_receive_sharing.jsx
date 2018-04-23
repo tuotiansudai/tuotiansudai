@@ -9,7 +9,7 @@ $('.invite_friends_btn').on('click',() => {
         $('.wechat_share_tip').show();
     }
     else {
-        alert('请点击浏览器分享');
+        alert('请在微信中分享');
     }
 });
 
