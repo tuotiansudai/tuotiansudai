@@ -7,39 +7,6 @@ let url = location.href;
 let timer;
 let timer1;
 
-let data = {
-    'myCashChain': [1.00,200.00,300.00,350.00,1500.11],
-    'nextNode': 6,
-    'nextAmount': 25000,// 分
-    'helpFriends': [
-        {
-            id: 1,
-            openId: '1111222aaa',
-            nickName: "朱坤",
-            headImgUrl: '',
-            createdTime: '2018-04-13 18:39:58',
-            updatedTime: '2018-04-13 18:39:58'
-        }
-    ],
-    'helpModel': {
-        id: 1,
-        loadnId: 22222222,
-        investAmount: 222,
-        annualizedAmount: 500,
-        loginName: 'chenzhonghui',
-        userName: '陈忠辉',
-        mobile: 1881111111,
-        openId: null,
-        type: 'INVEST_HELP',
-        helpUerCount: 2,
-        reward: 100,
-        startTime: '2018-04-13 17:39:58',
-        endTime: '2018-04-13 17:39:58',
-        cashBack: false
-
-    }
-};
-
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }

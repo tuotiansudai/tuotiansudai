@@ -84,7 +84,7 @@
                                     我的返现项目
                                 </div>
                                 <div class="already_login">
-                                    <div class="table_container">
+                                    <div class="table_container <#if investHelp!?size ==0>table_none</#if>">
                                         <table class="cashBack_list">
                                             <thead>
                                             <tr class="table_header">
