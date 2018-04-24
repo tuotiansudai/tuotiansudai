@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group">
-            <label for="number">活动期间内投资额</label>
+            <label for="number">活动期间内投资额(分)</label>
             <input type="text" class="form-control jq-balance-min" name="minInvest" value="${minInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
             <input type="text" class="form-control jq-balance-max" name="maxInvest" value="${maxInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
