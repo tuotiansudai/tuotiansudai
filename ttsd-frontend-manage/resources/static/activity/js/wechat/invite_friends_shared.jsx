@@ -34,7 +34,7 @@ $('.help_too').on('click',() => {
         location.href = "/activity/invite-help/wechat/everyone/help/detail";
     }
     else {
-        alert('请点击浏览器分享');
+        alert('请在微信中分享');
     }
 });
 

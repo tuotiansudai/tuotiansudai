@@ -13,7 +13,7 @@ let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // æ´»å
 
 !isGet ?  $('.handle_btn').addClass('get_it_now') :  $('.handle_btn').addClass('invest_btn');
 
-if (isSuc) {
+if (isGet) {
     $('.tip_text').show();
 }
 
