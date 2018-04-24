@@ -20,6 +20,7 @@ setTimeout(function () {
     function getPercentLight() {
         let currentPer = $("#cycle").data("mycash");
         let percentArr = $("#cycle").data("cashchain").split(",");
+        if (parseFloat(currentPer) < parseFloat(percentArr[0])) return;
         for (let i = 0;i < percentArr.length;i++) {
             let item = percentArr[i];
             if (parseFloat(currentPer) < parseFloat(item)) {
