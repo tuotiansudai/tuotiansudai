@@ -17,6 +17,9 @@ def migrate(gradle, etcd, exec_fun):
         'sms_operations':
             {'username': etcd.get('common.jdbc.username'),
              'password': etcd.get('common.jdbc.password')},
+        'fudian_bank':
+            {'username': etcd.get('common.jdbc.username'),
+             'password': etcd.get('common.jdbc.password')},
         'anxin_operations':
             {'username': etcd.get('anxin.jdbc.username'),
              'password': etcd.get('anxin.jdbc.password')},
