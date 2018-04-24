@@ -144,6 +144,9 @@
             <span><em class="pdf"><i class="iconRight"></i></em></span>
         </li>
     </ul>
+<br/>
+
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 
     <#if loan.loanStatus=='RAISING'>
         <button id="toInvest" class="to-invest-project" type="button">立即投资</button>

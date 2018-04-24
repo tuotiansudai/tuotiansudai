@@ -73,6 +73,7 @@
     <div class="history-record">
         <a id="lookOld" data-url="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
     </div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 
     <#if (transferApplication.transferStatus.name() == "SUCCESS")>
         <button class="to-invest-project" type="button" disabled>已转让</button>
