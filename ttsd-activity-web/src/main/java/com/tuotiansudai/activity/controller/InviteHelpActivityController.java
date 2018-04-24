@@ -99,7 +99,7 @@ public class InviteHelpActivityController {
         }
 
         if (inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id)){
-            return new ModelAndView(String.format("redirect:/activity/invite-help/%s/invest/help", id));
+            return new ModelAndView(String.format("redirect:/activity/invite-help/wechat/%s/invest/help", id));
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_shared");
