@@ -77,6 +77,11 @@ public class ActivityConsoleInviteHelpService {
         return new BasePaginationDataDto(index, pageSize, count, weChatHelpViews.subList(startIndex, endIndex));
     }
 
+    public WeChatHelpModel findById(long id){
+        return weChatHelpMapper.findById(id);
+    }
+
+
     public BasePaginationDataDto investRewardDetail(int index, int pageSize, long id, String nickName, WeChatHelpUserStatus status) {
         weChatUserInfoMapper.initCharset();
         List<WeChatHelpInfoView> weChatHelpInfoViews = weChatHelpInfoMapper.findByNickName(id, nickName, status);

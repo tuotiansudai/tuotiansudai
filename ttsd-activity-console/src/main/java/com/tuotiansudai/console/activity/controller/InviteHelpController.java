@@ -51,6 +51,7 @@ public class InviteHelpController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/help-invest-reward-detail");
         modelAndView.addObject("data", activityConsoleInviteHelpService.investRewardDetail(index, pageSize, id, nickName, status));
+        modelAndView.addObject("helpModel", activityConsoleInviteHelpService.findById(id));
         modelAndView.addObject("helpId", id);
         modelAndView.addObject("nickName", nickName);
         modelAndView.addObject("status", status == null ? "" : status);
