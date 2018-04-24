@@ -144,7 +144,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
                 .map(LoanRepayModel::getLoanId)
                 .distinct()
-                .map(s -> loanerDetailsMapper.getByLoanId(s))
+                .map(s -> loanerDetailsMapper.getByLoanId(s).getIdentityNumber())
                 .filter(loanerDetail -> loanerDetail != null)
                 .distinct()
                 .count()));

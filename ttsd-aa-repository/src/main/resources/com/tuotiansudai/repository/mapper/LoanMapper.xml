@@ -608,7 +608,7 @@
     </select>
 
     <select id="findSuccessLoanOutLoan" resultMap="loanResultMap">
-       SELECT * FROM loan WHERE status IN ('RAISING','RECHECK','REPAYING','COMPLETE')
+       SELECT * FROM loan WHERE status IN ('RAISING','RECHECK','REPAYING','COMPLETE','OVERDUE')
     </select>
 
     <select id="findLoanAchievementCount" parameterType="map" resultType="long">
