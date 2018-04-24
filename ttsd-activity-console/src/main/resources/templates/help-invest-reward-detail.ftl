@@ -8,7 +8,7 @@
           method="get">
         <div class="form-group">
             <label for="number">昵称</label>
-            <input type="text" id="keyWord" name="nickName" class="form-control ui-autocomplete-input" datatype="*"
+            <input type="text" id="nickName" name="nickName" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${nickName!}" placeholder="">
         </div>
 
@@ -73,7 +73,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index-1}"
+                        <a href="?nickName=${nickName!}&status=${status!}&index=${data.index-1}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
@@ -82,7 +82,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index+1}"
+                        <a href="?nickName=${nickName!}&status=${status!}&index=${data.index+1}"
                            aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>
