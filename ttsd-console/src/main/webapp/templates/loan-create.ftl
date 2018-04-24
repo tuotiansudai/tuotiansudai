@@ -217,7 +217,7 @@
                     <label class="col-sm-2 control-label">还款来源: </label>
 
                     <div class="col-sm-3">
-                        <input name="source" type="text" class="form-control" datatype="*" placeholder="请输入20个以内的字符" errormsg="还款来源不能为空">
+                        <input name="source" type="text" class="form-control" datatype="*" maxlength="30" placeholder="请输入30个以内的字符" errormsg="还款来源不能为空">
                     </div>
                 </div>
 
