@@ -12,7 +12,7 @@
                     <input type="text" name="title"  class="form-control article-title" value="<#if dto??>${dto.title!}</#if>" placeholder="" datatype="*" errormsg="标题不能为空">
                 </div>
                 <div class="col-sm-4">
-                    最多25个中文字符
+                    最多30个中文字符
                 </div>
             </div>
 

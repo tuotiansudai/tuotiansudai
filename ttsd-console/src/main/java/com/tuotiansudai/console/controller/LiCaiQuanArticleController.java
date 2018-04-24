@@ -66,7 +66,7 @@ public class LiCaiQuanArticleController {
         ArticlePaginationDataDto dto = consoleLiCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
         mv.addObject("data", dto);
         mv.addObject("title", title);
-        mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
+        mv.addObject("selected", articleSectionType);
         mv.addObject("articleSectionTypeList", ArticleSectionType.values());
         mv.addObject("userName",LoginUserInfo.getLoginName());
         mv.addObject("articleStatus",ArticleStatus.values());

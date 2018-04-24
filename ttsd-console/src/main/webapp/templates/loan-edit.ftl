@@ -226,7 +226,7 @@
                     <label class="col-sm-2 control-label">还款来源: </label>
 
                     <div class="col-sm-4">
-                        <input name="source" type="text" class="form-control" maxlength="20" datatype="*" placeholder="请输入20个以内的字符" errormsg="还款来源不能为空"
+                        <input name="source" type="text" class="form-control" maxlength="30" datatype="*" placeholder="请输入30个以内的字符" errormsg="还款来源不能为空"
                             <#if (loan.loanerDetails.source)??>value="${loan.loanerDetails.source}"</#if>>
                     </div>
                 </div>
