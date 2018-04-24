@@ -28,8 +28,8 @@ public class InviteHelpController {
         ModelAndView modelAndView = new ModelAndView("/help-invest-reward-list");
         modelAndView.addObject("data", activityConsoleInviteHelpService.investRewardList(index, pageSize, keyWord, minInvest, maxInvest));
         modelAndView.addObject("keyWord", keyWord);
-        modelAndView.addObject("minInvest", minInvest);
-        modelAndView.addObject("maxInvest", maxInvest);
+        modelAndView.addObject("minInvest", minInvest == null ? null : String.valueOf(minInvest));
+        modelAndView.addObject("maxInvest", maxInvest == null ? null : String.valueOf(maxInvest));
         return modelAndView;
     }
 
