@@ -54,7 +54,8 @@
             <span>${.now?string('yyyy-MM-dd')} 00:00:00</span>
         </li>
     </ul>
-
+    <br/>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
     <button class="to-invest-project" type="button" id="investment_btn">立即投资</button>
 </div>
 
@@ -114,6 +115,7 @@
                 </li>
             </ul>
         </div>
+        <div class="invest-tips-m exper_buy" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 
         <button type="submit" class="btn-wap-normal" id="submitBtn">立即体验</button>
         <div class="shade_mine" style="display: none"></div>

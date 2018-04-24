@@ -124,9 +124,10 @@
 
 <#include "component/anxin-agreement.ftl" />
     <div class="sectionNone"></div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 </div>
 
-<div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
+
 <div id="authorization_message" style="display: none">
     <div class="goBack_wrapper">
         安心签代签署授权

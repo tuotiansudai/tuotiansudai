@@ -88,6 +88,9 @@ body {
       line-height: .52rem;
       color: #666;
       margin-bottom: .1rem;
+      img {
+        max-width: 100%;
+      }
     }
   }
 }

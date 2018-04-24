@@ -60,6 +60,8 @@ amountInputElement.on('blur',function() {
 }).trigger('blur');
 
 function experInvest() {
+    let getInvestAmount = getAmount();
+    let error = checkError(getInvestAmount);
     commonFun.useAjax({
         type:'POST',
         url: '/experience-invest',
