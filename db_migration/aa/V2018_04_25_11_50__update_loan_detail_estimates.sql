@@ -1,3 +1,3 @@
 BEGIN;
-update loan_details set estimates = 'STEADY';
+update loan_details set estimate = 'STEADY';
 COMMIT;
