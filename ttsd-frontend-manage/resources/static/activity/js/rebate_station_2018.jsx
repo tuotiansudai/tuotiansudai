@@ -50,6 +50,7 @@ function getPercentLight(data) {
     }
     let has_get = data.helpModel.reward / 100;
     $('.has_get').html(has_get);
+
     let currentPer = has_get;
     let percentArr= data.myCashChain;
     for (let j = 0;j < percentArr.length;j++) {
@@ -154,6 +155,7 @@ $('.handle_btn').on('click',(e) => {
             type: 'GET',
             url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
         }, function (data) {
+            $('.userName').html(data.name);
             getList(data,'.cashBack_popModal');
             getPercentLight(data);
         });
