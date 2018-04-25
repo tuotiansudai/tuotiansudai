@@ -22,7 +22,7 @@
                 <div>您的好友已经获得<span class="strong">${helpModel.helpUserCount}位</span>好友助力</div>
                 <div>获得了<span class="strong">${(helpModel.reward/100)?string('0.00')}元</span>助力现金奖励</div>
             </div>
-            <div class="help_too"></div>
+            <div class="help_too" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}"></div>
         </div>
     </#if>
     <div class="countDown_time_wrapper">

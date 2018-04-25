@@ -3,6 +3,11 @@ let commonFun = require('publicJs/commonFun');
 let sourceKind = globalFun.parseURL(location.href);
 commonFun.calculationFun(document,window);
 let timer;
+let ownHelp = $('.help_too').data('ownHelp');
+let startTime = $('.help_too').data('startTime');
+let overTime = $('.help_too').data('overTime');
+let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
 $('.help_rightNow').on('click',function () {
     if ($(this).hasClass('no_click')) {
         layer.msg('助力已结束');
@@ -29,12 +34,29 @@ $('.help_rightNow').on('click',function () {
     }
 });
 $('.help_too').on('click',() => {
-    if(is_wechat()) {
-        // $('.wechat_share_tip').show();
-        location.href = "/activity/invite-help/wechat/everyone/help/detail";
+    let currentTime = new Date().getTime();
+    if (currentTime < activityTime) {
+        layer.msg('活动未开始');
+    }
+    else if (currentTime > activityOverTime) {
+        if (ownHelp){
+            if(is_wechat()) {
+                location.href = "/activity/invite-help/wechat/everyone/help/detail";
+            }
+            else {
+                alert('请在微信中分享');
+            }
+        }else{
+            layer.msg('活动已结束');
+        }
     }
     else {
-        alert('请在微信中分享');
+        if(is_wechat()) {
+            location.href = "/activity/invite-help/wechat/everyone/help/detail";
+        }
+        else {
+            alert('请在微信中分享');
+        }
     }
 });
 

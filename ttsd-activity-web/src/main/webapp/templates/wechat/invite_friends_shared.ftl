@@ -30,7 +30,7 @@
         <div>再次邀请好友助力，</div>
         <div> 一次助力可得<span class="strong">0.2元，</span>最高奖励<span class="strong">10元</span></div>
     </div>
-    <div class="help_too"></div>
+    <div class="help_too" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}"></div>
     <div class="countDown_time_wrapper">
         <span class="text" id="countDown" data-countdown="${helpModel.endTime?string('yyyy-MM-dd HH:mm:ss')}">倒计时：</span>
         <div class="pic_wrapper">

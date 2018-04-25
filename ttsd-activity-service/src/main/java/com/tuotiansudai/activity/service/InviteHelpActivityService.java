@@ -8,6 +8,7 @@ import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper;
 import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
@@ -65,7 +66,7 @@ public class InviteHelpActivityService {
             new Rates(108, Integer.MAX_VALUE, 0.01D)
     );
 
-    public List<WeChatHelpModel> sendRewardRecord(){
+    public List<WeChatHelpModel> sendRewardRecord() {
         List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(null, null, WeChatHelpType.INVEST_HELP);
         List<WeChatHelpModel> sendCashList = list.stream().filter(WeChatHelpModel::isCashBack).collect(Collectors.toList());
         sendCashList = sendCashList.stream().sorted(Comparator.comparing(WeChatHelpModel::getReward).reversed()).collect(Collectors.toList());
@@ -74,8 +75,8 @@ public class InviteHelpActivityService {
         return sendCashList;
     }
 
-    public List<WeChatHelpModel> myInvestHelp(String loginName){
-        if (loginName == null){
+    public List<WeChatHelpModel> myInvestHelp(String loginName) {
+        if (loginName == null) {
             return null;
         }
         List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.INVEST_HELP);
@@ -83,18 +84,18 @@ public class InviteHelpActivityService {
         return list;
     }
 
-    public WeChatHelpModel getHelpModel(long id){
+    public WeChatHelpModel getHelpModel(long id) {
         return weChatHelpMapper.findById(id);
     }
 
-    public Map<String, Object> investHelpDetail(WeChatHelpModel weChatHelpModel){
+    public Map<String, Object> investHelpDetail(WeChatHelpModel weChatHelpModel) {
         Map<String, Object> map = new HashMap<>();
         if (weChatHelpModel != null) {
             List<String> myCashChain = new ArrayList<>();
             rates.forEach(rate -> myCashChain.add(AmountConverter.convertCentToString((long) (weChatHelpModel.getAnnualizedAmount() * rate.getRate()))));
             map.put("myCashChain", myCashChain);
             Optional<Rates> optional = rates.stream().filter(rates -> rates.getMinNum() > weChatHelpModel.getHelpUserCount()).findFirst();
-            if (optional.isPresent()){
+            if (optional.isPresent()) {
                 map.put("nextNode", optional.get().getMinNum() - weChatHelpModel.getHelpUserCount());
                 map.put("nextAmount", (long) (weChatHelpModel.getAnnualizedAmount() * optional.get().getRate()));
             }
@@ -107,8 +108,8 @@ public class InviteHelpActivityService {
     }
 
     @Transactional
-    public WeChatHelpModel createEveryoneHelp(String loginName, String openId){
-        if (activityInviteHelpStartTime.after(new Date()) || activityInviteHelpEndTime.before(new Date())){
+    public WeChatHelpModel createEveryoneHelp(String loginName, String openId) {
+        if (activityInviteHelpStartTime.after(new Date()) || activityInviteHelpEndTime.before(new Date())) {
             return null;
         }
 
@@ -120,7 +121,7 @@ public class InviteHelpActivityService {
             weChatHelpModel.setUserName(userModel.getUserName());
         } else {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openId);
-            if (weChatUserModel.isBound()) {
+            if (weChatUserModel!=null && weChatUserModel.isBound()) {
                 weChatHelpModel.setLoginName(weChatUserModel.getLoginName());
                 weChatHelpModel.setOpenId(weChatUserModel.getOpenid());
                 UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
@@ -132,54 +133,65 @@ public class InviteHelpActivityService {
             }
         }
         weChatHelpMapper.create(weChatHelpModel);
-//        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
-        redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusHours(2).toString("yyyy-MM-dd HH:mm:ss"));
+        if (duringActivities()) {
+//            redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+            redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusHours(2).toString("yyyy-MM-dd HH:mm:ss"));
+
+        }
         return weChatHelpModel;
     }
 
     public WeChatHelpModel everyoneHelp(String loginName) {
-        if (loginName == null){
+        if (loginName == null) {
             return null;
         }
         List<WeChatHelpModel> list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP);
         return list.size() > 0 ? list.get(0) : null;
     }
 
-    public Map<String, Object> everyoneHelpDetail(String loginName, String openId){
+    public Map<String, Object> findOwnEveryoneHelp(String loginName, String openId){
         List<WeChatHelpModel> list;
         Map<String, Object> map = new HashMap<>();
         if (loginName != null) {
             list = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.EVERYONE_HELP);
             UserModel userModel = userMapper.findByLoginName(loginName);
-            map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
+            map.put("name", userModel.getUserName() != null ? userModel.getUserName() : userModel.getMobile());
 
         } else {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(openId);
-            if (weChatUserModel.isBound()){
+            if (weChatUserModel != null && weChatUserModel.isBound()) {
                 list = weChatHelpMapper.findByUserAndHelpType(weChatUserModel.getLoginName(), null, WeChatHelpType.EVERYONE_HELP);
                 UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
-                map.put("name", userModel.getUserName() != null? userModel.getUserName() : userModel.getMobile());
-            }else{
+                map.put("name", userModel.getUserName() != null ? userModel.getUserName() : userModel.getMobile());
+            } else {
                 list = weChatHelpMapper.findByUserAndHelpType(null, openId, WeChatHelpType.EVERYONE_HELP);
-                map.put("name", weChatUserInfoMapper.findByOpenId(openId).getNickName());
+                WeChatUserInfoModel weChatUserInfoModelModel = weChatUserInfoMapper.findByOpenId(openId);
+                map.put("name", weChatUserInfoModelModel == null ? null :weChatUserInfoModelModel.getNickName());
             }
         }
         if (list.size() > 0){
             map.put("helpModel", list.get(0));
-            map.put("drawEndTime", new DateTime(list.get(0).getEndTime()).plusDays(1).toDate());
-            map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(list.get(0).getId()));
-        }else{
+        }
+        return map;
+    }
+
+    public Map<String, Object> everyoneHelpDetail(String loginName, String openId) {
+        Map<String, Object> map = this.findOwnEveryoneHelp(loginName, openId);
+        if (map.containsKey("helpModel")) {
+            WeChatHelpModel weChatHelpModel = (WeChatHelpModel) map.get("helpModel");
+            map.put("drawEndTime", new DateTime(weChatHelpModel.getEndTime()).plusDays(1).toDate());
+            map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()));
+        } else {
             WeChatHelpModel weChatHelpModel = this.createEveryoneHelp(loginName, openId);
             map.put("helpModel", weChatHelpModel);
             map.put("drawEndTime", new DateTime(weChatHelpModel.getEndTime()).plusDays(1).toDate());
         }
-
         return map;
     }
 
-    public Map<String, Object> weChatInvestHelpDetail(long id, String openId){
+    public Map<String, Object> weChatInvestHelpDetail(long id, String openId) {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
-        if (weChatHelpModel == null){
+        if (weChatHelpModel == null) {
             return null;
         }
         Map<String, Object> map = this.investHelpDetail(weChatHelpModel);
@@ -187,14 +199,14 @@ public class InviteHelpActivityService {
         return map;
     }
 
-    public Map<String, Object> weChatEveryoneHelpDetail(long id, String openId){
+    public Map<String, Object> weChatEveryoneHelpDetail(long id, String openId) {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
-        if (weChatHelpModel == null){
+        if (weChatHelpModel == null) {
             return null;
         }
 
         String name = weChatHelpModel.getUserName() == null ? weChatHelpModel.getMobile() : weChatHelpModel.getUserName();
-        if (name == null){
+        if (name == null) {
             name = weChatUserInfoMapper.findByOpenId(weChatHelpModel.getOpenId()).getNickName();
         }
 
@@ -207,7 +219,7 @@ public class InviteHelpActivityService {
     }
 
     @Transactional
-    public boolean clickHelp(long id, String openId){
+    public boolean clickHelp(long id, String openId) {
         if (weChatHelpInfoMapper.findByOpenId(openId, id) != null) {
             return false;
         }
@@ -215,23 +227,23 @@ public class InviteHelpActivityService {
             return false;
         }
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.lockById(id);
-        if (new Date().after(weChatHelpModel.getEndTime())){
+        if (new Date().after(weChatHelpModel.getEndTime())) {
             return false;
         }
         this.weChatUserInfo(openId);
         weChatHelpInfoMapper.create(new WeChatHelpInfoModel(openId, id, WeChatHelpUserStatus.WAITING));
         weChatHelpModel.setHelpUserCount(weChatHelpModel.getHelpUserCount() + 1);
-        if (weChatHelpModel.getType() == WeChatHelpType.INVEST_HELP){
+        if (weChatHelpModel.getType() == WeChatHelpType.INVEST_HELP) {
             Optional<Rates> optional = rates.stream().filter(rate -> rate.getMinNum() <= weChatHelpModel.getHelpUserCount() && rate.getMaxNum() > weChatHelpModel.getHelpUserCount()).findAny();
             optional.ifPresent(rates -> weChatHelpModel.setReward((long) (weChatHelpModel.getAnnualizedAmount() * rates.getRate())));
-        }else if (weChatHelpModel.getReward() < 1000){
+        } else if (weChatHelpModel.getReward() < 1000) {
             weChatHelpModel.setReward((weChatHelpModel.getHelpUserCount() * 20));
         }
         weChatHelpMapper.update(weChatHelpModel);
         return true;
     }
 
-    public void updateEveryOneHelp(long id, String loginName, String mobile){
+    public void updateEveryOneHelp(long id, String loginName, String mobile) {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         weChatHelpModel.setLoginName(loginName);
         weChatHelpModel.setMobile(mobile);
@@ -240,29 +252,29 @@ public class InviteHelpActivityService {
     }
 
 
-    private void weChatUserInfo(String openId){
+    private void weChatUserInfo(String openId) {
         WeChatUserInfoModel weChatUserInfoModel = weChatUserInfoMapper.findByOpenId(openId);
         Map<String, Object> map = weChatClient.fetchWeChatUserInfo(openId);
-        if (map != null){
+        if (map != null) {
             weChatUserInfoMapper.initCharset();
-            if (weChatUserInfoModel == null){
+            if (weChatUserInfoModel == null) {
                 weChatUserInfoModel = new WeChatUserInfoModel(openId, (String) map.get("nickname"), (String) map.get("headimgurl"));
                 weChatUserInfoMapper.create(weChatUserInfoModel);
-            }else {
+            } else {
                 weChatUserInfoModel.setNickName((String) map.get("nickname"));
                 weChatUserInfoModel.setHeadImgUrl((String) map.get("headimgurl"));
                 weChatUserInfoModel.setUpdatedTime(new Date());
                 weChatUserInfoMapper.update(weChatUserInfoModel);
             }
-        }else{
-            if (weChatUserInfoModel == null){
+        } else {
+            if (weChatUserInfoModel == null) {
                 weChatUserInfoModel = new WeChatUserInfoModel(openId, null, null);
                 weChatUserInfoMapper.create(weChatUserInfoModel);
             }
         }
     }
 
-    class Rates{
+    class Rates {
         private int minNum;
         private int maxNum;
         private double rate;
@@ -289,8 +301,12 @@ public class InviteHelpActivityService {
         }
     }
 
-    public boolean isOwnHelp(String loginName, String openId, long id){
+    public boolean isOwnHelp(String loginName, String openId, long id) {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         return openId.equals(weChatHelpModel.getOpenId()) || (!Strings.isNullOrEmpty(loginName) && loginName.equals(weChatHelpModel.getLoginName()));
+    }
+
+    public boolean duringActivities() {
+        return activityInviteHelpStartTime.before(new Date()) && activityInviteHelpEndTime.after(new Date());
     }
 }

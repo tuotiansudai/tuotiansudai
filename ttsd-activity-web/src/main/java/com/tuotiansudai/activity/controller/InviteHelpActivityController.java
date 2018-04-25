@@ -60,7 +60,7 @@ public class InviteHelpActivityController {
         WeChatHelpModel weChatHelpModel = inviteHelpActivityService.getHelpModel(id);
         Map<String, Object> map = inviteHelpActivityService.investHelpDetail(weChatHelpModel);
         if (map.isEmpty()){
-            return new ModelAndView("/activities/2018/rebate-station");
+            return new ModelAndView("redirect:/activity/invite-help");
         }
         if (loginName == null || !weChatHelpModel.getLoginName().equals(loginName)){
             return new ModelAndView(String.format("redirect:/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/%s/invest/help", id));
@@ -85,15 +85,16 @@ public class InviteHelpActivityController {
         ModelAndView modelAndView = new ModelAndView("/wechat/everyone_receive_sharing");
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         String loginName = LoginUserInfo.getLoginName();
-        if (loginName != null || openId != null) {
-            modelAndView.addAllObjects(inviteHelpActivityService.everyoneHelpDetail(loginName, openId));
+        if (loginName == null && openId == null){
+            return new ModelAndView("redirect:/activity/invite-help");
         }
+        modelAndView.addAllObjects(inviteHelpActivityService.everyoneHelpDetail(loginName, openId));
         return modelAndView;
     }
 
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
-        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        String openId = "asdas";
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");
         }
@@ -103,7 +104,11 @@ public class InviteHelpActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/invite_friends_shared");
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
         modelAndView.addAllObjects(inviteHelpActivityService.weChatInvestHelpDetail(id, openId));
+        Map<String, Object> ownHelpModel = inviteHelpActivityService.findOwnEveryoneHelp(LoginUserInfo.getLoginName(), openId);
+        modelAndView.addObject("existOwnHelp", ownHelpModel.containsKey("helpModel"));
         return modelAndView;
     }
 
@@ -119,7 +124,11 @@ public class InviteHelpActivityController {
         }
 
         ModelAndView modelAndView = new ModelAndView("/wechat/everyone_receive_shared");
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
         modelAndView.addAllObjects(inviteHelpActivityService.weChatEveryoneHelpDetail(id, openId));
+        Map<String, Object> ownHelpModel = inviteHelpActivityService.findOwnEveryoneHelp(LoginUserInfo.getLoginName(), openId);
+        modelAndView.addObject("existOwnHelp", ownHelpModel.containsKey("helpModel"));
         return modelAndView;
     }
 
