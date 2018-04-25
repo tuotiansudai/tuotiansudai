@@ -13,6 +13,9 @@ public class LoanCreateLoanerEnterpriseInfoDto {
     @NotEmpty
     private String purpose;
 
+    @NotEmpty
+    private String source;
+
     private String factoringCompanyName;
 
     private String factoringCompanyDesc;
@@ -24,6 +27,7 @@ public class LoanCreateLoanerEnterpriseInfoDto {
         this.companyName = loanerEnterpriseInfoModel.getCompanyName();
         this.address = loanerEnterpriseInfoModel.getAddress();
         this.purpose = loanerEnterpriseInfoModel.getPurpose();
+        this.source = loanerEnterpriseInfoModel.getSource();
         this.factoringCompanyName = loanerEnterpriseInfoModel.getFactoringCompanyName();
         this.factoringCompanyDesc = loanerEnterpriseInfoModel.getFactoringCompanyDesc();
     }
@@ -50,6 +54,14 @@ public class LoanCreateLoanerEnterpriseInfoDto {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getFactoringCompanyName() {

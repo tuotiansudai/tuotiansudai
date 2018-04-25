@@ -472,6 +472,11 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         purposeItemDto.setValue(model.getPurpose());
         itemDtoList.add(purposeItemDto);
 
+        ItemDto sourceItemDto = new ItemDto();
+        sourceItemDto.setLabel("还款来源");
+        sourceItemDto.setValue(model.getSource());
+        itemDtoList.add(sourceItemDto);
+
         LoanerEnterpriseDetailsPurposeDisclosureDto.setItems(itemDtoList);
         return LoanerEnterpriseDetailsPurposeDisclosureDto;
     }
@@ -519,6 +524,11 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         purposeItemDto.setLabel("借款用途");
         purposeItemDto.setValue(model.getPurpose());
         itemDtoList.add(purposeItemDto);
+
+        ItemDto sourceItemDto = new ItemDto();
+        sourceItemDto.setLabel("还款来源");
+        sourceItemDto.setValue(model.getSource());
+        itemDtoList.add(sourceItemDto);
 
         LoanerEnterpriseInfoDisclosureDto.setItems(itemDtoList);
         return LoanerEnterpriseInfoDisclosureDto;

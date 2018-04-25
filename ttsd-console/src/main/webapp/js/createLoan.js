@@ -8,9 +8,9 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var loanerDetailsParam = ['userName', 'identityNumber', 'gender', 'age', 'marriage', 'region', 'income', 'employmentStatus', 'purpose', 'source'];
 
-        var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose'];
+        var loanerEnterpriseDetailsParam = ['juristicPerson', 'shareholder', 'address', 'purpose', 'source'];
 
-        var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose'];
+        var loanerEnterpriseInfoParam = ['companyName', 'address', 'purpose', 'source'];
 
         var loanerEnterpriseFactoringInfoParam = ['factoringCompanyName', 'factoringCompanyDesc'];
 
