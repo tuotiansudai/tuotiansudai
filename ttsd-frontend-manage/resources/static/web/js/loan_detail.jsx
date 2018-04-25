@@ -146,7 +146,7 @@ function investSubmit(){
                 content: $('#riskAssessment')
 
             });
-            return false;
+           location.reload();
         }else {
             $investForm.submit();
         }
@@ -910,21 +910,9 @@ $('.skip-group').hide();
     if(data.skipAuth=='true'){
         $isAuthenticationRequired.val('false');
     }
-    if(!isEstimate){
-        //风险测评
-        layer.open({
-            type: 1,
-            title:false,
-            closeBtn: 0,
-            area: ['400px', '250px'],
-            shadeClose: true,
-            content: $('#riskAssessment')
 
-        });
-        return false;
-    }else {
         noPasswordInvest?sendSubmitRequest():$investForm.submit();
-    }
+
 
 });
 
