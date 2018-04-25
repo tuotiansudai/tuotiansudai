@@ -147,7 +147,7 @@ $('.see_less').on('click',() => {
 
 //活动一 返现榜
 $('.handle_btn').on('click',(e) => {
-    let overTime = e.currentTarget.dataset.overtime;
+    let overTime = e.currentTarget.dataset.overtime || e.currentTarget.getAttribute('data-overtime');
     countTimePop(overTime);
     if (!isMobile()) {
         commonFun.useAjax({
