@@ -134,7 +134,7 @@ public class InviteHelpActivityController {
     public ModelAndView wechatWithDraw(@PathVariable boolean isOwn, @PathVariable long id, HttpServletRequest request){
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
-            request.getSession().setAttribute("channel", "weixin_rebateCheerActivity");
+            request.getSession().setAttribute("channel", "fanlijiayouzhan");
             return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
         }
         if (isOwn){
