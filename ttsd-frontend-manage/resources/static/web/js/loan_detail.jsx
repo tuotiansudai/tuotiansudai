@@ -108,6 +108,7 @@ function investSubmit(){
     }
     amountInputElement.val(amountInputElement.autoNumeric("get"));
     if (noPasswordInvest) {//判断是否开启免密投资
+
         layer.open({
             type: 1,
             closeBtn: 0,
@@ -133,7 +134,23 @@ function investSubmit(){
     }
     //正常投资
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
-        $investForm.submit();
+        if(!isEstimate){
+
+            //风险测评
+            layer.open({
+                type: 1,
+                title:false,
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskAssessment')
+
+            });
+            return false;
+        }else {
+            $investForm.submit();
+        }
+
     }else{
         anxinModule.getSkipPhoneTip();
         return false;
@@ -489,27 +506,27 @@ function showAuthorizeAgreementOptions(){
             $.when(commonFun.isUserLogin())
                 .done(function() {
                     if (isInvestor) {
-                        //noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
-                        if(noPasswordRemind || noPasswordInvest){
-
-                            if(!isEstimate){
-                                //风险测评
-                                layer.open({
-                                    type: 1,
-                                    title:false,
-                                    closeBtn: 0,
-                                    area: ['400px', '250px'],
-                                    shadeClose: true,
-                                    content: $('#riskAssessment')
-
-                                });
-                                return false;
-                            }else {
-                                $investForm.submit();
-                            }
-                        }else {
-                            markNoPasswordRemind();
-                        }
+                        noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                        // if(noPasswordRemind || noPasswordInvest){
+                        //
+                        //     if(!isEstimate){
+                        //         //风险测评
+                        //         layer.open({
+                        //             type: 1,
+                        //             title:false,
+                        //             closeBtn: 0,
+                        //             area: ['400px', '250px'],
+                        //             shadeClose: true,
+                        //             content: $('#riskAssessment')
+                        //
+                        //         });
+                        //         return false;
+                        //     }else {
+                        //         $investForm.submit();
+                        //     }
+                        // }else {
+                        //     markNoPasswordRemind();
+                        // }
                         return;
                     }
                     if (isAuthentication) {
@@ -893,7 +910,22 @@ $('.skip-group').hide();
     if(data.skipAuth=='true'){
         $isAuthenticationRequired.val('false');
     }
-    noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
+
+        });
+        return false;
+    }else {
+        noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    }
+
 });
 
 
@@ -910,7 +942,7 @@ $cancelAssessment.on('click', function(event) {
         type: 'POST'
     },function(data) {
         layer.closeAll();
-        investSubmit()
+        noPasswordInvest?sendSubmitRequest():$investForm.submit();
     });
 
 });
