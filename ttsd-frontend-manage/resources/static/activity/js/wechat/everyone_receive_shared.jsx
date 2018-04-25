@@ -20,7 +20,7 @@ $('.help_rightNow').on('click',function () {
                     setTimeout(() => {location.reload();},1000)
                 }
                 else {
-                    layer.msg('助力失败');
+                    layer.msg('今日助力已达上限');
                 }
             });
         }
