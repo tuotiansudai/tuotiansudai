@@ -35,8 +35,8 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
     }
 
     public BaseAsyncRequestModel(Source source, AsyncUmPayService service) {
-        this.retUrl = (Source.WEB == source || Source.M == source) ?
-                MessageFormat.format(Source.M == source ? "{0}/m/{1}" : "{0}/{1}", PAY_CALLBACK_WEB_HOST, service.getWebRetCallbackPath())
+        this.retUrl = (Source.WEB == source || Source.M == source || Source.WE_CHAT == source) ?
+                MessageFormat.format(Source.M == source || Source.WE_CHAT == source ? "{0}/m/{1}" : "{0}/{1}", PAY_CALLBACK_WEB_HOST, service.getWebRetCallbackPath())
                 : MessageFormat.format("{0}/{1}", PAY_CALLBACK_APP_WEB_HOST, service.getMobileRetCallbackPath());
 
         this.notifyUrl = MessageFormat.format("{0}/{1}", PAY_CALLBACK_BACK_HOST, service.getNotifyCallbackPath());

@@ -51,7 +51,7 @@
                 <div class="list">
                     <#list helpFriends as friend>
                         <div class="list_item">
-                            <#if friend.headImgUrl??>
+                            <#if friend.headImgUrl?? && friend.headImgUrl?trim?has_content>
                                 <img class="portrait" src="${friend.headImgUrl!}" />
                             <#else >
                                 <div class="portrait"></div>
