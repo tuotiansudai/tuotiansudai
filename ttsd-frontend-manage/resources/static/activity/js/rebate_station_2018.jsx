@@ -142,12 +142,13 @@ $('.see_less').on('click',() => {
 
 //活动一 返现榜
 $('.handle_btn').on('click',(e) => {
-    let overTime = e.currentTarget.dataset.overtime || e.currentTarget.getAttribute('data-overtime');
+    let overTime = e.currentTarget.dataset ? e.currentTarget.dataset.overtime : e.currentTarget.getAttribute('data-overtime');
+    let currentHelpId =  e.currentTarget.dataset ? e.currentTarget.dataset.helpId : e.currentTarget.getAttribute('data-help-id');
     countTimePop(overTime);
     if (!isMobile()) {
         commonFun.useAjax({
             type: 'GET',
-            url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
+            url: '/activity/invite-help/'+ currentHelpId +'/invest/help'
         }, function (data) {
             $('.userName').html(data.helpModel.userName);
             getList(data,'.cashBack_popModal');
@@ -156,7 +157,7 @@ $('.handle_btn').on('click',(e) => {
         $('.cashBack_popModal').show();
     }
     else {
-        location.href = '/activity/invite-help/wechat/'+ e.currentTarget.dataset.helpId + '/invest/help';
+        location.href = '/activity/invite-help/wechat/'+ currentHelpId + '/invest/help';
     }
 
 });
