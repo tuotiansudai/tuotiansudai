@@ -8,7 +8,7 @@
           method="get">
         <div class="form-group">
             <label for="number">昵称</label>
-            <input type="text" id="keyWord" name="nickName" class="form-control ui-autocomplete-input" datatype="*"
+            <input type="text" id="nickName" name="nickName" class="form-control ui-autocomplete-input" datatype="*"
                    autocomplete="off" value="${nickName!}" placeholder="">
         </div>
 
@@ -23,6 +23,11 @@
         </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
     </form>
+
+    <div>
+        现金奖励共:${(helpModel.reward/100)?string('0.00')}元, 助力人:${helpModel.helpUserCount}人,
+        平均每人获得<#if helpModel.helpUserCount gt 0>${(helpModel.reward/(helpModel.helpUserCount * 100))?string('0.00')}<#else>0.00</#if>元奖励
+    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -73,7 +78,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index-1}"
+                        <a href="?nickName=${nickName!}&status=${status!}&index=${data.index-1}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
@@ -82,7 +87,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index+1}"
+                        <a href="?nickName=${nickName!}&status=${status!}&index=${data.index+1}"
                            aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>

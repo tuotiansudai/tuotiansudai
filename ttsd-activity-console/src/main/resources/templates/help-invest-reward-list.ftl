@@ -20,7 +20,7 @@
         </div>
 
         <div class="form-group">
-            <label for="number">活动期间内投资额</label>
+            <label for="number">活动期间内投资额(分)</label>
             <input type="text" class="form-control jq-balance-min" name="minInvest" value="${minInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
             <input type="text" class="form-control jq-balance-max" name="maxInvest" value="${maxInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
@@ -75,7 +75,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index-1}"
+                        <a href="?mobile=${mobile!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&index=${data.index-1}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
@@ -84,7 +84,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?mobile=${mobile!}&startTime=${startTime!}&endTime=${endTime!}&index=${data.index+1}"
+                        <a href="?keyWord=${keyWord!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&index=${data.index+1}"
                            aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>

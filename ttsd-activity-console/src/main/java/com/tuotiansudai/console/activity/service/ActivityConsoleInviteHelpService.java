@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
+import com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
@@ -27,6 +28,9 @@ public class ActivityConsoleInviteHelpService {
 
     @Autowired
     private WeChatHelpInfoMapper weChatHelpInfoMapper;
+
+    @Autowired
+    private WeChatUserInfoMapper weChatUserInfoMapper;
 
     @Autowired
     private WeChatUserMapper weChatUserMapper;
@@ -73,9 +77,14 @@ public class ActivityConsoleInviteHelpService {
         return new BasePaginationDataDto(index, pageSize, count, weChatHelpViews.subList(startIndex, endIndex));
     }
 
-    public BasePaginationDataDto investRewardDetail(int index, int pageSize, long id, String nickName, WeChatHelpUserStatus status) {
-        List<WeChatHelpInfoView> weChatHelpInfoViews = weChatHelpInfoMapper.findByNickName(id, nickName, status);
+    public WeChatHelpModel findById(long id){
+        return weChatHelpMapper.findById(id);
+    }
 
+
+    public BasePaginationDataDto investRewardDetail(int index, int pageSize, long id, String nickName, WeChatHelpUserStatus status) {
+        weChatUserInfoMapper.initCharset();
+        List<WeChatHelpInfoView> weChatHelpInfoViews = weChatHelpInfoMapper.findByNickName(id, nickName, status);
         for (WeChatHelpInfoView weChatHelpInfoView: weChatHelpInfoViews) {
             WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(weChatHelpInfoView.getOpenId());
             if (weChatUserModel != null && weChatUserModel.isBound()) {

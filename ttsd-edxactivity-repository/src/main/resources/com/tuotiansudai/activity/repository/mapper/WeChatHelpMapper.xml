@@ -69,7 +69,7 @@
     </select>
 
     <select id="findByLoanId" parameterType="map" resultMap="weChatHelpModel">
-        SELECT * FROM we_chat_help where loanId = #{loanId}
+        SELECT * FROM we_chat_help where loan_id = #{loanId}
     </select>
 
     <select id="findByKeyWord" parameterType="map" resultMap="weChatHelpView">

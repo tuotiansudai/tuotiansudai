@@ -392,7 +392,7 @@
 </div>
 <div class="cashBack_popModal">
     <div class="content">
-        <div class="userName">用户15701292510</div>
+        <div class="userName"></div>
         <div class="title">
             <div class="left_topIcon"></div>
             <div class="text">
