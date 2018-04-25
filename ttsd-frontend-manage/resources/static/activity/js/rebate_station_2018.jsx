@@ -115,7 +115,7 @@ $.when(commonFun.isUserLogin())
     });
 
 $('.help_list').on('click','.invest_cash_btn', () => {
-    location.href = 'loan-list';
+    location.href = '/loan-list';
 });
 
 $('.login_btn').on('click', () => {
@@ -149,7 +149,7 @@ $('.handle_btn').on('click',(e) => {
             type: 'GET',
             url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
         }, function (data) {
-            $('.userName').html(data.name);
+            $('.userName').html(data.helpModel.userName);
             getList(data,'.cashBack_popModal');
             getPercentLight(data);
         });
