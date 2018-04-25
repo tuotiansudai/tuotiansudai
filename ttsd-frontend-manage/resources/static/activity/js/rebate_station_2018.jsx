@@ -50,6 +50,7 @@ function getPercentLight(data) {
     }
     let has_get = data.helpModel.reward / 100;
     $('.has_get').html(has_get);
+
     let currentPer = has_get;
     let percentArr= data.myCashChain;
     for (let j = 0;j < percentArr.length;j++) {
@@ -114,13 +115,7 @@ $.when(commonFun.isUserLogin())
     });
 
 $('.help_list').on('click','.invest_cash_btn', () => {
-    if ($(document).width() < 790) {
-        location.href = '/m/loan-list';
-    }
-    else {
-        location.href = '/loan-list';
-    }
-
+    location.href = 'loan-list';
 });
 
 $('.login_btn').on('click', () => {
@@ -147,13 +142,14 @@ $('.see_less').on('click',() => {
 
 //活动一 返现榜
 $('.handle_btn').on('click',(e) => {
-    let overTime = e.currentTarget.dataset.overtime;
+    let overTime = e.currentTarget.dataset.overtime || e.currentTarget.getAttribute('data-overtime');
     countTimePop(overTime);
     if (!isMobile()) {
         commonFun.useAjax({
             type: 'GET',
             url: '/activity/invite-help/'+ e.currentTarget.dataset.helpId +'/invest/help'
         }, function (data) {
+            $('.userName').html(data.name);
             getList(data,'.cashBack_popModal');
             getPercentLight(data);
         });
@@ -336,7 +332,7 @@ countDownList('.overTime');
 
 
 
-if ($('.part1').find('.help_list').find('.my_help_list').find('p').length > 2) {
+if ($('.part1').find('.help_list').find('.my_help_list').find('p').length > 3) {
     scrollUp($('.part1').find('.help_list').find('.my_help_list'));
 }
 

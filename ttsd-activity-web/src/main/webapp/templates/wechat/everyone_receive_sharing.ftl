@@ -12,7 +12,7 @@
     <div class="desc">
         <div>您已经获得<span class="strong"><#if helpModel??>${helpModel.helpUserCount}<#else>0</#if>位</span>好友助力</div>
         <div>获得了<span class="strong"><#if helpModel??>${(helpModel.reward/100)?string('0.00')}<#else>0.00</#if>元</span>助力现金奖励</div>
-        <div><#if drawEndTime??>请于<span class="strong">${drawEndTime?string('yyyy-MM-dd HH:mm:ss')}</span>前领取</#if></div>
+        <div><#if drawEndTime??><#if helpModel.reward gt 0 >请于<span class="strong">${drawEndTime?string('yyyy-MM-dd HH:mm:ss')}</span>前领取</#if></#if></div>
     </div>
     <div class="invite_friends_btn"></div>
     <#if helpModel??>
