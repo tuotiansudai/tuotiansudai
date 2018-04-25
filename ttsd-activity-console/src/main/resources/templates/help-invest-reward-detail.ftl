@@ -26,7 +26,7 @@
 
     <div>
         现金奖励共:${(helpModel.reward/100)?string('0.00')}元, 助力人:${helpModel.helpUserCount}人,
-        平均每人获得<#if helpModel.helpUserCount gt 0>${(helpModel.reward/(helpModel.helpUserCount * 100))?string('0.00')}<#else>0.00</#if>元奖励
+        平均每人获得<#if helpModel.helpUserCount gt 0>${(((helpModel.reward/helpModel.helpUserCount)?floor)/100)?string('0.00')}<#else>0.00</#if>元奖励
     </div>
 
     <div class="table-responsive">
