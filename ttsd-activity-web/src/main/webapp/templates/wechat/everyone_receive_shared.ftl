@@ -69,10 +69,10 @@
 </div>
 <div class="flex_rules">
     <div class="close_rules"></div>
-    <div class="desc first_desc">1.活动期间，用户分享活动链接至微信群/朋友圈/任意好友，邀请好友为您助力，分享后24小时内的好友助力有效。</div>
-    <div class="desc">2.每多邀请1人点击，可获得0.2元现金奖励，最高可获得10元现金奖励。</div>
-    <div class="desc">3.奖励将于用户成功分享24小时后统一发放到账户，可全部提现。</div>
-    <div class="desc">4.提现流程：1:点击“去提现”2:登录“拓天速贷3:完成实名认证。</div>
+    <div class="desc first_desc">1.活动期间，用户分享活动链接至微信群/朋友圈/任意好友，邀请好友为您助力，分享后24小时内的好友助力有效；</div>
+    <div class="desc">2.每多邀请1人点击，可获得0.2元现金奖励，最高可获得10元现金奖励；</div>
+    <div class="desc">3.奖励将于用户成功分享24小时后统一发放到账户，可全部提现；</div>
+    <div class="desc">4.提现流程：1:点击“去提现”2:登录“拓天速贷”3:完成实名认证；</div>
     <div class="desc">5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</div>
 </div>
 <div class="wechat_share_tip">

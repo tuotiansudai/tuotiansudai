@@ -115,7 +115,7 @@ $.when(commonFun.isUserLogin())
     });
 
 $('.help_list').on('click','.invest_cash_btn', () => {
-    location.href = 'loan-list';
+    location.href = '/loan-list';
 });
 
 $('.login_btn').on('click', () => {
