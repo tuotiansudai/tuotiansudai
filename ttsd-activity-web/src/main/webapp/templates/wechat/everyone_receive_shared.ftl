@@ -13,7 +13,7 @@
                 <div>您的朋友${name!}邀请你帮他助力</div>
             </div>
             <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
-            <div class="help_too"></div>
+            <div class="help_too" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}"></div>
         </div>
     <#else >
         <div class="has_shared">
