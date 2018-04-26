@@ -186,6 +186,10 @@ h2,h4 {
                     &.table_auto {
                       height: auto;
                     }
+                    &.table_none {
+                      height: auto;
+                    }
+
                   }
                   .cashBack_list {
                     display: table;
