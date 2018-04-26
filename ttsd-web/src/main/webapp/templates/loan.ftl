@@ -426,7 +426,7 @@
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.loanerEnterpriseDetailsInfo??>
-                                        <#list ['借款人', '公司所在地','企业借款用途描述'] as key>
+                                        <#list ['借款人', '公司所在地','企业借款用途描述', '还款来源'] as key>
                                             <#if loan.loanerEnterpriseDetailsInfo[key]?? && loan.loanerEnterpriseDetailsInfo[key] != ''>
                                                 <div class="col-md-6">${key}：${loan.loanerEnterpriseDetailsInfo[key]}</div>
                                             </#if>
@@ -470,9 +470,9 @@
                                                 <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
-                                        <#list ['借款用途'] as key>
+                                        <#list ['借款用途', '还款来源'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
-                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>
@@ -507,9 +507,9 @@
                                                 <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
-                                        <#list ['借款用途'] as key>
+                                        <#list ['借款用途', '还款来源'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
-                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>

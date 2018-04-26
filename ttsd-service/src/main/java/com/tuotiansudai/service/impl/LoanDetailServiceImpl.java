@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -253,6 +252,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("借款人", loanerEnterpriseDetailsModel.getJuristicPerson())
                     .put("公司所在地", loanerEnterpriseDetailsModel.getAddress())
                     .put("企业借款用途描述", loanerEnterpriseDetailsModel.getPurpose())
+                    .put("还款来源", Strings.isNullOrEmpty(loanerEnterpriseDetailsModel.getSource()) ? "" : loanerEnterpriseDetailsModel.getSource())
                     .build());
 
             if (loanDto.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
@@ -276,6 +276,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
                         .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .put("还款来源", Strings.isNullOrEmpty(loanerEnterpriseInfoModel.getSource()) ? "" : loanerEnterpriseInfoModel.getSource())
                         .put("公司名称", loanerEnterpriseInfoModel.getFactoringCompanyName() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyName())
                         .put("公司简介", loanerEnterpriseInfoModel.getFactoringCompanyDesc() == null ? "" : loanerEnterpriseInfoModel.getFactoringCompanyDesc())
                         .build());
@@ -284,6 +285,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("企业名称", loanerEnterpriseInfoModel.getCompanyName())
                         .put("经营地址", loanerEnterpriseInfoModel.getAddress())
                         .put("借款用途", loanerEnterpriseInfoModel.getPurpose())
+                        .put("还款来源", Strings.isNullOrEmpty(loanerEnterpriseInfoModel.getSource()) ? "" : loanerEnterpriseInfoModel.getSource())
                         .build());
             }
         }
