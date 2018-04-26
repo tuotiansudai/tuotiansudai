@@ -49,21 +49,7 @@ $('#transferSubmit').on('click', function(event) {
             });
         })
         .done(function() {
-            if(!isEstimate){
-                //风险测评
-                layer.open({
-                    type: 1,
-                    title:false,
-                    closeBtn: 0,
-                    area: ['400px', '250px'],
-                    shadeClose: true,
-                    content: $('#riskAssessment')
-
-                });
-                return false;
-            }else {
                 submitData();
-            }
 
         });
 });
@@ -139,6 +125,7 @@ function submitData() {
                         $transferForm.submit();
                     }else{
                         //安心签
+                        anxinModule.getSkipPhoneTip();
                         return false;
                     }
 
@@ -180,8 +167,23 @@ anxinModule.toAuthorForAnxin(function(data) {
     if(data.data.message=='skipAuth'){
         $isAnxinAuthenticationRequired.val('false');
     }
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
 
-    $('#transferForm').submit();
+        });
+        return false;
+    }else {
+        $('#transferForm').submit();
+    }
+
+
 
 });
 
