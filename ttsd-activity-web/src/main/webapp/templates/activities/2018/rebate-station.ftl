@@ -360,7 +360,7 @@
         <div class="active_one_pop"></div>
         <div class="friends">已助力好友</div>
         <div class="list_tip_text" style="display: none" id="helpPopText">您还没有获得好友助力，快去邀请吧</div>
-        <div class="friend_list" style="display: none">
+        <div class="friend_list friend_list_everyone" style="display: none">
             <#--<div class="list_item">-->
                 <#--<div class="portrait"></div>-->
                 <#--<div class="nickName">昵称00</div>-->
