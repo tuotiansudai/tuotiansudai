@@ -134,7 +134,6 @@
                                                     <#list investHelp as invest>
                                                     <tr>
                                                         <td>${(invest.investAmount/100)?string('0.00')}</td>
-                                                        <#--<td>${(invest.reward/100)?string('0.00')}</td>-->
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td class="handle_btn"
@@ -246,7 +245,7 @@
                                     </div>
                                     <div class="already_login">
                                         <div class="news">您已成功邀请<#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人，获得返现<#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元，<span
-                                                class="strong everyone_detail invite_everyone_detail" style="cursor: pointer">查看邀请详情></span></div>
+                                                class="strong everyone_detail invite_everyone_detail" style="cursor: pointer" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}">查看邀请详情></span></div>
                                     </div>
 
                                     <div class="no_login">
@@ -255,11 +254,6 @@
                                     <div class="end_time">活动有效期：05.02-05.31</div>
                                 </div>
                             </div>
-                            <#--<div class="no_login">-->
-                                <#--<div class="login_btn"></div>-->
-                                <#--<div class="login_text">登录后可查看分享链接</div>-->
-                                <#--<div class="duration_time">活动有效期：05.02-05.31</div>-->
-                            <#--</div>-->
                         </div>
                         <div class="part2_mobile">
                             <div class="title">
@@ -272,7 +266,7 @@
                                 <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span
                                         class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，
                                 </div>
-                                <div class="strong everyone_detail invite_everyone_detail" style="cursor: pointer">查看邀请详情></div>
+                                <div class="strong everyone_detail invite_everyone_detail" style="cursor: pointer" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}">查看邀请详情></div>
                                 <div class="invite_friends_help invite_everyone_detail"></div>
                             </div>
                             <div class="no_login">
@@ -361,31 +355,6 @@
         <div class="friends">已助力好友</div>
         <div class="list_tip_text" style="display: none" id="helpPopText">您还没有获得好友助力，快去邀请吧</div>
         <div class="friend_list friend_list_everyone" style="display: none">
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
         </div>
         <div class="close_btn"></div>
     </div>
@@ -455,31 +424,6 @@
         <div class="friends">已助力好友</div>
         <div class="list_tip_text" style="display: none">您还没有获得好友助力，快去邀请吧</div>
         <div class="friend_list" style="display: none">
-            <#--<div class="list_item">-->
-                <#--<img class="portrait" src=""/>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
-            <#--<div class="list_item">-->
-                <#--<div class="portrait"></div>-->
-                <#--<div class="nickName">昵称00</div>-->
-                <#--<div class="finish_time">2018.05.05 12:12:12</div>-->
-            <#--</div>-->
         </div>
         <div class="close_btn"></div>
     </div>

@@ -109,9 +109,6 @@ public class InviteHelpActivityService {
 
     @Transactional
     public WeChatHelpModel createEveryoneHelp(String loginName, String openId) {
-        if (activityInviteHelpStartTime.after(new Date()) || activityInviteHelpEndTime.before(new Date())) {
-            return null;
-        }
 
         WeChatHelpModel weChatHelpModel = new WeChatHelpModel(WeChatHelpType.EVERYONE_HELP, new Date(), DateTime.now().plusDays(1).toDate());
         if (loginName != null) {
@@ -185,6 +182,7 @@ public class InviteHelpActivityService {
             WeChatHelpModel weChatHelpModel = this.createEveryoneHelp(loginName, openId);
             map.put("helpModel", weChatHelpModel);
             map.put("drawEndTime", new DateTime(weChatHelpModel.getEndTime()).plusDays(1).toDate());
+            map.put("helpFriends", weChatUserInfoMapper.findInfoByHelpId(weChatHelpModel.getId()));
         }
         return map;
     }

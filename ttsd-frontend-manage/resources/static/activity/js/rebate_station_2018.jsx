@@ -7,6 +7,12 @@ let url = location.href;
 let timer;
 let timer1;
 
+let ownHelp = $('.invite_everyone_detail').data('ownHelp');
+let startTime = $('.invite_everyone_detail').data('startTime');
+let overTime = $('.invite_everyone_detail').data('overTime');
+let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
+
 if ($(document).width() < 790) {
     commonFun.calculationFun(document,window);
 }
@@ -164,15 +170,32 @@ $('.handle_btn').on('click',(e) => {
 
 // 活动二 人人可领10元现金
 $('.invite_everyone_detail').on('click',() => {
+    let currentTime = new Date().getTime();
+    if (currentTime < activityTime) {
+        layer.msg('活动未开始');
+    }
+    else if (currentTime > activityOverTime) {
+        if (ownHelp){
+            getEveryoneDetail();
+        }else{
+            layer.msg('活动已结束');
+        }
+    }
+    else {
+        getEveryoneDetail();
+    }
+});
+
+function getEveryoneDetail() {
     if (!isMobile()) {
         commonFun.useAjax({
             type: 'GET',
             url: '/activity/invite-help/everyone/help/detail'
         }, function (data) {
             $('.userName').html(data.name);
-            if(data.helpModel){
-                getList(data,'.help_popModal');
-            }else{
+            if (data.helpModel) {
+                getList(data, '.help_popModal');
+            } else {
                 $('#helpPopText').show();
             }
         });
@@ -181,7 +204,7 @@ $('.invite_everyone_detail').on('click',() => {
     else {
         location.href = '/activity/invite-help/wechat/everyone/help/detail';
     }
-});
+}
 
 $('.close_btn').on('click',function () {
     clearInterval(timer);

@@ -43,6 +43,14 @@ public class InviteHelpActivityController {
         modelAndView.addObject("investHelp", inviteHelpActivityService.myInvestHelp(loginName));
         modelAndView.addObject("everyoneHelp", inviteHelpActivityService.everyoneHelp(loginName));
         modelAndView.addObject("rewardRecords", inviteHelpActivityService.sendRewardRecord());
+        modelAndView.addObject("activityStartTime", startTime);
+        modelAndView.addObject("activityEndTime", endTime);
+        boolean existOwnHelp = false;
+        if (loginName !=null){
+            Map<String, Object> ownHelpModel = inviteHelpActivityService.findOwnEveryoneHelp(loginName, null);
+            existOwnHelp = ownHelpModel.containsKey("helpModel");
+        }
+        modelAndView.addObject("existOwnHelp", existOwnHelp);
         return modelAndView;
     }
 
