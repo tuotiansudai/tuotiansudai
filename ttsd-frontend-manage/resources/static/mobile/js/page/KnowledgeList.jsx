@@ -133,7 +133,7 @@ class KnowledgeList extends React.Component {
 										</div>
 										<h3>{value.title}</h3>
 										<div className="clearfix bottom-block">
-											
+
 											<div className="pull-right">
 												<div className="create-time"><span>{value.updatedTime}</span></div>
 											</div>
