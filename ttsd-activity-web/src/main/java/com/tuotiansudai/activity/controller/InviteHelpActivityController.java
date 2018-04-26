@@ -94,7 +94,7 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
-        String openId = "asdas";
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)){
             return new ModelAndView("redirect:/activity/invite-help");
         }
