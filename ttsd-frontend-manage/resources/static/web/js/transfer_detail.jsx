@@ -122,7 +122,22 @@ function submitData() {
                         }
                     }
                     if($isAnxinAuthenticationRequired.val()=='false'){
-                        $transferForm.submit();
+                        if(!isEstimate){
+                            //风险测评
+                            layer.open({
+                                type: 1,
+                                title:false,
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskAssessment')
+
+                            });
+                            return false;
+                        }else {
+                            $transferForm.submit();
+                        }
+
                     }else{
                         //安心签
                         anxinModule.getSkipPhoneTip();
@@ -178,7 +193,7 @@ anxinModule.toAuthorForAnxin(function(data) {
             content: $('#riskAssessment')
 
         });
-        return false;
+
     }else {
         $('#transferForm').submit();
     }
