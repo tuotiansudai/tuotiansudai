@@ -7,7 +7,7 @@ let commonFun= require('publicJs/commonFun');
 
 //安心签业务
 let anxinModule = require('webJsModule/anxin_signed');
-
+var $transferForm = $('#transferForm');
 var $transferDetailCon = $('#transferDetailCon'),
     $errorTip = $('.errorTip', $transferDetailCon),
     $questionList = $('.question-list', $transferDetailCon),
@@ -105,7 +105,7 @@ function submitData() {
                     layer.closeAll();
                 },
                 btn2: function() {
-                    var $transferForm = $('#transferForm');
+
                     if ($transferForm.attr('action') === '/transfer/purchase') {
 
                         var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
@@ -129,7 +129,7 @@ function submitData() {
                                 closeBtn: 0,
                                 area: ['400px', '250px'],
                                 shadeClose: true,
-                                content: $('#riskAssessmentFormSubmit')
+                                content: $('#riskAssessment')
 
                             });
                             return false;
@@ -190,7 +190,7 @@ anxinModule.toAuthorForAnxin(function(data) {
             closeBtn: 0,
             area: ['400px', '250px'],
             shadeClose: true,
-            content: $('#riskAssessmentFormSubmit')
+            content: $('#riskAssessment')
 
         });
         return false;
@@ -203,7 +203,7 @@ anxinModule.toAuthorForAnxin(function(data) {
 
 });
 
-
+var $riskAssessment = $('#riskAssessment');
 var $cancelAssessment = $('#cancelAssessment'),
     $confirmAssessment = $('#confirmAssessment'),
     $riskTips = $('#riskTips');
