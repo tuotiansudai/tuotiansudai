@@ -749,15 +749,7 @@
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
 </div>
-<#--风险测评-->
-<div id="riskAssessmentRequestSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-    <div class="tc person-info-btn" style="margin-top:40px;">
-        <button id="cancelAssessmentRequestSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
-    </div>
-</div>
+
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">

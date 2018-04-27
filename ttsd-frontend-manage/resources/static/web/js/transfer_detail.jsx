@@ -181,7 +181,7 @@ anxinModule.toAuthorForAnxin(function(data) {
     if(data.data.message=='skipAuth'){
         $isAnxinAuthenticationRequired.val('false');
     }
-    $isAuthenticationRequired.val('false')
+    $isAnxinAuthenticationRequired.val('false')
     if(!isEstimate){
         //风险测评
         layer.open({
