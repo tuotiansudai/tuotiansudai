@@ -119,7 +119,22 @@ function investSubmit(){
             },
             btn2:function(){
                 if($isAuthenticationRequired.val()==='false'){
-                    sendSubmitRequest();
+                    if(!isEstimate){
+                        //风险测评
+                        layer.open({
+                            type: 1,
+                            title:false,
+                            closeBtn: 0,
+                            area: ['400px', '250px'],
+                            shadeClose: true,
+                            content: $('#riskAssessmentFormSubmit')
+
+                        });
+                        return false;
+                    }else {
+                        sendSubmitRequest();
+                    }
+
                 }else{
                     anxinModule.getSkipPhoneTip();
                     return false;
@@ -130,7 +145,23 @@ function investSubmit(){
     }
     //正常投资
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
-        $investForm.submit();
+        if(!isEstimate){
+            //风险测评
+            layer.open({
+                type: 1,
+                title:false,
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskAssessmentFormSubmit')
+
+            });
+            return false;
+        }else {
+            $investForm.submit();
+        }
+
+
     }else{
         anxinModule.getSkipPhoneTip();
         return false;
@@ -863,8 +894,9 @@ $('.init-checkbox-style').initCheckbox(function(event) {
     }
 });
 let isEstimate = $loanDetailContent.data('estimate'),
-    $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment');
+    $cancelAssessmentFormSubmit = $('#cancelAssessmentFormSubmit'),
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskAssessmentRequestSubmit = $('#riskAssessmentRequestSubmit');
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
@@ -884,8 +916,10 @@ anxinModule.toAuthorForAnxin(function(data) {
         });
         return false;
     }else {
-        noPasswordInvest?sendSubmitRequest():$investForm.submit();
+         noPasswordInvest?sendSubmitRequest():$investForm.submit();
     }
+
+
 
 
 });
@@ -900,7 +934,7 @@ $riskTips.on('mouseout', function(event) {
     $('.risk-tip-content').hide();
 });
 
-$cancelAssessment.on('click', function(event) {
+$cancelAssessmentFormSubmit.on('click', function(event) {
     event.preventDefault();
     commonFun.useAjax({
         url: '/risk-estimate',
