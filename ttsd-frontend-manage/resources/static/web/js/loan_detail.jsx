@@ -35,6 +35,7 @@ let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
+let isEstimate = $loanDetailContent.data('estimate');
 
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -893,17 +894,17 @@ $('.init-checkbox-style').initCheckbox(function(event) {
         $('#checkTip').toggle();
     }
 });
-let isEstimate = $loanDetailContent.data('estimate'),
-    $cancelAssessmentFormSubmit = $('#cancelAssessmentFormSubmit'),
+
+ let   $cancelAssessmentFormSubmit = $('#cancelAssessmentFormSubmit'),
     $confirmAssessment = $('#confirmAssessment'),
     $riskAssessmentRequestSubmit = $('#riskAssessmentRequestSubmit');
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
-    if(data.skipAuth=='true'){
+    if(data.skipAuth=='true'){alert('skipAUth true')
         $isAuthenticationRequired.val('false');
     }
-    alert($isAuthenticationRequired.val())
+    $isAuthenticationRequired.val('false')
     if(!isEstimate){
         //风险测评
         layer.open({
