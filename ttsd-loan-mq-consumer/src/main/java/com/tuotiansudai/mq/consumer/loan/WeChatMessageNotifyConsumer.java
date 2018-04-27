@@ -48,7 +48,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
     private UserMapper userMapper;
-    @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\,')}")
+    @Value("#{'${loan.raising.complete.notify.mobiles}'.split('\\|')}")
     private List<String> loanCompleteNotifyUser;
 
     private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
