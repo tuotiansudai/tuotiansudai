@@ -340,6 +340,7 @@ activity-mq-consumer:
     - "sms-wrapper"
     - "redis-server"
     - "user-rest-service"
+    - "pay-wrapper"
 
 user-mq-consumer:
   image: "anapsix/alpine-java:8_jdk"

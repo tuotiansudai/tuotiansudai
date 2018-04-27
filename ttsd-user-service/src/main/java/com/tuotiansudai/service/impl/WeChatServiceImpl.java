@@ -22,7 +22,9 @@ public class WeChatServiceImpl implements WeChatService {
 
     private static Logger logger = Logger.getLogger(WeChatServiceImpl.class);
 
-    private final static String AUTHORIZE_URL_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect";
+    private final static String AUTHORIZE_URL_MUTE_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect";
+
+    private final static String AUTHORIZE_URL_ACTIVE_TEMPLATE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state={2}#wechat_redirect";
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -42,13 +44,26 @@ public class WeChatServiceImpl implements WeChatService {
     }
 
     @Override
-    public String generateAuthorizeURL(String sessionId, String redirect) {
+    public String generateMuteAuthorizeURL(String sessionId, String redirect) {
         String state = UUIDGenerator.generate();
         redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 15, state);
 
         logger.info(MessageFormat.format("Generate state {0} for session {1}", state, sessionId));
 
-        return MessageFormat.format(AUTHORIZE_URL_TEMPLATE,
+        return MessageFormat.format(AUTHORIZE_URL_MUTE_TEMPLATE,
+                weChatClient.getAppid(),
+                Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
+                state);
+    }
+
+    @Override
+    public String generateActiveAuthorizeURL(String sessionId, String redirect) {
+        String state = UUIDGenerator.generate();
+        redisWrapperClient.setex(MessageFormat.format("{0}:wechat:state", sessionId), 15, state);
+
+        logger.info(MessageFormat.format("Generate state {0} for session {1}", state, sessionId));
+
+        return MessageFormat.format(AUTHORIZE_URL_ACTIVE_TEMPLATE,
                 weChatClient.getAppid(),
                 Strings.isNullOrEmpty(redirect) ? this.authorizeCallback : MessageFormat.format("{0}?redirect={1}", this.authorizeCallback, redirect),
                 state);

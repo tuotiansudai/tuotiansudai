@@ -1,0 +1,64 @@
+body {
+  position: relative;
+  width: 100%;
+  background: url("../../images/2018/rebate-station/get_coupons_bg_weachat.png") no-repeat;
+  background-size: cover;
+}
+.container {
+  .tip_text {
+    display: none;
+    position: absolute;
+    top: 5.15rem;
+    width: 100%;
+    line-height: .75rem;
+    color: #fff;
+    font-size: .6rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  .handle_btn {
+    position: absolute;
+    top: 7rem;
+    left: 6.75rem;
+    width: 7.55rem;
+    height: 5.3rem;
+    &.invest_btn {
+      background: url("../../images/2018/rebate-station/go_invest_btn.png") no-repeat;
+      background-size: contain;
+    }
+    &.has_got {
+      background: url("../../images/2018/rebate-station/has_got.png") no-repeat;
+      background-size: contain;
+    }
+    &.get_it_now {
+      background: url("../../images/2018/rebate-station/get_it_now.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .content {
+    position: absolute;
+    top: 13.2rem;
+    left: 50%;
+    margin-left: -8.75rem;
+    width: 17.5rem;
+    height: 14.9rem;
+    background: url("../../images/2018/rebate-station/content_coupons.png") no-repeat;
+    background-size: contain;
+  }
+  .single_coupon {
+    position: absolute;
+    left: 50%;
+    margin-left: -5.5rem;
+    width: 11rem;
+    height: 3.5rem;
+    background: url("../../images/2018/rebate-station/single_coupon.png") no-repeat;
+    background-size: contain;
+    &.single_coupon1 {
+      top: 16.25rem;
+    }
+    &.single_coupon2 {
+      top: 20.5rem;
+    }
+  }
+
+}

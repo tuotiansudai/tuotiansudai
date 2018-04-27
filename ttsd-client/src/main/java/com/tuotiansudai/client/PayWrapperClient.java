@@ -92,6 +92,10 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(transferCashDto, transferCashPath);
     }
 
+    public BaseDto<PayDataDto> InviteHelpActivityTransferCash(Object InviteHelpActivityPayCashDto) {
+        return syncExecute(InviteHelpActivityPayCashDto, "/transfer-cash/invite-help-activity");
+    }
+
     public boolean resetUmpayPassword(Object resetUmpayPasswordDto) {
         BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword);
         return baseDto.isSuccess();
