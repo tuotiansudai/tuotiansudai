@@ -119,7 +119,7 @@ function toAuthorForAnxin(callback) {
                 captcha: skipCode,
                 skipAuth:tipCheck
             }
-        },function(data) {console.log(data)
+        },function(data) {
             $target.removeClass('active').val('立即授权').prop('disabled', false);
 
             if(data.success){

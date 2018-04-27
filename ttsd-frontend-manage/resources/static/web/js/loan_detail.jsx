@@ -901,10 +901,10 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
-    alert(data.skipAuth)
-    if(data.skipAuth=='true'){
-        $isAuthenticationRequired.val('false');
-    }
+
+    // if(data.skipAuth=='true'){
+    //     $isAuthenticationRequired.val('false');
+    // }
     $isAuthenticationRequired.val('false')
     if(!isEstimate){
         //风险测评

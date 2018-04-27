@@ -13,9 +13,7 @@
             <div class="tips-wrap">
     <#if loanDto.estimate??>
             <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
-    <#else>
-        <span id="riskTips" class="risk-tips">稳健型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为稳健型的用户</i></span>
-       </#if>
+    </#if>
             <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
             </div>
         </div>
