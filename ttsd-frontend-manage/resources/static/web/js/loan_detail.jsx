@@ -901,7 +901,8 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
-    if(data.skipAuth=='true'){alert('skipAUth true')
+    {alert((data.skipAuth)
+    if(data.skipAuth=='true')
         $isAuthenticationRequired.val('false');
     }
     $isAuthenticationRequired.val('false')
