@@ -137,8 +137,8 @@ public class OperationDataServiceImpl implements OperationDataService {
                 .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
                         && loanRepayModel.getRepayDate().before(endDate))
                 .map(LoanRepayModel::getLoanId).distinct().count();
-        operationDataDto.setLoanOverDueRate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(sumOverDueLoanCount).divide(new BigDecimal(sumRepayingLoanCount), 2, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setAmountOverDueRate(String.valueOf(sumOverDueAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 2, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDueRate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(sumOverDueLoanCount).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueRate(String.valueOf(sumOverDueAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
         operationDataDto.setLoanerOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
         operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
