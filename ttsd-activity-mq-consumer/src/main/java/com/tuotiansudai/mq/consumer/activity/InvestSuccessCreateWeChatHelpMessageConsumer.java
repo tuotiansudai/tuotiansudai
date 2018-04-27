@@ -58,7 +58,7 @@ public class InvestSuccessCreateWeChatHelpMessageConsumer implements MessageCons
         }
         Date date = new Date();
         if (date.before(activityInviteHelpStartTime) || date.after(activityInviteHelpEndTime)) {
-            logger.info("[MQ] InvestSuccess_WeChatHelp, cash snowball activity not in the activity time range");
+            logger.info("[MQ] InvestSuccess_WeChatHelp, invite help activity not in the activity time range");
             return;
         }
 

@@ -50,7 +50,7 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
 
     public Map<String, String> sign(String url) {
         Map<String, String> ret = Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("debug", String.valueOf(environment == Environment.QA))
+                .put("debug", String.valueOf(environment == Environment.DEV))
                 .put("appId", weChatClient.getAppid())
                 .put("nonceStr", UUID.randomUUID().toString())
                 .put("timestamp", String.valueOf(System.currentTimeMillis() / 1000))

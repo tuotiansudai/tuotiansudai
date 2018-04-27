@@ -8,7 +8,6 @@ import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper;
 import com.tuotiansudai.activity.repository.model.*;
-import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,9 +129,7 @@ public class InviteHelpActivityService {
         }
         weChatHelpMapper.create(weChatHelpModel);
         if (duringActivities()) {
-//            redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
-            redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusHours(2).toString("yyyy-MM-dd HH:mm:ss"));
-
+            redisWrapperClient.hset(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
         }
         return weChatHelpModel;
     }
