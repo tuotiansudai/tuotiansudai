@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.enums;
 
 import java.text.MessageFormat;
 
@@ -39,6 +39,8 @@ public enum SystemBillDetailTemplate {
     CASH_START_WORK_DETAIL_TEMPLATE("用户({0})在惊喜不重样加息不打烊活动中,获取现金奖励{1}分"),
 
     LOAN_OUT_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在标的放款中,获取现金奖励{1}分"),
+
+    INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在邀请助力活动中,获取现金奖励{1}分"),
     ;
 
     private final String template;

@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.activity.repository.dto.InviteHelpActivityPayCashDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -23,5 +24,11 @@ public class TransferCashController extends BaseController{
     @RequestMapping(value = "/transfer-cash", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferCash(@Valid @RequestBody TransferCashDto transferCashDto) {
         return transferCashService.transferCash(transferCashDto);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/transfer-cash/invite-help-activity", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> transferCash(@Valid @RequestBody InviteHelpActivityPayCashDto dto) {
+        return transferCashService.transferCashInviteHelpActivity(dto);
     }
 }

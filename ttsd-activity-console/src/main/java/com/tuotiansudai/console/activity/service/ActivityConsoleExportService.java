@@ -77,6 +77,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityConsoleStartWorkService activityConsoleStartWorkService;
 
+    @Autowired
+    private ActivityConsoleInviteHelpService activityConsoleInviteHelpService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -304,5 +307,20 @@ public class ActivityConsoleExportService {
 
     public List<List<String>> buildStartWorkActivityCsvList(String mobile, String userName, Date startTime, Date endTime){
         return activityConsoleStartWorkService.list(mobile, userName, startTime, endTime, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
+    }
+
+    public List<List<String>> buildInviteHelpInvestRewardActivityCsvList(String keyWord, Long minInvest, Long maxInvest){
+        BasePaginationDataDto<WeChatHelpView> dataDto = activityConsoleInviteHelpService.investRewardList(1, Integer.MAX_VALUE, keyWord, minInvest, maxInvest);
+        List<List<String>> rows = Lists.newArrayList();
+        dataDto.getRecords().forEach(record -> rows.add(Lists.newArrayList(
+                new DateTime(record.getStartTime()).toString("yyyy-MM-dd HH:mm:ss"),
+                record.getUserName(),
+                record.getMobile(),
+                String.valueOf(record.getInvestAmount()),
+                String.valueOf(record.getAnnualizedAmount()),
+                String.valueOf(record.getHelpUserCount()),
+                record.getRate(),
+                String.valueOf(record.getReward()))));
+        return rows;
     }
 }

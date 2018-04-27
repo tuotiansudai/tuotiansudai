@@ -71,7 +71,7 @@ require.ensure([],function() {
                 data:dataParam
             },function(data) {
                 if (data.status) {
-                    window.location.reload();
+                    window.location.href = location.href+'?time='+((new Date()).getTime());
                 } else {
                     commonFun.refreshCaptcha(globalFun.$('#imageCaptcha'), "/login/captcha");
                     globalFun.removeClass(thisButton,'loading');
