@@ -137,6 +137,7 @@ public class WeChatClient {
 
             bodyTemplate = bodyTemplate.replace("{{template_id}}", TEMPLATE_MAP.get(weChatMessageType));
 
+            logger.info(String.format("WeChatMessageNotify template json : %s", bodyTemplate));
             Request request = new Request.Builder()
                     .url(MessageFormat.format(MESSAGE_URL_TEMPLATE, token))
                     .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyTemplate))
@@ -239,19 +240,19 @@ public class WeChatClient {
         return token;
     }
 
-    public void saveWebAuthorizationToken(Map<String, String> result){
+    public void saveWebAuthorizationToken(Map<String, String> result) {
         redisWrapperClient.setex(MessageFormat.format("wechat:web:access:token:{0}", result.get("openid")), Integer.parseInt(result.get("expires_in")) - 60, result.get("access_token"));
         redisWrapperClient.setex(MessageFormat.format("wechat:web:refresh:token:{0}", result.get("openid")), 29 * 24 * 60 * 60, result.get("refresh_token"));
     }
 
-    public String getWebAuthorizationToken(String openId){
+    public String getWebAuthorizationToken(String openId) {
         String accessToken = redisWrapperClient.get(MessageFormat.format("wechat:web:access:token:{0}", openId));
         if (accessToken != null) {
             return accessToken;
         }
 
         String refreshToken = redisWrapperClient.get(MessageFormat.format("wechat:web:refresh:token:{0}", openId));
-        if (refreshToken == null){
+        if (refreshToken == null) {
             return null;
         }
         try {
@@ -281,7 +282,7 @@ public class WeChatClient {
 
     }
 
-    public Map<String, Object> fetchWeChatUserInfo(String openId){
+    public Map<String, Object> fetchWeChatUserInfo(String openId) {
         String token = getWebAuthorizationToken(openId);
 
         if (Strings.isNullOrEmpty(token)) {
