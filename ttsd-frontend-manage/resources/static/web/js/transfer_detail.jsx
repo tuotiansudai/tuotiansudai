@@ -134,8 +134,7 @@ function submitData() {
                             });
                             return false;
                         }else {
-                            alert('投资成功')
-                           // $transferForm.submit();
+                            $transferForm.submit();
                         }
 
                     }else{
@@ -195,8 +194,7 @@ anxinModule.toAuthorForAnxin(function(data) {
         });
         return false;
     }else {
-        alert('投资成功')
-       // $('#transferForm').submit();
+        $('#transferForm').submit();
     }
 
 
