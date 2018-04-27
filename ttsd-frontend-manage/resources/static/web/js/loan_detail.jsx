@@ -35,7 +35,6 @@ let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
-let isEstimate = $loanDetailContent.data('estimate');
 
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -69,11 +68,9 @@ function getInvestAmount() {
 
 function validateInvestAmount() {
     var amount = getInvestAmount();
-    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;//可投金额
+    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
     return amount > 0 && amountNeedRaised >= amount;
 };
-
-
 //投资表单请求以及校验
 function investSubmit(){
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
@@ -108,7 +105,6 @@ function investSubmit(){
     }
     amountInputElement.val(amountInputElement.autoNumeric("get"));
     if (noPasswordInvest) {//判断是否开启免密投资
-
         layer.open({
             type: 1,
             closeBtn: 0,
@@ -134,31 +130,16 @@ function investSubmit(){
     }
     //正常投资
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
-        if(!isEstimate){
-
-            //风险测评
-            layer.open({
-                type: 1,
-                title:false,
-                closeBtn: 0,
-                area: ['400px', '250px'],
-                shadeClose: true,
-                content: $('#riskAssessment')
-
-            });
-        }else {
-            $investForm.submit();
-        }
-
+        $investForm.submit();
     }else{
         anxinModule.getSkipPhoneTip();
         return false;
     }
-
-
 }
+
 //发送投资提交请求
 function sendSubmitRequest(){
+
     commonFun.useAjax({
         url: '/no-password-invest',
         data: $investForm.serialize(),
@@ -177,9 +158,9 @@ function sendSubmitRequest(){
         } else {
             showInputErrorTips(data.message);
         }
-
     });
 }
+
 //is tip B1 or tip B2?
 function markNoPasswordRemind(){
     if (!noPasswordRemind) {
@@ -198,7 +179,7 @@ function markNoPasswordRemind(){
         shadeClose: false,
         btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
         area: ['500px'],
-        content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，投资快人一步！</p>',
+        content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步！</p>',
         btn1: function () {
             investSubmit();
             layer.closeAll();
@@ -506,32 +487,11 @@ function showAuthorizeAgreementOptions(){
                 .done(function() {
                     if (isInvestor) {
                         noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
-                        // if(noPasswordRemind || noPasswordInvest){
-                        //
-                        //     if(!isEstimate){
-                        //         //风险测评
-                        //         layer.open({
-                        //             type: 1,
-                        //             title:false,
-                        //             closeBtn: 0,
-                        //             area: ['400px', '250px'],
-                        //             shadeClose: true,
-                        //             content: $('#riskAssessment')
-                        //
-                        //         });
-                        //         return false;
-                        //     }else {
-                        //         $investForm.submit();
-                        //     }
-                        // }else {
-                        //     markNoPasswordRemind();
-                        // }
                         return;
                     }
                     if (isAuthentication) {
                         location.href = '/register/account';
                     }
-
                 })
                 .fail(function() {
                     //判断是否需要弹框登陆
@@ -631,7 +591,7 @@ function showAuthorizeAgreementOptions(){
             title: '免密投资',
             btn: ['不开启', '开启'],
             area: ['500px'],
-            content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，投资快人一步，是否开启？</p>',
+            content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1: function () {
                 layer.closeAll();
             },
@@ -904,62 +864,15 @@ $('.init-checkbox-style').initCheckbox(function(event) {
 });
 
 anxinModule.toAuthorForAnxin(function(data) {
-$('#isAnxinUser').val('true');
-$('.skip-group').hide();
+    $('#isAnxinUser').val('true');
+    $('.skip-group').hide();
     if(data.skipAuth=='true'){
         $isAuthenticationRequired.val('false');
     }
-    if(!isEstimate){
-
-        //风险测评
-        layer.open({
-            type: 1,
-            title:false,
-            closeBtn: 0,
-            area: ['400px', '250px'],
-            shadeClose: true,
-            content: $('#riskAssessment')
-
-        });
-    }else {
-        noPasswordInvest?sendSubmitRequest():$investForm.submit();
-    }
-
-
-
+    noPasswordInvest?sendSubmitRequest():$investForm.submit();
 });
 
 
-
-var $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment'),
-    $riskTips = $('#riskTips');
-
-$cancelAssessment.on('click', function(event) {
-    event.preventDefault();
-    commonFun.useAjax({
-        url: '/risk-estimate',
-        data: {answers: ['-1']},
-        type: 'POST'
-    },function(data) {
-        layer.closeAll();
-        noPasswordInvest?sendSubmitRequest():$investForm.submit();
-    });
-
-});
-$confirmAssessment.on('click', function(event) {
-    event.preventDefault();
-    layer.closeAll();
-    location.href = '/risk-estimate'
-});
-$riskTips.on('mouseover', function(event) {
-    event.preventDefault();
-   $('.risk-tip-content').show();
-});
-$riskTips.on('mouseout', function(event) {
-    event.preventDefault();
-    $('.risk-tip-content').hide();
-});
 
 
 
