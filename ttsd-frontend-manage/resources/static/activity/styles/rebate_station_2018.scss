@@ -382,6 +382,7 @@ h2,h4 {
               font-size: 16px;
               color: #582e28;
               overflow: hidden;
+              text-align: center;
               .title {
                 margin: 0 auto;
                 width: 715px;
@@ -398,10 +399,11 @@ h2,h4 {
               }
               .content {
                 position: relative;
+                display: inline-block;
                 top: -30px;
                 margin: 0 auto;
-                width: 779px;
-                height: 348px;
+                width: 737px;
+                height: 548px;
                 //background: url("../images/2018/rebate-station/add_rates_wechat.png") no-repeat;
                 //background-size: contain;
               }
@@ -1227,7 +1229,7 @@ h2,h4 {
                   top: -1rem;
                   margin: 0 auto;
                   width: 15rem;
-                  height: 6.7rem;
+                  height: 11.15rem;
                   //background: url("../images/2018/rebate-station/add_rates_wechat_m.png") no-repeat;
                   //background-size: contain;
                 }
