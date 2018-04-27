@@ -862,17 +862,59 @@ $('.init-checkbox-style').initCheckbox(function(event) {
         $('#checkTip').toggle();
     }
 });
-
+let isEstimate = $loanDetailContent.data('estimate'),
+    $cancelAssessment = $('#cancelAssessment'),
+    $confirmAssessment = $('#confirmAssessment');
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
     if(data.skipAuth=='true'){
         $isAuthenticationRequired.val('false');
     }
-    noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
+
+        });
+        return false;
+    }else {
+        noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    }
+
+
 });
 
+let $riskTips = $('#riskTips');
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
 
+$cancelAssessment.on('click', function(event) {
+    event.preventDefault();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+        noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    });
 
-
+});
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
 
