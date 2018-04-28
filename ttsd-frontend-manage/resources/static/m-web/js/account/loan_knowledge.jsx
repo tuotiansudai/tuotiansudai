@@ -56,6 +56,10 @@ if(isLastPage){
                         let ListRender = _.template(knowledgeTpl);
                         let html = ListRender(data.data);
                         $knowledgeList.append(html);
+                       $knowledgeList.find('.date-time').each(function(key,option) {
+                           var getTime=$(option).text();
+                           $(option).text(getTime.substr(0,10));
+                       });
                         myScroll.refresh();
 
                     }else {
