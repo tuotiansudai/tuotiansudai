@@ -26,7 +26,7 @@
             <div class="target-category-box" data-url="loan-transfer-detail.ftl">
                 <b class="newer-title">房产抵押借款17070 <i class="icon-sign">新手专享</i> <i class="icon-sign">五一专享</i></b>
                 <ul class="loan-info clearfix">
-                    <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
+                    <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">约定年化利率</em></li>
                     <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
                     <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
                 </ul>

@@ -47,7 +47,7 @@
         </dl>
         <ul class="input-list">
             <li>
-                <label>预期年化收益</label>
+                <label>约定年化利率</label>
                 <em>13.00%</em>
             </li>
 
