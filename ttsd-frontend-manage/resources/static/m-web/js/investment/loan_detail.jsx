@@ -193,7 +193,7 @@ $('#transaction_record').on('click',function () {
                 if ((this.y - this.maxScrollY) <= 10) {
                     pageNum++;
 
-                     ();
+                    getMoreRecords();
                     myScroll.refresh();
                 }
             }
