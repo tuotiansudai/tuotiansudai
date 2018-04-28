@@ -61,6 +61,10 @@ public class SmsService {
             mobiles.addAll(fatalNotifyDevMobiles);
         }
 
+        if (notify.getErrorMessage().length() > 20){
+            notify.setErrorMessage(notify.getErrorMessage().substring(0, 20));
+        }
+
         List<String> paramList = ImmutableList.<String>builder().add(environment.name()).add(notify.getErrorMessage()).build();
         return smsClient.sendSMS(mobiles, SmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, paramList);
     }

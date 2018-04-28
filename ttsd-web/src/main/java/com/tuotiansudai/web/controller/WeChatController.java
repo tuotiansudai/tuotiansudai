@@ -36,7 +36,14 @@ public class WeChatController {
     public ModelAndView authorize(HttpServletRequest httpServletRequest,
                                   @RequestParam(name = "redirect", required = false) String redirect) {
         String sessionId = httpServletRequest.getSession().getId();
-        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateAuthorizeURL(sessionId, redirect)));
+        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateMuteAuthorizeURL(sessionId, redirect)));
+    }
+
+    @RequestMapping(path = "/active/authorize", method = RequestMethod.GET)
+    public ModelAndView userInfoAuthorize(HttpServletRequest httpServletRequest,
+                                  @RequestParam(name = "redirect", required = false) String redirect) {
+        String sessionId = httpServletRequest.getSession().getId();
+        return new ModelAndView(MessageFormat.format("redirect:{0}", weChatService.generateActiveAuthorizeURL(sessionId, redirect)));
     }
 
     @RequestMapping(path = "/authorize-callback", method = RequestMethod.GET)

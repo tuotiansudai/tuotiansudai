@@ -2,31 +2,22 @@ package com.tuotiansudai.dto;
 
 
 import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class TransferCashDto implements Serializable {
 
-    @NotEmpty
     private String loginName;
 
-    @NotEmpty
     private String orderId;
 
-    @NotEmpty
     private String amount;
 
-    @NotNull
     private UserBillBusinessType userBillBusinessType;
 
-    @NotNull
     private SystemBillBusinessType systemBillBusinessType;
 
-    @NotNull
     private SystemBillDetailTemplate systemBillDetailTemplate;
 
     public String getLoginName() {

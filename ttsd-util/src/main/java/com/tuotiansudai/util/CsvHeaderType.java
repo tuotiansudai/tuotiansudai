@@ -50,6 +50,7 @@ public enum CsvHeaderType {
     CashSnowballHeader("姓名, 手机号, 活动期限内投资金额, 累计年化投资额, 获得现金奖励", "现金滚雪球活动导出"),
     InvestAnnualizedHeader("姓名, 用户名,手机号, 活动期限内投资金额, 累计年化投资额", "投资金额统计导出"),
     StartWorkActivityHeader("手机号, 姓名,兑换奖品, 兑换时间, 消费小金人个数", "惊喜不重样加息不打烊活动导出"),
+    InviteHelpInvestActivityHeader("投资时间, 姓名,手机号, 投资金额, 年化投资额, 助力人数, 奖励比例, 获得现金奖励", "返利加油站活动投资奖励导出"),
     ;
 
     private String header;
