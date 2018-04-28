@@ -5,7 +5,7 @@
 <div class="home-page-container compliance-index" id="homePageContainer">
 
     <div id="bannerBox" class="banner-box-inner">
-        <div class="invest-tip-wrap"><div class="invest-tip">市场有风险，投资需谨慎！</div></div>
+
         <div class="app-container clearfix">
             <div class="logo"></div>
             <div class="app-detail">

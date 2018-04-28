@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -16,6 +17,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,6 +58,11 @@ public class TransferApplicationController {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
+    @Autowired
+    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Value(value = "${pay.interest.fee}")
+    private double defaultFee;
 
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
@@ -89,7 +96,7 @@ public class TransferApplicationController {
         modelAndView.addObject("hasBankCard", passedBankCard != null);
 
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
-
+        modelAndView.addObject("investFeeRate", membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 

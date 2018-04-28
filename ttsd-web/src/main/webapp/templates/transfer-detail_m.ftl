@@ -12,8 +12,6 @@
         <div class="collection">
     <#if loanDto.estimate??>
             <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
-    <#else>
-        <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">稳健型</i>的用户<em id="closeRisk"></em></span>
     </#if>
             <span class="summary-box">
                  <b>
@@ -54,6 +52,10 @@
         <li>
             <label>项目到期时间</label>
             <span>${transferApplication.dueDate?string("yyyy-MM-dd")}</span>
+        </li>
+        <li class="related-expenses" data-expenses="${investFeeRate*100}">
+            <label>相关费用</label>
+            <span>${investFeeRate*100}%技术服务费<em class="icon-mark" id="relatedTip"></em></span>
         </li>
         <#if (transferApplication.transferStatus.name() == "TRANSFERRING")>
         <li class="repay-plan" id="look_repay_plan">

@@ -125,7 +125,7 @@
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  <#else><span id="riskTips" class="risk-tips">稳健型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为稳健型的用户</i></span></#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -749,15 +749,7 @@
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
 </div>
-<#--风险测评-->
-<div id="riskAssessmentRequestSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-    <div class="tc person-info-btn" style="margin-top:40px;">
-        <button id="cancelAssessmentRequestSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
-    </div>
-</div>
+
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">

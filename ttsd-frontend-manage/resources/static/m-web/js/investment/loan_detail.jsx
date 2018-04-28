@@ -22,7 +22,6 @@ let commonFun = require('publicJs/commonFun');
 
 let isEstimate = $buyDetail.data('estimate');
 let isEstimateTransfer  = $transferDetail.data('estimate');
-
 //领优惠券
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -165,74 +164,74 @@ $('#btn-detail-toggle').click(function () {
     $('#apply_material').hide();
 })
 
-    //交易记录ajax请求
-    let $boxContent = $('#box_content');
-    let ajaxUrl = $boxContent.data('url');
-    let $scroll = $boxContent.find('#scroll');
-    let $content = $boxContent.find('#content');
-    let pageNum = 1;
+//交易记录ajax请求
+let $boxContent = $('#box_content');
+let ajaxUrl = $boxContent.data('url');
+let $scroll = $boxContent.find('#scroll');
+let $content = $boxContent.find('#content');
+let pageNum = 1;
 let flagScroll=true;
 
 
-    $('#transaction_record').on('click',function () {
-        $('#noData').hide();
-        document.getElementById('box_content').addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
-            capture: false,
-            passive: false
-        } : false);
+$('#transaction_record').on('click',function () {
+    $('#noData').hide();
+    document.getElementById('box_content').addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+        capture: false,
+        passive: false
+    } : false);
 
-        getMoreRecords();
-        //交易记录滚动加载更多
-        setTimeout(function () {
-            var myScroll = new IScroll('#box_content', {
-                probeType: 2,
-                mouseWheel: true
-            });
-            myScroll.on('scrollEnd', function () {
-                if(flagScroll){
-                    //如果滑动到底部，则加载更多数据（距离最底部10px高度）
-                    if ((this.y - this.maxScrollY) <= 10) {
-                        pageNum++;
+    getMoreRecords();
+    //交易记录滚动加载更多
+    setTimeout(function () {
+        var myScroll = new IScroll('#box_content', {
+            probeType: 2,
+            mouseWheel: true
+        });
+        myScroll.on('scrollEnd', function () {
+            if(flagScroll){
+                //如果滑动到底部，则加载更多数据（距离最底部10px高度）
+                if ((this.y - this.maxScrollY) <= 10) {
+                    pageNum++;
 
-                        getMoreRecords();
-                        myScroll.refresh();
-                    }
+                    getMoreRecords();
+                    myScroll.refresh();
                 }
-
-
-            });
-        },1000)
-    })
-
-    function getMoreRecords(){
-        commonFun.useAjax(
-            {
-                url:ajaxUrl,
-                type:'get',
-                data:{
-                    index:pageNum
-                }
-            },
-            function (res) {
-                if(res.success == true){
-                    if(res.data.records.length > 0){
-                        var html = tpl('recordsTpl', res.data);
-                        $content.prepend(html)
-                    }else {
-                        flagScroll = false;
-                        if(pageNum == 1){
-                            $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>');
-                            $boxContent.css('backgroundColor','#f2f2f2');
-                        }else {
-                            $('#noData').show();
-                        }
-
-                    }
-                }
-
             }
-        )
-    }
+
+
+        });
+    },1000)
+})
+
+function getMoreRecords(){
+    commonFun.useAjax(
+        {
+            url:ajaxUrl,
+            type:'get',
+            data:{
+                index:pageNum
+            }
+        },
+        function (res) {
+            if(res.success == true){
+                if(res.data.records.length > 0){
+                    var html = tpl('recordsTpl', res.data);
+                    $content.prepend(html)
+                }else {
+                    flagScroll = false;
+                    if(pageNum == 1){
+                        $content.html('<div class="no-records"><div class="icon"></div><p>暂无交易记录</p></div>');
+                        $boxContent.css('backgroundColor','#f2f2f2');
+                    }else {
+                        $('#noData').show();
+                    }
+
+                }
+            }
+
+        }
+    )
+}
 function isPassive() {
     var supportsPassiveOption = false;
     try {
@@ -257,7 +256,7 @@ $('#look_continue_record').click(function () {
 $('#look_repay_plan').click(function () {
     $('.buy-transfer').hide();
     $('#cotinue_record').hide();
-   $('#transferingDetail').hide();
+    $('#transferingDetail').hide();
     $('#repay_plan').show();
 })
 
@@ -284,7 +283,7 @@ function validateHash() {
 
     }else if(location.hash == '#projectDetail'){
 
-        $projectDetail.show().siblings().hide();
+        $projectDetail.show().siblings('.show-page').hide();
 
 
     }else if(location.hash == '#buyDetail'){
@@ -329,14 +328,14 @@ $('.to-use_coupon').each(function (index,item) {
 })
 $('.to-use_coupon').click(function () {
     let _self = $(this);
-   let couponId = _self.data('coupon-id');
+    let couponId = _self.data('coupon-id');
 
     $('.to-use_coupon').each(function (index,item) {
         $(item).removeClass('selected');
 
     })
     if(_self.hasClass('disabled')){
-       return false;
+        return false;
     }else {
         _self.addClass('selected');
     }
@@ -344,13 +343,13 @@ $('.to-use_coupon').click(function () {
     $('#couponId').val(_self.data('user-coupon-id'));
     $('#couponText').text(_self.data('coupon-desc'));
 
-        commonFun.useAjax({
-            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-            data: 'couponIds='+couponId,
-            type: 'GET'
-        },function(amount) {console.log(amount)
-            $couponExpectedInterest.text("+" + amount);
-        });
+    commonFun.useAjax({
+        url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+        data: 'couponIds='+couponId,
+        type: 'GET'
+    },function(amount) {console.log(amount)
+        $couponExpectedInterest.text("+" + amount);
+    });
 
     location.hash='buyDetail';
 
@@ -380,13 +379,13 @@ let calExpectedCouponInterest = function() {
 //根据选择优惠券计算红包或加息券的预期收益
 let calExpectedSelectCouponInterest = function(dom) {
     var couponIds = dom.data('coupon-id');
-        commonFun.useAjax({
-            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-            data: 'couponIds='+couponIds,
-            type: 'GET'
-        },function(amount) {
-            $couponExpectedInterest.text("+" + amount);
-        });
+    commonFun.useAjax({
+        url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+        data: 'couponIds='+couponIds,
+        type: 'GET'
+    },function(amount) {
+        $couponExpectedInterest.text("+" + amount);
+    });
 
 };
 
@@ -534,60 +533,33 @@ $('#investSubmit').on('click', function(event) {
                     anxinService();
 
                 } else {
-                   // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
-                    if(noPasswordInvest){
-alert('nopassword')
-                        if(!isEstimate){
-                            //风险测评
-                            commonFun.CommonLayerTip({
-                                btn: ['确定','取消'],
-                                area:['280px', '230px'],
-                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
-                            },function() {
-                                layer.closeAll();
-                                location.href = '/m/risk-estimate'
+                    if(!isEstimate){
+                        //风险测评
+                        commonFun.CommonLayerTip({
+                            btn: ['确定','取消'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                        },function() {
+                            layer.closeAll();
+                            location.href = '/m/risk-estimate'
 
-                            },function () {
-                                commonFun.useAjax({
-                                    url: '/risk-estimate',
-                                    data: {answers: ['-1']},
-                                    type: 'POST'
-                                },function(data) {
-                                    layer.closeAll();
-                                    $investForm.submit();
-                                });
-                            })
-                            $('.layui-layer-content').css('height','180px')
-                            return false;
-                        }else {
-                            sendSubmitRequest()
-                        }
+                        },function () {
+                            commonFun.useAjax({
+                                url: '/risk-estimate',
+                                data: {answers: ['-1']},
+                                type: 'POST'
+                            },function(data) {
+                                layer.closeAll();
+                                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                            });
+                        })
+                        $('.layui-layer-content').css('height','180px')
+                        return false;
                     }else {
-                        if(!isEstimate){
-                            //风险测评
-                            commonFun.CommonLayerTip({
-                                btn: ['确定','取消'],
-                                area:['280px', '230px'],
-                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
-                            },function() {
-                                layer.closeAll();
-                                location.href = '/m/risk-estimate'
-
-                            },function () {
-                                commonFun.useAjax({
-                                    url: '/risk-estimate',
-                                    data: {answers: ['-1']},
-                                    type: 'POST'
-                                },function(data) {
-                                    layer.closeAll();
-                                    $investForm.submit();
-                                });
-                            })
-                            $('.layui-layer-content').css('height','180px')
-                            return false;
-                        }
-                        $investForm.submit();
+                        noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                     }
+
+
                 }
                 return;
             }
@@ -647,7 +619,7 @@ $('#exchangeCoupon').on('click',function () {
 
 //转让购买
 //转让购买页
-  let $toBuyTransfer = $('#to_buy_transfer'),//立即投资
+let $toBuyTransfer = $('#to_buy_transfer'),//立即投资
     $transferSubmit = $('#transferSubmit'),//转让按钮
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 
@@ -693,10 +665,10 @@ function submitData() {
 
         if (data.message == "SUCCESS") {
             commonFun.CommonLayerTip({
-                        btn: ['确定'],
-                        area:['280px', '160px'],
-                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接，请选择其他项目</span></div> `,
-                    },function () {
+                btn: ['确定'],
+                area:['280px', '160px'],
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>该项目已被承接，请选择其他项目</span></div> `,
+            },function () {
                 layer.closeAll();
                 location.href = "/m/transfer-list";
             })
@@ -752,46 +724,39 @@ function submitData() {
                     return false;
                 }
             }
-            if(!isEstimateTransfer){
-                //风险测评
-                commonFun.CommonLayerTip({
-                    btn: ['确定','取消'],
-                    area:['280px', '230px'],
-                    content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
-                },function() {
-                    layer.closeAll();
-                    location.href = '/m/risk-estimate'
-
-                },function () {
-                    commonFun.useAjax({
-                        url: '/risk-estimate',
-                        data: {answers: ['-1']},
-                        type: 'POST'
-                    },function(data) {
+            if($isAnxinAuthenticationRequired.val()=='false'){
+                if(!isEstimateTransfer){
+                    //风险测评
+                    commonFun.CommonLayerTip({
+                        btn: ['确定','取消'],
+                        area:['280px', '230px'],
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                    },function() {
                         layer.closeAll();
-                        if($isAnxinAuthenticationRequired.val()=='false'){
-                            $transferForm.submit();
-                        }else{
-                            $transferDetail.hide();
-                            $authorization_message.show();
-                            anxinService();
-                            return false;
-                        }
-                    });
-                })
-                $('.layui-layer-content').css('height','180px')
-                return false;
-            }else {
-                if($isAnxinAuthenticationRequired.val()=='false'){
-                    $transferForm.submit();
-                }else{
-                    $transferDetail.hide();
-                    $authorization_message.show();
-                    anxinService();
-                    return false;
-                }
-            }
+                        location.href = '/m/risk-estimate'
 
+                    },function () {
+                        commonFun.useAjax({
+                            url: '/risk-estimate',
+                            data: {answers: ['-1']},
+                            type: 'POST'
+                        },function(data) {
+                            layer.closeAll();
+                            $transferForm.submit();
+                        });
+                    })
+                    $('.layui-layer-content').css('height','180px')
+                    return false;
+                }else {
+                    $transferForm.submit();
+                }
+
+            }else{
+                $transferDetail.hide();
+                $authorization_message.show();
+                anxinService();
+                return false;
+            }
 
         }
     });
@@ -874,9 +839,59 @@ function anxinService() {
             if(data.success) {
                 layer.closeAll();
                 if (dataPage == 'buy') {
-                    noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                    if(!isEstimate){
+                        //风险测评
+                        commonFun.CommonLayerTip({
+                            btn: ['确定','取消'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                        },function() {
+                            layer.closeAll();
+                            location.href = '/m/risk-estimate'
+
+                        },function () {
+                            commonFun.useAjax({
+                                url: '/risk-estimate',
+                                data: {answers: ['-1']},
+                                type: 'POST'
+                            },function(data) {
+                                layer.closeAll();
+                                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                            });
+                        })
+                        $('.layui-layer-content').css('height','180px')
+                        return false;
+                    }else {
+                        noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                    }
+
                 } else {
-                    $('#transferForm').submit();
+                    if(!isEstimateTransfer){
+                        //风险测评
+                        commonFun.CommonLayerTip({
+                            btn: ['确定','取消'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                        },function() {
+                            layer.closeAll();
+                            location.href = '/m/risk-estimate'
+
+                        },function () {
+                            commonFun.useAjax({
+                                url: '/risk-estimate',
+                                data: {answers: ['-1']},
+                                type: 'POST'
+                            },function(data) {
+                                layer.closeAll();
+                                $('#transferForm').submit();
+                            });
+                        })
+                        $('.layui-layer-content').css('height','180px')
+                        return false;
+                    }else {
+                        $('#transferForm').submit();
+                    }
+
                 }
             }
             else {
@@ -913,7 +928,7 @@ $buttonIdentify.on('click',function (event) {
 });
 
 $('#goPage_3').on('click',() => {
-   location.reload();
+    location.reload();
 });
 
 function countDownTime() {
@@ -952,4 +967,3 @@ $('#relatedTip').on('click',function () {
         layer.closeAll();
     })
 })
-
