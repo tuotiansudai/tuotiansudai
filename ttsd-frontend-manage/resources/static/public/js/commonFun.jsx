@@ -387,6 +387,49 @@ function phoneModal() {
     }
 }
 
+function Cycle(options) {
+    this.id = options.id;
+    this.width = options.width;
+    this.height = options.height;
+    this.percent = options.percent;
+    this.border = options.border;
+    this.bgColor = options.bgColor;
+    this.barColor = options.barColor;
+    this.fillColor = options.fillColor;
+};
+
+Cycle.prototype = {
+    contructor: Cycle,
+    init: function() {
+        //创建画布对象
+        var html = "<canvas id='canvas_" + this.id + "' width='" + this.width + "' height='" + this.height + "'></canvas>";
+        document.getElementById(this.id).innerHTML = html;
+
+        this.setOptions()
+    },
+    setOptions: function() {
+        var degree = this.percent;
+        var canvas = document.getElementById('canvas_' + this.id);
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, this.width * 2, this.height * 2);
+        //开始绘画
+        context.beginPath();
+        context.lineWidth = this.border;
+        context.strokeStyle = this.bgColor;
+        context.arc(this.width / 2, this.height / 2, (this.width / 2 - this.border / 2), 0, 2 * Math.PI);
+        context.fillStyle = this.fillColor;
+        context.fill();
+        context.stroke();
+        var deg = degree * 3.6 / 180 * Math.PI;
+        context.beginPath();
+        context.lineWidth = this.border;
+        context.strokeStyle = this.barColor;
+        context.arc(this.width / 2, this.height / 2, (this.width / 2 - this.border / 2), 0 - Math.PI / 2, deg - Math.PI / 2);
+        context.stroke();
+        context.beginPath();
+    }
+};
+
 exports.refreshCaptcha = refreshCaptcha;
 exports.initRadio = initRadio;
 exports.IdentityCodeValid = IdentityCodeValid;
@@ -405,5 +448,6 @@ exports.repeatBgSquare = repeatBgSquare;
 exports.calculationFun = calculationFun;
 exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
+exports.Cycle = Cycle;
 
 

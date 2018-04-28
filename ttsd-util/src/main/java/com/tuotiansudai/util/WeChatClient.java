@@ -34,6 +34,10 @@ public class WeChatClient {
 
     private final static String MESSAGE_URL_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";
 
+    private final static String WE_CHAT_USER_INFO_URL_TEMPLATE = "https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN";
+
+    private final static String WE_CHAT_REFRESH_TOKEN_TEMPLATE = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type=refresh_token&refresh_token={1}";
+
     private final OkHttpClient client = new OkHttpClient();
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -52,6 +56,7 @@ public class WeChatClient {
                     .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.normal.repay.success.id"))
                     .put(WeChatMessageType.INVEST_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.invest.success.id"))
                     .put(WeChatMessageType.LOAN_OUT_SUCCESS, ETCDConfigReader.getReader().getValue("wechat.loan.out.success.id"))
+                    .put(WeChatMessageType.LOAN_COMPLETE, ETCDConfigReader.getReader().getValue("wechat.loan.complete.notify.id"))
                     .build());
 
     private static String APP_ID = ETCDConfigReader.getReader().getValue("wechat.appId");
@@ -101,6 +106,7 @@ public class WeChatClient {
                 return null;
             }
 
+            saveWebAuthorizationToken(result);
             return result.get("openid");
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -131,6 +137,7 @@ public class WeChatClient {
 
             bodyTemplate = bodyTemplate.replace("{{template_id}}", TEMPLATE_MAP.get(weChatMessageType));
 
+            logger.info(String.format("WeChatMessageNotify template json : %s", bodyTemplate));
             Request request = new Request.Builder()
                     .url(MessageFormat.format(MESSAGE_URL_TEMPLATE, token))
                     .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyTemplate))
@@ -231,5 +238,78 @@ public class WeChatClient {
         }
 
         return token;
+    }
+
+    public void saveWebAuthorizationToken(Map<String, String> result) {
+        redisWrapperClient.setex(MessageFormat.format("wechat:web:access:token:{0}", result.get("openid")), Integer.parseInt(result.get("expires_in")) - 60, result.get("access_token"));
+        redisWrapperClient.setex(MessageFormat.format("wechat:web:refresh:token:{0}", result.get("openid")), 29 * 24 * 60 * 60, result.get("refresh_token"));
+    }
+
+    public String getWebAuthorizationToken(String openId) {
+        String accessToken = redisWrapperClient.get(MessageFormat.format("wechat:web:access:token:{0}", openId));
+        if (accessToken != null) {
+            return accessToken;
+        }
+
+        String refreshToken = redisWrapperClient.get(MessageFormat.format("wechat:web:refresh:token:{0}", openId));
+        if (refreshToken == null) {
+            return null;
+        }
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(WE_CHAT_REFRESH_TOKEN_TEMPLATE, APP_ID, refreshToken))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200) {
+                return null;
+            }
+            String responseString = response.body().string();
+            Map<String, String> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, String>>() {
+
+            });
+
+            if (result.containsKey("errcode")) {
+                logger.error(MessageFormat.format("refresh token failed, openId: {0} response: {1}", openId, responseString));
+                return null;
+            }
+            saveWebAuthorizationToken(result);
+            return result.get("access_token");
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+
+    }
+
+    public Map<String, Object> fetchWeChatUserInfo(String openId) {
+        String token = getWebAuthorizationToken(openId);
+
+        if (Strings.isNullOrEmpty(token)) {
+            return null;
+        }
+
+        try {
+            Request request = new Request.Builder()
+                    .url(MessageFormat.format(WE_CHAT_USER_INFO_URL_TEMPLATE, token, openId))
+                    .get().build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200) {
+                return null;
+            }
+            String responseString = response.body().string();
+            Map<String, Object> result = objectMapper.readValue(responseString, new TypeReference<HashMap<String, Object>>() {
+            });
+
+            if (result.containsKey("errcode")) {
+                logger.error(MessageFormat.format("fetch we chat user info failed, openId: {0} response: {1}", openId, responseString));
+                return null;
+            }
+            return result;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

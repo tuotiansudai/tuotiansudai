@@ -259,4 +259,20 @@ public class ExportController {
         List<List<String>> csvData = activityConsoleExportService.buildStartWorkActivityCsvList(mobile, userName, startTime, endTime);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.StartWorkActivityHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/invite-help/invest-reward", method = RequestMethod.GET)
+    public void investAnnualizedExport(HttpServletResponse response,
+                                       @RequestParam(value = "keyWord", required = false) String keyWord,
+                                       @RequestParam(value = "minInvest", required = false) Long minInvest,
+                                       @RequestParam(value = "maxInvest", required = false) Long maxInvest) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.InviteHelpInvestActivityHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildInviteHelpInvestRewardActivityCsvList(keyWord, minInvest, maxInvest);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InviteHelpInvestActivityHeader, csvData, response.getOutputStream());
+    }
 }

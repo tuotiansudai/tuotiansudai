@@ -6,7 +6,9 @@ public interface WeChatService {
 
     WeChatUserModel parseWeChatUserStatus(String sessionId, String state, String code);
 
-    String generateAuthorizeURL(String sessionId, String redirect);
+    String generateMuteAuthorizeURL(String sessionId, String redirect);
+
+    String generateActiveAuthorizeURL(String sessionId, String redirect);
 
     boolean isBound(String loginName);
 }
