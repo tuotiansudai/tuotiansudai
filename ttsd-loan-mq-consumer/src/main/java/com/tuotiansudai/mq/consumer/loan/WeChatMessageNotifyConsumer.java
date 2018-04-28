@@ -111,11 +111,8 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .collect(Collectors.toList());
 
         notifyLoginNames.stream()
-                .forEach(s -> {
-                    if (fetchOpenId(s) == null){
-                        return;
-                    }
-                    weChatClient.sendTemplateMessage(WeChatMessageType.LOAN_COMPLETE, Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .filter(s -> fetchOpenId(s) != null)
+                .forEach(s -> weChatClient.sendTemplateMessage(WeChatMessageType.LOAN_COMPLETE, Maps.newHashMap(ImmutableMap.<String, String>builder()
                         .put("openid", fetchOpenId(s))
                         .put("first", String.format("%s满标通知（运营内部）。", loanModel.getName()))
                         .put("keyword1", convertCentToTenThousandString(loanModel.getLoanAmount()))
@@ -124,8 +121,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                         .put("remark", String.format("%s上线的%s天投资项目已满，30分钟内将完成复核。",
                                 new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm"),
                                 loanModel.getDuration()))
-                        .build()));
-                });
+                        .build())));
     }
 
     private void loanOutMessageNotify(WeChatMessageNotify weChatMessageNotify) {
