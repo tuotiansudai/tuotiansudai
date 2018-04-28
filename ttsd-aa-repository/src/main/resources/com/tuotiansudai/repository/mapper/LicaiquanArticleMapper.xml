@@ -86,7 +86,7 @@
         <if test="section == null ">
             AND section != 'KNOWLEDGE'
         </if>
-        ORDER BY created_time DESC
+        ORDER BY updated_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
