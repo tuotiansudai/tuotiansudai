@@ -83,7 +83,6 @@ if($noticeList.length) {
     let ListRender = _.template(noticeTpl);
     let requestData={"index":1,"pageSize":10};
     paginationElement.loadPagination(requestData, function (data) {
-
         let html = ListRender(data);
         $noticeList.html(html);
         $noticeList.find('span').each(function(key,option) {
