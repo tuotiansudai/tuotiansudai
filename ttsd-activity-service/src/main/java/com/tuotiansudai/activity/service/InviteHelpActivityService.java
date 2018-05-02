@@ -297,7 +297,7 @@ public class InviteHelpActivityService {
 
     public boolean isOwnHelp(String loginName, String openId, long id) {
         WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
-        return weChatHelpModel != null && (openId.equals(weChatHelpModel.getOpenId()) || (!Strings.isNullOrEmpty(loginName) && loginName.equals(weChatHelpModel.getLoginName())));
+        return openId.equals(weChatHelpModel.getOpenId()) || (!Strings.isNullOrEmpty(loginName) && loginName.equals(weChatHelpModel.getLoginName()));
     }
 
     public boolean duringActivities() {

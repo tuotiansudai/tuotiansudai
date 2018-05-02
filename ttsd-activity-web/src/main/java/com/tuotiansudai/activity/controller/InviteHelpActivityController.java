@@ -103,7 +103,7 @@ public class InviteHelpActivityController {
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)){
+        if (Strings.isNullOrEmpty(openId) || inviteHelpActivityService.getHelpModel(id) == null){
             return new ModelAndView("redirect:/activity/invite-help");
         }
 
@@ -123,7 +123,7 @@ public class InviteHelpActivityController {
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/everyone/help", method = RequestMethod.GET)
     public ModelAndView wechatShareEveryoneHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)){
+        if (Strings.isNullOrEmpty(openId) || inviteHelpActivityService.getHelpModel(id) == null){
             return new ModelAndView("redirect:/activity/invite-help");
         }
 
