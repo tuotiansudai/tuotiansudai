@@ -3,6 +3,16 @@
   margin: 0;
   background: #336ded;
 }
+.compliance-banner {
+  .invest-tip {
+    bottom: 18px;
+    @media screen and(max-width: 1024px){
+      bottom: 11px;
+      width: 96%;
+      text-align: left;
+    }
+  }
+}
 .dragon-boat-container{
   float: left;
   width: 100%;

@@ -5,6 +5,8 @@ public enum ArticleStatus {
 
     TO_APPROVE("待审核"),
 
+    REFUSED("审核驳回"),
+
     APPROVING("审核中"),
 
     PUBLISH("已发布");

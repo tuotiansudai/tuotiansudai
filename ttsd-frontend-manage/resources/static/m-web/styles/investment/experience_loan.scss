@@ -257,9 +257,10 @@
   background: #fff;
 }
 .account-summary {
-  height:156px!important;
+  height:200px!important;
   .collection {
     padding-top: 5px;
+    width: 100%;
   }
   .transfer-hack {
     color: rgba(255, 255, 255, 1);
@@ -333,9 +334,12 @@
   }
 }
 .btn-wap-normal {
-  margin-top: 105px;
+  margin-top: 80px;
   border: 1px solid #FF635A;
   background: #FF635A;
+}
+.exper_buy {
+  margin-top: 20px;
 }
 
 .transfer-notice {
@@ -447,4 +451,28 @@
 
 #experience_balance {
   line-height: 1.5rem;
+}
+//用户分级
+.risk-tip {
+  width: 100%;
+  height: 32px;
+  background: rgba(255,176,0,0.9);
+  text-align: center;
+  position: relative;
+  .risk-type {
+    color: #FF473C;
+  }
+  em {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background: url("../../images/closeBtn.png") no-repeat;
+    background-size: 100%;
+    right: 5px;
+    top: 9px;
+  }
+}
+.record-tip-box {
+  padding: 10px;
+  text-align: center;
 }

@@ -116,8 +116,8 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                 var $articleTitle = $('.article-title').val(),
                     $articleSource = $('.article-source').val();
 
-                if ($articleTitle.length > 25) {
-                    showErrorMessage('标题最多25个中文字符', $('.article-title', curform));
+                if ($articleTitle.length > 30) {
+                    showErrorMessage('标题最多30个中文字符', $('.article-title', curform));
                     return false;
                 }
                 if ($articleSource.length > 25) {

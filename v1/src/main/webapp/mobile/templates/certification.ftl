@@ -15,7 +15,7 @@
 <div class="cerWrap"><!--cerWrap begin-->
     <h3>恭喜您注册成功</h3>
 
-    <p>拓天速贷与第三方支付平台（联动优势）合作，您的资金由联动优势平台进行托管，充分保障了安全，让您安心理财.</p>
+    <p>拓天速贷与第三方支付平台（联动优势）合作，您的资金由联动优势平台进行托管，充分保障了安全，让您安心投资.</p>
     <ul>
         <form class="realName" action="/mobile/certification/realName" method="post">
             <li><input type="text"name="yourName" required placeholder="请输入您的姓名" class="yourName" value="${yourName!}"/> </li>

@@ -14,6 +14,14 @@ public class ItemDto implements Serializable {
     @ApiModelProperty(value = "值", example = "男")
     private String value;
 
+    public ItemDto() {
+    }
+
+    public ItemDto(String label, String value) {
+        this.label = label;
+        this.value = value;
+    }
+
     public String getLabel() {
         return label;
     }

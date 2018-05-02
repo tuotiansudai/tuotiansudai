@@ -13,6 +13,9 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
     @NotEmpty
     private String purpose;
 
+    @NotEmpty
+    private String source;
+
     public LoanCreateLoanerEnterpriseDetailsDto() {
     }
 
@@ -20,6 +23,7 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
         this.juristicPerson = loanerEnterpriseDetailsModel.getJuristicPerson();
         this.address = loanerEnterpriseDetailsModel.getAddress();
         this.purpose = loanerEnterpriseDetailsModel.getPurpose();
+        this.source = loanerEnterpriseDetailsModel.getSource();
     }
 
     public String getJuristicPerson() {
@@ -44,5 +48,13 @@ public class LoanCreateLoanerEnterpriseDetailsDto {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

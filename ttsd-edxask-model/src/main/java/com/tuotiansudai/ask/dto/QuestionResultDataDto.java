@@ -11,6 +11,8 @@ public class QuestionResultDataDto extends BaseDataDto {
 
     private boolean isAdditionSensitiveValid;
 
+    private String sensitiveWord;
+
     @JsonProperty(value = "isCaptchaValid")
     public boolean isCaptchaValid() {
         return isCaptchaValid;
@@ -36,5 +38,13 @@ public class QuestionResultDataDto extends BaseDataDto {
 
     public void setAdditionSensitiveValid(boolean additionSensitiveValid) {
         isAdditionSensitiveValid = additionSensitiveValid;
+    }
+
+    public String getSensitiveWord() {
+        return sensitiveWord;
+    }
+
+    public void setSensitiveWord(String sensitiveWord) {
+        this.sensitiveWord = sensitiveWord;
     }
 }

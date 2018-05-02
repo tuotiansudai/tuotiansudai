@@ -93,7 +93,7 @@
         <result column="loan_desc" property="loanDesc"></result>
         <result column="user_name" property="userName"></result>
     </resultMap>
-    
+
     <resultMap id="investProductTypeView" type="InvestProductTypeView">
         <result column="user_name" property="userName"></result>
         <result column="login_name" property="loginName"></result>
@@ -591,7 +591,7 @@
     </select>
 
     <select id="findInvestorCount" resultType="long">
-        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS'
+        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS' and transfer_invest_id is null
     </select>
 
     <select id="findRegisteredNotInvestCount" resultType="long">
@@ -612,6 +612,8 @@
         <![CDATA[
 
 
+
+
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -623,6 +625,8 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
+
+
 
 
         ]]>
@@ -1037,6 +1041,8 @@
          <![CDATA[
         and DATE_FORMAT(invest.invest_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 
+
+
         ]]>
     </select>
 
@@ -1105,23 +1111,23 @@
 
     <select id="findAmountOrderByLoanId" parameterType="map" resultMap="investAchievementView">
         SELECT temp.login_name,temp.amount,temp.trading_time,user.mobile FROM
-            (SELECT
-                login_name,
-                    SUM(amount) AS amount,
-                    MAX(trading_time) AS trading_time
-            FROM
-                invest i JOIN loan on i.loan_id = loan.id
-            WHERE
-                i.loan_id = #{loanId} and i.loan_id != 1 and loan.activity_type != 'NEWBIE'
-                    <if test="activityStartTime !=null">
-                        AND loan.fundraising_start_time &gt;= #{activityStartTime}
-                    </if>
-                    <if test="activityEndTime !=null">
-                        AND loan.fundraising_start_time &lt;= #{activityEndTime}
-                    </if>
-                    AND i.status = 'SUCCESS'
-                    AND i.transfer_status != 'SUCCESS'
-            GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
+        (SELECT
+        login_name,
+        SUM(amount) AS amount,
+        MAX(trading_time) AS trading_time
+        FROM
+        invest i JOIN loan on i.loan_id = loan.id
+        WHERE
+        i.loan_id = #{loanId} and i.loan_id != 1 and loan.activity_type != 'NEWBIE'
+        <if test="activityStartTime !=null">
+            AND loan.fundraising_start_time &gt;= #{activityStartTime}
+        </if>
+        <if test="activityEndTime !=null">
+            AND loan.fundraising_start_time &lt;= #{activityEndTime}
+        </if>
+        AND i.status = 'SUCCESS'
+        AND i.transfer_status != 'SUCCESS'
+        GROUP BY i.login_name) temp join user on temp.login_name = user.login_name
         ORDER BY amount desc,trading_time
         <if test="limit != null">
             LIMIT #{limit}
@@ -1153,7 +1159,7 @@
         AND loan.activity_type != 'NEWBIE'
         AND loan_details.activity_desc in
         <foreach collection="loanActivityDescList" item="activityDesc" open="(" separator="," close=")">
-          #{activityDesc}
+            #{activityDesc}
         </foreach>
         AND loan.fundraising_start_time BETWEEN #{startTime} AND #{endTime}
         AND i.status = 'SUCCESS'

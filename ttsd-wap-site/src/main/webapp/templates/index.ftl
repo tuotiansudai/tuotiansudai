@@ -5,7 +5,7 @@
 <#assign js = {"${jsName}":"http://localhost:3008/wapSite/js/${jsName}.js"} >
 <#assign css = {"${jsName}":"http://localhost:3008/wapSite/js/${jsName}.css"}>
 
-<@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
+<@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P投资,拓天借贷,网络投资" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
 <div class="home-page-container" id="homePageContainer">
     <div id="bannerBox" class="banner-box-inner">
@@ -70,7 +70,7 @@
             <div class="target-category-box newer-experience" data-url="/loan/1">
                     <b class="newer-title">拓天体验金项目 <i class="icon-sign">体验金投资</i></b>
                     <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>13</i>%</span><em class="note">预期年化收益</em></li>
+                        <li><span class="percent-number"> <i>13</i>%</span><em class="note">约定年化利率</em></li>
                         <li><em class="duration-day">3</em> 天 <em class="note">项目期限</em></li>
                         <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
                     </ul>
@@ -86,7 +86,7 @@
         <div class="target-category-box">
             <b class="newer-title">房产抵押借款17070</b>
             <ul class="loan-info clearfix">
-                <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
+                <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">约定年化利率</em></li>
                 <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
                 <li><a href="/loan/1" class="btn-invest btn-normal">立即投资</a></li>
             </ul>
@@ -109,7 +109,7 @@
         <div class="target-category-box sold-out-box">
             <b class="newer-title">房产抵押借款17070</b>
             <ul class="loan-info  clearfix">
-                <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">预期年化收益</em></li>
+                <li><span class="percent-number"> <i>10.5+10.8</i>%</span><em class="note">约定年化利率</em></li>
                 <li>最长<em class="duration-day">30</em> 天 <em class="note">项目期限</em></li>
                 <li>
                     <i class="loan-status icon-sellout"></i>

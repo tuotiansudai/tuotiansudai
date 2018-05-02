@@ -1,7 +1,9 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.start_work_2018}" pageJavascript="${js.start_work_2018}" activeNav="" activeLeftNav="" title="加息不打烊_活动中心_拓天速贷" keywords="拓天速贷,开工红包,实物奖励,全场加息,体验金奖励" description='拓天速贷加息不打烊活动,活动期间微信关注"拓天速贷服务号"即可领取520元开工红包,周五投资额外享受年化投资额的0.5%返现奖励,用户累计年化投资可兑换实物奖励与体验金奖励.'>
 <div class="container_time" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}"></div>
-<div class="start-work-banner"></div>
+<div class="start-work-banner compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 <div class="activity-wrap-main">
     <div class="activity-page">
         <div class="red_pocket_container">

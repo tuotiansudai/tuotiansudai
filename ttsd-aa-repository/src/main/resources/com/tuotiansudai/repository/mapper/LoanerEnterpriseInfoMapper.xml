@@ -10,15 +10,16 @@
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
         <result column="company_name" property="companyName"/>
-        <result column="factoring_company_name" property="factoringCompanyName"/>
-        <result column="factoring_company_desc" property="factoringCompanyDesc"/>
         <result column="address" property="address"/>
         <result column="purpose" property="purpose"/>
+        <result column="source" property="source"/>
+        <result column="factoring_company_name" property="factoringCompanyName"/>
+        <result column="factoring_company_desc" property="factoringCompanyDesc"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanerEnterpriseInfoModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loaner_enterprise_info (loan_id, company_name, factoring_company_name, factoring_company_desc, address, purpose)
-        values (#{loanId}, #{companyName}, #{factoringCompanyName}, #{factoringCompanyDesc}, #{address}, #{purpose})
+        insert into loaner_enterprise_info (loan_id, company_name, address, purpose, source, factoring_company_name, factoring_company_desc)
+        values (#{loanId}, #{companyName}, #{address}, #{purpose}, #{source}, #{factoringCompanyName}, #{factoringCompanyDesc})
     </insert>
 
     <select id="getByLoanId" resultMap="resultMap" parameterType="map">

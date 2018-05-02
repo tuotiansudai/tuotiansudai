@@ -97,7 +97,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
 
     private String title = "拓天速贷引领投资热，开启互金新概念";
 
-    private String content = "个人经营借款理财项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
+    private String content = "个人经营借款投资项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {

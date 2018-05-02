@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLiCaiQuanArticleService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
-import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class LiCaiQuanArticleController {
     }
 
     @RequestMapping(value = "/article/create", method = RequestMethod.POST)
-    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) throws ParseException {
+    public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
         liCaiQuanArticleDto.setCreator(LoginUserInfo.getLoginName());
         consoleLiCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         return  new ModelAndView("redirect:/announce-manage/article/list");
@@ -68,7 +66,7 @@ public class LiCaiQuanArticleController {
         ArticlePaginationDataDto dto = consoleLiCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
         mv.addObject("data", dto);
         mv.addObject("title", title);
-        mv.addObject("selected", articleSectionType != null ? articleSectionType.getArticleSectionTypeName() : "");
+        mv.addObject("selected", articleSectionType);
         mv.addObject("articleSectionTypeList", ArticleSectionType.values());
         mv.addObject("userName",LoginUserInfo.getLoginName());
         mv.addObject("articleStatus",ArticleStatus.values());

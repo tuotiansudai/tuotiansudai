@@ -359,6 +359,20 @@ function calculationFun(doc, win) {
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 };
+function calculationRem(doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 100 * (clientWidth /750);
+            fSize > 100 && (fSize = 98.4);
+            docEl.style.fontSize = fSize + 'px';
+        };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+};
 
 function phoneModal() {
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -432,6 +446,7 @@ exports.activityStatus = activityStatus;
 exports.CommonLayerTip = CommonLayerTip;
 exports.repeatBgSquare = repeatBgSquare;
 exports.calculationFun = calculationFun;
+exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
 exports.Cycle = Cycle;
 

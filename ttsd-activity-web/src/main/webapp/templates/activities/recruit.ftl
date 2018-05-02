@@ -37,7 +37,7 @@
                 <p class="intro-detail">你是否错过股市？</br>
                     你是否错过互联网？</br>
                     你是否错过房地产投资？</br>
-                    而现在互联网金融正成为理财方式的新宠；</br>
+                    而现在互联网金融正成为投资方式的新宠；</br>
                     国家政策的扶持，行业新规的出台，规模惊人的市场；</br>
                 </p>
                 <img src="${commonStaticServer}/activity/images/sign/actor/daili/one-picture.png" width="50%" class="phone-picture">

@@ -180,3 +180,14 @@ if($myMenu.length){
 
     })
 }
+
+$('.notice-tip-btn').on('click',function () {
+    commonFun.CommonLayerTip({
+        btn: ['我知道了'],
+        area:['280px', '320px'],
+        content: `<div class="record-tip-box"><span class="kaola"></span> <b class="pop-title">出借人适当性管理告知</b> <p class="tip-content">参与网络借贷的出借人，应当具备投资风险意识、风险识别能力，拥有非保本类金融产品投资的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。</p></div> `,
+    },function() {
+        layer.closeAll();
+    })
+
+})

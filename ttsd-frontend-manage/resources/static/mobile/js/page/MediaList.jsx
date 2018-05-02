@@ -75,7 +75,13 @@ class MediaList extends React.Component {
 	}
 	listItemTapHandler(event) {
 		let target = this.findDelegateEle.call(this, event.target);
-		hashHistory.push(`media-center/article/${target.dataset.id}`);
+        hashHistory.push({
+            pathname: `media-center/article/${target.dataset.id}`,
+            query: {
+                isShowLikeCount:1
+            }
+
+        });
 	}
 	pagination() {
 		this.listIndex++;

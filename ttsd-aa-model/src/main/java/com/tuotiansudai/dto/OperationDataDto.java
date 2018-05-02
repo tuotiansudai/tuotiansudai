@@ -8,6 +8,7 @@ import java.util.List;
 public class OperationDataDto implements Serializable {
     private int operationDays;
     private long usersCount;
+    private long investUsersCount;
     private String TradeAmount;
     private String totalInterest;
     private String maleScale;
@@ -22,6 +23,16 @@ public class OperationDataDto implements Serializable {
     private List<OperationDataLoanerCityDataDto> loanerCityScaleTop5;
     private List<OperationDataInvestAmountDataDto> investAmountScaleTop3;
     private Date now;
+    private String sumLoanAmount;
+    private String sumLoanCount;
+    private String sumLoanerCount;
+    private String sumExpectedAmount;
+    private String sumOverDueAmount;
+    private String loanOverDueRate;
+    private String amountOverDueRate;
+    private String loanerOverDueCount;
+    private String loanerOverDueAmount;
+
 
     public int getOperationDays() {
         return operationDays;
@@ -149,5 +160,85 @@ public class OperationDataDto implements Serializable {
 
     public void setNow(Date now) {
         this.now = now;
+    }
+
+    public long getInvestUsersCount() {
+        return investUsersCount;
+    }
+
+    public void setInvestUsersCount(long investUsersCount) {
+        this.investUsersCount = investUsersCount;
+    }
+
+    public String getSumLoanAmount() {
+        return sumLoanAmount;
+    }
+
+    public void setSumLoanAmount(String sumLoanAmount) {
+        this.sumLoanAmount = sumLoanAmount;
+    }
+
+    public String getSumLoanCount() {
+        return sumLoanCount;
+    }
+
+    public void setSumLoanCount(String sumLoanCount) {
+        this.sumLoanCount = sumLoanCount;
+    }
+
+    public String getSumLoanerCount() {
+        return sumLoanerCount;
+    }
+
+    public void setSumLoanerCount(String sumLoanerCount) {
+        this.sumLoanerCount = sumLoanerCount;
+    }
+
+    public String getSumOverDueAmount() {
+        return sumOverDueAmount;
+    }
+
+    public void setSumOverDueAmount(String sumOverDueAmount) {
+        this.sumOverDueAmount = sumOverDueAmount;
+    }
+
+    public String getAmountOverDueRate() {
+        return amountOverDueRate;
+    }
+
+    public void setAmountOverDueRate(String amountOverDueRate) {
+        this.amountOverDueRate = amountOverDueRate;
+    }
+
+    public String getLoanerOverDueCount() {
+        return loanerOverDueCount;
+    }
+
+    public void setLoanerOverDueCount(String loanerOverDueCount) {
+        this.loanerOverDueCount = loanerOverDueCount;
+    }
+
+    public String getLoanerOverDueAmount() {
+        return loanerOverDueAmount;
+    }
+
+    public void setLoanerOverDueAmount(String loanerOverDueAmount) {
+        this.loanerOverDueAmount = loanerOverDueAmount;
+    }
+
+    public String getSumExpectedAmount() {
+        return sumExpectedAmount;
+    }
+
+    public void setSumExpectedAmount(String sumExpectedAmount) {
+        this.sumExpectedAmount = sumExpectedAmount;
+    }
+
+    public String getLoanOverDueRate() {
+        return loanOverDueRate;
+    }
+
+    public void setLoanOverDueRate(String loanOverDueRate) {
+        this.loanOverDueRate = loanOverDueRate;
     }
 }

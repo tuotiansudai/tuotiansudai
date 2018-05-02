@@ -13,4 +13,5 @@ public interface LoanDetailsMapper {
     void updateByLoanId(LoanDetailsModel loanDetailsModel);
 
     void deleteByLoanId(@Param(value = "loanId") long loanId);
+
 }
