@@ -15,6 +15,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String name;
 
+    private String introduce;
+
     private ProductType productType;
 
     private LoanType type;
@@ -89,9 +91,12 @@ public class LoanDetailDto extends BaseDataDto {
 
     private double maxExtraLoanRate;
 
+    private String estimate;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto, double maxExtraLoanRate) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
+        this.introduce = loanDetails.getIntroduce();
         this.progress = new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.baseRate = new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.activityRate = new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -121,6 +126,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.pledgeType = loanModel.getPledgeType();
         this.deadline = loanModel.getDeadline();
         this.maxExtraLoanRate = new BigDecimal(maxExtraLoanRate).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.estimate = loanDetails != null && loanDetails.getEstimate() != null ? loanDetails.getEstimate().getType() : null;
     }
 
     public long getId() {
@@ -129,6 +135,14 @@ public class LoanDetailDto extends BaseDataDto {
 
     public String getName() {
         return name;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 
     public ProductType getProductType() {
@@ -329,5 +343,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public double getMaxExtraLoanRate() {
         return maxExtraLoanRate;
+    }
+
+    public String getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
     }
 }

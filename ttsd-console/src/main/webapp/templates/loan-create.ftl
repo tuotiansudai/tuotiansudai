@@ -206,6 +206,22 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">项目介绍: </label>
+
+                    <div class="col-sm-3">
+                        <textarea name="introduce" class="form-control" datatype="*" placeholder="请输入200个以内的字符" errormsg="项目介绍不能为空"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">还款来源: </label>
+
+                    <div class="col-sm-3">
+                        <input name="source" type="text" class="form-control" datatype="*" maxlength="30" placeholder="请输入30个以内的字符" errormsg="还款来源不能为空">
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label">投资奖励: </label>
 
                     <div class="col-sm-3 checkbox">
@@ -224,7 +240,7 @@
                         <#list extraSources as source>
                             <label>
                                 <input name="extraSource" type="checkbox"
-                                       value="${source.name()}">${source.name()}</input>
+                                       value="${source.name()}">${source.name()}
                             </label>
                         </#list>
                     </div>
@@ -267,6 +283,26 @@
                                errormsg="返现奖励需要正确填写">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">项目适合的用户: </label>
+
+                    <div class="col-sm-3 checkbox" id="estimate">
+                        <label>
+                            <input name="estimate" type="radio"
+                                   value="CONSERVATIVE">保守型
+                        </label>
+                        <label>
+                            <input name="estimate" type="radio"
+                                   value="STEADY">稳健型
+                        </label>
+                        <label>
+                            <input name="estimate" type="radio"
+                                   value="POSITIVE">积极型
+                        </label>
+                    </div>
+                </div>
+
             </div>
         </section>
 

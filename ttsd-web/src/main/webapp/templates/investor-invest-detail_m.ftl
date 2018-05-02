@@ -60,7 +60,7 @@
         </#if>
         <ul class="input-list">
             <li>
-                <label>预期年化收益</label>
+                <label>约定年化利率</label>
                 <em>${(invest.baseRate+invest.activityRate)*100}%</em>
             </li>
 

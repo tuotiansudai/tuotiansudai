@@ -1,10 +1,11 @@
 <#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.index}" pageJavascript="${m_js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
+<@global.main pageCss="${m_css.index}" pageJavascript="${m_js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P投资,拓天借贷,网络投资" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 
-<div class="home-page-container" id="homePageContainer">
+<div class="home-page-container compliance-index" id="homePageContainer">
 
     <div id="bannerBox" class="banner-box-inner">
+
         <div class="app-container clearfix">
             <div class="logo"></div>
             <div class="app-detail">
@@ -57,7 +58,7 @@
         <ul class="loan-info clearfix">
             <li>
                 <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
-                <em class="note">预期年化收益</em>
+                <em class="note">约定年化利率</em>
             </li>
             <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
             <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
@@ -77,7 +78,7 @@
                             <i><@percentInteger>${newbieLoan.baseRate + newbieLoan.activityRate}</@percentInteger></i>%
                         </#if>
                     </span>
-                    <em class="note">预期年化收益</em>
+                    <em class="note">约定年化利率</em>
                 </li>
                 <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
                 <li>
@@ -150,7 +151,7 @@
                     </i><em>%</em>
 
                     </span>
-                        <em class="note">预期年化收益</em>
+                        <em class="note">约定年化利率</em>
                     </li>
 
                     <li>最长<em class="duration-day">${loan.duration}</em> 天 <em class="note">项目期限</em></li>
@@ -215,7 +216,7 @@
                     <span class="percent-number <#if (loan.transferStatus == "SUCCESS")>colorChange</#if>">
                         <i><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction></i>%
                     </span>
-                        <em class="note">预期年化收益</em>
+                        <em class="note">约定年化利率</em>
                     </li>
                     <li><em class="duration-day">${loan.leftDays}</em> 天 <em class="note">剩余天数</em></li>
                     <li>

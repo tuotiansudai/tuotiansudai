@@ -4,6 +4,7 @@
      data-has-bank-card="${hasBankCard?c}" data-loan-status="${loan.loanStatus}"
      data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
+     data-estimate="${estimate?string('true', 'false')}"
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="m-header"><em id="iconBuy" class="icon-left"><i></i></em>购买详情 </div>
     <#if coupons?has_content>
@@ -47,7 +48,7 @@
                             ~ <@percentInteger>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentInteger><@percentFraction>${loan.baseRate+loan.activityRate+loan.maxExtraLoanRate}</@percentFraction>
                         </#if>%</i>
                     </span>
-                    <em>预计年化收益</em>
+                    <em>约定年化利率</em>
                 </li>
                 <li>
                     <span>
@@ -123,6 +124,7 @@
 
 <#include "component/anxin-agreement.ftl" />
     <div class="sectionNone"></div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 </div>
 
 

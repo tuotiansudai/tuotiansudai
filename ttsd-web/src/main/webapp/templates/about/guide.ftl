@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
 
 <div class="new-guide-container" id="pageGuide">
     <ul class="quick-top-link page-width">
@@ -21,7 +21,7 @@
         <div class="column-title-ac"><i></i>为什么选择拓天速贷投资<i></i> </div>
         <dl>
             <dt><span>01</span>高收益＋稳定</dt>
-            <dd>可选择不同期限产品，预期年化收益最高可达<em>8%~11%</em></dd>
+            <dd>可选择不同期限产品，约定年化利率最高可达<em>8%~11%</em></dd>
             <dd class="img-load">
                 <div class="arrow-rise"></div>
                 <div class="report-load"></div>
@@ -89,13 +89,13 @@
             <p>每笔抵押贷都有超额的房产或车辆作为抵押物，风控严谨，变现力强，适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
             <ul class="mortgage-list">
                 <li><span>新手专享30天项目 <br/>
-                    预期年化收益8%</span></li>
+                    约定年化利率8%</span></li>
                 <li><span>90天短期项目<br/>
-                    预期年化收益9%</span></li>
+                    约定年化利率9%</span></li>
                 <li><span>180天中期项目<br/>
-                    预期年化收益10%</span></li>
+                    约定年化利率10%</span></li>
                 <li><span>360天长期项目<br/>
-                    预期年化收益11%</span></li>
+                    约定年化利率11%</span></li>
             </ul>
     <div class="tc">
         <a href="/loan-list" class="btn-guide">立刻投资</a>

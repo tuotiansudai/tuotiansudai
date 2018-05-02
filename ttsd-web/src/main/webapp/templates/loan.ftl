@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
+<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -63,7 +63,7 @@
                     <div class="content">
                         <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
-                                <div class="title">预期年化收益</div>
+                                <div class="title">约定年化利率</div>
                                 <div class="number red"><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                                     <#if loan.activityRate != 0>
                                         <i class="data-extra-rate">
@@ -111,13 +111,22 @@
                                 <span class="title">还款方式：</span>
                             ${loan.type.getRepayType()},${loan.type.getInterestType()}
                             </div>
+
                         </div>
+
                     </div> <#-- .content end tag -->
+
                 </div> <#-- .container-block end tag -->
+                <div class="row related-expenses clearfix">
+                    <span class="title">相关费用：</span>
+                    <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${investFeeRate*100}%技术服务费。</span>
+                </div>
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
-                <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
+
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
                         <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
@@ -289,7 +298,7 @@
                                     <dd>
                                         <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
                                             推荐您开通免密投资
-                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i>
+                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，投资快人一步"></i>
                                         </a>
                                     </dd>
                                 </#if>
@@ -338,15 +347,23 @@
             <div class="loan-list pad-s invest-list-content">
                 <div class="loan-list-con">
                     <div class="content detail">
+                        <#if loan.introduce??>
+                            <div class="subtitle">
+                                <h3>项目介绍</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                ${loan.introduce}
+                            </div>
+                        </#if>
                         <#if loan.loanerDetail??>
                             <div class="subtitle">
                                 <h3>借款人基本信息</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
-                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
+                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
-                                            <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
+                                            <div class="col-md-4"><div class="col-md-3">${key}：</div><div class="col-md-9">${loan.loanerDetail[key]}</div></div>
                                         </#if>
                                     </#list>
                                 </div>
@@ -409,7 +426,7 @@
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
                                     <#if loan.loanerEnterpriseDetailsInfo??>
-                                        <#list ['借款人', '公司所在地','企业借款用途描述'] as key>
+                                        <#list ['借款人', '公司所在地','企业借款用途描述', '还款来源'] as key>
                                             <#if loan.loanerEnterpriseDetailsInfo[key]?? && loan.loanerEnterpriseDetailsInfo[key] != ''>
                                                 <div class="col-md-6">${key}：${loan.loanerEnterpriseDetailsInfo[key]}</div>
                                             </#if>
@@ -453,9 +470,9 @@
                                                 <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
-                                        <#list ['借款用途'] as key>
+                                        <#list ['借款用途', '还款来源'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
-                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>
@@ -490,9 +507,9 @@
                                                 <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
-                                        <#list ['借款用途'] as key>
+                                        <#list ['借款用途', '还款来源'] as key>
                                             <#if loan.enterpriseInfo[key]?? && loan.enterpriseInfo[key] != ''>
-                                                <div class="col-md-12">${key}：${loan.enterpriseInfo[key]}</div>
+                                                <div class="col-md-6">${key}：${loan.enterpriseInfo[key]}</div>
                                             </#if>
                                         </#list>
                                     </#if>
@@ -723,6 +740,16 @@
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
+<#--风险测评-->
+<div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+    </div>
+</div>
+
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">

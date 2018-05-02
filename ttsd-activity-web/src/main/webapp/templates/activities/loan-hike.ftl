@@ -112,7 +112,7 @@
                         <dl>
                             <dt><span class="name-text">车辆抵押借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span>
                             </dt>
-                            <dd><span class="title-text">预期年化收益</span><span
+                            <dd><span class="title-text">约定年化利率</span><span
                                     class="number-text active"><strong>12～12.8</strong>％</span></dd>
                             <dd class="date-loan"><span class="title-text">投资期限</span><span class="number-text"><strong>180</strong>天</span>
                             </dd>
@@ -130,7 +130,7 @@
                         <dl>
                             <dt><span class="name-text">房产抵押借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span>
                             </dt>
-                            <dd><span class="title-text">预期年化收益</span><span
+                            <dd><span class="title-text">约定年化利率</span><span
                                     class="number-text active"><strong>13～14.2</strong>％</span></dd>
                             <dd class="date-loan"><span class="title-text">投资期限</span><span class="number-text"><strong>360</strong>天</span>
                             </dd>

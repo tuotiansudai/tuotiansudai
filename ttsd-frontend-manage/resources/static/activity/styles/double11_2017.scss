@@ -20,6 +20,15 @@ strong {
 * {
   -webkit-tap-highlight-color:transparent;
 }
+.compliance-banner {
+  .invest-tip {
+    color: #666;
+    bottom: 10px;
+    @media screen and(max-width: 1024px){
+      bottom: -10px;
+    }
+  }
+}
 .layui-layer-content {
   font-size: 12px!important;
   @media screen and (max-width:750px){

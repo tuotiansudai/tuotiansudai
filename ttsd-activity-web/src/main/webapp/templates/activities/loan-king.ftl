@@ -2,9 +2,10 @@
 
 <@global.main pageCss="${css.loan_king}" pageJavascript="${js.loan_king}" activeNav="" activeLeftNav="" title="标王争霸场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,京东E卡,红包奖励" description="拓天周年庆-标王争霸场活动,活动期间,每个债权针对用户在的累计投资额进行排名,前三名相应可获得100元京东E卡和红包奖励.">
 <div class="loan-king-container" id="loanKingContainer">
-    <div class="top-item">
+    <div class="top-item compliance-banner">
         <img src="" width="100%" class="media-pc">
         <img src="" width="100%" class="media-phone">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
     </div>
     <div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">
@@ -32,7 +33,7 @@
                     </h3>
                     <ul class="loan-info">
                         <li class="tl">
-                            <span>预期年化收益</span>
+                            <span>约定年化利率</span>
                             <span class="info-text">
                                 <em><strong><@percentInteger>${loan.baseRate}</@percentInteger></strong></em>
                                         <i><@percentFraction>${loan.baseRate}</@percentFraction>
@@ -107,7 +108,7 @@
             <dd>3.京东E卡将于活动结束后7个工作日内统一联系发放，请获奖用户保持联系方式畅通，若在7个工作日内无法联系，将视为自动放弃奖励；</dd>
             <dd>4.为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</dd>
             <dd>5.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</dd>
-            <dd>6.理财有风险，投资需谨慎。</dd>
+            <dd>6.投资有风险，投资需谨慎。</dd>
         </dl>
     </div>
 </div>

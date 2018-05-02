@@ -14,7 +14,7 @@ let topimg=require('../images/2017/sport-play/top-img.jpg'),
 let mediaPCHtml = '<img src="' + topimg + '" width="100%" class="media-pc">';
 let mediaPhoneHtml = '<img src="' + topimgPhone + '" width="100%" class="media-phone">';
 
-$sportPlayContainer.find('.top-img').html(mediaPCHtml + mediaPhoneHtml);
+$sportPlayContainer.find('.top-img').append(mediaPCHtml + mediaPhoneHtml);
 
 let drawBtn=require('../images/2017/sport-play/draw-btn.png');
 

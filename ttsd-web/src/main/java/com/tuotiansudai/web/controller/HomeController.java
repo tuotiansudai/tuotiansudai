@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -48,6 +49,9 @@ public class HomeController {
 
     @Autowired
     private TransferService transferService;
+
+    @Autowired
+    private RiskEstimateService riskEstimateService;
 
     @RequestMapping(path = {"/", "/m"}, method = RequestMethod.GET)
     public ModelAndView index() {
@@ -87,7 +91,7 @@ public class HomeController {
 
     @RequestMapping(value = "/settings")
     public ModelAndView settings(){
-        return new ModelAndView("/settings");
+        return new ModelAndView("/settings", "estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
     }
 
 }

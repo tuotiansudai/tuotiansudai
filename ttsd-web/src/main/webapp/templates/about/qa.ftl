@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="常见问题" title="拓天速贷解答_专业的P2P理财_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P理财/网络贷款用户,提供大量P2P理财/网络贷款知识,满足有相同或类似投资问题的用户需求.">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="常见问题" title="拓天速贷解答_专业的P2P投资_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P投资/网络贷款用户,提供大量P2P投资/网络贷款知识,满足有相同或类似投资问题的用户需求.">
 <div class="about-us-container" id="WhetherApp">
 	<h2 class="column-title"><em>常见问题</em></h2>
 	<div class="common-problem clearfix" id="problemListFrame">
@@ -85,7 +85,7 @@
                 会员礼包：每月发放投资红包，588、688、788、888元随机派送<br/>
                 服务费折扣：平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%<br/>
                 贵宾专线：贵宾级客服服务，投资问题，意见建议专享直达<br/>
-                专享理财顾问：发标时间，平台活动，理财顾问第一时间通知到您<br/>
+                专享投资顾问：发标时间，平台活动，投资顾问第一时间通知到您<br/>
                 生日福利：V5专享，平台将会在会员生日时送上神秘礼包<br/>
                 注：会员权益会不断提升，敬请期待。
             </dd>
@@ -125,8 +125,8 @@
                 ②电脑端更换浏览器重新操作，手机端退出APP重新操作；<br/>
                 ③如仍无法解决，请联系客服热线400-169-1188。
             </dd>
-            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>38.什么是预期收益？</span></dt>
-            <dd><strong>答：</strong>“预期收益”是指平台通过算法预计可能会产生的收益，不包括可能产生的服务费用和由于大小月产生的收益差别。</dd>
+            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>38.什么是约定年化利率？</span></dt>
+            <dd><strong>答：</strong>“约定年化利率”是指平台与出借用户之间约定在一定期限内按照披露的年化利率进行收益结算，不包括服务费用和由于大小月产生的收益差别。还款方式的差异会产生不同的收益。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>39.什么是实际收益？</span></dt>
             <dd><strong>答：</strong>“实际收益”是指按实际收益天数实际回款后，扣除相关费用，得到的实际收益，可在交易记录中查询。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>40.自动投标怎么设置？</span></dt>
@@ -174,7 +174,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>59.提现银行卡是否可以更换？</span></dt>
             <dd><strong>答：</strong>提现银行卡即您绑定的银行卡，换卡情况参照问题“如何更换绑定的银行卡”。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>60.抵押贷简介</span></dt>
-            <dd><strong>答：</strong>拓天速贷主要产品为房屋抵押贷、车辆抵押贷，具体可以细分为：30天（新手专享）、90天、180天、360天的抵押贷，预期年化收益率10%-13%；50元起投；还款方式为：先付收益后还投资本金，按天计息，放款后生息。适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。
+            <dd><strong>答：</strong>拓天速贷主要产品为房屋抵押贷、车辆抵押贷，具体可以细分为：30天（新手专享）、90天、180天、360天的抵押贷，约定年化利率10%-13%；50元起投；还款方式为：先付收益后还投资本金，按天计息，放款后生息。适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。
             </dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>61.债权转让在哪里购买？</span></dt>
             <dd><strong>答：</strong>登录官方网站—我要投资—转让项目（即可看到可购买的转让项目）。</dd>
@@ -205,7 +205,7 @@
                 （2）点击平台右上角“手机APP”，扫描二维码即可下载；
             </dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>70.什么是“好友推荐赚奖励”？</span></dt>
-            <dd><strong>答：</strong>用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金预期年化收益的1%，奖励在标的放款时发放到推荐人账户。</dd>
+            <dd><strong>答：</strong>用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金约定年化利率的1%，奖励在标的放款时发放到推荐人账户。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>71.怎么推荐好友参与投资？</span></dt>
             <dd><strong>答：</strong>
                 ①手机端：登录官方APP—我的财富—推荐人管理—扫码—保存二维码到手机发送给朋友/或分享至朋友圈；<br/>

@@ -607,6 +607,10 @@
         limit #{index}, #{pageSize}
     </select>
 
+    <select id="findSuccessLoanOutLoan" resultMap="loanResultMap">
+       SELECT * FROM loan WHERE status IN ('RAISING','RECHECK','REPAYING','COMPLETE','OVERDUE')
+    </select>
+
     <select id="findLoanAchievementCount" parameterType="map" resultType="long">
         SELECT
         count(*)
@@ -667,6 +671,7 @@
             OR temp.first_invest_login_name = #{mobile}
         </if>
     </select>
+
 
     <select id="findByProductType" resultMap="loanResultMap">
         select loan.* from loan left join loan_details on loan.id = loan_details.loan_id

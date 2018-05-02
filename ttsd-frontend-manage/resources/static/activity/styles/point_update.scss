@@ -3,6 +3,19 @@
 	margin: 0;
 }
 
+.compliance-banner {
+	.invest-tip {
+		line-height: 40px;
+		bottom: 67px;
+		@media screen and (max-width: 1024px){
+			bottom: 270px;
+			@media screen and (max-width:767px){
+				bottom: 143px;
+			}
+		}
+	}
+}
+
 .point-update-container {
 	background: #ff473c;
 	.media-pc{

@@ -3,6 +3,7 @@
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details"
      data-has-bank-card="${hasBankCard?c}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
+     data-estimate="${estimate?string('true', 'false')}"
      style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
     <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
@@ -57,7 +58,7 @@
 </#if>
 
 <#include "component/anxin-agreement.ftl" />
-
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 40px">市场有风险，投资需谨慎！</div>
 </div>
 
 <div id="authorization_message" style="display: none">

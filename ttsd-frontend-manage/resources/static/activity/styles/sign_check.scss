@@ -3,7 +3,13 @@
 	margin: 0;
 	background: #ffe672;
 }
-
+.compliance-banner {
+	.invest-tip {
+		color: #666;
+		line-height: 40px;
+		bottom: 23px;
+	}
+}
 .sign-check-container {
 	background: url("../images/sign-check/bg.png") repeat;
 	.media-pc{

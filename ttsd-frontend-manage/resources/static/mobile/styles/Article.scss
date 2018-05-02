@@ -50,6 +50,7 @@
 				margin-top: 0;
 			}
 			img {
+				max-width: 100%;
 				margin: 10px auto;
 				display: block;
 			}
@@ -62,6 +63,9 @@
 			padding-top: 12px;
 			.readed {
 				color: #103d70;
+			}
+			&.noDisplay {
+				display: none;
 			}
 		}
 	}

@@ -20,7 +20,7 @@ public class AnnounceController {
     private ConsoleAnnounceService consoleAnnounceService;
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
-    public ModelAndView announceManage(@RequestParam(value = "title", required = false) String title,
+    public ModelAndView anammnounceManage(@RequestParam(value = "title", required = false) String title,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/announce-list");

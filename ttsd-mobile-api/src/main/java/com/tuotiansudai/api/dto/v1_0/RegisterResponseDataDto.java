@@ -15,6 +15,7 @@ public class RegisterResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "token", example = "d96078c8-9bc8-4525-a830-a7e4c7dfb8f6")
     private String token;
+
     @ApiModelProperty(value = "identityNumber", example = "110000000000000000")
     private String identityNumber;
 

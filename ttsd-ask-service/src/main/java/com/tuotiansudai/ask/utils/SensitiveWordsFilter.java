@@ -14,6 +14,7 @@ public class SensitiveWordsFilter {
 
     private static String sensitiveLevelOneWords;
     private static String sensitiveLevelTwoWords;
+    private static String[] sensitiveWords;
 
     static {
         Properties config = new Properties();
@@ -23,6 +24,7 @@ public class SensitiveWordsFilter {
             config.load(reader);
             sensitiveLevelOneWords = config.getProperty("levelOneWords");
             sensitiveLevelTwoWords = config.getProperty("levelTwoWords");
+            sensitiveWords = config.getProperty("sensitiveWords").split("\\|");
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
@@ -49,5 +51,14 @@ public class SensitiveWordsFilter {
     public static boolean match(String raw) {
 //        return !replace(raw).equals(raw);
         return false;
+    }
+
+    public static String matchSensitiveWords(String raw){
+        for(String word : sensitiveWords){
+            if (raw.contains(word)) {
+                return word;
+            }
+        }
+        return null;
     }
 }

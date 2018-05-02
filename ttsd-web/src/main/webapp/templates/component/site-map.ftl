@@ -12,7 +12,7 @@
     <#--cms栏目列表-->
         <a href='${cmsDomain}/sitemap/categories.html' target="_blank">CMS栏目列表</a>
     <#--ask分类信息-->
-        <a href='${askDomain}/question/sitemap/category/INVEST' target="_blank">理财</a>
+        <a href='${askDomain}/question/sitemap/category/INVEST' target="_blank">投资</a>
         <a href='${askDomain}/question/sitemap/category/STOCK' target="_blank">股票</a>
         <a href='${askDomain}/question/sitemap/category/LOAN' target="_blank">贷款</a>
         <a href='${askDomain}/question/sitemap/category/CREDIT_CARD' target="_blank">信用卡</a>

@@ -2,7 +2,9 @@
 
 <@global.main pageCss="${css.school_open_2017}" pageJavascript="${js.school_open_2017}" activeNav="" activeLeftNav="" title="开学季活动_活动中心_拓天速贷" keywords="拓天速贷,拓天开学季,投资红包,京东E卡,实物大奖" description="拓天速贷谁是投资尖子生活动,每日登录可获一次免费抽取投资红包机会,活动期间,投资带有早鸟专享标签的项目前3名奖励100元京东E卡,累计投资前18名可获得实物大奖.">
 
-<div class="banner-slide" id="bannerSlide"></div>
+<div class="banner-slide compliance-banner" id="bannerSlide">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 
 <div class="activity-frame-box page-width" id="activityPageFrame">
 

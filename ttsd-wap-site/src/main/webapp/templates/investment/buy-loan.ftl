@@ -21,7 +21,7 @@
                     <span>
                         <i>15%</i>
                     </span>
-                    <em>预期年化收益</em>
+                    <em>约定年化利率</em>
                 </li>
                 <li>
                     <span>
