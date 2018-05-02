@@ -122,7 +122,7 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            title: '我正在拓天速贷投资拿返利，帮我助力，你也有钱拿！', // 分享标题
             desc: '我在拓天速贷app发现了一个助力得现金奖励的活动，快来参加吧！', // 分享描述
             link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
@@ -133,7 +133,7 @@
         });
 
         wx.onMenuShareTimeline({
-            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            title: '我正在拓天速贷投资拿返利，帮我助力，你也有钱拿！', // 分享标题
             link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
