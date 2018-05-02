@@ -165,5 +165,6 @@
         <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
+</div>
 
 </@global.main>
