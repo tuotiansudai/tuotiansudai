@@ -164,7 +164,7 @@ public class InviteHelpActivityController {
     public ModelAndView startWorkActivityWechat(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activities/2018/rebate-station");
+            return new ModelAndView("redirect:/activity/invite-help");
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/rebate-station-coupons");
         modelAndView.addObject("activityStartTime", startTime);
@@ -180,7 +180,7 @@ public class InviteHelpActivityController {
     public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activities/2018/rebate-station");
+            return new ModelAndView("redirect:/activity/invite-help");
         }
         boolean duringActivities = activityWeChatService.duringActivities(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT);
         if (!duringActivities) {
