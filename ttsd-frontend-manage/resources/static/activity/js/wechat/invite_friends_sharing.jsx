@@ -53,7 +53,7 @@ setTimeout(function () {
 },0);
 
 $('.invite_friends_btn').on('click',() => {
-    if(is_wechat() || sourceKind.params.source == 'app') {
+    if(is_wechat()) {
         $('.wechat_share_tip').show();
     }
     else {

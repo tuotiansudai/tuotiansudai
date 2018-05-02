@@ -29,10 +29,10 @@ $('.help_rightNow').on('click',function () {
             });
         }
         else {
-            if(sourceKind.params.source == 'app') {
-                $('.wechat_share_tip').show();
-                return;
-            }
+            // if(sourceKind.params.source == 'app') {
+            //     $('.wechat_share_tip').show();
+            //     return;
+            // }
             alert('请在微信中分享');
         }
     }
@@ -48,10 +48,10 @@ $('.help_too').on('click',() => {
                 location.href = "/activity/invite-help/wechat/everyone/help/detail";
             }
             else {
-                if(sourceKind.params.source == 'app') {
-                    $('.wechat_share_tip').show();
-                    return;
-                }
+                // if(sourceKind.params.source == 'app') {
+                //     $('.wechat_share_tip').show();
+                //     return;
+                // }
                 alert('请在微信中分享');
             }
         }else{
@@ -63,10 +63,10 @@ $('.help_too').on('click',() => {
             location.href = "/activity/invite-help/wechat/everyone/help/detail";
         }
         else {
-            if(sourceKind.params.source == 'app') {
-                $('.wechat_share_tip').show();
-                return;
-            }
+            // if(sourceKind.params.source == 'app') {
+            //     $('.wechat_share_tip').show();
+            //     return;
+            // }
             alert('请在微信中分享');
         }
     }
