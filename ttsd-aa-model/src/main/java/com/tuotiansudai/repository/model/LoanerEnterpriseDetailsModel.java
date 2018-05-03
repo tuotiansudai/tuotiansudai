@@ -10,6 +10,7 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
     private String juristicPerson;
     private String address;
     private String purpose;
+    private String source;
 
     public LoanerEnterpriseDetailsModel() {
     }
@@ -19,6 +20,7 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
         this.juristicPerson = dto.getJuristicPerson();
         this.address = dto.getAddress();
         this.purpose = dto.getPurpose();
+        this.source = dto.getSource();
     }
 
     public long getId() {
@@ -59,5 +61,13 @@ public class LoanerEnterpriseDetailsModel implements Serializable {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.double_landing}" pageJavascript="${js.double_landing}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
+<@global.main pageCss="${css.double_landing}" pageJavascript="${js.double_landing}" activeNav="" activeLeftNav="" title="新手福利_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大投资、贷款的用户提供多元化的投资选择和优质的综合投资服务,新手注册可领取588红包大奖和3%的新手加息券.">
 <style type="text/css">
     .header-container {
         display: none;
@@ -21,7 +21,7 @@
             <div class="image-title"></div>
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手体验项目</dt>
-                <dd><i>13</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>13</i>% <br/><em>约定年化利率</em></dd>
                 <dd><i>3</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -51,7 +51,7 @@
 
             <dl class="new-user-list clearfix">
                 <dt class="clearfix tc">新手专享标</dt>
-                <dd><i>11</i>% <br/><em>预期年化收益</em></dd>
+                <dd><i>11</i>% <br/><em>约定年化利率</em></dd>
                 <dd><i>30</i>天 <br/><em>项目期限</em></dd>
             </dl>
 
@@ -96,7 +96,7 @@
                 <span class="newbie-step5 icon-three"></span>
                 <br><i>稳健安全</i>
                     <br/>
-                    <p>预期年化收益8%～11%<br>房/车抵押债权安全系数高</p></dd>
+                    <p>约定年化利率8%～11%<br>房/车抵押债权安全系数高</p></dd>
             </dl>
 
         </div>

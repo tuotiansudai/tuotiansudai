@@ -1,7 +1,7 @@
 
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="article-list.js" headLab="content-manage" sideLab="articleMan" title="理财圈列表">
+<@global.main pageCss="" pageJavascript="article-list.js" headLab="content-manage" sideLab="articleMan" title="投资圈列表">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -17,7 +17,7 @@
                         <option value="">全部</option>
                     <#list articleSectionTypeList as sectionName>
                         <option value="${sectionName}"
-                                <#if (selected?has_content && selected == sectionName.articleSectionTypeName) >selected</#if>
+                                <#if (selected?? && selected == sectionName) >selected</#if>
                                 >${sectionName.articleSectionTypeName}</option>
                     </#list>
                 </select>
@@ -78,6 +78,10 @@
                     <td>${article.checker!}</td>
                     <td>${article.articleStatus.description!}</td>
                     <td>
+                        <#if article.articleStatus.description == '审核驳回'>
+                            <a href="/announce-manage/article/${article.articleId?c}/edit">编辑 </a>/
+                            <a href="/announce-manage/article/${article.articleId?c}/retrace"> 撤销</a>
+                        </#if>
                         <#if article.articleStatus.description == '待审核'>
                             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                                 <a href="javascript:void(0)" class="check-apply" data-id="${article.articleId?c}">审核 </a>/
@@ -117,7 +121,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index - 1}&pageSize=${data.pageSize}"
+                    <a href="/announce-manage/article/list?title=${title!}<#if status??>&status=${status}</#if><#if selected??>&articleSectionType=${selected}</#if>&index=${data.index - 1}&pageSize=${data.pageSize}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -128,7 +132,7 @@
                 <li><a id="pageIndex">${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/announce-manage/article/list?title=${title!}&index=${data.index + 1}&pageSize=${data.pageSize}"
+                    <a href="/announce-manage/article/list?title=${title!}<#if status??>&status=${status}</#if><#if selected??>&articleSectionType=${selected}</#if>&index=${data.index + 1}&pageSize=${data.pageSize}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

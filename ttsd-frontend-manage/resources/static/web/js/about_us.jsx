@@ -1,6 +1,7 @@
 require('webStyle/about_us.scss');
 require('publicJs/pagination');
 require('webJsModule/touch_menu');
+require('webJsModule/touch_menu');
 let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
@@ -82,7 +83,6 @@ if($noticeList.length) {
     let ListRender = _.template(noticeTpl);
     let requestData={"index":1,"pageSize":10};
     paginationElement.loadPagination(requestData, function (data) {
-
         let html = ListRender(data);
         $noticeList.html(html);
         $noticeList.find('span').each(function(key,option) {
@@ -146,6 +146,37 @@ $organizationalImg.find('li').each(function(key,option) {
     $(option).find('a').attr('href',organizationalImg[num].big);
     $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
 });
+//审计报告
+let $reportImg = $('.reportImg');
+let $report2017 = $('.photo2017'),
+    $report2016 = $('.photo2016'),
+    $report2015 = $('.photo2015');
+
+let reportImg={
+    '1': {
+        small:require('../images/sign/aboutus/report_2017_1_small.png'),
+        big:require('../images/sign/aboutus/report_2017_1_big.png')
+    },
+    '2':{
+        small:require('../images/sign/aboutus/report_2017_2_small.png'),
+        big:require('../images/sign/aboutus/report_2017_2_big.png')
+    },
+    '3': {
+        small:require('../images/sign/aboutus/report_2016_1_small.png'),
+        big:require('../images/sign/aboutus/report_2016_1_big.png')
+    },
+    '4':{
+        small:require('../images/sign/aboutus/report_2015_1_small.png'),
+        big:require('../images/sign/aboutus/report_2015_1_big.png')
+    }
+};
+
+$reportImg.find('li').each(function(key,option) {
+    console.log(option)
+    let num = key+1;
+    $(option).find('a').attr('href',reportImg[num].big);
+    $(option).find('a').append(`<img src="${reportImg[num].small}">`);
+});
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
@@ -170,7 +201,20 @@ fancybox(function() {
         }
     });
 });
+//审计报告放大图
 
+fancybox(function() {
+    $(".audit-report-item li a").fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        "loop":false,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+        }
+    });
+});
 //问题列表
 require.ensure([],function() {
     let $problemListFrame=$('#problemListFrame');
@@ -243,7 +287,7 @@ let getPartOnePage = (data, dataStr) => {
     $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
     $('#operationDays').append(dom);
     $('#operationDays').append(`<span>天</span>`);
-    // $('#grand_total_amount').html(formatNumber(data.tradeAmount, 2));
+
      $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
 };
 
@@ -279,6 +323,92 @@ function dateFomater(datetime) {
 require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
     let loadEcharts = require('publicJs/load_echarts');
     let commonFun=require('publicJs/commonFun');
+    //团队介绍环形图
+
+    if($('.team-introduction').length){
+        //年龄分布 环形图
+        let ageDistributionArr = [{name:'25岁以下  49%',scale:0.49},{name:'30~40岁   32%',scale:0.32},{name:'26~30岁  19%',scale:0.19}];
+        var optionAgeDistribution = loadEcharts.ChartOptionTemplates.AnnularOption(ageDistributionArr,
+            {
+                tooltip: {
+                formatter: '员工年龄'+'<br/>{b} ',
+                show: true,
+                enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+        });
+        optionAgeDistribution.series[0].center = ['50%', '40%'];
+        var  optAgeDistribution = loadEcharts.ChartConfig('ageDistribution', optionAgeDistribution);
+        loadEcharts.RenderChart(optAgeDistribution);
+        //学历分布
+        let educationalDistributionArr = [{name:'大专及本科  88%',scale:0.88},{name:'硕士及以上  5%',scale:0.05},{name:'其他  7%',scale:0.07}];
+        var optionEducationalDistribution = loadEcharts.ChartOptionTemplates.AnnularOption(educationalDistributionArr,
+            {
+                tooltip: {
+                    formatter: '员工学历'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+            });
+        optionEducationalDistribution.series[0].center = ['50%', '40%'];
+        var  optEducatioEnalDistribution = loadEcharts.ChartConfig('educationalDistribution', optionEducationalDistribution);
+        loadEcharts.RenderChart(optEducatioEnalDistribution);
+
+        //技术及风控团队员工学历分布
+        let technologyEducationalArr = [{name:'本科  80%',scale:0.8},{name:'硕士及以上  10%',scale:0.1},{name:'专科  10%',scale:0.1}];
+        var optionTechnologyEducational = loadEcharts.ChartOptionTemplates.AnnularOption(technologyEducationalArr,
+            {
+                tooltip: {
+                    formatter: '技术及风控团队员工学历'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa']
+            });
+        optionTechnologyEducational.series[0].center = ['50%', '40%'];
+        var  optTechnologyEducational = loadEcharts.ChartConfig('technologyEducational', optionTechnologyEducational);
+        loadEcharts.RenderChart(optTechnologyEducational);
+
+        //技术及风控团队员工工作年限分布
+        let technologyWorkingLifeArr = [{name:'3年以下  22%',scale:0.22},{name:'3-5年  39%',scale:0.39},{name:'6-10年    31%',scale:0.31},{name:'10年以上  8%',scale:0.08}];
+        var optionTechnologyWorkingLife = loadEcharts.ChartOptionTemplates.AnnularOption(technologyWorkingLifeArr,
+            {
+                tooltip: {
+                    formatter: '技术及风控团队员工工作年限'+'<br/>{b} ',
+                    show: true,
+                    enterable:true
+                },
+                color: ['#32cd32', '#da70d6', '#86cffa',"#ff7e50"]
+            });
+        optionTechnologyWorkingLife.series[0].center = ['50%', '40%'];
+        var  optTechnologyWorkingLife = loadEcharts.ChartConfig('technologyWorkingLife', optionTechnologyWorkingLife);
+        loadEcharts.RenderChart(optTechnologyWorkingLife);
+        //点击前后按钮
+        var pageIndex = 0;
+        var perWidth = 310*2+20*2;
+        var $carouselBox = $('#carouselBox');
+
+        $('.prevBtn').click(function(){
+            pageIndex--;
+            if(pageIndex <= 0) {
+                pageIndex = 0;
+            }
+            $carouselBox.animate({
+                'left':-pageIndex*perWidth
+            });
+        })
+        $('.nextBtn').click(function(){
+            pageIndex ++;
+            if(pageIndex >= 1) {
+                pageIndex = 1;
+            }
+            $carouselBox.animate({
+                'left':-pageIndex*perWidth
+            });
+        })
+    }
+
     if (!$("#dataRecord").length) {
         return;
     }
@@ -295,8 +425,21 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-         $('#usersCount').text(toThousands(data.usersCount));
-         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));
+         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
+         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));//累计交易金额
+       $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
+        $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
+        $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
+
+        $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
+         $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
+         $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
+         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
+         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
+
+        $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
+        $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+
         let barChartArr = [];
         let num = 0;
         for (let i = 0; i < 4; i++) {
@@ -317,7 +460,6 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             option = loadEcharts.ChartOptionTemplates.BarOption(dataJson);
         option.series[0].barWidth = 50;
 
-        console.log(option)
           var  opt = loadEcharts.ChartConfig('dataRecord', option);
         loadEcharts.RenderChart(opt);
         //投资人基本信息 环形图
@@ -391,3 +533,26 @@ function calculateWidth(dom,className) {
     })
     $(dom).find(className).width(widthArr[widthArr.length-1]).css('marginRight','10px');
 }
+//控股名单
+$('#nameList').click(function () {
+    layer.open({
+        type: 1,
+        title:'实际控制人与持股5%以上的股东名单',
+        closeBtn: 1,
+        area: ['600px', '280px'],
+        shadeClose: false,
+        content: $('#nameListPop')
+    });
+});
+//用户注册协议
+$('#userAgreement').click(function () {
+    layer.open({
+        type:1,
+        title:'速贷用户注册协议样本',
+        area:$(window).width()>700?['800px','520px']:['320px','100%'],
+        shadeClose: false,
+        scrollbar: true,
+        skin:'register-skin',
+        content: $('.user-register')
+    });
+});

@@ -6,6 +6,7 @@
     <div class="menu-category">
         <span class="current"><a id="aaa">直投项目</a></span>
         <span><a href="/m/transfer-list">转让项目</a></span>
+        <em class="notice-tip-btn"></em>
     </div>
 
     <div id="wrapperOut"  class="loan-list-frame">
@@ -19,7 +20,7 @@
                             <div class="target-category-box" data-url="/m/transfer-list">
                                 <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
                                 <ul class="transferArea loan-info clearfix">
-                                    <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                                    <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">约定年化利率</em></li>
                                     <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
                                     <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
                                 </ul>
@@ -53,7 +54,7 @@
                                 </#if>
                             </i><em>%</em>
                         </span>
-                                <em class="note">预期年化收益</em>
+                                <em class="note">约定年化利率</em>
                             </li>
                             <li>
                             <#if loanItem.productType != 'EXPERIENCE'>最长 </#if><em
@@ -113,7 +114,7 @@
                     <div class="target-category-box" data-url="/m/transfer-list">
                         <b class="newer-title transferAreaTitle">转让专区<i class="icon-sign">期限短 收益高</i></b>
                         <ul class="transferArea loan-info clearfix">
-                            <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">预期年化收益</em></li>
+                            <li><span class="max-benifit">最高<i><@percentInteger>${maxTransferringRate}</@percentInteger><@percentFraction>${maxTransferringRate}</@percentFraction></i>%</span><em class="note">约定年化利率</em></li>
                             <li style="position: relative"><em class="duration-day">${transferringCount}</em> 个 <em class="note">可投项目</em><i class="icon-first-get">先到先得</i></li>
                             <li><a href="/m/transfer-list" class="btn-invest btn-normal">马上抢标</a></li>
                         </ul>
@@ -141,6 +142,10 @@
         <a class="menu-invest current" href="/m/loan-list">
             <i></i>
             <span>投资</span>
+        </a>
+        <a class="menu-knowledge" href="/m/about/knowledge">
+            <i></i>
+            <span>发现</span>
         </a>
         <a class="menu-my" >
             <i></i>

@@ -25,7 +25,15 @@ public class ActivityWeChatDrawCouponService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.spring.breeze.endTime}\")}")
     private Date activitySpringBreezeEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.startTime}\")}")
+    private Date activityInviteHelpStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.endTime}\")}")
+    private Date activityInviteHelpEndTime;
+
     private static final String SPRING_BREEZE_KEY = "SPRING_BREEZE_ACTIVITY_DRAW_COUPON:{0}";
+
+    private static final String INVITE_HELP_KEY = "INVITE_HELP_ACTIVITY_DRAW_COUPON:{0}";
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -50,12 +58,14 @@ public class ActivityWeChatDrawCouponService {
     public List<Date> getActivityTime(WeChatDrawCoupon weChatDrawCoupon){
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, List<Date>>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, Lists.newArrayList(activitySpringBreezeStartTime, activitySpringBreezeEndTime))
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, Lists.newArrayList(activityInviteHelpStartTime, activityInviteHelpEndTime))
                 .build()).get(weChatDrawCoupon);
     }
 
     public String getActivityKey(WeChatDrawCoupon weChatDrawCoupon){
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, String>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, SPRING_BREEZE_KEY)
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, INVITE_HELP_KEY)
                 .build()).get(weChatDrawCoupon);
     }
 }

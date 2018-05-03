@@ -15,6 +15,8 @@ public enum WeChatMessageType {
 
     INVEST_SUCCESS("invest_wechat_message_request_body.json"),
 
+    LOAN_COMPLETE("loan_complete_wechat_message_request_body.json"),
+
     BOUND_TO_OTHER_USER("bound_wechat_message_request_body.json"); //账户被其他微信号绑定消息
 
 

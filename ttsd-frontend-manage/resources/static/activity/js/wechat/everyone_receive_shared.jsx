@@ -1,0 +1,144 @@
+require('activityStyle/wechat/everyone_receive_shared.scss');
+let commonFun = require('publicJs/commonFun');
+let sourceKind = globalFun.parseURL(location.href);
+commonFun.calculationFun(document,window);
+let timer;
+let ownHelp = $('.help_too').data('ownHelp');
+let startTime = $('.help_too').data('startTime');
+let overTime = $('.help_too').data('overTime');
+let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
+$('.help_rightNow').on('click',function () {
+    if ($(this).hasClass('no_click')) {
+        layer.msg('助力已结束');
+        return;
+    }
+    else {
+        if(is_wechat()) {
+            commonFun.useAjax({
+                type: 'GET',
+                url: '/activity/invite-help/click-help/'+ $("#nowHelpId").data('helpId')
+            }, function (data) {
+                if (data) {
+                    layer.msg('助力成功');
+                    setTimeout(() => {location.reload();},1000)
+                }
+                else {
+                    layer.msg('今日助力已达上限');
+                }
+            });
+        }
+        else {
+            // if(sourceKind.params.source == 'app') {
+            //     $('.wechat_share_tip').show();
+            //     return;
+            // }
+            alert('请在微信中分享');
+        }
+    }
+});
+
+$('.help_too').on('click',() => {
+    let currentTime = new Date().getTime();
+    if (currentTime < activityTime) {
+        layer.msg('活动未开始');
+    }
+    else if (currentTime > activityOverTime) {
+        if (ownHelp){
+            if(is_wechat()) {
+                location.href= "/activity/invite-help/wechat/everyone/help/detail";
+            }
+            else {
+                // if(sourceKind.params.source == 'app') {
+                //     $('.wechat_share_tip').show();
+                //     return;
+                // }
+                alert('请在微信中分享');
+            }
+        }else{
+            layer.msg('活动已结束');
+        }
+    }
+    else {
+        if(is_wechat()) {
+            location.href = "/activity/invite-help/wechat/everyone/help/detail";
+        }
+        else {
+            // if(sourceKind.params.source == 'app') {
+            //     $('.wechat_share_tip').show();
+            //     return;
+            // }
+            alert('请在微信中分享');
+        }
+    }
+});
+
+$('.rules').on('click',() => {
+    $('.flex_rules').show();
+    $('body').css('overflow','hidden');
+});
+
+$('.close_rules').on('click',() => {
+    $('.flex_rules').hide();
+    $('body').css('overflow','auto');
+});
+
+function countTimePop(str) {
+    $('.pic_wrapper').show();
+    $('.time_over').hide();
+    let end = new Date(str).getTime();
+    let now = new Date().getTime();
+    let leftTime = (end-now)/1000;
+    timerCount();
+    timer = setInterval(() => {
+        timerCount();
+    },1000);
+    function timerCount() {
+        let h,m,s;
+        if (leftTime > 0) {
+            if (leftTime <= 1) {
+                clearInterval(timer);
+                $('.pic_wrapper').hide();
+                $('.time_over').show();
+                return;
+            }
+            h = Math.floor(leftTime/60/60%24);
+            m = Math.floor(leftTime/60%60);
+            s = Math.floor(leftTime%60);
+            h = h < '10' ? '0' + h : h + '';
+            m = m < '10' ? '0' + m : m + '';
+            s = s < '10' ? '0' + s : s + '';
+
+            $('.hour1').html(h.charAt(0));
+            $('.hour2').html(h.charAt(1));
+            $('.minutes1').html(m.charAt(0));
+            $('.minutes2').html(m.charAt(1));
+            $('.seconds1').html(s.charAt(0));
+            $('.seconds2').html(s.charAt(1));
+            --leftTime;
+        }
+        else {
+            clearInterval(timer);
+            $('.help_rightNow').removeClass('help_rightNow').addClass('no_click');
+            $('.pic_wrapper').hide();
+            $('.time_over').show();
+        }
+    }
+}
+
+countTimePop($("#countDown").data("countdown").replace(/-/g,'/'));
+
+function is_wechat(){
+    return navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger";
+}
+
+$('.wechat_share_tip').on('click',function () {
+    $(this).hide();
+});
+
+
+
+
+
+
+

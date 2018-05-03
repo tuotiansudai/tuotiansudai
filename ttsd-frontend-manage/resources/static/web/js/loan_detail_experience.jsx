@@ -59,15 +59,9 @@ amountInputElement.on('blur',function() {
     });
 }).trigger('blur');
 
-
-
-investForm.onsubmit=function(event) {
-    event.preventDefault();
+function experInvest() {
     let getInvestAmount = getAmount();
     let error = checkError(getInvestAmount);
-    if(error) {
-        return;
-    }
     commonFun.useAjax({
         type:'POST',
         url: '/experience-invest',
@@ -93,8 +87,68 @@ investForm.onsubmit=function(event) {
         }
     });
 }
+let isEstimate = $experienceLoan.data('estimate');
+
+investForm.onsubmit=function(event) {
+    event.preventDefault();
+    let getInvestAmount = getAmount();
+    let error = checkError(getInvestAmount);
+    if(error) {
+        return;
+    }
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
+
+        });
+        return false;
+    }else {
+        experInvest();
+    }
+
+
+}
 $('.close-free',$experienceLoan).on('click', function (event) {
     event.preventDefault();
     layer.closeAll();
     location.reload();
 });
+
+var $cancelAssessment = $('#cancelAssessment'),
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskTips = $('#riskTips');
+
+$cancelAssessment.on('click', function(event) {
+    event.preventDefault();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+        experInvest();
+    });
+
+});
+
+
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
+

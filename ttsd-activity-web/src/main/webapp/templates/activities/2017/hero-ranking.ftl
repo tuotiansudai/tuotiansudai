@@ -1,7 +1,9 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.hero_ranking_2017}" pageJavascript="${js.hero_ranking_2017}" activeNav="" activeLeftNav="" title="英雄排位场_拓天周年庆_活动中心_拓天速贷" keywords="拓天速贷,拓天周年庆,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
-<div class="banner-slide" id="bannerSlide"></div>
+<div class="banner-slide compliance-banner" id="bannerSlide">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 <div class="activity-page-frame page-width" id="activityPageFrame">
     <div class="reg-tag-current" style="display: none">
         <#include '../../module/fast-register.ftl' />
@@ -92,7 +94,7 @@
         5、拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；<br/>
         6、为了保证获奖结果的公平性，实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；<br/>
         7、拓天速贷在法律范围内保留对本活动的最终解释权；<br/>
-        8、理财有风险，投资需谨慎。
+        8、投资有风险，投资需谨慎。
     </div>
 </div>
 

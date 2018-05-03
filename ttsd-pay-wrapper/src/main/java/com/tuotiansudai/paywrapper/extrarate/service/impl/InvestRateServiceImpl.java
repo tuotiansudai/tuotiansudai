@@ -1,10 +1,7 @@
 package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.SystemBillBusinessType;
-import com.tuotiansudai.enums.SystemBillMessageType;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -12,7 +9,6 @@ import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.model.InvestExtraRateModel;
 import com.tuotiansudai.repository.model.RepayStatus;
-import com.tuotiansudai.repository.model.SystemBillDetailTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

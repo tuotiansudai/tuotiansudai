@@ -128,7 +128,8 @@
                     {"name":"iphoneX","text":"iPhoneX活动 ","link":"/activity-console/activity-manage/iphonex-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"zeroShopping","text":"0元购活动管理 ","link":"/activity-console/activity-manage/zero-shopping/user-prize-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"cashSnowball","text":"现金滚雪球活动管理 ","link":"/activity-console/activity-manage/cash-snowball-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"cashSnowball","text":"惊喜不重样加息不打烊活动管理 ","link":"/activity-console/activity-manage/start-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"cashSnowball","text":"惊喜不重样加息不打烊活动管理 ","link":"/activity-console/activity-manage/start-work-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"inviteHelp","text":"返利加油站 ","link":"/activity-console/activity-manage/invite-help/invest-reward-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
             ]
         },
         {

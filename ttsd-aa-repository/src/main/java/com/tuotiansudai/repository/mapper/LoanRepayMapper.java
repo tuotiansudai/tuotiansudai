@@ -66,4 +66,5 @@ public interface LoanRepayMapper {
 
     long findSumActualInterest(@Param(value = "endDate") Date endDate);
 
+
 }

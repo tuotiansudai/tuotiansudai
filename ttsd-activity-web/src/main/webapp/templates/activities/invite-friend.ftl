@@ -1,7 +1,9 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.invite_friend}" pageJavascript="${js.invite_friend}" activeNav="" activeLeftNav="" title="推荐奖励_拓天速贷" keywords="拓天速贷,推荐奖励,红包奖励,现金奖励,加息劵奖励,推荐机制" description="拓天速贷邀好友拿3重好礼,邀请好友得红包,好友投资送加息劵,还可拿1%现金奖励,拓天速贷可以让您的财富快速升值.">
 
-<div class="tour-slide"></div>
+<div class="tour-slide compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 
 <div class="share-reward-container page-width" id="shareRewardContainer">
 
@@ -240,7 +242,7 @@
                     <dt>房产抵押借款<span>新手专享</span></dt>
                     <dd>
                         <span class="bite-text"><strong>11</strong>%</span>
-                        <span>预期年化收益</span>
+                        <span>约定年化利率</span>
                     </dd>
                     <dd>
                         <span class="bite-text"><strong>30</strong>天</span>

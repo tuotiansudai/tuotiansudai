@@ -33,6 +33,12 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.spring.breeze.endTime}\")}")
     private Date activitySpringBreezeEndTime;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.startTime}\")}")
+    private Date activityInviteHelpStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.invite.help.endTime}\")}")
+    private Date activityInviteHelpEndTime;
+
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
@@ -42,6 +48,8 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private static final String SPRING_BREEZE_KEY = "SPRING_BREEZE_ACTIVITY_DRAW_COUPON:{0}";
+
+    private static final String INVITE_HELP_KEY = "INVITE_HELP_ACTIVITY_DRAW_COUPON:{0}";
 
     private static final int lifeSecond = 60 * 60 * 24 * 180;
 
@@ -98,18 +106,21 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
     private List<Date> getActivityTime(WeChatDrawCoupon weChatDrawCoupon) {
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, List<Date>>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, Lists.newArrayList(activitySpringBreezeStartTime, activitySpringBreezeEndTime))
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, Lists.newArrayList(activityInviteHelpStartTime, activityInviteHelpEndTime))
                 .build()).get(weChatDrawCoupon);
     }
 
     private String getActivityKey(WeChatDrawCoupon weChatDrawCoupon) {
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, String>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, SPRING_BREEZE_KEY)
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, INVITE_HELP_KEY)
                 .build()).get(weChatDrawCoupon);
     }
 
     private List<Long> getActivityCoupons(WeChatDrawCoupon weChatDrawCoupon){
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, List<Long>>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, Lists.newArrayList(488L, 489L, 489L, 489L, 490L, 490L, 490L, 490L, 490L, 491L, 492L, 493L))
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, Lists.newArrayList(494L, 494L))
                 .build()).get(weChatDrawCoupon);
     }
 }

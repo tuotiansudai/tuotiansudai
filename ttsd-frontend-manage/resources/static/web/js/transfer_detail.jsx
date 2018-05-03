@@ -7,12 +7,13 @@ let commonFun= require('publicJs/commonFun');
 
 //安心签业务
 let anxinModule = require('webJsModule/anxin_signed');
-
+var $transferForm = $('#transferForm');
 var $transferDetailCon = $('#transferDetailCon'),
     $errorTip = $('.errorTip', $transferDetailCon),
     $questionList = $('.question-list', $transferDetailCon),
     $detailRecord = $('.detail-record', $transferDetailCon),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
+let isEstimate = $transferDetailCon.data('estimate');
 
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
@@ -104,7 +105,7 @@ function submitData() {
                     layer.closeAll();
                 },
                 btn2: function() {
-                    var $transferForm = $('#transferForm');
+
                     if ($transferForm.attr('action') === '/transfer/purchase') {
 
                         var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
@@ -120,9 +121,24 @@ function submitData() {
                         }
                     }
                     if($isAnxinAuthenticationRequired.val()=='false'){
-                        $transferForm.submit();
+                        if(!isEstimate){
+                            //风险测评
+                            layer.open({
+                                type: 1,
+                                title:false,
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskAssessment')
+
+                            });
+                            return false;
+                        }else {
+                            $transferForm.submit();
+                        }
+
                     }else{
-                        //安心签
+                        anxinModule.getSkipPhoneTip();
                         return false;
                     }
 
@@ -164,12 +180,57 @@ anxinModule.toAuthorForAnxin(function(data) {
     if(data.data.message=='skipAuth'){
         $isAnxinAuthenticationRequired.val('false');
     }
+    $isAnxinAuthenticationRequired.val('false')
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessment')
 
-    $('#transferForm').submit();
+        });
+        return false;
+    }else {
+        $('#transferForm').submit();
+    }
+
+
 
 });
 
+var $riskAssessment = $('#riskAssessment');
+var $cancelAssessment = $('#cancelAssessment'),
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskTips = $('#riskTips');
 
+$cancelAssessment.on('click', function(event) {
+    event.preventDefault();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+        $transferForm.submit();
+    });
+
+});
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
 
 
 

@@ -2,10 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.ExperienceLoanDetailService;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +19,14 @@ import java.util.Date;
 public class ExperienceLoanDetailController {
 
     @Autowired
+    private RiskEstimateService riskEstimateService;
+
+    @Autowired
     private ExperienceLoanDetailService experienceLoanDetailService;
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private AccountService accountService;
 
@@ -36,6 +37,7 @@ public class ExperienceLoanDetailController {
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(LoginUserInfo.getLoginName()));
         modelAndView.addObject("isAccount", accountService.findByLoginName(LoginUserInfo.getLoginName()) == null ? "false" : "true");
+        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
         return modelAndView;
     }
 

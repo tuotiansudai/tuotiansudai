@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail_experience}" pageJavascript="${js.loan_detail_experience}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
-<div class="loan-detail-content loan-detail-new" id="experienceLoanDetailContent" data-loan-progress="${loan.progress?string.computer}">
+<div class="loan-detail-content loan-detail-new" id="experienceLoanDetailContent" data-loan-progress="${loan.progress?string.computer}" data-estimate="${estimate?string('true', 'false')}">
 
     <div class="borderBox clearfix no-border">
         <div class="loan-model">
@@ -13,7 +13,7 @@
                     <div class="content">
                         <div class="row loan-number-detail clearfix">
                             <div class="col-md-4">
-                                <div class="title">预期年化收益</div>
+                                <div class="title">约定年化利率</div>
                                 <div class="number red">
                                     <@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                                     <span>%</span>
@@ -40,7 +40,7 @@
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
-                <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
+                <h5 class="l-title"><span id="riskTips" class="risk-tips">保守型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为保守型的用户</i></span>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
                     <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
@@ -140,7 +140,7 @@
             <#--没有实名认证-->
             <div class="detail-word">
                 <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元 <br/>
-                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即立即认证>></a>
+                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即认证>></a>
                 <div class="pad-m-tb" style="padding-left:50px;">
                     <button type="button" class="btn-normal close-free">确认</button>
                 </div>
@@ -158,4 +158,13 @@
     <#include "component/coupon-alert.ftl" />
 </div>
     <#include "component/red-envelope-float.ftl" />
+<#--风险测评-->
+<div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+    </div>
+</div>
+
 </@global.main>

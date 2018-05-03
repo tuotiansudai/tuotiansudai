@@ -98,6 +98,10 @@ public class ConsoleLiCaiQuanArticleService {
             if (liCaiQuanArticleDto.getSection() != null && liCaiQuanArticleDto.getSection().equals(articleSectionType)) {
                 articleDtoList.add(liCaiQuanArticleDto);
             }
+
+            if (liCaiQuanArticleDto.getArticleStatus() != null && liCaiQuanArticleDto.getArticleStatus() == articleStatus) {
+                articleDtoList.add(liCaiQuanArticleDto);
+            }
         }
         return articleDtoList;
     }
@@ -234,7 +238,7 @@ public class ConsoleLiCaiQuanArticleService {
     }
 
     public void rejectArticle(long articleId, String comment) {
-        changeArticleStatus(articleId, ArticleStatus.TO_APPROVE);
+        changeArticleStatus(articleId, ArticleStatus.REFUSED);
         redisWrapperClient.hdel(articleCheckerKey, String.valueOf(articleId));
         storeComment(articleId, comment);
     }

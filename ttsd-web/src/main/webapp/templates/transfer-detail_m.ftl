@@ -5,9 +5,14 @@
 <div class="my-account-content experience-amount" id="transferingDetail" style="display: none">
     <div class="m-header"><em id="iconTransferM" class="icon-left"><i></i></em>${transferApplication.name!}
         </span> </div>
+
+
+
     <div class="account-summary">
         <div class="collection">
-
+    <#if loanDto.estimate??>
+            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
+    </#if>
             <span class="summary-box">
                  <b>
                     <@percentInteger>${transferApplication.baseRate+transferApplication.activityRate}</@percentInteger><@percentFraction>${transferApplication.baseRate+transferApplication.activityRate}</@percentFraction>
@@ -15,7 +20,7 @@
                      <i>%</i>
                 </b>
 
-                <em>预期年化收益</em>
+                <em>约定年化利率</em>
             </span>
         </div>
 
@@ -48,6 +53,10 @@
             <label>项目到期时间</label>
             <span>${transferApplication.dueDate?string("yyyy-MM-dd")}</span>
         </li>
+        <li class="related-expenses" data-expenses="${investFeeRate*100}">
+            <label>相关费用</label>
+            <span>${investFeeRate*100}%技术服务费<em class="icon-mark" id="relatedTip"></em></span>
+        </li>
         <#if (transferApplication.transferStatus.name() == "TRANSFERRING")>
         <li class="repay-plan" id="look_repay_plan">
             <label>回款计划</label>
@@ -66,6 +75,7 @@
     <div class="history-record">
         <a id="lookOld" data-url="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
     </div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 
     <#if (transferApplication.transferStatus.name() == "SUCCESS")>
         <button class="to-invest-project" type="button" disabled>已转让</button>

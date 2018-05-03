@@ -327,6 +327,21 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
         color: #FF473C;
       }
     }
+    &.menu-knowledge {
+      i {
+        background: url('../images/bottom/ic-knowledge-normal.png') center center no-repeat;
+        background-size: 100%;
+      }
+
+      &.current {
+        i {
+          background: url('../images/bottom/ic-knowledge-current.png') center center no-repeat;
+          background-size: 100%;
+        }
+
+        color: #FF473C;
+      }
+    }
     &.menu-my {
       i {
         background: url('../images/bottom/ic-my-normal.png') center center no-repeat;

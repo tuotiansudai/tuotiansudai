@@ -20,6 +20,14 @@
             <label for="perName">安心签</label>
             <a><i class="icon-more"></i></a>
         </li>
+        <li id="riskEstimate">
+            <label for="perName">风险测评</label>
+    <#if !estimate??>
+        <a>评估一下更了解自己哦！<i class="icon-more"></i></a>
+    <#else>
+        <a>${estimate.getType()} <i class="icon-more"></i></a>
+    </#if>
+        </li>
     </ul>
 
     <button type="button" class="btn-wap-normal next-step" id="logout">退出登录</button>

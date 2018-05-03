@@ -37,6 +37,10 @@ public class MediaArticleResponseDataDto extends BaseResponseDataDto implements 
     @ApiModelProperty(value = "创建时间", example = "2016-05-06 12:32:58")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "更新时间", example = "2016-05-06 12:32:58")
+    private Date updatedTime;
+
     @ApiModelProperty(value = "文章来源", example = "baidu.com")
     private String source;
 
@@ -110,6 +114,13 @@ public class MediaArticleResponseDataDto extends BaseResponseDataDto implements 
         this.createTime = createTime;
     }
 
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 
     public String getSource() {
         return source;
@@ -147,6 +158,7 @@ public class MediaArticleResponseDataDto extends BaseResponseDataDto implements 
         this.section = model.getSection();
         this.content = model.getContent();
         this.createTime = model.getCreatedTime();
+        this.updatedTime = model.getUpdatedTime();
         this.source = model.getSource();
     }
 }

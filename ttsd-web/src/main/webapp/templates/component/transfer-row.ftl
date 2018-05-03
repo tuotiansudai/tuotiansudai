@@ -2,7 +2,7 @@
     <div class="target-column-con target-transfer-con">
         <#--项目名称-->
         <div class="table-row">${loan.name}</div>
-            <#--预期年化收益-->
+            <#--约定年化利率-->
         <div class="table-row">
             <em class="percent-number">
                 <s class="app">年化收益</s>

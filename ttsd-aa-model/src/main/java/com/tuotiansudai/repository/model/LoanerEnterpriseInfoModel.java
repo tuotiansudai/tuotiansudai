@@ -10,6 +10,7 @@ public class LoanerEnterpriseInfoModel implements Serializable {
     private String companyName;
     private String address;
     private String purpose;
+    private String source;
     private String factoringCompanyName;
     private String factoringCompanyDesc;
 
@@ -19,10 +20,11 @@ public class LoanerEnterpriseInfoModel implements Serializable {
     public LoanerEnterpriseInfoModel(long loanId, LoanCreateLoanerEnterpriseInfoDto dto) {
         this.loanId = loanId;
         this.companyName = dto.getCompanyName();
-        this.factoringCompanyName = dto.getFactoringCompanyName();
-        this.factoringCompanyDesc = dto.getFactoringCompanyDesc();
         this.address = dto.getAddress();
         this.purpose = dto.getPurpose();
+        this.source = dto.getSource();
+        this.factoringCompanyName = dto.getFactoringCompanyName();
+        this.factoringCompanyDesc = dto.getFactoringCompanyDesc();
     }
 
     public long getId() {
@@ -63,6 +65,14 @@ public class LoanerEnterpriseInfoModel implements Serializable {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getFactoringCompanyName() {

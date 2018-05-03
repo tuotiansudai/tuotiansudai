@@ -1,10 +1,21 @@
 <div class="pledge-box house">
 
+<#if loan.introduce??>
+    <div class="section">
+        <div class="title">项目介绍</div>
+        <div class="project-desc">
+            ${loan.introduce}
+        </div>
+    </div>
+</#if>
+
+
+
 <#if loan.loanerDetail??>
     <div class="section">
         <div class="title">借款人基本信息</div>
         <dl>
-            <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
+            <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
                 <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                     <dd><span>${key}：</span><span>${loan.loanerDetail[key]}</span></dd>
                 </#if>

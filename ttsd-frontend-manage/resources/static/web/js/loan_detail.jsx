@@ -35,6 +35,7 @@ let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
+let isEstimate = $loanDetailContent.data('estimate');
 
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -68,7 +69,7 @@ function getInvestAmount() {
 
 function validateInvestAmount() {
     var amount = getInvestAmount();
-    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;//可投金额
+    var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
     return amount > 0 && amountNeedRaised >= amount;
 };
 //投资表单请求以及校验
@@ -119,7 +120,22 @@ function investSubmit(){
             },
             btn2:function(){
                 if($isAuthenticationRequired.val()==='false'){
-                    sendSubmitRequest();
+                    if(!isEstimate){
+                        //风险测评
+                        layer.open({
+                            type: 1,
+                            title:false,
+                            closeBtn: 0,
+                            area: ['400px', '250px'],
+                            shadeClose: true,
+                            content: $('#riskAssessmentFormSubmit')
+
+                        });
+                        return false;
+                    }else {
+                        sendSubmitRequest();
+                    }
+
                 }else{
                     anxinModule.getSkipPhoneTip();
                     return false;
@@ -130,14 +146,32 @@ function investSubmit(){
     }
     //正常投资
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
-        $investForm.submit();
+        if(!isEstimate){
+            //风险测评
+            layer.open({
+                type: 1,
+                title:false,
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskAssessmentFormSubmit')
+
+            });
+            return false;
+        }else {
+            $investForm.submit();
+        }
+
+
     }else{
         anxinModule.getSkipPhoneTip();
         return false;
     }
 }
+
 //发送投资提交请求
 function sendSubmitRequest(){
+
     commonFun.useAjax({
         url: '/no-password-invest',
         data: $investForm.serialize(),
@@ -158,8 +192,9 @@ function sendSubmitRequest(){
         }
     });
 }
+
 //is tip B1 or tip B2?
-function markNoPasswordRemind(){debugger
+function markNoPasswordRemind(){
     if (!noPasswordRemind) {
         commonFun.useAjax({
             url: '/no-password-invest/mark-remind',
@@ -860,16 +895,63 @@ $('.init-checkbox-style').initCheckbox(function(event) {
     }
 });
 
+ let   $cancelAssessmentFormSubmit = $('#cancelAssessmentFormSubmit'),
+    $confirmAssessment = $('#confirmAssessment'),
+    $riskAssessmentRequestSubmit = $('#riskAssessmentRequestSubmit');
 anxinModule.toAuthorForAnxin(function(data) {
-$('#isAnxinUser').val('true');
-$('.skip-group').hide();
-    if(data.skipAuth=='true'){
-        $isAuthenticationRequired.val('false');
+    $('#isAnxinUser').val('true');
+    $('.skip-group').hide();
+
+    // if(data.skipAuth=='true'){
+    //     $isAuthenticationRequired.val('false');
+    // }
+    $isAuthenticationRequired.val('false')
+    if(!isEstimate){
+        //风险测评
+        layer.open({
+            type: 1,
+            title:false,
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskAssessmentFormSubmit')
+
+        });
+        return false;
+    }else {
+         noPasswordInvest?sendSubmitRequest():$investForm.submit();
     }
-    noPasswordInvest?sendSubmitRequest():$investForm.submit();
+
+
+
+
 });
 
+let $riskTips = $('#riskTips');
+$riskTips.on('mouseover', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').show();
+});
+$riskTips.on('mouseout', function(event) {
+    event.preventDefault();
+    $('.risk-tip-content').hide();
+});
 
+$cancelAssessmentFormSubmit.on('click', function(event) {
+    event.preventDefault();
+    commonFun.useAjax({
+        url: '/risk-estimate',
+        data: {answers: ['-1']},
+        type: 'POST'
+    },function(data) {
+        layer.closeAll();
+        noPasswordInvest?sendSubmitRequest():$investForm.submit();
+    });
 
-
+});
+$confirmAssessment.on('click', function(event) {
+    event.preventDefault();
+    layer.closeAll();
+    location.href = '/risk-estimate'
+});
 
