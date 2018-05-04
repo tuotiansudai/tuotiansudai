@@ -69,21 +69,22 @@ public class RegisterService implements AsyncCallbackInterface {
             return null;
         }
 
-        RegisterContentDto registerContentDto = (RegisterContentDto) responseDto.getContent();
-        HashMap map = Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("mobilePhone", registerContentDto.getMobilePhone())
-                .put("identityCode", registerContentDto.getIdentityCode())
-                .put("realName", registerContentDto.getRealName())
-                .put("accountNo", registerContentDto.getAccountNo())
-                .put("userName", registerContentDto.getUserName())
-                .put("regDate", registerContentDto.getRegDate())
-                .put("orderNo", registerContentDto.getOrderNo())
-                .build());
-
-        try {
-            mqWrapperClient.publishMessage(MessageTopic.CertificationSuccess, new Gson().toJson(map));
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] CertificationSuccess file JsonData:{}, error:{}", new Gson().toJson(map), e);
+        if (responseDto.isSuccess()){
+            RegisterContentDto registerContentDto = (RegisterContentDto) responseDto.getContent();
+            HashMap map = Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("mobilePhone", registerContentDto.getMobilePhone())
+                    .put("identityCode", registerContentDto.getIdentityCode())
+                    .put("realName", registerContentDto.getRealName())
+                    .put("accountNo", registerContentDto.getAccountNo())
+                    .put("userName", registerContentDto.getUserName())
+                    .put("regDate", registerContentDto.getRegDate())
+                    .put("orderNo", registerContentDto.getOrderNo())
+                    .build());
+            try {
+                mqWrapperClient.publishMessage(MessageTopic.CertificationSuccess, new Gson().toJson(map));
+            } catch (JsonProcessingException e) {
+                logger.error("[MQ] CertificationSuccess file JsonData:{}, error:{}", new Gson().toJson(map), e);
+            }
         }
 
         responseDto.setReqData(responseData);
