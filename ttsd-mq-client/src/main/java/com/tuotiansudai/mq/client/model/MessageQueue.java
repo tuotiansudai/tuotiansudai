@@ -86,7 +86,7 @@ public enum MessageQueue {
 
 
     //fudian
-    CertificationSuccess_CreateAccount("CertificationSuccess-CreateAccount"),
+    CertificationSuccess_CreateBankAccount("CertificationSuccess-CreateBankAccount"),
     CertificationSuccess_CompletePointTask("CertificationSuccess-CompletePointTask"),
     CertificationSuccess_EventMessage("CertificationSuccess-EventMessage"),
     CertificationSuccess_PushMessage("CertificationSuccess-PushMessage"),

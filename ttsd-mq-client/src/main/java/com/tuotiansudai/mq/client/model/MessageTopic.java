@@ -33,7 +33,7 @@ public enum MessageTopic {
 
     //fudian
     CertificationSuccess("CertificationSuccess",
-            MessageQueue.CertificationSuccess_CreateAccount,
+            MessageQueue.CertificationSuccess_CreateBankAccount,
             MessageQueue.CertificationSuccess_CompletePointTask,
             MessageQueue.CertificationSuccess_EventMessage,
             MessageQueue.CertificationSuccess_PushMessage),
