@@ -244,48 +244,13 @@
                                 </div>
                                 <div class="already_login">
                                     <div class="table_container <#if investHelp!?size ==0>table_none</#if>">
-                                        <table class="cashBack_list">
-                                            <thead>
-                                            <tr class="table_header">
-                                                <th>投资金额</th>
-                                                <th>年化投资金额</th>
-                                                <th>已助力好友（人）</th>
-                                                <th>获取现金奖励</th>
-                                                <th>好友助力倒计时</th>
-                                                <th>邀请好友助力</th>
-                                            </tr>
-                                            </thead>
-                                            <#if investHelp!?size!=0>
-                                                <tbody>
-                                                    <#list investHelp as invest>
-                                                    <tr>
-                                                        <td>${(invest.investAmount/100)?string('0.00')}</td>
-                                                        <td>${(invest.annualizedAmount/100)?string('0.00')}</td>
-                                                        <td>${invest.helpUserCount}</td>
-                                                        <td>${(invest.reward/100)?string('0.00')}</td>
-                                                        <td class="overTime"
-                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
-                                                        <td class="handle_btn"
-                                                            data-help-id="${invest.id}"
-                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
-                                                            去邀请
-                                                        </td>
-                                                    </tr>
-                                                    </#list>
-                                                </tbody>
-                                            </#if>
-                                        </table>
-                                        <#if investHelp!?size ==0>
-                                            <div class="tipText tipText_pc">
-                                                投资成功后，即可邀请好友助力获取高额返现
-                                            </div>
-                                        </#if>
+
                                         <table class="cashBack_list_m">
                                             <thead>
                                             <tr class="table_header">
                                                 <th>投资金额</th>
                                                 <th>好友助力倒计时</th>
-                                                <th>邀请好友助力</th>
+                                                <th>获取现金奖励</th>
                                             </tr>
                                             </thead>
                                             <#if investHelp!?size!=0>
@@ -295,10 +260,8 @@
                                                         <td>${(invest.investAmount/100)?string('0.00')}</td>
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
-                                                        <td class="handle_btn"
-                                                            data-help-id="${invest.id}"
-                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
-                                                            去邀请
+                                                        <td class="handle_btn">
+                                                        ${(record.reward/100)?string('0.00')}元
                                                         </td>
                                                     </tr>
                                                     </#list>
@@ -315,29 +278,13 @@
                                     <div class="see_less" style="display: none">收起></div>
                                 </div>
                                 <div class="no_login no_login1">
-                                    <table class="cashBack_list">
-                                        <table class="cashBack_list">
-                                            <thead>
-                                            <tr class="table_header">
-                                                <th>投资金额</th>
-                                                <th>年化投资金额</th>
-                                                <th>已助力好友（人）</th>
-                                                <th>获取现金奖励</th>
-                                                <th>好友助力倒计时</th>
-                                                <th>好友助力倒计时</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                        <div class="tipText tipText_pc">
-                                            投资成功后，即可邀请好友助力获取高额返现
-                                        </div>
-                                    </table>
+
                                     <table class="cashBack_list_m">
                                         <thead>
                                         <tr class="table_header">
                                             <th>投资金额</th>
                                             <th>好友助力倒计时</th>
-                                            <th>邀请好友助力</th>
+                                            <th>获取现金奖励</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -345,7 +292,7 @@
                                         投资成功后，即可邀请好友助力获取高额返现
                                     </div>
                                 </div>
-                                <a class="to-loan-btn" href="/loan-list"></a>
+                                <a class="to-loan-btn" href="loan-list"></a>
 
                             </div>
 
