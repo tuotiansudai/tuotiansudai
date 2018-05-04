@@ -261,8 +261,7 @@
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td>
-                                                        ${(record.reward/100)?string('0.00')}元
-
+                                                        ${(invest.reward/100)?string('0.00')}元
                                                         </td>
                                                     </tr>
                                                     </#list>
