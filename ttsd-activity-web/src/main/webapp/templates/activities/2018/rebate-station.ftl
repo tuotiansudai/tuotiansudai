@@ -10,7 +10,7 @@
     <div class="circle"></div>
     <div class="glasses"></div>
     <div class="ship"></div>
-    <div class="container container1">
+    <div class="container container1 pcmSite">
         <div class="star"></div>
         <div class="outBox">
             <div class="middleBox">
@@ -217,8 +217,99 @@
         <div class="wood bottomLeft"></div>
         <div class="wood bottomRight"></div>
     </div>
+<#--app独有页面begin-->
+    <div class="container containerApp" style="display: none">
+        <div class="star"></div>
+        <div class="outBox">
+            <div class="middleBox">
+                <div class="innerBox">
+                    <div class="box part1">
+                        <div class="desc">
+                            <p class="desc-activity">活动期间，用户投资后邀请好友助力，根据助力好友人数，该笔投资可获0.2%-1%（年化）返现。</p>
+                            <div class="line"></div>
+                            <div class="progress">
+                                <p><strong>参与流程：</strong><br/>
+                                    第一步：用户在拓天速贷上<strong>投资</strong>；<br/>
+                                    第二步：扫描二维码或微信搜索关注“<strong>拓天速贷服务号</strong>”，回复口令“<strong>返利加油站</strong>”，进入页面；<br/>
+                                    第三步：找到“<strong>邀请好友助力，最高返现1%×2</strong>”活动版块；<br/>
+                                    第四步：在“我的返现项目”中，点击【<strong>去邀请</strong>】按钮，按提示步骤操作即可。</p>
+
+                            </div>
+                            <img style="width: 100%" class="qrcode"
+                                 src="../../../activity/images/add_rates_wechat.png"/>
+                            <div class="cashBack">
+                                <div class="title">
+                                    <div class="cash_icon"></div>
+                                    我的返现项目
+                                </div>
+                                <div class="already_login">
+                                    <div class="table_container <#if investHelp!?size ==0>table_none</#if>">
+
+                                        <table class="cashBack_list_m">
+                                            <thead>
+                                            <tr class="table_header">
+                                                <th>投资金额</th>
+                                                <th>好友助力倒计时</th>
+                                                <th>获取现金奖励</th>
+                                            </tr>
+                                            </thead>
+                                            <#if investHelp!?size!=0>
+                                                <tbody>
+                                                    <#list investHelp as invest>
+                                                    <tr>
+                                                        <td>${(invest.investAmount/100)?string('0.00')}</td>
+                                                        <td class="overTime"
+                                                            data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
+                                                        <td>
+                                                        ${(invest.reward/100)?string('0.00')}元
+                                                        </td>
+                                                    </tr>
+                                                    </#list>
+                                                </tbody>
+                                            </#if>
+                                        </table>
+                                        <#if investHelp!?size ==0>
+                                            <div class="tipText tipText_mobile">
+                                                投资成功后，即可邀请好友助力获取高额返现
+                                            </div>
+                                        </#if>
+                                    </div>
+                                    <div class="see_more"><#if investHelp!?size gt 5>查看更多></#if></div>
+                                    <div class="see_less" style="display: none">收起></div>
+                                </div>
+                                <div class="no_login no_login1">
+
+                                    <table class="cashBack_list_m">
+                                        <thead>
+                                        <tr class="table_header">
+                                            <th>投资金额</th>
+                                            <th>好友助力倒计时</th>
+                                            <th>获取现金奖励</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="tipText tipText_mobile">
+                                        投资成功后，即可邀请好友助力获取高额返现
+                                    </div>
+                                </div>
+                                <a class="to-loan-btn" href="/loan-list"></a>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wood topLeft"></div>
+        <div class="wood topRight"></div>
+        <div class="wood bottomLeft"></div>
+        <div class="wood bottomRight"></div>
+    </div>
+<#--app页面end-->
     <div class="go_ahead"></div>
-    <div class="container">
+    <div class="container pcmSite">
         <div class="outBox">
             <div class="middleBox">
                 <div class="innerBox">
@@ -244,8 +335,13 @@
                                         <div>邀请好友助力得现金奖励</div>
                                     </div>
                                     <div class="already_login">
-                                        <div class="news">您已成功邀请<#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人，获得返现<#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元，<span
-                                                class="strong everyone_detail invite_everyone_detail" style="cursor: pointer" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}">查看邀请详情></span></div>
+                                        <div class="news">您已成功邀请<#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>
+                                            0</#if>人，获得返现<#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>
+                                            0.00</#if>元，<span
+                                                class="strong everyone_detail invite_everyone_detail"
+                                                style="cursor: pointer" data-start-time="${activityStartTime}"
+                                                data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}">查看邀请详情></span>
+                                        </div>
                                     </div>
 
                                     <div class="no_login">
@@ -263,10 +359,16 @@
                                             class="strong">10元现金</span>奖励。</p>
                             </div>
                             <div class="already_login">
-                                <div class="news">您已成功邀请<span class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>人</span>，获得返现<span
-                                        class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>0.00</#if>元</span>，
+                                <div class="news">您已成功邀请<span
+                                        class="strong"><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>0</#if>
+                                    人</span>，获得返现<span
+                                        class="strong"><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}<#else>
+                                    0.00</#if>元</span>，
                                 </div>
-                                <div class="strong everyone_detail invite_everyone_detail" style="cursor: pointer" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}">查看邀请详情></div>
+                                <div class="strong everyone_detail invite_everyone_detail" style="cursor: pointer"
+                                     data-start-time="${activityStartTime}" data-over-time="${activityEndTime}"
+                                     data-own-help="${existOwnHelp?c}">查看邀请详情>
+                                </div>
                                 <div class="invite_friends_help invite_everyone_detail"></div>
                             </div>
                             <div class="no_login">
@@ -274,6 +376,45 @@
                                 <div class="login_text">登录后可查看分享链接</div>
                                 <div class="duration_time">活动有效期：05.02-05.31</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wood topLeft"></div>
+        <div class="wood topRight"></div>
+        <div class="wood bottomLeft"></div>
+        <div class="wood bottomRight"></div>
+    </div>
+    <div class="container containerApp" style="display: none">
+        <div class="star"></div>
+        <div class="outBox">
+            <div class="middleBox">
+                <div class="innerBox">
+                    <div class="box part1">
+                        <div class="desc">
+                            <@global.isAnonymous>
+                                <div class="login_btn"></div>
+                                <p class="no-login-tip">登录后可查看已获取奖励</p>
+                            </@global.isAnonymous>
+                            <@global.isNotAnonymous>
+                                <div class="login-news">您已成功邀请<strong><#if everyoneHelp??>${everyoneHelp.helpUserCount}<#else>
+                                    0</#if></strong>人，获得返现<strong><#if everyoneHelp??>${(everyoneHelp.reward/100)?string('0.00')}</strong><#else>
+                                    0.00</#if>元
+                                </div>
+                            </@global.isNotAnonymous>
+
+                            <p class="desc-activity">活动期间，使用微信邀请好友助力，每多邀请1人为您助力，可获得0.2元现金，最高可获10元现金奖励。</p>
+                            <div class="line"></div>
+                            <div class="progress">
+                                <p><strong>参与流程：</strong><br/>
+                                    第一步：扫描二维码或微信搜索关注”<strong>拓天速贷服务号</strong>”，回复口令“<strong>返利加油站</strong>”，进入页面；<br/>
+                                    第二步：找到“<strong>人人可领10元现金</strong>”活动版块；<br/>
+                                    第三步：点击【<strong>邀请好友来助力</strong>】按钮，按提示步骤操作即可。</p>
+
+                            </div>
+                            <img style="width: 100%" class="qrcode"
+                                 src="../../../activity/images/add_rates_wechat.png"/>
                         </div>
                     </div>
                 </div>
@@ -295,7 +436,7 @@
                             </p>
                             <p>即可<span class="strong">获得0.5%加息券2张</span>，每人限领一次。</p>
                         </div>
-                        <img class="content" src="../../../activity/images/add_rates_wechat.png" />
+                        <img class="content" src="../../../activity/images/add_rates_wechat.png"/>
                     </div>
                 </div>
             </div>
@@ -367,7 +508,9 @@
             <div class="left_topIcon"></div>
             <div class="text">
                 <div>您已经获得<span class="strong"><span class="has_get"></span>元</span>助力现金奖励</div>
-                <div class="differ_friends" style="display: none">还差<span class="differ_count"></span>个好友助力即可得到<span class="strong"><span class="differ_amount"></span>元</span>现金奖励</div>
+                <div class="differ_friends" style="display: none">还差<span class="differ_count"></span>个好友助力即可得到<span
+                        class="strong"><span class="differ_amount"></span>元</span>现金奖励
+                </div>
             </div>
             <div class="right_topIcon"></div>
         </div>
