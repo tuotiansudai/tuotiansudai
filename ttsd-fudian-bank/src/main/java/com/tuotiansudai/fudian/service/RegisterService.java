@@ -77,7 +77,7 @@ public class RegisterService implements AsyncCallbackInterface {
                     .put("realName", registerContentDto.getRealName())
                     .put("accountNo", registerContentDto.getAccountNo())
                     .put("userName", registerContentDto.getUserName())
-                    .put("regDate", registerContentDto.getRegDate())
+                    .put("orderDate", registerContentDto.getRegDate())
                     .put("orderNo", registerContentDto.getOrderNo())
                     .build());
             try {
