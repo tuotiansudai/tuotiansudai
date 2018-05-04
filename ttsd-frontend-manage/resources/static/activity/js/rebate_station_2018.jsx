@@ -359,7 +359,15 @@ countDownList('.overTime');
 if ($('.part1').find('.help_list').find('.my_help_list').find('p').length > 3) {
     scrollUp($('.part1').find('.help_list').find('.my_help_list'));
 }
+//app里面显示的页面跟pc和M站不同
+if (sourceKind.params.source == 'app') {
+    $('.pcmSite').hide();
+    $('.containerApp').show();
+}else {
+    $('.containerApp').hide();
+    $('.pcmSite').show();
 
+}
 
 
 
