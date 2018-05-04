@@ -29,7 +29,15 @@ public enum MessageTopic {
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,
             MessageQueue.RepaySuccess_CouponRepay,
-            MessageQueue.RepaySuccess_ExtraRateRepay);
+            MessageQueue.RepaySuccess_ExtraRateRepay),
+
+    //fudian
+    CertificationSuccess("CertificationSuccess",
+            MessageQueue.CertificationSuccess_CreateAccount,
+            MessageQueue.CertificationSuccess_CompletePointTask,
+            MessageQueue.CertificationSuccess_EventMessage,
+            MessageQueue.CertificationSuccess_PushMessage),
+    ;
 
     final String topicName;
     final MessageQueue[] queues;

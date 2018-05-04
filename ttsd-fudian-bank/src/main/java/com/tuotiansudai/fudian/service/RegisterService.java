@@ -1,12 +1,15 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
+import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
+import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,14 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final MQWrapperClient mqWrapperClient;
+
     @Autowired
-    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MQWrapperClient mqWrapperClient) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     public RegisterRequestDto register(String realName, String identityCode, String mobilePhone) {
@@ -54,6 +60,10 @@ public class RegisterService implements AsyncCallbackInterface {
             return null;
         }
 
+        RegisterContentDto registerContentDto = (RegisterContentDto) responseDto.getContent();
+
+
+//        mqWrapperClient.publishMessage(MessageTopic.CertificationSuccess, );
         responseDto.setReqData(responseData);
         updateMapper.updateRegister(responseDto);
         return responseDto;
