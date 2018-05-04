@@ -53,16 +53,16 @@ public class UserBindBankCardService {
 
         UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
 
-        if (userBankCardModel == null) {
-            payFormDataDto.setMessage("未绑定银行卡");
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
+//        if (userBankCardModel == null) {
+//            payFormDataDto.setMessage("未绑定银行卡");
+//            payFormDataDto.setStatus(false);
+//            return baseDto;
+//        }
 
         // 发送用户行为日志 MQ消息
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.UNBIND_CARD, null);
 
-        baseDto = bankWrapperClient.unbindBankCard("UU02615960791461001", "UA02615960791501001");
+        baseDto = bankWrapperClient.unbindBankCard("UU02631330626431001", "UA02631330626471001");
 
         return baseDto;
     }

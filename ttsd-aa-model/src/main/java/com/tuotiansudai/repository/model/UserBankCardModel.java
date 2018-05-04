@@ -15,15 +15,28 @@ public class UserBankCardModel implements Serializable {
 
     private String cardNumber;
 
-    private String orderDate;
+    private String bankOrderNo;
 
-    private String orderNo;
+    private String bankOrderDate;
 
     private UserBankCardStatus status;
 
     private Date createdTime;
 
     private Date updatedTime;
+
+    public UserBankCardModel() {
+    }
+
+    public UserBankCardModel(String loginName, String bank, String bankCode, String cardNumber, String bankOrderNo, String bankOrderDate, UserBankCardStatus status) {
+        this.loginName = loginName;
+        this.bank = bank;
+        this.bankCode = bankCode;
+        this.cardNumber = cardNumber;
+        this.bankOrderNo = bankOrderNo;
+        this.bankOrderDate = bankOrderDate;
+        this.status = status;
+    }
 
     public long getId() {
         return id;
@@ -65,20 +78,20 @@ public class UserBankCardModel implements Serializable {
         this.cardNumber = cardNumber;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getBankOrderNo() {
+        return bankOrderNo;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getBankOrderDate() {
+        return bankOrderDate;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
     }
 
     public UserBankCardStatus getStatus() {

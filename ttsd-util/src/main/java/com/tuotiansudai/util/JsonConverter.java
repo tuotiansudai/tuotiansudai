@@ -3,6 +3,7 @@ package com.tuotiansudai.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,6 +20,10 @@ public class JsonConverter {
 
     public static <T> T readValue(String content, Class<T> valueType) throws IOException {
         return objectMapper.readValue(content, valueType);
+    }
+
+    public static <T> T readValue(String content, TypeReference<T> typeReference) throws IOException {
+        return objectMapper.readValue(content, typeReference);
     }
 
     public static String writeValueAsString(Object object) throws JsonProcessingException {

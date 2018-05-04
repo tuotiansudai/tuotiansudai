@@ -29,8 +29,12 @@ public enum MessageTopic {
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,
             MessageQueue.RepaySuccess_CouponRepay,
-            MessageQueue.RepaySuccess_ExtraRateRepay);
+            MessageQueue.RepaySuccess_ExtraRateRepay),
 
+    BindBankCard("BindBandCard",
+            MessageQueue.BindBankCard_Success),
+
+    ;
     final String topicName;
     final MessageQueue[] queues;
 
