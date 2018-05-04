@@ -260,7 +260,7 @@
                                                         <td>${(invest.investAmount/100)?string('0.00')}</td>
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
-                                                        <td class="handle_btn">
+                                                        <td>
                                                         ${(record.reward/100)?string('0.00')}元
                                                         </td>
                                                     </tr>
@@ -292,7 +292,7 @@
                                         投资成功后，即可邀请好友助力获取高额返现
                                     </div>
                                 </div>
-                                <a class="to-loan-btn" href="loan-list"></a>
+                                <a class="to-loan-btn" href="/loan-list"></a>
 
                             </div>
 
