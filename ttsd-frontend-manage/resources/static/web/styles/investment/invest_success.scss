@@ -85,13 +85,14 @@
 .callBack_container {
   position: relative;
   width: 100%;
-  height: 430px;
   overflow: hidden;
+  background: #fff;
+  padding-bottom: 90px;
   &.change_card_calBack {
     height: 685px;
   }
   .success_tip_icon {
-    margin: 98px auto 27px auto;
+    margin: 30px auto 27px auto;
     width: 60px;
     height: 60px;
     background: url("../../images/icons/success-tip.png") no-repeat center center;
@@ -175,5 +176,58 @@
   }
   .invest-success-phone{
     display:block;
+  }
+}
+.head-banner {
+  height: 173px;
+  background:url("../../images/myaccount/account_banner.png") no-repeat center center;
+  background-size: 100%;
+}
+.progress-wrap {
+  width: 266px;
+  margin: 0 auto;
+  margin-top: 27px;
+  text-align: center;
+  dl {
+    &.arrow {
+      display: inline-block;
+      width: 29px;
+      height: 28px;
+      margin-top: 4px;
+      background: url("../../images/myaccount/icon_arror_right.png") no-repeat;
+      background-size: 100%;
+    }
+    dt {
+      width: 60px;
+      height: 35px;
+      text-align: center;
+      span {
+        display: inline-block;
+        &.account {
+
+          width: 41px;
+          height: 35px;
+          background: url("../../images/myaccount/icon_account.png") no-repeat;
+          background-size: 100%;
+        }
+        &.bind-card {
+          width: 42px;
+          height: 27px;
+          background: url("../../images/myaccount/icon_nobind_card.png") no-repeat;
+          background-size: 100%;
+          &.active {
+            background: url("../../images/myaccount/bind_card_active.png") no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    dd {
+      font-size: 16px;
+      color: #ccc;
+      &.active {
+        color: #ff752a;
+      }
+    }
   }
 }

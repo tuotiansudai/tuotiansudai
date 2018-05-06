@@ -40,7 +40,7 @@ if($('#registerSuccess').length){
         if(referrer &&referrer == 'loan'){
             location.href = '/loan-application';
         }else {
-            location.href = '/recharge';
+            location.href = '/bind-card';
         }
 
     })
