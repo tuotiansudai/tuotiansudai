@@ -20,12 +20,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -57,7 +60,7 @@ public class HomeController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index");
 
-        modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB,new Date())); //banner
+        modelAndView.addObject("bannerList", bannerMapper.findBannerIsAuthenticatedOrderByOrder(!Strings.isNullOrEmpty(LoginUserInfo.getLoginName()), Source.WEB, new Date())); //banner
 
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords()); //公告
 
@@ -90,8 +93,30 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/settings")
-    public ModelAndView settings(){
+    public ModelAndView settings() {
         return new ModelAndView("/settings", "estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
     }
+
+    @RequestMapping(path = "/sitemap.xml", method = RequestMethod.GET)
+    public ModelAndView sitemap(HttpServletResponse response) {
+        response.setHeader("Content-Type", "text/plain");
+
+        Map<String, String> siteMap = homeService.siteMapIndex();
+
+        return new ModelAndView("/sitemap", "siteMap", siteMap);
+    }
+
+    @RequestMapping(path = "/{subSiteMapType}.xml", method = RequestMethod.GET)
+    public ModelAndView subSiteMap(@PathVariable String subSiteMapType, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView("/sub-site-map");
+        response.setHeader("Content-Type", "text/plain");
+        List<String> subSiteMap = homeService.subSiteMap(subSiteMapType);
+        modelAndView.addObject("subSiteMap", subSiteMap);
+        modelAndView.addObject("lastModifyTime", homeService.getLastModifyDate(subSiteMapType));
+        return modelAndView;
+
+
+    }
+
 
 }
