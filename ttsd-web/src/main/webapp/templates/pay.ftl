@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<#import "macro/global.ftl" as global>
+<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="成功">
 <#if (pay.data)??>
     <#assign payData = pay.data>
-<head>
-    <#if payData.status>
-        <script type="text/javascript">
-            window.onload=function()  {
-                document.getElementById('payForm').submit()
-            }
-        </script>
-    </#if>
-</head>
-<body>
 
+<div class="callBack_container">
+    <div class="loading-wrap">
+        <div class="loading"></div>
+        <p>正在载入...</p>
+    </div>
+</div>
     <#if payData.status>
     <form id="payForm" action="${payData.url}" method="post">
         <#list payData.fields?keys as key>
@@ -22,7 +18,15 @@
     <#else>
     <p>${payData.message!}</p>
     </#if>
-</body>
+
 </#if>
 
-</html>
+    <#if payData.status>
+    <script type="text/javascript">
+    window.onload=function()  {
+        document.getElementById('payForm').submit()
+    }
+    </script>
+    </#if>
+
+</@global.main>

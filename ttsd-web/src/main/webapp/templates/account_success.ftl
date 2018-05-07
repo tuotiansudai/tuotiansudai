@@ -1,8 +1,5 @@
-<#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="成功">
-<div class="callBack_container" id="registerSuccess">
-    <div class="head-banner">
-    </div>
+<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="银行卡绑定成功">
+<div class="callBack_container">
     <div class="account-head">
         <div class="progress-wrap clearfix">
             <dl class="progress-account fl">
@@ -18,9 +15,10 @@
 
     </div>
     <div class="success_tip_icon"></div>
-    <p class="my_pay_tip">实名认证成功</p>
+    <p class="my_pay_tip">银行卡绑定成功</p>
     <div class="handle_btn_container">
-        <div class="see_other_project toLocationBtn">去绑卡</div>
+        <div class="my_personal-info">查看我的账户</div>
+        <div class="go_to_recharge investBtn">去投资</div>
     </div>
 </div>
 </@global.main>
