@@ -7,10 +7,12 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.UserRegisterBankAccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
+import com.tuotiansudai.util.RequestIPParser;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.joda.time.Seconds;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -29,10 +32,7 @@ public class RegisterAccountController {
     private UserService userService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    private UserRegisterBankAccountService bankAccountService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
@@ -54,33 +54,15 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<HuiZuDataDto> registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto) {
-        if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
-            registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-            registerAccountDto.setMobile(LoginUserInfo.getMobile());
-            BaseDto<HuiZuDataDto> baseDto = accountService.registerAccountFromHuiZu(registerAccountDto);
-            baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())
-                    .build()));
-            myAuthenticationUtil.createAuthentication(LoginUserInfo.getLoginName(), Source.WEB);
-            return baseDto;
-        }
+    public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
+//        if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
+//        }
+        registerAccountDto.setMobile(LoginUserInfo.getMobile());
+        registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
+        BaseDto<PayFormDataDto> baseDto = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);
+        ModelAndView view = new ModelAndView("/pay");
+        view.addObject("pay", baseDto);
+        return view;
 
-        BaseDto<HuiZuDataDto> baseDto = new BaseDto<>();
-        HuiZuDataDto dataDto = new HuiZuDataDto();
-        baseDto.setData(dataDto);
-        baseDto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("referrer", Strings.isNullOrEmpty(registerAccountDto.getReferrer()) ? "" : registerAccountDto.getReferrer())
-                .build()));
-        return baseDto;
-    }
-
-    @RequestMapping(path = "/success", method = RequestMethod.GET)
-    public ModelAndView registerAccountSuccess() {
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        if (accountModel == null) {
-            return new ModelAndView("/error/404");
-        }
-        return new ModelAndView("/register-account-success");
     }
 }

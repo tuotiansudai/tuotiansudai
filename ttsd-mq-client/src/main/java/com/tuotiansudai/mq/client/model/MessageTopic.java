@@ -31,12 +31,14 @@ public enum MessageTopic {
             MessageQueue.RepaySuccess_CouponRepay,
             MessageQueue.RepaySuccess_ExtraRateRepay),
 
-    //fudian
     CertificationSuccess("CertificationSuccess",
             MessageQueue.CertificationSuccess_CreateBankAccount,
             MessageQueue.CertificationSuccess_CompletePointTask,
             MessageQueue.CertificationSuccess_EventMessage,
             MessageQueue.CertificationSuccess_PushMessage),
+
+    BindBankCard("BindBandCard",
+            MessageQueue.BindBankCard_Success),
     ;
 
     final String topicName;

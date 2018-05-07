@@ -1,11 +1,8 @@
 package com.tuotiansudai.fudian.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
@@ -13,16 +10,12 @@ import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class RegisterService implements AsyncCallbackInterface {
@@ -35,14 +28,14 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
-    private final MQWrapperClient mqWrapperClient;
+    private final MessageQueueClient messageQueueClient;
 
     @Autowired
-    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MQWrapperClient mqWrapperClient) {
+    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.mqWrapperClient = mqWrapperClient;
+        this.messageQueueClient = messageQueueClient;
     }
 
     public RegisterRequestDto register(String realName, String identityCode, String mobilePhone) {
@@ -59,6 +52,7 @@ public class RegisterService implements AsyncCallbackInterface {
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public ResponseDto callback(String responseData) {
         logger.info("[register callback] data is {}", responseData);
 
@@ -69,9 +63,9 @@ public class RegisterService implements AsyncCallbackInterface {
             return null;
         }
 
-        if (responseDto.isSuccess()){
+        if (responseDto.isSuccess()) {
             RegisterContentDto registerContentDto = (RegisterContentDto) responseDto.getContent();
-            HashMap map = Maps.newHashMap(ImmutableMap.<String, String>builder()
+            this.messageQueueClient.publishMessage(MessageTopic.CertificationSuccess, Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("mobilePhone", registerContentDto.getMobilePhone())
                     .put("identityCode", registerContentDto.getIdentityCode())
                     .put("realName", registerContentDto.getRealName())
@@ -79,12 +73,7 @@ public class RegisterService implements AsyncCallbackInterface {
                     .put("userName", registerContentDto.getUserName())
                     .put("orderDate", registerContentDto.getRegDate())
                     .put("orderNo", registerContentDto.getOrderNo())
-                    .build());
-            try {
-                mqWrapperClient.publishMessage(MessageTopic.CertificationSuccess, new Gson().toJson(map));
-            } catch (JsonProcessingException e) {
-                logger.error("[MQ] CertificationSuccess file JsonData:{}, error:{}", new Gson().toJson(map), e);
-            }
+                    .build()));
         }
 
         responseDto.setReqData(responseData);

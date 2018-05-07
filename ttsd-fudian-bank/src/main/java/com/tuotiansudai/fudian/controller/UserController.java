@@ -1,25 +1,29 @@
 package com.tuotiansudai.fudian.controller;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 @Controller
 @RequestMapping(path = "/user")
 public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    private final BankConfig bankConfig;
 
     private final RegisterService registerService;
 
@@ -34,7 +38,8 @@ public class UserController {
     private final PhoneUpdateService phoneUpdateService;
 
     @Autowired
-    public UserController(RegisterService registerService, CardBindService cardBindService, CancelCardBindService cancelCardBindService, AuthorizationService authorizationService, PasswordResetService passwordResetService, PhoneUpdateService phoneUpdateService) {
+    public UserController(BankConfig bankConfig, RegisterService registerService, CardBindService cardBindService, CancelCardBindService cancelCardBindService, AuthorizationService authorizationService, PasswordResetService passwordResetService, PhoneUpdateService phoneUpdateService) {
+        this.bankConfig = bankConfig;
         this.registerService = registerService;
         this.cardBindService = cardBindService;
         this.cancelCardBindService = cancelCardBindService;
@@ -44,35 +49,29 @@ public class UserController {
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.GET)
-    public String recharge(Map<String, Object> model) {
+    public ResponseEntity<Map<String, String>> recharge(Map<String, String> params) {
         logger.info("[Fudian] call register");
-
-        RegisterRequestDto requestDto = registerService.register("朱坤", "340322199503294631", "18895730992");
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.REGISTER.getPath());
-        return "post";
+        RegisterRequestDto requestDto = registerService.register(params.get("realName"), params.get("identityCode"), params.get("mobilePhone"));
+        return this.generateResponseJson(requestDto, ApiType.REGISTER);
     }
 
-    @RequestMapping(path = "/card-bind", method = RequestMethod.GET)
-    public String cardBind(Map<String, Object> model) {
+    @RequestMapping(path = "/card-bind", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, String>> cardBind(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] bind card");
 
 //        String data = cardBindService.bind("UU02615960791461001", "UA02615960791501001"); //GXD
 //        String data = cardBindService.bind("UU02619471098561001", "UA02619471098591001"); //ZK
-        CardBindRequestDto requestDto = cardBindService.bind("UU02624634769241001", "UA02624634769281001");//FZW
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.CARD_BIND.getPath());
-        return "post";
+        CardBindRequestDto requestDto = cardBindService.bind(params.get("bankUserName"), params.get("bankAccountNo"));//FZW
+
+        return this.generateResponseJson(requestDto, ApiType.CARD_BIND);
     }
 
-    @RequestMapping(path = "/cancel-card-bind", method = RequestMethod.GET)
-    public String cancelCardBind(Map<String, Object> model) {
+    @RequestMapping(path = "/cancel-card-bind", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, String>> cancelCardBind(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] cancel bind card");
 
-        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel("UU02619471098561001", "UA02619471098591001");
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.CANCEL_CARD_BIND.getPath());
-        return "post";
+        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(params.get("bankUserName"), params.get("bankAccountNo"));
+        return this.generateResponseJson(requestDto, ApiType.CANCEL_CARD_BIND);
     }
 
     @RequestMapping(path = "/authorization", method = RequestMethod.GET)
@@ -105,19 +104,11 @@ public class UserController {
         return "post";
     }
 
-    public String getRandomCode(int length) {
-        if (length >= 10) {
-            throw new RuntimeException("长度必须是10以内");
-        }
-        StringBuffer buffer = new StringBuffer();
-        Random random = new Random();
-        Set<Integer> set = new HashSet<Integer>();
-        while (set.size() < length) {
-            int a = random.nextInt(10);
-            if (set.add(a)) {
-                buffer.append(a);
-            }
-        }
-        return buffer.toString();
+    private ResponseEntity<Map<String, String>> generateResponseJson(BaseRequestDto requestDto, ApiType apiType) {
+        return ResponseEntity.ok(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("data", requestDto.getRequestData())
+                .put("url", bankConfig.getBankUrl() + apiType.getPath())
+                .build()));
     }
+
 }

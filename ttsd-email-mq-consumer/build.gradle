@@ -29,6 +29,7 @@ configurations {
 }
 
 dependencies {
+    compile project(':ttsd-util')
     compile project(':ttsd-mq-client')
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-aop"
