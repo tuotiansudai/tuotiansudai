@@ -6,17 +6,26 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tuotiansudai.client.MiPushClient;
+import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.enums.MessageEventType;
+import com.tuotiansudai.enums.PushSource;
+import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.repository.mapper.MessageMapper;
+import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
+import com.tuotiansudai.message.repository.model.MessageModel;
+import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,10 +34,14 @@ public class BankAccountRegisteredPushMessageConsumer implements MessageConsumer
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredPushMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+
+    private final MiPushClient miPushClient;
 
     @Autowired
-    private UserMapper userMapper;
+    public BankAccountRegisteredPushMessageConsumer(MiPushClient miPushClient) {
+        this.miPushClient = miPushClient;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -36,6 +49,7 @@ public class BankAccountRegisteredPushMessageConsumer implements MessageConsumer
     }
 
     @Override
+    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
@@ -47,10 +61,13 @@ public class BankAccountRegisteredPushMessageConsumer implements MessageConsumer
         try{
             HashMap<String, String> map = new Gson().fromJson(message, new TypeToken<HashMap<String, String>>() {
             }.getType());
-
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                UserModel userModel = userMapper.findByMobile(map.get("mobilePhone"));
-                pointTaskService.completeNewbieTask(PointTask.REGISTER, userModel.getLoginName());
+                PushMessage pushMessage = new PushMessage(Lists.newArrayList(map.get("loginName")),
+                        PushSource.ALL,
+                        PushType.REGISTER_ACCOUNT_SUCCESS,
+                        MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
+                        AppUrl.MESSAGE_CENTER_LIST);
+                miPushClient.sendPushMessage(pushMessage);
             }else {
                 logger.error("[MQ] message is invalid {}", message);
             }

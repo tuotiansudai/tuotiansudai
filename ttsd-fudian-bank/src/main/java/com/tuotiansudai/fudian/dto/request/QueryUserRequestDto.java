@@ -8,8 +8,8 @@ public class QueryUserRequestDto extends BaseRequestDto {
 
     private String userName;
 
-    public QueryUserRequestDto(String accountNo, String userName) {
-        super(ApiType.QUERY_USER.name().toLowerCase());
+    public QueryUserRequestDto(String accountNo, String userName, String loginName, String mobile) {
+        super(ApiType.QUERY_USER, loginName, mobile);
         this.accountNo = accountNo;
         this.userName = userName;
     }

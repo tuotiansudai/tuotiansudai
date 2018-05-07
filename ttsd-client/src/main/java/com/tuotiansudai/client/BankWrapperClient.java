@@ -38,8 +38,8 @@ public class BankWrapperClient extends BaseClient {
         this.okHttpClient.setWriteTimeout(180, TimeUnit.SECONDS);
     }
 
-    public BaseDto<PayFormDataDto> register(String realName, String identityCode, String mobilePhone){
-        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder().put("realName", realName).put("identityCode", identityCode).put("mobilePhone", mobilePhone).build()),
+    public BaseDto<PayFormDataDto> register(String loginName, String realName, String identityCode, String mobilePhone){
+        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder().put("loginName", loginName).put("realName", realName).put("identityCode", identityCode).put("mobilePhone", mobilePhone).build()),
                 "/user/register");
     }
 

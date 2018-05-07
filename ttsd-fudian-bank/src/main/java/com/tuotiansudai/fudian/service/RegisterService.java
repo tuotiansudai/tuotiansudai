@@ -2,7 +2,11 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
@@ -17,6 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 public class RegisterService implements AsyncCallbackInterface {
 
@@ -30,6 +37,8 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final MessageQueueClient messageQueueClient;
 
+    private List<String> JSON_KEYS = Lists.newArrayList("apiType", "loginName", "mobile");
+
     @Autowired
     public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient) {
         this.signatureHelper = signatureHelper;
@@ -38,9 +47,9 @@ public class RegisterService implements AsyncCallbackInterface {
         this.messageQueueClient = messageQueueClient;
     }
 
-    public RegisterRequestDto register(String realName, String identityCode, String mobilePhone) {
-        RegisterRequestDto dto = new RegisterRequestDto(realName, identityCode, mobilePhone);
-        signatureHelper.sign(dto);
+    public RegisterRequestDto register(String loginName, String realName, String identityCode, String mobilePhone) {
+        RegisterRequestDto dto = new RegisterRequestDto(loginName, realName, identityCode, mobilePhone);
+        signatureHelper.sign(dto, ApiType.REGISTER);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[register] sign error, realName: {}, identityCode: {}, mobilePhone: {}", realName, identityCode, mobilePhone);
@@ -65,7 +74,16 @@ public class RegisterService implements AsyncCallbackInterface {
 
         if (responseDto.isSuccess()) {
             RegisterContentDto registerContentDto = (RegisterContentDto) responseDto.getContent();
+            HashMap<String, String> extMarkMap = new Gson().fromJson(registerContentDto.getExtMark(), new TypeToken<HashMap<String, String>>() {
+            }.getType());
+
+            if (!Sets.difference(extMarkMap.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
+                logger.error("[register callback] formJson extMark error, extMark is {}", registerContentDto.getExtMark());
+                return null;
+            }
+
             this.messageQueueClient.publishMessage(MessageTopic.CertificationSuccess, Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("loginName", extMarkMap.get("loginName"))
                     .put("mobilePhone", registerContentDto.getMobilePhone())
                     .put("identityCode", registerContentDto.getIdentityCode())
                     .put("realName", registerContentDto.getRealName())

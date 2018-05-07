@@ -30,9 +30,9 @@ public class CancelCardBindService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public CancelCardBindRequestDto cancel(String userName, String accountNo) {
-        CancelCardBindRequestDto dto = new CancelCardBindRequestDto(userName, accountNo);
-        signatureHelper.sign(dto);
+    public CancelCardBindRequestDto cancel(String userName, String accountNo, String loginName, String mobile) {
+        CancelCardBindRequestDto dto = new CancelCardBindRequestDto(userName, accountNo, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.CANCEL_CARD_BIND);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[cancel card bind] sign error, userName: {}, accountNo: {}", userName, accountNo);

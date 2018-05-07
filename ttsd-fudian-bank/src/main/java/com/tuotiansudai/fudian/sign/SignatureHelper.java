@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
 import com.tuotiansudai.fudian.util.OrderIdGenerator;
@@ -72,15 +73,15 @@ public class SignatureHelper {
 
     }
 
-    public <T extends BaseRequestDto> void sign(T dto) {
+    public <T extends BaseRequestDto> void sign(T dto, ApiType apiType) {
         dto.setMerchantNo(this.bankConfig.getMerchant());
         dto.setOrderNo(OrderIdGenerator.generate(redisTemplate));
         Class<?> dtoClass = dto.getClass();
         try {
             Method returnUrlMethod = dtoClass.getMethod("setReturnUrl", String.class);
             Method notifyUrlMethod = dtoClass.getMethod("setNotifyUrl", String.class);
-            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(), dto.getExtMark());
-            String notifyUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackNotifyUrl(), dto.getExtMark());
+            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(), apiType.name());
+            String notifyUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackNotifyUrl(), apiType.name());
             returnUrlMethod.invoke(dto, returnUrl);
             notifyUrlMethod.invoke(dto, notifyUrl);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {

@@ -8,8 +8,8 @@ public class PhoneUpdateRequestDto extends UserBaseRequestDto {
 
     private String type; // 1原有手机号可用，进行自助修改 2原有手机号不可用，进行人工修改
 
-    public PhoneUpdateRequestDto(String userName, String accountNo, String newPhone, String type) {
-        super(userName, accountNo, ApiType.PHONE_UPDATE.name());
+    public PhoneUpdateRequestDto(String userName, String accountNo, String newPhone, String type, String loginName, String mobile) {
+        super(userName, accountNo, ApiType.PHONE_UPDATE, loginName, mobile);
         this.newPhone = newPhone;
         this.type = type;
     }

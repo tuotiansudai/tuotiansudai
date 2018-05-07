@@ -39,9 +39,9 @@ public class CardBindService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public CardBindRequestDto bind(String userName, String accountNo) {
-        CardBindRequestDto dto = new CardBindRequestDto(userName, accountNo);
-        signatureHelper.sign(dto);
+    public CardBindRequestDto bind(String userName, String accountNo, String loginName, String mobile) {
+        CardBindRequestDto dto = new CardBindRequestDto(userName, accountNo, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.CARD_BIND);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[card bind] sign error, userName: {}, accountNo: {}", userName, accountNo);

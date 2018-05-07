@@ -30,9 +30,9 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public LoanCreditInvestRequestDto invest(String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee);
-        signatureHelper.sign(dto);
+    public LoanCreditInvestRequestDto invest(String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee, String loginName, String mobile) {
+        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.LOAN_CREDIT_INVEST);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan credit invest] sign error, userName: {}, accountNo: {}, loanTxNo: {}, investOrderNo: {}, investOrderDate: {}, creditNo: {}, creditAmount: {}, amount: {}, creditFee: {}",

@@ -20,6 +20,6 @@ public class SignatureHelperTest {
 
     @Test
     public void test() {
-        insertMapper.insertRegister(new RegisterRequestDto("", "", ""));
+        insertMapper.insertRegister(new RegisterRequestDto("", "", "", ""));
     }
 }

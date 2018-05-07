@@ -30,9 +30,9 @@ public class PhoneUpdateService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public PhoneUpdateRequestDto update(String userName, String accountNo, String newPhone, String type) {
-        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(userName, accountNo, newPhone, type);
-        signatureHelper.sign(dto);
+    public PhoneUpdateRequestDto update(String userName, String accountNo, String newPhone, String type, String loginName, String mobile) {
+        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(userName, accountNo, newPhone, type, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.PHONE_UPDATE);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[phone update] sign error, userName: {}, accountNo: {}, newPhone: {}, type: {}", userName, accountNo, newPhone, type);

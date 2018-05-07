@@ -28,8 +28,8 @@ public class LoanCreditInvestRequestDto extends PayBaseRequestDto {
 
     private String repayedAmount = "0.00"; //已还款金额
 
-    public LoanCreditInvestRequestDto(String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        super(userName, accountNo, ApiType.LOAN_CREDIT_INVEST.name());
+    public LoanCreditInvestRequestDto(String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee, String loginName, String mobile) {
+        super(userName, accountNo, ApiType.LOAN_CREDIT_INVEST, loginName, mobile);
         this.loanTxNo = loanTxNo;
         this.investOrderNo = investOrderNo;
         this.oriOrderNo = investOrderNo;

@@ -30,10 +30,10 @@ public class PasswordResetService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public PasswordResetRequestDto reset(String userName, String accountNo) {
-        PasswordResetRequestDto dto = new PasswordResetRequestDto(userName, accountNo);
+    public PasswordResetRequestDto reset(String userName, String accountNo, String loginName, String mobile) {
+        PasswordResetRequestDto dto = new PasswordResetRequestDto(userName, accountNo, loginName, mobile);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(dto, ApiType.PASSWORD_RESET);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[password reset] sign error, userName: {}, accountNo: {}", userName, accountNo);

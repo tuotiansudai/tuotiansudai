@@ -30,10 +30,10 @@ public class AuthorizationService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public AuthorizationRequestDto auth(String userName, String accountNo) {
-        AuthorizationRequestDto dto = new AuthorizationRequestDto(userName, accountNo);
+    public AuthorizationRequestDto auth(String userName, String accountNo, String loginName, String mobile) {
+        AuthorizationRequestDto dto = new AuthorizationRequestDto(userName, accountNo, loginName, mobile);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(dto, ApiType.AUTHORIZATION);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[authorization] sign error, userName: {}, accountNo: {}", userName, accountNo);
 

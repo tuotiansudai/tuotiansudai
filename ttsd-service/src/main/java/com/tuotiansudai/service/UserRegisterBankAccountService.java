@@ -29,16 +29,15 @@ public class UserRegisterBankAccountService {
     }
 
     public BaseDto<PayFormDataDto> registerAccount(RegisterAccountDto registerAccountDto, Source source, String ip, String deviceId) {
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(registerAccountDto.getLoginName());
-
         if (bankAccountModel != null) {
+            PayFormDataDto payFormDataDto = new PayFormDataDto();
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
             payFormDataDto.setMessage("已实名认证，请勿重复操作");
             payFormDataDto.setStatus(false);
             return baseDto;
         }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber(), registerAccountDto.getMobile());
+        return bankWrapperClient.register(registerAccountDto.getLoginName(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber(), registerAccountDto.getMobile());
     }
 }

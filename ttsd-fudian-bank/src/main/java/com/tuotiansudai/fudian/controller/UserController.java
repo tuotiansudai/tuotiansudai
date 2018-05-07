@@ -51,7 +51,7 @@ public class UserController {
     @RequestMapping(path = "/register", method = RequestMethod.GET)
     public ResponseEntity<Map<String, String>> recharge(Map<String, String> params) {
         logger.info("[Fudian] call register");
-        RegisterRequestDto requestDto = registerService.register(params.get("realName"), params.get("identityCode"), params.get("mobilePhone"));
+        RegisterRequestDto requestDto = registerService.register(params.get("loginName"), params.get("realName"), params.get("identityCode"), params.get("mobilePhone"));
         return this.generateResponseJson(requestDto, ApiType.REGISTER);
     }
 
@@ -61,7 +61,7 @@ public class UserController {
 
 //        String data = cardBindService.bind("UU02615960791461001", "UA02615960791501001"); //GXD
 //        String data = cardBindService.bind("UU02619471098561001", "UA02619471098591001"); //ZK
-        CardBindRequestDto requestDto = cardBindService.bind(params.get("bankUserName"), params.get("bankAccountNo"));//FZW
+        CardBindRequestDto requestDto = cardBindService.bind(params.get("bankUserName"), params.get("bankAccountNo"), params.get("loginName"), params.get("mobile"));//FZW
 
         return this.generateResponseJson(requestDto, ApiType.CARD_BIND);
     }
@@ -70,7 +70,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> cancelCardBind(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] cancel bind card");
 
-        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(params.get("bankUserName"), params.get("bankAccountNo"));
+        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(params.get("bankUserName"), params.get("bankAccountNo"), params.get("loginName"), params.get("mobile"));
         return this.generateResponseJson(requestDto, ApiType.CANCEL_CARD_BIND);
     }
 
@@ -78,7 +78,7 @@ public class UserController {
     public String authorization(Map<String, Object> model) {
         logger.info("[Fudian] authorization");
 
-        AuthorizationRequestDto requestDto = authorizationService.auth("UU02619471098561001", "UA02619471098591001");
+        AuthorizationRequestDto requestDto = authorizationService.auth("UU02619471098561001", "UA02619471098591001", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.AUTHORIZATION.getPath());
         return "post";
@@ -88,7 +88,7 @@ public class UserController {
     public String passwordReset(Map<String, Object> model) {
         logger.info("[Fudian] password reset");
 
-        PasswordResetRequestDto requestDto = passwordResetService.reset("UU02619471098561001", "UA02619471098591001");
+        PasswordResetRequestDto requestDto = passwordResetService.reset("UU02619471098561001", "UA02619471098591001", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.PASSWORD_RESET.getPath());
         return "post";
@@ -98,7 +98,7 @@ public class UserController {
     public String phoneUpdate(Map<String, Object> model) {
         logger.info("[Fudian] phone update");
 
-        PhoneUpdateRequestDto requestDto = phoneUpdateService.update("UU02619471098561001", "UA02619471098591001", "18611112222", "2");
+        PhoneUpdateRequestDto requestDto = phoneUpdateService.update("UU02619471098561001", "UA02619471098591001", "18611112222", "2", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.PHONE_UPDATE.getPath());
         return "post";

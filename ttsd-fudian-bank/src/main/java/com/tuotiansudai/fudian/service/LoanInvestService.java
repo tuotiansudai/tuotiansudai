@@ -34,9 +34,9 @@ public class LoanInvestService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public LoanInvestRequestDto invest(String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST.name());
-        signatureHelper.sign(dto);
+    public LoanInvestRequestDto invest(String userName, String accountNo, String amount, String award, String loanTxNo, String loginName, String mobile) {
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.LOAN_INVEST);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan invest] sign error, userName: {}, accountNo: {}, amount: {}, award: {}, loanTxNo: {}",
@@ -48,10 +48,10 @@ public class LoanInvestService implements AsyncCallbackInterface {
         return dto;
     }
 
-    public ResponseDto fastInvest(String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST.name());
+    public ResponseDto fastInvest(String userName, String accountNo, String amount, String award, String loanTxNo, String loginName, String mobile) {
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST, loginName, mobile);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(dto, ApiType.LOAN_FAST_INVEST);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan fast invest] sign error, userName: {}, accountNo: {}, amount: {}, award: {}, loanTxNo: {}",

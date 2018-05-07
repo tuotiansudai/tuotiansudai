@@ -10,8 +10,8 @@ public class QueryTradeRequestDto extends BaseRequestDto {
 
     private String queryType; /*01充值 02提现 03投标 04借款人还款 05投资人回款 06债权认购 07满标放款*/
 
-    public QueryTradeRequestDto(String queryOrderNo, String queryOrderDate, String queryType) {
-        super(ApiType.QUERY_TRADE.name().toLowerCase());
+    public QueryTradeRequestDto(String queryOrderNo, String queryOrderDate, String queryType, String loginName, String mobile) {
+        super(ApiType.QUERY_TRADE, loginName, mobile);
         this.queryOrderNo = queryOrderNo;
         this.queryOrderDate = queryOrderDate;
         this.queryType = queryType;

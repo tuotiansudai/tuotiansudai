@@ -41,22 +41,29 @@ public class RegisterAccountController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/identity-number/{identityNumber:^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/verify/identity-number/{identityNumber:^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$}", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> isIdentityNumberExist(@PathVariable String identityNumber) {
-        boolean isExist = userService.isIdentityNumberExist(identityNumber);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(isExist);
+        boolean isLegal = IdentityNumberValidator.validateIdentity(identityNumber);
+        if (!isLegal) {
+            dataDto.setMessage("身份证不合法");
+            return baseDto;
+        }
+        boolean isExist = userService.isIdentityNumberExist(identityNumber);
+        if (isExist){
+            dataDto.setMessage("身份证已存在");
+            return baseDto;
+        }
+        dataDto.setStatus(true);
         return baseDto;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
-//        if (IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())) {
-//        }
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);

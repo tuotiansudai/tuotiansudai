@@ -27,7 +27,7 @@ public class BankAccountRegisteredMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     @Autowired
     private UserMapper userMapper;
@@ -53,18 +53,18 @@ public class BankAccountRegisteredMessageConsumer implements MessageConsumer {
         try{
             HashMap<String, String> map = new Gson().fromJson(message, new TypeToken<HashMap<String, String>>() {
             }.getType());
-            UserModel userModel = userMapper.findByMobile(map.get("mobilePhone"));
-            if (bankAccountMapper.findByLoginName(userModel.getLoginName()) != null){
-                logger.info("[MQ] receive message: {}, user:{} completed bank account ", this.queue(), userModel.getLoginName());
-                return;
-            }
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                bankAccountMapper.create(new BankAccountModel(userModel.getLoginName(),
+                String loginName = map.get("loginName");
+                if (bankAccountMapper.findByLoginName(loginName) != null){
+                    logger.info("[MQ] receive message: {}, user:{} completed bank account ", this.queue(), loginName);
+                    return;
+                }
+                bankAccountMapper.create(new BankAccountModel(loginName,
                         map.get("userName"),
                         map.get("accountNo"),
                         map.get("orderNo"),
                         map.get("orderDate")));
-                userMapper.updateUserNameAndIdentityNumber(userModel.getLoginName(), map.get("realName"), map.get("identityCode"));
+                userMapper.updateUserNameAndIdentityNumber(loginName, map.get("realName"), map.get("identityCode"));
             }else {
                 logger.error("[MQ] message is invalid {}", message);
             }

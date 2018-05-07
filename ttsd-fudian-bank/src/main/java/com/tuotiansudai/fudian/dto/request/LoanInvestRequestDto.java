@@ -1,5 +1,7 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.tuotiansudai.fudian.config.ApiType;
+
 public class LoanInvestRequestDto extends PayBaseRequestDto {
 
     private String amount;
@@ -8,8 +10,8 @@ public class LoanInvestRequestDto extends PayBaseRequestDto {
 
     private String loanTxNo;
 
-    public LoanInvestRequestDto(String userName, String accountNo, String amount, String award, String loanTxNo, String extMark) {
-        super(userName, accountNo, extMark);
+    public LoanInvestRequestDto(String userName, String accountNo, String amount, String award, String loanTxNo, ApiType apiType, String loginName, String mobile) {
+        super(userName, accountNo, apiType, loginName, mobile);
         this.amount = amount;
         this.award = award;
         this.loanTxNo = loanTxNo;

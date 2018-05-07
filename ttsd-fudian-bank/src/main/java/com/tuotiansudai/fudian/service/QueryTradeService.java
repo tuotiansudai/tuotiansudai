@@ -27,10 +27,10 @@ public class QueryTradeService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String orderNo, String orderDate, QueryTradeType queryType) {
-        QueryTradeRequestDto dto = new QueryTradeRequestDto(orderNo, orderDate, queryType.getValue());
+    public ResponseDto query(String orderNo, String orderDate, QueryTradeType queryType, String loginName, String mobile) {
+        QueryTradeRequestDto dto = new QueryTradeRequestDto(orderNo, orderDate, queryType.getValue(), loginName, mobile);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(dto, ApiType.QUERY_TRADE);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[query trade] sign error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
             return null;

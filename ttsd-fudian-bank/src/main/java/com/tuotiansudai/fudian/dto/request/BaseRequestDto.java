@@ -1,5 +1,10 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.tuotiansudai.fudian.config.ApiType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,8 +24,12 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(String extMark) {
-        this.extMark = extMark.toLowerCase();
+    public BaseRequestDto(ApiType apiType, String loginName, String mobile) {
+        this.extMark = new Gson().toJson(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("apiType", apiType.name().toLowerCase())
+                .put("loginName", loginName)
+                .put("mobile", mobile)
+                .build()));
     }
 
     public long getId() {

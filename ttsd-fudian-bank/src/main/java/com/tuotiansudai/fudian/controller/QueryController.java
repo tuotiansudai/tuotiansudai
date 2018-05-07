@@ -42,7 +42,7 @@ public class QueryController {
                                                  @RequestParam(name = "accountNo") String accountNo) {
         logger.info("[Fudian] query user userName: {}, accountNo: {}", userName, accountNo);
 
-        ResponseDto responseDto = queryUserService.query(userName, accountNo);
+        ResponseDto responseDto = queryUserService.query(userName, accountNo, null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -51,7 +51,7 @@ public class QueryController {
     public ResponseEntity<ResponseDto> queryLoan(@RequestParam(name = "loanTxNo") String loanTxNo) {
         logger.info("[Fudian] query loan loanTxNo: {}", loanTxNo);
 
-        ResponseDto responseDto = queryLoanService.query(loanTxNo);
+        ResponseDto responseDto = queryLoanService.query(loanTxNo, null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -62,7 +62,7 @@ public class QueryController {
                                                   @RequestParam(name = "queryType") QueryTradeType queryType) {
         logger.info("[Fudian] query trade orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
 
-        ResponseDto responseDto = queryTradeService.query(orderNo, orderDate, queryType);
+        ResponseDto responseDto = queryTradeService.query(orderNo, orderDate, queryType, null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -73,7 +73,7 @@ public class QueryController {
                                                        @RequestParam(name = "queryOrderDate") String queryOrderDate) {
         logger.info("[Fudian] query log account userName: {}, accountNo: {}, queryOrderDate: {}", userName, accountNo, queryOrderDate);
 
-        ResponseDto responseDto = queryLogAccountService.query(userName, accountNo, queryOrderDate);
+        ResponseDto responseDto = queryLogAccountService.query(userName, accountNo, queryOrderDate, null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -83,7 +83,7 @@ public class QueryController {
                                                            @RequestParam(name = "loanTxNo") String loanTxNo) {
         logger.info("[Fudian] query log loan account loanAccNo: {}, loanTxNo: {}", loanAccNo, loanTxNo);
 
-        ResponseDto responseDto = queryLogLoanAccountService.query(loanAccNo, loanTxNo);
+        ResponseDto responseDto = queryLogLoanAccountService.query(loanAccNo, loanTxNo, null, null);
 
         return ResponseEntity.ok(responseDto);
     }

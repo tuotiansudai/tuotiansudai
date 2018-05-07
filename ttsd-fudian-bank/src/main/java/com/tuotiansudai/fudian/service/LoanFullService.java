@@ -35,9 +35,9 @@ public class LoanFullService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public ResponseDto full(String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
-        LoanFullRequestDto dto = new LoanFullRequestDto(userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
-        signatureHelper.sign(dto);
+    public ResponseDto full(String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String loginName, String mobile) {
+        LoanFullRequestDto dto = new LoanFullRequestDto(userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, loginName, mobile);
+        signatureHelper.sign(dto, ApiType.LOAN_FULL);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan full] sign error, userName: {}, accountNo: {}, loanTxNo: {}, loanOrderNo: {}, loanOrderDate: {}, expectRepayTime: {}",
