@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -38,7 +37,6 @@ public class BindBankCardCompletePointTaskConsumer implements MessageConsumer {
         return MessageQueue.BindBankCard_CompletePointTask;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
@@ -48,7 +46,7 @@ public class BindBankCardCompletePointTaskConsumer implements MessageConsumer {
             });
 
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, message);
+                this.pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, message);
             } else {
                 logger.error("[MQ] message is invalid {}", message);
             }

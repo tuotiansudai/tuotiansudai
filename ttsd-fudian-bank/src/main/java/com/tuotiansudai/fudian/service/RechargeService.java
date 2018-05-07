@@ -35,12 +35,12 @@ public class RechargeService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public RechargeRequestDto recharge(String userName, String accountNo, String amount, RechargePayType payType) {
-        RechargeRequestDto dto = new RechargeRequestDto(userName, accountNo, amount, payType);
+    public RechargeRequestDto recharge(String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
+        RechargeRequestDto dto = new RechargeRequestDto(bankUserName, bankAccountNo, amount, payType);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", userName, accountNo, amount, payType);
+            logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", bankUserName, bankAccountNo, amount, payType);
             return null;
         }
         insertMapper.insertRecharge(dto);
