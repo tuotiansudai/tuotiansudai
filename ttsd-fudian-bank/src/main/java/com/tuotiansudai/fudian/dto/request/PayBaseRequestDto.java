@@ -13,7 +13,7 @@ public class PayBaseRequestDto extends BaseRequestDto {
     private String notifyUrl; //异步回调地址
 
     public PayBaseRequestDto(String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
-        super(apiType, loginName, mobile);
+        super(loginName, mobile, apiType);
         this.userName = userName;
         this.accountNo = accountNo;
     }

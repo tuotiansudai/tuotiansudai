@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
@@ -25,7 +23,7 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(ApiType apiType, String loginName, String mobile) {
+    public BaseRequestDto(String loginName, String mobile, ApiType apiType) {
         this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType));
     }
 

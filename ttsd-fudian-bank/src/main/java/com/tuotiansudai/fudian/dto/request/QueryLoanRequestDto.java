@@ -7,7 +7,7 @@ public class QueryLoanRequestDto extends BaseRequestDto {
     private String loanTxNo;
 
     public QueryLoanRequestDto(String loginName, String mobile, String loanTxNo) {
-        super(ApiType.QUERY_LOAN, loginName, mobile);
+        super(loginName, mobile, ApiType.QUERY_LOAN);
         this.loanTxNo = loanTxNo;
     }
 
