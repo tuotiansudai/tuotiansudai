@@ -3,7 +3,7 @@
 <#if siteMap??>
     <#list siteMap?keys as prop>
         <sitemap>
-            <loc>https://tuotiansudai.com/${prop!}</loc>
+            <loc>https://tuotiansudai.com/${prop!}.xml</loc>
 
             <lastmod>${siteMap[prop]!}</lastmod>
         </sitemap>
