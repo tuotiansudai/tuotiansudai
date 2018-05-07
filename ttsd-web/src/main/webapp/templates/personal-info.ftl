@@ -39,9 +39,13 @@
                 </span>
             <#else>
                 <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
+                <form action="/bank-card/bind" method="post" style="display: inline-block;float:right">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="/bind-card">绑定</a>
+                    <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard" value="绑定" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
                 </span>
+                </form>
             </#if>
         </li>
         <li><span class="info-title"> 登录密码</span>
