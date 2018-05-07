@@ -64,7 +64,7 @@ public class UserController {
 
 //        String data = cardBindService.bind("UU02615960791461001", "UA02615960791501001"); //GXD
 //        String data = cardBindService.bind("UU02619471098561001", "UA02619471098591001"); //ZK
-        CardBindRequestDto requestDto = cardBindService.bind(params.get("bankUserName"), params.get("bankAccountNo"));//FZW
+        CardBindRequestDto requestDto = cardBindService.bind(params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"));//FZW
 
         return this.generateResponseJson(requestDto, ApiType.CARD_BIND);
     }

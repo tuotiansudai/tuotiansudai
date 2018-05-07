@@ -32,7 +32,8 @@ public enum MessageTopic {
             MessageQueue.RepaySuccess_ExtraRateRepay),
 
     BindBankCard("BindBandCard",
-            MessageQueue.BindBankCard_Success),
+            MessageQueue.BindBankCard_Success,
+            MessageQueue.BindBankCard_CompletePointTask),
 
     ;
     final String topicName;

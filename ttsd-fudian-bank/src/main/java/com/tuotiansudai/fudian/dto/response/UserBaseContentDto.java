@@ -6,6 +6,8 @@ public class UserBaseContentDto extends BaseContentDto {
 
     private String userName;
 
+    private String extMark;
+
     private String notifyUrl;
 
     private String returnUrl;
@@ -24,6 +26,14 @@ public class UserBaseContentDto extends BaseContentDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getExtMark() {
+        return extMark;
+    }
+
+    public void setExtMark(String extMark) {
+        this.extMark = extMark;
     }
 
     public String getNotifyUrl() {

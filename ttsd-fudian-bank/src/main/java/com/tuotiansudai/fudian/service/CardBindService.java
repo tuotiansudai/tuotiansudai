@@ -3,7 +3,10 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.CardBindRequestDto;
 import com.tuotiansudai.fudian.dto.response.CardBindContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
@@ -17,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class CardBindService implements AsyncCallbackInterface {
@@ -39,12 +44,12 @@ public class CardBindService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public CardBindRequestDto bind(String userName, String accountNo) {
-        CardBindRequestDto dto = new CardBindRequestDto(userName, accountNo);
+    public CardBindRequestDto bind(String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        CardBindRequestDto dto = new CardBindRequestDto(bankUserName, bankAccountNo);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[card bind] sign error, userName: {}, accountNo: {}", userName, accountNo);
+            logger.error("[card bind] sign error, userName: {}, accountNo: {}", bankUserName, bankAccountNo);
 
             return null;
         }
@@ -71,8 +76,12 @@ public class CardBindService implements AsyncCallbackInterface {
 
         if (responseDto.isSuccess()) {
             CardBindContentDto content = responseDto.getContent();
+            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(responseDto.getContent().getExtMark(), ExtMarkDto.class);
+
             this.messageQueueClient.publishMessage(MessageTopic.BindBankCard,
                     Maps.newHashMap(ImmutableMap.<String, String>builder()
+                            .put("loginName", extMarkDto.getLoginName())
+                            .put("mobile", extMarkDto.getMobile())
                             .put("bankUserName", content.getUserName())
                             .put("bankAccountNo", content.getAccountNo())
                             .put("bank", content.getBank())

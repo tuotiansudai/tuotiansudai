@@ -1,5 +1,7 @@
 package com.tuotiansudai.fudian.sign;
 
+import com.google.gson.GsonBuilder;
+import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import org.junit.Test;
@@ -20,6 +22,8 @@ public class SignatureHelperTest {
 
     @Test
     public void test() {
+        ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson("{\"apiType\": \"register\"}", ExtMarkDto.class);
+
         insertMapper.insertRegister(new RegisterRequestDto("", "", ""));
     }
 }

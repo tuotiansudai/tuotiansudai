@@ -38,13 +38,23 @@ public class BankWrapperClient extends BaseClient {
         this.okHttpClient.setWriteTimeout(180, TimeUnit.SECONDS);
     }
 
-    public BaseDto<PayFormDataDto> bindBankCard(String bankUserName, String bankAccountNo) {
-        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder().put("bankUserName", bankUserName).put("bankAccountNo", bankAccountNo).build()),
+    public BaseDto<PayFormDataDto> bindBankCard(String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                        .put("loginName", loginName)
+                        .put("mobile", mobile)
+                        .put("bankUserName", bankUserName)
+                        .put("bankAccountNo", bankAccountNo)
+                        .build()),
                 "/user/card-bind");
     }
 
-    public BaseDto<PayFormDataDto> unbindBankCard(String bankUserName, String bankAccountNo) {
-        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder().put("bankUserName", bankUserName).put("bankAccountNo", bankAccountNo).build()),
+    public BaseDto<PayFormDataDto> unbindBankCard(String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                        .put("loginName", loginName)
+                        .put("mobile", mobile)
+                        .put("bankUserName", bankUserName)
+                        .put("bankAccountNo", bankAccountNo)
+                        .build()),
                 "/user/cancel-card-bind");
     }
 

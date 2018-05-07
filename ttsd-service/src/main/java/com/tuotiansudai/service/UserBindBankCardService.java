@@ -8,6 +8,8 @@ import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,12 @@ public class UserBindBankCardService {
 
     private final UserOpLogService userOpLogService;
 
+    private final UserMapper userMapper;
+
     @Autowired
-    public UserBindBankCardService(BankWrapperClient bankWrapperClient, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
+    public UserBindBankCardService(BankWrapperClient bankWrapperClient, UserMapper userMapper, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
         this.bankWrapperClient = bankWrapperClient;
+        this.userMapper = userMapper;
         this.userBankCardMapper = userBankCardMapper;
         this.userOpLogService = userOpLogService;
     }
@@ -42,7 +47,9 @@ public class UserBindBankCardService {
         // 发送用户行为日志 MQ消息
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.BIND_CARD, null);
 
-        baseDto = bankWrapperClient.bindBankCard("UU02631330626431001", "UA02631330626471001");
+        UserModel userModel = this.userMapper.findByLoginName(loginName);
+
+        baseDto = bankWrapperClient.bindBankCard(loginName, userModel.getMobile(), "UU02631330626431001", "UA02631330626471001");
 
         return baseDto;
     }
@@ -62,7 +69,9 @@ public class UserBindBankCardService {
         // 发送用户行为日志 MQ消息
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.UNBIND_CARD, null);
 
-        baseDto = bankWrapperClient.unbindBankCard("UU02631330626431001", "UA02631330626471001");
+        UserModel userModel = this.userMapper.findByLoginName(loginName);
+
+        baseDto = bankWrapperClient.unbindBankCard(loginName, userModel.getMobile(), "UU02631330626431001", "UA02631330626471001");
 
         return baseDto;
     }
