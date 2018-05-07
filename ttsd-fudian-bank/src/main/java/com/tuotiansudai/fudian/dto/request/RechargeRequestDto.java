@@ -10,8 +10,8 @@ public class RechargeRequestDto extends PayBaseRequestDto {
 
     private String payType;
 
-    public RechargeRequestDto(String userName, String accountNo, String amount, RechargePayType payType) {
-        super(userName, accountNo, ApiType.RECHARGE.name());
+    public RechargeRequestDto(String loginName, String mobile, String userName, String accountNo, String amount, RechargePayType payType) {
+        super(loginName, mobile, userName, accountNo, ApiType.RECHARGE);
         this.amount = amount;
         this.payType = payType.getValue();
     }

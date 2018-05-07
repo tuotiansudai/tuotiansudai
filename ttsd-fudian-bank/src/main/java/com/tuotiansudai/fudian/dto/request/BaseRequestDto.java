@@ -1,5 +1,9 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.google.gson.Gson;
+import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.ExtMarkDto;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,8 +23,8 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(String extMark) {
-        this.extMark = extMark.toLowerCase();
+    public BaseRequestDto(String loginName, String mobile, ApiType apiType) {
+        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType));
     }
 
     public long getId() {

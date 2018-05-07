@@ -26,8 +26,8 @@ public class QueryLogLoanAccountService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String loanAccNo, String loanTxNo) {
-        QueryLogLoanAccountRequestDto dto = new QueryLogLoanAccountRequestDto(loanAccNo, loanTxNo);
+    public ResponseDto query(String loginName, String mobile, String loanAccNo, String loanTxNo) {
+        QueryLogLoanAccountRequestDto dto = new QueryLogLoanAccountRequestDto(loginName, mobile, loanAccNo, loanTxNo);
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

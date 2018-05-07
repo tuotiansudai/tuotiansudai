@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
+import com.google.protobuf.Api;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.LoanCallbackInvestItemRequestDto;
 import com.tuotiansudai.fudian.dto.request.LoanCallbackRequestDto;
@@ -42,8 +43,8 @@ public class LoanCallbackService {
         this.redisTemplate = redisTemplate;
     }
 
-    public ResponseDto loanCallback(String loanTxNo, List<LoanCallbackInvestItemRequestDto> investItems) {
-        LoanCallbackRequestDto dto = new LoanCallbackRequestDto(loanTxNo, investItems);
+    public ResponseDto loanCallback( String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investItems) {
+        LoanCallbackRequestDto dto = new LoanCallbackRequestDto(loginName, mobile, loanTxNo, investItems);
 
         investItems.forEach(investItem -> {
             investItem.setOrderNo(OrderIdGenerator.generate(redisTemplate));

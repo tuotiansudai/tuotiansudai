@@ -27,8 +27,8 @@ public class QueryTradeService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String orderNo, String orderDate, QueryTradeType queryType) {
-        QueryTradeRequestDto dto = new QueryTradeRequestDto(orderNo, orderDate, queryType.getValue());
+    public ResponseDto query(String loginName, String mobile, String orderNo, String orderDate, QueryTradeType queryType) {
+        QueryTradeRequestDto dto = new QueryTradeRequestDto(loginName, mobile, orderNo, orderDate, queryType.getValue());
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

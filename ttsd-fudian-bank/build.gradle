@@ -41,4 +41,5 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
     compile project(':ttsd-etcd')
+    compile project(':ttsd-mq-client')
 }
