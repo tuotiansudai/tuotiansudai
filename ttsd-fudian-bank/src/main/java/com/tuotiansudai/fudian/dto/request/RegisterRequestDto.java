@@ -12,8 +12,8 @@ public class RegisterRequestDto extends UserBaseRequestDto {
 
     private String mobilePhone;
 
-    public RegisterRequestDto(String realName, String identityCode, String mobilePhone) {
-        super(null, null, ApiType.REGISTER.name());
+    public RegisterRequestDto(String loginName, String mobile, String realName, String identityCode) {
+        super(loginName, mobile, null, null, ApiType.REGISTER);
         this.realName = realName;
         this.identityCode = identityCode;
         this.mobilePhone = mobilePhone;

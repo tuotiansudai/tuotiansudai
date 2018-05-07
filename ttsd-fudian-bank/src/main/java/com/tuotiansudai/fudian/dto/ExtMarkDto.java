@@ -10,6 +10,15 @@ public class ExtMarkDto {
 
     private ApiType apiType;
 
+    public ExtMarkDto() {
+    }
+
+    public ExtMarkDto(String loginName, String mobile, ApiType apiType) {
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.apiType = apiType;
+    }
+
     public String getLoginName() {
         return loginName;
     }

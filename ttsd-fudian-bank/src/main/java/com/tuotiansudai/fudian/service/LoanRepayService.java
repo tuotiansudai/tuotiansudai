@@ -34,8 +34,8 @@ public class LoanRepayService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public LoanRepayRequestDto repay(String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY.name());
+    public LoanRepayRequestDto repay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY);
 
         signatureHelper.sign(dto);
 
@@ -49,8 +49,8 @@ public class LoanRepayService implements AsyncCallbackInterface {
         return dto;
     }
 
-    public ResponseDto fastRepay(String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY.name());
+    public ResponseDto fastRepay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

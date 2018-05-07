@@ -3,6 +3,7 @@ package com.tuotiansudai.enums;
 
 public enum UserOpType {
 
+    REGISTER("实名认证"),
     CHANGE_PASSWORD("修改密码"),
     BIND_CHANGE_EMAIL("绑定/修改邮箱"),
     BIND_CARD("绑卡"),

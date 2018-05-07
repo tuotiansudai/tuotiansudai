@@ -3,7 +3,6 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
@@ -14,14 +13,11 @@ import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class CardBindService implements AsyncCallbackInterface {
@@ -45,7 +41,7 @@ public class CardBindService implements AsyncCallbackInterface {
     }
 
     public CardBindRequestDto bind(String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        CardBindRequestDto dto = new CardBindRequestDto(bankUserName, bankAccountNo);
+        CardBindRequestDto dto = new CardBindRequestDto(loginName, mobile, bankUserName, bankAccountNo);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

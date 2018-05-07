@@ -10,8 +10,8 @@ public class LoanCreateRequestDto extends PayBaseRequestDto {
 
     private String loanType = "1";
 
-    public LoanCreateRequestDto(String userName, String accountNo, String amount, String loanName) {
-        super(userName, accountNo, ApiType.LOAN_CREATE.name());
+    public LoanCreateRequestDto(String loginName, String mobile, String userName, String accountNo, String amount, String loanName) {
+        super(loginName, mobile, userName, accountNo, ApiType.LOAN_CREATE);
         this.amount = amount;
         this.loanName = loanName;
     }

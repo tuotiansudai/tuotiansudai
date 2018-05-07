@@ -4,7 +4,7 @@ import com.tuotiansudai.fudian.config.ApiType;
 
 public class PasswordResetRequestDto extends UserBaseRequestDto {
 
-    public PasswordResetRequestDto(String userName, String accountNo) {
-        super(userName, accountNo, ApiType.PASSWORD_RESET.name());
+    public PasswordResetRequestDto(String loginName, String mobile, String userName, String accountNo) {
+        super(loginName, mobile, userName, accountNo, ApiType.PASSWORD_RESET);
     }
 }

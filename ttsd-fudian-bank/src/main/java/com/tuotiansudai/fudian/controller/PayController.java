@@ -59,8 +59,6 @@ public class PayController {
     public ResponseEntity<Map<String, String>> recharge(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] call recharge");
 
-//        String data = rechargeService.recharge("UU02615960791461001", "UA02615960791501001", "10000.00", RechargePayType.GATE_PAY);
-//        String data = rechargeService.recharge("UU02619471098561001", "UA02619471098591001", "10000.00", RechargePayType.GATE_PAY);
         RechargeRequestDto requestDto = rechargeService.recharge(params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"), AmountUtils.toAmount(params.get("amount")), RechargePayType.GATE_PAY);
 
         return this.generateResponseJson(requestDto, ApiType.RECHARGE);
@@ -70,7 +68,7 @@ public class PayController {
     public String merchantRecharge(Map<String, Object> model) {
         logger.info("[Fudian] call merchant recharge");
 
-        RechargeRequestDto requestDto = rechargeService.merchantRecharge("1000000.00");
+        RechargeRequestDto requestDto = rechargeService.merchantRecharge(null, null, "1000000.00");
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.RECHARGE.getPath());
         return "post";
@@ -80,7 +78,7 @@ public class PayController {
     public String withdraw(Map<String, Object> model) {
         logger.info("[Fudian] call withdraw");
 
-        WithdrawRequestDto requestDto = withdrawService.withdraw("UU02615960791461001", "UA02615960791501001", "1.00");
+        WithdrawRequestDto requestDto = withdrawService.withdraw("UU02615960791461001", "UA02615960791501001", "1.00", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.WITHDRAW.getPath());
         return "post";
@@ -90,7 +88,7 @@ public class PayController {
     public ResponseEntity<ResponseDto> loanCreate(Map<String, Object> model) {
         logger.info("[Fudian] call loan create");
 
-        ResponseDto responseDto = loanCreateService.create("UU02615960791461001", "UA02615960791501001", "10.00", "LOAN_CREDIT");
+        ResponseDto responseDto = loanCreateService.create("UU02615960791461001", "UA02615960791501001", "10.00", "LOAN_CREDIT",null,null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -99,7 +97,7 @@ public class PayController {
     public ResponseEntity<ResponseDto> loanFull(Map<String, Object> model) {
         logger.info("[Fudian] call loan full");
 
-        ResponseDto responseDto = loanFullService.full("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "20180427000000000001", "20180427", "20180701");
+        ResponseDto responseDto = loanFullService.full("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "20180427000000000001", "20180427", "20180701", null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -109,7 +107,7 @@ public class PayController {
         logger.info("[Fudian] call loan invest");
 
 //        loanInvestService.invest("UU02615960791461001", "UA02615960791501001", "1.00", "0.00", "LU02619459384521001");
-        LoanInvestRequestDto requestDto = loanInvestService.invest("UU02619471098561001", "UA02619471098591001", "10.00", "0.00", "LU02625453517541001");
+        LoanInvestRequestDto requestDto = loanInvestService.invest("UU02619471098561001", "UA02619471098591001", "10.00", "0.00", "LU02625453517541001", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.LOAN_INVEST.getPath());
         return "post";
@@ -119,7 +117,7 @@ public class PayController {
     public String loanCreditInvest(Map<String, Object> model) {
         logger.info("[Fudian] call loan credit invest");
 
-        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest("UU02624634769241001", "UA02624634769281001", "LU02625453517541001", "20180427000000000002", "20180427", "3", "1.00", "1.00", "100.00");
+        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest("UU02624634769241001", "UA02624634769281001", "LU02625453517541001", "20180427000000000002", "20180427", "3", "1.00", "1.00", "100.00",null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.LOAN_CREDIT_INVEST.getPath());
         return "post";
@@ -130,7 +128,7 @@ public class PayController {
         logger.info("[Fudian] call loan fast invest");
 
 //        String data = loanInvestService.invest("UU02615960791461001", "UA02615960791501001", "1.00", "0.00", "LU02619459384521001");
-        ResponseDto responseDto = loanInvestService.fastInvest("UU02619471098561001", "UA02619471098591001", "1.00", "0.00", "LU02619459384521001");
+        ResponseDto responseDto = loanInvestService.fastInvest("UU02619471098561001", "UA02619471098591001", "1.00", "0.00", "LU02619459384521001", null, null);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -138,7 +136,7 @@ public class PayController {
     public String loanRepay(Map<String, Object> model) {
         logger.info("[Fudian] call loan repay");
 
-        LoanRepayRequestDto requestDto = loanRepayService.repay("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00");
+        LoanRepayRequestDto requestDto = loanRepayService.repay("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00",null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.LOAN_REPAY.getPath());
         return "post";
@@ -148,7 +146,7 @@ public class PayController {
     public ResponseEntity<ResponseDto> loanFastRepay(Map<String, Object> model) {
         logger.info("[Fudian] call loan fast repay");
 
-        ResponseDto responseDto = loanRepayService.fastRepay("UU02615960791461001", "UA02615960791501001", "LU02619459384521001", "1.00", "0.00");
+        ResponseDto responseDto = loanRepayService.fastRepay("UU02615960791461001", "UA02615960791501001", "LU02619459384521001", "1.00", "0.00", null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -157,7 +155,7 @@ public class PayController {
     public ResponseEntity<ResponseDto> merchantTransfer(Map<String, Object> model) {
         logger.info("[Fudian] call merchant transfer");
 
-        ResponseDto responseDto = merchantTransferService.transfer("UU02615960791461001", "UA02615960791501001", "0.01");
+        ResponseDto responseDto = merchantTransferService.transfer("UU02615960791461001", "UA02615960791501001", "0.01", null, null);
 
         return ResponseEntity.ok(responseDto);
     }

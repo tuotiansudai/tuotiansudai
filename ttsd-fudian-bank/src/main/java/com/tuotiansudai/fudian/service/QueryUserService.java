@@ -26,8 +26,8 @@ public class QueryUserService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String userName, String accountNo) {
-        QueryUserRequestDto dto = new QueryUserRequestDto(accountNo, userName);
+    public ResponseDto query(String loginName, String mobile, String userName, String accountNo) {
+        QueryUserRequestDto dto = new QueryUserRequestDto(loginName, mobile, accountNo, userName);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

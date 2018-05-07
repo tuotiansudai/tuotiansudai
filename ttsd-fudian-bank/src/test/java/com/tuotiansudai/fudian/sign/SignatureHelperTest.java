@@ -32,5 +32,7 @@ public class SignatureHelperTest {
         System.out.println(AmountUtils.toAmount("100"));
         System.out.println(AmountUtils.toAmount("110"));
         System.out.println(AmountUtils.toAmount("101"));
+        insertMapper.insertRegister(new RegisterRequestDto("", "", "", ""));
+        ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson("{\"apiType\": \"register\"}", ExtMarkDto.class);
     }
 }

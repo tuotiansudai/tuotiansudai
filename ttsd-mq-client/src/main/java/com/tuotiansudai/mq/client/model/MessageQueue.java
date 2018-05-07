@@ -83,10 +83,13 @@ public enum MessageQueue {
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
 
-
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
+    RegisterBankAccount_Success("RegisterBankAccount-Success"),
+    RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
+    RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
+    RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
     ;
 
     private final String queueName;
