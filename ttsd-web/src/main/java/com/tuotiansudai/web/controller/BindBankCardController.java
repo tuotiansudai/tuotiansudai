@@ -26,7 +26,7 @@ public class BindBankCardController {
         this.userBindBankCardService = userBindBankCardService;
     }
 
-    @RequestMapping(path = "/bind", method = RequestMethod.GET)
+    @RequestMapping(path = "/bind", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(HttpServletRequest request) {
         BaseDto<PayFormDataDto> baseDto = userBindBankCardService.bind(LoginUserInfo.getLoginName(), Source.WEB, RequestIPParser.parse(request), null);
