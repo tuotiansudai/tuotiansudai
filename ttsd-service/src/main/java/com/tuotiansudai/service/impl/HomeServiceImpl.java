@@ -63,7 +63,7 @@ public class HomeServiceImpl implements HomeService {
 
     private static final String SITE_MAP_LAST_MODIFY_DATE_KEY = "sitemap:lastModifyDate";
 
-    private static final int SITE_MAP_STANDARD_NUM = 50000;
+    private static final int SITE_MAP_STANDARD_NUM = 20000;
 
     private enum SiteMapType {
         ASK(ASK_SITE_MAP_KEY),
