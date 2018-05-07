@@ -32,6 +32,10 @@ public class UserBindBankCardService {
         this.userOpLogService = userOpLogService;
     }
 
+    public UserBankCardModel findBankCard(String loginName) {
+        return userBankCardMapper.findByLoginName(loginName);
+    }
+
     public BaseDto<PayFormDataDto> bind(String loginName, Source source, String ip, String deviceId) {
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
