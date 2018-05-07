@@ -50,3 +50,18 @@ $('.my_personal-info').on('click',() => {
     location.href = '/personal-info';
 });
 
+let $bankResult = $('#bankResult');
+if($('#bankResult').length){
+    let $countTime = $('.count-down',$bankResult);
+    let redirectTo = $bankResult.data('redirect-to');
+
+    commonFun.countDownLoan({
+        btnDom:$countTime,
+        time:5
+    },function() {
+        window.location.href = '/'+redirectTo;
+    });
+}
+
+
+
