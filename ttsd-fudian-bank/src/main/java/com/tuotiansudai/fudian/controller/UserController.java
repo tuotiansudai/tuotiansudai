@@ -51,7 +51,7 @@ public class UserController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ResponseEntity<Map<String, String>> recharge(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] call register");
-        RegisterRequestDto requestDto = registerService.register(params.get("loginName"), params.get("mobilePhone"), params.get("realName"), params.get("identityCode"));
+        RegisterRequestDto requestDto = registerService.register(params.get("loginName"), params.get("mobile"), params.get("realName"), params.get("identityCode"));
         return this.generateResponseJson(requestDto, ApiType.REGISTER);
     }
 

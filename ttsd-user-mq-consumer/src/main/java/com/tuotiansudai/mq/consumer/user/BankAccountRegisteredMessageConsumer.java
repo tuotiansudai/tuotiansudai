@@ -10,7 +10,6 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class BankAccountRegisteredMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     @Autowired
     private UserMapper userMapper;
@@ -37,7 +36,7 @@ public class BankAccountRegisteredMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CertificationSuccess_CreateBankAccount;
+        return MessageQueue.RegisterBankAccount_Success;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class BankAccountRegisteredMessageConsumer implements MessageConsumer {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[MQ] CertificationSuccess_CreateBankAccount message is empty");
+            logger.error("[MQ] RegisterBankAccount_Success message is empty");
             return;
         }
 

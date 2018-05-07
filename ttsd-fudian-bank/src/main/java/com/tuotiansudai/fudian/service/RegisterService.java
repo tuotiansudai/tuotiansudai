@@ -43,12 +43,12 @@ public class RegisterService implements AsyncCallbackInterface {
         this.messageQueueClient = messageQueueClient;
     }
 
-    public RegisterRequestDto register(String loginName, String mobilePhone, String realName, String identityCode) {
-        RegisterRequestDto dto = new RegisterRequestDto(loginName, mobilePhone, realName, identityCode);
+    public RegisterRequestDto register(String loginName, String mobile, String realName, String identityCode) {
+        RegisterRequestDto dto = new RegisterRequestDto(loginName, mobile, realName, identityCode);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[register] sign error, realName: {}, identityCode: {}, mobilePhone: {}", realName, identityCode, mobilePhone);
+            logger.error("[register] sign error, realName: {}, identityCode: {}, mobilePhone: {}", realName, identityCode, mobile);
             return null;
         }
 
@@ -71,9 +71,9 @@ public class RegisterService implements AsyncCallbackInterface {
         if (responseDto.isSuccess()) {
             RegisterContentDto registerContentDto = responseDto.getContent();
             ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(registerContentDto.getExtMark(), ExtMarkDto.class);
-            this.messageQueueClient.publishMessage(MessageTopic.CertificationSuccess, Maps.newHashMap(ImmutableMap.<String, String>builder()
+            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount, Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("loginName", extMarkDto.getLoginName())
-                    .put("mobilePhone", registerContentDto.getMobilePhone())
+                    .put("mobile", registerContentDto.getMobilePhone())
                     .put("identityCode", registerContentDto.getIdentityCode())
                     .put("realName", registerContentDto.getRealName())
                     .put("accountNo", registerContentDto.getAccountNo())

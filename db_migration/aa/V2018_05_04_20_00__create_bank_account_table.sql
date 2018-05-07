@@ -15,8 +15,8 @@ CREATE TABLE `aa`.`bank_account` (
 
   PRIMARY KEY (`id`),
   CONSTRAINT FK_BANK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
-  INDEX bank_account_user_name (bank_user_name),
-  INDEX bank_account_account_no (bank_account_no)
+  INDEX INDEX_BANK_ACCOUNT_USER_NAME (bank_user_name),
+  INDEX INDEX_BANK_ACCOUNT_ACCOUNT_NO (bank_account_no)
 
 )
   ENGINE = InnoDB

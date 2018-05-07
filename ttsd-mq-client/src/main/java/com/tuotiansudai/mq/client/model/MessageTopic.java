@@ -31,11 +31,11 @@ public enum MessageTopic {
             MessageQueue.RepaySuccess_CouponRepay,
             MessageQueue.RepaySuccess_ExtraRateRepay),
 
-    CertificationSuccess("CertificationSuccess",
-            MessageQueue.CertificationSuccess_CreateBankAccount,
-            MessageQueue.CertificationSuccess_CompletePointTask,
-            MessageQueue.CertificationSuccess_EventMessage,
-            MessageQueue.CertificationSuccess_PushMessage),
+    RegisterBankAccount("RegisterBankAccount",
+            MessageQueue.RegisterBankAccount_Success,
+            MessageQueue.RegisterBankAccount_CompletePointTask,
+            MessageQueue.RegisterBankAccount_EventMessage,
+            MessageQueue.RegisterBankAccount_PushMessage),
 
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,

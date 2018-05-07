@@ -10,8 +10,6 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointTaskService;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +24,14 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredCompletePointTaskConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
-
-    @Autowired
-    private UserMapper userMapper;
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     @Autowired
     public PointTaskService pointTaskService;
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CertificationSuccess_CompletePointTask;
+        return MessageQueue.RechargeSuccess_CompletePointTask;
     }
 
     @Override
@@ -44,7 +39,7 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[MQ] CertificationSuccess_CompletePointTask message is empty");
+            logger.error("[MQ] RechargeSuccess_CompletePointTask message is empty");
             return;
         }
 

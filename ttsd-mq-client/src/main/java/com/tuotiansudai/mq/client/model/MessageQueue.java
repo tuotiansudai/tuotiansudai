@@ -86,10 +86,10 @@ public enum MessageQueue {
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
-    CertificationSuccess_CreateBankAccount("CertificationSuccess-CreateBankAccount"),
-    CertificationSuccess_CompletePointTask("CertificationSuccess-CompletePointTask"),
-    CertificationSuccess_EventMessage("CertificationSuccess-EventMessage"),
-    CertificationSuccess_PushMessage("CertificationSuccess-PushMessage"),
+    RegisterBankAccount_Success("RegisterBankAccount-Success"),
+    RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
+    RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
+    RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
     ;
 
     private final String queueName;

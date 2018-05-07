@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -29,7 +28,7 @@ public class BankAccountRegisteredEventMessageConsumer implements MessageConsume
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredEventMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     @Autowired
     private UserMessageMapper userMessageMapper;
@@ -39,16 +38,15 @@ public class BankAccountRegisteredEventMessageConsumer implements MessageConsume
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CertificationSuccess_EventMessage;
+        return MessageQueue.RegisterBankAccount_EventMessage;
     }
 
     @Override
-    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[MQ] CertificationSuccess_EventMessage message is empty");
+            logger.error("[MQ] RegisterBankAccount_EventMessage message is empty");
             return;
         }
 

@@ -12,20 +12,14 @@ import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.enums.PushType;
 import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.repository.mapper.MessageMapper;
-import com.tuotiansudai.message.repository.mapper.UserMessageMapper;
-import com.tuotiansudai.message.repository.model.MessageModel;
-import com.tuotiansudai.message.repository.model.UserMessageModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +28,7 @@ public class BankAccountRegisteredPushMessageConsumer implements MessageConsumer
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredPushMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     private final MiPushClient miPushClient;
 
@@ -45,16 +39,15 @@ public class BankAccountRegisteredPushMessageConsumer implements MessageConsumer
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CertificationSuccess_PushMessage;
+        return MessageQueue.RegisterBankAccount_PushMessage;
     }
 
     @Override
-    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[MQ] CertificationSuccess_PushMessage message is empty");
+            logger.error("[MQ] RegisterBankAccount_PushMessage message is empty");
             return;
         }
 
