@@ -14,8 +14,8 @@ public class LoanFullRequestDto extends PayBaseRequestDto {
 
     private String expectRepayTime;
 
-    public LoanFullRequestDto(String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String loginName, String mobile) {
-        super(userName, accountNo, ApiType.LOAN_FULL, loginName, mobile);
+    public LoanFullRequestDto(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
+        super(loginName, mobile, userName, accountNo, ApiType.LOAN_FULL);
         this.loanTxNo = loanTxNo;
         this.loanOrderNo = loanOrderNo;
         this.loanOrderDate = loanOrderDate;

@@ -26,7 +26,7 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredCompletePointTaskConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobilePhone", "identityCode", "realName", "accountNo", "userName", "orderDate", "orderNo");
 
     @Autowired
     private UserMapper userMapper;
@@ -53,8 +53,7 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
             }.getType());
 
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                UserModel userModel = userMapper.findByMobile(map.get("mobilePhone"));
-                pointTaskService.completeNewbieTask(PointTask.REGISTER, userModel.getLoginName());
+                pointTaskService.completeNewbieTask(PointTask.REGISTER, map.get("loginName"));
             }else {
                 logger.error("[MQ] message is invalid {}", message);
             }

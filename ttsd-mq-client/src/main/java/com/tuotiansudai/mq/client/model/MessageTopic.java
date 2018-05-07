@@ -38,7 +38,8 @@ public enum MessageTopic {
             MessageQueue.CertificationSuccess_PushMessage),
 
     BindBankCard("BindBandCard",
-            MessageQueue.BindBankCard_Success),
+            MessageQueue.BindBankCard_Success,
+            MessageQueue.BindBankCard_CompletePointTask),
     ;
 
     final String topicName;

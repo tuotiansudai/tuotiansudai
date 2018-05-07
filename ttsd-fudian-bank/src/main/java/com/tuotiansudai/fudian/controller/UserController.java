@@ -48,10 +48,10 @@ public class UserController {
         this.phoneUpdateService = phoneUpdateService;
     }
 
-    @RequestMapping(path = "/register", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> recharge(Map<String, String> params) {
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, String>> recharge(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] call register");
-        RegisterRequestDto requestDto = registerService.register(params.get("loginName"), params.get("realName"), params.get("identityCode"), params.get("mobilePhone"));
+        RegisterRequestDto requestDto = registerService.register(params.get("loginName"), params.get("mobilePhone"), params.get("realName"), params.get("identityCode"));
         return this.generateResponseJson(requestDto, ApiType.REGISTER);
     }
 
@@ -61,8 +61,7 @@ public class UserController {
 
 //        String data = cardBindService.bind("UU02615960791461001", "UA02615960791501001"); //GXD
 //        String data = cardBindService.bind("UU02619471098561001", "UA02619471098591001"); //ZK
-        CardBindRequestDto requestDto = cardBindService.bind(params.get("bankUserName"), params.get("bankAccountNo"), params.get("loginName"), params.get("mobile"));//FZW
-
+        CardBindRequestDto requestDto = cardBindService.bind(params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"));//FZW
         return this.generateResponseJson(requestDto, ApiType.CARD_BIND);
     }
 

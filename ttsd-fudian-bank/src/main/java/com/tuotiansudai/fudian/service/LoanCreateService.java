@@ -34,9 +34,9 @@ public class LoanCreateService {
         this.updateMapper = updateMapper;
     }
 
-    public ResponseDto create(String userName, String accountNo, String amount, String loanName, String loginName, String mobile) {
-        LoanCreateRequestDto dto = new LoanCreateRequestDto(userName, accountNo, amount, loanName, loginName, mobile);
-        signatureHelper.sign(dto, ApiType.LOAN_CREATE);
+    public ResponseDto create(String loginName, String mobile, String userName, String accountNo, String amount, String loanName) {
+        LoanCreateRequestDto dto = new LoanCreateRequestDto(loginName, mobile, userName, accountNo, amount, loanName);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan create] sign error, userName: {}, accountNo: {}, amount: {}, loanName: {}",

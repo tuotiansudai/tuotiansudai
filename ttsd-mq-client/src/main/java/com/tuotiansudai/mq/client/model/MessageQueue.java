@@ -33,7 +33,6 @@ public enum MessageQueue {
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
     StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
-    BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     ExperienceRepayCallback("ExperienceRepayCallback"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
@@ -86,6 +85,7 @@ public enum MessageQueue {
 
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
+    BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     CertificationSuccess_CreateBankAccount("CertificationSuccess-CreateBankAccount"),
     CertificationSuccess_CompletePointTask("CertificationSuccess-CompletePointTask"),
     CertificationSuccess_EventMessage("CertificationSuccess-EventMessage"),

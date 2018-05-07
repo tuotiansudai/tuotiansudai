@@ -70,6 +70,5 @@ public class RegisterAccountController {
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
         return view;
-
     }
 }

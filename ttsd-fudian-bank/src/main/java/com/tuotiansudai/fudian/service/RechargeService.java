@@ -35,9 +35,9 @@ public class RechargeService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public RechargeRequestDto recharge(String userName, String accountNo, String amount, RechargePayType payType, String loginName, String mobile) {
-        RechargeRequestDto dto = new RechargeRequestDto(userName, accountNo, amount, payType, loginName, mobile);
-        signatureHelper.sign(dto, ApiType.RECHARGE);
+    public RechargeRequestDto recharge(String loginName, String mobile, String userName, String accountNo, String amount, RechargePayType payType) {
+        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, userName, accountNo, amount, payType);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", userName, accountNo, amount, payType);
@@ -48,10 +48,10 @@ public class RechargeService implements AsyncCallbackInterface {
 
     }
 
-    public RechargeRequestDto merchantRecharge(String amount, String loginName, String mobile) {
-        RechargeRequestDto dto = new RechargeRequestDto(bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY, loginName, mobile);
+    public RechargeRequestDto merchantRecharge(String loginName, String mobile, String amount) {
+        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
 
-        signatureHelper.sign(dto, ApiType.RECHARGE);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[merchant recharge sign] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}",

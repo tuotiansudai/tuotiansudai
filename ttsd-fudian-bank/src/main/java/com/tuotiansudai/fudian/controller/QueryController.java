@@ -62,7 +62,7 @@ public class QueryController {
                                                   @RequestParam(name = "queryType") QueryTradeType queryType) {
         logger.info("[Fudian] query trade orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
 
-        ResponseDto responseDto = queryTradeService.query(orderNo, orderDate, queryType, null, null);
+        ResponseDto responseDto = queryTradeService.query(null, null, orderNo, orderDate, queryType);
 
         return ResponseEntity.ok(responseDto);
     }

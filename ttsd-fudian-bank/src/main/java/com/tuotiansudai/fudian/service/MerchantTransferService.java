@@ -34,9 +34,9 @@ public class MerchantTransferService {
         this.updateMapper = updateMapper;
     }
 
-    public ResponseDto transfer(String userName, String accountNo, String amount, String loginName, String mobile) {
-        MerchantTransferRequestDto dto = new MerchantTransferRequestDto(userName, accountNo, amount, loginName, mobile);
-        signatureHelper.sign(dto, ApiType.MERCHANT_TRANSFER);
+    public ResponseDto transfer(String loginName, String mobile, String userName, String accountNo, String amount) {
+        MerchantTransferRequestDto dto = new MerchantTransferRequestDto(loginName, mobile, userName, accountNo, amount);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[merchant transfer] sign error, userName: {}, accountNo: {}, amount: {}", userName, accountNo, amount);

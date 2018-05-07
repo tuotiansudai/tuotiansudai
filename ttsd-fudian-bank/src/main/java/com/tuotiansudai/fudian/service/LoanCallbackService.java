@@ -43,15 +43,15 @@ public class LoanCallbackService {
         this.redisTemplate = redisTemplate;
     }
 
-    public ResponseDto loanCallback(String loanTxNo, List<LoanCallbackInvestItemRequestDto> investItems, String loginName, String mobile) {
-        LoanCallbackRequestDto dto = new LoanCallbackRequestDto(loanTxNo, investItems, loginName, mobile);
+    public ResponseDto loanCallback( String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investItems) {
+        LoanCallbackRequestDto dto = new LoanCallbackRequestDto(loginName, mobile, loanTxNo, investItems);
 
         investItems.forEach(investItem -> {
             investItem.setOrderNo(OrderIdGenerator.generate(redisTemplate));
             investItem.setOrderDate(dto.getOrderDate());
         });
 
-        signatureHelper.sign(dto, ApiType.LOAN_CALLBACK);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan callback] sign error, loanTxNo: {}", loanTxNo);

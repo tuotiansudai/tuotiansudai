@@ -25,7 +25,7 @@ public class BindBankCardMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(BindBankCardMessageConsumer.class);
 
-    private static List<String> JSON_KEYS = Lists.newArrayList("bankUserName", "bankAccountNo", "bank", "bankCode", "cardNumber", "bankOrderNo", "bankOrderDate");
+    private static List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "bankUserName", "bankAccountNo", "bank", "bankCode", "cardNumber", "bankOrderNo", "bankOrderDate");
 
     private final UserBankCardMapper userBankCardMapper;
 

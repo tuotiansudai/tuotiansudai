@@ -34,10 +34,10 @@ public class LoanRepayService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public LoanRepayRequestDto repay(String userName, String accountNo, String loanTxNo, String capital, String interest, String loginName, String mobile) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY, loginName, mobile);
+    public LoanRepayRequestDto repay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY);
 
-        signatureHelper.sign(dto, ApiType.LOAN_REPAY);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan repay] sign error, userName: {}, accountNo: {}, loanTxNo: {}, capital: {}, interest: {}",
@@ -49,9 +49,9 @@ public class LoanRepayService implements AsyncCallbackInterface {
         return dto;
     }
 
-    public ResponseDto fastRepay(String userName, String accountNo, String loanTxNo, String capital, String interest, String loginName, String mobile) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY, loginName, mobile);
-        signatureHelper.sign(dto, ApiType.LOAN_FAST_REPAY);
+    public ResponseDto fastRepay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[loan fast repay] sign error, userName: {}, accountNo: {}, loanTxNo: {}, capital: {}, interest: {}",

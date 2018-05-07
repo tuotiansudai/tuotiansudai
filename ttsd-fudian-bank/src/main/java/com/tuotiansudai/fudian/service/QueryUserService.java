@@ -26,9 +26,9 @@ public class QueryUserService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String userName, String accountNo, String loginName, String mobile) {
-        QueryUserRequestDto dto = new QueryUserRequestDto(accountNo, userName, loginName, mobile);
-        signatureHelper.sign(dto, ApiType.QUERY_USER);
+    public ResponseDto query(String loginName, String mobile, String userName, String accountNo) {
+        QueryUserRequestDto dto = new QueryUserRequestDto(loginName, mobile, accountNo, userName);
+        signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[query user] sign error, userName: {}, accountNo: {}", userName, accountNo);
