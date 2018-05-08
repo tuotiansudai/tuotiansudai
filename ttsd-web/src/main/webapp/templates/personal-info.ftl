@@ -43,7 +43,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard" value="绑定" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
+                    <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard bandBindCard" value="绑定"/>
                 </span>
                 </form>
             </#if>
