@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
@@ -16,6 +15,11 @@ public interface RechargeMapper {
     void create(RechargeModel model);
 
     void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
+
+    void updateStatusAndOrder(@Param("id") long id,
+                              @Param("status") RechargeStatus status,
+                              @Param("bankOrderNo") String bankOrderNo,
+                              @Param("bankOrderDate") String bankOrderDate);
 
     RechargeModel findById(long id);
 

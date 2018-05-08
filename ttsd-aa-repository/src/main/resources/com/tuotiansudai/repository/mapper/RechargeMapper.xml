@@ -15,6 +15,9 @@
         <result column="fast_pay" property="fastPay"/>
         <result column="public_pay" property="publicPay"/>
         <result column="created_time" property="createdTime"/>
+        <result column="pay_tyle" property="payType"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
     </resultMap>
 
     <resultMap id="rechargeResultView" type="RechargePaginationView" extends="rechargeResultMap">
@@ -25,8 +28,8 @@
 
 
     <insert id="create" parameterType="RechargeModel">
-        insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time, updated_time)
-        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime}, now())
+        insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time, updated_time, pay_type, bank_order_no, bank_order_date)
+        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime}, now(), #{payType}, #{banOrderNo}, #{bankOrderDate})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="rechargeResultMap">
@@ -35,6 +38,10 @@
 
     <update id="updateStatus" parameterType="map">
         update recharge set status = #{status}, updated_time = now() where id = #{id}
+    </update>
+
+    <update id="updateStatusAndOrder" parameterType="map">
+        update recharge set status = #{status}, bank_order_no = #{bankOrderNo}, bank_order_date = #{bankOrderDate}, updated_time = now() where id = #{id}
     </update>
 
     <select id="findSumSuccessRechargeByLoginName" parameterType="java.lang.String" resultType="long">

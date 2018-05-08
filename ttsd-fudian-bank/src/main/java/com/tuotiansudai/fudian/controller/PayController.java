@@ -1,6 +1,9 @@
 package com.tuotiansudai.fudian.controller;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.service.*;
@@ -19,6 +22,8 @@ public class PayController {
 
     private static Logger logger = LoggerFactory.getLogger(PayController.class);
 
+    private final BankConfig bankConfig;
+
     private final RechargeService rechargeService;
 
     private final WithdrawService withdrawService;
@@ -36,7 +41,8 @@ public class PayController {
     private final MerchantTransferService merchantTransferService;
 
     @Autowired
-    public PayController(RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
+    public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
+        this.bankConfig = bankConfig;
         this.rechargeService = rechargeService;
         this.withdrawService = withdrawService;
         this.loanCreateService = loanCreateService;
@@ -48,15 +54,15 @@ public class PayController {
     }
 
     @RequestMapping(path = "/recharge", method = RequestMethod.GET)
-    public String recharge(Map<String, Object> model) {
+    public ResponseEntity<Map<String, String>> recharge(Map<String, Object> model) {
         logger.info("[Fudian] call recharge");
 
 //        String data = rechargeService.recharge("UU02615960791461001", "UA02615960791501001", "10000.00", RechargePayType.GATE_PAY);
 //        String data = rechargeService.recharge("UU02619471098561001", "UA02619471098591001", "10000.00", RechargePayType.GATE_PAY);
-        RechargeRequestDto requestDto = rechargeService.recharge(null, null,"UU02624634769241001", "UA02624634769281001", "1000000.00", RechargePayType.GATE_PAY);//商户
+        RechargeRequestDto requestDto = rechargeService.recharge(null, null, null,"UU02624634769241001", "UA02624634769281001", "1000000.00", RechargePayType.GATE_PAY);//商户
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.RECHARGE.getPath());
-        return "post";
+        return this.generateResponseJson(requestDto, ApiType.RECHARGE);
     }
 
     @RequestMapping(path = "/merchant-recharge", method = RequestMethod.GET)
@@ -153,5 +159,12 @@ public class PayController {
         ResponseDto responseDto = merchantTransferService.transfer("UU02615960791461001", "UA02615960791501001", "0.01", null, null);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    private ResponseEntity<Map<String, String>> generateResponseJson(BaseRequestDto baseRequestDto, ApiType apiType) {
+        return ResponseEntity.ok(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("data", baseRequestDto.getRequestData())
+                .put("url", bankConfig.getBankUrl() + apiType.getPath())
+                .build()));
     }
 }

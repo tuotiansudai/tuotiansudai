@@ -40,6 +40,10 @@ public enum MessageTopic {
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,
             MessageQueue.BindBankCard_CompletePointTask),
+
+    Recharge("Recharge",
+            MessageQueue.Recharge_Success,
+            MessageQueue.Recharge_CompletePointTask),
     ;
 
     final String topicName;

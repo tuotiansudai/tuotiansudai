@@ -90,6 +90,8 @@ public enum MessageQueue {
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
     RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
     RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
+    Recharge_callback("Recharge-callback"),
+    Recharge_CompletePointTask("Recharge-CompletePointTask"),
     ;
 
     private final String queueName;
