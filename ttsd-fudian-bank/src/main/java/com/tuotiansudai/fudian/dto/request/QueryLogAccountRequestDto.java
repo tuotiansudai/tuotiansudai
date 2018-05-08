@@ -10,8 +10,8 @@ public class QueryLogAccountRequestDto extends BaseRequestDto {
 
     private String queryOrderDate;
 
-    public QueryLogAccountRequestDto(String userName, String accountNo, String queryOrderDate) {
-        super(ApiType.QUERY_LOG_ACCOUNT.name().toLowerCase());
+    public QueryLogAccountRequestDto(String loginName, String mobile, String userName, String accountNo, String queryOrderDate) {
+        super(loginName, mobile, ApiType.QUERY_LOG_ACCOUNT);
         this.userName = userName;
         this.accountNo = accountNo;
         this.queryOrderDate = queryOrderDate;

@@ -59,7 +59,7 @@ public class LoanCallbackServiceTest {
 //                "20180426000000000019",
 //                "20180426");
 
-        ResponseDto responseDto = loanCallbackService.loanCallback("LU02625453517541001", Lists.newArrayList(item1));
+        ResponseDto responseDto = loanCallbackService.loanCallback("", "", "LU02625453517541001", Lists.newArrayList(item1));
 
         System.out.println(responseDto);
     }

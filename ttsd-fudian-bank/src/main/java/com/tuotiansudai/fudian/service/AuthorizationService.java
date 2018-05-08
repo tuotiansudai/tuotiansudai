@@ -30,8 +30,8 @@ public class AuthorizationService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public AuthorizationRequestDto auth(String userName, String accountNo) {
-        AuthorizationRequestDto dto = new AuthorizationRequestDto(userName, accountNo);
+    public AuthorizationRequestDto auth(String loginName, String mobile, String userName, String accountNo) {
+        AuthorizationRequestDto dto = new AuthorizationRequestDto(loginName, mobile, userName, accountNo);
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

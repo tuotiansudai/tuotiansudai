@@ -30,8 +30,8 @@ public class WithdrawService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public WithdrawRequestDto withdraw(String userName, String accountNo, String amount) {
-        WithdrawRequestDto dto = new WithdrawRequestDto(userName, accountNo, amount);
+    public WithdrawRequestDto withdraw(String loginName, String mobile, String userName, String accountNo, String amount) {
+        WithdrawRequestDto dto = new WithdrawRequestDto(loginName, mobile, userName, accountNo, amount);
 
         signatureHelper.sign(dto);
 

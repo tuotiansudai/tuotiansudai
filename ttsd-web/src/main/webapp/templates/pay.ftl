@@ -12,7 +12,7 @@
     <#if payData.status>
     <form id="payForm" action="${payData.url}" method="post">
         <#list payData.fields?keys as key>
-            <input type="hidden" name="${key}" value="${payData.fields[key]}"/>
+            <input type="hidden" name="${key}" value='${payData.fields[key]}'/>
         </#list>
     </form>
     <#else>

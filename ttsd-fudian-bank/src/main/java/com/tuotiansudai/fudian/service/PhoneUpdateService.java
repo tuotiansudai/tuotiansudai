@@ -30,8 +30,8 @@ public class PhoneUpdateService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public PhoneUpdateRequestDto update(String userName, String accountNo, String newPhone, String type) {
-        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(userName, accountNo, newPhone, type);
+    public PhoneUpdateRequestDto update(String loginName, String mobile, String userName, String accountNo, String newPhone, String type) {
+        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(loginName, mobile, userName, accountNo, newPhone, type);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

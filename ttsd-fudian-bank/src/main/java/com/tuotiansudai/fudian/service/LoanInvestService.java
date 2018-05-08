@@ -34,8 +34,8 @@ public class LoanInvestService implements AsyncCallbackInterface {
         this.updateMapper = updateMapper;
     }
 
-    public LoanInvestRequestDto invest(String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST.name());
+    public LoanInvestRequestDto invest(String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -48,8 +48,8 @@ public class LoanInvestService implements AsyncCallbackInterface {
         return dto;
     }
 
-    public ResponseDto fastInvest(String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST.name());
+    public ResponseDto fastInvest(String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST);
 
         signatureHelper.sign(dto);
 

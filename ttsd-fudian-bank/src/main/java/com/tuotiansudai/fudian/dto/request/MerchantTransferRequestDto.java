@@ -6,8 +6,8 @@ public class MerchantTransferRequestDto extends PayBaseRequestDto {
 
     private String amount;
 
-    public MerchantTransferRequestDto(String userName, String accountNo, String amount) {
-        super(userName, accountNo, ApiType.MERCHANT_TRANSFER.name());
+    public MerchantTransferRequestDto(String loginName, String mobile, String userName, String accountNo, String amount) {
+        super(loginName, mobile, userName, accountNo, ApiType.MERCHANT_TRANSFER);
         this.amount = amount;
     }
 

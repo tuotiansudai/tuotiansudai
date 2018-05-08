@@ -276,7 +276,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
         switch (pointTask) {
             case REGISTER:
-                return accountMapper.findByLoginName(loginName) != null;
+                return true;
             case BIND_BANK_CARD:
                 return bankCardMapper.findPassedBankCardByLoginName(loginName) != null;
             case FIRST_RECHARGE:

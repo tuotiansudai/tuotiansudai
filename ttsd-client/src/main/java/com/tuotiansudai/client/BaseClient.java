@@ -77,16 +77,7 @@ public abstract class BaseClient {
                 .addHeader("Content-Type", "text/plain; charset=UTF-8")
                 .build();
 
-        try {
-            Response response = this.okHttpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        return null;
+        return call(request);
     }
 
     protected ResponseBody newCall(String path, String requestJson, String method) {
@@ -107,6 +98,10 @@ public abstract class BaseClient {
                 .addHeader(USER_ID, userId)
                 .build();
 
+        return call(request);
+    }
+
+    private ResponseBody call(Request request) {
         try {
             Response response = this.okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
