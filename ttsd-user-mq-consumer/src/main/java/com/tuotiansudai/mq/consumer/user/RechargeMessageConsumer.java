@@ -27,7 +27,7 @@ import java.util.List;
 public class RechargeMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(RechargeMessageConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "orderDate", "orderNo", "isSuccess");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "payType", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
     private RechargeMapper rechargeMapper;
@@ -67,7 +67,8 @@ public class RechargeMessageConsumer implements MessageConsumer {
                 boolean isSuccess = Boolean.valueOf(map.get("isSuccess"));
                 rechargeMapper.updateStatusAndOrder(Long.parseLong(map.get("rechargeId")),
                         isSuccess ? RechargeStatus.SUCCESS : RechargeStatus.FAIL,
-                        map.get("orderId"),
+                        map.get("payType"),
+                        map.get("orderNo"),
                         map.get("orderDate"));
 
                 if (isSuccess) {
@@ -76,9 +77,7 @@ public class RechargeMessageConsumer implements MessageConsumer {
                             rechargeId, rechargeModel.getAmount(),
                             UserBillBusinessType.RECHARGE_SUCCESS,
                             null,
-                            null,
-                            map.get("orderNo"),
-                            map.get("orderDate")));
+                            null));
                 }
 
             }else {

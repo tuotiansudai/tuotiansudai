@@ -42,7 +42,7 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final RedisClient redisClient;
 
-    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{}";
+    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
 
     @Autowired
     public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, RedisClient redisClient) {
@@ -58,7 +58,7 @@ public class RechargeService implements AsyncCallbackInterface {
         RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, userName, accountNo, amount, payType);
         signatureHelper.sign(dto);
 
-        redisClient.newJedis().set(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), rechargeId);
+        redisClient.newJedis().setex(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), 30 * 24 * 60 * 60, rechargeId);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", userName, accountNo, amount, payType);
@@ -95,6 +95,8 @@ public class RechargeService implements AsyncCallbackInterface {
             logger.error("[recharge callback] parse callback data error, data is {}", responseData);
             return null;
         }
+        responseDto.setReqData(responseData);
+        updateMapper.updateRecharge(responseDto);
 
         RechargeContentDto rechargeContentDto = responseDto.getContent();
         String rechargeKey = MessageFormat.format(RECHARGE_BIND_ORDER_NO, rechargeContentDto.getOrderNo());
@@ -104,14 +106,12 @@ public class RechargeService implements AsyncCallbackInterface {
                 .put("loginName", extMarkDto.getLoginName())
                 .put("mobile", extMarkDto.getMobile())
                 .put("rechargeId", rechargeId)
+                .put("payType", rechargeContentDto.getPayType())
                 .put("orderDate", rechargeContentDto.getOrderDate())
                 .put("orderNo", rechargeContentDto.getOrderNo())
                 .put("isSuccess", String.valueOf(responseDto.isSuccess() && rechargeContentDto.isSuccess()))
                 .build()));
 
-        redisClient.newJedis().del(rechargeKey);
-        responseDto.setReqData(responseData);
-        updateMapper.updateRecharge(responseDto);
         return responseDto;
     }
 }

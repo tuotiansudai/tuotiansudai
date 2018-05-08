@@ -22,7 +22,7 @@ import java.util.List;
 public class RechargeCompletePointTaskConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(RechargeCompletePointTaskConsumer.class);
 
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "orderDate", "orderNo", "isSuccess");
+    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "payType", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
     private PointTaskService pointTaskService;

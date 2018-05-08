@@ -18,6 +18,7 @@ public interface RechargeMapper {
 
     void updateStatusAndOrder(@Param("id") long id,
                               @Param("status") RechargeStatus status,
+                              @Param("payType") String payType,
                               @Param("bankOrderNo") String bankOrderNo,
                               @Param("bankOrderDate") String bankOrderDate);
 

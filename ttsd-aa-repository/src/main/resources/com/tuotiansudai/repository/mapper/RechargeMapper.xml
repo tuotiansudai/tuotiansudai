@@ -41,7 +41,7 @@
     </update>
 
     <update id="updateStatusAndOrder" parameterType="map">
-        update recharge set status = #{status}, bank_order_no = #{bankOrderNo}, bank_order_date = #{bankOrderDate}, updated_time = now() where id = #{id}
+        update recharge set status = #{status}, pay_type = #{payType}, bank_order_no = #{bankOrderNo}, bank_order_date = #{bankOrderDate}, updated_time = now() where id = #{id}
     </update>
 
     <select id="findSumSuccessRechargeByLoginName" parameterType="java.lang.String" resultType="long">

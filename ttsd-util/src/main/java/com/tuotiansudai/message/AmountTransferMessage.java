@@ -21,10 +21,6 @@ public class AmountTransferMessage {
 
     private AmountTransferMessage next;
 
-    private String bankOrderNo;
-
-    private String bankOrderDate;
-
     public AmountTransferMessage() {
 
     }
@@ -38,19 +34,6 @@ public class AmountTransferMessage {
         this.businessType = businessType;
         this.operatorLoginName = operatorLoginName;
         this.interventionReason = interventionReasonl;
-    }
-
-    public AmountTransferMessage(TransferType transferType, String loginName, long orderId, long amount,
-                                 UserBillBusinessType businessType, String operatorLoginName, String interventionReasonl, String bankOrderNo, String bankOrderDate) {
-        this.transferType = transferType;
-        this.loginName = loginName;
-        this.orderId = orderId;
-        this.amount = amount;
-        this.businessType = businessType;
-        this.operatorLoginName = operatorLoginName;
-        this.interventionReason = interventionReasonl;
-        this.bankOrderNo = bankOrderNo;
-        this.bankOrderDate = bankOrderDate;
     }
 
     public TransferType getTransferType() {
@@ -115,21 +98,5 @@ public class AmountTransferMessage {
 
     public void setNext(AmountTransferMessage next) {
         this.next = next;
-    }
-
-    public String getBankOrderNo() {
-        return bankOrderNo;
-    }
-
-    public void setBankOrderNo(String bankOrderNo) {
-        this.bankOrderNo = bankOrderNo;
-    }
-
-    public String getBankOrderDate() {
-        return bankOrderDate;
-    }
-
-    public void setBankOrderDate(String bankOrderDate) {
-        this.bankOrderDate = bankOrderDate;
     }
 }
