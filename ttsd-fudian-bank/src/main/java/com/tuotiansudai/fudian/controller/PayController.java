@@ -54,14 +54,12 @@ public class PayController {
     }
 
     @RequestMapping(path = "/recharge", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, String>> recharge(Map<String, Object> model) {
+    public ResponseEntity<Map<String, String>> recharge(Map<String, String> params) {
         logger.info("[Fudian] call recharge");
-
 //        String data = rechargeService.recharge("UU02615960791461001", "UA02615960791501001", "10000.00", RechargePayType.GATE_PAY);
 //        String data = rechargeService.recharge("UU02619471098561001", "UA02619471098591001", "10000.00", RechargePayType.GATE_PAY);
-        RechargeRequestDto requestDto = rechargeService.recharge(null, null, null,"UU02624634769241001", "UA02624634769281001", "1000000.00", RechargePayType.GATE_PAY);//商户
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.RECHARGE.getPath());
+//        String data = rechargeService.recharge("UU02624634769241001", "UA02624634769281001", "10000.00", RechargePayType.GATE_PAY); 商户
+        RechargeRequestDto requestDto = rechargeService.recharge(params.get("rechargeId"), params.get("loginName"), params.get("mobile"),params.get("userName"), params.get("accountNo"), params.get("amount"), RechargePayType.valueOf(params.get("rechargePayType")));//商户
         return this.generateResponseJson(requestDto, ApiType.RECHARGE);
     }
 
