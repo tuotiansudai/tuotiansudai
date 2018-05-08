@@ -3,30 +3,25 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
-import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/recharge")
 public class RechargeController {
 
     @Autowired
-    private RechargeService rechargeService;
+    private UserRechargeService userRechargeService;
 
     @Autowired
     private UserService userService;
@@ -70,10 +65,16 @@ public class RechargeController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView recharge(@Valid @ModelAttribute RechargeDto rechargeDto) {
-        rechargeDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<PayFormDataDto> baseDto = rechargeService.recharge(rechargeDto);
+//    @RequestMapping(method = RequestMethod.POST)
+//    public ModelAndView recharge(@Valid @ModelAttribute RechargeDto rechargeDto) {
+//        rechargeDto.setLoginName(LoginUserInfo.getLoginName());
+//        BaseDto<PayFormDataDto> baseDto = rechargeService.recharge(rechargeDto);
+//        return new ModelAndView("/pay", "pay", baseDto);
+//    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ModelAndView userRecharge(){
+        BaseDto<PayFormDataDto> baseDto = userRechargeService.recharge();
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

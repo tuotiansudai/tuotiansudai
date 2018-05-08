@@ -35,8 +35,8 @@ bank:
   cer-path: classpath:cfca/bank.cer
   crl-path: classpath:cfca/bank.crl
   bank-url: http://116.62.202.105:56502
-  callback-return-url: http://118.187.56.164:30000/callback/return-url
-  callback-notify-url: http://118.187.56.164:30000/callback/notify-url
+  callback-return-url: http://118.187.56.164:30001/callback/return-url
+  callback-notify-url: http://118.187.56.164:30001/callback/notify-url
 
 mybatis:
   type-aliases-package: com.tuotiansudai.fudian.mapper

@@ -42,7 +42,7 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final RedisClient redisClient;
 
-    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{}";
+    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
 
     @Autowired
     public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, RedisClient redisClient) {

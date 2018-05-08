@@ -68,6 +68,19 @@ public class BankWrapperClient extends BaseClient {
                 "/user/cancel-card-bind");
     }
 
+    public BaseDto<PayFormDataDto> recharge(String rechargeId, String loginName, String mobile, String userName, String accountNo, String amount, String rechargePayType){
+        return asyncExecute(Maps.newHashMap(ImmutableMap.<String, String>builder()
+                        .put("rechargeId", rechargeId)
+                        .put("loginName", loginName)
+                        .put("mobile", mobile)
+                        .put("userName", userName)
+                        .put("accountNo", accountNo)
+                        .put("amount", amount)
+                        .put("rechargePayType", rechargePayType)
+                        .build()),
+                "/recharge");
+    }
+
     private BaseDto<PayDataDto> syncExecute(Object requestData, String requestPath) {
         try {
             String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, "POST");

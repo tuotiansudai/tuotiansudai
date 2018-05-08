@@ -81,7 +81,7 @@ public abstract class BaseClient {
     }
 
     protected ResponseBody newCall(String path, String requestJson, String method) {
-        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
+//        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
@@ -91,7 +91,7 @@ public abstract class BaseClient {
         String userId = (MDC.get(USER_ID) != null && MDC.get(USER_ID) instanceof String) ? MDC.get(USER_ID).toString() : ANONYMOUS;
 
         Request request = new Request.Builder()
-                .url(url)
+                .url("http://192.168.80.88:30001/recharge")
                 .method(method, requestBody)
                 .addHeader("Content-Type", "application/json; charset=UTF-8")
                 .addHeader(REQUEST_ID, requestId)
