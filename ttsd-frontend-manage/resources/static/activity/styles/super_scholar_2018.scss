@@ -1,0 +1,201 @@
+$yellow: #ffec85;
+p {
+  margin-bottom: 5px;
+}
+
+.super-scholar-banner {
+  height: 350px;
+  background: url("../images/2018/super-scholar/pc_banner.png") no-repeat center center;
+}
+
+.super-scholar-container {
+  background: #3d3f4b;
+  padding-top: 37px;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.part-one-title {
+  position: relative;
+  width: 583px;
+  height: 94px;
+  margin: 0 auto;
+  background: url("../images/2018/super-scholar/part-one-title.png") no-repeat;
+  background-size: 100%;
+}
+
+.notice {
+  box-sizing: border-box;
+  width: 660px;
+  height: 60px;
+  border-radius: 30px;
+  background: #212f34 url("../images/2018/super-scholar/horn.png") no-repeat 50px center;
+  border: 3px solid #132124;
+  margin: 0 auto;
+  margin-top: 37px;
+  font-size: 26px;
+  color: #d6eee1;
+  font-weight: bold;
+  line-height: 60px;
+  text-align: center;
+  text-indent: 130px;
+}
+
+.qrcode {
+  position: relative;
+  width: 285px;
+  height: 280px;
+  background: url("../images/2018/super-scholar/qr_bg.png") no-repeat;
+  background-size: 100%;
+  margin: 0 auto;
+  margin-top: 37px;
+  padding-top: 17px;
+  box-sizing: border-box;
+  .tips {
+    position: absolute;
+    right: -120px;
+    width: 101px;
+    height: 161px;
+    top: 90px;
+    background: url("../images/2018/super-scholar/scavenging_tips.png") no-repeat;
+    background-size: 100%;
+  }
+  .code {
+    width: 249px;
+    height: 247px;
+    background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+  }
+}
+
+.my-reappearance {
+  position: relative;
+  width: 583px;
+  height: 94px;
+  background: url("../images/2018/super-scholar/my_reappearance.png") no-repeat;
+  background-size: 100%;
+  margin: 0 auto;
+  margin-top: 70px;
+
+}
+
+.ball {
+  position: absolute;
+  width: 96px;
+  height: 114px;
+  background: url("../images/2018/super-scholar/ball.png") no-repeat;
+  background-size: 100%;
+  bottom: -40px;
+  right: -60px;
+}
+
+.my_reappearance-table {
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 1000px;
+  table {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    thead {
+      th {
+        font-size: 24px;
+        color: $yellow;
+        background: none;
+        font-weight: normal;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+        border-right: 2px solid rgba(255, 255, 255, 0.8);
+      }
+    }
+    tbody {
+      tr {
+        td {
+          font-size: 24px;
+          color: #fff;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+          border-right: 2px solid rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+  }
+
+  .get-more {
+    margin-top: 67px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+}
+
+.to-loan {
+  text-align: center;
+  margin-bottom: 46px;
+}
+
+.link-btn {
+  display: inline-block;
+  width: 139px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  color: $yellow;
+  font-size: 21px;
+  background: url("../images/2018/super-scholar/btn_bg.png") no-repeat;
+  background-size: 100%;
+  &:hover {
+    color: $yellow;
+  }
+}
+
+.to-loan-btn {
+  display: inline-block;
+  width: 644px;
+  height: 120px;
+  background: url("../images/2018/super-scholar/to_loan_btn.png") no-repeat;
+  background-size: 100%;
+  text-indent: -9999999px;
+}
+
+.tips-and-rules {
+  box-sizing: border-box;
+  width: 1003px;
+  margin: 0 auto;
+
+  .top {
+    height: 23px;
+    background: url("../images/2018/super-scholar/kindly_tips_top.png") no-repeat;
+    background-size: 100%;
+  }
+  .bot {
+    height: 23px;
+    background: url("../images/2018/super-scholar/kindly_tips_bot.png") no-repeat;
+    background-size: 100%;
+  }
+  .bg {
+    padding: 30px;
+    background: url("../images/2018/super-scholar/kindly_bg.png") repeat-y;
+  }
+  h2 {
+    color: #fff;
+    font-size: 38px;
+  }
+  p {
+    color: #fff;
+    font-size: 24px;
+    line-height: 30px;
+  }
+  table {
+    margin-top: 16px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    td {
+      color: #fff;
+      font-size: 24px;
+      line-height: 30px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+      border-right: 2px solid rgba(255, 255, 255, 0.8);
+    }
+  }
+
+}
