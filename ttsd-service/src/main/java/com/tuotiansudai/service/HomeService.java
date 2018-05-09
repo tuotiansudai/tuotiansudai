@@ -15,4 +15,12 @@ public interface HomeService {
     List<HomeLoanDto> getEnterpriseLoans();
 
     List<SiteMapDataDto> siteMapData();
+
+    Map<String, String> siteMapIndex();
+
+    List<String> subSiteMap(String subSiteMapType);
+
+    String getLastModifyDate(String lastModifyDateKey);
+
+
 }
