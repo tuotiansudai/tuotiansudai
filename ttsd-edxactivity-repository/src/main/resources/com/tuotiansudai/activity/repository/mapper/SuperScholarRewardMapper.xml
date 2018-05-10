@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="superScholarRewardResultMap" type="com.tuotiansudai.activity.repository.model.SuperScholarRewardModel">
+        <result column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="question_index" property="questionIndex"/>
+        <result column="question_answer" property="questionAnswer"/>
+        <result column="user_answer" property="userAnswer"/>
+        <result column="user_right" property="userRight"/>
+        <result column="is_share_home" property="isShareHome"/>
+        <result column="is_share_account" property="isShareAccount"/>
+        <result column="is_share_invest" property="isShareInvest"/>
+        <result column="is_cashback" property="isCashBack"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="answer_time" property="answerTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="superScholarRewardModel" useGeneratedKeys="true" keyProperty="id">
+        insert into super_scholar_reward(login_name,question_index,question_answer,created_time,updated_time)
+               VALUES (#{loginName},#{questionIndex},#{questionAnswer},#{createdTime},#{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="map">
+        update super_scholar_reward SET
+          question_index = #{userAnsquestionIndexwer},
+          question_answer = #{questionAnswer},
+          user_answer = #{userAnswer},
+          user_right = #{userRight},
+          is_share_home = #{isShareHome},
+          is_share_account = #{isShareAccount},
+          is_share_invest = #{isShareInvest},
+          is_cashback = #{isCashBack},
+          answer_time = #{answerTime},
+          updated_time = #{updatedTime}
+          where id = #{id}
+    </update>
+
+    <select id="findByLoginNameAndAnswerTime" parameterType="map" resultMap="superScholarRewardResultMap">
+        select * from super_scholar_reward where login_name = #{loginName} and DATE(answer_time)= #{answerTime}
+    </select>
+
+    <select id="findByLoginNameAndCreatedTime" parameterType="map" resultMap="superScholarRewardResultMap">
+        select * from super_scholar_reward where login_name = #{loginName} and DATE(created_time)= #{createdTime}
+    </select>
+
+    <select id="findByAnswerTime" resultType="map" parameterMap="superScholarRewardResultMap">
+        select * from super_scholar_reward where DATE(answer_time)= #{answerTime}
+    </select>
+
+</mapper>

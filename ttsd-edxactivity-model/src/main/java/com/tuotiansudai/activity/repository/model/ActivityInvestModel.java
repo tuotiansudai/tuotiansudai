@@ -1,31 +1,33 @@
 package com.tuotiansudai.activity.repository.model;
 
 
-import org.joda.time.DateTime;
-
 import java.io.Serializable;
 import java.util.Date;
 
 public class ActivityInvestModel implements Serializable{
 
     private long id;
+    private long loanId;
     private long investId;
     private String loginName;
     private String userName;
     private String mobile;
     private long investAmount;
+    private long annualizedAmount;
     private String activityName;
     private Date createdTime;
 
     public ActivityInvestModel() {
     }
 
-    public ActivityInvestModel(long investId, String loginName, String userName, String mobile, long investAmount, String activityName) {
+    public ActivityInvestModel(long loanId, long investId, String loginName, String userName, String mobile, long investAmount, long annualizedAmount, String activityName) {
+        this.loanId = loanId;
         this.investId = investId;
         this.loginName = loginName;
         this.userName = userName;
         this.mobile = mobile;
         this.investAmount = investAmount;
+        this.annualizedAmount = annualizedAmount;
         this.activityName = activityName;
         this.createdTime = new Date();
     }
@@ -92,5 +94,21 @@ public class ActivityInvestModel implements Serializable{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
+    public long getAnnualizedAmount() {
+        return annualizedAmount;
+    }
+
+    public void setAnnualizedAmount(long annualizedAmount) {
+        this.annualizedAmount = annualizedAmount;
     }
 }

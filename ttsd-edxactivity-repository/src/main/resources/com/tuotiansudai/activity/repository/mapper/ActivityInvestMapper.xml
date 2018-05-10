@@ -6,11 +6,13 @@
 
     <resultMap id="activityInvestResultMap" type="com.tuotiansudai.activity.repository.model.ActivityInvestModel">
         <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
         <result column="invest_id" property="investId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="user_name" property="userName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="invest_amount" property="investAmount"></result>
+        <result column="annualized_amount" property="annualizedAmount"></result>
         <result column="activity_name" property="activityName"></result>
         <result column="created_time" property="createdTime"></result>
 
@@ -25,14 +27,16 @@
 
     <insert id="create" parameterType="activityInvestModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`activity_invest`
+        (`loan_id`,
         (`invest_id`,
         `login_name`,
         `user_name`,
         `mobile`,
         `invest_amount`,
+        `annualized_amount`,
         `activity_name`,
         `created_time`)
-        VALUES(#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{activityName},#{createdTime})
+        VALUES(#{loanId},#{investId},#{loginName},#{userName},#{mobile},#{investAmount},#{annualizedAmount},#{activityName},#{createdTime})
     </insert>
 
     <select id="sumAmountByNameDateAndActivity" parameterType="map" resultMap="activityInvestView">
@@ -56,6 +60,24 @@
         </where>
         GROUP BY ai.login_name , ai.user_name , ai.mobile
         ORDER BY sumAmount DESC , MAX(ai.created_time)
+    </select>
+
+    <select id="findAllByActivityLoginNameAndTime" parameterType="map" resultMap="activityInvestResultMap">
+        select * from activity_invest
+        where login_name = #{loginName}
+        and created_time BETWEEN #{startTime} and #{endTime}
+        and activity_name=#{activityName}
+    </select>
+
+    <select id="sumInvestAmountByActivityLoginNameAndTime" parameterType="map" resultType="long">
+        select IFNULL(SUM(invest_amount),0) from activity_invest
+        where login_name = #{loginName}
+        and created_time BETWEEN #{startTime} and #{endTime}
+        and activity_name=#{activityName}
+    </select>
+
+    <select id="findByLoanId" resultType="map" parameterMap="activityInvestResultMap">
+        SELECT * FROM activity_invest WHERE loan_id = #{loanId}
     </select>
 
 </mapper>

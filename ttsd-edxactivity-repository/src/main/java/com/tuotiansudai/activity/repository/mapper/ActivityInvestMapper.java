@@ -14,6 +14,18 @@ public interface ActivityInvestMapper {
     void create(ActivityInvestModel activityInvestModel);
 
     List<ActivityInvestView> sumAmountByNameDateAndActivity(@Param(value = "activityName") String activityName,
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
+
+    List<ActivityInvestModel> findAllByActivityLoginNameAndTime(@Param(value = "loginName") String loginName,
+                                                                @Param(value = "activityName") String activityName,
                                                                 @Param(value = "startTime") Date startTime,
                                                                 @Param(value = "endTime") Date endTime);
+
+    long sumInvestAmountByActivityLoginNameAndTime(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "activityName") String activityName,
+                                                   @Param(value = "startTime") Date startTime,
+                                                   @Param(value = "endTime") Date endTime);
+
+    List<ActivityInvestModel> findByLoanId(@Param(value = "loanId") long loanId);
 }
