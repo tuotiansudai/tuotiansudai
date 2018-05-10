@@ -353,7 +353,8 @@ if($createQuestion.length) {
                 location.href='question/my-questions';
             }
             else {
-                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'captcha');
+                 $formSubmit.prop('disabled',true);
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
                         $question.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
