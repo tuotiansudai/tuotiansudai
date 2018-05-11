@@ -69,7 +69,7 @@ public class HomeServiceImpl implements HomeService {
         ASK(ASK_SITE_MAP_KEY),
         NEW(CMS_SITE_MAP_NEW_KEY),
         BAIKE(CMS_SITE_MAP_BAIKE_KEY),
-        COLUMN(SITE_MAP_LAST_MODIFY_DATE_KEY);
+        COLUMN(CMS_SITE_MAP_COLUMN_KEY);
 
         private String redisKey;
 
@@ -253,7 +253,7 @@ public class HomeServiceImpl implements HomeService {
         String[] siteMapArray = siteMapValue.split("\n");
         int indexSize = siteMapArray.length % SITE_MAP_STANDARD_NUM == 0 ? siteMapArray.length / SITE_MAP_STANDARD_NUM : (siteMapArray.length / SITE_MAP_STANDARD_NUM) + 1;
         for (int i = 1; i < indexSize + 1; i++) {
-            String lastModifyDateKey = String.format(type.name().equalsIgnoreCase(SiteMapType.ASK.name()) ? String.format("ask-%s", String.valueOf(i)) : String.format("cms-%s-%s", type.name().toLowerCase(), String.valueOf(i)));
+            String lastModifyDateKey = String.format(type.name().equalsIgnoreCase(SiteMapType.ASK.name()) ? String.format("sitemap-ask-%s", String.valueOf(i)) : String.format("sitemap-cms-%s-%s", type.name().toLowerCase(), String.valueOf(i)));
 
             siteMap.put(lastModifyDateKey, getLastModifyDateByKey(lastModifyDateKey));
         }
