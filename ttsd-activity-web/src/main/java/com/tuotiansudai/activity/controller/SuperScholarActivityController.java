@@ -20,7 +20,7 @@ public class SuperScholarActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView activityHome(){
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/super-scholar", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/wechat/super-scholar", "responsive", true);
         if (LoginUserInfo.getLoginName() != null) {
             modelAndView.addObject("data", superScholarActivityService.activityHome(LoginUserInfo.getLoginName()));
             modelAndView.addObject("doQuestion", superScholarActivityService.doQuestion(LoginUserInfo.getLoginName()));

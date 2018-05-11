@@ -67,6 +67,7 @@
         where login_name = #{loginName}
         and created_time BETWEEN #{startTime} and #{endTime}
         and activity_name=#{activityName}
+        order by created_time desc
     </select>
 
     <select id="sumInvestAmountByActivityLoginNameAndTime" parameterType="map" resultType="long">

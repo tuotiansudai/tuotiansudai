@@ -102,7 +102,7 @@ public class SuperScholarActivityService {
             superScholarRewardMapper.create(new SuperScholarRewardModel(loginName, String.join(",", questionIndex), String.join(",", answers)));
         } else {
             superScholarRewardModel.setQuestionIndex(String.join(",", questionIndex));
-            superScholarRewardModel.setQuestionIndex(String.join(",", answers));
+            superScholarRewardModel.setQuestionAnswer(String.join(",", answers));
             superScholarRewardModel.setUpdatedTime(new Date());
             superScholarRewardMapper.update(superScholarRewardModel);
         }
