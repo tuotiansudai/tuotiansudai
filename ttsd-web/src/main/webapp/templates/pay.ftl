@@ -6,7 +6,11 @@
         <div class="callBack_container">
             <div class="loading-wrap">
                 <div class="loading"></div>
-                <p>${payData.message!('正在载入...')}</p>
+                <#if payData.status>
+                    <p>正在载入...</p>
+                <#else>
+                    <p>${payData.message}</p>
+                </#if>
             </div>
         </div>
 

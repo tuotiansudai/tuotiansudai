@@ -20,22 +20,22 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class BindBankCardMessageConsumer implements MessageConsumer {
+public class UnbindBankCardMessageConsumer implements MessageConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(BindBankCardMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(UnbindBankCardMessageConsumer.class);
 
     private static List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "bankUserName", "bankAccountNo", "bank", "bankCode", "cardNumber", "bankOrderNo", "bankOrderDate");
 
     private final UserBankCardMapper userBankCardMapper;
 
     @Autowired
-    public BindBankCardMessageConsumer(UserBankCardMapper userBankCardMapper) {
+    public UnbindBankCardMessageConsumer(UserBankCardMapper userBankCardMapper) {
         this.userBankCardMapper = userBankCardMapper;
     }
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.BindBankCard_Success;
+        return MessageQueue.UnbindBankCard_Success;
     }
 
     @Override
@@ -47,8 +47,13 @@ public class BindBankCardMessageConsumer implements MessageConsumer {
             });
 
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                UserBankCardModel model = new UserBankCardModel(map.get("loginName"), map.get("bank"), map.get("bankCode"), map.get("cardNumber"), map.get("bankOrderNo"), map.get("bankOrderDate"), UserBankCardStatus.BOUND);
-                userBankCardMapper.create(model);
+                UserBankCardModel model = this.userBankCardMapper.findByLoginName(map.get("loginName"));
+                if (model != null && map.get("cardNumber").equalsIgnoreCase(model.getCardNumber())) {
+                    model.setStatus(UserBankCardStatus.UNBOUND);
+                    userBankCardMapper.updateStatus(model.getId(), UserBankCardStatus.UNBOUND);
+                    return;
+                }
+                logger.error("[MQ] bank card is not exited, message: {}", message);
             } else {
                 logger.error("[MQ] message is invalid {}", message);
             }

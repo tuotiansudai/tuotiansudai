@@ -34,17 +34,20 @@
         <li><span class="info-title"> 绑定银行卡</span>
             <#if bankCard??>
                 <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
-                <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="javascript:void(0)" id="update-bank-card" data-url="${requestContext.getContextPath()}/bind-card/replace">修改</a>
-                </span>
+                <form action="${requestContext.getContextPath()}/bank-card/unbind/source/WEB" method="post" style="display: inline-block;float:right">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <span class="binding-set">
+                        <i class="fa fa-check-circle ok"></i>已绑定<input type="submit" class="setlink setBankCard" value="解绑" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
+                    </span>
+                </form>
             <#else>
                 <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
-                <form action="/bank-card/bind" method="post" style="display: inline-block;float:right">
+                <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: inline-block;float:right">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-                <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard" value="绑定" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
-                </span>
+                    <span class="binding-set">
+                        <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard" value="绑定" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
+                    </span>
                 </form>
             </#if>
         </li>

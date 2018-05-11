@@ -4,7 +4,7 @@ import com.tuotiansudai.fudian.config.ApiType;
 
 public class CancelCardBindRequestDto extends UserBaseRequestDto {
 
-    public CancelCardBindRequestDto(String loginName, String mobile, String userName, String accountNo) {
-        super(loginName, mobile, userName, accountNo, ApiType.CANCEL_CARD_BIND);
+    public CancelCardBindRequestDto(Source source, String loginName, String mobile, String userName, String accountNo) {
+        super(source, loginName, mobile, userName, accountNo, ApiType.CANCEL_CARD_BIND);
     }
 }

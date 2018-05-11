@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.repository.model.UserBankCardStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,5 @@ public interface UserBankCardMapper {
 
     UserBankCardModel findByLoginName(@Param(value = "loginName") String loginName);
 
-    void update(@Param(value = "status") UserBankCardModel userBankCardModel);
+    void updateStatus(@Param(value = "id") long id, @Param(value = "status") UserBankCardStatus status);
 }

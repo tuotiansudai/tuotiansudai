@@ -15,16 +15,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegisterBankAccountService {
 
-    private final BankWrapperClient bankWrapperClient;
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     private final BankAccountMapper bankAccountMapper;
 
     private final UserOpLogService userOpLogService;
 
     @Autowired
-    public UserRegisterBankAccountService(BankWrapperClient bankWrapperClient, BankAccountMapper bankAccountMapper, UserOpLogService userOpLogService){
+    public UserRegisterBankAccountService(BankAccountMapper bankAccountMapper, UserOpLogService userOpLogService){
         this.bankAccountMapper = bankAccountMapper;
-        this.bankWrapperClient = bankWrapperClient;
         this.userOpLogService = userOpLogService;
     }
 
@@ -38,6 +37,6 @@ public class UserRegisterBankAccountService {
             return baseDto;
         }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(registerAccountDto.getLoginName(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber(), registerAccountDto.getMobile());
+        return bankWrapperClient.register(Source.WEB, registerAccountDto.getLoginName(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber(), registerAccountDto.getMobile());
     }
 }

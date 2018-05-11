@@ -5,4 +5,6 @@ import com.tuotiansudai.fudian.dto.response.ResponseDto;
 public interface AsyncCallbackInterface {
 
     ResponseDto callback(String responseData);
+
+    Boolean isSuccess(String orderNo);
 }

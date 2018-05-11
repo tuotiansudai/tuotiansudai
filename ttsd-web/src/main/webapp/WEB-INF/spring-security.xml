@@ -148,6 +148,7 @@
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
+                <beans:value>/callback/return-url/*</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

@@ -5,8 +5,11 @@ import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -27,16 +30,19 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.bankConfig = bankConfig;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public RechargeRequestDto recharge(String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
-        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, bankUserName, bankAccountNo, amount, payType);
+    public RechargeRequestDto recharge(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankUserName, bankAccountNo, amount, payType);
 
         signatureHelper.sign(dto);
 
@@ -49,8 +55,8 @@ public class RechargeService implements AsyncCallbackInterface {
 
     }
 
-    public RechargeRequestDto merchantRecharge(String loginName, String mobile, String amount) {
-        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
+    public RechargeRequestDto merchantRecharge(Source source, String loginName, String mobile, String amount) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
 
         signatureHelper.sign(dto);
 
@@ -78,5 +84,18 @@ public class RechargeService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updateRecharge(responseDto);
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.RECHARGE.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<RechargeContentDto> responseDto = (ResponseDto<RechargeContentDto>) ApiType.RECHARGE.getParser().parse(responseData);
+
+        return responseDto.isSuccess() && responseDto.getContent().isSuccess();
     }
 }

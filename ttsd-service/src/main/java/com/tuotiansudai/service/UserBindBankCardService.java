@@ -5,7 +5,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserBindBankCardService {
 
-    private final BankWrapperClient bankWrapperClient;
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     private final UserBankCardMapper userBankCardMapper;
 
@@ -24,10 +26,12 @@ public class UserBindBankCardService {
 
     private final UserMapper userMapper;
 
+    private final BankAccountMapper bankAccountMapper;
+
     @Autowired
-    public UserBindBankCardService(BankWrapperClient bankWrapperClient, UserMapper userMapper, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
-        this.bankWrapperClient = bankWrapperClient;
+    public UserBindBankCardService(UserMapper userMapper, BankAccountMapper bankAccountMapper, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
         this.userMapper = userMapper;
+        this.bankAccountMapper = bankAccountMapper;
         this.userBankCardMapper = userBankCardMapper;
         this.userOpLogService = userOpLogService;
     }
@@ -53,7 +57,9 @@ public class UserBindBankCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        baseDto = bankWrapperClient.bindBankCard(loginName, userModel.getMobile(), "UU02631330626431001", "UA02631330626471001");
+        BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
+
+        baseDto = bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
 
         return baseDto;
     }
@@ -75,7 +81,9 @@ public class UserBindBankCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        baseDto = bankWrapperClient.unbindBankCard(loginName, userModel.getMobile(), "UU02631330626431001", "UA02631330626471001");
+        BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
+
+        baseDto = bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
 
         return baseDto;
     }

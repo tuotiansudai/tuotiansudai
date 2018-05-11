@@ -29,6 +29,10 @@ $('.investBtn').on('click',() => {
     location.href = '/loan-list';
 });
 
+$('.retry').on('click',() => {
+    location.href = $('.retry').data("redirect-to");
+});
+
 if($('#registerSuccess').length){
     let referParam = globalFun.parseURL(location.href);
     let referrer = referParam.params.referrer;
@@ -53,13 +57,12 @@ $('.my_personal-info').on('click',() => {
 let $bankResult = $('#bankResult');
 if($('#bankResult').length){
     let $countTime = $('.count-down',$bankResult);
-    let redirectTo = $bankResult.data('redirect-to');
 
     commonFun.countDownLoan({
         btnDom:$countTime,
         time:5
     },function() {
-        window.location.href = '/'+redirectTo;
+        $("#isPaySuccess").submit();
     });
 }
 

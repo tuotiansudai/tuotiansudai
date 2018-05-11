@@ -3,8 +3,10 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.LoanFullRequestDto;
+import com.tuotiansudai.fudian.dto.response.LoanFullContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -26,13 +28,15 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public LoanFullService(BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public LoanFullService(BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
     public ResponseDto full(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
@@ -68,7 +72,6 @@ public class LoanFullService implements AsyncCallbackInterface {
         }
 
         return responseDto;
-
     }
 
     @Override
@@ -85,4 +88,18 @@ public class LoanFullService implements AsyncCallbackInterface {
         updateMapper.updateLoanFull(responseDto);
         return responseDto;
     }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.LOAN_FULL.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) ApiType.LOAN_FULL.getParser().parse(responseData);
+
+        return responseDto.isSuccess() && responseDto.getContent().isSuccess();
+    }
+
 }

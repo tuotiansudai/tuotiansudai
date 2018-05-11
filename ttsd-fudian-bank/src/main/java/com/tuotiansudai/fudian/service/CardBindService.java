@@ -7,9 +7,11 @@ import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.CardBindRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.CardBindContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
@@ -24,24 +26,27 @@ public class CardBindService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(CardBindService.class);
 
+    private final MessageQueueClient messageQueueClient;
+
     private final SignatureHelper signatureHelper;
 
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
 
-    private final MessageQueueClient messageQueueClient;
+    private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public CardBindService(MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public CardBindService(MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public CardBindRequestDto bind(String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        CardBindRequestDto dto = new CardBindRequestDto(loginName, mobile, bankUserName, bankAccountNo);
+    public CardBindRequestDto bind(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        CardBindRequestDto dto = new CardBindRequestDto(source, loginName, mobile, bankUserName, bankAccountNo);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -67,8 +72,8 @@ public class CardBindService implements AsyncCallbackInterface {
             return null;
         }
 
-        updateMapper.updateCardBind(responseDto);
         responseDto.setReqData(responseData);
+        updateMapper.updateCardBind(responseDto);
 
         if (responseDto.isSuccess()) {
             CardBindContentDto content = responseDto.getContent();
@@ -89,4 +94,18 @@ public class CardBindService implements AsyncCallbackInterface {
         }
         return responseDto;
     }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.CARD_BIND.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<CardBindContentDto> responseDto = (ResponseDto<CardBindContentDto>) ApiType.CARD_BIND.getParser().parse(responseData);
+
+        return responseDto.getContent().isSuccess();
+    }
+
 }

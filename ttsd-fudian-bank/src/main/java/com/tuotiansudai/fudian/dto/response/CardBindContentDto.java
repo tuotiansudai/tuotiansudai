@@ -51,4 +51,8 @@ public class CardBindContentDto extends UserBaseContentDto {
     public void setDeductMoney(String deductMoney) {
         this.deductMoney = deductMoney;
     }
+
+    public boolean isSuccess() {
+        return "1".equalsIgnoreCase(status);
+    }
 }
