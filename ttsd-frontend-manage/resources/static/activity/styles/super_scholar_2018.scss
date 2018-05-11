@@ -11,6 +11,7 @@ p {
 .super-scholar-container {
   background: #3d3f4b;
   padding-top: 37px;
+  padding-bottom: 200px;
 }
 
 .main-frame {
@@ -28,6 +29,7 @@ p {
 }
 
 .notice {
+  display: inline-block;
   box-sizing: border-box;
   width: 660px;
   height: 60px;
@@ -41,7 +43,9 @@ p {
   font-weight: bold;
   line-height: 60px;
   text-align: center;
-  text-indent: 130px;
+  &.isAnswered {
+    width: 700px;
+  }
 }
 
 .qrcode {
@@ -71,6 +75,9 @@ p {
     margin: 0 auto;
   }
 }
+.immediate-answer {
+  display: none;
+}
 
 .my-reappearance {
   position: relative;
@@ -81,6 +88,9 @@ p {
   margin: 0 auto;
   margin-top: 70px;
 
+}
+.my-reappearance-wap {
+  display: none;
 }
 
 .ball {
@@ -133,7 +143,7 @@ p {
   margin-bottom: 46px;
 }
 
-.link-btn {
+.look-btn {
   display: inline-block;
   width: 139px;
   height: 52px;
@@ -175,6 +185,7 @@ p {
   .bg {
     padding: 30px;
     background: url("../images/2018/super-scholar/kindly_bg.png") repeat-y;
+    background-size: 100%;
   }
   h2 {
     color: #fff;
@@ -196,6 +207,205 @@ p {
       border-bottom: 2px solid rgba(255, 255, 255, 0.8);
       border-right: 2px solid rgba(255, 255, 255, 0.8);
     }
+  }
+
+}
+.reappearance-content {
+  overflow: hidden;
+}
+@media screen and(max-width: 768px){
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .super-scholar-banner {
+    height: 5.86rem;
+    background: url("../images/2018/super-scholar/wap_banner.png") no-repeat center center;
+    background-size: 100%;
+  }
+
+  .super-scholar-container {
+    background: #1e272e;
+    padding-top: 0.7rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .part-one-title {
+    position: static;
+    width: 6.08rem;
+    height: 1rem;
+    background: url("../images/2018/super-scholar/part_one_titile_wap.png") no-repeat;
+    background-size: 100%;
+  }
+
+  .notice {
+    position: relative;
+    box-sizing: border-box;
+    width: 6.8rem;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background: #212f34;
+    margin-top: 0.6rem;
+    font-size: 0.28rem;
+    line-height: 0.5rem;
+    &.isAnswered {
+      width: 100%;
+      text-align: right;
+      .horn {
+        left: 0.1rem;
+      }
+    }
+    .horn {
+      position: absolute;
+      left: 0.4rem;
+      top: 50%;
+      margin-top: -0.2rem;
+      width: 0.44rem;
+      height: 0.35rem;
+      background: url("../images/2018/super-scholar/horn.png") no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  .qrcode {
+    position: relative;
+    width: 3.75rem;
+    height: 3.68rem;
+    margin-top: 0.34rem;
+    padding-top: 0.16rem;
+    .tips {
+      right: -1.2rem;
+      width: 1.19rem;
+      height: 1.91rem;
+      top: 1.8rem;
+      background: url("../images/2018/super-scholar/scavenging_tips_wap.png") no-repeat;
+      background-size: 100%;
+    }
+    .code {
+      width: 3.33rem;
+      height: 3.36rem;
+      background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
+      background-size: 100%;
+    }
+  }
+  .immediate-answer {
+    display: block;
+    width: 6.44rem;
+    height: 1.2rem;
+    background: url("../images/2018/super-scholar/answer_btn.png") no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    margin-top: 0.68rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .my-reappearance {
+    display: none;
+  }
+  .my-reappearance-wap {
+    display: block;
+    text-align: center;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+    a {
+      color: #a91d2e;
+      font-size: 0.3rem;
+      padding-top: 0.1rem;
+      border-bottom: 2px solid #a91d2e;
+    }
+  }
+
+  .ball {
+    display: none;
+  }
+
+  .my_reappearance-table {
+    display: none;
+  }
+  .my_reappearance-table-wap {
+    margin: 0 auto;
+    margin-top: 0.4rem;
+    margin-bottom: 0.5rem;
+    width: 6.1rem;
+    table {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      thead {
+        th {
+          font-size: 0.24rem;
+          color: $yellow;
+          background: none;
+          font-weight: normal;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+          border-right: 2px solid rgba(255, 255, 255, 0.8);
+        }
+      }
+      tbody {
+        tr {
+          td {
+            font-size: 0.24rem;
+            color: #fff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+            border-right: 2px solid rgba(255, 255, 255, 0.8);
+          }
+        }
+      }
+    }
+
+  }
+
+  .to-loan {
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .to-loan-btn {
+    display: inline-block;
+    width: 6.44rem;
+    height: 1.2rem;
+    text-indent: -9999999px;
+  }
+
+  .tips-and-rules {
+    width: 6.5rem;
+    .top {
+      height: 0.23rem;
+      background: url("../images/2018/super-scholar/kindly_top.png") no-repeat;
+      background-size: 100%;
+    }
+    .bot {
+      height: 0.32rem;
+      background: url("../images/2018/super-scholar/kindly_bot_wap.png") no-repeat;
+      background-size: 100%;
+    }
+    .bg {
+      box-sizing: border-box;
+      padding:0 0.3rem 0.1rem 0.3rem;
+      background: url("../images/2018/super-scholar/kindly_bg_wap.png") repeat-y;
+      background-size: 100%;
+    }
+    h2 {
+      font-size: 0.32rem;
+      color: #f0f0f0;
+    }
+    p {
+      font-size: 0.24rem;
+      line-height: 0.4rem;
+    }
+    table {
+      margin-top: 0.16rem;
+      margin-bottom: 0.2rem;
+      td {
+        font-size: 0.24rem;
+        line-height: 0.4rem;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+  }
+  .reappearance-content {
+    overflow: hidden;
   }
 
 }
