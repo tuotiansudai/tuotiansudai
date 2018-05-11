@@ -246,7 +246,9 @@ if($questionDetailTag.length) {
 
             }
             else {
-                commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'../captcha',false,function () {
+                    $formAnswerSubmit.prop('disabled',true);
+                });
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
                         $formAnswer.find('.answer').next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
@@ -353,8 +355,10 @@ if($createQuestion.length) {
                 location.href='question/my-questions';
             }
             else {
-                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'captcha');
-                 $formSubmit.prop('disabled',true);
+                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'captcha',false,function () {
+                    $formSubmit.prop('disabled',true);
+                });
+
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
                         $question.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
