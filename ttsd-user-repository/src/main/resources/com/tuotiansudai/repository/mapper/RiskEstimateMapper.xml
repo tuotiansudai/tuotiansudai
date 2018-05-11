@@ -39,7 +39,8 @@
 
     <insert id="create" parameterType="RiskEstimateModel" useGeneratedKeys="true" keyProperty="id">
         insert into risk_estimate (login_name, age, income, investment, experience, attitude, duration, loss, rate, estimate, created_time, updated_time)
-        value(#{loginName}, #{age}, #{income}, #{investment}, #{experience}, #{attitude}, #{duration}, #{loss}, #{rate}, #{estimate}, now(), now())
+        value(#{loginName}, #{age}, #{income}, #{investment}, #{experience}, #{attitude}, #{duration}, #{loss}, #{rate}, #{estimate}, now(), now()) ON DUPLICATE KEY UPDATE
+        age=#{age}, income=#{income}, investment=#{investment}, experience=#{experience}, attitude=#{attitude}, duration=#{duration}, loss=#{loss}, rate=#{rate}, estimate=#{estimate}
     </insert>
 
     <select id="findByLoginName" parameterType="string" resultMap="riskEstimateResultMap">
