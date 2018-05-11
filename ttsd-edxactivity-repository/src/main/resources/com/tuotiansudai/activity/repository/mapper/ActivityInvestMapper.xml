@@ -76,7 +76,7 @@
         and activity_name=#{activityName}
     </select>
 
-    <select id="findByLoanId" resultType="map" parameterMap="activityInvestResultMap">
+    <select id="findByLoanId" parameterType="map" resultMap="activityInvestResultMap">
         SELECT * FROM activity_invest WHERE loan_id = #{loanId}
     </select>
 

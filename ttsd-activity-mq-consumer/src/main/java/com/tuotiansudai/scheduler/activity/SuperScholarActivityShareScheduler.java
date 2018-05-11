@@ -46,7 +46,7 @@ public class SuperScholarActivityShareScheduler {
         }
 
         String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now().minusDays(1));
-        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(yesterday);
+        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().minusDays(1).toDate());
 
         for(SuperScholarRewardModel model : models){
             model.setShareAccount(redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, yesterday, model.getLoginName())));

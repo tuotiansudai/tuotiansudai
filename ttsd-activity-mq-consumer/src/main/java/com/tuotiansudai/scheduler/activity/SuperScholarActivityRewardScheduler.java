@@ -6,6 +6,14 @@ import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.enums.SystemBillDetailTemplate;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -46,32 +54,60 @@ public class SuperScholarActivityRewardScheduler {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final String SUPER_SCHOLAR_SEND_CASH = "SUPER_SCHOLAR_SEND_CASH";
+    private final String SUPER_SCHOLAR_SEND_CASH_LOAN = "SUPER_SCHOLAR_SEND_CASH_LOAN";
+
+    private final String SUPER_SCHOLAR_SEND_USER_CASH = "SUPER_SCHOLAR_SEND_USER_CASH:{0}:{1}";
+
+    private final int lifeSecond = 180 * 24 * 60 * 60;
 
     @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Shanghai")
     public void sendSuperScholarReward() {
 
-        Map<String, String> loanIds = redisWrapperClient.hgetAll(SUPER_SCHOLAR_SEND_CASH);
+        Map<String, String> loanIds = redisWrapperClient.hgetAll(SUPER_SCHOLAR_SEND_CASH_LOAN);
 
         for (Map.Entry<String, String> entry : loanIds.entrySet()) {
             if (new Date().after(DateTime.parse(entry.getValue(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate())) {
-                redisWrapperClient.hdel(SUPER_SCHOLAR_SEND_CASH, entry.getKey());
+                redisWrapperClient.hdel(SUPER_SCHOLAR_SEND_CASH_LOAN, entry.getKey());
                 List<ActivityInvestModel> investModels = activityInvestMapper.findByLoanId(Long.parseLong(entry.getKey()));
-                for (ActivityInvestModel model : investModels){
-                    String investDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(new DateTime(model.getCreatedTime()));
-                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), investDate);
-                    if (superScholarRewardModel == null){
+                for (ActivityInvestModel model : investModels) {
+                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime());
+                    if (superScholarRewardModel == null) {
                         return;
                     }
                     double rewardRate = superScholarRewardModel.getRewardRate();
-
-
+                    long reward = (long) (model.getAnnualizedAmount() * rewardRate);
+                    if (reward > 0 && !redisWrapperClient.exists(MessageFormat.format(SUPER_SCHOLAR_SEND_USER_CASH, String.valueOf(model.getInvestId()), model.getLoginName()))) {
+                        logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH BEGIN, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
+                        try {
+                            sendCash(model.getInvestId(), model.getLoginName(), reward);
+                        } catch (Exception e) {
+                            logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH error, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
+                        }
+                        logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH end, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
+                    }
                 }
             }
 
         }
 
-
-
     }
+
+    private void sendCash(long investId, String loginName, long reward) {
+        String key = MessageFormat.format(SUPER_SCHOLAR_SEND_USER_CASH, String.valueOf(investId), loginName);
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(IdGenerator.generate()), String.valueOf(reward),
+                UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.SUPER_SCHOLAR_SEND_CASH_REWARD_DETAIL_TEMPLATE);
+        try {
+            BaseDto<PayDataDto> response = payWrapperClient.transferCash(transferCashDto);
+            if (response.getData().getStatus()) {
+                logger.info("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:success", investId, loginName, reward);
+                redisWrapperClient.setex(key, lifeSecond, "success");
+                return;
+            }
+        } catch (Exception e) {
+            logger.info("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:error", investId, loginName, reward);
+        }
+        redisWrapperClient.setex(key, lifeSecond, "fail");
+        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【学霸加薪季活动】用户:{0}, 投资Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward))));
+    }
+
 }

@@ -58,13 +58,12 @@ public class SuperScholarActivityService {
         List<ActivityInvestModel> models = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(), activityStartTime, DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         return models.stream()
                 .filter(model -> {
-                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(new DateTime(model.getCreatedTime())));
+                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
                     return superScholarRewardModel != null && superScholarRewardModel.getUserAnswer() != null;
                 })
                 .map(model -> {
-                    String investDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(new DateTime(model.getCreatedTime()));
-                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, investDate);
-                    double rewardRate = superScholarRewardModel != null ? superScholarRewardModel.getRewardRate() : new SuperScholarRewardModel().getRewardRate();
+                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
+                    double rewardRate = superScholarRewardModel.getRewardRate();
                     return new SuperScholarRewardView(AmountConverter.convertCentToString(model.getInvestAmount()),
                             AmountConverter.convertCentToString(model.getAnnualizedAmount()),
                             String.format("%.1f", rewardRate * 100) + "%",
@@ -75,12 +74,12 @@ public class SuperScholarActivityService {
     }
 
     public boolean doQuestion(String loginName) {
-        return superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now())) != null;
+        return superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date()) != null;
     }
 
     @Transactional
     public List<Map<String, Object>> getQuestions(String loginName) throws IOException {
-        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now()));
+        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         InputStream inputStream = SuperScholarActivityService.class.getClassLoader().getResourceAsStream(QUESTIONS);
         String jsonString = inputStreamToString(inputStream);
         JsonObject json = (JsonObject) new JsonParser().parse(jsonString);
@@ -112,7 +111,7 @@ public class SuperScholarActivityService {
 
     @Transactional
     public boolean submitAnswer(String loginName, String answer) {
-        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now()));
+        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         List<String> userAnswer = Arrays.asList(answer.split(","));
         if (superScholarRewardModel == null || userAnswer.size() < 5) {
             return false;
@@ -133,7 +132,7 @@ public class SuperScholarActivityService {
     }
 
     public Map<String, Object> examineGrade(String loginName) {
-        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now()));
+        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("rate", String.format("%.1f", superScholarRewardModel.getRewardRate() * 100) + "%")
                 .put("questionAnswer", Lists.newArrayList(superScholarRewardModel.getQuestionAnswer().split(",")))
@@ -142,7 +141,7 @@ public class SuperScholarActivityService {
     }
 
     public void shareSuccess(String loginName) {
-        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now()));
+        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         superScholarRewardModel.setShareHome(true);
         superScholarRewardModel.setUpdatedTime(new Date());
         superScholarRewardMapper.update(superScholarRewardModel);
