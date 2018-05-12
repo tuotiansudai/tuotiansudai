@@ -107,7 +107,7 @@
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td class="handle_btn"
-                                                            data-help-id="${invest.id}"
+                                                            data-help-id="${invest.id?c}"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
                                                             去邀请
                                                         </td>
@@ -137,7 +137,7 @@
                                                         <td class="overTime"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}"></td>
                                                         <td class="handle_btn"
-                                                            data-help-id="${invest.id}"
+                                                            data-help-id="${invest.id?c}"
                                                             data-overtime="${invest.endTime?string('yyyy-MM-dd HH:mm:ss')}">
                                                             去邀请
                                                         </td>

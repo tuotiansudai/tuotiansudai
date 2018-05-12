@@ -124,7 +124,7 @@
         wx.onMenuShareAppMessage({
             title: '我正在拓天速贷投资拿返利，帮我助力，你也有钱拿！', // 分享标题
             desc: '我在拓天速贷app发现了一个助力得现金奖励的活动，快来参加吧！', // 分享描述
-            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id?c}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
             },
@@ -134,7 +134,7 @@
 
         wx.onMenuShareTimeline({
             title: '我正在拓天速贷投资拿返利，帮我助力，你也有钱拿！', // 分享标题
-            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id?c}/invest/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
