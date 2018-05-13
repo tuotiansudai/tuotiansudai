@@ -13,4 +13,9 @@ public class SuperScholarActivtyController {
     public ModelAndView activityHome(){
         return new ModelAndView("/activities/2018/super-scholar");
     }
+
+    @RequestMapping(value = "/question", method = RequestMethod.GET)
+    public ModelAndView activityQuestion(){
+        return new ModelAndView("/activities/2018/super-scholar-question");
+    }
 }

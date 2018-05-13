@@ -1,44 +1,47 @@
 require("activityStyle/super_scholar_2018.scss");
-let commonFun= require('publicJs/commonFun');
 require('publicJs/plugins/jquery.qrcode.min');
 require('publicJs/plugins/jQuery.md5');
-//require('publicJs/login_tip');
-let sourceKind = globalFun.parseURL(location.href);
-let url = location.href;
 
-let $getMore = $('#getMore'),
-    $getLess = $('#getLess'),
-    $reappearanceList = $('#reappearanceList'),
-    $reappearanceContent = $('.reappearance-content');
-commonFun.calculationRem(document, window)
+
+    let commonFun= require('publicJs/commonFun');
+    let tpl = require('art-template/dist/template');
+//require('publicJs/login_tip');
+    let sourceKind = globalFun.parseURL(location.href);
+    let url = location.href;
+
+    let $getMore = $('#getMore'),
+        $getLess = $('#getLess'),
+        $reappearanceList = $('#reappearanceList'),
+        $reappearanceContent = $('.reappearance-content');
+    commonFun.calculationRem(document, window)
 
 //heroRank();
-$getMore.on('click',function () {
-    let _this = $(this);
-    _this.hide();
-    $getLess.show();
-     getMoreData();
-})
+    $getMore.on('click',function () {
+        let _this = $(this);
+        _this.hide();
+        $getLess.show();
+        getMoreData();
+    })
 
-$getLess.on('click',function () {
-    let _this = $(this);
-    _this.hide();
-    $getMore.show();
-    getLess();
-})
-function getLess() {
-    let liHeihgt = $reappearanceList.find('tr').outerHeight();
-    let thHeight =  $reappearanceContent.find('thead').outerHeight();
-    let totalHeight = 3*liHeihgt+thHeight+2;
-    $reappearanceContent.height(totalHeight);
-}
-function getMoreData(num) {
-    // let liHeihgt = $reappearanceList.find('tr').outerHeight();
-    // let thHeight =  $reappearanceContent.find('thead').outerHeight();
-    // let totalHeight = num*liHeihgt+thHeight+2;
-    // $reappearanceContent.height(totalHeight);
-}
- function heroRank(records,callback) {
+    $getLess.on('click',function () {
+        let _this = $(this);
+        _this.hide();
+        $getMore.show();
+        getLess();
+    })
+    function getLess() {
+        let liHeihgt = $reappearanceList.find('tr').outerHeight();
+        let thHeight =  $reappearanceContent.find('thead').outerHeight();
+        let totalHeight = 3*liHeihgt+thHeight+2;
+        $reappearanceContent.height(totalHeight);
+    }
+    function getMoreData(num) {
+        // let liHeihgt = $reappearanceList.find('tr').outerHeight();
+        // let thHeight =  $reappearanceContent.find('thead').outerHeight();
+        // let totalHeight = num*liHeihgt+thHeight+2;
+        // $reappearanceContent.height(totalHeight);
+    }
+    function heroRank(records,callback) {
 //     commonFun.useAjax({
 //         type: 'GET',
 //         url: '/activity/spring-breeze/ranking/2018-3-22'
@@ -52,7 +55,71 @@ function getMoreData(num) {
 //         let html = render(data);
 //         $reappearanceList.html(html);
 //     })
- }
-var md5String=commonFun.decrypt.compile('c44e7bfb1f8beae43b1c888844014dce','18710164899');
- alert(md5String)
-//c44e7bfb1f8beae43b1c888844014dce   c41e8b7b1f0b1a644b8c989844014dce
+    }
+
+    let $questionContainer = $('.question-container'),
+        $questionList = $('#questionList'),
+        $questionBtn = $('.question-btn');
+
+    if($questionContainer.length){
+        var data = {
+            questions :[
+                {
+                    "question": "ICP备案ICP经营许可证，是一回事吗？( )",
+                    "options": [
+                        "A、是一回事",
+                        "B、不是一回事，ICP经营许可证要求更加严格"
+                    ]
+                },
+                {
+                    "question": "以下哪个名字不是小编的惯用马甲( )",
+                    "options": [
+                        "A、小明",
+                        "B、拓小天",
+                        "C、小拓拓"
+                    ]
+                },
+                {
+                    "question": "在线上没有活动的时候，拓天速贷平台180天项目预期年化收益率是多少？( )",
+                    "options": [
+                        "A、9%",
+                        "B、10%",
+                        "C、11%"
+                    ]
+                },
+                {
+                    "question": "在线上没有活动的时候，拓天速贷平台180天项目预期年化收益率是多少？( )",
+                    "options": [
+                        "A、9%",
+                        "B、10%",
+                        "C、11%"
+                    ]
+                },
+                {
+                    "question": "购买银行理财产品，错误的做法是( )",
+                    "options": [
+                        "A、信赖银行，把钱交给理财经理就好",
+                        "B、要在银行柜台完成申购手续"
+                    ]
+                }
+            ]
+        }
+
+         $questionList.html(tpl('questionTpl', data));
+
+        $questionList.find('.question-btn').on('click',function () {
+                let _self = $(this);
+                if(_self.parents('.question-inner').index() !== 4){
+                    _self.parents('.question-inner').hide()
+                }
+        })
+
+        $('.inner5').on('click',function () {
+            alert('submit')
+        })
+
+
+    }
+
+
+
