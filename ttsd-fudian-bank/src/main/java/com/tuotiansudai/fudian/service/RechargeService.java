@@ -18,13 +18,14 @@ import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import com.tuotiansudai.mq.tools.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RechargeService implements AsyncCallbackInterface {
@@ -41,21 +42,21 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final MessageQueueClient messageQueueClient;
 
-    private final RedisClient redisClient;
+    private final RedisTemplate<String, String> redisTemplate;
 
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
 
     @Autowired
-    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, RedisClient redisClient, SelectResponseDataMapper selectResponseDataMapper) {
+    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper, RedisTemplate<String, String> redisTemplate) {
         this.bankConfig = bankConfig;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.messageQueueClient = messageQueueClient;
-        this.redisClient = redisClient;
         this.selectResponseDataMapper = selectResponseDataMapper;
+        this.redisTemplate = redisTemplate;
     }
 
     public RechargeRequestDto recharge(String rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
@@ -63,7 +64,7 @@ public class RechargeService implements AsyncCallbackInterface {
 
         signatureHelper.sign(dto);
 
-        redisClient.newJedis().setex(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), 30 * 24 * 60 * 60, rechargeId);
+        redisTemplate.opsForValue().set(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), rechargeId, 30 * 24 * 60 * 60, TimeUnit.SECONDS);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", bankUserName, bankAccountNo, amount, payType);
@@ -105,7 +106,7 @@ public class RechargeService implements AsyncCallbackInterface {
 
         RechargeContentDto rechargeContentDto = responseDto.getContent();
         String rechargeKey = MessageFormat.format(RECHARGE_BIND_ORDER_NO, rechargeContentDto.getOrderNo());
-        String rechargeId = redisClient.newJedis().get(rechargeKey);
+        String rechargeId = redisTemplate.opsForValue().get(rechargeKey);
         ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(rechargeContentDto.getExtMark(), ExtMarkDto.class);
         this.messageQueueClient.publishMessage(MessageTopic.Recharge, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("loginName", extMarkDto.getLoginName())

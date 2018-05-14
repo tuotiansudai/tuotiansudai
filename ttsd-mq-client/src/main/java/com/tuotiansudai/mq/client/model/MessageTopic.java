@@ -42,7 +42,7 @@ public enum MessageTopic {
             MessageQueue.BindBankCard_CompletePointTask),
 
     Recharge("Recharge",
-            MessageQueue.Recharge_callback,
+            MessageQueue.Recharge_Success,
             MessageQueue.Recharge_CompletePointTask),
     ;
 
