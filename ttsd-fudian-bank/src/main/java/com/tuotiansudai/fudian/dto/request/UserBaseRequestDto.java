@@ -12,8 +12,8 @@ public class UserBaseRequestDto extends BaseRequestDto {
 
     private String notifyUrl; //异步回调地址
 
-    public UserBaseRequestDto(String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
-        super(loginName, mobile, apiType);
+    public UserBaseRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
+        super(source, loginName, mobile, apiType);
         this.userName = userName;
         this.accountNo = accountNo;
     }

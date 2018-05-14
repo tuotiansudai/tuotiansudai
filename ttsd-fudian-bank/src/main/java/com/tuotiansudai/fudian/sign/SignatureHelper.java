@@ -82,7 +82,7 @@ public class SignatureHelper {
             ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(dto.getExtMark(), ExtMarkDto.class);
             Method returnUrlMethod = dtoClass.getMethod("setReturnUrl", String.class);
             Method notifyUrlMethod = dtoClass.getMethod("setNotifyUrl", String.class);
-            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(), extMarkDto.getApiType().name().toLowerCase());
+            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(dto.getSource()), extMarkDto.getApiType().name().toLowerCase());
             String notifyUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackNotifyUrl(), extMarkDto.getApiType().name().toLowerCase());
             returnUrlMethod.invoke(dto, returnUrl);
             notifyUrlMethod.invoke(dto, notifyUrl);

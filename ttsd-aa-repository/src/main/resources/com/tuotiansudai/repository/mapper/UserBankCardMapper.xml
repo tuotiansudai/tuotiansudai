@@ -29,7 +29,7 @@
     <update id="updateStatus" parameterType="map">
         update user_bank_card
         set status = #{status}, updated_time = now()
-        where login_name = #{loginName}
+        where id = #{id}
     </update>
 
 </mapper>

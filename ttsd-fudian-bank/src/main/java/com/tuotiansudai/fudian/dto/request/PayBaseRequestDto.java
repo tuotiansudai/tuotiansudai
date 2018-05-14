@@ -12,8 +12,8 @@ public class PayBaseRequestDto extends BaseRequestDto {
 
     private String notifyUrl; //异步回调地址
 
-    public PayBaseRequestDto(String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
-        super(loginName, mobile, apiType);
+    public PayBaseRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
+        super(source, loginName, mobile, apiType);
         this.userName = userName;
         this.accountNo = accountNo;
     }

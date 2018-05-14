@@ -8,8 +8,8 @@ public class WithdrawRequestDto extends PayBaseRequestDto {
 
     private String fee = "0.00";
 
-    public WithdrawRequestDto(String loginName, String mobile, String userName, String accountNo, String amount) {
-        super(loginName, mobile, userName, accountNo, ApiType.WITHDRAW);
+    public WithdrawRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount) {
+        super(source, loginName, mobile, userName, accountNo, ApiType.WITHDRAW);
         this.amount = amount;
     }
 
