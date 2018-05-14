@@ -28,6 +28,13 @@ public class SuperScholarActivityController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/view/question", method = RequestMethod.GET)
+    public ModelAndView questionPage(){
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/super-scholar-question", "responsive", true);
+        modelAndView.addObject("doQuestion", LoginUserInfo.getLoginName() != null && superScholarActivityService.doQuestion(LoginUserInfo.getLoginName()));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/questions", method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String, Object>> getQuestions() throws IOException {
@@ -43,7 +50,7 @@ public class SuperScholarActivityController {
         return superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer);
     }
 
-    @RequestMapping(value = "/examine/grade", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/result", method = RequestMethod.GET)
     public ModelAndView sharePage(){
         ModelAndView modelAndView = new ModelAndView("/wechat/super-scholar-share");
         modelAndView.addAllObjects(superScholarActivityService.examineGrade(LoginUserInfo.getLoginName()));
