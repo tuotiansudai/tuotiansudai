@@ -39,7 +39,6 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
     @Autowired
     private ActivityInvestMapper activityInvestMapper;
 
-    @Autowired
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";

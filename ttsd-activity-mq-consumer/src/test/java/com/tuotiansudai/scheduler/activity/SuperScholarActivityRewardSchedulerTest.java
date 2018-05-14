@@ -5,15 +5,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
 import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
-import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +28,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -59,6 +69,27 @@ public class SuperScholarActivityRewardSchedulerTest {
 
     @Test
     public void sendCashSuccess(){
+        ArgumentCaptor<String> redisDelKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisDelHKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisSetKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisSetValueCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+
+        when(redisWrapperClient.hgetAll("SUPER_SCHOLAR_SEND_CASH_LOAN")).thenReturn(fakeLoanId());
+        when(activityInvestMapper.findByLoanId(anyLong())).thenReturn(fakeActivityInvestModels());
+        when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName"), any())).thenReturn(fakeSuperScholarRewardModel("loginName"));
+        when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName1"), any())).thenReturn(fakeSuperScholarRewardModel("loginName1"));
+        when(redisWrapperClient.exists(anyString())).thenReturn(false);
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(true)));
+
+        superScholarActivityRewardScheduler.sendSuperScholarReward();
+
+        verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
+        verify(this.payWrapperClient, times(3)).transferCash(transferCashDtoCaptor.capture());
+        verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), any(), redisSetValueCaptor.capture());
+
+        assertThat(redisDelKeyCaptor.getValue(), is("SUPER_SCHOLAR_SEND_CASH_LOAN"));
+        assertThat(redisDelHKeyCaptor.getValue(), is("201805"));
 
     }
 
@@ -69,13 +100,13 @@ public class SuperScholarActivityRewardSchedulerTest {
     }
 
     public List<ActivityInvestModel> fakeActivityInvestModels(){
-        return Lists.newArrayList(new ActivityInvestModel(201805, 20180501, "loginName", "userName", "mobile", 100, 100, null),
-                new ActivityInvestModel(201805, 20180502, "loginName", "userName", "mobile", 200, 200, null),
-                new ActivityInvestModel(201805, 20180503, "loginName", "userName", "mobile", 300, 300, null));
+        return Lists.newArrayList(new ActivityInvestModel(201805, 20180501, "loginName", "userName", "mobile", 10000, 10000, null),
+                new ActivityInvestModel(201805, 20180502, "loginName1", "userName1", "mobile1", 20000, 20000, null),
+                new ActivityInvestModel(201805, 20180503, "loginName1", "userName1", "mobile1", 30000, 30000, null));
     }
 
-    public SuperScholarRewardModel fakeSuperScholarRewardModel(){
-        SuperScholarRewardModel superScholarRewardModel = new SuperScholarRewardModel("loginName", "1,2,3,4,5", "A,A,A,A,A");
+    public SuperScholarRewardModel fakeSuperScholarRewardModel(String loginName){
+        SuperScholarRewardModel superScholarRewardModel = new SuperScholarRewardModel(loginName, "1,2,3,4,5", "A,A,A,A,A");
         superScholarRewardModel.setUserAnswer("A,A,A,A,A");
         superScholarRewardModel.setUserRight(5);
         superScholarRewardModel.setShareHome(true);
