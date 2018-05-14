@@ -179,7 +179,8 @@ require(['jquery', 'layerWrapper', 'underscore', 'jquery.validate', 'jquery.vali
 							password: $('#password').val(),
 							captcha: $('#captcha').val(),
 							referrer: JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')["referrerMobile"],
-							agreement: $('#agreement').attr("checked") == "checked"
+							agreement: $('#agreement').attr("checked") == "checked",
+							activityReferrer: $('#activityReferrer').val()
 						}
 					})
 					.done(function(data) {

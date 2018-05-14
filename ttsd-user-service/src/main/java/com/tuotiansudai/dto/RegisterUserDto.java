@@ -35,6 +35,8 @@ public class RegisterUserDto implements Serializable {
 
     private String redirectToAfterRegisterSuccess = "/";
 
+    private String activityReferrer;
+
     @AssertTrue
     private boolean agreement;
 
@@ -122,5 +124,13 @@ public class RegisterUserDto implements Serializable {
 
     public void setRedirectToAfterRegisterSuccess(String redirectToAfterRegisterSuccess) {
         this.redirectToAfterRegisterSuccess = redirectToAfterRegisterSuccess;
+    }
+
+    public String getActivityReferrer() {
+        return activityReferrer;
+    }
+
+    public void setActivityReferrer(String activityReferrer) {
+        this.activityReferrer = activityReferrer;
     }
 }
