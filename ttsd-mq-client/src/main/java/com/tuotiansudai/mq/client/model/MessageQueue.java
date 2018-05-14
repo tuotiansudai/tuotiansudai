@@ -34,7 +34,6 @@ public enum MessageQueue {
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
     StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
-    BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     ExperienceRepayCallback("ExperienceRepayCallback"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
@@ -85,6 +84,15 @@ public enum MessageQueue {
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
+
+    //fudian new queues
+    BindBankCard_Success("BindBankCard-Success"),
+    BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
+    UnbindBankCard_Success("UnbindBankCard-Success"),
+    RegisterBankAccount_Success("RegisterBankAccount-Success"),
+    RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
+    RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
+    RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
     ;
 
     private final String queueName;
