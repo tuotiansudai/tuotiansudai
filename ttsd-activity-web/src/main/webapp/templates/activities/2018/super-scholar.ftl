@@ -40,34 +40,17 @@
                 <th>时间</th>
                 </thead>
                 <tbody id="reappearanceList" class="reappearance-list">
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                    <td>1,000</td>
-                    <td>2018-9-20 19:00:00</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                    <td>1,000</td>
-                    <td>2018-9-20 19:00:00</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                    <td>1,000</td>
-                    <td>2018-9-20 19:00:00</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                    <td>1,000</td>
-                    <td>2018-9-20 19:00:00</td>
-                </tr>
+                    <#if data!?size!=0>
+                        <#list data as invest>
+                        <tr>
+                            <td>${invest.amount}</td>
+                            <td>${invest.annualizedAmount}</td>
+                            <td>${invest.rewardRate}</td>
+                            <td>${invest.reward}</td>
+                            <td>${invest.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        </tr>
+                        </#list>
+                    </#if>
                 </tbody>
             </table>
         </div>
@@ -85,26 +68,15 @@
                 <th>获取返现比率</th>
                 </thead>
                 <tbody id="reappearanceList" class="reappearance-list">
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                </tr>
-                <tr>
-                    <td>1,000</td>
-                    <td>1,000</td>
-                    <td>0.6%</td>
-                </tr>
+                    <#if data!?size!=0>
+                        <#list data as invest>
+                        <tr>
+                            <td>${invest.amount}</td>
+                            <td>${invest.annualizedAmount}</td>
+                            <td>${invest.rewardRate}</td>
+                        </tr>
+                        </#list>
+                    </#if>
                 </tbody>
             </table>
         </div>
