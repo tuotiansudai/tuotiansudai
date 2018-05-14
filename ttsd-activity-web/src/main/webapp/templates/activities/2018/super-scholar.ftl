@@ -7,8 +7,17 @@
     <h2 class="part-one-title">
         <div class="ball"></div>
     </h2>
+<@global.isAnonymous>
     <h4 class="notice"><span class="horn"></span>今日还未答题哦！赶快答题赢返现吧！</h4>
-    <h4 class="notice isAnswered"><span class="horn"></span>今日已答题，投资可获获年化0.6%返现，赶快投资吧！</h4>
+</@global.isAnonymous>
+<@global.isNotAnonymous>
+<#if doQuestion>
+<h4 class="notice isAnswered"><span class="horn"></span>今日已答题，投资可获获年化0.6%返现，赶快投资吧！</h4>
+<#else>
+<h4 class="notice"><span class="horn"></span>今日还未答题哦！赶快答题赢返现吧！</h4>
+</#if>
+</@global.isNotAnonymous>
+
     <div class="qrcode">
         <div class="code"></div>
         <span class="tips"></span>
@@ -64,7 +73,6 @@
         </div>
             <div class="get-more">
                 <a class="look-btn" id="getMoreData" href="javascript:;">查看更多</a>
-                <a class="look-btn" id="getLess" href="javascript:;" style="display: none">收起</a>
             </div>
         </div>
     <#--m站我的返现奖励-->

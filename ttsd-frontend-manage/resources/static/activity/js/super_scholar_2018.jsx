@@ -9,56 +9,28 @@ let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
 let url = location.href;
 
-let $getMore = $('#getMore'),
-    $getLess = $('#getLess'),
+let $getMore = $('#getMoreData'),
     $reappearanceList = $('#reappearanceList'),
     $reappearanceContent = $('.reappearance-content');
 commonFun.calculationRem(document, window)
 
-//heroRank();
+let len = $reappearanceList.find('tr').length;
+getMoreData(3);
 $getMore.on('click', function () {
     let _this = $(this);
     _this.hide();
-    $getLess.show();
-    getMoreData();
+    getMoreData(4);
+    $reappearanceContent.css('overflow','visible')
 })
 
-$getLess.on('click', function () {
-    let _this = $(this);
-    _this.hide();
-    $getMore.show();
-    getLess();
-})
 
-function getLess() {
+function getMoreData(num) {
     let liHeihgt = $reappearanceList.find('tr').outerHeight();
-    let thHeight = $reappearanceContent.find('thead').outerHeight();
-    let totalHeight = 3 * liHeihgt + thHeight + 2;
+    let thHeight =  $reappearanceContent.find('thead').outerHeight();
+    let totalHeight = num*liHeihgt+thHeight+2;
     $reappearanceContent.height(totalHeight);
 }
 
-function getMoreData(num) {
-    // let liHeihgt = $reappearanceList.find('tr').outerHeight();
-    // let thHeight =  $reappearanceContent.find('thead').outerHeight();
-    // let totalHeight = num*liHeihgt+thHeight+2;
-    // $reappearanceContent.height(totalHeight);
-}
-
-function heroRank(records, callback) {
-//     commonFun.useAjax({
-//         type: 'GET',
-//         url: '/activity/spring-breeze/ranking/2018-3-22'
-//     }, function (data) {
-//         let list = [1,2,3,4,5];
-//         callback(list.length)
-//         //获取模版内容
-//         let ListTpl = $('#tplTable').html();
-//         // 解析模板, 返回解析后的内容
-//         let render = _.template(ListTpl);
-//         let html = render(data);
-//         $reappearanceList.html(html);
-//     })
-}
 
 let $questionContainer = $('.question-container'),
     $questionList = $('#questionList'),

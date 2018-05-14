@@ -4,7 +4,7 @@ p {
 }
 
 .super-scholar-banner {
-  height: 350px;
+  height: 424px;
   background: url("../images/2018/super-scholar/pc_banner.png") no-repeat center center;
 }
 
@@ -29,12 +29,12 @@ p {
 }
 
 .notice {
-  display: inline-block;
+  position: relative;
+  margin: 0 auto;
   box-sizing: border-box;
   width: 660px;
   height: 60px;
   border-radius: 30px;
-  background: #212f34 url("../images/2018/super-scholar/horn.png") no-repeat 50px center;
   border: 3px solid #132124;
   margin: 0 auto;
   margin-top: 37px;
@@ -45,6 +45,20 @@ p {
   text-align: center;
   &.isAnswered {
     width: 700px;
+    text-indent: 52px;
+    .horn {
+      left: 15px;
+    }
+  }
+  .horn {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    margin-top: -17px;
+    width: 44px;
+    height: 35px;
+    background: url("../images/2018/super-scholar/horn.png") no-repeat;
+    background-size: 100%;
   }
 }
 
@@ -138,6 +152,9 @@ p {
     margin-bottom: 40px;
     text-align: center;
   }
+}
+.my_reappearance-table-wap {
+  display: none;
 }
 
 .to-loan {
@@ -329,6 +346,7 @@ p {
     display: none;
   }
   .my_reappearance-table-wap {
+    display: block;
     margin: 0 auto;
     margin-top: 0.4rem;
     margin-bottom: 0.5rem;
