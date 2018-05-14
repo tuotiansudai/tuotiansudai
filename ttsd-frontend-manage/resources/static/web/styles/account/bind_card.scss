@@ -184,6 +184,7 @@
     border: 1px solid #ddd;
     border-top-width: 0;
     padding: 15px 10px;
+    padding-bottom: 50px;
 
     .recharge-form, .fast-recharge-form {
       clear: both;
@@ -291,4 +292,84 @@
       }
     }
   }
+}
+
+.progress-wrap {
+  width: 266px;
+  margin: 0 auto;
+  margin-top: 27px;
+  text-align: center;
+  dl {
+    &.arrow {
+      display: inline-block;
+      width: 29px;
+      height: 28px;
+      margin-top: 4px;
+      background: url("../../images/myaccount/icon_arror_right.png") no-repeat;
+      background-size: 100%;
+      &.active {
+        background: url("../../images/myaccount/arrow_active.png") no-repeat;
+        background-size: 100%;
+      }
+    }
+    dt {
+      width: 93px;
+      height: 35px;
+      text-align: center;
+      span {
+        display: inline-block;
+        &.account {
+
+          width: 41px;
+          height: 35px;
+          background: url("../../images/myaccount/icon_unbind_card.png") no-repeat;
+          background-size: 100%;
+        }
+        &.bind-card {
+          width: 42px;
+          height: 27px;
+          background: url("../../images/myaccount/icon_nobind_card.png") no-repeat;
+          background-size: 100%;
+          &.active {
+            background: url("../../images/myaccount/bind_card_active.png") no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    dd {
+      font-size: 16px;
+      color: #ccc;
+      &.active {
+        color: #ff752a;
+      }
+    }
+  }
+}
+.to-fudian {
+  display: block;
+  width: 140px;
+  height: 36px;
+  background: #ff752a;
+  line-height: 36px;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  margin: 0 auto;
+  margin-top: 70px;
+  &:hover {
+    color: #fff;
+  }
+}
+.unbind-condition {
+  b {
+    font-size: 14px;
+    color: #4c4c4c;
+  }
+  font-size: 12px;
+  color: #808080;
+  line-height: 22px;
+}
+.paddingBottom120 {
+  padding-bottom: 120px!important;
 }

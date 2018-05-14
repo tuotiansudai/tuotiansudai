@@ -43,7 +43,7 @@ public interface UpdateMapper {
     @Update("UPDATE loan_credit_invest SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanCreditInvest(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update("UPDATE loan_full SET SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
+    @Update("UPDATE loan_full SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanFull(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_repay SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")

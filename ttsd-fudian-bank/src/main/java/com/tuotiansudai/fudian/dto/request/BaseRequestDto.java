@@ -13,6 +13,8 @@ public class BaseRequestDto {
 
     private transient long id;
 
+    private transient Source source;
+
     private String requestData;
 
     private String merchantNo; //商户号
@@ -23,8 +25,9 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(String loginName, String mobile, ApiType apiType) {
+    public BaseRequestDto(Source source, String loginName, String mobile, ApiType apiType) {
         this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType));
+        this.source = source;
     }
 
     public long getId() {
@@ -33,6 +36,14 @@ public class BaseRequestDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public String getRequestData() {

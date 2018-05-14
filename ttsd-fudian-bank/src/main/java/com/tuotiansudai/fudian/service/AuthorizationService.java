@@ -3,8 +3,10 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.AuthorizationRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -23,15 +25,18 @@ public class AuthorizationService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public AuthorizationService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public AuthorizationService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public AuthorizationRequestDto auth(String loginName, String mobile, String userName, String accountNo) {
-        AuthorizationRequestDto dto = new AuthorizationRequestDto(loginName, mobile, userName, accountNo);
+    public AuthorizationRequestDto auth(Source source, String loginName, String mobile, String userName, String accountNo) {
+        AuthorizationRequestDto dto = new AuthorizationRequestDto(source, loginName, mobile, userName, accountNo);
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -58,6 +63,17 @@ public class AuthorizationService implements AsyncCallbackInterface {
         updateMapper.updateAuthorization(responseDto);
         responseDto.setReqData(responseData);
         return responseDto;
+    }
 
+    @Override
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.AUTHORIZATION.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto responseDto = ApiType.AUTHORIZATION.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
     }
 }

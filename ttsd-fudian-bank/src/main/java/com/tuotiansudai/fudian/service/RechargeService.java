@@ -9,13 +9,14 @@ import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import com.tuotiansudai.mq.tools.RedisClient;
 import org.slf4j.Logger;
@@ -42,26 +43,30 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final RedisClient redisClient;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
 
     @Autowired
-    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, RedisClient redisClient) {
+    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, RedisClient redisClient, SelectResponseDataMapper selectResponseDataMapper) {
         this.bankConfig = bankConfig;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.messageQueueClient = messageQueueClient;
         this.redisClient = redisClient;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public RechargeRequestDto recharge(String rechargeId, String loginName, String mobile, String userName, String accountNo, String amount, RechargePayType payType) {
-        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, userName, accountNo, amount, payType);
+    public RechargeRequestDto recharge(String rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankUserName, bankAccountNo, amount, payType);
+
         signatureHelper.sign(dto);
 
         redisClient.newJedis().setex(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), 30 * 24 * 60 * 60, rechargeId);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", userName, accountNo, amount, payType);
+            logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", bankUserName, bankAccountNo, amount, payType);
             return null;
         }
         insertMapper.insertRecharge(dto);
@@ -69,8 +74,8 @@ public class RechargeService implements AsyncCallbackInterface {
 
     }
 
-    public RechargeRequestDto merchantRecharge(String loginName, String mobile, String amount) {
-        RechargeRequestDto dto = new RechargeRequestDto(loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
+    public RechargeRequestDto merchantRecharge(Source source, String loginName, String mobile, String amount) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
 
         signatureHelper.sign(dto);
 
@@ -113,5 +118,18 @@ public class RechargeService implements AsyncCallbackInterface {
                 .build()));
 
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.RECHARGE.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<RechargeContentDto> responseDto = (ResponseDto<RechargeContentDto>) ApiType.RECHARGE.getParser().parse(responseData);
+
+        return responseDto.isSuccess() && responseDto.getContent().isSuccess();
     }
 }

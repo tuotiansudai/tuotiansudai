@@ -2,15 +2,16 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
@@ -19,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RegisterService implements AsyncCallbackInterface {
@@ -35,16 +34,19 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final MessageQueueClient messageQueueClient;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient) {
+    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.messageQueueClient = messageQueueClient;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public RegisterRequestDto register(String loginName, String mobile, String realName, String identityCode) {
-        RegisterRequestDto dto = new RegisterRequestDto(loginName, mobile, realName, identityCode);
+    public RegisterRequestDto register(Source source, String loginName, String mobile, String realName, String identityCode) {
+        RegisterRequestDto dto = new RegisterRequestDto(source, loginName, mobile, realName, identityCode);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -86,5 +88,18 @@ public class RegisterService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updateRegister(responseDto);
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.REGISTER.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<RegisterContentDto> responseDto = (ResponseDto<RegisterContentDto>) ApiType.REGISTER.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
     }
 }

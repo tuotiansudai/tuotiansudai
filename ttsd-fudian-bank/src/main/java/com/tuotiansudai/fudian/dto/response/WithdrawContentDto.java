@@ -81,4 +81,8 @@ public class WithdrawContentDto extends PayBaseContentDto {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public boolean isSuccess() {
+        return "1".equalsIgnoreCase(status);
+    }
 }

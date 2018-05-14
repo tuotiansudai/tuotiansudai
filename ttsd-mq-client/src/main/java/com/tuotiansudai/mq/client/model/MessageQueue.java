@@ -86,6 +86,7 @@ public enum MessageQueue {
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
+    UnbindBankCard_Success("UnbindBankCard-Success"),
     RegisterBankAccount_Success("RegisterBankAccount-Success"),
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
     RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),

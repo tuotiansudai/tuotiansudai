@@ -3,8 +3,11 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.PasswordResetRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.PasswordResetContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -23,15 +26,18 @@ public class PasswordResetService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public PasswordResetService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public PasswordResetService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public PasswordResetRequestDto reset(String loginName, String mobile, String userName, String accountNo) {
-        PasswordResetRequestDto dto = new PasswordResetRequestDto(loginName, mobile, userName, accountNo);
+    public PasswordResetRequestDto reset(Source source, String loginName, String mobile, String userName, String accountNo) {
+        PasswordResetRequestDto dto = new PasswordResetRequestDto(source, loginName, mobile, userName, accountNo);
 
         signatureHelper.sign(dto);
 
@@ -59,4 +65,18 @@ public class PasswordResetService implements AsyncCallbackInterface {
         updateMapper.updatePasswordReset(responseDto);
         return responseDto;
     }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.PASSWORD_RESET.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<PasswordResetContentDto> responseDto = (ResponseDto<PasswordResetContentDto>) ApiType.PASSWORD_RESET.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
+    }
+
 }

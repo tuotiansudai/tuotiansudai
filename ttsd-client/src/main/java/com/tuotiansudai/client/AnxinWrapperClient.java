@@ -3,6 +3,7 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
+import com.squareup.okhttp.ResponseBody;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import org.apache.log4j.Logger;
@@ -111,6 +112,16 @@ public class AnxinWrapperClient extends BaseClient {
             baseDto.setSuccess(false);
         }
         return baseDto;
+    }
+
+    private byte[] downPdf(String path, String requestJson) {
+        ResponseBody responseBody = newCall(path, requestJson, "POST");
+        try {
+            return responseBody != null ? responseBody.bytes() : null;
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 
     private BaseDto<AnxinDataDto> syncExecute(Object requestData, String requestPath, String method) {

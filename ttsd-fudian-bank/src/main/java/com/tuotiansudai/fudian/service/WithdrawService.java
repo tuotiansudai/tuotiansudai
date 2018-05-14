@@ -2,9 +2,12 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.request.WithdrawRequestDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.dto.response.WithdrawContentDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -23,15 +26,18 @@ public class WithdrawService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public WithdrawService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public WithdrawService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public WithdrawRequestDto withdraw(String loginName, String mobile, String userName, String accountNo, String amount) {
-        WithdrawRequestDto dto = new WithdrawRequestDto(loginName, mobile, userName, accountNo, amount);
+    public WithdrawRequestDto withdraw(Source source, String loginName, String mobile, String userName, String accountNo, String amount) {
+        WithdrawRequestDto dto = new WithdrawRequestDto(source, loginName, mobile, userName, accountNo, amount);
 
         signatureHelper.sign(dto);
 
@@ -58,5 +64,18 @@ public class WithdrawService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updateWithdraw(responseDto);
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.WITHDRAW.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<WithdrawContentDto> responseDto = (ResponseDto<WithdrawContentDto>) ApiType.WITHDRAW.getParser().parse(responseData);
+
+        return responseDto.isSuccess() && responseDto.getContent().isSuccess();
     }
 }
