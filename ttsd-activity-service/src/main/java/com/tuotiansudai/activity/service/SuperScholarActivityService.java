@@ -59,12 +59,15 @@ public class SuperScholarActivityService {
         return models.stream()
                 .filter(model -> {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
-                    return superScholarRewardModel != null && superScholarRewardModel.getUserAnswer() != null;
+                    return superScholarRewardModel != null;
                 })
                 .map(model -> {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
                     double rewardRate = superScholarRewardModel.getRewardRate();
-                    return new SuperScholarRewardView(AmountConverter.convertCentToString(model.getInvestAmount()),
+                    return new SuperScholarRewardView(
+                            model.getUserName(),
+                            model.getMobile(),
+                            AmountConverter.convertCentToString(model.getInvestAmount()),
                             AmountConverter.convertCentToString(model.getAnnualizedAmount()),
                             String.format("%.1f", rewardRate * 100) + "%",
                             AmountConverter.convertCentToString((long) (model.getAnnualizedAmount() * rewardRate)),
@@ -109,7 +112,6 @@ public class SuperScholarActivityService {
         return questions;
     }
 
-    @Transactional
     public boolean submitAnswer(String loginName, String answer) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         List<String> userAnswer = Arrays.asList(answer.split(","));
@@ -126,17 +128,19 @@ public class SuperScholarActivityService {
         superScholarRewardModel.setUserAnswer(answer);
         superScholarRewardModel.setUserRight(userRight);
         superScholarRewardModel.setAnswerTime(new Date());
-
-        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + getCouponId());
         return true;
     }
 
+    @Transactional
     public Map<String, Object> examineGrade(String loginName) {
+        long couponId = getCouponId();
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("rate", String.format("%.1f", superScholarRewardModel.getRewardRate() * 100) + "%")
                 .put("questionAnswer", Lists.newArrayList(superScholarRewardModel.getQuestionAnswer().split(",")))
                 .put("userAnswer", Lists.newArrayList(superScholarRewardModel.getUserAnswer().split(",")))
+                .put("coupon", couponId)
                 .build());
     }
 

@@ -8,9 +8,11 @@ import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -56,6 +58,9 @@ public class SuperScholarActivityRewardSchedulerTest {
     @Mock
     private RedisWrapperClient redisWrapperClient;
 
+    @Mock
+    private SmsWrapperClient smsWrapperClient;
+
     @Before
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -86,11 +91,54 @@ public class SuperScholarActivityRewardSchedulerTest {
 
         verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
         verify(this.payWrapperClient, times(3)).transferCash(transferCashDtoCaptor.capture());
-        verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), any(), redisSetValueCaptor.capture());
+        verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), anyInt(), redisSetValueCaptor.capture());
 
         assertThat(redisDelKeyCaptor.getValue(), is("SUPER_SCHOLAR_SEND_CASH_LOAN"));
         assertThat(redisDelHKeyCaptor.getValue(), is("201805"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(0).getLoginName(), is("loginName"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(0).getAmount(), is("150"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(1).getLoginName(), is("loginName1"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(1).getAmount(), is("300"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(2).getLoginName(), is("loginName1"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(2).getAmount(), is("450"));
+        assertThat(redisSetKeyCaptor.getAllValues().get(0), is("SUPER_SCHOLAR_SEND_USER_CASH:20180501:loginName"));
+        assertThat(redisSetKeyCaptor.getAllValues().get(1), is("SUPER_SCHOLAR_SEND_USER_CASH:20180502:loginName1"));
+        assertThat(redisSetKeyCaptor.getAllValues().get(2), is("SUPER_SCHOLAR_SEND_USER_CASH:20180503:loginName1"));
+    }
 
+    @Test
+    public void sendCashFail(){
+        ArgumentCaptor<String> redisDelKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisDelHKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisSetKeyCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> redisSetValueCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
+
+        when(redisWrapperClient.hgetAll("SUPER_SCHOLAR_SEND_CASH_LOAN")).thenReturn(fakeLoanId());
+        when(activityInvestMapper.findByLoanId(anyLong())).thenReturn(fakeActivityInvestModels());
+        when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName"), any())).thenReturn(fakeSuperScholarRewardModel("loginName"));
+        when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName1"), any())).thenReturn(fakeSuperScholarRewardModel("loginName1"));
+        when(redisWrapperClient.exists(anyString())).thenReturn(false);
+        when(payWrapperClient.transferCash(any(TransferCashDto.class))).thenReturn(new BaseDto(new PayDataDto(false)));
+
+        superScholarActivityRewardScheduler.sendSuperScholarReward();
+
+        verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
+        verify(this.payWrapperClient, times(3)).transferCash(transferCashDtoCaptor.capture());
+        verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), anyInt(), redisSetValueCaptor.capture());
+        verify(this.smsWrapperClient, times(3)).sendFatalNotify(any(SmsFatalNotifyDto.class));
+
+        assertThat(redisDelKeyCaptor.getValue(), is("SUPER_SCHOLAR_SEND_CASH_LOAN"));
+        assertThat(redisDelHKeyCaptor.getValue(), is("201805"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(0).getLoginName(), is("loginName"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(0).getAmount(), is("150"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(1).getLoginName(), is("loginName1"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(1).getAmount(), is("300"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(2).getLoginName(), is("loginName1"));
+        assertThat(transferCashDtoCaptor.getAllValues().get(2).getAmount(), is("450"));
+        assertThat(redisSetValueCaptor.getAllValues().get(0), is("fail"));
+        assertThat(redisSetValueCaptor.getAllValues().get(1), is("fail"));
+        assertThat(redisSetValueCaptor.getAllValues().get(2), is("fail"));
     }
 
     private Map<String, String> fakeLoanId(){

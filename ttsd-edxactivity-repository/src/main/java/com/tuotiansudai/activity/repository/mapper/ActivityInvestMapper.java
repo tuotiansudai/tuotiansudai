@@ -3,6 +3,7 @@ package com.tuotiansudai.activity.repository.mapper;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.ActivityInvestView;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -28,4 +29,7 @@ public interface ActivityInvestMapper {
                                                    @Param(value = "endTime") Date endTime);
 
     List<ActivityInvestModel> findByLoanId(@Param(value = "loanId") long loanId);
+
+    List<ActivityInvestModel> findByUserNameOrMobile(@Param(value = "keyWord") String keyWord,
+                                                     @Param(value = "activityName") String activityName);
 }

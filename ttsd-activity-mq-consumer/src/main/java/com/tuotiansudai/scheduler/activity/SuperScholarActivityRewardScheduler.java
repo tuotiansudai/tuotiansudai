@@ -83,7 +83,7 @@ public class SuperScholarActivityRewardScheduler {
                         } catch (Exception e) {
                             logger.error("SUPER_SCHOLAR_ACTIVITY SEND CASH error, invest:{}, user:{}, rewardModelId:{}, error:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId(), e.getMessage());
                         }
-                        logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH end, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
+                        logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH END, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
                     }
                 }
             }

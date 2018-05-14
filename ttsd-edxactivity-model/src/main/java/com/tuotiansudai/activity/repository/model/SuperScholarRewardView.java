@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class SuperScholarRewardView implements Serializable{
 
+    private String userName;
+    private String mobile;
     private String amount;
     private String annualizedAmount;
     private String rewardRate;
@@ -15,12 +17,30 @@ public class SuperScholarRewardView implements Serializable{
     public SuperScholarRewardView() {
     }
 
-    public SuperScholarRewardView(String amount, String annualizedAmount, String rewardRate, String reward, Date investTime) {
+    public SuperScholarRewardView(String userName, String mobile, String amount, String annualizedAmount, String rewardRate, String reward, Date investTime) {
+        this.userName = userName;
+        this.mobile = mobile;
         this.amount = amount;
         this.annualizedAmount = annualizedAmount;
         this.rewardRate = rewardRate;
         this.reward = reward;
         this.investTime = investTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getAmount() {

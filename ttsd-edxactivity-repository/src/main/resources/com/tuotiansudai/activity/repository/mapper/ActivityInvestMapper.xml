@@ -81,4 +81,12 @@
         SELECT * FROM activity_invest WHERE loan_id = #{loanId}
     </select>
 
+    <select id="findByUserNameOrMobile" parameterType="map" resultMap="activityInvestResultMap">
+        SELECT * from activity_invest where activity_name=#{activityName}
+        <if test="keyWord !=null and keyWord !=''">
+            and user_name = #{keyWord} or mobile = #{keyWord}
+        </if>
+        ORDER by created_time desc
+    </select>
+
 </mapper>
