@@ -81,7 +81,7 @@ public class SuperScholarActivityRewardScheduler {
                         try {
                             sendCash(model.getInvestId(), model.getLoginName(), reward);
                         } catch (Exception e) {
-                            logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH error, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
+                            logger.error("SUPER_SCHOLAR_ACTIVITY SEND CASH error, invest:{}, user:{}, rewardModelId:{}, error:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId(), e.getMessage());
                         }
                         logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH end, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
                     }
@@ -104,7 +104,7 @@ public class SuperScholarActivityRewardScheduler {
                 return;
             }
         } catch (Exception e) {
-            logger.info("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:error", investId, loginName, reward);
+            logger.error("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:error:{}", investId, loginName, reward, e.getMessage());
         }
         redisWrapperClient.setex(key, lifeSecond, "fail");
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【学霸加薪季活动】用户:{0}, 投资Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward))));
