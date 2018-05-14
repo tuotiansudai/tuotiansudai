@@ -19,7 +19,6 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -57,10 +56,7 @@ public class SuperScholarActivityService {
     public List<SuperScholarRewardView> activityHome(String loginName) {
         List<ActivityInvestModel> models = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(), activityStartTime, DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         return models.stream()
-                .filter(model -> {
-                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
-                    return superScholarRewardModel != null;
-                })
+                .filter(model -> superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime()) != null)
                 .map(model -> {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime());
                     double rewardRate = superScholarRewardModel.getRewardRate();
@@ -146,6 +142,9 @@ public class SuperScholarActivityService {
 
     public void shareSuccess(String loginName) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
+        if (superScholarRewardModel == null){
+            return;
+        }
         superScholarRewardModel.setShareHome(true);
         superScholarRewardModel.setUpdatedTime(new Date());
         superScholarRewardMapper.update(superScholarRewardModel);

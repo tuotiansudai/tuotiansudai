@@ -23,13 +23,10 @@ public class ActivityConsoleSuperScholarService {
     @Autowired
     private SuperScholarRewardMapper superScholarRewardMapper;
 
-    public BasePaginationDataDto<SuperScholarRewardView> list(String keyWord, int index, int pageSize){
+    public BasePaginationDataDto<SuperScholarRewardView> list(String keyWord, int index, int pageSize) {
         List<ActivityInvestModel> activityInvestModels = activityInvestMapper.findByUserNameOrMobile(keyWord, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name());
         List<SuperScholarRewardView> list = activityInvestModels.stream()
-                .filter(model -> {
-                    SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime());
-                    return superScholarRewardModel != null;
-                })
+                .filter(model -> superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime()) != null)
                 .map(model -> {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime());
                     double rewardRate = superScholarRewardModel.getRewardRate();
@@ -43,7 +40,7 @@ public class ActivityConsoleSuperScholarService {
                             model.getCreatedTime());
 
                 }).collect(Collectors.toList());
-        int count=list.size();
+        int count = list.size();
         int endIndex = pageSize * index;
         int startIndex = (index - 1) * pageSize;
         if (count <= endIndex) {
