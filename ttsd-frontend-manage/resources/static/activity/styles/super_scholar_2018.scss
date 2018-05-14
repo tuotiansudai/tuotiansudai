@@ -468,6 +468,9 @@ p {
           li {
             position: relative;
             background: #d64f5d;
+            &.active {
+              background: #a2a2a2;
+            }
             border: 2px solid #4b4b4b;
             border-radius: 2px;
             font-size: 0.27rem;
