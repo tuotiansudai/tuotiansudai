@@ -19,7 +19,7 @@ getMoreData(3);
 $getMore.on('click', function () {
     let _this = $(this);
     _this.hide();
-    getMoreData(4);
+    getMoreData(len);
     $reappearanceContent.css('overflow','visible')
 })
 
