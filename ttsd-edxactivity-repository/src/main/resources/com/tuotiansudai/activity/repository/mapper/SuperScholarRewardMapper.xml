@@ -29,7 +29,7 @@
 
     <update id="update" parameterType="map">
         update super_scholar_reward SET
-          question_index = #{userAnsquestionIndexwer},
+          question_index = #{questionIndex},
           question_answer = #{questionAnswer},
           user_answer = #{userAnswer},
           user_right = #{userRight},
