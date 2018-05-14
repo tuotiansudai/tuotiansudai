@@ -1,0 +1,163 @@
+html {
+  font-size: 100px;
+}
+
+.result-container {
+  min-height: 100%;
+  position: relative;
+  background: #1e2b2e url("../../images/2018/super-scholar/question_bot.png") no-repeat bottom center;
+  background-size: contain;
+  padding-bottom: 1.2rem;
+  .book {
+    position: absolute;
+    right: 0;
+    bottom: 0.5rem ;
+    width: 1.31rem;
+    height: 1.1rem;
+    background: url("../../images/2018/super-scholar/book.png") no-repeat bottom center;
+    background-size: contain;
+  }
+  .arrow {
+    position: absolute;
+    left: 0;
+    bottom: 1.1rem;
+    width: 0.53rem;
+    height: 1.09rem;
+    background: url("../../images/2018/super-scholar/arrow.png") no-repeat bottom center;
+    background-size: contain;
+  }
+  .result-bg {
+    background: #1e2b2e url("../../images/2018/super-scholar/question_result_bg.png") no-repeat;
+    background-size: 100%;
+    padding-top: 0.43rem;
+    .answer-bg {
+      position: relative;
+      margin: 0 auto;
+      width: 7.19rem;
+      height: 6.29rem;
+      background: url("../../images/2018/super-scholar/answer_bg.png") no-repeat;
+      background-size: contain;
+      box-sizing: border-box;
+      padding: 0.4rem;
+      .result-table {
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        td {
+          color: #fff;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+          border-right: 2px solid rgba(255, 255, 255, 0.8);
+          &.first-td {
+            width: 1rem;
+          }
+        }
+      }
+      .my-reappearance {
+        width: 4.1rem;
+        height: 0.41rem;
+        line-height: 0.41rem;
+        text-align: center;
+        font-size: 0.31rem;
+        color: #fff;
+        margin: 0 auto;
+        margin-top: 0.4rem;
+        margin-bottom: 0.1rem;
+        span {
+          vertical-align: middle;
+        }
+        .percent {
+          display: inline-block;
+          width: 0.91rem;
+          height: 0.41rem;
+          line-height: 0.41rem;
+          vertical-align: middle;
+          padding: 0 0.06rem;
+          background: url("../../images/2018/super-scholar/percent_bg.png") no-repeat;
+          background-size: 100%;
+          color: #f64242;
+          font-size: 0.38rem;
+        }
+      }
+      .today-reward {
+        position: relative;
+        width: 3.5rem;
+        height: 1.05rem;
+        margin: 0 auto;
+        background: url("../../images/2018/super-scholar/answer_reward_bg.png") no-repeat;
+        background-size: 100%;
+        .triangle {
+          position: absolute;
+          left: -1.5rem;
+          width: 1.04rem;
+          height: 1.14rem;
+          background: url("../../images/2018/super-scholar/triangle.png") no-repeat;
+          background-size: 100%;
+        }
+      }
+      .my-coupon {
+        margin: 0 auto;
+        margin-top: 0.3rem;
+        width: 2.77rem;
+        height: 1.5rem;
+        background: url("../../images/2018/super-scholar/coupon1.png") no-repeat;
+        background-size: contain;
+      }
+      .fly {
+        position: absolute;
+        right: 0.4rem;
+        bottom: 0.6rem;
+        width: 1.5rem;
+        height: 1.54rem;
+        background: url("../../images/2018/super-scholar/fly.png") no-repeat;
+        background-size: contain;
+      }
+    }
+    .btn-wrap {
+      width: 4.1rem;
+      margin: 0 auto;
+      .bonus-question {
+        width: 2.07rem;
+        height: 0.67rem;
+        background: url("../../images/2018/super-scholar/plus_title.png") no-repeat;
+        background-size: contain;
+      }
+      .invite-more {
+        display: block;
+        width: 4.06rem;
+        height: 1.02rem;
+        margin-top: 0.34rem;
+        &.share-activity {
+          background: url("../../images/2018/super-scholar/share_btn.png") no-repeat;
+          background-size: contain;
+        }
+        &.invite-friend {
+          background: url("../../images/2018/super-scholar/invite_friend.png") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+    .invest-rules {
+      margin: 0 auto;
+      margin-top: 0.4rem;
+      box-sizing: border-box;
+      padding-top: 0.24rem;
+      text-align: center;
+      font-size: 0.25rem;
+      line-height: 0.34rem;
+      color: #fff;
+      width: 4.36rem;
+      height: 1.16rem;
+      background: #1e2b2e url("../../images/2018/super-scholar/invest_tips_bg.png") no-repeat;
+      background-size: contain;
+    }
+  }
+  .to-loan {
+    margin: 0 auto;
+    display: block;
+    width: 2.89rem;
+    height: 1.23rem;
+    margin-top: 0.23rem;
+    background: url("../../images/2018/super-scholar/result_invest_btn.png") no-repeat;
+    background-size: contain;
+  }
+
+}
+
