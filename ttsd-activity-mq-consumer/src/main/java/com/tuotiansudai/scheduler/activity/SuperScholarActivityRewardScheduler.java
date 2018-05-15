@@ -80,6 +80,8 @@ public class SuperScholarActivityRewardScheduler {
                         logger.info("SUPER_SCHOLAR_ACTIVITY SEND CASH BEGIN, invest:{}, user:{}, rewardModelId:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId());
                         try {
                             sendCash(model.getInvestId(), model.getLoginName(), reward);
+                            superScholarRewardModel.setCashBack(true);
+                            superScholarRewardMapper.update(superScholarRewardModel);
                         } catch (Exception e) {
                             logger.error("SUPER_SCHOLAR_ACTIVITY SEND CASH error, invest:{}, user:{}, rewardModelId:{}, error:{}", model.getInvestId(), model.getUserName(), superScholarRewardModel.getId(), e.getMessage());
                         }

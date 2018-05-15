@@ -102,7 +102,6 @@ public class SuperScholarActivityService {
         } else {
             superScholarRewardModel.setQuestionIndex(String.join(",", questionIndex));
             superScholarRewardModel.setQuestionAnswer(String.join(",", answers));
-            superScholarRewardModel.setUpdatedTime(new Date());
             superScholarRewardMapper.update(superScholarRewardModel);
         }
         return questions;
@@ -121,22 +120,25 @@ public class SuperScholarActivityService {
             userRight = userRight + (userAnswer.get(i).toUpperCase().equals(rightAnswer.get(i).toUpperCase()) ? 1 : 0);
         }
 
+        long couponId = getCouponId();
+        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+
         superScholarRewardModel.setUserAnswer(answer);
         superScholarRewardModel.setUserRight(userRight);
         superScholarRewardModel.setAnswerTime(new Date());
+        superScholarRewardModel.setCouponId(couponId);
+        superScholarRewardMapper.update(superScholarRewardModel);
         return true;
     }
 
     @Transactional
     public Map<String, Object> examineGrade(String loginName) {
-        long couponId = getCouponId();
-        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("rate", String.format("%.1f", superScholarRewardModel.getRewardRate() * 100) + "%")
                 .put("questionAnswer", Lists.newArrayList(superScholarRewardModel.getQuestionAnswer().split(",")))
                 .put("userAnswer", Lists.newArrayList(superScholarRewardModel.getUserAnswer().split(",")))
-                .put("coupon", couponId)
+                .put("coupon", superScholarRewardModel.getCouponId())
                 .build());
     }
 
@@ -146,7 +148,6 @@ public class SuperScholarActivityService {
             return;
         }
         superScholarRewardModel.setShareHome(true);
-        superScholarRewardModel.setUpdatedTime(new Date());
         superScholarRewardMapper.update(superScholarRewardModel);
     }
 
