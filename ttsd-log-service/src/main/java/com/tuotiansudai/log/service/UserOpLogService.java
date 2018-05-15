@@ -6,7 +6,6 @@ import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JsonConverter;
@@ -32,7 +31,7 @@ public class UserOpLogService {
         UserOpLogModel logModel = new UserOpLogModel();
         logModel.setId(IdGenerator.generate());
         logModel.setLoginName(loginName);
-        logModel.setMobile(getMobile(loginName));
+        logModel.setMobile(userMapper.findByLoginName(loginName).getMobile());
         logModel.setIp(ip);
         logModel.setDeviceId(deviceId);
         logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
@@ -45,10 +44,5 @@ public class UserOpLogService {
         } catch (JsonProcessingException e) {
             logger.error("[MQ] " + userOpType.getDesc() + ", send UserOperateLog fail.", e);
         }
-    }
-
-    private String getMobile(String loginName) {
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        return userModel != null ? userModel.getMobile() : "";
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserBankCardMapper">
+
+    <resultMap id="userBankCardResultMap" type="UserBankCardModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="bank" property="bank"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="card_number" property="cardNumber"/>
+        <result column="status" property="status"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_bank_card(login_name, bank, bank_code, card_number, bank_order_no, bank_order_date, status, created_time, updated_time)
+        value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now())
+    </insert>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND'
+    </select>
+
+    <update id="updateStatus" parameterType="map">
+        update user_bank_card
+        set status = #{status}, updated_time = now()
+        where id = #{id}
+    </update>
+
+</mapper>

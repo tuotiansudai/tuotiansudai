@@ -1,46 +1,77 @@
 <#import "macro/global.ftl" as global>
+<#--<@global.main pageCss="${css.bind_card}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="更换银行卡">-->
+<#--<div class="content-container">-->
+    <#--<h4 class="column-title"><em class="tc">更换银行卡</em></h4>-->
+    <#--<div class="recharge-bind-card pad-s">-->
+        <#--<div class="recharge-wrapper bind-card-frame" id="bindCardBox">-->
+        <#--<form action="" method="post" target="_blank">-->
+            <#--真实姓名：${userName}-->
+            <#--<div class="clear-blank"></div>-->
+            <#--<div class="e-bank-recharge">-->
+                <#--<b class="title">选择银行:</b>-->
+                <#--<ol class="select-bank">-->
+                    <#--<#list banks as bank>-->
+                        <#--<li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>-->
+                            <#--<input data-name="${bank}" type="radio" value="${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if>>-->
+                            <#--<label for="bank-${bank}">-->
+                                <#--<span class="bank ${bank}"></span>-->
+                            <#--</label>-->
+                        <#--</li>-->
+                    <#--</#list>-->
+                <#--</ol>-->
+                <#--<div class="recharge-form">-->
+                    <#--<form action="/bind-card/replace" method="post" target="_blank">-->
+                        <#--银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />-->
+                        <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+                        <#--<div class="tc pad-m">-->
+                            <#--<input type="submit" class="btn-normal replace-card-submit" disabled="disabled"  value="确认更换"/>-->
+                        <#--</div>-->
+                    <#--</form>-->
+                <#--</div>-->
+            <#--</div>-->
+        <#--</form>-->
+    <#--</div>-->
+    <#--<div class="clear-blank"></div>-->
+    <#--<div class="borderBox">-->
+        <#--<b>温馨提示:</b><br/>-->
+        <#--1、不支持提现至信用卡账户。<br/>-->
+        <#--2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>-->
+        <#--3、可开通快捷支付银行卡列表：中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行。<br/>-->
+        <#--4、<span style="color: #FF0000">如您已开通快捷支付</span>，更换绑定银行卡时若账户余额或待回款金额不为0，需联动优势人工审核后方能更换成功。<br/>-->
+        <#--5、更换绑定银行卡时间：自动审核一般1个工作日内更换完成，人工审核一般在2-3个工作日内完成。<br/>-->
+    <#--</div>-->
+<#--</div>-->
+<#--</div>-->
+
+<#--</@global.main>-->
+
 <@global.main pageCss="${css.bind_card}" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="更换银行卡">
-<div class="content-container">
+<div class="content-container paddingBottom120">
     <h4 class="column-title"><em class="tc">更换银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
         <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
-        <form action="" method="post" target="_blank">
-            真实姓名：${userName}
-            <div class="clear-blank"></div>
-            <div class="e-bank-recharge">
-                <b class="title">选择银行:</b>
-                <ol class="select-bank">
-                    <#list banks as bank>
-                        <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                            <input data-name="${bank}" type="radio" value="${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}">
-                                <span class="bank ${bank}"></span>
-                            </label>
-                        </li>
-                    </#list>
-                </ol>
-                <div class="recharge-form">
-                    <form action="/bind-card/replace" method="post" target="_blank">
-                        银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
-                            <input type="submit" class="btn-normal replace-card-submit" disabled="disabled"  value="确认更换"/>
-                        </div>
-                    </form>
-                </div>
+            <div class="progress-wrap clearfix">
+                <dl class="progress-account fl">
+                    <dt><span class="account"></span></dt>
+                    <dd class="active">解绑旧银行卡</dd>
+                </dl>
+                <dl class="arrow active"></dl>
+                <dl class="progress-bind-card fr">
+                    <dt><span class="bind-card"></span></dt>
+                    <dd>绑定新银行卡</dd>
+                </dl>
             </div>
-        </form>
+            <a href="/unbind-card" class="to-fudian">去解绑</a>
+        </div>
+
+        <div class="clear-blank"></div>
+        <div class="borderBox unbind-condition">
+            <b>解绑条件:</b><br/>
+            1、账号余额为零。<br/>
+            2、所有投资已经全部回款。<br/>
+            3、所有借款已经全部还清。
+        </div>
     </div>
-    <div class="clear-blank"></div>
-    <div class="borderBox">
-        <b>温馨提示:</b><br/>
-        1、不支持提现至信用卡账户。<br/>
-        2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>
-        3、可开通快捷支付银行卡列表：中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行。<br/>
-        4、<span style="color: #FF0000">如您已开通快捷支付</span>，更换绑定银行卡时若账户余额或待回款金额不为0，需联动优势人工审核后方能更换成功。<br/>
-        5、更换绑定银行卡时间：自动审核一般1个工作日内更换完成，人工审核一般在2-3个工作日内完成。<br/>
-    </div>
-</div>
 </div>
 
 </@global.main>

@@ -13,7 +13,8 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_CashSnowball,
             MessageQueue.InvestSuccess_StartWork,
             MessageQueue.InvestSuccess_Ranking,
-            MessageQueue.InvestSuccess_WeChatHelp),
+            MessageQueue.InvestSuccess_WeChatHelp,
+            MessageQueue.InvestSuccess_ActivityInvest),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,
@@ -24,12 +25,24 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_CashSnowball,
             MessageQueue.LoanOutSuccess_StartWorkActivity,
             MessageQueue.LoanOutSuccess_SendCashReward,
-            MessageQueue.LoanOutSuccess_InviteHelpActivity),
+            MessageQueue.LoanOutSuccess_InviteHelpActivity,
+            MessageQueue.LoanOutSuccess_SuperScholarActivity),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,
             MessageQueue.RepaySuccess_CouponRepay,
-            MessageQueue.RepaySuccess_ExtraRateRepay);
+            MessageQueue.RepaySuccess_ExtraRateRepay),
+
+    RegisterBankAccount("RegisterBankAccount",
+            MessageQueue.RegisterBankAccount_Success,
+            MessageQueue.RegisterBankAccount_CompletePointTask,
+            MessageQueue.RegisterBankAccount_EventMessage,
+            MessageQueue.RegisterBankAccount_PushMessage),
+
+    BindBankCard("BindBandCard",
+            MessageQueue.BindBankCard_Success,
+            MessageQueue.BindBankCard_CompletePointTask),
+    ;
 
     final String topicName;
     final MessageQueue[] queues;

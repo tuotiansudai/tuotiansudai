@@ -7,18 +7,17 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public abstract class BaseClient {
 
-    static Logger logger = Logger.getLogger(BaseClient.class);
+    private static Logger logger = Logger.getLogger(BaseClient.class);
 
     protected final static String URL_TEMPLATE = "http://{host}:{port}{applicationContext}{uri}";
 
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    private final static MediaType text = MediaType.parse("text/plain; charset=utf-8");
 
     private final static String REQUEST_ID = "requestId";
 
@@ -56,39 +55,6 @@ public abstract class BaseClient {
         }
     }
 
-
-    protected byte[] downPdf(String path, String requestJson) {
-        ResponseBody responseBody = newCall(path, requestJson, "POST");
-        try {
-            return responseBody != null ? responseBody.bytes() : null;
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return null;
-        }
-    }
-
-    protected ResponseBody newCallForBaiDu(String url,String requestStr) {
-        RequestBody requestBody = RequestBody.create(text, !Strings.isNullOrEmpty(requestStr) ? requestStr : "");
-        Request request = new Request.Builder()
-                .url(url)
-                .method("POST", requestBody)
-                .addHeader("User-Agent", "curl/7.12.1")
-                .addHeader("Host", "data.zz.baidu.com")
-                .addHeader("Content-Type", "text/plain; charset=UTF-8")
-                .build();
-
-        try {
-            Response response = this.okHttpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        return null;
-    }
-
     protected ResponseBody newCall(String path, String requestJson, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
@@ -107,10 +73,16 @@ public abstract class BaseClient {
                 .addHeader(USER_ID, userId)
                 .build();
 
+        return call(request);
+    }
+
+    protected ResponseBody call(Request request) {
         try {
             Response response = this.okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 return response.body();
+            } else {
+                logger.error(MessageFormat.format("response code: {0}, body: {1}", response.code(), response.body() != null ? response.body().string() : null));
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
