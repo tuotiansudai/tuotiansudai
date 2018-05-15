@@ -43,12 +43,7 @@ public class RechargeContentDto extends PayBaseContentDto {
     }
 
     public boolean isSuccess() {
-<<<<<<< HEAD
         return "1".equalsIgnoreCase(this.status);
     }
 
-=======
-        return "1".equalsIgnoreCase(status);
-    }
->>>>>>> fudian_bank_master
 }

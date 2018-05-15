@@ -29,12 +29,22 @@
 
     <insert id="create" parameterType="RechargeModel">
         insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time, updated_time, pay_type, bank_order_no, bank_order_date)
-        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime}, now(), #{payType}, #{banOrderNo}, #{bankOrderDate})
+        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, now(), now(), #{payType}, #{banOrderNo}, #{bankOrderDate})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="rechargeResultMap">
         select * from recharge where id = #{id}
     </select>
+
+    <update id="update" parameterType="map">
+        update recharge set
+        status = #{status},
+        pay_type = #{payType},
+        bank_order_no = #{bankOrderNo},
+        bank_order_date = #{bankOrderDate},
+        updated_time = now()
+        where id = #{id}
+    </update>
 
     <update id="updateStatus" parameterType="map">
         update recharge set status = #{status}, updated_time = now() where id = #{id}

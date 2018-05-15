@@ -50,16 +50,6 @@ public class RechargeModel implements Serializable {
         this.createdTime = new Date();
     }
 
-    public RechargeModel(String loginName, String amount, String payType, String bankOrderNo, String bankOrderDate) {
-        this.loginName = loginName;
-        this.amount = AmountConverter.convertStringToCent(amount);
-        this.status = RechargeStatus.SUCCESS;
-        this.payType = payType;
-        this.bankOrderNo = bankOrderNo;
-        this.bankOrderDate = bankOrderDate;
-        this.createdTime = new Date();
-    }
-
     public long getId() {
         return id;
     }

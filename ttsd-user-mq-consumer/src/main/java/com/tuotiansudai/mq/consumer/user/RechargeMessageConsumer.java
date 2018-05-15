@@ -37,7 +37,7 @@ public class RechargeMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.Recharge_callback;
+        return MessageQueue.Recharge_Success;
     }
 
     @Override
@@ -65,11 +65,11 @@ public class RechargeMessageConsumer implements MessageConsumer {
                 }
 
                 boolean isSuccess = Boolean.valueOf(map.get("isSuccess"));
-                rechargeMapper.updateStatusAndOrder(Long.parseLong(map.get("rechargeId")),
-                        isSuccess ? RechargeStatus.SUCCESS : RechargeStatus.FAIL,
-                        map.get("payType"),
-                        map.get("orderNo"),
-                        map.get("orderDate"));
+                rechargeModel.setStatus(isSuccess ? RechargeStatus.SUCCESS : RechargeStatus.FAIL);
+                rechargeModel.setPayType(map.get("payType"));
+                rechargeModel.setBankOrderNo(map.get("orderNo"));
+                rechargeModel.setBankOrderDate(map.get("orderDate"));
+                rechargeMapper.update(rechargeModel);
 
                 if (isSuccess) {
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
