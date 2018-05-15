@@ -7,6 +7,7 @@ CREATE TABLE `super_scholar_reward` (
   `question_answer`   VARCHAR(20) NOT NULL,
   `user_answer`       VARCHAR(20) ,
   `user_right`        int(1)      NOT NULL DEFAULT 0,
+  `coupon_id`         BIGINT UNSIGNED,
   `is_share_home`     TINYINT(1)  NOT NULL DEFAULT 0,
   `is_share_account`  TINYINT(1)  NOT NULL DEFAULT 0,
   `is_share_invest`   TINYINT(1)  NOT NULL DEFAULT 0,
