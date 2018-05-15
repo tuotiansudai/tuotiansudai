@@ -17,7 +17,7 @@
                 <tr>
                     <td class="first-td">选项</td>
                     <#list userAnswer as answer>
-                        <td class="answer-right">${answer}</td>
+                        <td <#if answer == questionAnswer[answer_index]>class="answer-right"</#if>>${answer}</td>
                     </#list>
                 </tr>
             </table>
@@ -25,8 +25,11 @@
             <div class="today-reward">
                 <div class="triangle"></div>
             </div>
-            <div class="my-coupon coupon05"></div>
-            <div class="my-coupon coupon02"></div>
+            <#if coupon == 495>
+                <div class="my-coupon coupon05"></div>
+            <#else>
+                <div class="my-coupon coupon02"></div>
+            </#if>
             <div class="fly">
             </div>
         </div>
