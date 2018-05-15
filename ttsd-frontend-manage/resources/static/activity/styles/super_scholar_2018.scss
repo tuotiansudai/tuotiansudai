@@ -82,11 +82,21 @@ p {
     background-size: 100%;
   }
   .code {
+    position: relative;
     width: 249px;
     height: 247px;
-    background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
-    background-size: 100%;
     margin: 0 auto;
+    .logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 85px;
+      height: 85px;
+      margin-left: -42.5px;
+      margin-top: -42.5px;
+      background: url("../images/2018/super-scholar/logo.png") no-repeat;
+      background-size: contain;
+    }
   }
 }
 
@@ -159,6 +169,7 @@ p {
 
 .to-loan {
   text-align: center;
+  margin-top: 46px;
   margin-bottom: 46px;
 }
 
@@ -272,7 +283,8 @@ p {
     line-height: 0.5rem;
     &.isAnswered {
       width: 100%;
-      text-align: right;
+      text-align: left;
+      text-indent: 0.6rem;
       .horn {
         left: 0.1rem;
       }
@@ -297,18 +309,24 @@ p {
     padding-top: 0.16rem;
     margin-bottom: 0.4rem;
     .tips {
-      right: -1.2rem;
+      right: -1.4rem;
       width: 1.19rem;
       height: 1.91rem;
-      top: 1.8rem;
+      top: 1.4rem;
       background: url("../images/2018/super-scholar/scavenging_tips_wap.png") no-repeat;
       background-size: 100%;
     }
     .code {
       width: 3.33rem;
       height: 3.36rem;
-      background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
-      background-size: 100%;
+      .logo {
+        width: 0.85rem;
+        height: 0.85rem;
+        margin-left: -0.43rem;
+        margin-top: -0.43rem;
+        background: url("../images/2018/super-scholar/logo.png") no-repeat;
+        background-size: contain;
+      }
     }
   }
   .immediate-answer {
@@ -559,4 +577,75 @@ p {
     }
   }
 
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
 }

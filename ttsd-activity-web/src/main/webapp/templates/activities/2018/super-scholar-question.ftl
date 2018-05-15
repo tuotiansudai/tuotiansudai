@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.super_scholar_2018}" pageJavascript="${js.super_scholar_2018}" activeNav="" activeLeftNav="" title="加息不打烊_活动中心_拓天速贷" keywords="拓天速贷,开工红包,实物奖励,全场加息,体验金奖励" description='拓天速贷加息不打烊活动,活动期间微信关注"拓天速贷服务号"即可领取520元开工红包,周五投资额外享受年化投资额的0.5%返现奖励,用户累计年化投资可兑换实物奖励与体验金奖励.'>
+<@global.main pageCss="${css.super_scholar_2018}" pageJavascript="${js.super_scholar_2018}" activeNav="" activeLeftNav="" title='学霸升值季，答题赢加"薪"' keywords="拓天速贷,答题赢加薪,邀请好友,返现奖励" description='拓天速贷答题赢加"薪"活动,用户每日答题,投资可获得年化0.2%-0.6%返现奖励,完成答题赠送最高0.5%加息券,分享答题、邀请好友注册、投资还可增加年化返现,返现+加息高至2%.'>
 <div class="question-container">
     <div class="question-head">
     </div>
@@ -11,6 +11,7 @@
         <div class="book"></div>
         <div class="desk"></div>
     </div>
+    <input id="isDoneQuestion" type="hidden" value="${doQuestion?c}">
 </div>
 <script type="text/html" id="questionTpl">
     {{if questions}}
