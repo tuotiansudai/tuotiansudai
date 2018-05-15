@@ -121,10 +121,11 @@ if ($questionContainer.length) {
 
                             if (count < 1) {
                                 layer.msg('请选择答案！');
-                                _self.addClass('error')
+                                _self.addClass('error');
                                 return false;
                             } else {
                                 questions.push(answer);
+                                _self.removeClass('error');
                             }
 
                             if (_self.parents('.question-inner').index() !== 4) {
@@ -134,8 +135,10 @@ if ($questionContainer.length) {
                     )
 
                     $('.inner5').find('.question-btn').on('click', function () {
+
                         if ($(this).hasClass('error')) {
-                            layer.msg('请选择答案！')
+                            layer.msg('请选择答案！');
+                            $(this).removeClass('error');
                         } else {
                             console.log(questions.join(''))
                             commonFun.useAjax({
