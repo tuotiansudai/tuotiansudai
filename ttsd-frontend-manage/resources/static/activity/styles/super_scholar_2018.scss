@@ -364,7 +364,10 @@ p {
     display: none;
   }
   .my_reappearance-table-wap {
-    display: block;
+    display: none;
+    &.show {
+      display: block;
+    }
     margin: 0 auto;
     margin-top: 0.4rem;
     margin-bottom: 0.5rem;

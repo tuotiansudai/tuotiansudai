@@ -10,7 +10,7 @@ if(sourceKind.port){
 }else {
     url = sourceKind.protocol+'://'+sourceKind.host;
 }
-console.log(sourceKind)
+
 let isWeixin = equipment.wechat;
 if (isWeixin) {
     $('#immediateAnswer').on('click', function () {
@@ -66,7 +66,8 @@ function getMoreData(num) {
 let $questionContainer = $('.question-container'),
     $questionList = $('#questionList'),
     $questionBtn = $('.question-btn');
-let $isDoneQuestion = $('#isDoneQuestion');
+let isDoneQuestion = $('#isDoneQuestion').val();
+
 let $qrcodeBox = $('#qrcodeBox');
 let qrcodeWidth = $qrcodeBox.width();
 let qrcodeHeight = $qrcodeBox.height();
@@ -75,7 +76,7 @@ let qrcodeHeight = $qrcodeBox.height();
 if ($questionContainer.length) {
     $.when(commonFun.isUserLogin())
         .done(function () {
-            if (!$isDoneQuestion) {
+            if (isDoneQuestion == 'false') {
                 commonFun.useAjax({
                     dataType: 'json',
                     url: '/activity/super-scholar/questions',
@@ -134,7 +135,7 @@ if ($questionContainer.length) {
 
                     $('.inner5').find('.question-btn').on('click', function () {
                         if ($(this).hasClass('error')) {
-                            location.reload();
+                            layer.msg('请选择答案！')
                         } else {
                             console.log(questions.join(''))
                             commonFun.useAjax({
@@ -176,6 +177,9 @@ if ($questionContainer.length) {
 
 
 }else {
+    $('#myReappearanceBtn').on('click',function () {
+        $('#myReappearanceWap').toggleClass('show');
+    })
     $('#qrcodeBox').qrcode({
         text: url+'/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
         width: qrcodeWidth,

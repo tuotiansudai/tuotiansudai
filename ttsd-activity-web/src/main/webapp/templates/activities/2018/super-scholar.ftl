@@ -7,10 +7,12 @@
     <h2 class="part-one-title">
         <div class="ball"></div>
     </h2>
+
     <@global.isAnonymous>
         <h4 class="notice"><span class="horn"></span>今日还未答题哦！赶快答题赢返现吧！</h4>
     </@global.isAnonymous>
     <@global.isNotAnonymous>
+        <input id="isDoneQuestion" type="hidden" value="${doQuestion?c}">
         <#if doQuestion>
             <h4 class="notice isAnswered"><span class="horn"></span>今日已答题，投资可获获年化0.6%返现，赶快投资吧！</h4>
         <#else>
@@ -62,10 +64,10 @@
     </#if>
     <#if data!?size!=0>
         <div class="my-reappearance-wap">
-            <a href="javascript:;">我的返现奖励</a>
+            <a href="javascript:;" id="myReappearanceWapBtn">我的返现奖励</a>
         </div>
     <#--m站我的返现奖励-->
-        <div class="my_reappearance-table-wap">
+        <div class="my_reappearance-table-wap" id="myReappearanceWap">
             <div class="reappearance-content">
                 <table>
                     <thead>
@@ -153,21 +155,5 @@
     </div>
 
 </div>
-<script type="text/template" id="tplTable">
 
-
-    <% for(var i = 0; i < records.length; i++) {
-    var item = records[i];
-    %>
-    <tr>
-        <td>1,000</td>
-        <td>1,000</td>
-        <td>0.6%</td>
-        <td>1,000</td>
-        <td>2018-9-20 19:00:00</td>
-    </tr>
-    <% } %>
-
-
-</script>
 </@global.main>
