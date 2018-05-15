@@ -51,7 +51,6 @@ public class SuperScholarActivityShareScheduler {
         for(SuperScholarRewardModel model : models){
             model.setShareAccount(redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, yesterday, model.getLoginName())));
             model.setShareInvest(redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST, yesterday, model.getLoginName())));
-            model.setUpdatedTime(new Date());
             superScholarRewardMapper.update(model);
         }
 

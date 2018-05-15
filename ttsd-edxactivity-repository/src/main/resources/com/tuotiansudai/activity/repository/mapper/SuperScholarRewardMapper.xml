@@ -13,6 +13,7 @@
         <result column="question_answer" property="questionAnswer"/>
         <result column="user_answer" property="userAnswer"/>
         <result column="user_right" property="userRight"/>
+        <result column="coupon_id" property="couponId"/>
         <result column="is_share_home" property="isShareHome"/>
         <result column="is_share_account" property="isShareAccount"/>
         <result column="is_share_invest" property="isShareInvest"/>
@@ -24,7 +25,7 @@
 
     <insert id="create" parameterType="superScholarRewardModel" useGeneratedKeys="true" keyProperty="id">
         insert into super_scholar_reward(login_name,question_index,question_answer,created_time,updated_time)
-               VALUES (#{loginName},#{questionIndex},#{questionAnswer},#{createdTime},#{updatedTime})
+               VALUES (#{loginName},#{questionIndex},#{questionAnswer},now(),now())
     </insert>
 
     <update id="update" parameterType="map">
@@ -33,6 +34,7 @@
           question_answer = #{questionAnswer},
           user_answer = #{userAnswer},
           user_right = #{userRight},
+          coupon_id = #{couponId},
           is_share_home = #{isShareHome},
           is_share_account = #{isShareAccount},
           is_share_invest = #{isShareInvest},
