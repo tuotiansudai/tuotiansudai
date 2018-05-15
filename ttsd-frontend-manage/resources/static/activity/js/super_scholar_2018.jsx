@@ -4,7 +4,13 @@ let commonFun = require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
-let url = location.href;
+let url = sourceKind.host+sourceKind.port?(':'+sourceKind.port):'';
+if(sourceKind.port){
+    url = sourceKind.host+':'+sourceKind.port;
+}else {
+    url = sourceKind.host;
+}
+
 let isWeixin = equipment.wechat;
 if (isWeixin) {
     $('#immediateAnswer').on('click', function () {
@@ -13,7 +19,7 @@ if (isWeixin) {
                 location.href = '/activity/super-scholar/view/question'
             })
             .fail(function () {
-                location.href = '/login?redirect=/activity/super-scholar/view/question';
+                location.href = '/m/login?redirect=/activity/super-scholar/view/question';
             })
     })
 
@@ -64,13 +70,16 @@ let $isDoneQuestion = $('#isDoneQuestion');
 let $qrcodeBox = $('#qrcodeBox');
 let qrcodeWidth = $qrcodeBox.width();
 let qrcodeHeight = $qrcodeBox.height();
+
 $('#qrcodeBox').qrcode({
-    text: url+'/view/question',
+    text: url+'/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
     width: qrcodeWidth,
     height: qrcodeHeight,
     colorDark : '#1e272e',
     colorLight : '#ffffff',
-})
+}).find('canvas').hide();
+var canvas=$qrcodeBox.find('canvas').get(0);
+$('#rqcodeImg').attr('src',canvas.toDataURL('image/jpg'))
 if ($questionContainer.length) {
     $.when(commonFun.isUserLogin())
         .done(function () {

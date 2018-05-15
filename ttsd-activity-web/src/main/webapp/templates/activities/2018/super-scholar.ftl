@@ -19,7 +19,7 @@
     </@global.isNotAnonymous>
 
     <div class="qrcode">
-        <div class="code" id="qrcodeBox"><span class="logo"></span></div>
+        <div class="code" id="qrcodeBox"><span class="logo"></span><img id="rqcodeImg" src="" alt=""></div>
         <span class="tips"></span>
     </div>
     <#if !doQuestion?? || (doQuestion?? && !doQuestion)>
