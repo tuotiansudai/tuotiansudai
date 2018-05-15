@@ -6,9 +6,9 @@ let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
 let url;
 if(sourceKind.port){
-    url = sourceKind.port+'://'+protocolsourceKind.host+':'+sourceKind.port;
+    url = sourceKind.protocol+'://'+sourceKind.host+':'+sourceKind.port;
 }else {
-    url = sourceKind.port+'://'+sourceKind.host;
+    url = sourceKind.protocol+'://'+sourceKind.host;
 }
 console.log(sourceKind)
 let isWeixin = equipment.wechat;
