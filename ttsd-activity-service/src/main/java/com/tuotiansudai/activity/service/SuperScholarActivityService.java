@@ -134,6 +134,9 @@ public class SuperScholarActivityService {
     @Transactional
     public Map<String, Object> viewResult(String loginName) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
+        if (superScholarRewardModel == null){
+            return null;
+        }
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("rate", String.format("%.1f", superScholarRewardModel.getRewardRate() * 100) + "%")
                 .put("questionAnswer", Lists.newArrayList(superScholarRewardModel.getQuestionAnswer().split(",")))

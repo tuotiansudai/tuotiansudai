@@ -4,7 +4,11 @@ import com.tuotiansudai.activity.service.SuperScholarActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -53,7 +57,11 @@ public class SuperScholarActivityController {
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
     public ModelAndView sharePage(){
         ModelAndView modelAndView = new ModelAndView("/wechat/super_scholer_question_result_2018");
-        modelAndView.addAllObjects(superScholarActivityService.viewResult(LoginUserInfo.getLoginName()));
+        Map<String, Object> map = superScholarActivityService.viewResult(LoginUserInfo.getLoginName());
+        if (CollectionUtils.isEmpty(map)){
+            return new ModelAndView("redirect:/activity/super-scholar");
+        }
+        modelAndView.addAllObjects(map);
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         return modelAndView;
     }
