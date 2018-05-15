@@ -37,87 +37,102 @@ let $questionContainer = $('.question-container'),
     $questionBtn = $('.question-btn');
 
 if ($questionContainer.length) {
-    commonFun.useAjax({
-        dataType: 'json',
-        url: '/activity/super-scholar/questions',
-        type: 'get'
+    $.when(commonFun.isUserLogin())
+        .done(function(){
+            commonFun.useAjax({
+                dataType: 'json',
+                url: '/activity/super-scholar/questions',
+                type: 'get'
 
-    }, function (response) {
-        $questionList.html(tpl('questionTpl', {questions:response}));
-        $('.question-inner').find('li').on('click', function () {
-            let _this = $(this);
-            _this.addClass('active').siblings().removeClass('active');
-        })
-        let questions = [];
-        let questionFlag = true;
+            }, function (response) {
+                $questionList.html(tpl('questionTpl', {questions:response}));
+                $('.question-inner').find('li').on('click', function () {
+                    let _this = $(this);
+                    _this.addClass('active').siblings().removeClass('active');
+                })
+                let questions = [];
+                let questionFlag = true;
 
-        $questionList.find('.question-btn').on('click', function () {
-                let _self = $(this);
-                let count = 0;
-                let error = false;
-                let answer;
-                _self.parents('.question-inner').find('li').each(function (index, item) {
+                $questionList.find('.question-btn').on('click', function () {
+                        let _self = $(this);
+                        let count = 0;
+                        let error = false;
+                        let answer;
+                        _self.parents('.question-inner').find('li').each(function (index, item) {
 
-                    if ($(item).hasClass('active')) {
+                            if ($(item).hasClass('active')) {
 
-                        if (index == 0) {
-                            answer = 'A';
-                        } else if (index == 1) {
-                            answer = 'B';
-                        } else if (index == 2) {
-                            answer = 'C';
-                        } else if (index == 3) {
-                            answer = 'D';
+                                if (index == 0) {
+                                    answer = 'A';
+                                } else if (index == 1) {
+                                    answer = 'B';
+                                } else if (index == 2) {
+                                    answer = 'C';
+                                } else if (index == 3) {
+                                    answer = 'D';
+                                }
+
+
+                                count++;
+                                return false;
+
+                            }
+
+
+                        })
+
+                        if (count < 1) {
+                            layer.msg('请选择答案！');
+                            _self.addClass('error')
+                            return false;
+                        } else {
+                            questions.push(answer);
                         }
 
+                        if (_self.parents('.question-inner').index() !== 4) {
+                            _self.parents('.question-inner').hide()
+                        }
+                    }
+                )
 
-                        count++;
-                        return false;
+                $('.inner5').find('.question-btn').on('click', function () {
+                    if ($(this).hasClass('error')) {
+                        location.reload();
+                    } else {
+                        console.log(questions.join(''))
+                        commonFun.useAjax({
+                            dataType: 'json',
+                            url: '/activity/super-scholar/submit/answer',
+                            type: 'post',
+                            data:{
+                                answer:questions.join(',')
+                            }
+
+                        }, function (response) {
+                            if(response == true){
+                                location.href = '/activity/super-scholar/view/result'
+                            }else {
+                                layer.msg('答题失败，请稍后再试！')
+                            }
+                        })
 
                     }
 
 
                 })
 
-                if (count < 1) {
-                    layer.msg('请选择答案！');
-                    _self.addClass('error')
-                    return false;
-                } else {
-                    questions.push(answer);
-                }
+            })
 
-                if (_self.parents('.question-inner').index() !== 4) {
-                    _self.parents('.question-inner').hide()
-                }
-            }
-        )
-
-        $('.inner5').find('.question-btn').on('click', function () {
-            if ($(this).hasClass('error')) {
-                location.reload();
-            } else {
-                console.log(questions.join(''))
-                commonFun.useAjax({
-                    dataType: 'json',
-                    url: '/activity/super-scholar/submit/answer',
-                    type: 'post',
-                    data:{
-                        answer:questions.join(',')
-                    }
-
-                }, function (response) {
-                    if(response == true){
-                        location.href = '/activity/super-scholar/view/result'
-                    }
-                })
-
-            }
 
 
         })
-
-    })
+        .fail(function(){
+            if(sourceKind.params.source=='app'){alert('app')
+                location.href='app/tuotian/login';
+            }else{
+                location.href = '/m/login'
+            }
+        });
 
 
 
