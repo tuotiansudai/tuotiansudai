@@ -128,7 +128,7 @@ if ($questionContainer.length) {
         })
         .fail(function(){
             if(sourceKind.params.source=='app'){alert('app')
-                location.href='app/tuotian/login';
+                location.href='/login';
             }else{
                 location.href = '/m/login'
             }
