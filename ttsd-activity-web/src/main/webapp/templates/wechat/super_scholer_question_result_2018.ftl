@@ -1,6 +1,6 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.super_scholer_question_result}" pageJavascript="${js.super_scholer_question_result}"  title="恭喜你！领到380元红包">
+<@global.main pageCss="${css.super_scholer_question_result}" pageJavascript="${js.super_scholer_question_result}"  title='学霸升值季，答题赢加"薪"' >
 
 <div class="result-container" data-url="">
     <div class="result-bg">
