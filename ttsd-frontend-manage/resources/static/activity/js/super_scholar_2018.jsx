@@ -127,7 +127,7 @@ if ($questionContainer.length) {
 
         })
         .fail(function(){
-            if(sourceKind.params.source=='app'){alert('app')
+            if(sourceKind.params.source=='app'){
                 location.href='/login';
             }else{
                 location.href = '/m/login'
