@@ -80,6 +80,9 @@ public class ActivityConsoleExportService {
     @Autowired
     private ActivityConsoleInviteHelpService activityConsoleInviteHelpService;
 
+    @Autowired
+    private ActivityConsoleSuperScholarService activityConsoleSuperScholarService;
+
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.mid.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
 
@@ -322,5 +325,9 @@ public class ActivityConsoleExportService {
                 record.getRate(),
                 String.valueOf(record.getReward()))));
         return rows;
+    }
+
+    public List<List<String>> buildSuperScholarActivityCsvList(String keyWord){
+        return activityConsoleSuperScholarService.list(keyWord, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 }
