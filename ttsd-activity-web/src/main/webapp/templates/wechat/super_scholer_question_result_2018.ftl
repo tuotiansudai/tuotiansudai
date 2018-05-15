@@ -49,20 +49,22 @@
     <input id="webServer" type="hidden" value="${webServer}">
 </div>
 <script>
-    var shareUrl;
-    var $shareActivity = $('.share-activity'),
-            $inviteFriend = $('.invite-friend');
 
-    var webServer = $('#webServer').val();
 
-    $shareActivity.on('click',function () {
-        shareUrl = webServer+'/activity/super-scholar?come=wechat';
-    })
-    $inviteFriend.on('click',function () {
-        shareUrl = webServer+'/activity/super-scholar/share/register?come=wechat';
-    })
-alert(shareUrl)
     wx.ready(function () {
+        var shareUrl;
+        var $shareActivity = $('.share-activity'),
+                $inviteFriend = $('.invite-friend');
+
+        var webServer = $('#webServer').val();
+
+        $shareActivity.on('click',function () {
+            shareUrl = webServer+'/activity/super-scholar?come=wechat';
+        })
+        $inviteFriend.on('click',function () {
+            shareUrl = webServer+'/activity/super-scholar/share/register?come=wechat';
+        })
+        alert(shareUrl)
         wx.onMenuShareAppMessage({
             title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
             desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
