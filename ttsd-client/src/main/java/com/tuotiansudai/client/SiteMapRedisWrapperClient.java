@@ -103,6 +103,10 @@ public class SiteMapRedisWrapperClient {
         return jedis;
     }
 
+    public boolean del(final String... keys) {
+        return execute(jedis -> jedis.del(keys) == keys.length);
+    }
+
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();

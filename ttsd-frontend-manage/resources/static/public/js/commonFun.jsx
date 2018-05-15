@@ -1,9 +1,10 @@
-function refreshCaptcha(dom, url, flush) {
+function refreshCaptcha(dom, url, flush,callback) {
     let captcha= url +'?'+ new Date().getTime().toString();
     if (flush === false) {
         captcha += '&flush=false'
     }
     dom.setAttribute('src',captcha);
+    callback&&callback();
 }
 /* init radio style */
 function initRadio($radio,$radioLabel) {

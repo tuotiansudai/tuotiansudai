@@ -151,6 +151,7 @@ function getAmount() {
     return amount;
 }
 function experSubmit() {
+    let getInvestAmount = getAmount();
     commonFun.useAjax({
         type:'POST',
         url: '/experience-invest',
