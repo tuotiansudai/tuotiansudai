@@ -103,12 +103,13 @@ if ($questionContainer.length) {
                     url: '/activity/super-scholar/submit/answer',
                     type: 'post',
                     data:{
-                        answer:questions.join('')
+                        answer:questions.join(',')
                     }
 
                 }, function (response) {
-                    
-
+                    if(response == true){
+                        location.href = '/activity/super-scholar/view/result'
+                    }
                 })
 
             }
