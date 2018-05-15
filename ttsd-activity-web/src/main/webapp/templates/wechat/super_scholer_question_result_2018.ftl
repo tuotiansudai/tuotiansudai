@@ -27,7 +27,8 @@
             <div class="today-reward">
                 <div class="triangle"></div>
             </div>
-            <div class="my-coupon"></div>
+            <div class="my-coupon coupon05"></div>
+            <div class="my-coupon coupon02"></div>
             <div class="fly">
             </div>
         </div>

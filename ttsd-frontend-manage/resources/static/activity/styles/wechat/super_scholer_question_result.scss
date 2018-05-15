@@ -97,8 +97,14 @@ html {
         margin-top: 0.3rem;
         width: 2.77rem;
         height: 1.5rem;
-        background: url("../../images/2018/super-scholar/coupon1.png") no-repeat;
-        background-size: contain;
+        &.coupon05 {
+          background: url("../../images/2018/super-scholar/coupon1.png") no-repeat;
+          background-size: contain;
+        }
+        &.coupon02 {
+          background: url("../../images/2018/super-scholar/coupon2.png") no-repeat;
+          background-size: contain;
+        }
       }
       .fly {
         position: absolute;
