@@ -129,7 +129,7 @@ public class SuperScholarActivityService {
     }
 
     @Transactional
-    public Map<String, Object> examineGrade(String loginName) {
+    public Map<String, Object> viewResult(String loginName) {
         long couponId = getCouponId();
         mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
