@@ -48,6 +48,14 @@ html {
           &.first-td {
             width: 1rem;
           }
+          &.answer-right {
+            background: url("../../images/2018/super-scholar/icon_right.png") no-repeat center center;
+            background-size: contain;
+          }
+          &.answer-wrong {
+            background: url("../../images/2018/super-scholar/icon_wrong.png") no-repeat center center;
+            background-size: contain;
+          }
         }
       }
       .my-reappearance {

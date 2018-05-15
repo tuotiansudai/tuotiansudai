@@ -17,7 +17,7 @@
                 <tr>
                     <td class="first-td">选项</td>
                     <#list userAnswer as answer>
-                        <td>${answer}</td>
+                        <td class="answer-right">${answer}</td>
                     </#list>
                 </tr>
             </table>
