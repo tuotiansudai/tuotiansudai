@@ -4,13 +4,13 @@ let commonFun = require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
-let url = sourceKind.host+sourceKind.port?(':'+sourceKind.port):'';
+let url;
 if(sourceKind.port){
-    url = sourceKind.host+':'+sourceKind.port;
+    url = sourceKind.port+'://'+protocolsourceKind.host+':'+sourceKind.port;
 }else {
-    url = sourceKind.host;
+    url = sourceKind.port+'://'+sourceKind.host;
 }
-
+console.log(sourceKind)
 let isWeixin = equipment.wechat;
 if (isWeixin) {
     $('#immediateAnswer').on('click', function () {
@@ -71,15 +71,7 @@ let $qrcodeBox = $('#qrcodeBox');
 let qrcodeWidth = $qrcodeBox.width();
 let qrcodeHeight = $qrcodeBox.height();
 
-$('#qrcodeBox').qrcode({
-    text: url+'/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
-    width: qrcodeWidth,
-    height: qrcodeHeight,
-    colorDark : '#1e272e',
-    colorLight : '#ffffff',
-}).find('canvas').hide();
-var canvas=$qrcodeBox.find('canvas').get(0);
-$('#rqcodeImg').attr('src',canvas.toDataURL('image/jpg'))
+
 if ($questionContainer.length) {
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -183,6 +175,16 @@ if ($questionContainer.length) {
         });
 
 
+}else {
+    $('#qrcodeBox').qrcode({
+        text: url+'/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
+        width: qrcodeWidth,
+        height: qrcodeHeight,
+        colorDark : '#1e272e',
+        colorLight : '#ffffff',
+    }).find('canvas').hide();
+    var canvas=$qrcodeBox.find('canvas').get(0);
+    $('#rqcodeImg').attr('src',canvas.toDataURL('image/jpg'))
 }
 
 

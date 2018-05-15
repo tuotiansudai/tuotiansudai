@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${css.super_scholer_question_result}" pageJavascript="${js.super_scholer_question_result}"  title="恭喜你！领到380元红包">
 
-<div class="result-container" data-url="${webServer}">
+<div class="result-container" data-url="">
     <div class="result-bg">
         <div class="answer-bg">
             <table class="result-table">
@@ -35,7 +35,7 @@
         </div>
         <div class="btn-wrap">
             <div class="bonus-question"></div>
-            <a href="javascript:;" class="share-activity invite-more">
+            <a href="javascript:;" id="" class="share-activity invite-more">
                 分享活动+0.1%返现
             </a>
             <a href="javascript:;" class="invite-friend invite-more">邀请好友认证+0.2%</a>
@@ -46,6 +46,6 @@
     <a href="/loan-list" class="to-loan"></a>
     <div class="book"></div>
     <div class="arrow"></div>
+    <input id="webServer" type="hidden" value="${webServer}">
 </div>
-
 </@global.main>
