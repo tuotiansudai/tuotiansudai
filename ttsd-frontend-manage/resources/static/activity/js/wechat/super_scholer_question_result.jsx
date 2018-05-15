@@ -15,8 +15,16 @@ function calculationFun(doc, win) {
 };
 calculationFun(document, window);
 
+var $shareActivity = $('.share-activity'),
+    $inviteFriend = $('.invite-friend');
 
+$shareActivity.on('click',function () {
+    location.href = '/activity/super-scholar/view/result?shareType=activityHome';
+});
 
+$inviteFriend.on('click',function () {
+    location.href = '/activity/super-scholar/view/result?shareType=activityRegister';
+});
 
 
 

@@ -46,35 +46,29 @@
     <a href="/loan-list" class="to-loan"></a>
     <div class="book"></div>
     <div class="arrow"></div>
-    <input id="webServer" type="hidden" value="${webServer}">
+    <input type="hidden" id="shareType" value="${shareType!}">
 </div>
 <script>
 
+    var shareType = document.getElementById("shareType").value;
+    var link;
+
+    if (shareType === 'activityHome'){
+        link = '${webServer}/activity/super-scholar?come=wechat'
+    }else{
+        link = '${webServer}/activity/super-scholar/share/register?referrerMobile=${mobile}&come=wechat'
+    }
 
     wx.ready(function () {
-        var shareUrl;
-        var $shareActivity = $('.share-activity'),
-                $inviteFriend = $('.invite-friend');
-
-        var webServer = $('#webServer').val();
-
-        $shareActivity.on('click',function () {
-            shareUrl = webServer+'/activity/super-scholar?come=wechat';
-        })
-        $inviteFriend.on('click',function () {
-            shareUrl = webServer+'/activity/super-scholar/share/register?come=wechat';
-        })
-        alert(shareUrl)
         wx.onMenuShareAppMessage({
             title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
             desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
-            link: shareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/2018/super-scholar/icon_red_ware.png', // 分享图标
             success: function () {
-                // ajax
                 commonFun.useAjax({
                     dataType: 'json',
-                    url: '/activity/super-scholar/share/success',
+                    url: '${webServer}/activity/super-scholar/share/success',
                     type: 'post'
 
                 }, function (response) {
@@ -88,13 +82,13 @@
         wx.onMenuShareTimeline({
             title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
             desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
-            link: '${webServer}/activity/super-scholar?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images//2018/super-scholar/icon_red_ware.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
                 commonFun.useAjax({
                     dataType: 'json',
-                    url: '/activity/super-scholar/share/success',
+                    url: '${webServer}/activity/super-scholar/share/success',
                     type: 'post'
 
                 }, function (response) {

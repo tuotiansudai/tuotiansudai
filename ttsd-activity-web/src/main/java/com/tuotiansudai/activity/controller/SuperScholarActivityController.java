@@ -55,7 +55,7 @@ public class SuperScholarActivityController {
     }
 
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
-    public ModelAndView sharePage(){
+    public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType){
         ModelAndView modelAndView = new ModelAndView("/wechat/super_scholer_question_result_2018");
         Map<String, Object> map = superScholarActivityService.viewResult(LoginUserInfo.getLoginName());
         if (CollectionUtils.isEmpty(map)){
@@ -63,6 +63,7 @@ public class SuperScholarActivityController {
         }
         modelAndView.addAllObjects(map);
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
+        modelAndView.addObject("shareType", shareType);
         return modelAndView;
     }
 
