@@ -124,6 +124,7 @@ public class SuperScholarActivityService {
         superScholarRewardModel.setUserAnswer(answer);
         superScholarRewardModel.setUserRight(userRight);
         superScholarRewardModel.setAnswerTime(new Date());
+        superScholarRewardMapper.update(superScholarRewardModel);
         return true;
     }
 
