@@ -53,7 +53,7 @@ public class SuperScholarActivityController {
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
     public ModelAndView sharePage(){
         ModelAndView modelAndView = new ModelAndView("/wechat/super_scholer_question_result_2018");
-        modelAndView.addAllObjects(superScholarActivityService.examineGrade(LoginUserInfo.getLoginName()));
+        modelAndView.addAllObjects(superScholarActivityService.viewResult(LoginUserInfo.getLoginName()));
         modelAndView.addObject("mobile", LoginUserInfo.getMobile());
         return modelAndView;
     }

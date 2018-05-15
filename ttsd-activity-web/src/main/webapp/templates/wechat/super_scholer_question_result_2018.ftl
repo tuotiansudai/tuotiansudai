@@ -16,14 +16,12 @@
                 </tr>
                 <tr>
                     <td class="first-td">选项</td>
-                    <td>A</td>
-                    <td>B</td>
-                    <td>C</td>
-                    <td>D</td>
-                    <td>B</td>
+                    <#list userAnswer as answer>
+                        <td>${answer}</td>
+                    </#list>
                 </tr>
             </table>
-            <div class="my-reappearance"><span>我的当前返现比例</span><span class="percent">0.6%</span></div>
+            <div class="my-reappearance"><span>我的当前返现比例</span><span class="percent">${rate!}</span></div>
             <div class="today-reward">
                 <div class="triangle"></div>
             </div>
