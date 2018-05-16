@@ -2,14 +2,26 @@
   width: 100%;
 }
 body {
-  background: #c7262c url("../images/landingpage/body_bg.png") repeat-y center center;
+
 }
 .landing-page-container {
   width: 100%;
   height: 4700px;
-  background: url("../images/landingpage/container_bg.png") no-repeat center top;
   .banner {
-    height: 518px;
-    background: url("../images/landingpage/pc_banner.png") no-repeat center center;
+    height: 521px;
+    background: url("../images/landingpage/banner_bg.png") no-repeat center center;
+    .banner-img {
+      width: 1462px;
+      height: 521px;
+      background: url("../images/landingpage/banner.png") no-repeat center center;
+    }
+  }
+  .landing-main {
+    height: 4700px;
+    background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
+    .start-content {
+      height: 7000px;
+      background:  url("../images/landingpage/body_bg.png") repeat-y center top;
+    }
   }
 }
