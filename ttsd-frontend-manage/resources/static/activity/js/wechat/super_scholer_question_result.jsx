@@ -40,7 +40,7 @@ wx.ready(function () {
         title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
         desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
         link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: commonStaticServer + '/images/2018/super-scholar/icon_red_ware.png', // 分享图标
+        imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
         success: function () {
             commonFun.useAjax({
                 dataType: 'json',
@@ -59,7 +59,7 @@ wx.ready(function () {
         title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
         desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
         link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: commonStaticServer + '/images/2018/super-scholar/icon_red_ware.png', // 分享图标
+        imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
         success: function () {
             // 用户确认分享后执行的回调函数
             commonFun.useAjax({
