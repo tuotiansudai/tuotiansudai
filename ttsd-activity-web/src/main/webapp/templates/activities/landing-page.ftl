@@ -80,7 +80,7 @@
                                   <p>项目期限</p>
                               </div>
                               <div class="split"></div>
-                              <div>
+                              <div class="third">
                                   <p><a href="/loan-list">马上投资</a></p>
                                   <p><span class="checkbox-red"></span>银行资金存管</p>
                               </div>

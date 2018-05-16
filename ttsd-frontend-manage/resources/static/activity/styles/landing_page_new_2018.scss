@@ -167,6 +167,12 @@ p {
                   height: 80px;
                   background: #eccfa4;
                 }
+                .third {
+                  .checkbox-red {
+
+                  }
+
+                }
               }
             }
           }
@@ -281,7 +287,15 @@ p {
     background-size: 100%;
   }
 }
-
+.btn-red {
+  width: 204px;
+  height: 44px;
+  background: #bc3434;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 23px;
+}
 .fl {
   float: left;
 }
