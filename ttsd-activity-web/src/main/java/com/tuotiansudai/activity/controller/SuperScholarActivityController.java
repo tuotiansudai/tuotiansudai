@@ -23,7 +23,7 @@ public class SuperScholarActivityController {
     private SuperScholarActivityService superScholarActivityService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView activityHome(){
+    public ModelAndView activityHome() {
         ModelAndView modelAndView = new ModelAndView("/activities/2018/super-scholar", "responsive", true);
         if (LoginUserInfo.getLoginName() != null) {
             modelAndView.addObject("data", superScholarActivityService.activityHome(LoginUserInfo.getLoginName()));
@@ -33,7 +33,11 @@ public class SuperScholarActivityController {
     }
 
     @RequestMapping(value = "/view/question", method = RequestMethod.GET)
-    public ModelAndView questionPage(){
+    public ModelAndView questionPage() {
+        if (!superScholarActivityService.duringActivities()) {
+            return new ModelAndView("redirect:/activity/super-scholar");
+        }
+
         ModelAndView modelAndView = new ModelAndView("/activities/2018/super-scholar-question", "responsive", true);
         modelAndView.addObject("doQuestion", LoginUserInfo.getLoginName() != null && superScholarActivityService.doQuestion(LoginUserInfo.getLoginName()));
         return modelAndView;
@@ -42,7 +46,7 @@ public class SuperScholarActivityController {
     @RequestMapping(value = "/questions", method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String, Object>> getQuestions() throws IOException {
-        if (superScholarActivityService.doQuestion(LoginUserInfo.getLoginName())){
+        if (superScholarActivityService.doQuestion(LoginUserInfo.getLoginName())) {
             return null;
         }
         return superScholarActivityService.getQuestions(LoginUserInfo.getLoginName());
@@ -50,15 +54,19 @@ public class SuperScholarActivityController {
 
     @RequestMapping(value = "/submit/answer", method = RequestMethod.POST)
     @ResponseBody
-    public boolean submitAnswer(@RequestParam(value = "answer") String answer){
+    public boolean submitAnswer(@RequestParam(value = "answer") String answer) {
         return superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer);
     }
 
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
-    public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType){
+    public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType) {
+        if (!superScholarActivityService.duringActivities()) {
+            return new ModelAndView("redirect:/activity/super-scholar");
+        }
+
         ModelAndView modelAndView = new ModelAndView("/wechat/super_scholer_question_result_2018");
         Map<String, Object> map = superScholarActivityService.viewResult(LoginUserInfo.getLoginName());
-        if (CollectionUtils.isEmpty(map)){
+        if (CollectionUtils.isEmpty(map)) {
             return new ModelAndView("redirect:/activity/super-scholar");
         }
         modelAndView.addAllObjects(map);
@@ -69,13 +77,17 @@ public class SuperScholarActivityController {
 
     @RequestMapping(value = "/share/success", method = RequestMethod.GET)
     @ResponseBody
-    public boolean shareSuccess(){
+    public boolean shareSuccess() {
         superScholarActivityService.shareSuccess(LoginUserInfo.getLoginName());
         return true;
     }
 
     @RequestMapping(value = "/share/register", method = RequestMethod.GET)
-    public ModelAndView shareRegister(@RequestParam(value = "referrerMobile", required = false) String referrerMobile){
+    public ModelAndView shareRegister(@RequestParam(value = "referrerMobile", required = false) String referrerMobile) {
+        if (!superScholarActivityService.duringActivities()) {
+            return new ModelAndView("redirect:/activity/super-scholar");
+        }
+
         if (referrerMobile == null || !superScholarActivityService.mobileExists(referrerMobile)) {
             ModelAndView modelAndView = new ModelAndView("/error/error-info-page");
             modelAndView.addObject("errorInfo", "无效推荐链接");
@@ -86,7 +98,6 @@ public class SuperScholarActivityController {
         modelAndView.addObject("referrerInfo", superScholarActivityService.getReferrerInfo(referrerMobile));
         modelAndView.addObject("activityReferrerMobile", referrerMobile);
         return modelAndView;
-
     }
 
 }
