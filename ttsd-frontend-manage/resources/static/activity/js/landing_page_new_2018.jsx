@@ -1,0 +1,1 @@
+require("activityStyle/landing_page_new_2018.scss");
