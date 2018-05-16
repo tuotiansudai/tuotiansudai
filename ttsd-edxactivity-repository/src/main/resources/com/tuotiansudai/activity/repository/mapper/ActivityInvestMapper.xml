@@ -28,7 +28,7 @@
     <insert id="create" parameterType="activityInvestModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`activity_invest`
         (`loan_id`,
-        (`invest_id`,
+        `invest_id`,
         `login_name`,
         `user_name`,
         `mobile`,
