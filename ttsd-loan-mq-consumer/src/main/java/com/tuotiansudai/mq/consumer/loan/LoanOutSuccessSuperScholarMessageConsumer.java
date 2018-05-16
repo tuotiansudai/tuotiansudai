@@ -45,7 +45,8 @@ public class LoanOutSuccessSuperScholarMessageConsumer implements MessageConsume
             logger.error("[标的放款MQ] LoanOutSuccess_SuperScholarActivity json convert LoanOutSuccessMessage is fail, message:{}", message);
             return;
         }
-        redisWrapperClient.hset(SUPER_SCHOLAR_SEND_CASH_LOAN, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+//        redisWrapperClient.hset(SUPER_SCHOLAR_SEND_CASH_LOAN, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().plusDays(1).toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.hset(SUPER_SCHOLAR_SEND_CASH_LOAN, String.valueOf(loanOutInfo.getLoanId()), DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

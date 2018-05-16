@@ -36,7 +36,8 @@ public class SuperScholarActivityShareScheduler {
 
     private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST = "REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST:{0}:{1}";
 
-    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
     public void updateSuperScholarShareStatus() {
 
         if (new Date().before(new DateTime(activityStartTime).plusDays(1).toDate())
