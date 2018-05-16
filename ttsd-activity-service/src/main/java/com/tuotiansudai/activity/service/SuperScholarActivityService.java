@@ -194,5 +194,7 @@ public class SuperScholarActivityService {
         return 496L;
     }
 
-
+    public boolean duringActivities() {
+        return activityStartTime.before(new Date()) && activityEndTime.after(new Date());
+    }
 }
