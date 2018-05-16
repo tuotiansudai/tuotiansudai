@@ -27,9 +27,9 @@ public class JianZhouSmsWrapperClient {
 
     private final static String SMS_SIGN = "【拓天速贷】";
 
-    private final static String ACCOUNT = "";
+    private final static String ACCOUNT = "sdk_bjttwy";
 
-    private final static String PASSWORD = "";
+    private final static String PASSWORD = "667789887";
 
     protected OkHttpClient okHttpClient;
 
@@ -43,19 +43,14 @@ public class JianZhouSmsWrapperClient {
     }
 
     public void sendSms(boolean isVoice, List<String> mobileList, SmsTemplateCell template, List<String> paramList){
-        String msgText = "测试开始";
-//        try {
-//            msgText = URLEncoder.encode(template.generateContent(paramList) + SMS_SIGN, "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        String msgText = "测试开始" + SMS_SIGN;
         String destmobile = String.join(";", mobileList);
         String content = "account=" + ACCOUNT + "&" + "password=" + PASSWORD + "&" + "sendDateTime=" + "" + "&" + "destmobile=" + destmobile + "&"
                 + "msgText=" + msgText;
         this.syncExecute(isVoice, content);
     }
 
-    private ResponseBody syncExecute(boolean isVoice, String requestData){
+    private String syncExecute(boolean isVoice, String requestData){
         String url = isVoice ? SMS_VOICE_URL : SMS_TEXT_URL;
         RequestBody requestBody = RequestBody.create(FORM, requestData);
         Request request = new Request.Builder()
@@ -65,7 +60,7 @@ public class JianZhouSmsWrapperClient {
         try {
             Response response = this.okHttpClient.newCall(request).execute();
             if(response.isSuccessful()){
-                return response.body();
+                return response.body().string();
             }
 
         }catch (IOException e) {
@@ -75,6 +70,6 @@ public class JianZhouSmsWrapperClient {
     }
 
     public static void main(String[] args) {
-        new JianZhouSmsWrapperClient().sendSms(false, Lists.newArrayList("18895730992"), null, null);
+        new JianZhouSmsWrapperClient().sendSms(false, Lists.newArrayList("18895730992", "18310701649"), null, null);
     }
 }
