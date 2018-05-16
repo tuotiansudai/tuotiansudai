@@ -33,7 +33,7 @@
         </div>
 
         <div class="my_reappearance-table">
-            <div class="reappearance-content">
+            <div class="reappearance-content" id="reappearanceContent">
                 <table>
                     <thead>
                     <th>投资金额</th>
