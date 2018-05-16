@@ -5,6 +5,7 @@ body {
 
 }
 .landing-page-container {
+  font-family:"MICROSOFT YAHEI";
   width: 100%;
   height: 4700px;
   .banner {
@@ -19,9 +20,104 @@ body {
   .landing-main {
     height: 4700px;
     background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
-    .start-content {
+    .star-content {
       height: 7000px;
       background:  url("../images/landingpage/body_bg.png") repeat-y center top;
+      .newbie-register-wrap {
+        padding-top: 30px;
+        .newbie-register-title {
+          margin: 0 auto;
+          margin-bottom: 30px;
+          width: 1062px;
+          height: 115px;
+          background: url("../images/landingpage/register_title.png") no-repeat center center;
+          background-size: 100%;
+        }
+        .desc-container {
+          .content {
+            height: 300px;
+          }
+        }
+        .to-experience {
+          margin-top: 60px;
+          margin-bottom: 60px;
+        }
+
+      }
+      .red-ware-wrap {
+        .red-ware-title {
+          margin: 0 auto;
+          width: 1016px;
+          height: 107px;
+          background: url("../images/landingpage/red_ware_1000.png") no-repeat center center;
+          background-size: 100%;
+        }
+      }
     }
+  }
+}
+.textCenter {
+  text-align: center;
+}
+.gold-btn {
+  width: 576px;
+  height: 134px;
+  display: inline-block;
+  background: url("../images/landingpage/button_bg.png") no-repeat center center;
+  background-size: 100%;
+  color: #8d080d;
+  font-size: 54px;
+  line-height: 134px;
+  text-align: center;
+  &:hover {
+    color: #8d080d;
+  }
+}
+.desc-container {
+  margin: 0 auto;
+  width: 983px;
+  position: relative;
+  .title {
+    width: 100%;
+    color: #d79d56;
+    height: 107px;
+    font-size: 46px;
+    text-align: center;
+    line-height: 107px;
+    position: absolute;
+    top: 38px;
+  }
+  .transverse-line {
+    position: absolute;
+    width: 136px;
+    height: 13px;
+    top: 86px;
+    &.left-line {
+      left: 110px;
+      background: url("../images/landingpage/left_line.png") no-repeat;
+      background-size: 100%;
+    }
+    &.right-line {
+      right: 110px;
+      background: url("../images/landingpage/right_line.png") no-repeat;
+      background-size: 100%;
+    }
+  }
+  .top {
+    height: 107px;
+    top: 0;
+    left: 0;
+    background: url("../images/landingpage/top_bg.png") no-repeat;
+    background-size: 100%;
+  }
+  .content {
+    background: url("../images/landingpage/content_bg.png") repeat-y;
+    background-size: 100%;
+
+  }
+  .bot {
+    height: 113px;
+    background: url("../images/landingpage/bot_bg.png") no-repeat center bottom;
+    background-size: 100%;
   }
 }
