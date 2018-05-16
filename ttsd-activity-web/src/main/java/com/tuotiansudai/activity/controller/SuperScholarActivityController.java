@@ -68,8 +68,10 @@ public class SuperScholarActivityController {
     }
 
     @RequestMapping(value = "/share/success", method = RequestMethod.GET)
-    public void shareSuccess(){
+    @ResponseBody
+    public boolean shareSuccess(){
         superScholarActivityService.shareSuccess(LoginUserInfo.getLoginName());
+        return true;
     }
 
     @RequestMapping(value = "/share/register", method = RequestMethod.GET)
