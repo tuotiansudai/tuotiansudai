@@ -37,7 +37,7 @@ if (isWeixin) {
 
 let $getMore = $('#getMoreData'),
     $reappearanceList = $('#reappearanceList'),
-    $reappearanceContent = $('.reappearance-content');
+    $reappearanceContent = $('#reappearanceContent');
 commonFun.calculationRem(document, window)
 
 let len = $reappearanceList.find('tr').length;

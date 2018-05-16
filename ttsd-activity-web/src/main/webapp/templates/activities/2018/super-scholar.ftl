@@ -68,7 +68,7 @@
         </div>
     <#--m站我的返现奖励-->
         <div class="my_reappearance-table-wap" id="myReappearanceWap">
-            <div class="reappearance-content">
+            <div class="reappearance-content" id="reappearanceContent">
                 <table>
                     <thead>
                     <th>投资金额</th>
