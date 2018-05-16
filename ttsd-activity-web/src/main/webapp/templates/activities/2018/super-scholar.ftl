@@ -75,7 +75,7 @@
                     <th>年化投资金额</th>
                     <th>获取返现比率</th>
                     </thead>
-                    <tbody id="reappearanceList" class="reappearance-list">
+                    <tbody id="reappearanceListWap" class="reappearance-list">
 
                         <#list data as invest>
                         <tr>
