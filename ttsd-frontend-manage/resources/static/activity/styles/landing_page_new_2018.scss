@@ -1,11 +1,15 @@
 .main-frame {
   width: 100%;
 }
+
 body {
 
 }
+p {
+  margin-bottom: 0;
+}
 .landing-page-container {
-  font-family:"MICROSOFT YAHEI";
+  font-family: "MICROSOFT YAHEI";
   width: 100%;
   height: 4700px;
   .banner {
@@ -22,7 +26,7 @@ body {
     background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
     .star-content {
       height: 7000px;
-      background:  url("../images/landingpage/body_bg.png") repeat-y center top;
+      background: url("../images/landingpage/body_bg.png") repeat-y center top;
       .newbie-register-wrap {
         padding-top: 30px;
         .newbie-register-title {
@@ -35,7 +39,6 @@ body {
         }
         .desc-container {
           .content {
-            height: 300px;
           }
         }
         .to-experience {
@@ -52,13 +55,131 @@ body {
           background: url("../images/landingpage/red_ware_1000.png") no-repeat center center;
           background-size: 100%;
         }
+        .red-ware {
+          margin: 0 auto;
+          width: 939px;
+          height: 710px;
+          position: relative;
+          margin-bottom: 44px;
+          .red-ware-img {
+            position: absolute;
+            top: -140px;
+            width: 939px;
+            height: 851px;
+            background: url("../images/landingpage/red_ware_big.png") no-repeat center center;
+            background-size: 100%;
+          }
+        }
+      }
+      .newbie-increase-wrap {
+        .increase-title {
+          margin: 0 auto;
+          margin-bottom: 40px;
+          width: 799px;
+          height: 114px;
+          background: url("../images/landingpage/increase_interest.png") no-repeat center center;
+          background-size: 100%;
+        }
+        .desc-container {
+          dl {
+            &.left-desc {
+              margin-left: 140px;
+              .plus {
+                position: relative;
+                font-size: 65px;
+                top: -10px;
+              }
+            }
+            &.right-desc {
+              margin-right: 170px;
+            }
+            dt {
+              &.newbie {
+                font-size: 60px;
+                padding-top: 25px;
+              }
+              .newbie-dt {
+                font-size: 90px;
+                color: #d79d56;
+                i {
+                  font-size: 57px;
+                  color: #d79d56;
+                }
+              }
+            }
+          }
+        }
+        .to-loan {
+          margin-top: 60px;
+          margin-bottom: 60px;
+        }
+        .loan-wrap {
+          .desc-container {
+            .content {
+              box-sizing: border-box;
+              padding-left: 80px;
+              padding-right: 80px;
+              padding-top: 0;
+              .top-content {
+                border-radius: 8px;
+                border: 3px solid #e2b573;
+                padding-bottom: 20px;
+                background: #fff;
+                padding-top: 30px;
+                >div {
+                  float: left;
+                  font-size: 14px;
+                  .top-p {
+                    color: #bc3434;
+                    font-weight: bold;
+                  }
+                  p {
+                    text-align: center;
+                  }
+                }
+                .first {
+                  width: 200px;
+                  p {
+                    line-height: 40px;
+                    &.top-p {
+                      font-size: 35px;
+                      span {
+                        font-size: 28px;
+                      }
+                    }
+
+                  }
+                }
+                .second {
+                  width: 240px;
+                  p {
+                    line-height: 40px;
+                    &.top-p {
+                      font-size: 34px;
+                      span {
+                        font-size: 24px;
+                      }
+                    }
+                  }
+
+                }
+                .split {
+                  height: 80px;
+                  background: #eccfa4;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
 }
+
 .textCenter {
   text-align: center;
 }
+
 .gold-btn {
   width: 576px;
   height: 134px;
@@ -73,10 +194,19 @@ body {
     color: #8d080d;
   }
 }
+
 .desc-container {
   margin: 0 auto;
   width: 983px;
   position: relative;
+  .line {
+    position: absolute;
+    left: 50%;
+    top: 195px;
+    width: 1px;
+    height: 145px;
+    background: #d79d56;
+  }
   .title {
     width: 100%;
     color: #d79d56;
@@ -113,6 +243,36 @@ body {
   .content {
     background: url("../images/landingpage/content_bg.png") repeat-y;
     background-size: 100%;
+    padding-top: 100px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    dl {
+      &.left-desc {
+        margin-left: 200px;
+      }
+      &.right-desc {
+        margin-right: 200px;
+      }
+      dt {
+        font-size: 145px;
+        color: #cd2e32;
+        line-height: 60px;
+        font-family: "SimHei MICROSOFT YAHEI";
+        span {
+          font-size: 57px;
+          font-weight: bold;
+        }
+        em {
+          color: #d79d56;
+          font-size: 50px;
+        }
+      }
+      dd {
+        font-size: 25px;
+        color: #d79d56;
+        text-align: center;
+      }
+    }
 
   }
   .bot {
@@ -120,4 +280,12 @@ body {
     background: url("../images/landingpage/bot_bg.png") no-repeat center bottom;
     background-size: 100%;
   }
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
 }
