@@ -35,7 +35,7 @@ public class LoanCreateService {
     }
 
     public ResponseDto create(String loginName, String mobile, String userName, String accountNo, String amount, String loanName) {
-        LoanCreateRequestDto dto = new LoanCreateRequestDto(loginName, mobile, userName, accountNo, amount, loanName);
+        LoanCreateRequestDto dto = new LoanCreateRequestDto(loginName, mobile, userName, accountNo, amount, loanName, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

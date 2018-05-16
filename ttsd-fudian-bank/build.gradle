@@ -21,8 +21,6 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-
-
 dependencies {
     def springBootVersion = '2.0.1.RELEASE'
 
@@ -40,6 +38,7 @@ dependencies {
     providedCompile("org.apache.tomcat.embed:tomcat-embed-jasper:8.5.30")
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
+    compile project(':ttsd-fudian-bank-dto')
     compile project(':ttsd-etcd')
     compile project(':ttsd-mq-client')
 }

@@ -85,4 +85,8 @@ public class WithdrawContentDto extends PayBaseContentDto {
     public boolean isSuccess() {
         return "1".equalsIgnoreCase(status);
     }
+
+    public boolean isApplying() {
+        return "0".equalsIgnoreCase(status);
+    }
 }

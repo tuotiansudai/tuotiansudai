@@ -6,6 +6,7 @@ import com.tuotiansudai.fudian.dto.ExtMarkDto;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class BaseRequestDto {
 
@@ -25,8 +26,8 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(Source source, String loginName, String mobile, ApiType apiType) {
-        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType));
+    public BaseRequestDto(Source source, String loginName, String mobile, ApiType apiType, Map<String, String> extraValues) {
+        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType, extraValues));
         this.source = source;
     }
 

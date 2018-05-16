@@ -2,6 +2,8 @@ package com.tuotiansudai.fudian.dto;
 
 import com.tuotiansudai.fudian.config.ApiType;
 
+import java.util.Map;
+
 public class ExtMarkDto {
 
     private String loginName;
@@ -10,13 +12,16 @@ public class ExtMarkDto {
 
     private ApiType apiType;
 
+    private Map<String, String> extraValues;
+
     public ExtMarkDto() {
     }
 
-    public ExtMarkDto(String loginName, String mobile, ApiType apiType) {
+    public ExtMarkDto(String loginName, String mobile, ApiType apiType, Map<String, String> extraValues) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.apiType = apiType;
+        this.extraValues = extraValues;
     }
 
     public String getLoginName() {
@@ -41,5 +46,13 @@ public class ExtMarkDto {
 
     public void setApiType(ApiType apiType) {
         this.apiType = apiType;
+    }
+
+    public Map<String, String> getExtraValues() {
+        return extraValues;
+    }
+
+    public void setExtraValues(Map<String, String> extraValues) {
+        this.extraValues = extraValues;
     }
 }

@@ -13,7 +13,7 @@ public class RegisterRequestDto extends UserBaseRequestDto {
     private String mobilePhone;
 
     public RegisterRequestDto(Source source, String loginName, String mobile, String realName, String identityCode) {
-        super(source, loginName, mobile, null, null, ApiType.REGISTER);
+        super(source, loginName, mobile, null, null, ApiType.REGISTER, null);
         this.realName = realName;
         this.identityCode = identityCode;
         this.mobilePhone = mobile;

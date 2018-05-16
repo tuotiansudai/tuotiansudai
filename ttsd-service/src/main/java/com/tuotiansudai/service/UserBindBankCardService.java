@@ -4,6 +4,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
@@ -40,16 +41,11 @@ public class UserBindBankCardService {
         return userBankCardMapper.findByLoginName(loginName);
     }
 
-    public BaseDto<PayFormDataDto> bind(String loginName, Source source, String ip, String deviceId) {
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
-
+    public BankAsyncData bind(String loginName, Source source, String ip, String deviceId) {
         UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
 
         if (userBankCardModel != null) {
-            payFormDataDto.setMessage("已绑定银行卡，请勿重复绑定");
-            payFormDataDto.setStatus(false);
-            return baseDto;
+            return new BankAsyncData();
         }
 
         // 发送用户行为日志 MQ消息
@@ -59,15 +55,10 @@ public class UserBindBankCardService {
 
         BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
 
-        baseDto = bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
-
-        return baseDto;
+        return bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 
-    public BaseDto<PayFormDataDto> unbind(String loginName, Source source, String ip, String deviceId) {
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
-
+    public BankAsyncData unbind(String loginName, Source source, String ip, String deviceId) {
         UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
 
 //        if (userBankCardModel == null) {
@@ -83,8 +74,6 @@ public class UserBindBankCardService {
 
         BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
 
-        baseDto = bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
-
-        return baseDto;
+        return bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 }

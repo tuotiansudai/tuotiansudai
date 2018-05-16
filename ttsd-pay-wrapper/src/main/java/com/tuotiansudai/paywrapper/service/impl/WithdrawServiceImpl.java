@@ -107,7 +107,6 @@ public class WithdrawServiceImpl implements WithdrawService {
         return callbackRequest != null ? callbackRequest.getResponseData() : null;
     }
 
-    @Transactional
     private void postWithdrawApplyCallback(BaseCallbackRequestModel callbackRequestModel) {
         if (callbackRequestModel == null) {
             return;
@@ -158,7 +157,6 @@ public class WithdrawServiceImpl implements WithdrawService {
         }
     }
 
-    @Transactional
     private void postWithdrawNotifyCallback(BaseCallbackRequestModel callbackRequestModel) {
         if (callbackRequestModel == null) {
             return;

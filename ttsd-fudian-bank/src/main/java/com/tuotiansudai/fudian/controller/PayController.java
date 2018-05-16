@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.service.*;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Map;
 
 @Controller
-public class PayController {
+public class PayController extends AsyncRequestController {
 
     private static Logger logger = LoggerFactory.getLogger(PayController.class);
-
-    private final BankConfig bankConfig;
 
     private final RechargeService rechargeService;
 
@@ -44,7 +45,7 @@ public class PayController {
 
     @Autowired
     public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
-        this.bankConfig = bankConfig;
+        super(bankConfig);
         this.rechargeService = rechargeService;
         this.withdrawService = withdrawService;
         this.loanCreateService = loanCreateService;
@@ -59,7 +60,7 @@ public class PayController {
     public ResponseEntity<Map<String, String>> recharge(@RequestBody Map<String, String> params) {
         logger.info("[Fudian] call recharge");
 
-        RechargeRequestDto requestDto = rechargeService.recharge(Source.valueOf(params.get("source")), params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"), AmountUtils.toAmount(params.get("amount")), RechargePayType.GATE_PAY);
+        RechargeRequestDto requestDto = rechargeService.recharge(Source.valueOf(params.get("source")), params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"), AmountUtils.toYuan(params.get("amount")), RechargePayType.GATE_PAY);
 
         return this.generateResponseJson(requestDto, ApiType.RECHARGE);
     }
@@ -74,21 +75,32 @@ public class PayController {
         return "post";
     }
 
-    @RequestMapping(path = "/withdraw", method = RequestMethod.GET)
-    public String withdraw(Map<String, Object> model) {
+    @RequestMapping(path = "/withdraw/source/{source}", method = RequestMethod.POST)
+    @SuppressWarnings(value = "unchecked")
+    public ResponseEntity<BankAsyncData> withdraw(@PathVariable Source source, @RequestBody BankWithdrawDto params) {
         logger.info("[Fudian] call withdraw");
 
-        WithdrawRequestDto requestDto = withdrawService.withdraw(Source.WEB, "UU02615960791461001", "UA02615960791501001", "1.00", null, null);
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.WITHDRAW.getPath());
-        return "post";
+        if (!params.isValid()) {
+            logger.error("[Fudian] call withdraw bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        WithdrawRequestDto requestDto = withdrawService.withdraw(source, params);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.WITHDRAW);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call withdraw, request data generation failure, data: {}", params);
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/loan-create", method = RequestMethod.GET)
     public ResponseEntity<ResponseDto> loanCreate(Map<String, Object> model) {
         logger.info("[Fudian] call loan create");
 
-        ResponseDto responseDto = loanCreateService.create("UU02615960791461001", "UA02615960791501001", "10.00", "LOAN_CREDIT",null,null);
+        ResponseDto responseDto = loanCreateService.create("UU02615960791461001", "UA02615960791501001", "10.00", "LOAN_CREDIT", null, null);
 
         return ResponseEntity.ok(responseDto);
     }
@@ -117,7 +129,7 @@ public class PayController {
     public String loanCreditInvest(Map<String, Object> model) {
         logger.info("[Fudian] call loan credit invest");
 
-        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest(Source.WEB, "UU02624634769241001", "UA02624634769281001", "LU02625453517541001", "20180427000000000002", "20180427", "3", "1.00", "1.00", "100.00",null, null);
+        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest(Source.WEB, "UU02624634769241001", "UA02624634769281001", "LU02625453517541001", "20180427000000000002", "20180427", "3", "1.00", "1.00", "100.00", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.LOAN_CREDIT_INVEST.getPath());
         return "post";
@@ -136,7 +148,7 @@ public class PayController {
     public String loanRepay(Map<String, Object> model) {
         logger.info("[Fudian] call loan repay");
 
-        LoanRepayRequestDto requestDto = loanRepayService.repay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00",null, null);
+        LoanRepayRequestDto requestDto = loanRepayService.repay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00", null, null);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.LOAN_REPAY.getPath());
         return "post";

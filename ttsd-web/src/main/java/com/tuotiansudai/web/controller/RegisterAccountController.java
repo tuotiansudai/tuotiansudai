@@ -1,21 +1,13 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.UserRegisterBankAccountService;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
 import com.tuotiansudai.util.RequestIPParser;
-import org.joda.time.DateTime;
-import org.joda.time.Minutes;
-import org.joda.time.Seconds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +24,7 @@ public class RegisterAccountController {
     private UserService userService;
 
     @Autowired
-    private UserRegisterBankAccountService bankAccountService;
+    private BankAccountService bankAccountService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
@@ -66,9 +58,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<PayFormDataDto> baseDto = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);
-        ModelAndView view = new ModelAndView("/pay");
-        view.addObject("pay", baseDto);
-        return view;
+        BankAsyncData bankAsyncData = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);
+        return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

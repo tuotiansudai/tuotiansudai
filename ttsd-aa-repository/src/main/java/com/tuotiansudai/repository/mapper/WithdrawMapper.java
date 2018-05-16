@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;

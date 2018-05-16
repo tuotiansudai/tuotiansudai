@@ -4,6 +4,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
@@ -49,7 +51,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/register/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> recharge(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncData> register(@PathVariable Source source, @RequestBody Map<String, String> params) {
         logger.info("[Fudian] call register, params: {}", params);
 
         String loginName = params.get("loginName");
@@ -62,46 +64,59 @@ public class UserController extends AsyncRequestController {
         }
 
         RegisterRequestDto requestDto = registerService.register(source, loginName, mobile, realName, identityCode);
-        return this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call register, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> cardBind(@PathVariable Source source, @RequestBody Map<String, String> params) {
-        logger.info("[Fudian] bind card, params: {}", params);
+    public ResponseEntity<BankAsyncData> cardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+        logger.info("[Fudian] call bind card, params: {}", params);
 
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String bankUserName = params.get("bankUserName");
-        String bankAccountNo = params.get("bankAccountNo");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo))) {
+        if (!params.isValid()) {
+            logger.error("[Fudian] call bind card bad request, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
-        CardBindRequestDto requestDto = cardBindService.bind(source, params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"));
-        return this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
+        CardBindRequestDto requestDto = cardBindService.bind(source, params);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call bind card, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/cancel-card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> cancelCardBind(@PathVariable Source source, @RequestBody Map<String, String> params) {
-        logger.info("[Fudian] cancel bind card, params: {}", params);
+    public ResponseEntity<BankAsyncData> cancelCardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+        logger.info("[Fudian] call cancel bind card, params: {}", params);
 
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String bankUserName = params.get("bankUserName");
-        String bankAccountNo = params.get("bankAccountNo");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo))) {
+        if (!params.isValid()) {
+            logger.error("[Fudian] call bind card bad request, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
-        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, loginName, mobile, bankUserName, bankAccountNo);
-        return this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
+        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call cancel bind card, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/authorization/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> authorization(@PathVariable Source source, @RequestBody Map<String, String> params) {
-        logger.info("[Fudian] authorization, params: {}", params);
+    public ResponseEntity<BankAsyncData> authorization(@PathVariable Source source, @RequestBody Map<String, String> params) {
+        logger.info("[Fudian] call authorization, params: {}", params);
 
         String loginName = params.get("loginName");
         String mobile = params.get("mobile");
@@ -113,12 +128,19 @@ public class UserController extends AsyncRequestController {
         }
 
         AuthorizationRequestDto requestDto = authorizationService.auth(source, loginName, mobile, bankUserName, bankAccountNo);
-        return this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call authorization, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/password-reset/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> passwordReset(@PathVariable Source source, @RequestBody Map<String, String> params) {
-        logger.info("[Fudian] password reset, params: {}", params);
+    public ResponseEntity<BankAsyncData> passwordReset(@PathVariable Source source, @RequestBody Map<String, String> params) {
+        logger.info("[Fudian] call password reset, params: {}", params);
 
         String loginName = params.get("loginName");
         String mobile = params.get("mobile");
@@ -130,12 +152,19 @@ public class UserController extends AsyncRequestController {
         }
 
         PasswordResetRequestDto requestDto = passwordResetService.reset(source, loginName, mobile, bankUserName, bankAccountNo);
-        return this.generateAsyncRequestData(requestDto, ApiType.PASSWORD_RESET);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PASSWORD_RESET);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call password reset, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/phone-update/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> phoneUpdate(@PathVariable Source source, @RequestBody Map<String, String> params) {
-        logger.info("[Fudian] phone update, params: {}", params);
+    public ResponseEntity<BankAsyncData> phoneUpdate(@PathVariable Source source, @RequestBody Map<String, String> params) {
+        logger.info("[Fudian] call phone update, params: {}", params);
 
         String loginName = params.get("loginName");
         String mobile = params.get("mobile");
@@ -148,10 +177,15 @@ public class UserController extends AsyncRequestController {
         }
 
         PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, loginName, mobile, bankUserName, bankAccountNo, newPhone);
-        return this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call phone update, request data generation failure, data: {}");
+        }
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
-    private boolean isBadRequest(List<String> values) {
-        return Lists.newArrayList(values).stream().anyMatch(Strings::isNullOrEmpty);
-    }
+
 }

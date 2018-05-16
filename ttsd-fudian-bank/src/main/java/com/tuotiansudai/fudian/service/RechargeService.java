@@ -42,7 +42,7 @@ public class RechargeService implements AsyncCallbackInterface {
     }
 
     public RechargeRequestDto recharge(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
-        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankUserName, bankAccountNo, amount, payType);
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankUserName, bankAccountNo, amount, payType, null);
 
         signatureHelper.sign(dto);
 
@@ -56,7 +56,7 @@ public class RechargeService implements AsyncCallbackInterface {
     }
 
     public RechargeRequestDto merchantRecharge(Source source, String loginName, String mobile, String amount) {
-        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
+        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY, null);
 
         signatureHelper.sign(dto);
 
