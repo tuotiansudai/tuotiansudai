@@ -180,7 +180,7 @@ if ($questionContainer.length) {
 
 
 }else {
-    $('#myReappearanceBtn').on('click',function () {
+    $('#myReappearanceWapBtn').on('click',function () {
         $('#myReappearanceWap').toggleClass('show');
     })
     $('#qrcodeBox').qrcode({

@@ -14,7 +14,7 @@
     <@global.isNotAnonymous>
         <input id="isDoneQuestion" type="hidden" value="${doQuestion?c}">
         <#if doQuestion>
-            <h4 class="notice isAnswered"><span class="horn"></span>今日已答题，投资可获获年化0.6%返现，赶快投资吧！</h4>
+            <h4 class="notice isAnswered"><span class="horn"></span>今日已答题，投资可获年化0.6%返现，赶快投资吧！</h4>
         <#else>
             <h4 class="notice"><span class="horn"></span>今日还未答题哦！赶快答题赢返现吧！</h4>
         </#if>
