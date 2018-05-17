@@ -8,9 +8,11 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -87,37 +89,33 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BaseDto<PayFormDataDto> register(Source source, String loginName, String mobile, String realName, String identityCode) {
+    public BankAsyncData register(Source source, String loginName, String mobile, String realName, String identityCode) {
         return asyncExecute(MessageFormat.format("/user/register/source/{}", source.name().toLowerCase()),
                 Maps.newHashMap(ImmutableMap.<String, String>builder()
                         .put("loginName", loginName)
                         .put("mobile", mobile)
                         .put("realName", realName)
-                        .put("identityCode", identityCode)
+                        .put("" +
+                                "", identityCode)
                         .build()));
     }
 
-    public BaseDto<PayFormDataDto> bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+    public BankAsyncData bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
-                Maps.newHashMap(ImmutableMap.<String, String>builder()
-                        .put("loginName", loginName)
-                        .put("mobile", mobile)
-                        .put("bankUserName", bankUserName)
-                        .put("bankAccountNo", bankAccountNo)
-                        .build()));
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BaseDto<PayFormDataDto> unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+    public BankAsyncData unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}", source.name().toLowerCase()),
-                Maps.newHashMap(ImmutableMap.<String, String>builder()
-                        .put("loginName", loginName)
-                        .put("mobile", mobile)
-                        .put("bankUserName", bankUserName)
-                        .put("bankAccountNo", bankAccountNo)
-                        .build()));
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    private BaseDto<PayFormDataDto> asyncExecute(String path, Object requestData) {
+    public BankAsyncData withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
+        BankWithdrawDto dto = new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId);
+        return asyncExecute(MessageFormat.format("/withdraw/source/{0}", source.name().toLowerCase()), dto);
+    }
+
+    private BankAsyncData asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
         String url = this.baseUrl + path;
 
@@ -133,8 +131,7 @@ public class BankWrapperClient {
 
             if (response.isSuccessful()) {
                 try {
-                    return new GsonBuilder().create().fromJson(response.body().string(), new TypeToken<BaseDto<PayFormDataDto>>() {
-                    }.getType());
+                    return new GsonBuilder().create().fromJson(response.body().string(), BankAsyncData.class);
                 } catch (JsonParseException e) {
                     logger.error(MessageFormat.format("parse pay response error, url: {}, data: {}, response: {}", url, content, response.body().string()), e);
                 }
@@ -144,8 +141,7 @@ public class BankWrapperClient {
             logger.error(MessageFormat.format("call pay wrapper error, url: {}, data: {}", url, content), e);
         }
 
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        return new BaseDto<>(false, payFormDataDto);
+        return new BankAsyncData();
     }
 
 }

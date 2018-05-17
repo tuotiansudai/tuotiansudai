@@ -91,6 +91,11 @@ public enum MessageQueue {
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
     RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
     RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
+
+    Withdraw_Success("Recharge-Success"),
+    Withdraw_EventMessage("Recharge-EventMessage"),
+    Withdraw_PushMessage("Recharge-PushMessage"),
+    Withdraw_WeChatMessage("Recharge-WeChatMessage"),
     ;
 
     private final String queueName;

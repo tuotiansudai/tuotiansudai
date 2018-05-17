@@ -1,5 +1,7 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import java.util.Map;
+
 public class LoanCallbackInvestItemRequestDto {
 
     private transient long id;

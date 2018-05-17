@@ -41,7 +41,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
     }
 
     public LoanInvestRequestDto invest(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST);
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -55,7 +55,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
     }
 
     public ResponseDto fastInvest(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST);
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST, null);
 
         signatureHelper.sign(dto);
 

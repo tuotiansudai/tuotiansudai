@@ -35,7 +35,7 @@ public class MerchantTransferService {
     }
 
     public ResponseDto transfer(String loginName, String mobile, String userName, String accountNo, String amount) {
-        MerchantTransferRequestDto dto = new MerchantTransferRequestDto(loginName, mobile, userName, accountNo, amount);
+        MerchantTransferRequestDto dto = new MerchantTransferRequestDto(loginName, mobile, userName, accountNo, amount, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

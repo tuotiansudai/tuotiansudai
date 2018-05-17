@@ -4,10 +4,10 @@
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
 
     <div class="pad-s">
-        <div class="borderBox withdraw" data-access="${hasAccess}">
+        <div class="borderBox withdraw">
             可提现额度：<i class="color-note">${balance}</i>元<br/>
-            <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-l-zero="deny"
-                                                      data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
+            <span class="pad-l-15">提现金额：</span>
+            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
             <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
@@ -16,8 +16,7 @@
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
             <div class="clear-blank"></div>
-            <form action="/withdraw" method="post" id="withdraw"
-                  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+            <form action="/withdraw" method="post" id="withdraw">
                 <input name="amount" type="hidden" value=""/>
                 <input name="source" type="hidden" value="WEB"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -32,24 +31,5 @@
         </div>
     </div>
 
-</div>
-
-<div id="popWithdraw" class="pad-m recharge-plat" style="display: none;">
-    <p>请在新打开的联动优势页面提现完成后选择：</p>
-
-    <div class="ret">
-        <p>提现成功：<a href="/account" class="btn-success" data-category="确认成功" data-label="withdraw">确认成功</a></p>
-
-        <p>提现失败：<a href="/withdraw" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
-            <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心"
-                                    data-label="recharge">帮助中心</a></span>
-        </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
-    </div>
-</div>
-
-<div id="popWithdrawFail" class="pad-m recharge-plat" style="display: none;">
-    <p>操作失败(错误代码:YM001), 请联系客服</p>
-    <span>客服电话:400-169-1188 (服务时间:9:00-20:00)</span>
 </div>
 </@global.main>

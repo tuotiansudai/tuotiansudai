@@ -10,6 +10,8 @@ public class PayBaseContentDto extends BaseContentDto {
 
     private String returnUrl;
 
+    private String extMark;
+
     public String getAccountNo() {
         return accountNo;
     }
@@ -40,5 +42,13 @@ public class PayBaseContentDto extends BaseContentDto {
 
     public void setReturnUrl(String returnUrl) {
         this.returnUrl = returnUrl;
+    }
+
+    public String getExtMark() {
+        return extMark;
+    }
+
+    public void setExtMark(String extMark) {
+        this.extMark = extMark;
     }
 }

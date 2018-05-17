@@ -7,7 +7,7 @@ public enum BankCallbackType {
     CANCEL_CARD_BIND("银行卡解绑成功", "/personal-info"),
 
     RECHARGE("", ""),
-    WITHDRAW("", ""),
+    WITHDRAW("提现申请成功", "/withdraw"),
 
     AUTHORIZATION("", ""),
 
