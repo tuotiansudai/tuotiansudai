@@ -2,14 +2,6 @@ package com.tuotiansudai.smswrapper;
 
 public enum SmsTemplate {
 
-    /*
-    !!! ATTENTION !!!
-    请在阿里平台上配置的时候一定要注意，请严格按照变量在文本中出现的顺序进行编号，编号从0开始。
-    请在阿里平台上配置的时候一定要注意，请严格按照变量在文本中出现的顺序进行编号，编号从0开始。
-    请在阿里平台上配置的时候一定要注意，请严格按照变量在文本中出现的顺序进行编号，编号从0开始。
-    !!! ATTENTION !!!
-     */
-
 
     SMS_REGISTER_CAPTCHA_TEMPLATE(
             new SmsTemplateCell("SMS_45345002", "尊敬的拓天速贷客户，您的注册验证码是：${param0} 。请勿泄露给他人！"),

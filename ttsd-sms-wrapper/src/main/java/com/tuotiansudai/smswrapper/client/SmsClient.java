@@ -46,6 +46,8 @@ public class SmsClient {
 
     private SmsProvider smsProviderAlidayuVoice;
 
+    private JianZhouSmsClient jianZhouSmsWrapperClient;
+
     @Autowired
     public SmsClient(@Qualifier("smsProviderAlidayuText") SmsProvider smsProviderAlidayuText, @Qualifier("smsProviderAlidayuVoice") SmsProvider smsProviderAlidayuVoice) {
         this.smsProviderAlidayuText = smsProviderAlidayuText;

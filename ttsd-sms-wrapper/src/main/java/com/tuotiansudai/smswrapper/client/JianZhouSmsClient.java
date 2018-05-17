@@ -1,23 +1,22 @@
-package com.tuotiansudai.smswrapper.provider;
+package com.tuotiansudai.smswrapper.client;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.client.OkHttpLoggingInterceptor;
-import com.tuotiansudai.smswrapper.SmsTemplateCell;
+import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class JianZhouSmsWrapperClient {
+public class JianZhouSmsClient {
 
-    static Logger logger = Logger.getLogger(JianZhouSmsWrapperClient.class);
+    static Logger logger = Logger.getLogger(JianZhouSmsClient.class);
 
     private final static MediaType FORM = MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8");
 
@@ -33,7 +32,7 @@ public class JianZhouSmsWrapperClient {
 
     protected OkHttpClient okHttpClient;
 
-    public JianZhouSmsWrapperClient(){
+    public JianZhouSmsClient(){
         this.okHttpClient = new OkHttpClient();
         this.okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
         this.okHttpClient.setWriteTimeout(30, TimeUnit.SECONDS);
@@ -42,12 +41,12 @@ public class JianZhouSmsWrapperClient {
         okHttpClient.interceptors().add(loggingInterceptor);
     }
 
-    public void sendSms(boolean isVoice, List<String> mobileList, SmsTemplateCell template, List<String> paramList){
-        String msgText = "测试开始" + SMS_SIGN;
-        String destmobile = String.join(";", mobileList);
-        String content = "account=" + ACCOUNT + "&" + "password=" + PASSWORD + "&" + "sendDateTime=" + "" + "&" + "destmobile=" + destmobile + "&"
-                + "msgText=" + msgText;
-        this.syncExecute(isVoice, content);
+    public String sendSms(boolean isVoice, List<String> mobileList, JianZhouSmsTemplate template, List<String> paramList, String sendDateTime){
+        String msgText = template.generateContent(isVoice, paramList) + SMS_SIGN;
+        String mobiles = String.join(";", mobileList);
+        sendDateTime = Strings.isNullOrEmpty(sendDateTime) ? "" : sendDateTime;
+        String content = MessageFormat.format("account={0}&password={1}&sendDateTime={2}&destmobile={3}&msgText={4}", ACCOUNT, PASSWORD, sendDateTime, mobiles, msgText);
+        return this.syncExecute(isVoice, content);
     }
 
     private String syncExecute(boolean isVoice, String requestData){
@@ -70,6 +69,6 @@ public class JianZhouSmsWrapperClient {
     }
 
     public static void main(String[] args) {
-        new JianZhouSmsWrapperClient().sendSms(false, Lists.newArrayList("18895730992", "18310701649"), null, null);
+        new JianZhouSmsClient().sendSms(true, Lists.newArrayList("18895730992", "13671079909"), JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, null, null);
     }
 }
