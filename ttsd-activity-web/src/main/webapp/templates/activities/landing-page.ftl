@@ -2,7 +2,27 @@
 <@global.main pageCss="${css.landing_page_new_2018}" pageJavascript="${js.landing_page_new_2018}" activeNav="" activeLeftNav="" title="拓天速贷_新手注册送1000元投资红包_拓天速贷官网" keywords="拓天速贷,新手注册，1000元投资红包,6888元体验金,3%加息劵" description="拓天速贷新手注册送1000元投资红包,新人独享11%高息新手标,首次投资可获得3%加息券,新用户注册送6888元体验金,为广大投资用户提供多元化的投资选择和优质的综合投资服务.">
 <div class="landing-page-container" id="landingTop">
     <div class="banner">
-        <div class="banner-img"></div>
+        <div class="banner-img">
+            <div class="my-page-width banner-con">
+                <div class="login-wrap">
+                    <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
+                    <div class="login-con">
+                        <ul>
+                            <li><input class="width100 height100 borderRadius" placeholder="输入手机号码" name="mobile" maxlength="11" type="text"></li>
+                            <li><input class="width100 height100 borderRadius" placeholder="密码" maxlength="20" type="password" name="password" ></li>
+                            <li>
+                                <input class="borderRadius height100" placeholder="图形验证码" name="imageCaptcha" type="text" maxlength="5">
+                                <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
+                                <span class="img-change height100 nextImg">换一张</span>
+                            </li>
+                            <li><input class="height100 borderRadius" placeholder="手机验证码" name="captcha" type="text"><span class="get-captcha borderRadius height100">获取验证码</span></li>
+                            <li class="recommend"> <span class="icon-arrow-bottom">请输入推荐人</span>（此项选填） </li>
+                            <li><input class="borderRadius height100" type="text" name="referrer" maxlength="11" placeholder="推荐人手机号"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="landing-main">
         <div class="star-content">
@@ -36,7 +56,9 @@
             <div class="red-ware-wrap">
                 <h2 class="red-ware-title"></h2>
                 <div class="red-ware">
-                    <div class="red-ware-img"></div>
+                    <div class="red-ware-img">
+                        <a class="red-ware-btn" href="#landingTop">立即领取</a>
+                    </div>
                 </div>
             </div>
             <div class="newbie-increase-wrap">
@@ -152,7 +174,7 @@
 
             </div>
             <div class="kindly-tips-wrap">
-                <div class="title"><span class="left-line"></span>温馨提示<span class="right-line"></span></div>
+                <div class="title"><span class="tip-line left-line"></span>温馨提示<span class="tip-line right-line"></span></div>
                 <div class="kindly-tips-con">
                     <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
                     <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
@@ -162,7 +184,6 @@
                     <p>6.投资时产生的提现费用及手续费由用户自理；</p>
                     <p>7.每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
                     <p>8.活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
-                    <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
                 </div>
             </div>
 

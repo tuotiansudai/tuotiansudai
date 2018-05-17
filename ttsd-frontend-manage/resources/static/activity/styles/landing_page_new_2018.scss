@@ -1,14 +1,27 @@
 .main-frame {
   width: 100%;
 }
-
-body {
-
+.width100 {
+  width: 100%;
+}
+.height100 {
+  height: 100%;
+}
+input {
+  padding: 0;
+  margin: 0;
+}
+.borderRadius {
+  border-radius: 3px;
 }
 
 p {
   margin-bottom: 0;
   line-height: 1;
+}
+.my-page-width {
+  width: 1100px;
+  margin: 0 auto;
 }
 
 .landing-page-container {
@@ -20,7 +33,81 @@ p {
     .banner-img {
       width: 1462px;
       height: 521px;
-      background: url("../images/landingpage/banner.png") no-repeat center center;
+      background: url("../images/landingpage/banner.png") no-repeat center top;
+      .banner-con {
+        position: relative;
+        .login-wrap {
+          width: 354px;
+          position: absolute;
+          right: 0;
+          top: 30px;
+          .title {
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            font-size: 16px;
+            background: rgba(0,0,0,0.56);
+            color: #fff;
+            >span {
+              vertical-align: middle;
+            }
+            .icon-title {
+              display: inline-block;
+              margin-right: 12px;
+              width: 19px;
+              height: 25px;
+              background: url("../images/landingpage/icon_login_bank.png") no-repeat center center;
+              background-size: 100%;
+            }
+          }
+          .login-con {
+            box-sizing: border-box;
+            padding: 12px  26px;
+            background: rgba(2,2,2,0.27);
+            ul {
+              li {
+                height: 42px;
+                margin-bottom: 17px;
+                &.recommend {
+                  height: 30px;
+                }
+                input{
+                  border: 0;
+                  color: #858585;
+                  text-indent: 20px;
+                }
+                .image-captcha {
+                  display: inline-block;
+                  width: 76px;
+                  height: 30px;
+                  margin-left: 5px;
+                  margin-right: 5px;
+                  img {
+                    width: 100%;
+                    height: 100%;
+                  }
+                }
+                .nextImg {
+                  font-size: 16px;
+                  color: #3a84cf;
+                  cursor: pointer;
+                }
+                .get-captcha {
+                  width: 105px;
+                  vertical-align: middle;
+                  display: inline-block;
+                  background: #ff771c;
+                  color: #fff;
+                  text-align: center;
+                  line-height: 42px;
+                  margin-left: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
   }
   .landing-main {
@@ -68,6 +155,22 @@ p {
             height: 851px;
             background: url("../images/landingpage/red_ware_big.png") no-repeat center center;
             background-size: 100%;
+            .red-ware-btn {
+              position: absolute;
+              bottom: 94px;
+              width: 249px;
+              height: 84px;
+              line-height: 84px;
+              left: 50%;
+              margin-left: -133px;
+              color: #e40000;
+              font-size: 30px;
+              font-weight: bold;
+              background: url("../images/landingpage/red_ware_btn.png") no-repeat center center;
+              background-size: 100%;
+              text-align: center;
+              text-indent: -20px;
+            }
           }
         }
       }
@@ -395,15 +498,36 @@ p {
       }
       .kindly-tips-wrap {
         width: 1083px;
+        margin: 0 auto;
         .title {
           text-align: center;
           font-size: 30px;
           color: #faf0c3;
+          position: relative;
+          .tip-line {
+            width: 301px;
+            height: 18px;
+            position: absolute;
+            top: 20px;
+            &.left-line {
+              left: 135px;
+              background: url("../images/landingpage/tip_left_line.png") no-repeat center center;
+              background-size: 100%;
+            }
+            &.right-line {
+              right: 135px;
+              background: url("../images/landingpage/tip_right_line.png") no-repeat center center;
+              background-size: 100%;
+            }
+          }
         }
         .kindly-tips-con {
+          padding-bottom: 70px;
           p {
             line-height: 30px;
             margin-bottom: 5px;
+            color: #faf0c3;
+            font-size: 24px;
           }
         }
 
