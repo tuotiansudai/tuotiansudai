@@ -1,11 +1,10 @@
 package com.tuotiansudai.activity.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
 import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
@@ -80,19 +79,20 @@ public class SuperScholarActivityService {
     public List<Map<String, Object>> getQuestions(String loginName) throws IOException {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         InputStream inputStream = SuperScholarActivityService.class.getClassLoader().getResourceAsStream(QUESTIONS);
-        String jsonString = inputStreamToString(inputStream);
-        JsonObject json = (JsonObject) new JsonParser().parse(jsonString);
+        Map<String, Object> map = new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, Object>>() {
+        });
         HashSet<String> randomQuestion = new HashSet<>();
         randomSet(randomQuestion);
         List<String> questionIndex = new ArrayList<>(randomQuestion);
         List<String> answers = new ArrayList<>();
         List<Map<String, Object>> questions = questionIndex.stream()
                 .map(index -> {
-                    answers.add(json.get(index).getAsJsonObject().get("answer").getAsString());
-                    Set<Map.Entry<String, JsonElement>> optionsJsonSet = json.get(index).getAsJsonObject().get("options").getAsJsonObject().entrySet();
+                    HashMap<String, Object> values = (HashMap<String, Object>) map.get(index);
+                    answers.add((String) values.get("answer"));
+                    HashMap<String, String> options = (HashMap<String, String>) values.get("options");
                     return Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                            .put("question", json.get(index).getAsJsonObject().get("question").getAsString())
-                            .put("options", optionsJsonSet.stream().map(entry -> (entry.getKey() + "、" + entry.getValue().getAsString())).collect(Collectors.toList()))
+                            .put("question", values.get("question"))
+                            .put("options", options.entrySet().stream().map(entry -> (entry.getKey() + "、" + entry.getValue())).collect(Collectors.toList()))
                             .build());
                 })
                 .collect(Collectors.toList());
@@ -131,7 +131,6 @@ public class SuperScholarActivityService {
         return true;
     }
 
-    @Transactional
     public Map<String, Object> viewResult(String loginName) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         if (superScholarRewardModel == null){
@@ -175,15 +174,6 @@ public class SuperScholarActivityService {
         if (set.size() < 5) {
             randomSet(set);
         }
-    }
-
-    private String inputStreamToString(InputStream is) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int i = -1;
-        while ((i = is.read()) != -1) {
-            byteArrayOutputStream.write(i);
-        }
-        return byteArrayOutputStream.toString("utf-8");
     }
 
     public long getCouponId() {
