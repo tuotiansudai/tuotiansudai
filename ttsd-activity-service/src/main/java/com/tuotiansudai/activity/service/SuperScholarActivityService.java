@@ -130,7 +130,6 @@ public class SuperScholarActivityService {
         return true;
     }
 
-    @Transactional
     public Map<String, Object> viewResult(String loginName) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         if (superScholarRewardModel == null){
