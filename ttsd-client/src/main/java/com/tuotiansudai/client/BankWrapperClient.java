@@ -1,9 +1,11 @@
 package com.tuotiansudai.client;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
@@ -12,7 +14,9 @@ import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
 import com.tuotiansudai.fudian.dto.BankWithdrawDto;
+import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -111,8 +115,26 @@ public class BankWrapperClient {
     }
 
     public BankAsyncData withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
-        BankWithdrawDto dto = new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId);
-        return asyncExecute(MessageFormat.format("/withdraw/source/{0}", source.name().toLowerCase()), dto);
+        return asyncExecute(MessageFormat.format("/withdraw/source/{0}", source.name().toLowerCase()),
+                new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId));
+    }
+
+    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, long loanId, long loanAmount) {
+        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, String.valueOf(loanId), loanAmount);
+
+        String json = syncExecute("/loan-create", bankLoanCreateDto);
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankLoanCreateMessage(false, null);
+        }
+
+        try {
+            return new GsonBuilder().create().fromJson(json, BankLoanCreateMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", String.valueOf(loanId)), e);
+        }
+
+        return new BankLoanCreateMessage(false, null);
     }
 
     private BankAsyncData asyncExecute(String path, Object requestData) {
@@ -143,5 +165,30 @@ public class BankWrapperClient {
 
         return new BankAsyncData();
     }
+
+    private String syncExecute(String path, Object requestData) {
+        String content = new GsonBuilder().create().toJson(requestData);
+        String url = this.baseUrl + path;
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = this.okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+            logger.error(MessageFormat.format("call pay wrapper status: {}, url: {}, request: {}", response.code(), url, content));
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("call pay wrapper error, url: {}, request: {}", url, content), e);
+        }
+
+        return null;
+    }
+
 
 }

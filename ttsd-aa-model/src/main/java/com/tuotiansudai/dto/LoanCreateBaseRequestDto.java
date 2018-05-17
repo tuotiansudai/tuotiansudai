@@ -86,7 +86,7 @@ public class LoanCreateBaseRequestDto {
     public LoanCreateBaseRequestDto() {
     }
 
-    public LoanCreateBaseRequestDto(LoanModel loanModel) {
+    public LoanCreateBaseRequestDto(LoanModel loanModel, List<LoanTitleRelationModel> loanTitles) {
         this.id = loanModel.getId();
         this.productType = loanModel.getProductType();
         this.loanType = loanModel.getType();
@@ -106,7 +106,7 @@ public class LoanCreateBaseRequestDto {
         this.deadline = loanModel.getDeadline();
         this.contractId = loanModel.getContractId();
         this.status = loanModel.getStatus();
-        this.loanTitles = loanModel.getLoanTitles();
+        this.loanTitles = loanTitles;
         this.verifyTime = loanModel.getVerifyTime();
         this.verifyLoginName = loanModel.getVerifyLoginName();
         this.recheckTime = loanModel.getRecheckTime();
