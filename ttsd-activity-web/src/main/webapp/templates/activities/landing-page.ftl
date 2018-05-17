@@ -13,7 +13,7 @@
                     <div class="line"></div>
                     <div class="transverse-line left-line"></div>
                     <div class="transverse-line right-line"></div>
-                    <div class="top"> </div>
+                    <div class="top"></div>
                     <div class="content clearfix">
                         <dl class="fl left-desc">
                             <dt>13<span>%</span></dt>
@@ -46,7 +46,7 @@
                     <div class="line"></div>
                     <div class="transverse-line left-line"></div>
                     <div class="transverse-line right-line"></div>
-                    <div class="top"> </div>
+                    <div class="top"></div>
                     <div class="content clearfix">
                         <dl class="fl left-desc">
                             <dt>9<span>%</span><em class="plus">+</em><span class="newbie-dt">2<i>%<i></i></span></dt>
@@ -63,33 +63,106 @@
 
                 </div>
                 <div class="to-loan textCenter">
-                    <a class="gold-btn" href="/loan-list">去投资</a>
+                    <a class="gold-btn" href="/loan-list">马上投资</a>
                 </div>
                 <div class="loan-wrap">
                     <div class="desc-container">
-                        <div class="top"> </div>
+                        <div class="top"></div>
                         <div class="content">
-                          <div class="top-content clearfix">
-                              <div class="first">
-                                  <p class="top-p">11<span>%</span></p>
-                                  <p>约定年化利率</p>
-                              </div>
-                              <div class="split"></div>
-                              <div class="second">
-                                  <p class="top-p">360<span>天</span></p>
-                                  <p>项目期限</p>
-                              </div>
-                              <div class="split"></div>
-                              <div class="third">
-                                  <p><a href="/loan-list">马上投资</a></p>
-                                  <p><span class="checkbox-red"></span>银行资金存管</p>
-                              </div>
-                          </div>
+                            <div class="top-content clearfix border-section">
+                                <div class="first">
+                                    <p class="top-p">10<span>%</span></p>
+                                    <p>约定年化利率</p>
+                                </div>
+                                <div class="split"></div>
+                                <div class="second">
+                                    <p class="top-p">360<span>天</span></p>
+                                    <p>项目期限</p>
+                                </div>
+                                <div class="split"></div>
+                                <div class="third">
+                                    <p><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                    <p class="bank"><span class="checkbox-red"></span><span>银行资金存管</span></p>
+                                </div>
+                            </div>
+                            <div class="bot-content clearfix">
+                                <div class="left-bot border-section fl">
+                                    <div class="loan-wrap">
+                                        <h2 class="loan-title">房产抵押借款</h2>
+                                        <div class="loan-con">
+                                            <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
+                                                    class="day">天</span></div>
+                                            <p class="rate">约定年化利率</p>
+                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span class="icon2"></span><span>按天计息 即投即生息</span></p>
+                                            <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right-bot border-section fr">
+                                    <ul>
+                                        <li><label>投资金额：</label><div class="border-section"><input type="text"><span>元</span></div></li>
+                                        <li><label>项目期限：</label><div class="border-section"><input type="text"><span>天</span></div></li>
+                                        <li><label>约定年化利率：</label><div class="border-section"><input type="text"><span>%</span></div></li>
+                                    </ul>
+                                    <p class="compute-link"><a href="javascript:;" class="btn-red">计算收益</a></p>
+                                    <p class="profit">本息合计<strong>0</strong>元</p>
+                                    <p class="small-tip">计算结果仅供参考，以实际收益为准</p>
+
+
+                                </div>
+                            </div>
 
                         </div>
                         <div class="bot"></div>
 
                     </div>
+                </div>
+            </div>
+            <div class="six-advance-wrap">
+                <h2 class="title"></h2>
+                <div class="advance-con">
+                    <dl>
+                        <dt class="icon-advance1"></dt>
+                        <dd><p class="profile">银行资金存管</p><p class="font">与平台自有资金物理隔离</p></dd>
+                    </dl>
+                    <dl>
+                        <dt class="icon-advance2"></dt>
+                        <dd><p class="profile">约定年化利率8%-10%</p><p class="font">房/车抵押债权安全系数高</p></dd>
+                    </dl>
+                    <dl>
+                        <dt class="icon-advance3"></dt>
+                        <dd><p class="profile">六重风控，22道手续</p><p class="font">历史全额兑付，0逾期0坏账</p></dd>
+                    </dl>
+                    <dl>
+                        <dt class="icon-advance4"></dt>
+                        <dd><p class="profile">获批ICP经营许可证</p><p class="font">稳健运营，合规披露</p></dd>
+                    </dl>
+                    <dl>
+                        <dt class="icon-advance5"></dt>
+                        <dd><p class="profile">四大保障，12项措施</p><p class="font">资金、个人信息均安全</p></dd>
+                    </dl>
+                    <dl>
+                        <dt class="icon-advance6"></dt>
+                        <dd><p class="profile">携手CFCA权威认证</p><p class="font">投资合同受法律保护</p></dd>
+                    </dl>
+                </div>
+                <div class="gift-link textCenter">
+                    <a class="gold-btn" href="#landingTop">注册领取新手大礼包</a>
+                </div>
+
+            </div>
+            <div class="kindly-tips-wrap">
+                <div class="title"><span class="left-line"></span>温馨提示<span class="right-line"></span></div>
+                <div class="kindly-tips-con">
+                    <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
+                    <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
+                    <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
+                    <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端“我的”中查看；</p>
+                    <p>5.用户每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选，使用红包金额将于所投债权放款后返至您的账户；</p>
+                    <p>6.投资时产生的提现费用及手续费由用户自理；</p>
+                    <p>7.每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
+                    <p>8.活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
+                    <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
                 </div>
             </div>
 

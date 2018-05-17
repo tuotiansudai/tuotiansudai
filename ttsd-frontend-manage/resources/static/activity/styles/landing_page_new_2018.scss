@@ -5,13 +5,15 @@
 body {
 
 }
+
 p {
   margin-bottom: 0;
+  line-height: 1;
 }
+
 .landing-page-container {
   font-family: "MICROSOFT YAHEI";
   width: 100%;
-  height: 4700px;
   .banner {
     height: 521px;
     background: url("../images/landingpage/banner_bg.png") no-repeat center center;
@@ -22,10 +24,8 @@ p {
     }
   }
   .landing-main {
-    height: 4700px;
     background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
     .star-content {
-      height: 7000px;
       background: url("../images/landingpage/body_bg.png") repeat-y center top;
       .newbie-register-wrap {
         padding-top: 30px;
@@ -120,18 +120,17 @@ p {
               padding-left: 80px;
               padding-right: 80px;
               padding-top: 0;
+              padding-bottom: 0;
               .top-content {
-                border-radius: 8px;
-                border: 3px solid #e2b573;
                 padding-bottom: 20px;
                 background: #fff;
                 padding-top: 30px;
-                >div {
+                > div {
                   float: left;
                   font-size: 14px;
                   .top-p {
                     color: #bc3434;
-                    font-weight: bold;
+                    font-weight: normal;
                   }
                   p {
                     text-align: center;
@@ -164,12 +163,161 @@ p {
 
                 }
                 .split {
+                  width: 1px;
                   height: 80px;
                   background: #eccfa4;
                 }
                 .third {
+                  margin-left: 80px;
                   .checkbox-red {
+                    display: inline-block;
+                    width: 19px;
+                    height: 19px;
+                    background: url("../images/landingpage/checkbox_bg.png") no-repeat center center;
+                    background-size: 100%;
+                    margin-right: 10px;
+                  }
+                  .bank {
+                    margin-top: 5px;
+                    span {
+                      vertical-align: middle;
+                    }
+                  }
 
+                }
+              }
+              .bot-content {
+                margin-top: 55px;
+                height: 390px;
+                .left-bot {
+                  width: 295px;
+                  height: 100%;
+                  .loan-wrap {
+                    .loan-title {
+                      height: 46px;
+                      line-height: 46px;
+                      text-align: center;
+                      color: #fff;
+                      font-size: 20px;
+                      background: #e2b573;
+                    }
+                    .loan-con {
+                      background: #fff;
+                      box-sizing: border-box;
+                      height: 337px;
+                      padding-top: 60px;
+                      padding-bottom: 30px;
+                      border-radius: 0 0 8px 8px;
+                      .loan-info {
+                        font-size: 20px;
+                        text-align: center;
+                        line-height: 70px;
+                        .big-num {
+                          font-size: 118px;
+                          color: #ce2f2c;
+                        }
+                        .percent {
+                          font-size: 60px;
+                          color: #ce2f2c;
+                          margin-right: 10px;
+                        }
+                        .day {
+                          font-size: 14px;
+                        }
+                      }
+                      .rate {
+                        color: #383838;
+                        font-size: 18px;
+                        text-align: center;
+                      }
+                      .other {
+                        text-align: center;
+                        margin-top: 26px;
+                        > span {
+                          vertical-align: middle;
+                        }
+                        .icon1 {
+                          display: inline-block;
+                          width: 14px;
+                          height: 18px;
+                          background: url("../images/landingpage/icon1.png") no-repeat center center;
+                          background-size: 100%;
+                          margin-right: 8px;
+                        }
+                        .icon2 {
+                          display: inline-block;
+                          width: 17px;
+                          height: 18px;
+                          background: url("../images/landingpage/icon2.png") no-repeat center center;
+                          background-size: 100%;
+                          margin-right: 8px;
+                          margin-left: 8px;
+                        }
+                      }
+                      .loan-link {
+                        text-align: center;
+                        margin-top: 30px;
+
+                      }
+                    }
+                  }
+                }
+                .right-bot {
+                  width: 495px;
+                  height: 100%;
+                  background: #fff;
+                  padding: 20px;
+                  box-sizing: border-box;
+                  ul {
+                    li {
+                      margin-bottom: 26px;
+                      label {
+                        display: inline-block;
+                        vertical-align: middle;
+                        font-size: 21px;
+                        color: #565656;
+                        width: 148px;
+                        text-align: right;
+                      }
+                      div {
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: 300px;
+                        height: 54px;
+                        input {
+                          border: none;
+                          padding: 0;
+                          background: none;
+                          width: 256px;
+                        }
+                        span {
+                          font-size: 22px;
+                        }
+                      }
+
+                    }
+                  }
+                  .compute-link {
+                    text-align: right;
+                    padding-right: 32px;
+                    margin-top: 10px;
+                    .btn-red {
+                      text-align: center;
+                    }
+                  }
+                  .profit {
+                    font-size: 21px;
+                    color: #2c2c2c;
+                    margin-top: 5px;
+                    strong {
+                      color: #ce2f2c;
+                      font-size: 30px;
+                    }
+                  }
+                  .small-tip {
+                    font-size: 12px;
+                    color: #5c5a5a;
+                    margin-top: 10px;
                   }
 
                 }
@@ -177,6 +325,88 @@ p {
             }
           }
         }
+      }
+
+      .six-advance-wrap {
+        .title {
+          width: 869px;
+          height: 113px;
+          margin: 0 auto;
+          margin-top: 50px;
+          margin-bottom: 60px;
+          background: url("../images/landingpage/six_advantage.png") no-repeat center center;
+          background-size: 100%;
+        }
+        .advance-con {
+          width: 972px;
+          margin: 0 auto;
+          dl {
+            width: 324px;
+            float: left;
+            margin-bottom: 70px;
+            text-align: center;
+            dt {
+              width: 174px;
+              height: 173px;
+              display: inline-block;
+              &.icon-advance1 {
+                background: url("../images/landingpage/icon_advance1.png") no-repeat center center;
+                background-size: 100%;
+              }
+              &.icon-advance2 {
+                background: url("../images/landingpage/icon_advance2.png") no-repeat center center;
+                background-size: 100%;
+              }
+              &.icon-advance3 {
+                background: url("../images/landingpage/icon_advance3.png") no-repeat center center;
+                background-size: 100%;
+              }
+              &.icon-advance4 {
+                background: url("../images/landingpage/icon_advance4.png") no-repeat center center;
+                background-size: 100%;
+              }
+              &.icon-advance5 {
+                background: url("../images/landingpage/icon_advance5.png") no-repeat center center;
+                background-size: 100%;
+              }
+              &.icon-advance6 {
+                background: url("../images/landingpage/icon_advance6.png") no-repeat center center;
+                background-size: 100%;
+              }
+            }
+            dd {
+              .profile {
+                font-size: 19px;
+                line-height: 28px;
+                color: #fbf1c5;
+              }
+              .font {
+                font-size: 16px;
+                color: #fbf1c5;
+                line-height: 28px;
+              }
+
+            }
+          }
+        }
+        .gift-link {
+          margin-bottom: 20px;
+        }
+      }
+      .kindly-tips-wrap {
+        width: 1083px;
+        .title {
+          text-align: center;
+          font-size: 30px;
+          color: #faf0c3;
+        }
+        .kindly-tips-con {
+          p {
+            line-height: 30px;
+            margin-bottom: 5px;
+          }
+        }
+
       }
     }
   }
@@ -287,15 +517,28 @@ p {
     background-size: 100%;
   }
 }
+
 .btn-red {
   width: 204px;
   height: 44px;
+  line-height: 44px;
   background: #bc3434;
   box-sizing: border-box;
   border-radius: 8px;
   color: #fff;
   font-size: 23px;
+  display: inline-block;
+  &:hover {
+    color: #fff;
+  }
 }
+
+.border-section {
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 3px solid #e2b573;
+}
+
 .fl {
   float: left;
 }
