@@ -5,9 +5,11 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
 import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.service.*;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import org.slf4j.Logger;
@@ -96,13 +98,18 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/loan-create", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanCreate(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-create", method = RequestMethod.POST)
+    public ResponseEntity<BankLoanCreateMessage> loanCreate(@RequestBody BankLoanCreateDto params) {
         logger.info("[Fudian] call loan create");
 
-        ResponseDto responseDto = loanCreateService.create("UU02615960791461001", "UA02615960791501001", "10.00", "LOAN_CREDIT", null, null);
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.ok(responseDto);
+        BankLoanCreateMessage bankLoanCreateMessage = loanCreateService.create(params);
+
+        return ResponseEntity.ok(bankLoanCreateMessage);
     }
 
     @RequestMapping(path = "/loan-full", method = RequestMethod.GET)

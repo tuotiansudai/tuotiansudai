@@ -10,9 +10,9 @@ public class LoanCreateRequestDto extends PayBaseRequestDto {
 
     private String loanName;
 
-    private String loanType = "1";
+    private String loanType = "1"; // 1表示普通标的， 融资人和资金使用方相同。资金为融资人使用 3表示担保标的， 融资人无法还款的时候，有担保公司代偿还款，代偿必须传此类型，否则无法代偿成功
 
-    public LoanCreateRequestDto(String loginName, String mobile, String userName, String accountNo, String amount, String loanName, Map<String, String> extraValues) {
+    public LoanCreateRequestDto(String loginName, String mobile, String userName, String accountNo, String loanName, String amount, Map<String, String> extraValues) {
         super(Source.WEB, loginName, mobile, userName, accountNo, ApiType.LOAN_CREATE, extraValues);
         this.amount = amount;
         this.loanName = loanName;
