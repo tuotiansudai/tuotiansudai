@@ -92,7 +92,7 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
 
     private void referrerSuperScholarActivityInvest(String loginName){
         long sumAmount = activityInvestMapper.sumInvestAmountByActivityLoginNameAndTime(loginName,
-                ActivityCategory.SCHOOL_SEASON_ACTIVITY.name(),
+                ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(),
                 DateTime.now().withTimeAtStartOfDay().toDate(),
                 new Date());
 
