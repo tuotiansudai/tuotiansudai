@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -7,9 +8,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.UserFundView;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
@@ -54,24 +53,25 @@ public class AccountController {
     private UserService userService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private UserBindBankCardService userBindBankCardService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
 
         String loginName = LoginUserInfo.getLoginName();
-
+        String mobile = LoginUserInfo.getMobile();
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName);
+        UserBankCardModel bankCard = userBindBankCardService.findBankCard(loginName);
 
-        modelAndView.addObject("mobile", LoginUserInfo.getMobile());
+
+        modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
 
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
@@ -93,7 +93,7 @@ public class AccountController {
         modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
         modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
         modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
-        modelAndView.addObject("hasAccount", accountModel != null);
+        modelAndView.addObject("hasAccount", bankAccount != null);
         modelAndView.addObject("hasBankCard", bankCard != null);
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益

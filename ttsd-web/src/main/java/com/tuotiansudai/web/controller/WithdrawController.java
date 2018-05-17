@@ -47,6 +47,7 @@ public class WithdrawController {
 
         long balance = bankAccountService.findBankAccount(LoginUserInfo.getLoginName()).getBalance();
         ModelAndView modelAndView = new ModelAndView("/withdraw");
+        modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         return modelAndView;
