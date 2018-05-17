@@ -1,0 +1,562 @@
+$yellow: #ffec85;
+p {
+  margin-bottom: 5px;
+}
+
+.super-scholar-banner {
+  height: 424px;
+  background: url("../images/2018/super-scholar/pc_banner.png") no-repeat center center;
+}
+
+.super-scholar-container {
+  background: #3d3f4b;
+  padding-top: 37px;
+  padding-bottom: 200px;
+}
+
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.part-one-title {
+  position: relative;
+  width: 583px;
+  height: 94px;
+  margin: 0 auto;
+  background: url("../images/2018/super-scholar/part-one-title.png") no-repeat;
+  background-size: 100%;
+}
+
+.notice {
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 660px;
+  height: 60px;
+  border-radius: 30px;
+  border: 3px solid #132124;
+  margin: 0 auto;
+  margin-top: 37px;
+  font-size: 26px;
+  color: #d6eee1;
+  font-weight: bold;
+  line-height: 60px;
+  text-align: center;
+  &.isAnswered {
+    width: 700px;
+    text-indent: 52px;
+    .horn {
+      left: 15px;
+    }
+  }
+  .horn {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    margin-top: -17px;
+    width: 44px;
+    height: 35px;
+    background: url("../images/2018/super-scholar/horn.png") no-repeat;
+    background-size: 100%;
+  }
+}
+
+.qrcode {
+  position: relative;
+  width: 285px;
+  height: 280px;
+  background: url("../images/2018/super-scholar/qr_bg.png") no-repeat;
+  background-size: 100%;
+  margin: 0 auto;
+  margin-top: 37px;
+  padding-top: 17px;
+  box-sizing: border-box;
+  .tips {
+    position: absolute;
+    right: -120px;
+    width: 101px;
+    height: 161px;
+    top: 90px;
+    background: url("../images/2018/super-scholar/scavenging_tips.png") no-repeat;
+    background-size: 100%;
+  }
+  .code {
+    width: 249px;
+    height: 247px;
+    background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+  }
+}
+
+.immediate-answer {
+  display: none;
+}
+
+.my-reappearance {
+  position: relative;
+  width: 583px;
+  height: 94px;
+  background: url("../images/2018/super-scholar/my_reappearance.png") no-repeat;
+  background-size: 100%;
+  margin: 0 auto;
+  margin-top: 70px;
+
+}
+
+.my-reappearance-wap {
+  display: none;
+}
+
+.ball {
+  position: absolute;
+  width: 96px;
+  height: 114px;
+  background: url("../images/2018/super-scholar/ball.png") no-repeat;
+  background-size: 100%;
+  bottom: -40px;
+  right: -60px;
+}
+
+.my_reappearance-table {
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 1000px;
+  table {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    thead {
+      th {
+        font-size: 24px;
+        color: $yellow;
+        background: none;
+        font-weight: normal;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+        border-right: 2px solid rgba(255, 255, 255, 0.8);
+      }
+    }
+    tbody {
+      tr {
+        td {
+          font-size: 24px;
+          color: #fff;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+          border-right: 2px solid rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+  }
+
+  .get-more {
+    margin-top: 67px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+}
+.my_reappearance-table-wap {
+  display: none;
+}
+
+.to-loan {
+  text-align: center;
+  margin-bottom: 46px;
+}
+
+.look-btn {
+  display: inline-block;
+  width: 139px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  color: $yellow;
+  font-size: 21px;
+  background: url("../images/2018/super-scholar/btn_bg.png") no-repeat;
+  background-size: 100%;
+  &:hover {
+    color: $yellow;
+  }
+}
+
+.to-loan-btn {
+  display: inline-block;
+  width: 644px;
+  height: 120px;
+  background: url("../images/2018/super-scholar/to_loan_btn.png") no-repeat;
+  background-size: 100%;
+  text-indent: -9999999px;
+}
+
+.tips-and-rules {
+  box-sizing: border-box;
+  width: 1003px;
+  margin: 0 auto;
+
+  .top {
+    height: 23px;
+    background: url("../images/2018/super-scholar/kindly_tips_top.png") no-repeat;
+    background-size: 100%;
+  }
+  .bot {
+    height: 23px;
+    background: url("../images/2018/super-scholar/kindly_tips_bot.png") no-repeat;
+    background-size: 100%;
+  }
+  .bg {
+    padding: 30px;
+    background: url("../images/2018/super-scholar/kindly_bg.png") repeat-y;
+    background-size: 100%;
+  }
+  h2 {
+    color: #fff;
+    font-size: 38px;
+  }
+  p {
+    color: #fff;
+    font-size: 24px;
+    line-height: 30px;
+  }
+  table {
+    margin-top: 16px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    td {
+      color: #fff;
+      font-size: 24px;
+      line-height: 30px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+      border-right: 2px solid rgba(255, 255, 255, 0.8);
+    }
+  }
+
+}
+
+.reappearance-content {
+  overflow: hidden;
+}
+
+@media screen and(max-width: 768px) {
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .super-scholar-banner {
+    height: 5.86rem;
+    background: url("../images/2018/super-scholar/wap_banner.png") no-repeat center center;
+    background-size: 100%;
+  }
+
+  .super-scholar-container {
+    background: #1e272e;
+    padding-top: 0.7rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .part-one-title {
+    position: static;
+    width: 6.08rem;
+    height: 1rem;
+    background: url("../images/2018/super-scholar/part_one_titile_wap.png") no-repeat;
+    background-size: 100%;
+  }
+
+  .notice {
+    position: relative;
+    box-sizing: border-box;
+    width: 6.8rem;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background: #212f34;
+    margin-top: 0.6rem;
+    font-size: 0.28rem;
+    line-height: 0.5rem;
+    &.isAnswered {
+      width: 100%;
+      text-align: right;
+      .horn {
+        left: 0.1rem;
+      }
+    }
+    .horn {
+      position: absolute;
+      left: 0.4rem;
+      top: 50%;
+      margin-top: -0.2rem;
+      width: 0.44rem;
+      height: 0.35rem;
+      background: url("../images/2018/super-scholar/horn.png") no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  .qrcode {
+    position: relative;
+    width: 3.75rem;
+    height: 3.68rem;
+    margin-top: 0.34rem;
+    padding-top: 0.16rem;
+    margin-bottom: 0.4rem;
+    .tips {
+      right: -1.2rem;
+      width: 1.19rem;
+      height: 1.91rem;
+      top: 1.8rem;
+      background: url("../images/2018/super-scholar/scavenging_tips_wap.png") no-repeat;
+      background-size: 100%;
+    }
+    .code {
+      width: 3.33rem;
+      height: 3.36rem;
+      background: url("../images/2018/super-scholar/qr_code.png") no-repeat;
+      background-size: 100%;
+    }
+  }
+  .immediate-answer {
+    display: block;
+    width: 6.44rem;
+    height: 1.2rem;
+    background: url("../images/2018/super-scholar/answer_btn.png") no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    margin-top: 0.68rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .my-reappearance {
+    display: none;
+  }
+  .my-reappearance-wap {
+    display: block;
+    text-align: center;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+    a {
+      color: #a91d2e;
+      font-size: 0.3rem;
+      padding-top: 0.1rem;
+      border-bottom: 2px solid #a91d2e;
+    }
+  }
+
+  .ball {
+    display: none;
+  }
+
+  .my_reappearance-table {
+    display: none;
+  }
+  .my_reappearance-table-wap {
+    display: block;
+    margin: 0 auto;
+    margin-top: 0.4rem;
+    margin-bottom: 0.5rem;
+    width: 6.1rem;
+    table {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      thead {
+        th {
+          font-size: 0.24rem;
+          color: $yellow;
+          background: none;
+          font-weight: normal;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+          border-right: 2px solid rgba(255, 255, 255, 0.8);
+        }
+      }
+      tbody {
+        tr {
+          td {
+            font-size: 0.24rem;
+            color: #fff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+            border-right: 2px solid rgba(255, 255, 255, 0.8);
+          }
+        }
+      }
+    }
+
+  }
+
+  .to-loan {
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .to-loan-btn {
+    display: inline-block;
+    width: 6.44rem;
+    height: 1.2rem;
+    text-indent: -9999999px;
+  }
+
+  .tips-and-rules {
+    width: 6.5rem;
+    .top {
+      height: 0.23rem;
+      background: url("../images/2018/super-scholar/kindly_top.png") no-repeat;
+      background-size: 100%;
+    }
+    .bot {
+      height: 0.32rem;
+      background: url("../images/2018/super-scholar/kindly_bot_wap.png") no-repeat;
+      background-size: 100%;
+    }
+    .bg {
+      box-sizing: border-box;
+      padding: 0 0.3rem 0.1rem 0.3rem;
+      background: url("../images/2018/super-scholar/kindly_bg_wap.png") repeat-y;
+      background-size: 100%;
+    }
+    h2 {
+      font-size: 0.32rem;
+      color: #f0f0f0;
+    }
+    p {
+      font-size: 0.24rem;
+      line-height: 0.4rem;
+    }
+    table {
+      margin-top: 0.16rem;
+      margin-bottom: 0.2rem;
+      td {
+        font-size: 0.24rem;
+        line-height: 0.4rem;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+  }
+  .reappearance-content {
+    overflow: hidden;
+  }
+  //答题页面
+  .question-container {
+    background: url("../images/2018/super-scholar/question_bot.png") no-repeat;
+    background-size: 100%;
+
+    .question-head {
+      width: 7.5rem;
+      height: 1.64rem;
+      background: url("../images/2018/super-scholar/question_title.png") no-repeat;
+      background-size: 100%;
+    }
+    .question-wrap {
+      position: relative;
+      background: #1e2b2e url("../images/2018/super-scholar/question_bg.png") no-repeat;
+      background-size: 100%;
+      height: 9.44rem;
+      .question-inner {
+        position: absolute;
+        z-index: 20;
+        left: 50%;
+        margin-left: -3.42rem;
+        box-sizing: border-box;
+        width: 6.86rem;
+        padding-left: 0.45rem;
+        padding-right: 0.45rem;
+        padding-top: 0.6rem;
+        padding-bottom: 0.8rem;
+        height: 9.44rem;
+        background: url("../images/2018/super-scholar/question_inner_bg.png") no-repeat;
+        background-size: 100%;
+        &.inner2 {
+          z-index: 19;
+        }
+        &.inner3 {
+          z-index: 18;
+        }
+        &.inner4 {
+          z-index: 17;
+        }
+        &.inner5 {
+          z-index: 16;
+          .question-btn {
+            background: url("../images/2018/super-scholar/complete_question_btn.png") no-repeat;
+            background-size: 100%;
+          }
+
+        }
+        .title {
+          color: #2a2a2a;
+          font-size: 0.3rem;
+        }
+        ul {
+          margin-top: 0.9rem;
+          li {
+            position: relative;
+            background: #d64f5d;
+            &.active {
+              background: #a2a2a2;
+            }
+            border: 2px solid #4b4b4b;
+            border-radius: 2px;
+            font-size: 0.27rem;
+            color: #fff;
+            text-indent: 0.3rem;
+            line-height: 0.8rem;
+            margin-top: 0.5rem;
+            .hight-light {
+              position: absolute;
+              left: 0.1rem;
+              top: 0.05rem;
+              width: 0.39rem;
+              height: 0.12rem;
+              background: url("../images/2018/super-scholar/hight_light.png") no-repeat;
+              background-size: 100%;
+            }
+          }
+        }
+        .question-btn {
+         position: absolute;
+          display: block;
+          z-index: 2;
+          bottom: 0.6rem;
+          left: 50%;
+          margin-left: -2.15rem;
+          width: 4.35rem;
+          height: 0.98rem;
+          background: url("../images/2018/super-scholar/next_question_btn.png") no-repeat;
+          background-size: 100%;
+          &.last {
+            background: url("../images/2018/super-scholar/complete_question_btn.png") no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    .question-bot {
+      position: relative;
+      height: 1.8rem;
+      background: #1e2b2e;
+      .arrow {
+        position: absolute;
+        top: -0.18rem;
+        left: 0;
+        width: 0.53rem;
+        height: 1.09rem;
+        background: url("../images/2018/super-scholar/arrow.png") no-repeat;
+        background-size: 100%;
+      }
+      .book {
+        position: absolute;
+        right: 0;
+        bottom: 0.5rem;
+        width: 1.31rem;
+        height: 1.10rem;
+        background: url("../images/2018/super-scholar/book.png") no-repeat;
+        background-size: 100%;
+      }
+      .desk {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 7.5rem;
+        height: 1.02rem;
+        background: url("../images/2018/super-scholar/question_bot.png") no-repeat;
+        background-size: 100%;
+      }
+    }
+  }
+
+}
