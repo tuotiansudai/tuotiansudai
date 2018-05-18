@@ -63,7 +63,7 @@ public class SmsService {
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate., isVoice, Lists.newArrayList(captcha), ip);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
     }
 
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
