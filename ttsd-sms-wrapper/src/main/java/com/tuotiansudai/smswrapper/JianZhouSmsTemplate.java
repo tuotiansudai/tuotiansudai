@@ -5,19 +5,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-public enum  JianZhouSmsTemplate {
+public enum JianZhouSmsTemplate {
 
     SMS_REGISTER_CAPTCHA_TEMPLATE(
             "尊敬的用户，您的注册验证码是：${param0} 。请勿泄露给他人！",
             "尊敬的用户，您的注册验证码是：${param0} 。请勿泄露给他人！"),
-
-    SMS_REGISTER_SUCCESS_TEMPLATE(
-            "恭喜您注册成功！1000元新人红包及6888元体验金已到账！登录拓天速贷，新客独享10%约定年化收益！",
-            null),
-
-    SMS_REGISTER_SUCCESS_REFERRER_TEMPLATE(
-            "尊敬的用户，您推荐的好友${param0}已成功注册，(邀请好友投资)您还能再拿0.5%现金奖励哦！",
-            null),
 
     SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE(
             "尊敬的用户，您的验证码是：${param0} 。请勿泄露给他人！",
@@ -28,7 +20,7 @@ public enum  JianZhouSmsTemplate {
             "尊敬的用户，您的找回密码的验证码是：${param0} 。请勿泄露给他人！"),
 
     SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE(
-           "尊敬的用户，您的登录密码已修改。如非本人操作，请速登录拓天速贷官网重置密码，或联系客服处理，电话：400-169-1188。",
+            "尊敬的用户，您的登录密码已修改。如非本人操作，请速登录拓天速贷官网重置密码，或联系客服处理，电话：400-169-1188。",
             null),
 
     SMS_LOAN_REPAY_NOTIFY_TEMPLATE(
@@ -36,7 +28,7 @@ public enum  JianZhouSmsTemplate {
             null),
 
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(
-           "亲爱的用户，您投资的新手体验项目所得${param0}元投资红包奖励已发放，快来激活奖励吧！",
+            "尊敬的用户，您投资的新手体验项目所得${param0}元奖励已发放至账户，登录拓天速贷激活奖励吧！",
             null),
 
     SMS_CANCEL_TRANSFER_LOAN(
@@ -44,7 +36,7 @@ public enum  JianZhouSmsTemplate {
             null),
 
     SMS_IMPORT_RECEIVE_MEMBERSHIP(
-            "尊敬的用户，拓天给您赠送了V${param0}会员，赶紧投资享受会员特权吧！",
+            "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V3会员特权，登录拓天速贷查看吧。",
             null),
 
     SMS_NEW_USER_RECEIVE_MEMBERSHIP(
@@ -52,7 +44,7 @@ public enum  JianZhouSmsTemplate {
             null),
 
     SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(
-            "安心签合同生成失败，业务 id : ${param0}",
+            "尊敬的用户，您通过平台向安心签提交签署申请的《债权转让协议》电子合同生成失败，业务 id : ${param0}",
             null),
 
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(
@@ -77,9 +69,7 @@ public enum  JianZhouSmsTemplate {
 
     SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE(
             "慧租账户余额不足，请及时登录后台充值。",
-            null)
-
-    ;
+            null);
 
     private String templateText;
 
