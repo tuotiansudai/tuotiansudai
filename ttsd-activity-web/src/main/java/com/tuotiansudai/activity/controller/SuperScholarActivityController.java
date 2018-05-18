@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class SuperScholarActivityController {
     }
 
     @RequestMapping(value = "/share/register", method = RequestMethod.GET)
-    public ModelAndView shareRegister(@RequestParam(value = "referrerMobile", required = false) String referrerMobile) {
+    public ModelAndView shareRegister(@RequestParam(value = "referrerMobile", required = false) String referrerMobile, HttpServletRequest request) {
         if (!superScholarActivityService.duringActivities()) {
             return new ModelAndView("redirect:/activity/super-scholar");
         }
@@ -94,6 +95,7 @@ public class SuperScholarActivityController {
             return modelAndView;
         }
 
+        request.getSession().setAttribute("channel", "datiyingjiaxin");
         ModelAndView modelAndView = new ModelAndView("/wechat/share-app-mobile", "responsive", true);
         modelAndView.addObject("referrerInfo", superScholarActivityService.getReferrerInfo(referrerMobile));
         modelAndView.addObject("activityReferrerMobile", referrerMobile);
