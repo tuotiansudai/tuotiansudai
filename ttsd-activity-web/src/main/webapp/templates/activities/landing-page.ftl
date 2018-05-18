@@ -4,22 +4,39 @@
     <div class="banner">
         <div class="banner-img">
             <div class="my-page-width banner-con">
-                <div class="login-wrap">
-                    <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
-                    <div class="login-con">
-                        <ul>
-                            <li><input class="width100 height100 borderRadius" placeholder="输入手机号码" name="mobile" maxlength="11" type="text"></li>
-                            <li><input class="width100 height100 borderRadius" placeholder="密码" maxlength="20" type="password" name="password" ></li>
-                            <li>
-                                <input class="borderRadius height100" placeholder="图形验证码" name="imageCaptcha" type="text" maxlength="5">
-                                <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
-                                <span class="img-change height100 nextImg">换一张</span>
-                            </li>
-                            <li><input class="height100 borderRadius" placeholder="手机验证码" name="captcha" type="text"><span class="get-captcha borderRadius height100">获取验证码</span></li>
-                            <li class="recommend"> <span class="icon-arrow-bottom">请输入推荐人</span>（此项选填） </li>
-                            <li><input class="borderRadius height100" type="text" name="referrer" maxlength="11" placeholder="推荐人手机号"></li>
-                        </ul>
-                    </div>
+                <div class="login-wrap" id="registerContainer">
+                    <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
+                        <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
+                        <div class="login-con">
+                            <ul>
+                                <li><input id="mobile" class="width100 height100 borderRadius" placeholder="输入手机号码" name="mobile"
+                                           maxlength="11" type="text" autocomplete="off" validate></li>
+                                <li><input class="width100 height100 borderRadius" placeholder="密码" maxlength="20"
+                                           type="password" name="password" autocomplete="off" validate></li>
+                                <li>
+                                    <input class="borderRadius height100" id="input_img_captcha" placeholder="图形验证码" name="appCaptcha"
+                                           type="text" maxlength="5" validate>
+                                    <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
+                                    <span class="img-change height100 nextImg">换一张</span>
+                                </li>
+                                <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius" placeholder="手机验证码"
+                                                              name="captcha" type="text" validate>
+                                    <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100" value="获取验证码" disabled/><br/></li>
+                                <li class="recommend" id="recommendLabel"><span class="icon-arrow-bottom"></span><span>请输入推荐人（此项选填）</span>
+                                </li>
+                                <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text" name="referrer"
+                                           maxlength="11" placeholder="推荐人手机号" validate></li>
+                                <li class="agreement-li">
+                                    <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
+                                           checked>
+                                    <div id="agreementLable">
+                                    <span class="icon-yesOrNo-checked checked"></span>
+                                    <label for="agreementInput" class="check-label"><span>同意拓天速贷</span></label></div><a href="javascript:void(0);"
+                                                                                                                  class="show-agreement">《服务协议》</a></li>
+                                <li class="submit-li"><input class="register-sub width100 height100" type="submit" value="注册领6888元体验金"/></li>
+                            </ul>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -115,16 +132,23 @@
                                             <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
                                                     class="day">天</span></div>
                                             <p class="rate">约定年化利率</p>
-                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span class="icon2"></span><span>按天计息 即投即生息</span></p>
+                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                                    class="icon2"></span><span>按天计息 即投即生息</span></p>
                                             <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="right-bot border-section fr">
                                     <ul>
-                                        <li><label>投资金额：</label><div class="border-section"><input type="text"><span>元</span></div></li>
-                                        <li><label>项目期限：</label><div class="border-section"><input type="text"><span>天</span></div></li>
-                                        <li><label>约定年化利率：</label><div class="border-section"><input type="text"><span>%</span></div></li>
+                                        <li><label>投资金额：</label>
+                                            <div class="border-section"><input type="text"><span>元</span></div>
+                                        </li>
+                                        <li><label>项目期限：</label>
+                                            <div class="border-section"><input type="text"><span>天</span></div>
+                                        </li>
+                                        <li><label>约定年化利率：</label>
+                                            <div class="border-section"><input type="text"><span>%</span></div>
+                                        </li>
                                     </ul>
                                     <p class="compute-link"><a href="javascript:;" class="btn-red">计算收益</a></p>
                                     <p class="profit">本息合计<strong>0</strong>元</p>
@@ -145,27 +169,33 @@
                 <div class="advance-con">
                     <dl>
                         <dt class="icon-advance1"></dt>
-                        <dd><p class="profile">银行资金存管</p><p class="font">与平台自有资金物理隔离</p></dd>
+                        <dd><p class="profile">银行资金存管</p>
+                            <p class="font">与平台自有资金物理隔离</p></dd>
                     </dl>
                     <dl>
                         <dt class="icon-advance2"></dt>
-                        <dd><p class="profile">约定年化利率8%-10%</p><p class="font">房/车抵押债权安全系数高</p></dd>
+                        <dd><p class="profile">约定年化利率8%-10%</p>
+                            <p class="font">房/车抵押债权安全系数高</p></dd>
                     </dl>
                     <dl>
                         <dt class="icon-advance3"></dt>
-                        <dd><p class="profile">六重风控，22道手续</p><p class="font">历史全额兑付，0逾期0坏账</p></dd>
+                        <dd><p class="profile">六重风控，22道手续</p>
+                            <p class="font">历史全额兑付，0逾期0坏账</p></dd>
                     </dl>
                     <dl>
                         <dt class="icon-advance4"></dt>
-                        <dd><p class="profile">获批ICP经营许可证</p><p class="font">稳健运营，合规披露</p></dd>
+                        <dd><p class="profile">获批ICP经营许可证</p>
+                            <p class="font">稳健运营，合规披露</p></dd>
                     </dl>
                     <dl>
                         <dt class="icon-advance5"></dt>
-                        <dd><p class="profile">四大保障，12项措施</p><p class="font">资金、个人信息均安全</p></dd>
+                        <dd><p class="profile">四大保障，12项措施</p>
+                            <p class="font">资金、个人信息均安全</p></dd>
                     </dl>
                     <dl>
                         <dt class="icon-advance6"></dt>
-                        <dd><p class="profile">携手CFCA权威认证</p><p class="font">投资合同受法律保护</p></dd>
+                        <dd><p class="profile">携手CFCA权威认证</p>
+                            <p class="font">投资合同受法律保护</p></dd>
                     </dl>
                 </div>
                 <div class="gift-link textCenter">
@@ -174,7 +204,8 @@
 
             </div>
             <div class="kindly-tips-wrap">
-                <div class="title"><span class="tip-line left-line"></span>温馨提示<span class="tip-line right-line"></span></div>
+                <div class="title"><span class="tip-line left-line"></span>温馨提示<span class="tip-line right-line"></span>
+                </div>
                 <div class="kindly-tips-con">
                     <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
                     <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>

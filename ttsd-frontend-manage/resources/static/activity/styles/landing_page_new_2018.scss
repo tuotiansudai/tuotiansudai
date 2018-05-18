@@ -11,6 +11,9 @@ input {
   padding: 0;
   margin: 0;
 }
+.error {
+  color: #fff;
+}
 .borderRadius {
   border-radius: 3px;
 }
@@ -67,9 +70,66 @@ p {
             ul {
               li {
                 height: 42px;
-                margin-bottom: 17px;
+                margin-bottom: 25px;
+                &.captcha-li {
+                  margin-bottom: 15px;
+                }
+                &.agreement-li {
+                  height: 30px;
+                  a {
+                    color: #3a84cf;
+                  }
+                  #agreementLable {
+                    display: inline-block;
+                  }
+                  .agreement-check {
+                    visibility: hidden;
+                    vertical-align: middle;
+                  }
+                  .icon-yesOrNo-checked {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 18px;
+                    height: 18px;
+                    background: url("../images/landingpage/checkbox_bg_no.png") no-repeat center center;
+                    background-size: 100%;
+                    &.checked {
+                      background: url("../images/landingpage/checkboxed_bg.png") no-repeat center center;
+                      background-size: 100%;
+                    }
+                  }
+                  .check-label {
+                    color: #fff;
+                    vertical-align: middle;
+                  }
+                }
+                &.recomender-iphone {
+                  margin-bottom: 0;
+                  display: none;
+                  &.show {
+                    display: block;
+                  }
+                }
                 &.recommend {
                   height: 30px;
+                  color: #fff;
+                  margin-bottom: 5px;
+                  cursor: pointer;
+                  >span {
+                    vertical-align: middle;
+                    display: inline-block;
+                  }
+                  .icon-arrow-bottom {
+                    width: 14px;
+                    height: 16px;
+                    background: url("../images/landingpage/traingle_right.png") no-repeat center center;
+                    background-size: 100%;
+                    margin-right: 5px;
+                    &.active {
+                      background: url("../images/landingpage/traingle_bg.png") no-repeat center center;
+                      background-size: 100%;
+                    }
+                  }
                 }
                 input{
                   border: 0;
@@ -101,6 +161,21 @@ p {
                   text-align: center;
                   line-height: 42px;
                   margin-left: 10px;
+                  text-indent: 0;
+                  cursor: pointer;
+                  &:disabled {
+                      background: #ccc;
+                      cursor: default;
+                  }
+                }
+
+                .register-sub {
+                  background: #ff771c;
+                  color: #fff;
+                  font-size: 21px;
+                  &:disabled {
+                    background: #ccc;
+                  }
                 }
               }
             }
@@ -385,7 +460,7 @@ p {
                       div {
                         display: inline-block;
                         vertical-align: middle;
-                        width: 300px;
+                        width: 290px;
                         height: 54px;
                         input {
                           border: none;
