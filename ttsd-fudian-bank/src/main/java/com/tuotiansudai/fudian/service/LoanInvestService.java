@@ -2,6 +2,7 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankInvestDto;
 import com.tuotiansudai.fudian.dto.request.LoanInvestRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanInvestContentDto;
@@ -10,16 +11,24 @@ import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
+import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.BankClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoanInvestService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanInvestService.class);
+
+    private final static String INVEST_ID_TEMPLATE = "BANK_INVEST_{0}";
 
     private final SignatureHelper signatureHelper;
 
@@ -31,8 +40,11 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
     private final SelectResponseDataMapper selectResponseDataMapper;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Autowired
-    public LoanInvestService(SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanInvestService(RedisTemplate<String, String> redisTemplate, SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+        this.redisTemplate = redisTemplate;
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
@@ -40,22 +52,30 @@ public class LoanInvestService implements AsyncCallbackInterface {
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public LoanInvestRequestDto invest(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_INVEST, null);
+    public LoanInvestRequestDto invest(Source source, BankInvestDto bankInvestDto) {
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(source,
+                bankInvestDto.getLoginName(),
+                bankInvestDto.getMobile(), bankInvestDto.getBankUserName(),
+                bankInvestDto.getBankAccountNo(),
+                AmountUtils.toYuan(bankInvestDto.getAmount()),
+                bankInvestDto.getLoanTxNo(), ApiType.LOAN_INVEST,
+                null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[loan invest] sign error, userName: {}, accountNo: {}, amount: {}, award: {}, loanTxNo: {}",
-                    userName, accountNo, amount, award, loanTxNo);
+            logger.error("[loan invest] sign error, data {}", bankInvestDto);
             return null;
         }
 
         insertMapper.insertLoanInvest(dto);
+
+        redisTemplate.opsForValue().set(MessageFormat.format(INVEST_ID_TEMPLATE, dto.getOrderNo()), String.valueOf(bankInvestDto.getInvestId()), 7, TimeUnit.DAYS);
+
         return dto;
     }
 
     public ResponseDto fastInvest(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo) {
-        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, award, loanTxNo, ApiType.LOAN_FAST_INVEST, null);
+        LoanInvestRequestDto dto = new LoanInvestRequestDto(source, loginName, mobile, userName, accountNo, amount, loanTxNo, ApiType.LOAN_FAST_INVEST, null);
 
         signatureHelper.sign(dto);
 
@@ -108,6 +128,11 @@ public class LoanInvestService implements AsyncCallbackInterface {
         updateMapper.updateLoanInvest(responseDto);
 
         return responseDto;
+    }
+
+    @Scheduled(fixedDelay = 1000 * 10, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
+    public void schedule() {
+
     }
 
     @Override

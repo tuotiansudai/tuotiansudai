@@ -12,10 +12,10 @@ public class LoanInvestRequestDto extends PayBaseRequestDto {
 
     private String loanTxNo;
 
-    public LoanInvestRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String award, String loanTxNo, ApiType apiType, Map<String, String> extraValues) {
+    public LoanInvestRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String loanTxNo, ApiType apiType, Map<String, String> extraValues) {
         super(source, loginName, mobile, userName, accountNo, apiType, extraValues);
         this.amount = amount;
-        this.award = award;
+        this.award = "0.00";
         this.loanTxNo = loanTxNo;
     }
 

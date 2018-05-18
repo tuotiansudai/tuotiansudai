@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.dto.BankInvestDto;
 import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
 import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.request.*;
@@ -12,6 +13,8 @@ import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.service.*;
 import com.tuotiansudai.fudian.util.AmountUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,9 @@ public class PayController extends AsyncRequestController {
     private final LoanRepayService loanRepayService;
 
     private final MerchantTransferService merchantTransferService;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Autowired
     public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
@@ -121,15 +127,20 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @RequestMapping(path = "/loan-invest", method = RequestMethod.GET)
-    public String loanInvest(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-invest/source/{source}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncData> loanInvest(@PathVariable(name = "source") Source source, @RequestBody BankInvestDto params) {
         logger.info("[Fudian] call loan invest");
 
-//        loanInvestService.invest("UU02615960791461001", "UA02615960791501001", "1.00", "0.00", "LU02619459384521001");
-        LoanInvestRequestDto requestDto = loanInvestService.invest(Source.WEB, "UU02619471098561001", "UA02619471098591001", "10.00", "0.00", "LU02625453517541001", null, null);
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.LOAN_INVEST.getPath());
-        return "post";
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan invest bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        LoanInvestRequestDto requestDto = loanInvestService.invest(source,params);
+
+        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_INVEST);
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/loan-credit-invest", method = RequestMethod.GET)

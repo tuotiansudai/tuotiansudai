@@ -42,3 +42,9 @@ bank:
 
 mybatis:
   type-aliases-package: com.tuotiansudai.fudian.mapper
+
+redisson:
+  address: redis://${common.redis.host}:${common.redis.port}
+  timeout: 10000
+  connectionPoolSize: 50
+  database: 10
