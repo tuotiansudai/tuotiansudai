@@ -102,7 +102,7 @@ public class WeChatClient {
             });
 
             if (result.containsKey("errcode")) {
-                logger.error(MessageFormat.format("fetch openid failed, response: {0}", responseString));
+                logger.warn(MessageFormat.format("fetch openid failed, response: {0}", responseString));
                 return null;
             }
 
