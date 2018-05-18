@@ -10,10 +10,14 @@ import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.provider.SmsProvider;
+import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.SmsHistoryMapper;
+import com.tuotiansudai.smswrapper.repository.model.JianZhouSmsHistoryModel;
 import com.tuotiansudai.smswrapper.repository.model.SmsHistoryModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,6 +68,9 @@ public class SmsService {
 
     @Autowired
     private JianZhouSmsClient jianZhouSmsClient;
+
+    @Autowired
+    private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
         return smsClient.sendSMS(mobile, SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, isVoice, captcha, ip);
@@ -156,7 +164,9 @@ public class SmsService {
         return smsClient.sendSMS(dto.getMobiles(), SmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, false, paramList);
     }
 
-    private BaseDto<SmsDataDto> sendSMS(List<String> mobileList, SmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {
+
+
+    private BaseDto<SmsDataDto> sendSMS(List<String> mobileList, JianZhouSmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {
         SmsDataDto data = new SmsDataDto();
         BaseDto<SmsDataDto> dto = new BaseDto<>(data);
 
@@ -178,11 +188,11 @@ public class SmsService {
             return dto;
         }
 
-        List<SmsHistoryModel> smsHistoryModels = smsProvider.sendSMS(mobileList, template, paramList);
-        jianZhouSmsClient.sendSms(isVoice, mobileList, template, paramList)
+        List<JianZhouSmsHistoryModel> models = createSmsHistory(mobileList, template, paramList, isVoice);
+        String response = jianZhouSmsClient.sendSms(isVoice, mobileList, template, paramList, null);
+        updateSmsHistory(models, response);
 
-        data.setStatus(CollectionUtils.isNotEmpty(smsHistoryModels) && smsHistoryModels.get(0).isSuccess());
-        if(!data.getStatus()){
+        if(response == null || Long.parseLong(response) < 0){
             data.setIsRestricted(true);
             data.setMessage("短信网关返回失败");
         }
@@ -215,5 +225,27 @@ public class SmsService {
             String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
             redisWrapperClient.setex(redisKey, second, ip);
         }
+    }
+
+    private List<JianZhouSmsHistoryModel> createSmsHistory(List<String> mobileList, JianZhouSmsTemplate template, List<String> paramList, boolean isVoice){
+        List<JianZhouSmsHistoryModel> models = new ArrayList<>();
+        int count = mobileList.size();
+        int batchSize = count / 10 + (count % 1000 > 0 ? 1 : 0);
+        for (int batch = 0 ; batch < batchSize ; batchSize++){
+            JianZhouSmsHistoryModel model = new JianZhouSmsHistoryModel(
+                    String.join(", ", mobileList.subList(batch * 10, (batch + 1) * 10 > count ? count : ((batch + 1) * 10))),
+                    template.generateContent(isVoice, paramList),
+                    isVoice);
+            jianZhouSmsHistoryMapper.create(model);
+            models.add(model);
+        }
+        return models;
+    }
+
+    private void updateSmsHistory(List<JianZhouSmsHistoryModel> models, String response){
+        models.forEach(model -> {
+            model.setResponse(response);
+            jianZhouSmsHistoryMapper.update(model);
+        });
     }
 }
