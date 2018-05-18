@@ -23,6 +23,7 @@
                 <th>返现比率</th>
                 <th>获得现金奖励</th>
                 <th>投资时间</th>
+                <th>是否返现</th>
             </tr>
             </thead>
             <tbody>
@@ -35,6 +36,7 @@
                     <td>${item.rewardRate}</td>
                     <td>${item.reward}</td>
                     <td>${item.investTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                    <td>${item.cashBack?string('是','否')}</td>
                 </tr>
                 <#else>
                 <tr>

@@ -51,7 +51,7 @@ public enum CsvHeaderType {
     InvestAnnualizedHeader("姓名, 用户名,手机号, 活动期限内投资金额, 累计年化投资额", "投资金额统计导出"),
     StartWorkActivityHeader("手机号, 姓名,兑换奖品, 兑换时间, 消费小金人个数", "惊喜不重样加息不打烊活动导出"),
     InviteHelpInvestActivityHeader("投资时间, 姓名,手机号, 投资金额, 年化投资额, 助力人数, 奖励比例, 获得现金奖励", "返利加油站活动投资奖励导出"),
-    SuperScholarActivityHeader("姓名, 手机号,投资金额, 年化投资金额, 返现比率, 获得返现奖励, 投资时间", "6月答题加薪活动导出"),
+    SuperScholarActivityHeader("姓名, 手机号,投资金额, 年化投资金额, 返现比率, 获得返现奖励, 是否返现, 投资时间", "6月答题加薪活动导出"),
     ;
 
     private String header;

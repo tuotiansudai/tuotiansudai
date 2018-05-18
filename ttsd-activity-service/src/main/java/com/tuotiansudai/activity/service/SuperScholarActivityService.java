@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -66,6 +65,7 @@ public class SuperScholarActivityService {
                             AmountConverter.convertCentToString(model.getAnnualizedAmount()),
                             String.format("%.1f", rewardRate * 100) + "%",
                             AmountConverter.convertCentToString((long) (model.getAnnualizedAmount() * rewardRate)),
+                            superScholarRewardModel.isCashBack(),
                             model.getCreatedTime());
 
                 }).collect(Collectors.toList());
