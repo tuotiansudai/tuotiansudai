@@ -19,7 +19,7 @@ $('.help_rightNow').on('click',function () {
                 type: 'GET',
                 url: '/activity/invite-help/click-help/'+ $("#nowHelpId").data('helpId')
             }, function (data) {
-                if (data) {
+                if (data.status) {
                     layer.msg('助力成功');
                     setTimeout(() => {location.reload();},1000)
                 }
