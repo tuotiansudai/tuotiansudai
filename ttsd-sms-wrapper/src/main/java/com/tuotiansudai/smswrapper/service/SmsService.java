@@ -2,7 +2,6 @@ package com.tuotiansudai.smswrapper.service;
 
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
@@ -64,7 +63,7 @@ public class SmsService {
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate., isVoice, Lists.newArrayList(captcha), ip);
     }
 
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
