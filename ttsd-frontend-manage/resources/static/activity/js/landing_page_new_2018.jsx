@@ -4,7 +4,7 @@ require('publicJs/placeholder');
 let ValidatorObj = require('publicJs/validator');
 let $registerContainer = $('#registerContainer');
 let $agreementLi = $('#agreementLable');
-let $btnCoupon = $('#btn-get-coupon', $registerContainer),
+let $btnCoupon = $('.coupon-btn'),
     browser = globalFun.browserRedirect();
 let urlObj = globalFun.parseURL(location.href);
 let $btnChangeImgCode = $('.img-change',$registerContainer );//换一张
@@ -22,15 +22,18 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 
 $inputImgCaptcha.on('keyup', function (event) {
     event.preventDefault();
-    if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5) {
+    disableCaptchaBtn();
+});
+disableCaptchaBtn();
+function disableCaptchaBtn() {
+    if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
         if(!isSmsSended){
             $fetchCaptcha.prop('disabled', false);
         }
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
-});
-
+}
 $agreementLi.on('click', function (e) {
     e.preventDefault();
     $('.icon-yesOrNo-checked').toggleClass('checked');
@@ -212,4 +215,18 @@ registerForm.onsubmit = function(event) {
     event.preventDefault();
     registerForm.submit();
 }
+
+//点击立即注册领取
+$btnCoupon.on('click', function (event) {
+    event.preventDefault();
+    if (urlObj.params.source == 'app') {
+        window.location.href = "/register/user";
+    } else {
+        if (browser=='mobile') {
+            $('body,html').animate({scrollTop: $('.landingContainerBox').height()}, 'fast');
+        } else {
+            $('body,html').animate({scrollTop: 0}, 'fast');
+        }
+    }
+});
 

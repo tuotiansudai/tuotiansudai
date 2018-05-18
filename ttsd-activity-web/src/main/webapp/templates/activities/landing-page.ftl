@@ -67,14 +67,14 @@
 
                 </div>
                 <div class="to-experience textCenter">
-                    <a class="gold-btn" href="#landingTop">领取6888元体验金</a>
+                    <a class="gold-btn coupon-btn" href="javascript:;">领取6888元体验金</a>
                 </div>
             </div>
             <div class="red-ware-wrap">
                 <h2 class="red-ware-title"></h2>
                 <div class="red-ware">
                     <div class="red-ware-img">
-                        <a class="red-ware-btn" href="#landingTop">立即领取</a>
+                        <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
                     </div>
                 </div>
             </div>
@@ -199,7 +199,7 @@
                     </dl>
                 </div>
                 <div class="gift-link textCenter">
-                    <a class="gold-btn" href="#landingTop">注册领取新手大礼包</a>
+                    <a class="gold-btn coupon-btn" href="javascript:;">注册领取新手大礼包</a>
                 </div>
 
             </div>
