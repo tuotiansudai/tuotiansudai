@@ -5,35 +5,52 @@
         <div class="banner-img">
             <div class="my-page-width banner-con">
                 <div class="login-wrap" id="registerContainer">
+
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
                         <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
                         <div class="login-con">
+                            <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                             <ul>
-                                <li><input id="mobile" class="width100 height100 borderRadius" placeholder="输入手机号码" name="mobile"
+                                <li><input id="mobile" class="width100 height100 borderRadius" placeholder="输入手机号码"
+                                           name="mobile"
                                            maxlength="11" type="text" autocomplete="off" validate></li>
                                 <li><input class="width100 height100 borderRadius" placeholder="密码" maxlength="20"
                                            type="password" name="password" autocomplete="off" validate></li>
                                 <li>
-                                    <input class="borderRadius height100" id="input_img_captcha" placeholder="图形验证码" name="appCaptcha"
+                                    <input class="borderRadius height100" id="input_img_captcha" placeholder="图形验证码"
+                                           name="appCaptcha"
                                            type="text" maxlength="5" validate>
                                     <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
                                     <span class="img-change height100 nextImg">换一张</span>
                                 </li>
-                                <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius" placeholder="手机验证码"
-                                                              name="captcha" type="text" validate>
-                                    <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100" value="获取验证码" disabled/><br/></li>
-                                <li class="recommend" id="recommendLabel"><span class="icon-arrow-bottom"></span><span>请输入推荐人（此项选填）</span>
+                                <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius"
+                                                              placeholder="手机验证码"
+                                                              name="captcha" type="text" maxlength="6" validate>
+                                    <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
+                                           value="获取验证码" disabled/><br/>
+                                    <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a
+                                            href="javascript:;" id="voice_btn">语音验证</a> </span>
                                 </li>
-                                <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text" name="referrer"
-                                           maxlength="11" placeholder="推荐人手机号" validate></li>
+                                <li class="recommend" id="recommendLabel" style="display: none"><span
+                                        class="icon-arrow-bottom"></span><span>请输入推荐人（此项选填）</span>
+                                </li>
+                                <li class="recommend" id="recommendLabelExist" style="display: none"><span>推荐人（<em
+                                        id="referMobile"></em>）</span>
+                                </li>
+                                <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
+                                                                     name="referrer"
+                                                                     maxlength="11" placeholder="推荐人手机号" validate></li>
                                 <li class="agreement-li">
                                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
-                                           checked>
+                                    >
                                     <div id="agreementLable">
-                                    <span class="icon-yesOrNo-checked checked"></span>
-                                    <label for="agreementInput" class="check-label"><span>同意拓天速贷</span></label></div><a href="javascript:void(0);"
-                                                                                                                  class="show-agreement">《服务协议》</a></li>
-                                <li class="submit-li"><input class="register-sub width100 height100" type="submit" value="注册领6888元体验金"/></li>
+                                        <span class="icon-yesOrNo-checked checked"></span>
+                                        <label for="agreementInput" class="check-label"><span>同意拓天速贷</span></label>
+                                    </div>
+                                    <a href="javascript:void(0);"
+                                       class="show-agreement">《服务协议》</a></li>
+                                <li class="submit-li"><input class="register-sub width100 height100" type="submit"
+                                                             value="注册领6888元体验金" disabled/></li>
                             </ul>
                         </div>
                     </form>
@@ -138,21 +155,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="right-bot border-section fr">
-                                    <ul>
-                                        <li><label>投资金额：</label>
-                                            <div class="border-section"><input type="text"><span>元</span></div>
-                                        </li>
-                                        <li><label>项目期限：</label>
-                                            <div class="border-section"><input type="text"><span>天</span></div>
-                                        </li>
-                                        <li><label>约定年化利率：</label>
-                                            <div class="border-section"><input type="text"><span>%</span></div>
-                                        </li>
-                                    </ul>
-                                    <p class="compute-link"><a href="javascript:;" class="btn-red">计算收益</a></p>
-                                    <p class="profit">本息合计<strong>0</strong>元</p>
-                                    <p class="small-tip">计算结果仅供参考，以实际收益为准</p>
+                                <div class="right-bot border-section fr count-form">
+                                    <form id="countForm" action="" class="clearfix">
+                                        <ul>
+                                            <li><label>投资金额：</label>
+                                                <div class="border-section"><input type="text" name="money" id="moneyNum"><span>元</span></div>
+                                            </li>
+                                            <li><label>项目期限：</label>
+                                                <div class="border-section"><input type="text" name="day" id="dayNum"><span>天</span></div>
+                                            </li>
+                                            <li class="rate-li"><label>约定年化利率：</label>
+                                                <div class="border-section"><input type="text" name="rate" id="rateNum"><span>%</span></div>
+                                            </li>
+                                            <li class="error-li"><label></label>
+                                               <div class="error-box"></div>
+                                            </li>
+
+                                        </ul>
+                                        <p class="compute-link"><input type="submit" class="btn-red" value="计算收益" /></p>
+                                        <p class="profit">本息合计<strong id="resultNum">0</strong>元</p>
+                                        <p class="small-tip">计算结果仅供参考，以实际收益为准</p>
+                                    </form>
 
 
                                 </div>

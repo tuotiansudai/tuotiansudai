@@ -14,12 +14,10 @@ let $inputImgCaptcha = $('#input_img_captcha');//图形验证码输入框
 let $inputSmsCaptcha = $('#smsCaptcha');//图形验证码输入框
 let isSmsSended = false;
 let $registerSubmit=$('input[type="submit"]',$(registerForm));
+let $voiceCaptcha = $('#voice_captcha');
+let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 
-// let $registerSubmit = $('input[type="submit"]', $(registerForm));
-// let $voiceCaptcha = $('#voice_captcha');
-// let $voiceBtn = $('#voice_btn', $voiceCaptcha);
-
-
+let isVoice = false;
 $inputImgCaptcha.on('keyup', function (event) {
     event.preventDefault();
     disableCaptchaBtn();
@@ -34,9 +32,27 @@ function disableCaptchaBtn() {
         $fetchCaptcha.prop('disabled', true);
     }
 }
+$('#agreementInput').prop('checked',true);
+
 $agreementLi.on('click', function (e) {
-    e.preventDefault();
     $('.icon-yesOrNo-checked').toggleClass('checked');
+    let mobile=registerForm.mobile,
+        password=registerForm.password,
+        captcha=registerForm.captcha;
+
+    //获取验证码点亮
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+    let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+    //通过获取验证码按钮来判断
+
+
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    $registerSubmit.prop('disabled',!isDisabledSubmit);
+
 })
 $('#recommendLabel').on('click', function () {
     $('.icon-arrow-bottom').toggleClass('active');
@@ -93,13 +109,15 @@ function getSmsCaptcha() {
         url: '/register/user/send-register-captcha',
         type: 'POST',
         dataType: 'json',
-        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:false}
+        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:isVoice}
     },function(data) {
         console.log(data)
         if (data.data.status && !data.data.isRestricted) {
-
+            $voiceCaptcha.hide();
         commonFun.countDownLoan({
             btnDom:$fetchCaptcha
+        },function () {
+            $voiceCaptcha.show();
         })
             return;
         }
@@ -204,7 +222,6 @@ function isDisabledButton() {
     !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-
     let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
@@ -229,4 +246,141 @@ $btnCoupon.on('click', function (event) {
         }
     }
 });
+
+//判断有无推荐人
+function showReferrerInfoIfNeeded() {
+    var referNum = urlObj.params.referrer;
+
+    if (referNum) {
+        //有推荐人
+        var mobileNum = commonFun.decrypt.uncompile(referNum);
+        // $('input[name="referrer"]', $registerContainer).val(mobileNum);
+        $('#recommendLabel').hide();
+        $('#recommendLabelExist').show();
+        $('#referMobile').text(mobileNum)
+        //通过手机号得到用户名
+        commonFun.useAjax({
+            type:'GET',
+            dataType: 'json',
+            url:"/activity/get-realRealName?mobile=" + mobileNum
+        },function(data) {
+            //姓名的第一个字母用*替换
+            $('.refer-name', $registerContainer).text(data);
+        });
+    }
+    else {
+        //无推荐人
+        $('.refer-person-info', $registerContainer).hide();
+        $('#recommendLabel').show();
+        $('#recommendLabelExist').hide();
+
+    }
+    isDisabledButton();
+}
+showReferrerInfoIfNeeded();
+
+$voiceBtn.on('click', function(event) {
+    isVoice = true;
+    event.preventDefault();
+    let mobile=registerForm.mobile,
+        password=registerForm.password,
+        captcha=registerForm.captcha;
+
+    //获取验证码点亮
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+    let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+    //通过获取验证码按钮来判断
+
+
+    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    if(isDisabledSubmit){
+        getSmsCaptcha();
+    }
+
+});
+
+
+// **************** 投资计算器开始****************
+(function() {
+    let countForm=globalFun.$('#countForm');
+    let $countFormOut=$(countForm).parents('.count-form');
+    let errorCountDom=$(countForm).find('.error-box');
+
+    //验证表单
+    let countValidator = new ValidatorObj.ValidatorForm();
+
+    countValidator.add(countForm.money, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入投资金额！'
+    }, {
+        strategy: 'isNumber',
+        errorMsg: '请输入有效的数字！'
+    }]);
+
+    countValidator.add(countForm.day, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入投资期限！'
+    }, {
+        strategy: 'isNumber',
+        errorMsg: '请输入有效的数字！'
+    }]);
+
+    countValidator.add(countForm.rate, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '请输入年化利率！'
+    }, {
+        strategy: 'isNumber',
+        errorMsg: '请输入有效的数字！'
+    }]);
+
+    let reInputs=$(countForm).find('input:text');
+    for(let i=0,len=reInputs.length; i<len;i++) {
+        reInputs[i].addEventListener("blur", function() {
+            let errorMsg = countValidator.start(this);
+            if(errorMsg) {
+                errorCountDom.text(errorMsg);
+            }
+            else {
+                errorCountDom.text('');
+            }
+        })
+    }
+    countForm.onsubmit = function(event) {
+        event.preventDefault();
+        let errorMsg;
+        for(let i=0,len=reInputs.length;i<len;i++) {
+            errorMsg = countValidator.start(reInputs[i]);
+            if(errorMsg) {
+                errorCountDom.text(errorMsg);
+                break;
+            }
+        }
+        if (!errorMsg) {
+            //计算本息
+            var moneyNum = Math.floor(countForm.money.value * 100),
+                dayNum = Math.floor(countForm.day.value),
+                rateNum = Math.floor(countForm.rate.value * 10),
+                $resultNum = $('#resultNum');
+
+            var period = dayNum % 30 == 0 ? 30 : dayNum % 30,
+                resultNum = parseFloat((moneyNum / 100).toFixed(2)),
+                interest, fee;
+
+            while (dayNum > 0) {
+                interest = parseFloat((Math.floor(moneyNum * rateNum * period / 365000) / 100).toFixed(2));
+                fee = parseFloat((Math.floor(interest * 10) / 100).toFixed(2));
+                resultNum += (interest - fee);
+                dayNum -= period;
+                period = 30;
+            }
+            $resultNum.text(resultNum.toFixed(2));
+        }
+    }
+
+})();
+
 

@@ -67,17 +67,38 @@ p {
             box-sizing: border-box;
             padding: 12px  26px;
             background: rgba(2,2,2,0.27);
+            .refer-person-info {
+              text-align: center;
+              color: #fff;
+              margin-bottom: 5px;
+              .refer-name {
+                color: red;
+              }
+            }
+
             ul {
               li {
                 height: 42px;
                 margin-bottom: 25px;
                 &.captcha-li {
-                  margin-bottom: 15px;
+                  position: relative;
+                  margin-bottom: 25px;
+                  .voice-captcha {
+                    position: absolute;
+                    right: 0;
+                    bottom: -26px;
+                    color: #fff;
+                    a {
+                      color: red;
+                    }
+                  }
                 }
                 &.agreement-li {
                   height: 30px;
+                  margin-bottom: 5px;
                   a {
                     color: #3a84cf;
+                    vertical-align: middle;
                   }
                   #agreementLable {
                     display: inline-block;
@@ -113,8 +134,9 @@ p {
                 &.recommend {
                   height: 30px;
                   color: #fff;
-                  margin-bottom: 5px;
+                  margin-bottom: 0;
                   cursor: pointer;
+                  margin-top: 10px;
                   >span {
                     vertical-align: middle;
                     display: inline-block;
@@ -448,7 +470,17 @@ p {
                   box-sizing: border-box;
                   ul {
                     li {
-                      margin-bottom: 26px;
+                      margin-bottom: 22px;
+                      &.rate-li {
+                        margin-bottom: 0px;
+                      }
+                      &.error-li {
+                        height: 30px;
+                        margin-bottom: 0;
+                        .error-box {
+                          height: 30px;
+                        }
+                      }
                       label {
                         display: inline-block;
                         vertical-align: middle;
@@ -463,10 +495,14 @@ p {
                         width: 290px;
                         height: 54px;
                         input {
+                          display: inline-block;
                           border: none;
                           padding: 0;
                           background: none;
                           width: 256px;
+                          color: #565656;
+                          text-indent: 20px;
+                          font-size: 21px;
                         }
                         span {
                           font-size: 22px;
