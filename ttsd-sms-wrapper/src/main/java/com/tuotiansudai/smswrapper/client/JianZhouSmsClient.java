@@ -62,7 +62,7 @@ public class JianZhouSmsClient {
                 return response.body().string();
             }
 
-        }catch (IOException e) {
+        }catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
