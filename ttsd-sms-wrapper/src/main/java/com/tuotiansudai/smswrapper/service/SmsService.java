@@ -7,10 +7,7 @@ import com.sun.org.apache.bcel.internal.generic.FADD;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
-import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.dto.sms.SmsRegisterSuccessNotifyDto;
+import com.tuotiansudai.dto.sms.*;
 import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
@@ -152,6 +149,10 @@ public class SmsService {
                 dto.getLoanRaisingCompleteTime(), "借款人：" + dto.getLoanerName(), "代理人：" + dto.getAgentName()};
         List<String> paramList = Arrays.asList(paramArr);
         return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, false, paramList, null);
+    }
+
+    public BaseDto<SmsDataDto> loanOutCompleteNotify(LoanOutCompleteNotifyDto dto) {
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName(), dto.getBaseRate()), null);
     }
 
     private BaseDto<SmsDataDto> sendSMS(List<String> mobileList, JianZhouSmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {

@@ -1,9 +1,8 @@
-package com.tuotiansudai.mq.consumer.loan.service;
+package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.sms.LoanOutCompleteNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -11,13 +10,15 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.JsonConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer {
@@ -58,7 +59,10 @@ public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer
         }
 
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
-
-
+        List<String> mobiles = investMapper.findMobileByLoanId(loanModel.getId());
+        if (CollectionUtils.isNotEmpty(mobiles)){
+            String rate = String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%";
+            smsWrapperClient.sendLoanOutCompleteNotify(new LoanOutCompleteNotifyDto(mobiles, loanModel.getName(), rate));
+        }
     }
 }

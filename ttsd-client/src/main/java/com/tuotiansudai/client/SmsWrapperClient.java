@@ -57,6 +57,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String LOAN_RAISING_COMPLETE_NOTIFY_URI = "/sms/loan-raising-complete-notify";
 
+    private final static String LOAN_OUT_COMPLETE_NOTIFY_URI = "/sms/loan-out-complete-notify";
+
     private final static String COUPON_ASSIGN_SUCCESS = "/sms/coupon-assign-success";
 
     private final static String COUPON_EXPIRED_NOTIFY = "/sms/coupon-expired-notify";
@@ -113,6 +115,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendLoanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
         return send(dto, LOAN_RAISING_COMPLETE_NOTIFY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendLoanOutCompleteNotify(LoanOutCompleteNotifyDto dto) {
+        return send(dto, LOAN_OUT_COMPLETE_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendCouponAssignSuccessNotify(SmsCouponNotifyDto dto) {

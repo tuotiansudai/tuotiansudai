@@ -59,6 +59,10 @@ public enum JianZhouSmsTemplate {
             "${param0}上线的${param1}天总额为${param2}万的项目于今日${param3}已满，借款人:${param4};代理人:${param5}，30分钟内将完成复核。",
             null),
 
+    SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE(
+            "尊敬的用户，您投资的${param0}项目已经满额放款，约定年化收益${param1}。",
+            null),
+
     SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE(
             "尊敬的用户，恭喜您获得了一张${param0}，${param1}天有效期，请尽快使用！",
             null),

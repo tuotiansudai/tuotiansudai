@@ -94,6 +94,12 @@ public class SmsController {
         return smsService.loanRaisingCompleteNotify(notifyDto);
     }
 
+    @RequestMapping(value = "/loan-out-complete-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> loanOutCompleteNotify(@RequestBody LoanOutCompleteNotifyDto notifyDto) {
+        return smsService.loanOutCompleteNotify(notifyDto);
+    }
+
     @RequestMapping(value = "/coupon-assign-success", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> couponAssignSuccessNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
