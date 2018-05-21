@@ -31,5 +31,7 @@ public interface ActivityInvestMapper {
     List<ActivityInvestModel> findByLoanId(@Param(value = "loanId") long loanId);
 
     List<ActivityInvestModel> findByUserNameOrMobile(@Param(value = "keyWord") String keyWord,
-                                                     @Param(value = "activityName") String activityName);
+                                                     @Param(value = "activityName") String activityName,
+                                                     @Param(value = "startTime") Date startTime,
+                                                     @Param(value = "endTime") Date endTime);
 }

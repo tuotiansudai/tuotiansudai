@@ -82,7 +82,7 @@
     </select>
 
     <select id="findByUserNameOrMobile" parameterType="map" resultMap="activityInvestResultMap">
-        SELECT * from activity_invest where activity_name=#{activityName}
+        SELECT * from activity_invest where activity_name=#{activityName} and created_time BETWEEN #{startTime} and #{endTime}
         <if test="keyWord !=null and keyWord !=''">
             and user_name = #{keyWord} or mobile = #{keyWord}
         </if>
