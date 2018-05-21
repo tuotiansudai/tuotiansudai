@@ -51,6 +51,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String CANCEL_TRANSFER_LOAN_URI = "/sms/cancel-transfer-loan";
 
+    private final static String TRANSFER_LOAN_SUCCESS_URI = "/sms/transfer-loan-success";
+
     private final static String IMPORT_USER_RECEIVE_MEMBERSHIP_URI = "/sms/import-user-receive-membership";
 
     private final static String NEW_USER_RECEIVE_MEMBERSHIP_URI = "/sms/new-user-receive-membership";
@@ -101,8 +103,12 @@ public class SmsWrapperClient extends BaseClient {
         return send(dto, LOAN_REPAY_NOTIFY_URL);
     }
 
-    public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsCancelTransferLoanNotifyDto dto) {
+    public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsTransferLoanNotifyDto dto) {
         return send(dto, CANCEL_TRANSFER_LOAN_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendTransferLoanSuccessNotify(SmsTransferLoanNotifyDto dto) {
+        return send(dto, TRANSFER_LOAN_SUCCESS_URI);
     }
 
     public BaseDto<SmsDataDto> sendImportUserReceiveMembership(SmsUserReceiveMembershipDto dto) {

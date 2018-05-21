@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.aspect;
 
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsCancelTransferLoanNotifyDto;
+import com.tuotiansudai.dto.sms.SmsTransferLoanNotifyDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.TransferStatus;
@@ -63,7 +63,7 @@ public class AdvancedRepayAspect {
             logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of advanced repay.", transferApplicationModel.getId()));
 
             String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-            smsWrapperClient.sendCancelTransferLoanNotify(new SmsCancelTransferLoanNotifyDto(mobile, transferApplicationModel.getName()));
+            smsWrapperClient.sendCancelTransferLoanNotify(new SmsTransferLoanNotifyDto(mobile, transferApplicationModel.getName()));
         }
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",

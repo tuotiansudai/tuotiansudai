@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class SmsCancelTransferLoanNotifyDto implements Serializable {
+public class SmsTransferLoanNotifyDto implements Serializable {
     @NotEmpty
     @Pattern(regexp = "^\\d{11}$")
     private String mobile;
@@ -14,10 +14,10 @@ public class SmsCancelTransferLoanNotifyDto implements Serializable {
     @Pattern(regexp = "^[\\dZR-]{14}$")
     private String transferLoanName;
 
-    public SmsCancelTransferLoanNotifyDto() {
+    public SmsTransferLoanNotifyDto() {
     }
 
-    public SmsCancelTransferLoanNotifyDto(String mobile, String transferLoanName) {
+    public SmsTransferLoanNotifyDto(String mobile, String transferLoanName) {
         this.mobile = mobile;
         this.transferLoanName = transferLoanName;
     }

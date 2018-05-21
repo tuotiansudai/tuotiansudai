@@ -101,6 +101,10 @@ public class SmsService {
         return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN, false, Lists.newArrayList(transferLoanName), null);
     }
 
+    public BaseDto<SmsDataDto> transferLoanSuccess(String mobile, String transferLoanName) {
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS, false, Lists.newArrayList(transferLoanName), null);
+    }
+
     public BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level) {
         return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP, false, Lists.newArrayList(String.valueOf(level)), null);
     }
