@@ -19,18 +19,7 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 
-// let $registerContainerWap = $('#registerContainerWap');
-// let $agreementLiWao = $('#agreementLableWap');
-// let $btnCouponWap = $('.coupon-btn',$registerContainerWap);
 
-// let $btnChangeImgCodeWap = $('.img-change',$registerContainerWap );//换一张
-// let registerFormWap = globalFun.$('#registerUserFormWap');
-// let $fetchCaptchaWap = $('#getCaptchaBtnWap');//获取短信验证码btn
-// let $inputImgCaptchaWap = $('#input_img_captchaWap');//图形验证码输入框
-// let $inputSmsCaptchaWap = $('#smsCaptchaWap');//图形验证码输入框
-// let isSmsSended = false;
-// let $registerSubmitWap=$('input[type="submit"]',$(registerFormWap));
-// let $voiceCaptchaWap = $('#voice_captchaWap');
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
     let imgUrl = require('../../images/landingpage/fuli'+(index+1)+'.png');
@@ -39,7 +28,7 @@ $('#fuliList').find('.swiper-slide').each(function (index,item) {
     _self.append(img);
 })
 
-var mySwiper = new Swiper ('.swiper-container', {
+var mySwiper = new Swiper ('#fuliList', {
     direction: 'horizontal',
     loop: true,
     autoplay:5000,

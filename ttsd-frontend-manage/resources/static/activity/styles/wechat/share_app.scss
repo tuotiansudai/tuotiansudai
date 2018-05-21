@@ -82,6 +82,75 @@ p {
 		background-size: contain;
 	}
 	.landing-page-container {
+      #register_btn {
+        font-size: 13px;
+        position: absolute;
+        right: 3%;
+        top: 10px;
+        color: #fff;
+        width: 57px;
+        height: 30px;
+        line-height: 30px;
+        background: #2d2544;
+        text-align: center;
+        border-radius: 5px;
+      }
+      .success-con {
+        .share-refer-info {
+          text-align: center;
+          color: #fff0b5;
+          padding-top: 0.35rem;
+          padding-bottom: 0.35rem;
+          line-height: 0.6rem;
+          span {
+            font-size: 0.4rem;
+          }
+          strong {
+            font-size: 0.42rem;
+            font-weight: normal;
+          }
+        }
+        .share-old {
+          margin: 0 auto;
+          margin-top: 0.3rem;
+          width: 5.93rem;
+          height: 1.4rem;
+          background: url("../../images/shareapp/share-old.png") no-repeat center top;
+          background-size: contain;
+        }
+        .gift-icon {
+          margin: 0 auto;
+          margin-top: 0.2rem;
+          margin-bottom: 0.2rem;
+          width: 5.36rem;
+          height: 4.3rem;
+          background: url("../../images/shareapp/gift-icon.png") no-repeat center top;
+          background-size: 100%;
+        }
+        .btn-app {
+          color: #820401;
+          background: #fff0b5;
+          display: inline-block;
+          width: 6rem;
+          height: 0.8rem;
+          line-height: 0.8rem;
+          margin-bottom: 0.4rem;
+          font-size: 0.3rem;
+          border-radius: 0.12rem ;
+        }
+      .invite-friend-invest {
+       p {
+         color: #fff0b5;
+         font-size: 0.3rem;
+         text-align: center;
+         line-height: 0.5rem;
+         span {
+           font-size: 0.36rem;
+         }
+       }
+      }
+
+      }
 
 		.login-wrap {
 			width: 7.5rem;
@@ -290,6 +359,7 @@ p {
 				.newbie-register-wrap {
 					padding-top: 0.1rem;
 					.newbie-register-title {
+                      margin: 0 auto;
 						margin-bottom: 0.2rem;
 						width: 6.51rem;
 						height: 1.16rem;

@@ -67,11 +67,14 @@ $inputImgCaptcha.on('keyup', function (event) {
     disableCaptchaBtn();
 });
 disableCaptchaBtn();
+$('#mobile').on('keyup',function () {
+    disableCaptchaBtn();
+})
 function disableCaptchaBtn() {
-    if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
-        if(!isSmsSended){
+    if ($('#mobile').val() != '' && /0?(13|14|15|18|17)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
+
             $fetchCaptcha.prop('disabled', false);
-        }
+
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
