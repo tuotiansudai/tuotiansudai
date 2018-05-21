@@ -1,3 +1,6 @@
+body {
+  font-size: 12px;
+}
 .main-frame {
   width: 100%;
 }
@@ -211,6 +214,7 @@ p {
     background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
     .star-content {
       background: url("../images/landingpage/body_bg.png") repeat-y center top;
+
       .newbie-register-wrap {
         padding-top: 30px;
         .newbie-register-title {
@@ -230,6 +234,9 @@ p {
           margin-bottom: 60px;
         }
 
+      }
+      .wap-swiper {
+        display: none;
       }
       .red-ware-wrap {
         .red-ware-title {
@@ -607,6 +614,9 @@ p {
           margin-bottom: 20px;
         }
       }
+      .good-project-wap {
+        display: none;
+      }
       .kindly-tips-wrap {
         width: 1083px;
         margin: 0 auto;
@@ -780,4 +790,489 @@ p {
 
 .fr {
   float: right;
+}
+
+@media screen and (max-width: 1024px){
+  .wapStyleNone {
+    display: none;
+  }
+  .error {
+    font-size: 0.24rem;
+  }
+  .desc-container {
+   display: none;
+  }
+  .btn-red {
+    width: 2.08rem;
+    height: 0.56rem;
+    line-height: 0.56rem;
+    font-size: 0.32rem;
+    text-align: center;
+  }
+body {
+  background: #d32c31 url("../images/landingpage/body_bg_wap.png") no-repeat center top;
+  background-size: contain;
+}
+  .landing-page-container {
+
+    .banner {
+      height: 15rem;
+      background: none;
+      &.bannerNotLogin {
+        height: 6.5rem;
+      }
+      .banner-img {
+        width: 7.5rem;
+        height: 6.76rem;
+        background: url("../images/landingpage/banner_wap.png") no-repeat center top;
+        background-size: contain;
+        .banner-con {
+          position: relative;
+          .login-wrap {
+            width: 7.5rem;
+            position: relative;
+            right: 0rem;
+            top: 6.8rem;
+            .title {
+              display: none;
+            }
+            .login-con {
+              background: none;
+              box-sizing: border-box;
+              padding: 0.12rem  0.3rem;
+              ul {
+                li {
+                  height: 0.96rem;
+                  margin-bottom: 0.4rem;
+                  &.captcha-li {
+                    position: relative;
+                    margin-bottom: 0.4rem;
+                    .voice-captcha {
+                      position: absolute;
+                      right: 0;
+                      bottom: -26px;
+                      color: #fff;
+                      a {
+                        color: #fff0b5;
+                      }
+                    }
+                  }
+                  &.agreement-li {
+                    height: 0.6rem;
+                    margin-bottom: 5px;
+                    font-size: 0.3rem;
+                    a {
+                      color: #3a84cf;
+                      vertical-align: middle;
+                      font-size: 0.3rem;
+                    }
+                    #agreementLable {
+                      display: inline-block;
+                    }
+                    .agreement-check {
+                      visibility: hidden;
+                      vertical-align: middle;
+                    }
+                    .icon-yesOrNo-checked {
+                      display: inline-block;
+                      vertical-align: middle;
+                      width: 0.36rem;
+                      height: 0.36rem;
+                      background: url("../images/landingpage/checkbox_bg_no.png") no-repeat center center;
+                      background-size: 100%;
+                      &.checked {
+                        background: url("../images/landingpage/checkboxed_bg.png") no-repeat center center;
+                        background-size: 100%;
+                      }
+                    }
+                    .check-label {
+                      color: #fff;
+                      vertical-align: middle;
+                    }
+                  }
+                  &.recomender-iphone {
+                    margin-bottom: 0;
+                    display: none;
+                    &.show {
+                      display: block;
+                    }
+                  }
+                  &.recommend {
+                    height: 0.6rem;
+                    color: #fff;
+                    margin-bottom: 0;
+                    cursor: pointer;
+                    margin-top: 0.2rem;
+                    >span {
+                      vertical-align: middle;
+                      display: inline-block;
+                      font-size: 0.34rem;
+                    }
+                    .icon-arrow-bottom {
+                      width: 0.28rem;
+                      height: 0.32rem;
+                      background: url("../images/landingpage/traingle_right.png") no-repeat center center;
+                      background-size: 100%;
+                      margin-right: 5px;
+                      &.active {
+                        background: url("../images/landingpage/traingle_bg.png") no-repeat center center;
+                        background-size: 100%;
+                      }
+                    }
+                  }
+                  input{
+                    border: 0;
+                    color: #959794;
+                    text-indent: 1.04rem;
+                    font-size: 0.28rem;
+                    &.mobileIcon {
+                      background:#fff url("../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+                    }
+                    &.passwordIcon {
+                      background:#fff url("../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+                    }
+                    &.captchaIcon {
+                      background:#fff url("../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+                    }
+                    &.smsIcon {
+                      background:#fff url("../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+                    }
+                  }
+                  #input_img_captcha {
+                    width: 3.4rem;
+                  }
+                  .image-captcha {
+                    display: inline-block;
+                    width: 2rem;
+                    height: 0.96rem;
+                    margin-left: 0.1rem;
+                    margin-right: 0.1rem;
+                    img {
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
+                  .nextImg {
+                    font-size: 0.32rem;
+                    color: #3a84cf;
+                    cursor: pointer;
+                  }
+                  .get-captcha {
+                    width: 2.1rem;
+                    vertical-align: middle;
+                    display: inline-block;
+                    background: #fce9a0;
+                    color: #820401;
+                    text-align: center;
+                    line-height: 0.8rem;
+                    margin-left: 0.2rem;
+                    text-indent: 0;
+                    cursor: pointer;
+                    &:disabled {
+                      background: #ccc;
+                      cursor: default;
+                      color: #fff;
+                    }
+                  }
+
+                  .register-sub {
+                    background: url("../images/landingpage/register_btn_bg.png") no-repeat center center;
+                    background-size: 100%;
+                    color: #fff;
+                    font-size: 0.45rem;
+                    &:disabled {
+                      background: #ccc;
+                      color: #fff;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+    .landing-main {
+      background: none;
+      .star-content {
+        background: none;
+
+        .newbie-register-wrap {
+          padding-top: 0.1rem;
+          .newbie-register-title {
+            margin-bottom: 0.2rem;
+            width: 6.51rem;
+            height: 1.16rem;
+            background: url("../images/landingpage/new_title_wap.png") no-repeat center center;
+            background-size: 100%;
+          }
+
+          .to-experience {
+            display: none;
+            margin-top: 60px;
+            margin-bottom: 60px;
+          }
+
+        }
+
+        .wap-con-swiper {
+          margin: 0 auto;
+          width: 5.96rem;
+          height: 3.9rem;
+          .swiper-container {
+            width: 5.96rem;
+            height: 3.9rem;
+            margin: 0 auto;
+            overflow: visible!important;
+            .swiper-wrapper {
+              .swiper-slide{
+                width: 5.96rem;
+                .get-btn {
+                  position: absolute;
+                  bottom: 0.6rem;
+                  left: 50%;
+                  margin-left: -1.98rem;
+                  width: 3.86rem;
+                  height: 0.64rem;
+                  background: url("../images/landingpage/get_btn_wap.png") no-repeat center center;
+                  background-size: 100%;
+                  color: #fff;
+                  font-size: 0.26rem;
+                  line-height: 0.64rem;
+                  text-align: center;
+                }
+                img{
+                  width: 100%;
+                }
+              }
+              .swiper-slide-prev {
+                margin-top: 0.3rem;
+                height: 2.9rem!important;
+                img{
+                  height: 2.9rem!important;
+                }
+              }
+              .swiper-slide-next{
+                margin-top: 0.3rem;
+                height: 2.9rem!important;
+                img{
+                  height: 2.9rem!important;
+                }
+              }
+              .swiper-slide-active{
+                width: 5.96rem;
+                height: 3.9rem;
+              }
+
+            }
+            .controlsBtn {
+              width: 0.7rem;
+              height: 0.7rem;
+              position: absolute;
+              top: 50%;
+              margin-top: -0.35rem;
+              background: rgba(0,0,0,0.3);
+              border-radius: 0.35rem;
+              z-index: 3000;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 30%;
+              cursor: pointer;
+              &.prevBtn {
+                left: -0.08rem;
+                background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
+              }
+              &.nextBtn {
+                right:-0.08rem;
+                background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
+              }
+            }
+          }
+        }
+
+
+        .red-ware-wrap {
+          display: none;
+        }
+        .newbie-increase-wrap {
+          display: none;
+        }
+
+        .six-advance-wrap {
+          clear: both;
+          .title {
+            width: 7.5rem;
+            height: 1.16rem;
+            margin-top: 0;
+            margin-bottom: 0.2rem;
+            background: url("../images/landingpage/six_advance_wap.png") no-repeat center center;
+            background-size: 100%;
+          }
+          .advance-con {
+            width: 7.5rem;
+            dl {
+              width: 3.5rem;
+              margin-bottom: 0.26rem;
+              dt {
+                width: 1.97rem;
+                height: 1.98rem;
+              }
+              dd {
+                .profile {
+                  font-size: 0.34rem;
+                  line-height: 0.34rem;
+
+                }
+                .font {
+                  font-size: 0.24rem;
+                  line-height: 0.34rem;
+                }
+
+              }
+            }
+          }
+          .gift-link {
+            display: none;
+          }
+        }
+        .good-project-wap {
+          display: block;
+          width: 7.5rem;
+          margin: 0 auto;
+          margin-top: 0.2rem;
+          margin-bottom: 0.25rem;
+          .title {
+            margin: 0 auto;
+            width: 5.38rem;
+            height: 1.16rem;
+            background: url("../images/landingpage/good_project.png") no-repeat center center;
+            background-size: 100%;
+          }
+          .project-list {
+              li {
+                .pro-item {
+                  width: 7.5rem;
+                  height: 2.52rem;
+                  position: relative;
+                  &.item1 {
+                    background: url("../images/landingpage/good_project1.png") no-repeat center center;
+                    background-size: 100%;
+                  }
+                  &.item2 {
+                    background: url("../images/landingpage/good_project2.png") no-repeat center center;
+                    background-size: 100%;
+                  }
+                  &.item3 {
+                    background: url("../images/landingpage/good_project3.png") no-repeat center center;
+                    background-size: 100%;
+                  }
+                  &.item4 {
+                    background: url("../images/landingpage/good_project4.png") no-repeat center center;
+                    background-size: 100%;
+                  }
+                  .btn-red {
+                    position: absolute;
+                    right: 0.7rem;
+                    bottom: 0.6rem;
+                  }
+                }
+              }
+
+          }
+        }
+        .kindly-tips-wrap {
+          width: 6.64rem;
+          .title {
+            font-size: 0.38rem;
+            position: relative;
+            .tip-line {
+              display: none;
+            }
+          }
+          .kindly-tips-con {
+            padding-bottom: 0.4rem;
+            p {
+              line-height: 0.34rem;
+              margin-bottom: 1px;
+              font-size: 0.24rem;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
 }

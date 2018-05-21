@@ -1,29 +1,32 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.landing_page_new_2018}" pageJavascript="${js.landing_page_new_2018}" activeNav="" activeLeftNav="" title="拓天速贷_新手注册送1000元投资红包_拓天速贷官网" keywords="拓天速贷,新手注册，1000元投资红包,6888元体验金,3%加息劵" description="拓天速贷新手注册送1000元投资红包,新人独享11%高息新手标,首次投资可获得3%加息券,新用户注册送6888元体验金,为广大投资用户提供多元化的投资选择和优质的综合投资服务.">
 <div class="landing-page-container" id="landingTop">
-    <div class="banner">
+    <@global.isAnonymous>
+    <div class="banner" id="bannerBox">
         <div class="banner-img">
             <div class="my-page-width banner-con">
-                <div class="login-wrap" id="registerContainer">
+
+                    <div class="login-wrap" id="registerContainer">
 
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
                         <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
                         <div class="login-con">
                             <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                             <ul>
-                                <li><input id="mobile" class="width100 height100 borderRadius" placeholder="输入手机号码"
+                                <li><input id="mobile" class="width100 height100 borderRadius mobileIcon" placeholder="输入手机号码"
                                            name="mobile"
                                            maxlength="11" type="text" autocomplete="off" validate></li>
-                                <li><input class="width100 height100 borderRadius" placeholder="密码" maxlength="20"
+                                <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
                                            type="password" name="password" autocomplete="off" validate></li>
                                 <li>
-                                    <input class="borderRadius height100" id="input_img_captcha" placeholder="图形验证码"
+                                    <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
                                            name="appCaptcha"
                                            type="text" maxlength="5" validate>
                                     <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
-                                    <span class="img-change height100 nextImg">换一张</span>
+                                    <span class="img-change height100 nextImg wapStyleNone">换一张</span><br/>
                                 </li>
-                                <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius"
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius smsIcon"
                                                               placeholder="手机验证码"
                                                               name="captcha" type="text" maxlength="6" validate>
                                     <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
@@ -34,8 +37,8 @@
                                 <li class="recommend" id="recommendLabel" style="display: none"><span
                                         class="icon-arrow-bottom"></span><span>请输入推荐人（此项选填）</span>
                                 </li>
-                                <li class="recommend" id="recommendLabelExist" style="display: none"><span>推荐人（<em
-                                        id="referMobile"></em>）</span>
+                                <li class="recommend" id="recommendLabelExist" style="display: none"><span>推荐人：<em
+                                        id="referMobile"></em></span>
                                 </li>
                                 <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
                                                                      name="referrer"
@@ -55,43 +58,100 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
+    </@global.isAnonymous>
+    <@global.isNotAnonymous>
+        <div class="banner bannerNotLogin" id="bannerBox">
+            <div class="banner-img">
+                <div class="my-page-width banner-con">
+
+                </div>
+            </div>
+        </div>
+    </@global.isNotAnonymous>
+
     <div class="landing-main">
         <div class="star-content">
             <div class="newbie-register-wrap">
                 <h2 class="newbie-register-title"></h2>
-                <div class="desc-container">
-                    <h2 class="title">新手体验项目</h2>
-                    <div class="line"></div>
-                    <div class="transverse-line left-line"></div>
-                    <div class="transverse-line right-line"></div>
-                    <div class="top"></div>
-                    <div class="content clearfix">
-                        <dl class="fl left-desc">
-                            <dt>13<span>%</span></dt>
-                            <dd>约定年化利率</dd>
-                        </dl>
 
-                        <dl class="fr right-desc">
-                            <dt>3<span>天</span></dt>
-                            <dd>项目期限</dd>
-                        </dl>
+                     <div class="desc-container">
+                        <h2 class="title">新手体验项目</h2>
+                        <div class="line"></div>
+                        <div class="transverse-line left-line"></div>
+                        <div class="transverse-line right-line"></div>
+                        <div class="top"></div>
+                        <div class="content clearfix">
+                            <dl class="fl left-desc">
+                                <dt>13<span>%</span></dt>
+                                <dd>约定年化利率</dd>
+                            </dl>
+
+                            <dl class="fr right-desc">
+                                <dt>3<span>天</span></dt>
+                                <dd>项目期限</dd>
+                            </dl>
+
+                        </div>
+                        <div class="bot"></div>
 
                     </div>
-                    <div class="bot"></div>
 
-                </div>
+
                 <div class="to-experience textCenter">
-                    <a class="gold-btn coupon-btn" href="javascript:;">领取6888元体验金</a>
+                    <@global.isAnonymous>
+                        <a class="gold-btn coupon-btn" href="javascript:;">领取6888元体验金</a>
+                    </@global.isAnonymous>
+                    <@global.isNotAnonymous>
+                        <a class="gold-btn" href="/loan-list">马上投资</a>
+                    </@global.isNotAnonymous>
                 </div>
+            </div>
+            <div class="wap-con-swiper">
+                    <div class="swiper-container" id="fuliList">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide item1">
+                               <@global.isAnonymous>
+                                 <a class="get-btn coupon-btn">领取6888元体验金</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                </@global.isNotAnonymous>
+                            </div>
+                            <div class="swiper-slide item2">
+                                <@global.isAnonymous>
+                                    <a class="get-btn coupon-btn">领取6888元体验金</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                </@global.isNotAnonymous>
+                            </div>
+                            <div class="swiper-slide item3">
+                                <@global.isAnonymous>
+                                    <a class="get-btn coupon-btn">领取6888元体验金</a>
+                                </@global.isAnonymous>
+                                <@global.isNotAnonymous>
+                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                </@global.isNotAnonymous>
+                            </div>
+                        </div>
+                        <div class="controlsBtn prevBtn"></div>
+                        <div class="controlsBtn nextBtn"></div>
+                    </div>
             </div>
             <div class="red-ware-wrap">
                 <h2 class="red-ware-title"></h2>
                 <div class="red-ware">
                     <div class="red-ware-img">
-                        <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
+                        <@global.isAnonymous>
+                            <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <a class="red-ware-btn" href="/loan-list">立即投资</a>
+                        </@global.isNotAnonymous>
                     </div>
                 </div>
             </div>
@@ -187,7 +247,7 @@
                     </div>
                 </div>
             </div>
-            <div class="six-advance-wrap">
+            <div class="six-advance-wrap clearfix">
                 <h2 class="title"></h2>
                 <div class="advance-con">
                     <dl>
@@ -222,9 +282,23 @@
                     </dl>
                 </div>
                 <div class="gift-link textCenter">
+                <@global.isAnonymous>
                     <a class="gold-btn coupon-btn" href="javascript:;">注册领取新手大礼包</a>
+                </@global.isAnonymous>
+                <@global.isNotAnonymous>
+                    <a class="gold-btn" href="/loan-list">马上投资</a>
+                </@global.isNotAnonymous>
                 </div>
 
+            </div>
+            <div class="good-project-wap">
+                <h2 class="title"></h2>
+                    <ul class="project-list">
+                        <li><div class="pro-item item1"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
+                        <li><div class="pro-item item2"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
+                        <li><div class="pro-item item3"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
+                        <li><div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
+                    </ul>
             </div>
             <div class="kindly-tips-wrap">
                 <div class="title"><span class="tip-line left-line"></span>温馨提示<span class="tip-line right-line"></span>
@@ -246,6 +320,7 @@
     </div>
 
 </div>
+
 
     <#include '../module/register-agreement.ftl' />
 </@global.main>
