@@ -24,7 +24,8 @@ public enum MessageTopic {
             MessageQueue.LoanOutSuccess_CashSnowball,
             MessageQueue.LoanOutSuccess_StartWorkActivity,
             MessageQueue.LoanOutSuccess_SendCashReward,
-            MessageQueue.LoanOutSuccess_InviteHelpActivity),
+            MessageQueue.LoanOutSuccess_InviteHelpActivity,
+            MessageQueue.LoanOutSuccess_SmsInvestor),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,

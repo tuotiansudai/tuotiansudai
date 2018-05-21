@@ -46,6 +46,7 @@ public enum MessageQueue {
     LoanOutSuccess_StartWorkActivity("LoanOutSuccess-StartWorkActivity"),
     LoanOutSuccess_InviteHelpActivity("LoanOutSuccess-InviteHelpActivity"),
     LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
+    LoanOutSuccess_SmsInvestor("LoanOutSuccess-SmsInvestor"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
