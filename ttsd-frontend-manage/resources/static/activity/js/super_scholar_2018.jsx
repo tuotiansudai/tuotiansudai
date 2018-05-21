@@ -83,7 +83,7 @@ if ($questionContainer.length) {
                     type: 'get'
 
                 }, function (response) {
-                    $questionList.html(tpl('questionTpl', {questions: response}));
+                    $questionList.html(tpl('questionTpl', {questions: response.data}));
                     $('.question-inner').find('li').on('click', function () {
                         let _this = $(this);
                         _this.addClass('active').siblings().removeClass('active');
@@ -150,7 +150,7 @@ if ($questionContainer.length) {
                                 }
 
                             }, function (response) {
-                                if (response == true) {
+                                if (response.status == true) {
                                     location.href = '/activity/super-scholar/view/result'
                                 } else {
                                     layer.msg('答题失败，请稍后再试！')

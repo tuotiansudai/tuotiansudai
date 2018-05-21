@@ -1,5 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
+import com.tuotiansudai.activity.repository.dto.BaseResponse;
 import com.tuotiansudai.activity.service.SuperScholarActivityService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +47,18 @@ public class SuperScholarActivityController {
 
     @RequestMapping(value = "/questions", method = RequestMethod.GET)
     @ResponseBody
-    public List<Map<String, Object>> getQuestions() throws IOException {
-        if (superScholarActivityService.doQuestion(LoginUserInfo.getLoginName())) {
-            return null;
+    public BaseResponse getQuestions() throws IOException {
+        String loginName = LoginUserInfo.getLoginName();
+        if (loginName == null || superScholarActivityService.doQuestion(loginName)) {
+            return new BaseResponse(false);
         }
-        return superScholarActivityService.getQuestions(LoginUserInfo.getLoginName());
+        return superScholarActivityService.getQuestions(loginName);
     }
 
     @RequestMapping(value = "/submit/answer", method = RequestMethod.POST)
     @ResponseBody
-    public boolean submitAnswer(@RequestParam(value = "answer") String answer) {
-        return superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer);
+    public BaseResponse submitAnswer(@RequestParam(value = "answer") String answer) {
+        return new BaseResponse(superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer));
     }
 
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
@@ -78,9 +80,8 @@ public class SuperScholarActivityController {
 
     @RequestMapping(value = "/share/success", method = RequestMethod.GET)
     @ResponseBody
-    public boolean shareSuccess() {
-        superScholarActivityService.shareSuccess(LoginUserInfo.getLoginName());
-        return true;
+    public BaseResponse shareSuccess() {
+        return new BaseResponse(superScholarActivityService.shareSuccess(LoginUserInfo.getLoginName()));
     }
 
     @RequestMapping(value = "/share/register", method = RequestMethod.GET)

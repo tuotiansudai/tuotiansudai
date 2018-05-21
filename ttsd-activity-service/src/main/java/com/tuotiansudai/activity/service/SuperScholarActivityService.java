@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.activity.repository.dto.BaseResponse;
 import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
 import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
@@ -76,7 +77,7 @@ public class SuperScholarActivityService {
     }
 
     @Transactional
-    public List<Map<String, Object>> getQuestions(String loginName) throws IOException {
+    public BaseResponse getQuestions(String loginName) throws IOException {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         InputStream inputStream = SuperScholarActivityService.class.getClassLoader().getResourceAsStream(QUESTIONS);
         Map<String, Object> map = new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, Object>>() {
@@ -104,7 +105,9 @@ public class SuperScholarActivityService {
             superScholarRewardModel.setQuestionAnswer(String.join(",", answers));
             superScholarRewardMapper.update(superScholarRewardModel);
         }
-        return questions;
+        BaseResponse baseResponse = new BaseResponse(true);
+        baseResponse.setData(questions);
+        return baseResponse;
     }
 
     public boolean submitAnswer(String loginName, String answer) {
@@ -144,13 +147,14 @@ public class SuperScholarActivityService {
                 .build());
     }
 
-    public void shareSuccess(String loginName) {
+    public boolean shareSuccess(String loginName) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, new Date());
         if (superScholarRewardModel == null){
-            return;
+            return false;
         }
         superScholarRewardModel.setShareHome(true);
         superScholarRewardMapper.update(superScholarRewardModel);
+        return true;
     }
 
     public boolean mobileExists(String mobile) {
