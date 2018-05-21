@@ -40,11 +40,11 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_NEW_USER_RECEIVE_MEMBERSHIP(
-            "尊敬的用户，欢迎您加入拓天，拓天给您赠送了V${param0}会员，赶紧投资享受会员特权吧！",
+            "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V${param1}会员特权，登录拓天速贷查看吧。",
             null),
 
     SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(
-            "尊敬的用户，您通过平台向安心签提交签署申请的《债权转让协议》电子合同生成失败，业务 id : ${param0}",
+            "安心签合同生成失败，业务 id : ${param0}",
             null),
 
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(
@@ -52,7 +52,7 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE(
-            "尊敬的用户，恭喜您获得了一张${param0}，请尽快使用拿奖励哦！",
+            "尊敬的用户，恭喜您获得了一张${param0}，${param1}天有效期，请尽快使用！",
             null),
 
     SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(

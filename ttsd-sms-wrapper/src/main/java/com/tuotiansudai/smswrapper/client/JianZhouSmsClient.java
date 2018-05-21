@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.client.OkHttpLoggingInterceptor;
 import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
+import com.tuotiansudai.util.WeChatClient;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ public class JianZhouSmsClient {
 
     static Logger logger = Logger.getLogger(JianZhouSmsClient.class);
 
+    private final static JianZhouSmsClient instance = new JianZhouSmsClient();
+
     private final static MediaType FORM = MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8");
 
     private final static String SMS_TEXT_URL = "http://www.jianzhou.sh.cn/JianzhouSMSWSServer/http/sendBatchMessage";
@@ -30,13 +33,17 @@ public class JianZhouSmsClient {
 
     private final static String PASSWORD = "667789887";
 
-    protected OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
+
+    public static JianZhouSmsClient getClient() {
+        return instance;
+    }
 
     public JianZhouSmsClient(){
         this.okHttpClient = new OkHttpClient();
-        this.okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
-        this.okHttpClient.setWriteTimeout(30, TimeUnit.SECONDS);
-        this.okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
+        this.okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        this.okHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        this.okHttpClient.setReadTimeout(10, TimeUnit.SECONDS);
         OkHttpLoggingInterceptor loggingInterceptor = new OkHttpLoggingInterceptor(message -> logger.info(message));
         okHttpClient.interceptors().add(loggingInterceptor);
     }

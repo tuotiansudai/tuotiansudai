@@ -57,7 +57,7 @@ public class SmsService {
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    private JianZhouSmsClient jianZhouSmsClient;
+    private JianZhouSmsClient jianZhouSmsClient = JianZhouSmsClient.getClient();
 
     @Autowired
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
@@ -99,7 +99,7 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, false, Lists.newArrayList(String.valueOf(level)), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
     }
 
     private String getCouponName(SmsCouponNotifyDto notifyDto) {
