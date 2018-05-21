@@ -610,6 +610,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(transferApplicationModel.getLoginName(), WeChatMessageType.TRANSFER_SUCCESS, transferApplicationModel.getId()));
 
         String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-        smsWrapperClient.sendCancelTransferLoanNotify(new SmsTransferLoanNotifyDto(mobile, transferApplicationModel.getName()));
+        smsWrapperClient.sendTransferLoanSuccessNotify(new SmsTransferLoanNotifyDto(mobile, transferApplicationModel.getName()));
     }
 }

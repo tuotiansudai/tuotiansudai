@@ -4,7 +4,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.sms.SmsTransferLoanNotifyDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
@@ -16,6 +18,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.CalculateLeftDays;
@@ -75,6 +78,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
@@ -228,6 +237,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 PushType.TRANSFER_FAIL,
                 MessageEventType.TRANSFER_FAIL.getTitleTemplate(),
                 AppUrl.MESSAGE_CENTER_LIST));
+
+        String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
+        smsWrapperClient.sendTransferLoanOverdueNotify(new SmsTransferLoanNotifyDto(transferApplicationModel.getName(), mobile));
 
         return true;
     }

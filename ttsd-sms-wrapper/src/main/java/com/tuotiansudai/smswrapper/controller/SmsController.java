@@ -64,10 +64,16 @@ public class SmsController {
         return smsService.cancelTransferLoan(notifyDto.getMobile(), notifyDto.getTransferLoanName());
     }
 
-    @RequestMapping(value = "/transfer-loan-SUCCESS", method = RequestMethod.POST)
+    @RequestMapping(value = "/transfer-loan-success", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> transferLoanSuccess(@RequestBody SmsTransferLoanNotifyDto notifyDto) {
         return smsService.transferLoanSuccess(notifyDto.getMobile(), notifyDto.getTransferLoanName());
+    }
+
+    @RequestMapping(value = "/transfer-loan-overdue", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> transferLoanOverdue(@RequestBody SmsTransferLoanNotifyDto notifyDto) {
+        return smsService.transferLoanOverdue(notifyDto.getMobile(), notifyDto.getTransferLoanName());
     }
 
     @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
