@@ -12,20 +12,18 @@ public class SuperScholarRewardView implements Serializable{
     private String annualizedAmount;
     private String rewardRate;
     private String reward;
-    private boolean isCashBack;
     private Date investTime;
 
     public SuperScholarRewardView() {
     }
 
-    public SuperScholarRewardView(String userName, String mobile, String amount, String annualizedAmount, String rewardRate, String reward, boolean isCashBack, Date investTime) {
+    public SuperScholarRewardView(String userName, String mobile, String amount, String annualizedAmount, String rewardRate, String reward, Date investTime) {
         this.userName = userName;
         this.mobile = mobile;
         this.amount = amount;
         this.annualizedAmount = annualizedAmount;
         this.rewardRate = rewardRate;
         this.reward = reward;
-        this.isCashBack = isCashBack;
         this.investTime = investTime;
     }
 
@@ -75,14 +73,6 @@ public class SuperScholarRewardView implements Serializable{
 
     public void setReward(String reward) {
         this.reward = reward;
-    }
-
-    public boolean isCashBack() {
-        return isCashBack;
-    }
-
-    public void setCashBack(boolean cashBack) {
-        isCashBack = cashBack;
     }
 
     public Date getInvestTime() {

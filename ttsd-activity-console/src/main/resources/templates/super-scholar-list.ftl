@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="InviteHelpActivity" title="返利加油站活动">
+<@global.main pageCss="" pageJavascript="" headLab="activity-manage" sideLab="InviteHelpActivity" title="6月答题赢加薪活动">
 
 <div class="col-md-10">
 
@@ -23,7 +23,6 @@
                 <th>返现比率</th>
                 <th>获得现金奖励</th>
                 <th>投资时间</th>
-                <th>是否返现</th>
             </tr>
             </thead>
             <tbody>
@@ -36,7 +35,6 @@
                     <td>${item.rewardRate}</td>
                     <td>${item.reward}</td>
                     <td>${item.investTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                    <td>${item.cashBack?string('是','否')}</td>
                 </tr>
                 <#else>
                 <tr>

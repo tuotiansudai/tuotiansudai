@@ -37,7 +37,6 @@ public class ActivityConsoleSuperScholarService {
                             AmountConverter.convertCentToString(model.getAnnualizedAmount()),
                             String.format("%.1f", rewardRate * 100) + "%",
                             AmountConverter.convertCentToString((long) (model.getAnnualizedAmount() * rewardRate)),
-                            superScholarRewardModel.isCashBack(),
                             model.getCreatedTime());
 
                 }).collect(Collectors.toList());
