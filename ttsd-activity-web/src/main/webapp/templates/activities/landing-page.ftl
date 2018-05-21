@@ -203,16 +203,43 @@
                             </div>
                             <div class="bot-content clearfix">
                                 <div class="left-bot border-section fl">
-                                    <div class="loan-wrap">
-                                        <h2 class="loan-title">房产抵押借款</h2>
-                                        <div class="loan-con">
-                                            <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
-                                                    class="day">天</span></div>
-                                            <p class="rate">约定年化利率</p>
-                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span
-                                                    class="icon2"></span><span>按天计息 即投即生息</span></p>
-                                            <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                    <div class="swiper-container" id="loanBoxList">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide loan-wrap">
+                                                <h2 class="loan-title">房产抵押借款</h2>
+                                                <div class="loan-con">
+                                                    <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
+                                                            class="day">天</span></div>
+                                                    <p class="rate">约定年化利率</p>
+                                                    <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                                            class="icon2"></span><span>按天计息 即投即生息</span></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide loan-wrap">
+                                                <h2 class="loan-title">车辆抵押借款</h2>
+                                                <div class="loan-con">
+                                                    <div class="loan-info"><span class="big-num">9</span><span class="percent">%</span>90<span
+                                                            class="day">天</span></div>
+                                                    <p class="rate">约定年化利率</p>
+                                                    <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                                            class="icon2"></span><span>按天计息 即投即生息</span></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide loan-wrap">
+                                                <h2 class="loan-title">车辆抵押借款</h2>
+                                                <div class="loan-con">
+                                                    <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>180<span
+                                                            class="day">天</span></div>
+                                                    <p class="rate">约定年化利率</p>
+                                                    <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                                            class="icon2"></span><span>按天计息 即投即生息</span></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="swiper-pagination"></div>
                                     </div>
                                 </div>
                                 <div class="right-bot border-section fr count-form">

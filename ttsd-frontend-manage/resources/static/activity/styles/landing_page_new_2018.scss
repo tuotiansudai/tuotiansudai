@@ -399,6 +399,12 @@ p {
                 .left-bot {
                   width: 295px;
                   height: 100%;
+                  .swiper-container {
+                    float: none;
+                    .swiper-pagination-bullet-active {
+                      background: #bc3434;
+                    }
+                  }
                   .loan-wrap {
                     .loan-title {
                       height: 46px;

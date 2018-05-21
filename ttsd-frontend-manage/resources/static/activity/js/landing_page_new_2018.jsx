@@ -28,10 +28,10 @@ $('#fuliList').find('.swiper-slide').each(function (index,item) {
     _self.append(img);
 })
 
-    var mySwiper = new Swiper ('.swiper-container', {
+    var mySwiper = new Swiper ('#fuliList', {
         direction: 'horizontal',
         loop: true,
-        autoplay:3000,
+        autoplay:5000,
         autoplayDisableOnInteraction:false,
         slidesPerView: 'auto',
         centeredSlides:true,
@@ -51,7 +51,15 @@ $nextBtn.on('click',function () {
     mySwiper.slideNext();
 })
 
+//pc swiper
+var mySwiper = new Swiper ('#loanBoxList', {
+    direction: 'horizontal',
+    loop: true,
+    autoplay:5000,
+    autoplayDisableOnInteraction:false,
+    pagination: '.swiper-pagination'
 
+});
 
 let isVoice = false;
 $inputImgCaptcha.on('keyup', function (event) {
