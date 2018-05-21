@@ -46,8 +46,10 @@ public class SuperScholarActivityShareScheduler {
             return;
         }
 
-        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now().minusDays(1));
-        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().minusDays(1).toDate());
+//        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now().minusDays(1));
+        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
+//        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().minusDays(1).toDate());
+        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().toDate());
 
         for(SuperScholarRewardModel model : models){
             model.setShareAccount(redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, yesterday, model.getLoginName())));
