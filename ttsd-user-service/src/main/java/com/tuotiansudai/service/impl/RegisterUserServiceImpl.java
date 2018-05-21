@@ -3,8 +3,10 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
+import com.tuotiansudai.dto.sms.SmsRegisterSuccessNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -38,6 +40,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
     private static final long EXPERIENCE_AMOUNT = 688800L;
 
     @Override
@@ -54,6 +59,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         userMembershipMapper.create(userMembershipModel);
 
         this.sendMessage(userModel);
+
+        smsWrapperClient.sendRegisterSuccessSms(new SmsRegisterSuccessNotifyDto(userModel.getMobile(), userModel.getReferrer()));
 
         return userModel;
     }

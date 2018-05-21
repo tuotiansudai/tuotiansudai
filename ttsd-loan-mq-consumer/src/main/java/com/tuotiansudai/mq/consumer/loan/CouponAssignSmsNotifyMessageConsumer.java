@@ -66,6 +66,7 @@ public class CouponAssignSmsNotifyMessageConsumer implements MessageConsumer {
         notifyDto.setRate(String.format("%.1f", couponModel.getRate() * 100));
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(DateTime.now().plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().toString("yyyy年MM月dd日"));
+        notifyDto.setDeadLine(couponModel.getDeadline());
 
         logger.info(MessageFormat.format("Send coupon notify, loginName:{0}, couponId:{1}", couponAssignSmsNotifyMessage.getLoginName(), String.valueOf(couponAssignSmsNotifyMessage.getCouponId())));
 

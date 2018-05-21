@@ -3,12 +3,14 @@ package com.tuotiansudai.smswrapper.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.bcel.internal.generic.FADD;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
 import com.tuotiansudai.dto.sms.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.sms.SmsRegisterSuccessNotifyDto;
 import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
@@ -66,6 +68,14 @@ public class SmsService {
         return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
     }
 
+    public BaseDto<SmsDataDto> sendRegisterSuccess(SmsRegisterSuccessNotifyDto notifyDto) {
+        if (!Strings.isNullOrEmpty(notifyDto.getReferrerMobile())){
+            String mobile = notifyDto.getMobile().substring(0, 3) + "****" + notifyDto.getMobile().substring(7);
+            sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_REFERRER_TEMPLATE, false, Lists.newArrayList(mobile), null);
+        }
+        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
+    }
+
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
         return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
     }
@@ -118,15 +128,11 @@ public class SmsService {
         if (null == couponName) {
             return new BaseDto<>(false);
         }
-        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, false, Lists.newArrayList(couponName), null);
+        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, false, Lists.newArrayList(couponName, String.valueOf(notifyDto.getDeadLine())), null);
     }
 
     public BaseDto<SmsDataDto> couponExpiredNotify(SmsCouponNotifyDto notifyDto) {
-        String couponName = getCouponName(notifyDto);
-        if (null == couponName) {
-            return new BaseDto<>(false);
-        }
-        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, false, Lists.newArrayList(couponName, notifyDto.getExpiredDate()), null);
+        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, false, Lists.newArrayList(String.valueOf(notifyDto.getExpiredCount())), null);
     }
 
     public BaseDto<SmsDataDto> creditLoanBalanceAlert() {

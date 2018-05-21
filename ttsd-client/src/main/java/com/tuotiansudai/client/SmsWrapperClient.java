@@ -33,6 +33,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String REGISTER_CAPTCHA_SMS_URI = "/sms/register-captcha";
 
+    private final static String REGISTER_SUCCESS_SMS_URI = "/sms/register-success";
+
     private final static String NO_PASSWORD_INVEST_CAPTCHA_SMS_URI = "/sms/no-password-invest-captcha";
 
     private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-password-captcha";
@@ -63,6 +65,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendRegisterSuccessSms(SmsRegisterSuccessNotifyDto dto) {
+        return send(dto, REGISTER_SUCCESS_SMS_URI);
     }
 
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptchaSms(SmsCaptchaDto dto) {

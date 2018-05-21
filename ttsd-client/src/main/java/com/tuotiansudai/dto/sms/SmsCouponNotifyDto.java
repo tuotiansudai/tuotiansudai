@@ -27,6 +27,10 @@ public class SmsCouponNotifyDto implements Serializable {
     @NotNull
     private String expiredDate;
 
+    private int deadLine;
+
+    private int expiredCount;
+
     public String getMobile() {
         return mobile;
     }
@@ -65,5 +69,21 @@ public class SmsCouponNotifyDto implements Serializable {
 
     public void setExpiredDate(String expiredDate) {
         this.expiredDate = expiredDate;
+    }
+
+    public int getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(int deadLine) {
+        this.deadLine = deadLine;
+    }
+
+    public int getExpiredCount() {
+        return expiredCount;
+    }
+
+    public void setExpiredCount(int expiredCount) {
+        this.expiredCount = expiredCount;
     }
 }

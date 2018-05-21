@@ -11,6 +11,14 @@ public enum JianZhouSmsTemplate {
             "尊敬的用户，您的注册验证码是：${param0} 。请勿泄露给他人！",
             "尊敬的用户，您的注册验证码是：${param0} 。请勿泄露给他人！"),
 
+    SMS_REGISTER_SUCCESS_TEMPLATE(
+            "恭喜您注册成功！1000元新人红包及6888元体验金已到账！登录拓天速贷，新客独享10%约定年化收益！",
+            null),
+
+    SMS_REGISTER_SUCCESS_REFERRER_TEMPLATE(
+            "尊敬的用户，您推荐的好友${param0}已成功注册，(邀请好友投资)您还能再拿0.5%现金奖励哦！",
+            null),
+
     SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE(
             "尊敬的用户，您的验证码是：${param0} 。请勿泄露给他人！",
             "尊敬的用户，您的验证码是：${param0} 。请勿泄露给他人！"),
@@ -56,7 +64,7 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(
-            "尊敬的用户，您的${param0}即将过期（有效期至：${param1}），请尽快使用。",
+            "尊敬的用户，您账户内有${param0}张优惠券，将在2天后过期，请尽快使用！",
             null),
 
     SMS_FATAL_NOTIFY_TEMPLATE(

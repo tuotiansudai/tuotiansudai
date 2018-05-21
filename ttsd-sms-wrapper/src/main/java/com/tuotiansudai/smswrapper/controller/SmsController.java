@@ -22,6 +22,12 @@ public class SmsController {
         return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.isVoice(), smsCaptchaDto.getIp());
     }
 
+    @RequestMapping(value = "/register-success", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendRegisterSuccess(@Valid @RequestBody SmsRegisterSuccessNotifyDto notifyDto) {
+        return smsService.sendRegisterSuccess(notifyDto);
+    }
+
     @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
