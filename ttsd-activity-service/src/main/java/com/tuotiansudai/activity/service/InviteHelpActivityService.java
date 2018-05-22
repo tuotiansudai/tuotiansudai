@@ -212,7 +212,7 @@ public class InviteHelpActivityService {
                 .build());
     }
 
-    @Transactional
+    @Transactional(transactionManager = "activityTransactionManager")
     public boolean clickHelp(long id, String openId) {
         if (weChatHelpInfoMapper.findByOpenId(openId, id) != null) {
             return false;
