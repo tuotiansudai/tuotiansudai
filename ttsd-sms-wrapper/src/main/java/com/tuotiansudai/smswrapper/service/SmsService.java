@@ -122,11 +122,11 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(dto.getSendDate()), null);
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, false, Lists.newArrayList(dto.getSendDate()), null);
     }
 
     public BaseDto<SmsDataDto> usePoint(SmsUsePointNotifyDto dto) {
-        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(dto.getUsePoint(), dto.getSurplusPoint()), null);
+        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_USE_POINT_NOTIFY_TEMPLATE, false, Lists.newArrayList(dto.getUsePoint(), dto.getSurplusPoint()), null);
     }
 
     public BaseDto<SmsDataDto> membershipUpgrade(SmsUserReceiveMembershipDto dto) {
