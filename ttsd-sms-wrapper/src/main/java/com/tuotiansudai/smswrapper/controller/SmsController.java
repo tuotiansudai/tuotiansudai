@@ -75,18 +75,18 @@ public class SmsController {
     public BaseDto<SmsDataDto> transferLoanOverdue(@RequestBody SmsTransferLoanNotifyDto notifyDto) {
         return smsService.transferLoanOverdue(notifyDto.getMobile(), notifyDto.getTransferLoanName());
     }
+//
+//    @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
+//    @ResponseBody
+//    public BaseDto<SmsDataDto> importUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+//        return smsService.importUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+//    }
 
-    @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> importUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
-        return smsService.importUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
-    }
-
-    @RequestMapping(value = "/new-user-receive-membership", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
-        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
-    }
+//    @RequestMapping(value = "/new-user-receive-membership", method = RequestMethod.POST)
+//    @ResponseBody
+//    public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
+//        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
+//    }
 
     @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
     @ResponseBody
@@ -148,4 +148,17 @@ public class SmsController {
     public BaseDto<SmsDataDto> sendPayrollNotify(@Valid @RequestBody SmsPayrollNotifyDto dto) {
         return smsService.payroll(dto);
     }
+
+    @RequestMapping(value = "/use-point", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendUsePointNotify(@Valid @RequestBody SmsUsePointNotifyDto dto) {
+        return smsService.usePoint(dto);
+    }
+
+    @RequestMapping(value = "/membership-upgrade", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendMembershipUpgradeNotify(@Valid @RequestBody SmsUserReceiveMembershipDto dto) {
+        return smsService.membershipUpgrade(dto);
+    }
+
 }

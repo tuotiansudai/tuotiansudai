@@ -2,6 +2,8 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.sms.SmsUserReceiveMembershipDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
@@ -17,6 +19,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,12 @@ public class MembershipInvestService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
 
     @Transactional
@@ -102,5 +111,8 @@ public class MembershipInvestService {
                 null
         ));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title, AppUrl.MESSAGE_CENTER_LIST));
+
+        smsWrapperClient.sendMembershipUpgradeNotify(new SmsUserReceiveMembershipDto(userMapper.findByLoginName(loginName).getMobile(), String.valueOf(level)));
+
     }
 }

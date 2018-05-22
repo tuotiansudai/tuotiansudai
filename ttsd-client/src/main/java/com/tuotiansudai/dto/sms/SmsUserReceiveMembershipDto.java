@@ -10,12 +10,12 @@ public class SmsUserReceiveMembershipDto implements Serializable {
     @Pattern(regexp = "^\\d{11}$")
     private String mobile;
 
-    private int level;
+    private String level;
 
     public SmsUserReceiveMembershipDto() {
     }
 
-    public SmsUserReceiveMembershipDto(String mobile, int level) {
+    public SmsUserReceiveMembershipDto(String mobile, String level) {
         this.mobile = mobile;
         this.level = level;
     }
@@ -28,11 +28,11 @@ public class SmsUserReceiveMembershipDto implements Serializable {
         this.mobile = mobile;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 }

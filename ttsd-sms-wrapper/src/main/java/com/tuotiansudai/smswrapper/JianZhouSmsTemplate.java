@@ -51,11 +51,11 @@ public enum JianZhouSmsTemplate {
             "尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功，请尽快登录平台进行查看。如有疑问，请致电客服热线400-169-1188。",
             null),
 
-    SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE(
-            "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V3会员特权，登录拓天速贷查看吧。",
-            null),
-
-    SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE(
+//    SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE(
+//            "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V${param1}会员特权，登录拓天速贷查看吧。",
+//            null),
+//
+    SMS_MEMBERSHIP_UPGRADE_TEMPLATE(
             "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V${param1}会员特权，登录拓天速贷查看吧。",
             null),
 
@@ -85,6 +85,10 @@ public enum JianZhouSmsTemplate {
 
     SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE(
             "尊敬的用户，您账户内有${param0}张优惠券，将在2天后过期，请尽快使用！",
+            null),
+
+    SMS_USE_POINT_NOTIFY_TEMPLATE(
+            "尊敬的用户，您在积分商城消费${param0}积分，剩余积分${param1}，如有疑问，请致电客服热线400-169-1188，感谢您选择拓天速贷。",
             null),
 
     SMS_FATAL_NOTIFY_TEMPLATE(

@@ -75,6 +75,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PAYROLL = "/sms/payroll";
 
+    private final static String MEMBERSHIP_UPGRADE = "/sms/membership-upgrade";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -161,6 +163,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCreditLoanBalanceAlert() {
         return send(null, CREDIT_LOAN_BALANCE_ALERT);
+    }
+
+    public BaseDto<SmsDataDto> sendMembershipUpgradeNotify(SmsUserReceiveMembershipDto dto) {
+        return send(dto, MEMBERSHIP_UPGRADE);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

@@ -110,7 +110,7 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level)), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
     }
 
     public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
@@ -118,7 +118,7 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> advancedRepay(InvestSmsNotifyDto dto) {
-        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
+        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
     }
 
     public BaseDto<SmsDataDto> membershipPrivilegeBySuccess(String mobile) {
@@ -127,6 +127,14 @@ public class SmsService {
 
     public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {
         return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(dto.getSendDate()), null);
+    }
+
+    public BaseDto<SmsDataDto> usePoint(SmsUsePointNotifyDto dto) {
+        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(dto.getUsePoint(), dto.getSurplusPoint()), null);
+    }
+
+    public BaseDto<SmsDataDto> membershipUpgrade(SmsUserReceiveMembershipDto dto) {
+        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_MEMBERSHIP_UPGRADE_TEMPLATE, false, Lists.newArrayList(dto.getLevel(), dto.getLevel()), null);
     }
 
     private String getCouponName(SmsCouponNotifyDto notifyDto) {
