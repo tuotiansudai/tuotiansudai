@@ -234,6 +234,7 @@ public class InviteHelpActivityService {
         } else if (weChatHelpModel.getReward() < 1000) {
             weChatHelpModel.setReward((helpUserCount * 20));
         }
+        weChatHelpMapper.update(weChatHelpModel);
         return true;
     }
 
