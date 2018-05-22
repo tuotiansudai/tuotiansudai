@@ -19,6 +19,10 @@ let isSmsSended = false;
 let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
+if(urlObj.params.source == 'app'){
+    $('#bannerBox').hide();
+   $('#bannerBoxApp').show();
+}
 
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);

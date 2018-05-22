@@ -64,7 +64,7 @@
     </div>
     </@global.isAnonymous>
     <@global.isNotAnonymous>
-        <div class="banner bannerNotLogin" id="bannerBox">
+        <div class="banner bannerNotLogin" id="bannerBoxLogin">
             <div class="banner-img">
                 <div class="my-page-width banner-con">
 
@@ -72,6 +72,13 @@
             </div>
         </div>
     </@global.isNotAnonymous>
+    <div class="banner bannerNotLogin" id="bannerBoxApp" style="display: none">
+        <div class="banner-img">
+            <div class="my-page-width banner-con">
+
+            </div>
+        </div>
+    </div>
 
     <div class="landing-main">
         <div class="star-content">

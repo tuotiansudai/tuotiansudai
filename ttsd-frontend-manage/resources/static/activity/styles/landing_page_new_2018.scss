@@ -933,15 +933,19 @@ body {
                     font-size: 0.28rem;
                     &.mobileIcon {
                       background:#fff url("../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+                      background-size: contain;
                     }
                     &.passwordIcon {
                       background:#fff url("../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+                      background-size: contain;
                     }
                     &.captchaIcon {
                       background:#fff url("../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+                      background-size: contain;
                     }
                     &.smsIcon {
                       background:#fff url("../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+                      background-size: contain;
                     }
                   }
                   #input_img_captcha {
