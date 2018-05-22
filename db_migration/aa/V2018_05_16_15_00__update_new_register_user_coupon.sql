@@ -2,7 +2,7 @@ BEGIN;
 
 UPDATE coupon
 SET deleted = 1
-WHERE id IN (383, 384, 385, 386, 387, 389, 390);
+WHERE id IN (383, 384, 385, 386, 387, 389, 390, 391);
 
 INSERT INTO `coupon` (`id`, `amount`, `rate`, `birthday_benefit`, `multiple`, `start_time`, `end_time`, `deadline`, `used_count`, `total_count`, `issued_count`, `active`, `shared`, `created_by`, `created_time`, `activated_by`, `activated_time`, `updated_by`, `updated_time`, `invest_lower_limit`, `product_types`, `coupon_type`, `user_group`, `deleted`, `comment`, `coupon_source`)
 VALUES (497, 800, 0, 0, 0, '2018-01-01 00:00:00', '2020-12-31 23:59:59', 30, 0, 9999999, 0, 1, 0, 'sidneygao',
