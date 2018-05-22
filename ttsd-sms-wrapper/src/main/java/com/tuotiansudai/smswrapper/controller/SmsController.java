@@ -75,18 +75,6 @@ public class SmsController {
     public BaseDto<SmsDataDto> transferLoanOverdue(@RequestBody SmsTransferLoanNotifyDto notifyDto) {
         return smsService.transferLoanOverdue(notifyDto.getMobile(), notifyDto.getTransferLoanName());
     }
-//
-//    @RequestMapping(value = "/import-user-receive-membership", method = RequestMethod.POST)
-//    @ResponseBody
-//    public BaseDto<SmsDataDto> importUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
-//        return smsService.importUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
-//    }
-
-//    @RequestMapping(value = "/new-user-receive-membership", method = RequestMethod.POST)
-//    @ResponseBody
-//    public BaseDto<SmsDataDto> newUserReceiveMembership(@RequestBody SmsUserReceiveMembershipDto notifyDto) {
-//        return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
-//    }
 
     @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
     @ResponseBody

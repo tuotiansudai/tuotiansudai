@@ -109,14 +109,6 @@ public class SmsService {
         return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
     }
 
-    public BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
-    }
-
-    public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
-    }
-
     public BaseDto<SmsDataDto> advancedRepay(InvestSmsNotifyDto dto) {
         return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
     }

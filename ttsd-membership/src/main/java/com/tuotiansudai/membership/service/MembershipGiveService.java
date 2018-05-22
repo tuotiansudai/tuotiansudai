@@ -140,13 +140,6 @@ public class MembershipGiveService {
     public void newUserReceiveMembership(String loginName) {
         List<MembershipGiveModel> membershipGiveModels = membershipGiveMapper.findAllCurrentNewUserGivePlans();
         giveUsersMemberships(Lists.newArrayList(loginName), membershipGiveModels);
-
-        String mobile = userMapper.findByLoginName(loginName).getMobile();
-        for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
-            if (membershipGiveModel.isSmsNotify()) {
-                sendReceiveMembershipSmsNotify(mobile, membershipGiveModel, MembershipUserGroup.NEW_REGISTERED_USER);
-            }
-        }
     }
 
     @Transactional
@@ -173,9 +166,6 @@ public class MembershipGiveService {
                 mobiles.add(userModel.getMobile());
             }
             giveUsersMemberships(importUsers, Lists.newArrayList(membershipGiveModel));
-            for (String mobile : mobiles) {
-                sendReceiveMembershipSmsNotify(mobile, membershipGiveModel, MembershipUserGroup.IMPORT_USER);
-            }
         }
 
         membershipGiveModel.setActive(true);
@@ -321,20 +311,6 @@ public class MembershipGiveService {
         if (userMembershipModels.size() != 0 && membershipExperienceBillModels.size() != 0) {
             userMembershipMapper.createBatch(userMembershipModels);
             membershipExperienceBillMapper.createBatch(membershipExperienceBillModels);
-        }
-    }
-
-    private void sendReceiveMembershipSmsNotify(String mobile, MembershipGiveModel membershipGiveModel, MembershipUserGroup membershipUserGroup) {
-        Map<Long, Integer> idLevelMap = getIdLevelMap();
-        switch (membershipUserGroup) {
-            case IMPORT_USER:
-                smsWrapperClient.sendImportUserReceiveMembership(new SmsUserReceiveMembershipDto(mobile, idLevelMap.get(membershipGiveModel.getMembershipId())));
-                break;
-            case NEW_REGISTERED_USER:
-                smsWrapperClient.sendNewUserReceiveMembership(new SmsUserReceiveMembershipDto(mobile, idLevelMap.get(membershipGiveModel.getMembershipId())));
-                break;
-            default:
-                break;
         }
     }
 

@@ -55,10 +55,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String TRANSFER_LOAN_OVERDUE_URI = "/sms/transfer-loan-overdue";
 
-    private final static String IMPORT_USER_RECEIVE_MEMBERSHIP_URI = "/sms/import-user-receive-membership";
-
-    private final static String NEW_USER_RECEIVE_MEMBERSHIP_URI = "/sms/new-user-receive-membership";
-
     private final static String LOAN_RAISING_COMPLETE_NOTIFY_URI = "/sms/loan-raising-complete-notify";
 
     private final static String LOAN_OUT_COMPLETE_NOTIFY_URI = "/sms/loan-out-complete-notify";
@@ -123,14 +119,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendTransferLoanOverdueNotify(SmsTransferLoanNotifyDto dto) {
         return send(dto, TRANSFER_LOAN_OVERDUE_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendImportUserReceiveMembership(SmsUserReceiveMembershipDto dto) {
-        return send(dto, IMPORT_USER_RECEIVE_MEMBERSHIP_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendNewUserReceiveMembership(SmsUserReceiveMembershipDto dto) {
-        return send(dto, NEW_USER_RECEIVE_MEMBERSHIP_URI);
     }
 
     public BaseDto<SmsDataDto> sendLoanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
