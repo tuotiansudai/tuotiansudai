@@ -1,9 +1,10 @@
 package com.tuotiansudai.dto.sms;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LoanOutCompleteNotifyDto {
+public class LoanOutCompleteNotifyDto implements Serializable {
 
     private List<String> mobiles;
 

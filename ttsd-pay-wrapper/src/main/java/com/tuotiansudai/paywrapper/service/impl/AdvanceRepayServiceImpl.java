@@ -7,10 +7,10 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -29,9 +29,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
-import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -87,16 +87,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     protected PaySyncClient paySyncClient;
 
     @Autowired
-    protected InvestService investService;
-
-    @Autowired
     protected LoanService loanService;
-
-    @Autowired
-    protected JobManager jobManager;
-
-    @Autowired
-    protected CouponRepayMapper couponRepayMapper;
 
     @Autowired
     protected AdvanceRepayNotifyMapper advanceRepayNotifyMapper;
@@ -106,6 +97,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -571,6 +565,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title, AppUrl.MESSAGE_CENTER_LIST));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.ADVANCE_REPAY_SUCCESS, currentInvestRepay.getId()));
+
+        smsWrapperClient.sendAdvancedRepayNotify(new InvestSmsNotifyDto(userMapper.findByLoginName(investModel.getLoginName()).getMobile(), loanModel.getName(), null));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {

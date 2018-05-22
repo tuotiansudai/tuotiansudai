@@ -45,7 +45,7 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "/sms/generate-contract-error-notify";
 
-    private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
+    private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{}/password-changed-notify";
 
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
@@ -67,7 +67,13 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String COUPON_EXPIRED_NOTIFY = "/sms/coupon-expired-notify";
 
+    private final static String ADVANCED_REPAY_URI = "/sms/advanced-repay";
+
     private final static String CREDIT_LOAN_BALANCE_ALERT = "/sms/credit-loan-balance-alert";
+
+    private final static String MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI = "/sms/mobile/{0}/membership-privilege-buy-success";
+
+    private final static String PAYROLL = "/sms/payroll";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
@@ -139,6 +145,18 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCouponExpiredNotify(SmsCouponNotifyDto dto) {
         return send(dto, COUPON_EXPIRED_NOTIFY);
+    }
+
+    public BaseDto<SmsDataDto> sendAdvancedRepayNotify(InvestSmsNotifyDto dto) {
+        return send(dto, ADVANCED_REPAY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeBuySuccessNotify(String mobile) {
+        return send(null, MessageFormat.format(MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI, mobile));
+    }
+
+    public BaseDto<SmsDataDto> sendPayrollNotify(SmsPayrollNotifyDto dto) {
+        return send(dto, PAYROLL);
     }
 
     public BaseDto<SmsDataDto> sendCreditLoanBalanceAlert() {

@@ -129,4 +129,23 @@ public class SmsController {
     public BaseDto<SmsDataDto> creditLoanBalanceAlert() {
         return smsService.creditLoanBalanceAlert();
     }
+
+
+    @RequestMapping(value = "/advanced-repay", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> advancedRepayNotify(@Valid @RequestBody InvestSmsNotifyDto dto) {
+        return smsService.advancedRepay(dto);
+    }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/membership-privilege-buy-success", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeBySuccessNotify(@PathVariable String mobile) {
+        return smsService.membershipPrivilegeBySuccess(mobile);
+    }
+
+    @RequestMapping(value = "/payroll", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendPayrollNotify(@Valid @RequestBody SmsPayrollNotifyDto dto) {
+        return smsService.payroll(dto);
+    }
 }

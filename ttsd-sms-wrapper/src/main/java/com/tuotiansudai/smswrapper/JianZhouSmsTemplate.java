@@ -39,24 +39,32 @@ public enum JianZhouSmsTemplate {
             "尊敬的用户，您投资的新手体验项目所得${param0}元奖励已发放至账户，登录拓天速贷激活奖励吧！",
             null),
 
-    SMS_CANCEL_TRANSFER_LOAN(
+    SMS_CANCEL_TRANSFER_LOAN_TEMPLATE(
             "尊敬的拓天速贷客户，由于原始项目提前还款，您的债权转让项目${param0}已自动取消，请尽快登录平台进行查看。",
             null),
 
-    SMS_TRANSFER_LOAN_SUCCESS(
+    SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE(
             "尊敬的用户，您发起的转让项目${param0}已经转让成功，资金已经到达您的账户，感谢您选择拓天速贷！",
             null),
 
-    SMS_TRANSFER_LOAN_OVERDUE(
+    SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE(
             "尊敬的用户，我们遗憾地通知您，您发起的转让项目没有转让成功，请尽快登录平台进行查看。如有疑问，请致电客服热线400-169-1188。",
             null),
 
-    SMS_IMPORT_RECEIVE_MEMBERSHIP(
+    SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE(
             "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V3会员特权，登录拓天速贷查看吧。",
             null),
 
-    SMS_NEW_USER_RECEIVE_MEMBERSHIP(
+    SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE(
             "尊敬的用户，您的会员等级已升至V${param0}，投资、积分商城积分兑换等可享受V${param1}会员特权，登录拓天速贷查看吧。",
+            null),
+
+    SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE(
+            "尊敬的用户，您购买的增值特权已开始生效，可享受服务费7折优惠。",
+            null),
+
+    SMS_ADVANCED_REPAY_TEMPLATE(
+            "尊敬的用户，您投资的${param0}因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，请悉知！",
             null),
 
     SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE(
@@ -89,7 +97,11 @@ public enum JianZhouSmsTemplate {
 
     SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE(
             "慧租账户余额不足，请及时登录后台充值。",
-            null);
+            null),
+
+    SMS_PAYROLL_TEMPLATE(
+            "拓天资产${param0}工资已发放到您的账户余额中，请注意查收。",
+            null),;
 
     private String templateText;
 

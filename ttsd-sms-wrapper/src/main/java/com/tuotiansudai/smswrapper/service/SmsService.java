@@ -98,23 +98,35 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN, false, Lists.newArrayList(transferLoanName), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
     }
 
     public BaseDto<SmsDataDto> transferLoanSuccess(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS, false, Lists.newArrayList(transferLoanName), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
     }
 
     public BaseDto<SmsDataDto> transferLoanOverdue(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE, false, Lists.newArrayList(transferLoanName), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
     }
 
     public BaseDto<SmsDataDto> importUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP, false, Lists.newArrayList(String.valueOf(level)), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_IMPORT_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level)), null);
     }
 
     public BaseDto<SmsDataDto> newUserGetGiveMembership(String mobile, int level) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(String.valueOf(level), String.valueOf(level)), null);
+    }
+
+    public BaseDto<SmsDataDto> advancedRepay(InvestSmsNotifyDto dto) {
+        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_NEW_USER_RECEIVE_MEMBERSHIP_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
+    }
+
+    public BaseDto<SmsDataDto> membershipPrivilegeBySuccess(String mobile) {
+        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
+    }
+
+    public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(dto.getSendDate()), null);
     }
 
     private String getCouponName(SmsCouponNotifyDto notifyDto) {

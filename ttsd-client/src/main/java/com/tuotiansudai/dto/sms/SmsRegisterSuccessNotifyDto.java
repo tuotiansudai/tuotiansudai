@@ -1,7 +1,9 @@
 package com.tuotiansudai.dto.sms;
 
 
-public class SmsRegisterSuccessNotifyDto {
+import java.io.Serializable;
+
+public class SmsRegisterSuccessNotifyDto implements Serializable{
 
     private String mobile;
 

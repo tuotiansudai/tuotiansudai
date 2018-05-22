@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.*;
@@ -55,6 +56,9 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPrivilegePurchaseDto dto) {
@@ -143,5 +147,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
                 Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()), title, content, membershipPrivilegePurchaseModel.getId()));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()),
                 PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+
+        smsWrapperClient.sendMembershipPrivilegeBuySuccessNotify(membershipPrivilegePurchaseModel.getMobile());
     }
 }
