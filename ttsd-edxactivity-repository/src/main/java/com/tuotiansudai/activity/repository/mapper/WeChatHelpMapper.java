@@ -16,6 +16,8 @@ public interface WeChatHelpMapper {
 
     void update(WeChatHelpModel weChatHelpModel);
 
+    void updateHelpUserCount(@Param(value = "id") long id);
+
     WeChatHelpModel findById(@Param(value = "id") long id);
 
     WeChatHelpModel lockById(@Param(value = "id") long id);
