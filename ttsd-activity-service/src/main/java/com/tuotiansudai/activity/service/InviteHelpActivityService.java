@@ -212,7 +212,6 @@ public class InviteHelpActivityService {
                 .build());
     }
 
-    @Transactional
     public boolean clickHelp(long id, String openId) {
         if (weChatHelpInfoMapper.findByOpenId(openId, id) != null) {
             return false;
@@ -220,19 +219,20 @@ public class InviteHelpActivityService {
         if (weChatHelpInfoMapper.findHelpCountByOpenIdAndTime(openId, DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().toDate()) >= 5) {
             return false;
         }
-        WeChatHelpModel weChatHelpModel = weChatHelpMapper.lockById(id);
+        WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         if (new Date().after(weChatHelpModel.getEndTime())) {
             return false;
         }
         this.weChatUserInfo(openId);
         weChatHelpInfoMapper.create(new WeChatHelpInfoModel(openId, id, WeChatHelpUserStatus.WAITING));
-        weChatHelpModel.setHelpUserCount(weChatHelpModel.getHelpUserCount() + 1);
+        int helpUserCount = weChatHelpInfoMapper.getCountByHelpId(id);
         if (weChatHelpModel.getType() == WeChatHelpType.INVEST_HELP) {
-            Optional<Rates> optional = rates.stream().filter(rate -> rate.getMinNum() <= weChatHelpModel.getHelpUserCount() && rate.getMaxNum() > weChatHelpModel.getHelpUserCount()).findAny();
+            Optional<Rates> optional = rates.stream().filter(rate -> rate.getMinNum() <= helpUserCount && rate.getMaxNum() > helpUserCount).findAny();
             optional.ifPresent(rates -> weChatHelpModel.setReward((long) (weChatHelpModel.getAnnualizedAmount() * rates.getRate())));
         } else if (weChatHelpModel.getReward() < 1000) {
-            weChatHelpModel.setReward((weChatHelpModel.getHelpUserCount() * 20));
+            weChatHelpModel.setReward((helpUserCount * 20));
         }
+        weChatHelpModel.setHelpUserCount(helpUserCount);
         weChatHelpMapper.update(weChatHelpModel);
         return true;
     }
