@@ -6,14 +6,14 @@ let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
 let url;
-if(sourceKind.port){
-    url = sourceKind.protocol+'://'+sourceKind.host+':'+sourceKind.port;
-}else {
-    url = sourceKind.protocol+'://'+sourceKind.host;
+if (sourceKind.port) {
+    url = sourceKind.protocol + '://' + sourceKind.host + ':' + sourceKind.port;
+} else {
+    url = sourceKind.protocol + '://' + sourceKind.host;
 }
-if($qrcodeWap.length){
+if ($qrcodeWap.length) {
     let imgUrl = require('../images/2018/super-scholar/app_code.png');
-    $qrcodeWap.find('img').attr('src',imgUrl);
+    $qrcodeWap.find('img').attr('src', imgUrl);
 }
 let isWeixin = equipment.wechat;
 if (isWeixin) {
@@ -119,7 +119,7 @@ if ($questionContainer.length) {
                             })
 
                             if (count < 1) {
-                                layer.msg('请选择答案！',{time:400});
+                                layer.msg('请选择答案！', {time: 400});
                                 _self.addClass('error');
                                 return false;
                             } else {
@@ -135,28 +135,33 @@ if ($questionContainer.length) {
 
                     $('.inner5').find('.question-btn').on('click', function () {
 
-                        if ($(this).hasClass('error')) {
-                            layer.msg('请选择答案！');
-                            $(this).removeClass('error');
-                        } else {
-                            console.log(questions.join(''))
-                            commonFun.useAjax({
-                                dataType: 'json',
-                                url: '/activity/super-scholar/submit/answer',
-                                type: 'post',
-                                data: {
-                                    answer: questions.join(',')
-                                }
+                        if (questionFlag) {
 
-                            }, function (response) {
-                                if (response.status == true) {
-                                    location.href = '/activity/super-scholar/view/result'
-                                } else {
-                                    layer.msg('答题失败，请稍后再试！')
-                                }
-                            })
 
+                            if ($(this).hasClass('error')) {
+                                layer.msg('请选择答案！');
+                                $(this).removeClass('error');
+                            } else {
+                                console.log(questions.join(''))
+                                commonFun.useAjax({
+                                    dataType: 'json',
+                                    url: '/activity/super-scholar/submit/answer',
+                                    type: 'post',
+                                    data: {
+                                        answer: questions.join(',')
+                                    }
+
+                                }, function (response) {
+                                    if (response.status == true) {
+                                        location.href = '/activity/super-scholar/view/result'
+                                    } else {
+                                        layer.msg('答题失败，请稍后再试！')
+                                    }
+                                })
+
+                            }
                         }
+                        questionFlag = false;
 
 
                     })
@@ -178,19 +183,19 @@ if ($questionContainer.length) {
         });
 
 
-}else {
-    $('#myReappearanceWapBtn').on('click',function () {
+} else {
+    $('#myReappearanceWapBtn').on('click', function () {
         $('#myReappearanceWap').toggleClass('show');
     })
     $('#qrcodeBox').qrcode({
-        text: url+'/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
+        text: url + '/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
         width: qrcodeWidth,
         height: qrcodeHeight,
-        colorDark : '#1e272e',
-        colorLight : '#ffffff',
+        colorDark: '#1e272e',
+        colorLight: '#ffffff',
     }).find('canvas').hide();
-    var canvas=$qrcodeBox.find('canvas').get(0);
-    $('#rqcodeImg').attr('src',canvas.toDataURL('image/jpg'))
+    var canvas = $qrcodeBox.find('canvas').get(0);
+    $('#rqcodeImg').attr('src', canvas.toDataURL('image/jpg'))
 }
 
 
