@@ -212,7 +212,6 @@ public class InviteHelpActivityService {
                 .build());
     }
 
-    @Transactional(transactionManager = "activityTransactionManager")
     public boolean clickHelp(long id, String openId) {
         if (weChatHelpInfoMapper.findByOpenId(openId, id) != null) {
             return false;
@@ -220,7 +219,7 @@ public class InviteHelpActivityService {
         if (weChatHelpInfoMapper.findHelpCountByOpenIdAndTime(openId, DateTime.now().withTimeAtStartOfDay().toDate(), DateTime.now().toDate()) >= 5) {
             return false;
         }
-        WeChatHelpModel weChatHelpModel = weChatHelpMapper.lockById(id);
+        WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
         if (new Date().after(weChatHelpModel.getEndTime())) {
             return false;
         }
