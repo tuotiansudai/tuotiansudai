@@ -48,7 +48,7 @@
         SELECT * from we_chat_help where id = #{id}
     </select>
 
-    <select id="lockById" resultType="map" resultMap="weChatHelpModel">
+    <select id="lockById" resultType="map" resultMap="weChatHelpModel" useCache="false">
         SELECT * from we_chat_help where id = #{id} FOR UPDATE
     </select>
 
