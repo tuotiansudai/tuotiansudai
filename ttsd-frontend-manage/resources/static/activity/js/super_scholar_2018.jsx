@@ -1,5 +1,6 @@
 require("activityStyle/super_scholar_2018.scss");
 require('publicJs/plugins/jquery.qrcode.min');
+let $qrcodeWap = $('#qrcodeWap');
 let commonFun = require('publicJs/commonFun');
 let tpl = require('art-template/dist/template');
 let sourceKind = globalFun.parseURL(location.href);
@@ -10,7 +11,10 @@ if(sourceKind.port){
 }else {
     url = sourceKind.protocol+'://'+sourceKind.host;
 }
-
+if($qrcodeWap.length){
+    let imgUrl = require('../images/2018/super-scholar/app_code.png');
+    $qrcodeWap.find('img').attr('src',imgUrl);
+}
 let isWeixin = equipment.wechat;
 if (isWeixin) {
     $('#immediateAnswer').on('click', function () {
@@ -22,17 +26,10 @@ if (isWeixin) {
                 location.href = '/m/login?redirect=/activity/super-scholar/view/question';
             })
     })
+    $qrcodeWap.hide();
 
 } else {
-    $('#immediateAnswer').on('click', function () {
-        $.when(commonFun.isUserLogin())
-            .done(function () {
-                layer.msg('请在微信中扫二维码去答题！')
-            })
-            .fail(function () {
-                layer.msg('请在微信中登录！')
-            })
-    })
+    $('.immediate-answer').hide();
 }
 
 let $getMore = $('#getMoreData'),
@@ -43,8 +40,10 @@ commonFun.calculationRem(document, window)
 let len = $reappearanceList.find('tr').length;
 if (len < 3) {
     getMoreData(len);
+    $getMore.hide();
 } else {
     getMoreData(3);
+    $getMore.show();
 }
 
 $getMore.on('click', function () {
@@ -120,7 +119,7 @@ if ($questionContainer.length) {
                             })
 
                             if (count < 1) {
-                                layer.msg('请选择答案！');
+                                layer.msg('请选择答案！',{time:400});
                                 _self.addClass('error');
                                 return false;
                             } else {

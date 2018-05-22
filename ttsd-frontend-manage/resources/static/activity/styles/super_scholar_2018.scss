@@ -72,6 +72,9 @@ p {
   margin-top: 37px;
   padding-top: 17px;
   box-sizing: border-box;
+  &.qrcode-wap {
+    display: none;
+  }
   .tips {
     position: absolute;
     right: -120px;
@@ -246,6 +249,9 @@ p {
 }
 
 @media screen and(max-width: 768px) {
+  .layui-layer-dialog .layui-layer-content {
+    font-size: 0.3rem!important;
+  }
 
   p {
     margin-bottom: 5px;
@@ -308,6 +314,17 @@ p {
     margin-top: 0.34rem;
     padding-top: 0.16rem;
     margin-bottom: 0.4rem;
+    &.qrcode-pc {
+      display: none;
+    }
+    &.qrcode-wap {
+      display: block;
+      .code-wap {
+        img {
+          width: 100%;
+        }
+      }
+    }
     .tips {
       right: -1.4rem;
       width: 1.19rem;
@@ -338,6 +355,12 @@ p {
     margin: 0 auto;
     margin-top: 0.68rem;
     margin-bottom: 0.2rem;
+    &.already-answer {
+      width: 6.72rem;
+      height: 1.26rem;
+      background: url("../images/2018/super-scholar/already_answer.png") no-repeat;
+      background-size: 100%;
+    }
   }
 
   .my-reappearance {
@@ -466,7 +489,7 @@ p {
       position: relative;
       background: #1e2b2e url("../images/2018/super-scholar/question_bg.png") no-repeat;
       background-size: 100%;
-      height: 9.44rem;
+      height: 10.97rem;
       .question-inner {
         position: absolute;
         z-index: 20;
@@ -478,7 +501,7 @@ p {
         padding-right: 0.45rem;
         padding-top: 0.6rem;
         padding-bottom: 0.8rem;
-        height: 9.44rem;
+        height: 10.97rem;
         background: url("../images/2018/super-scholar/question_inner_bg.png") no-repeat;
         background-size: 100%;
         &.inner2 {

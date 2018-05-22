@@ -20,12 +20,18 @@
         </#if>
     </@global.isNotAnonymous>
 
-    <div class="qrcode">
+    <div class="qrcode qrcode-pc" id="qrcodePC">
         <div class="code" id="qrcodeBox"><span class="logo"></span><img id="rqcodeImg" src="" alt=""></div>
         <span class="tips"></span>
     </div>
+    <div class="qrcode qrcode-wap" id="qrcodeWap">
+        <div class="code code-wap"><img src="" alt=""></div>
+        <span class="tips"></span>
+    </div>
     <#if !doQuestion?? || (doQuestion?? && !doQuestion)>
-        <div class="immediate-answer" id="immediateAnswer"></div>
+        <a class="immediate-answer" id="immediateAnswer" href="javascript:;"></a>
+    <#else>
+        <a class="immediate-answer already-answer" href="/activity/super-scholar/view/result"></a>
     </#if>
     <#if data!?size!=0>
         <div class="my-reappearance">
@@ -128,9 +134,10 @@
                 <div class="activity-rules">
                     <h2>温馨提示：</h2>
                     <p>1、用户每日答题，分享，邀请的好友注册实名认证，邀请的好友投资所获的返现比率仅限当日24:00前投资使用，如当日未投资，返现比率归零；</p>
-                    <p>2、用户每日答题、分享、邀请的好友注册实名认证、邀请的好友投资所获得的所有返现将于用户当日所投项目放款后24小时内统一发放到账户；</p>
-                    <p>3、用户答题所获赠加息券即时发放，用户可在PC端“我的账户”或App端“我的-优惠券”中进行查看；</p>
-                    <p>4、本活动仅限直投项目，债权转让、体验项目及新手专享项目不参与累计；</p>
+                    <p>2、 用户需通过本活动页面的“邀请好友认证”按钮邀请好友注册认证和投资，方可获得对应的返现比例，通过其他方式邀请，无法获得本活动发放的返现比例；</p>
+                    <p>3、用户每日答题、分享、邀请的好友注册实名认证、邀请的好友投资所获得的所有返现将于用户当日所投项目放款后24小时内统一发放到账户；</p>
+                    <p>4、用户答题所获赠加息券即时发放，用户可在PC端“我的账户”或App端“我的-优惠券”中进行查看；</p>
+                    <p>5、本活动仅限直投项目，债权转让、体验项目及新手专享项目不参与累计；</p>
                     <table>
                         <tr>
                             <td>60天 - 90天项目</td>
@@ -145,8 +152,8 @@
                             <td>年化投资额 = 实际投资金额</td>
                         </tr>
                     </table>
-                    <p>5、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
-                    <p>6、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</p>
+                    <p>6、活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
+                    <p>7、活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有；</p>
                 </div>
             </div>
         </div>
