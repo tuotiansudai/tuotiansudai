@@ -1,4 +1,4 @@
-require("activityStyle/wechat/share_app.scss");
+require("activityStyle/landing_page_new_2018.scss");
 let commonFun = require('publicJs/commonFun');
 require('publicJs/placeholder');
 require('swiper/dist/css/swiper.css')
@@ -9,7 +9,8 @@ let $agreementLi = $('#agreementLable');
 let $btnCoupon = $('.coupon-btn'),
     browser = globalFun.browserRedirect();
 let urlObj = globalFun.parseURL(location.href);
-let $btnChangeImgCode = $('.image-captcha',$registerContainer );//换一张
+let $btnChangeImgCode = $('.img-change',$registerContainer );//换一张
+let $btnChangeImgCodeWap = $('.image-captcha',$registerContainer );//换一张
 let registerForm = globalFun.$('#registerUserForm');
 let $fetchCaptcha = $('#getCaptchaBtn');//获取短信验证码btn
 let $inputImgCaptcha = $('#input_img_captcha');//图形验证码输入框
@@ -18,29 +19,32 @@ let isSmsSended = false;
 let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
-
+if(urlObj.params.source == 'app'){
+    $('#bannerBox').hide();
+   $('#bannerBoxApp').show();
+}
 
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
-    let imgUrl = require('../../images/landingpage/fuli'+(index+1)+'.png');
+    let imgUrl = require('../images/landingpage/fuli'+(index+1)+'.png');
     let img = new Image();
     img.src = imgUrl;
     _self.append(img);
 })
 
-var mySwiper = new Swiper ('#fuliList', {
-    direction: 'horizontal',
-    loop: true,
-    autoplay:5000,
-    autoplayDisableOnInteraction:false,
-    slidesPerView: 'auto',
-    centeredSlides:true,
-    spaceBetween: -20,
-    loopAdditionalSlides:1,
-    nextButton: '.prevBtn',
-    prevButton: '.prevBtn',
+    var mySwiper = new Swiper ('#fuliList', {
+        direction: 'horizontal',
+        loop: true,
+        autoplay:5000,
+        autoplayDisableOnInteraction:false,
+        slidesPerView: 'auto',
+        centeredSlides:true,
+        spaceBetween: -20,
+        loopAdditionalSlides:1,
+        nextButton: '.prevBtn',
+        prevButton: '.prevBtn',
 
-});
+    });
 let $prevBtn = $('.prevBtn'),
     $nextBtn = $('.nextBtn');
 
@@ -51,7 +55,15 @@ $nextBtn.on('click',function () {
     mySwiper.slideNext();
 })
 
+//pc swiper
+var mySwiper = new Swiper ('#loanBoxList', {
+    direction: 'horizontal',
+    loop: true,
+    autoplay:5000,
+    autoplayDisableOnInteraction:false,
+    pagination: '.swiper-pagination'
 
+});
 
 let isVoice = false;
 $inputImgCaptcha.on('keyup', function (event) {
@@ -59,11 +71,14 @@ $inputImgCaptcha.on('keyup', function (event) {
     disableCaptchaBtn();
 });
 disableCaptchaBtn();
+$('#mobile').on('keyup',function () {
+    disableCaptchaBtn();
+})
 function disableCaptchaBtn() {
-    if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
-        if(!isSmsSended){
+    if ($('#mobile').val() != '' && /0?(13|14|15|18|17)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
+
             $fetchCaptcha.prop('disabled', false);
-        }
+
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
@@ -99,7 +114,10 @@ $btnChangeImgCode.on('click', function (event) {
     event.preventDefault();
     refreshImgCaptcha();
 });
-
+$btnChangeImgCodeWap.on('click', function (event) {
+    event.preventDefault();
+    refreshImgCaptcha();
+});
 
 function refreshImgCaptcha() {
     $('.image-captcha img').each(function (index, el) {
@@ -151,11 +169,11 @@ function getSmsCaptcha() {
         console.log(data)
         if (data.data.status && !data.data.isRestricted) {
             $voiceCaptcha.hide();
-            commonFun.countDownLoan({
-                btnDom:$fetchCaptcha
-            },function () {
-                $voiceCaptcha.show();
-            })
+        commonFun.countDownLoan({
+            btnDom:$fetchCaptcha
+        },function () {
+            $voiceCaptcha.show();
+        })
             return;
         }
         if (!data.data.status && data.data.isRestricted) {
@@ -172,103 +190,139 @@ function getSmsCaptcha() {
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 //验证码是否正确
-validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
-    var getResult='',
-        that=this,
-        _arguments=arguments;
+if($registerContainer.length){
+    validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,showErrorAfter) {
+        var getResult='',
+            that=this,
+            _arguments=arguments;
 
-    var _phone = registerForm.mobile.value,
-        _captcha=registerForm.captcha.value;
+        var _phone = registerForm.mobile.value,
+            _captcha=registerForm.captcha.value;
 
 
-    //先判断手机号格式是否正确
-    if(!/(^1[0-9]{10}$)/.test(_phone)) {
-        return;
+        //先判断手机号格式是否正确
+        if(!/(^1[0-9]{10}$)/.test(_phone)) {
+            return;
+        }
+        commonFun.useAjax({
+            type:'GET',
+            async: false,
+            url:`/register/user/mobile/${_phone}/captcha/${_captcha}/verify`
+        },function(response) {
+            if(response.data.status) {
+                // 如果为true说明验证码正确
+                getResult='';
+                ValidatorObj.isHaveError.no.apply(that,_arguments);
+            }
+            else {
+                getResult=errorMsg;
+                ValidatorObj.isHaveError.yes.apply(that,_arguments);
+            }
+        });
+        return getResult;
+    });
+
+    validator.add(registerForm.mobile, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '手机号不能为空',
+    }, {
+        strategy: 'isMobile',
+        errorMsg: '手机号格式不正确'
+    },{
+        strategy: 'isMobileExist',
+        errorMsg: '手机号已经存在'
+    }],true);
+    validator.add(registerForm.password, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '密码不能为空'
+    }, {
+        strategy: 'checkPassword',
+        errorMsg: '密码为6位至20位，不能全是数字'
+    }],true);
+    validator.add(registerForm.appCaptcha, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '验证码不能为空'
+    }],true);
+    validator.add(registerForm.captcha, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '验证码不能为空'
+    },{
+        strategy: 'isNumber:6',
+        errorMsg: '验证码为6位数字'
+    },{
+        strategy: 'isCaptchaValid',
+        errorMsg: '验证码不正确'
+    }],true);
+    //点击立即注册按钮
+    registerForm.onsubmit = function(event) {
+        event.preventDefault();
+        registerForm.submit();
     }
-    commonFun.useAjax({
-        type:'GET',
-        async: false,
-        url:`/register/user/mobile/${_phone}/captcha/${_captcha}/verify`
-    },function(response) {
-        if(response.data.status) {
-            // 如果为true说明验证码正确
-            getResult='';
-            ValidatorObj.isHaveError.no.apply(that,_arguments);
+    let reInputs=$(registerForm).find('input[validate]');
+
+    for(let i=0,len=reInputs.length; i<len;i++) {
+        globalFun.addEventHandler(reInputs[i],"keyup", "focusout", function() {
+            let errorMsg=validator.start(this);
+            isDisabledButton();
+        })
+    }
+
+    function isDisabledButton() {
+        let mobile=registerForm.mobile,
+            password=registerForm.password,
+            captcha=registerForm.captcha;
+
+        //获取验证码点亮
+        let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+        let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+        let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+        //通过获取验证码按钮来判断
+        !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
+
+        let captchaValid = !$(captcha).hasClass('error') && captcha.value;
+        let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
+        $registerSubmit.prop('disabled',!isDisabledSubmit);
+
+    }
+    //判断有无推荐人
+    function showReferrerInfoIfNeeded() {
+        var referNum = urlObj.params.referrer;
+
+        if (referNum) {
+            //有推荐人
+            var mobileNum = commonFun.decrypt.uncompile(referNum);
+            $('input[name="referrer"]', $registerContainer).val(mobileNum);
+            $('#recommendLabel').hide();
+            $('#recommendLabelExist').show();
+            $('#referMobile').text(mobileNum)
+            //通过手机号得到用户名
+            commonFun.useAjax({
+                type:'GET',
+                dataType: 'json',
+                url:"/activity/get-realRealName?mobile=" + mobileNum
+            },function(data) {
+                //姓名的第一个字母用*替换
+                $('.refer-name', $registerContainer).text(data);
+            });
         }
         else {
-            getResult=errorMsg;
-            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+            //无推荐人
+            $('.refer-person-info', $registerContainer).hide();
+            $('#recommendLabel').show();
+            $('#recommendLabelExist').hide();
+
         }
-    });
-    return getResult;
-});
-
-validator.add(registerForm.mobile, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '手机号不能为空',
-}, {
-    strategy: 'isMobile',
-    errorMsg: '手机号格式不正确'
-},{
-    strategy: 'isMobileExist',
-    errorMsg: '手机号已经存在'
-}],true);
-validator.add(registerForm.password, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '密码不能为空'
-}, {
-    strategy: 'checkPassword',
-    errorMsg: '密码为6位至20位，不能全是数字'
-}],true);
-validator.add(registerForm.appCaptcha, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '验证码不能为空'
-}],true);
-validator.add(registerForm.captcha, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '验证码不能为空'
-},{
-    strategy: 'isNumber:6',
-    errorMsg: '验证码为6位数字'
-},{
-    strategy: 'isCaptchaValid',
-    errorMsg: '验证码不正确'
-}],true);
-
-let reInputs=$(registerForm).find('input[validate]');
-
-for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i],"keyup", "focusout", function() {
-        let errorMsg=validator.start(this);
         isDisabledButton();
-    })
+    }
+    showReferrerInfoIfNeeded();
 }
 
-function isDisabledButton() {
-    let mobile=registerForm.mobile,
-        password=registerForm.password,
-        captcha=registerForm.captcha;
 
-    //获取验证码点亮
-    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
-    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
 
-    let isDisabledCaptcha = isMobileValid && isPwdValid;
 
-    //通过获取验证码按钮来判断
-    !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
-    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
-    $registerSubmit.prop('disabled',!isDisabledSubmit);
-
-}
-
-//点击立即注册按钮
-registerForm.onsubmit = function(event) {
-    event.preventDefault();
-    registerForm.submit();
-}
 
 //点击立即注册领取
 $btnCoupon.on('click', function (event) {
@@ -280,37 +334,7 @@ $btnCoupon.on('click', function (event) {
     }
 });
 
-//判断有无推荐人
-function showReferrerInfoIfNeeded() {
-    var referNum = urlObj.params.referrerMobile;
 
-    if (referNum) {
-        //有推荐人
-        var mobileNum = referNum;
-        $('#recommendLabel').hide();
-        $('#recommendLabelExist').show();
-        $('.refer-info-other').show();
-        $('#referMobile').text(mobileNum);
-        //通过手机号得到用户名
-        commonFun.useAjax({
-            type:'GET',
-            dataType: 'json',
-            url:"/activity/get-realRealName?mobile=" + mobileNum
-        },function(data) {
-            //姓名的第一个字母用*替换
-            $('.refer-name', $registerContainer).text(data);
-        });
-    }
-    else {
-        //无推荐人
-        $('.refer-person-info', $registerContainer).hide();
-        $('#recommendLabel').show();
-        $('#recommendLabelExist').hide();
-
-    }
-    isDisabledButton();
-}
-showReferrerInfoIfNeeded();
 
 $voiceBtn.on('click', function(event) {
     isVoice = true;
