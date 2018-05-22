@@ -59,6 +59,10 @@ public enum JianZhouSmsTemplate {
             "尊敬的用户，您购买的增值特权已开始生效，可享受服务费7折优惠。",
             null),
 
+    SMS_MEMBERSHIP_PRIVILEGE_EXPIRED_TEMPLATE(
+            "尊敬的用户，您购买的增值特权已过期，增值特权可享受服务费7折优惠，如有需要，请及时续费。",
+            null),
+
     SMS_ADVANCED_REPAY_TEMPLATE(
             "尊敬的用户，您投资的${param0}因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，请悉知！",
             null),

@@ -1,7 +1,9 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.sms.SmsUsePointNotifyDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -58,6 +60,9 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
 
     @Override
     @Transactional
@@ -92,6 +97,11 @@ public class PointBillServiceImpl implements PointBillService {
         long sudaiPoint = point - channelPoint;
         pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note, userModel.getMobile(), userModel.getUserName()));
         userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
+
+        if (Lists.newArrayList(PointBusinessType.POINT_LOTTERY, PointBusinessType.EXCHANGE).contains(businessType)){
+            smsWrapperClient.sendUsePointNotify(new SmsUsePointNotifyDto(userModel.getMobile(), String.valueOf(-point), String.valueOf(userPointModel.getPoint() + point)));
+        }
+
     }
 
     private long calculateChannelPoint(UserPointModel userPointModel, long point, PointBusinessType businessType) {

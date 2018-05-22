@@ -125,10 +125,16 @@ public class SmsController {
         return smsService.advancedRepay(dto);
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/membership-privilege-buy-success", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/membership-privilege-buy-success", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> sendMembershipPrivilegeBySuccessNotify(@PathVariable String mobile) {
-        return smsService.membershipPrivilegeBySuccess(mobile);
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeBySuccessNotify(@Valid @RequestBody SmsMembershipPrivilegeNotifyDto dto) {
+        return smsService.membershipPrivilegeBySuccess(dto);
+    }
+
+    @RequestMapping(value = "/mobile/membership-privilege-expired", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeExpiredNotify(@Valid @RequestBody SmsMembershipPrivilegeNotifyDto dto) {
+        return smsService.membershipPrivilegeExpired(dto);
     }
 
     @RequestMapping(value = "/payroll", method = RequestMethod.POST)

@@ -113,8 +113,12 @@ public class SmsService {
         return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
     }
 
-    public BaseDto<SmsDataDto> membershipPrivilegeBySuccess(String mobile) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
+    public BaseDto<SmsDataDto> membershipPrivilegeBySuccess(SmsMembershipPrivilegeNotifyDto dto) {
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
+    }
+
+    public BaseDto<SmsDataDto> membershipPrivilegeExpired(SmsMembershipPrivilegeNotifyDto dto) {
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_EXPIRED_TEMPLATE, false, Lists.newArrayList(), null);
     }
 
     public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {

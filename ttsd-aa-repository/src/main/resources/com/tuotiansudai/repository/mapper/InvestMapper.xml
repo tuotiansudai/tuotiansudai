@@ -1215,7 +1215,7 @@
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
     </select>
 
-    <select id="findMobileByLoanId" parameterType="map" resultType="String">
+    <select id="findMobileByLoanId" parameterType="map" resultType="string">
         SELECT distinct user.mobile from invest join user on invest.login_name = user.login_name
         join loan on invest.loan_id = loan.id
         where loan.id = #{loanId}

@@ -67,11 +67,15 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String CREDIT_LOAN_BALANCE_ALERT = "/sms/credit-loan-balance-alert";
 
-    private final static String MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI = "/sms/mobile/{0}/membership-privilege-buy-success";
+    private final static String MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI = "/sms/membership-privilege-buy-success";
+
+    private final static String MEMBERSHIP_PRIVILEGE_EXPIRED_URI = "/sms/membership-privilege-expired";
 
     private final static String PAYROLL = "/sms/payroll";
 
     private final static String MEMBERSHIP_UPGRADE = "/sms/membership-upgrade";
+
+    private final static String USE_POINT = "/sms/use-point";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
@@ -141,8 +145,12 @@ public class SmsWrapperClient extends BaseClient {
         return send(dto, ADVANCED_REPAY_URI);
     }
 
-    public BaseDto<SmsDataDto> sendMembershipPrivilegeBuySuccessNotify(String mobile) {
-        return send(null, MessageFormat.format(MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI, mobile));
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeBuySuccessNotify(SmsMembershipPrivilegeNotifyDto dto) {
+        return send(dto, MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendMembershipPrivilegeExpiredNotify(SmsMembershipPrivilegeNotifyDto dto) {
+        return send(dto, MEMBERSHIP_PRIVILEGE_EXPIRED_URI);
     }
 
     public BaseDto<SmsDataDto> sendPayrollNotify(SmsPayrollNotifyDto dto) {
@@ -155,6 +163,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendMembershipUpgradeNotify(SmsUserReceiveMembershipDto dto) {
         return send(dto, MEMBERSHIP_UPGRADE);
+    }
+
+    public BaseDto<SmsDataDto> sendUsePointNotify(SmsUsePointNotifyDto dto) {
+        return send(dto, USE_POINT);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {
