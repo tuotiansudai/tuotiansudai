@@ -36,6 +36,10 @@
         where id = #{id}
     </update>
 
+    <select id="getCountByHelpId" parameterType="map" resultType="int">
+        SELECT count(1) FROM we_chat_help_info where we_chat_help_id = #{helpId}
+    </select>
+
     <select id="findByOpenId" parameterType="map" resultMap="weChatHelpInfoModel">
         SELECT * from we_chat_help_info where openId = #{openId} and we_chat_help_id = #{helpId}
     </select>

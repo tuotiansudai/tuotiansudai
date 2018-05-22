@@ -225,14 +225,14 @@ public class InviteHelpActivityService {
         }
         this.weChatUserInfo(openId);
         weChatHelpInfoMapper.create(new WeChatHelpInfoModel(openId, id, WeChatHelpUserStatus.WAITING));
-        weChatHelpMapper.updateHelpUserCount(id);
-        int helpUserCount = weChatHelpMapper.getHelpUserCount(id);
+        int helpUserCount = weChatHelpInfoMapper.getCountByHelpId(id);
         if (weChatHelpModel.getType() == WeChatHelpType.INVEST_HELP) {
             Optional<Rates> optional = rates.stream().filter(rate -> rate.getMinNum() <= helpUserCount && rate.getMaxNum() > helpUserCount).findAny();
             optional.ifPresent(rates -> weChatHelpModel.setReward((long) (weChatHelpModel.getAnnualizedAmount() * rates.getRate())));
         } else if (weChatHelpModel.getReward() < 1000) {
             weChatHelpModel.setReward((helpUserCount * 20));
         }
+        weChatHelpModel.setHelpUserCount(helpUserCount);
         weChatHelpMapper.update(weChatHelpModel);
         return true;
     }
