@@ -267,8 +267,36 @@ function isDisabledButton() {
 //点击立即注册按钮
 registerForm.onsubmit = function(event) {
     event.preventDefault();
-    registerForm.submit();
+     //registerForm.submit();
+    let surl,
+        paramObj={};
+    let referrerMobile = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')["referrerMobile"];
+    paramObj.mobile = registerForm.mobile.value;
+    paramObj.captcha = registerForm.captcha.value;
+
+
+    surl = '/register/user/shared';
+    paramObj.password = registerForm.password.value;
+    paramObj.referrer = referrerMobile;
+    paramObj.agreement = $('#agreementInput').prop('checked');
+
+
+    commonFun.useAjax({
+        url: surl,
+        type: 'POST',
+        dataType: 'json',
+        data: paramObj
+    },function(data) {
+        if (data.data.status) {
+            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1];
+        } else {
+            layer.msg('请求失败，请重试！');
+        }
+    });
 }
+
+
+
 
 //点击立即注册领取
 $btnCoupon.on('click', function (event) {
