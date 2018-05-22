@@ -24,10 +24,8 @@
     </resultMap>
 
     <insert id="create" parameterType="weChatHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO we_chat_help_info(openId, we_chat_help_id, status, created_time)
-        SELECT #{openId}, #{weChatHelpId}, #{status}, #{createdTime}
-        FROM dual
-        WHERE NOT EXISTS(SELECT * FROM we_chat_help_info WHERE openId= #{openId} and we_chat_help_id= #{weChatHelpId})
+        INSERT IGNORE INTO we_chat_help_info(openId, we_chat_help_id, status, created_time)
+        VALUES (#{openId}, #{weChatHelpId}, #{status}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="weChatHelpInfoModel">
