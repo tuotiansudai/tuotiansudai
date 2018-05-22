@@ -46,6 +46,8 @@
     <a href="/loan-list" class="to-loan"></a>
     <div class="book"></div>
     <div class="arrow"></div>
+    <div class="tip-box share-tip" id="shareBox" style="display: none"><a href="javascript:;" class="known-btn share-tip-btn"></a></div>
+    <div class="tip-box invite-tip" id="inviteBox" style="display: none"><a href="javascript:;" class="known-btn invite-tip-btn"></a></div>
 </div>
 <script>
     webServer = '${webServer}';

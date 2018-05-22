@@ -33,11 +33,11 @@
     <#else>
         <a class="immediate-answer already-answer" href="/activity/super-scholar/view/result"></a>
     </#if>
-    <#if data!?size!=0>
+
         <div class="my-reappearance">
             <div class="ball"></div>
         </div>
-
+    <#if data!?size!=0>
         <div class="my_reappearance-table">
             <div class="reappearance-content" id="reappearanceContent">
                 <table>
@@ -67,11 +67,34 @@
                 <a class="look-btn" id="getMoreData" href="javascript:;">查看更多</a>
             </div>
         </div>
+    <#else>
+        <div class="my_reappearance-table">
+            <div class="reappearance-content">
+                <table>
+                    <thead>
+                    <th>投资金额</th>
+                    <th>年化投资金额</th>
+                    <th>获取返现比率</th>
+                    <th>获取返现金额</th>
+                    <th>时间</th>
+                    </thead>
+                    <tbody class="reappearance-list">
+
+                    <tr><td class="no-data" colspan="5">暂无返现奖励~</td></tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="get-more">
+                <a class="look-btn" id="getMoreData" href="javascript:;">查看更多</a>
+            </div>
+        </div>
     </#if>
-    <#if data!?size!=0>
+
         <div class="my-reappearance-wap">
             <a href="javascript:;" id="myReappearanceWapBtn">我的返现奖励</a>
         </div>
+    <#if data!?size!=0>
     <#--m站我的返现奖励-->
         <div class="my_reappearance-table-wap" id="myReappearanceWap">
             <div class="reappearance-content" id="reappearanceContent">
@@ -90,6 +113,24 @@
                             <td>${invest.rewardRate}</td>
                         </tr>
                         </#list>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    <#else>
+        <div class="my_reappearance-table-wap" id="myReappearanceWap">
+            <div class="reappearance-content">
+                <table>
+                    <thead>
+                    <th>投资金额</th>
+                    <th>年化投资金额</th>
+                    <th>获取返现比率</th>
+                    </thead>
+                    <tbody class="reappearance-list">
+
+                            <td colspan="3" class="no-data">暂无返现奖励~</td>
 
                     </tbody>
                 </table>

@@ -20,12 +20,23 @@ var $shareActivity = $('.share-activity'),
     $inviteFriend = $('.invite-friend');
 
 $shareActivity.on('click',function () {
-    location.href = '/activity/super-scholar/view/result?shareType=activityHome';
+    $('#inviteBox').hide();
+    $('#shareBox').show();
+
+
 });
 
 $inviteFriend.on('click',function () {
-    location.href = '/activity/super-scholar/view/result?shareType=activityRegister';
+    $('#shareBox').hide();
+    $('#inviteBox').show();
+
 });
+$('.share-tip-btn').on('click',function () {
+    location.href = '/activity/super-scholar/view/result?shareType=activityHome';
+})
+$('.invite-tip-btn').on('click',function () {
+    location.href = '/activity/super-scholar/view/result?shareType=activityRegister';
+})
 
 var link = webServer + '/activity/super-scholar?come=wechat';
 

@@ -17,6 +17,7 @@ if ($qrcodeWap.length) {
 }
 let isWeixin = equipment.wechat;
 if (isWeixin) {
+    $('.immediate-answer').show();
     $('#immediateAnswer').on('click', function () {
         $.when(commonFun.isUserLogin())
             .done(function () {

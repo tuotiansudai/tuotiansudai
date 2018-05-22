@@ -155,6 +155,13 @@ p {
           color: #fff;
           border-bottom: 2px solid rgba(255, 255, 255, 0.8);
           border-right: 2px solid rgba(255, 255, 255, 0.8);
+          &.no-data {
+            border-bottom: none;
+            border-right:none;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+          }
         }
       }
     }
@@ -414,6 +421,11 @@ p {
             color: #fff;
             border-bottom: 2px solid rgba(255, 255, 255, 0.8);
             border-right: 2px solid rgba(255, 255, 255, 0.8);
+            &.no-data {
+              border-bottom: none;
+              border-right: none;
+              height: 0.6rem;
+            }
           }
         }
       }
@@ -566,6 +578,18 @@ p {
             background: url("../images/2018/super-scholar/complete_question_btn.png") no-repeat;
             background-size: 100%;
           }
+        }
+        .page-num {
+          width: 6.86rem;
+          height: 0.4rem;
+          font-size: 0.6rem;
+          text-align: center;
+          position: absolute;
+          bottom: 0.1rem;
+          left: 50%;
+          margin-left: -3.43rem;
+          color: #fff;
+          font-weight: bold;
         }
       }
     }
