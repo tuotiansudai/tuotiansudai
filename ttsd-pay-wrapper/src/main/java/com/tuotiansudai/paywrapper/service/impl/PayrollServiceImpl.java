@@ -222,10 +222,9 @@ public class PayrollServiceImpl implements PayrollService {
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.PAYROLL_HAS_BEEN_TRANSFERRED,
                 Collections.singletonList(payrollDetailModel.getLoginName()),
                 title, message, null));
-    }
 
-    private void sendSuccessSmsNotify(PayrollModel payrollModel, PayrollDetailModel payrollDetailModel){
-        smsWrapperClient.sendPayrollNotify(new SmsPayrollNotifyDto(Lists.newArrayList(payrollDetailModel.getMobile()), "");
+        smsWrapperClient.sendPayrollNotify(new SmsPayrollNotifyDto(Lists.newArrayList(payrollDetailModel.getMobile()), payrollModel.getTitle()));
 
     }
+
 }

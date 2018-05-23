@@ -122,7 +122,7 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, false, Lists.newArrayList(dto.getSendDate()), null);
+        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, false, Lists.newArrayList(dto.getTitle()), null);
     }
 
     public BaseDto<SmsDataDto> usePoint(SmsUsePointNotifyDto dto) {

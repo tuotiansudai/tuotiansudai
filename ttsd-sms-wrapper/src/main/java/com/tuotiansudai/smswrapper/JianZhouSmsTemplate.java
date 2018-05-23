@@ -104,7 +104,7 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_PAYROLL_TEMPLATE(
-            "拓天资产${param0}工资已发放到您的账户余额中，请注意查收。",
+            "${param0}已发放到您的账户余额中，请注意查收。",
             null),;
 
     private String templateText;

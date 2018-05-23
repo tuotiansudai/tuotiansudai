@@ -8,14 +8,14 @@ public class SmsPayrollNotifyDto implements Serializable {
 
     private List<String> mobiles;
 
-    private String sendDate;
+    private String title;
 
     public SmsPayrollNotifyDto() {
     }
 
-    public SmsPayrollNotifyDto(List<String> mobiles, String sendDate) {
+    public SmsPayrollNotifyDto(List<String> mobiles, String title) {
         this.mobiles = mobiles;
-        this.sendDate = sendDate;
+        this.title = title;
     }
 
     public List<String> getMobiles() {
@@ -26,11 +26,11 @@ public class SmsPayrollNotifyDto implements Serializable {
         this.mobiles = mobiles;
     }
 
-    public String getSendDate() {
-        return sendDate;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSendDate(String sendDate) {
-        this.sendDate = sendDate;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
