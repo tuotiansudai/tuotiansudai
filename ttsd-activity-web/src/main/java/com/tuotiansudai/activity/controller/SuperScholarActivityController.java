@@ -55,13 +55,13 @@ public class SuperScholarActivityController {
         return superScholarActivityService.getQuestions(loginName);
     }
 
-    @RequestMapping(value = "/submit/answer", method = RequestMethod.GET)
+    @RequestMapping(value = "/submit/answer", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse submitAnswer(@RequestParam(value = "answer") String answer) {
         return new BaseResponse(superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer));
     }
 
-    @RequestMapping(value = "/view/result", method = RequestMethod.POST)
+    @RequestMapping(value = "/view/result", method = RequestMethod.GET)
     public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType) {
         if (!superScholarActivityService.duringActivities()) {
             return new ModelAndView("redirect:/activity/super-scholar");
