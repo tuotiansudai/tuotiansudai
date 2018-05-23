@@ -17,17 +17,7 @@ public enum MessageQueue {
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     GenerateReferrerRelation("GenerateReferrerRelation"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
-    InvestSuccess_CompletePointTask("InvestSuccess-CompletePointTask"),
-    InvestSuccess_CouponUpdate("InvestSuccess-CouponUpdate"),
-    InvestSuccess_MembershipUpdate("InvestSuccess-MembershipUpdate"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
-    InvestSuccess_ExperienceAssignInterestCoupon("InvestSuccess-ExperienceAssignInterestCoupon"),
-    InvestSuccess_YearEndAwards("InvestSuccess-YearEndAwards"),
-    InvestSuccess_CashSnowball("InvestSuccess-CashSnowball"),
-    InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
-    InvestSuccess_StartWork("InvestSuccess-StartWork"),
-    InvestSuccess_Ranking("InvestSuccess-Ranking"),
-    InvestSuccess_WeChatHelp("InvestSuccess-WeChatHelp"),
     ActivityWeChatCoupon("ActivityWeChatCoupon"),
     Celebration_Coupon("Celebration-Coupon"),
     NewYearActivity_Coupon("NewYearActivity-Coupon"),
@@ -91,8 +81,20 @@ public enum MessageQueue {
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
     RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
     RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
+
     Recharge_Success("Recharge-Success"),
     Recharge_CompletePointTask("Recharge-CompletePointTask"),
+
+    Withdraw_Success("Recharge-Success"),
+    Withdraw_EventMessage("Recharge-EventMessage"),
+    Withdraw_PushMessage("Recharge-PushMessage"),
+    Withdraw_WeChatMessage("Recharge-WeChatMessage"),
+
+
+    Invest_Success("Invest-Success"),
+    Invest_CompletePointTask("Invest-CompletePointTask"),
+    Invest_CouponUpdate("Invest-CouponUpdate"),
+    Invest_MembershipUpdate("Invest-MembershipUpdate"),
     ;
 
     private final String queueName;

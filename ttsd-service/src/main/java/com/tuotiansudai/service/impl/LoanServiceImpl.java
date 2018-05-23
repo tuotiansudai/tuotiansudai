@@ -26,6 +26,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -105,12 +106,7 @@ public class LoanServiceImpl implements LoanService {
             }
         }
 
-        List<LoanPaginationItemDataDto> records = Lists.transform(loanModels, new Function<LoanModel, LoanPaginationItemDataDto>() {
-            @Override
-            public LoanPaginationItemDataDto apply(LoanModel input) {
-                return new LoanPaginationItemDataDto(input);
-            }
-        });
+        List<LoanPaginationItemDataDto> records = loanModels.stream().map(LoanPaginationItemDataDto::new).collect(Collectors.toList());
 
         BasePaginationDataDto<LoanPaginationItemDataDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
         dataDto.setStatus(true);

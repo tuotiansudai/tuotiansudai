@@ -2,6 +2,8 @@ package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.config.ApiType;
 
+import java.util.Map;
+
 public class RechargeRequestDto extends PayBaseRequestDto {
 
     private String amount;
@@ -11,7 +13,7 @@ public class RechargeRequestDto extends PayBaseRequestDto {
     private String payType;
 
     public RechargeRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount, RechargePayType payType) {
-        super(source, loginName, mobile, userName, accountNo, ApiType.RECHARGE);
+        super(source, loginName, mobile, userName, accountNo, ApiType.RECHARGE, null);
         this.amount = amount;
         this.payType = payType.getValue();
     }

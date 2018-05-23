@@ -29,4 +29,4 @@ include 'ttsd-job'
 include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
-include 'ttsd-fudian-bank'
+include 'ttsd-fudian-bank', "ttsd-fudian-bank-dto"

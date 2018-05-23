@@ -164,7 +164,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
 
             SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON_RED_ENVELOPE, detail);
             AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, userCouponModel.getLoginName(),
-                    userCouponModel.getId(), transferAmount, couponModel.getCouponType().getUserBillBusinessType(), null, null);
+                    userCouponModel.getId(), transferAmount, couponModel.getCouponType().getUserBillBusinessType());
 
             mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);

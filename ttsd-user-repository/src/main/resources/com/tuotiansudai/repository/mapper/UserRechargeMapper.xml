@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserRechargeMapper">
+
+    <resultMap id="userRechargeResultMap" type="UserRechargeModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="fee" property="fee"/>
+        <result column="source" property="source"/>
+        <result column="pay_type" property="payType"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.UserRechargeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_recharge(login_name, fee, source, status, created_time, updated_time)
+        value(#{loginName}, #{fee}, #{source}, #{status}, #{status}, now(), now())
+    </insert>
+
+    <update id="update" parameterType="map">
+        update user_recharge
+        set 
+    </update>
+
+
+
+</mapper>

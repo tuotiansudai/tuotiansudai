@@ -28,12 +28,6 @@ public class RechargeModel implements Serializable {
 
     private Date createdTime;
 
-    private String payType;
-
-    private String bankOrderNo;
-
-    private String bankOrderDate;
-
     public RechargeModel() {
 
     }
@@ -128,29 +122,5 @@ public class RechargeModel implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
-    }
-
-    public String getPayType() {
-        return payType;
-    }
-
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
-
-    public String getBankOrderNo() {
-        return bankOrderNo;
-    }
-
-    public void setBankOrderNo(String bankOrderNo) {
-        this.bankOrderNo = bankOrderNo;
-    }
-
-    public String getBankOrderDate() {
-        return bankOrderDate;
-    }
-
-    public void setBankOrderDate(String bankOrderDate) {
-        this.bankOrderDate = bankOrderDate;
     }
 }

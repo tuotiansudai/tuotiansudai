@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<#if pay.data??>
-    <#assign payData = pay.data>
+<#if pay??>
+
 <head>
-    <#if payData.status>
+    <#if pay.status>
         <script type="text/javascript" src="/js/libs/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
             $(function () {
@@ -13,15 +13,14 @@
     </#if>
 </head>
 <body>
-
-    <#if payData.status>
-    <form id="payForm" action="${payData.url}" method="post">
+    <#if pay.status>
+    <form id="payForm" action="${pay.url}" method="post">
         <#list payData.fields?keys as key>
-            <input type="hidden" name="${key}" value="${payData.fields[key]}"/>
+            <input type="hidden" name="reqData" value="${pay.data}"/>
         </#list>
     </form>
     <#else>
-    <p>${payData.message}</p>
+    <p>${pay.message}</p>
     </#if>
 </body>
 </#if>

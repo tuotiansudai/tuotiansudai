@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
+import com.tuotiansudai.fudian.dto.BankRechargeDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
@@ -16,6 +17,7 @@ import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
+import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.slf4j.Logger;
@@ -59,15 +61,15 @@ public class RechargeService implements AsyncCallbackInterface {
         this.redisTemplate = redisTemplate;
     }
 
-    public RechargeRequestDto recharge(String rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String amount, RechargePayType payType) {
-        RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankUserName, bankAccountNo, amount, payType);
+    public RechargeRequestDto recharge(Source source, RechargePayType rechargePayType, BankRechargeDto bankRechargeDto) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, bankRechargeDto.getLoginName(), bankRechargeDto.getMobile(), bankRechargeDto.getBankUserName(), bankRechargeDto.getBankAccountNo(), AmountUtils.toYuan(bankRechargeDto.getAmount()), rechargePayType);
 
         signatureHelper.sign(dto);
 
-        redisTemplate.opsForValue().set(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), rechargeId, 30 * 24 * 60 * 60, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), String.valueOf(bankRechargeDto.getRechargeId()), 30 * 24 * 60 * 60, TimeUnit.SECONDS);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[recharge] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}", bankUserName, bankAccountNo, amount, payType);
+            logger.error("[recharge] sign error, data {}", bankRechargeDto);
             return null;
         }
         insertMapper.insertRecharge(dto);

@@ -7,7 +7,7 @@ public enum BankCallbackType {
     CANCEL_CARD_BIND("银行卡解绑成功", "/personal-info"),
 
     RECHARGE("", ""),
-    WITHDRAW("", ""),
+    WITHDRAW("提现申请成功", "/withdraw"),
 
     AUTHORIZATION("", ""),
 
@@ -16,7 +16,7 @@ public enum BankCallbackType {
 
     PHONE_UPDATE("", ""),
 
-    LOAN_INVEST("", ""),
+    LOAN_INVEST("投资成功", "/loan-list"),
     LOAN_FAST_INVEST("", ""),
     LOAN_CREDIT_INVEST("", ""),
 

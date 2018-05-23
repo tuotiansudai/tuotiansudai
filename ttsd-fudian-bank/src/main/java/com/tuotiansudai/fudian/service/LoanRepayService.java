@@ -2,6 +2,7 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
 import com.tuotiansudai.fudian.dto.request.LoanRepayRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
@@ -41,7 +42,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
     }
 
     public LoanRepayRequestDto repay(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY);
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY, null);
 
         signatureHelper.sign(dto);
 
@@ -56,7 +57,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
     }
 
     public ResponseDto fastRepay(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY);
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -88,7 +89,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto);
+        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSED);
         return responseDto;
     }
 

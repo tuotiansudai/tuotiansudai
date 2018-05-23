@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.CardBindRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
@@ -13,6 +14,7 @@ import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.message.BankBindCardMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -45,16 +47,15 @@ public class CardBindService implements AsyncCallbackInterface {
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public CardBindRequestDto bind(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        CardBindRequestDto dto = new CardBindRequestDto(source, loginName, mobile, bankUserName, bankAccountNo);
+    public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto) {
+        CardBindRequestDto dto = new CardBindRequestDto(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo(), null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[card bind] sign error, userName: {}, accountNo: {}", bankUserName, bankAccountNo);
+            logger.error("[card bind] sign error, data: {}", bankBaseDto);
 
             return null;
         }
-
 
         insertMapper.insertCardBind(dto);
         return dto;
@@ -75,22 +76,20 @@ public class CardBindService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updateCardBind(responseDto);
 
-        if (responseDto.isSuccess()) {
-            CardBindContentDto content = responseDto.getContent();
-            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(responseDto.getContent().getExtMark(), ExtMarkDto.class);
+        CardBindContentDto content = responseDto.getContent();
 
-            this.messageQueueClient.publishMessage(MessageTopic.BindBankCard,
-                    Maps.newHashMap(ImmutableMap.<String, String>builder()
-                            .put("loginName", extMarkDto.getLoginName())
-                            .put("mobile", extMarkDto.getMobile())
-                            .put("bankUserName", content.getUserName())
-                            .put("bankAccountNo", content.getAccountNo())
-                            .put("bank", content.getBank())
-                            .put("bankCode", content.getBankCode())
-                            .put("cardNumber", content.getBankAccountNo())
-                            .put("bankOrderNo", content.getOrderNo())
-                            .put("bankOrderDate", content.getOrderDate())
-                            .build()));
+        if (responseDto.isSuccess() && content.isSuccess()) {
+            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(responseDto.getContent().getExtMark(), ExtMarkDto.class);
+            BankBindCardMessage message = new BankBindCardMessage(extMarkDto.getLoginName(),
+                    extMarkDto.getMobile(),
+                    content.getUserName(),
+                    content.getAccountNo(),
+                    content.getBank(),
+                    content.getBankCode(),
+                    content.getBankAccountNo(),
+                    content.getOrderNo(),
+                    content.getOrderDate());
+            this.messageQueueClient.publishMessage(MessageTopic.BindBankCard, message);
         }
         return responseDto;
     }

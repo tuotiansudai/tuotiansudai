@@ -37,7 +37,7 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
     }
 
     public LoanCreditInvestRequestDto invest(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee);
+        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

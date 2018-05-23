@@ -20,36 +20,44 @@
         <result column="description_text" property="descriptionText"/>
         <result column="description_html" property="descriptionHtml"/>
         <result column="pledge_type" property="pledgeType"/>
-        <result column="base_rate" property="baseRate"/>
         <result column="loan_amount" property="loanAmount"/>
         <result column="min_invest_amount" property="minInvestAmount"/>
-        <result column="invest_increasing_amount" property="investIncreasingAmount"/>
         <result column="max_invest_amount" property="maxInvestAmount"/>
+        <result column="invest_increasing_amount" property="investIncreasingAmount"/>
         <result column="activity_type" property="activityType"/>
         <result column="product_type" property="productType"/>
+        <result column="base_rate" property="baseRate"/>
         <result column="activity_rate" property="activityRate"/>
         <result column="contract_id" property="contractId"/>
         <result column="fundraising_start_time" property="fundraisingStartTime"/>
         <result column="fundraising_end_time" property="fundraisingEndTime"/>
         <result column="deadline" property="deadline"/>
         <result column="raising_complete_time" property="raisingCompleteTime"/>
-        <result column="show_on_home" property="showOnHome"/>
-        <result column="created_time" property="createdTime"/>
-        <result column="created_login_name" property="createdLoginName"/>
         <result column="verify_time" property="verifyTime"/>
         <result column="verify_login_name" property="verifyLoginName"/>
         <result column="recheck_time" property="recheckTime"/>
         <result column="recheck_login_name" property="recheckLoginName"/>
         <result column="status" property="status"/>
         <result column="first_invest_achievement_id" property="firstInvestAchievementId"/>
-        <result column="max_amount_achievement_id" property="maxAmountAchievementId"/>
         <result column="last_invest_achievement_id" property="lastInvestAchievementId"/>
+        <result column="max_amount_achievement_id" property="maxAmountAchievementId"/>
+        <result column="show_on_home" property="showOnHome"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_login_name" property="createdLoginName"/>
+        <result column="update_time" property="updateTime"/>
+
+        <result column="loan_tx_no" property="loanTxNo"/>
+        <result column="loan_acc_no" property="loanAccNo"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+
+
+
         <result column="next_repay_date" property="nextRepayDate"/>
         <result column="completed_date" property="completedDate"/>
         <result column="unpaid_amount" property="unpaidAmount"/>
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
-        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -80,8 +88,8 @@
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
         #{periods}, #{originalDuration}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
         #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
-        #{fundraisingEndTime}, #{deadline}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
-        #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
+        #{fundraisingEndTime}, #{deadline}, #{showOnHome}, now(), #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
+        #{recheckTime}, #{recheckLoginName}, #{status}, now())
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -407,10 +415,20 @@
             <if test="lastInvestAchievementId !=null">
                 last_invest_achievement_id = #{lastInvestAchievementId},
             </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime}
+            <if test="loanTxNo !=null">
+                loan_tx_no = #{loanTxNo},
+            </if>
+            <if test="loanAccNo !=null">
+                loan_acc_no = #{loanAccNo},
+            </if>
+            <if test="bankOrderNo !=null">
+                bank_order_no = #{bankOrderNo},
+            </if>
+            <if test="bankOrderDate !=null">
+                bank_order_date = #{bankOrderDate},
             </if>
 
+            update_time = now()
         </trim>
         where id = #{id}
     </update>

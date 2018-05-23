@@ -11,7 +11,14 @@ public class InvestModel implements Serializable {
      * 投资ID
      */
     private long id;
-
+    /**
+     * 银行订单号
+     */
+    private String bankOrderNo;
+    /**
+     * 银行订单日期
+     */
+    private String bankOrderDate;
     /**
      * 转让人投资id
      */
@@ -45,10 +52,6 @@ public class InvestModel implements Serializable {
      */
     private Source source;
     /**
-     * 是否为自动投资
-     */
-    private boolean isAutoInvest;
-    /**
      * 应用安装来源渠道
      */
     private String channel;
@@ -59,7 +62,7 @@ public class InvestModel implements Serializable {
     /**
      * 创建时间
      */
-    private Date createdTime = new Date();
+    private Date createdTime;
 
     /**
      * 交易完成时间
@@ -93,9 +96,7 @@ public class InvestModel implements Serializable {
         this.source = source;
         this.channel = channel;
         this.status = InvestStatus.WAIT_PAY;
-        this.isAutoInvest = Source.AUTO == source;
         this.investTime = investTime;
-        this.createdTime = new Date();
         this.transferStatus = TransferStatus.TRANSFERABLE;
         this.investFeeRate = investFeeRate;
     }
@@ -106,6 +107,22 @@ public class InvestModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
     }
 
     public Long getTransferInvestId() {
@@ -162,14 +179,6 @@ public class InvestModel implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public boolean isAutoInvest() {
-        return isAutoInvest;
-    }
-
-    public void setIsAutoInvest(boolean isAutoInvest) {
-        this.isAutoInvest = isAutoInvest;
     }
 
     public Date getCreatedTime() {

@@ -1,9 +1,12 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -54,39 +57,27 @@ public class InvestController {
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
 
-        if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
-            investDto.setSource(Source.WE_CHAT);
-        } else if (Source.M.equals(investDto.getSource())) {
-            investDto.setSource(Source.M);
-        } else {
-            investDto.setSource(Source.WEB);
-        }
-        String errorMessage = "投资失败，请联系客服！";
-        String errorType = "";
-        if (bindingResult.hasErrors()) {
-            errorMessage = bindingResult.getFieldError().getDefaultMessage();
-        }
-        try {
-            investDto.setLoginName(LoginUserInfo.getLoginName());
-            BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-            if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
-                return new ModelAndView("/pay", "pay", baseDto);
+        if (!bindingResult.hasErrors()) {
+            try {
+                investDto.setLoginName(LoginUserInfo.getLoginName());
+                BankAsyncData bankAsyncData = investService.invest(investDto);
+                return new ModelAndView("/pay", "pay", bankAsyncData);
+            } catch (InvestException e) {
+                redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+                redirectAttributes.addFlashAttribute("errorType", e.getType().name());
             }
-            if (baseDto.getData() != null) {
-                errorMessage = baseDto.getData().getMessage();
-            }
-        } catch (InvestException e) {
-            errorMessage = e.getMessage();
-            errorType = e.getType().name();
         }
 
-        redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-        redirectAttributes.addFlashAttribute("errorType", errorType);
+        redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服");
+        redirectAttributes.addFlashAttribute("errorType", "");
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
+
         if (Source.M.equals(investDto.getSource())) {
             return new ModelAndView(MessageFormat.format("redirect:/m/loan/{0}#buyDetail", investDto.getLoanId()));
         }
+
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 

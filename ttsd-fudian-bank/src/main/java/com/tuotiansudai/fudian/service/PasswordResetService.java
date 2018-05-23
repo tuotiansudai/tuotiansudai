@@ -37,7 +37,7 @@ public class PasswordResetService implements AsyncCallbackInterface {
     }
 
     public PasswordResetRequestDto reset(Source source, String loginName, String mobile, String userName, String accountNo) {
-        PasswordResetRequestDto dto = new PasswordResetRequestDto(source, loginName, mobile, userName, accountNo);
+        PasswordResetRequestDto dto = new PasswordResetRequestDto(source, loginName, mobile, userName, accountNo, null);
 
         signatureHelper.sign(dto);
 

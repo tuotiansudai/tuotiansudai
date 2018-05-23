@@ -2,6 +2,8 @@ package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.config.ApiType;
 
+import java.util.Map;
+
 public class LoanCreditInvestRequestDto extends PayBaseRequestDto {
 
     private String creditNo; //债权挂牌ID
@@ -28,8 +30,8 @@ public class LoanCreditInvestRequestDto extends PayBaseRequestDto {
 
     private String repayedAmount = "0.00"; //已还款金额
 
-    public LoanCreditInvestRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        super(source, loginName, mobile, userName, accountNo, ApiType.LOAN_CREDIT_INVEST);
+    public LoanCreditInvestRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee, Map<String, String> extraValues) {
+        super(source, loginName, mobile, userName, accountNo, ApiType.LOAN_CREDIT_INVEST, extraValues);
         this.loanTxNo = loanTxNo;
         this.investOrderNo = investOrderNo;
         this.oriOrderNo = investOrderNo;

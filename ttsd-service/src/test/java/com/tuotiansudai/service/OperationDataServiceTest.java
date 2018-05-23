@@ -144,7 +144,6 @@ public class OperationDataServiceTest {
         model.setAmount(amount);
         model.setCreatedTime(createTime);
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
@@ -159,7 +158,6 @@ public class OperationDataServiceTest {
         model.setAmount(amount);
         model.setCreatedTime(createTime);
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setInvestTime(investTime);
         model.setLoanId(loanId);

@@ -16,8 +16,6 @@ public interface RechargeMapper {
 
     void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
 
-    void update(RechargeModel model);
-
     RechargeModel findById(long id);
 
     List<RechargeModel> findRechargePagination(@Param(value = "rechargeId") String rechargeId,

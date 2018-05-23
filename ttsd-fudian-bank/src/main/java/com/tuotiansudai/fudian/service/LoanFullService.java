@@ -40,7 +40,7 @@ public class LoanFullService implements AsyncCallbackInterface {
     }
 
     public ResponseDto full(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
-        LoanFullRequestDto dto = new LoanFullRequestDto(loginName, mobile, userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
+        LoanFullRequestDto dto = new LoanFullRequestDto(loginName, mobile, userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

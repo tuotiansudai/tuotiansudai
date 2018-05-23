@@ -1,12 +1,13 @@
 package com.tuotiansudai.mq.consumer.amount.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.*;
 import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import org.slf4j.Logger;
@@ -22,11 +23,15 @@ public class AmountTransferService {
 
     private static final Logger logger = LoggerFactory.getLogger(AmountTransferService.class);
 
-    @Autowired
-    private AccountMapper accountMapper;
+    private final BankAccountMapper bankAccountMapper;
+
+    private final UserBillMapper userBillMapper;
 
     @Autowired
-    private UserBillMapper userBillMapper;
+    public AmountTransferService(BankAccountMapper bankAccountMapper, UserBillMapper userBillMapper) {
+        this.bankAccountMapper = bankAccountMapper;
+        this.userBillMapper = userBillMapper;
+    }
 
     @Transactional
     public void amountTransferProcess(AmountTransferMessage message) throws AmountTransferException {
@@ -38,7 +43,6 @@ public class AmountTransferService {
         logger.info("end amount transfer linked messages process");
     }
 
-
     private void amountTransferProcessOne(AmountTransferMessage message) throws AmountTransferException {
         logger.info("amount transfer process one message. loginName: {}, orderId:{}, amount:{}, businessType:{}",
                 message.getLoginName(), message.getOrderId(), message.getAmount(), message.getBusinessType());
@@ -47,157 +51,30 @@ public class AmountTransferService {
 
         logger.info("transfer type:{}", transferType);
 
+        if (!Lists.newArrayList(TransferType.TRANSFER_IN_BALANCE, TransferType.TRANSFER_OUT_BALANCE).contains(message.getTransferType())) {
+            throw new AmountTransferException(MessageFormat.format("transfer type incorrect. transferType:{0}", transferType));
+        }
+
         String loginName = message.getLoginName();
-        long orderId = message.getOrderId();
-        long amount = message.getAmount();
-        UserBillBusinessType businessType = message.getBusinessType();
-        String operationLoginName = message.getOperatorLoginName();
-        String interventionReason = message.getInterventionReason();
 
-        switch (transferType) {
-            case FREEZE:
-                freeze(loginName, orderId, amount, businessType, operationLoginName, interventionReason);
-                break;
-            case UNFREEZE:
-                unfreeze(loginName, orderId, amount, businessType, operationLoginName, interventionReason);
-                break;
-            case TRANSFER_IN_BALANCE:
-                transferInBalance(loginName, orderId, amount, businessType, operationLoginName, interventionReason);
-                break;
-            case TRANSFER_OUT_BALANCE:
-                transferOutBalance(loginName, orderId, amount, businessType, operationLoginName, interventionReason);
-                break;
-            case TRANSFER_OUT_FREEZE:
-                transferOutFreeze(loginName, orderId, amount, businessType, operationLoginName, interventionReason);
-                break;
-            default:
-                throw new AmountTransferException(MessageFormat.format("transfer type incorrect. transferType:{0}", transferType));
-        }
-    }
-
-
-    private void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start freeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            throw new FreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
-        }
-
-        long balance = accountModel.getBalance();
-        long freeze = accountModel.getFreeze();
-        if (balance < amount) {
-            String template = "Freeze Failed (orderId = {0}): {1} balance {2} is less than amount {3}";
-            throw new FreezeAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
-        }
-
-        balance -= amount;
-        freeze += amount;
-
-        accountModel.setBalance(balance);
-        accountModel.setFreeze(freeze);
-        accountMapper.update(accountModel);
-
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.FREEZE, operatorLoginName, interventionReason);
-        userBillMapper.create(userBillModel);
-    }
-
-    private void unfreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start unfreeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            throw new UnfreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
-        }
-
-        long balance = accountModel.getBalance();
-        long freeze = accountModel.getFreeze();
-        if (freeze < amount) {
-            String template = "Unfreeze Failed (orderId = {0}): {1} freeze {2} is less than amount {3}";
-            throw new UnfreezeAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(freeze), String.valueOf(amount)));
-        }
-
-        balance += amount;
-        freeze -= amount;
-
-        accountModel.setBalance(balance);
-        accountModel.setFreeze(freeze);
-        accountMapper.update(accountModel);
-
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.UNFREEZE, operatorLoginName, interventionReason);
-        userBillMapper.create(userBillModel);
-    }
-
-    private void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferInBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        if (bankAccountModel == null) {
             throw new TransferInAmountException(MessageFormat.format("{0} account is not exist", loginName));
         }
 
-        long balance = accountModel.getBalance();
-        long freeze = accountModel.getFreeze();
+        long orderId = message.getOrderId();
+        long amount = message.getAmount() * (transferType == TransferType.TRANSFER_IN_BALANCE ? 1 : -1);
+        UserBillBusinessType businessType = message.getBusinessType();
 
-        balance += amount;
+        logger.info("start transferInBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
 
-        accountModel.setBalance(balance);
-        accountModel.setFreeze(freeze);
-        accountMapper.update(accountModel);
+        bankAccountMapper.updateBalance(loginName, amount);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TI_BALANCE, operatorLoginName, interventionReason);
-        userBillMapper.create(userBillModel);
-    }
-
-    private void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferOutBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            throw new TransferOutAmountException(MessageFormat.format("{0} account is not exist", loginName));
-        }
-
-        long balance = accountModel.getBalance();
-        long freeze = accountModel.getFreeze();
-
-        if (balance < amount) {
-            String template = "Transfer Out Balance Failed (orderId = {0}): {1} balance {2} is less than amount {3}";
-            throw new TransferOutAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
-        }
-
-        balance -= amount;
-
-        accountModel.setBalance(balance);
-        accountModel.setFreeze(freeze);
-        accountMapper.update(accountModel);
-
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_BALANCE, operatorLoginName, interventionReason);
-        userBillMapper.create(userBillModel);
-    }
-
-    private void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
-        logger.info("start transferOutFreeze, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
-            throw new TransferOutFreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
-        }
-
-        long balance = accountModel.getBalance();
-        long freeze = accountModel.getFreeze();
-
-        if (freeze < amount) {
-            String template = "Transfer Out Freeze Failed (orderId = {0}): {1} freeze {2} is less than amount {3}";
-            throw new TransferOutFreezeAmountException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(freeze), String.valueOf(amount)));
-        }
-
-        freeze -= amount;
-
-        accountModel.setBalance(balance);
-        accountModel.setFreeze(freeze);
-        accountMapper.update(accountModel);
-
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_FREEZE, operatorLoginName, interventionReason);
-        userBillMapper.create(userBillModel);
+        userBillMapper.create(new UserBillModel(loginName,
+                orderId,
+                message.getAmount(),
+                bankAccountModel.getBalance() + amount,
+                businessType,
+                amount > 0 ? UserBillOperationType.TI_BALANCE : UserBillOperationType.TO_BALANCE));
     }
 }

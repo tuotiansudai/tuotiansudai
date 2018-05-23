@@ -36,7 +36,7 @@ public class AuthorizationService implements AsyncCallbackInterface {
     }
 
     public AuthorizationRequestDto auth(Source source, String loginName, String mobile, String userName, String accountNo) {
-        AuthorizationRequestDto dto = new AuthorizationRequestDto(source, loginName, mobile, userName, accountNo);
+        AuthorizationRequestDto dto = new AuthorizationRequestDto(source, loginName, mobile, userName, accountNo, null);
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

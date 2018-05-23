@@ -99,29 +99,6 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
             }
         });
 
-        if (maxAmountAchievementInvestOptional.isPresent()) {
-            InvestModel previousMaxAmountInvest = maxAmountAchievementInvestOptional.get();
-
-            long currentInvestorInvestAmount = 0;
-            long maxAmountInvestorInvestAmount = 0;
-
-            for (InvestModel successInvestModel : successInvestModels) {
-                if (successInvestModel.getLoginName().equalsIgnoreCase(investModel.getLoginName())) {
-                    currentInvestorInvestAmount += successInvestModel.getAmount();
-                }
-                if (successInvestModel.getLoginName().equalsIgnoreCase(previousMaxAmountInvest.getLoginName())) {
-                    maxAmountInvestorInvestAmount += successInvestModel.getAmount();
-                }
-            }
-
-            if (currentInvestorInvestAmount <= maxAmountInvestorInvestAmount) {
-                return false;
-            }
-
-            previousMaxAmountInvest.getAchievements().remove(InvestAchievement.MAX_AMOUNT);
-            investMapper.update(previousMaxAmountInvest);
-        }
-
         return true;
     }
 
