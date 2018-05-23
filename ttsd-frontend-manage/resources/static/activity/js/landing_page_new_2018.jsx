@@ -22,6 +22,7 @@ let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
    $('#bannerBoxApp').show();
+   $('.app-container-landing').hide();
 }
 
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
@@ -440,7 +441,10 @@ $voiceBtn.on('click', function(event) {
 })();
 
 
-
+$('.close-app').click(function (e) {
+    e.stopPropagation();
+    $('.app-container-landing').hide();
+})
 
 
 

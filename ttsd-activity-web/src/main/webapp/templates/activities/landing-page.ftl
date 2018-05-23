@@ -125,7 +125,7 @@
                                  <a class="get-btn coupon-btn">领取6888元体验金</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                    <a class="get-btn" href="/loan-list">马上投资</a>
                                 </@global.isNotAnonymous>
                             </div>
                             <div class="swiper-slide item2">
@@ -133,7 +133,7 @@
                                     <a class="get-btn coupon-btn">领取6888元体验金</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                    <a class="get-btn" href="/loan-list">马上投资</a>
                                 </@global.isNotAnonymous>
                             </div>
                             <div class="swiper-slide item3">
@@ -141,7 +141,7 @@
                                     <a class="get-btn coupon-btn">领取6888元体验金</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">立即投资</a>
+                                    <a class="get-btn" href="/loan-list">马上投资</a>
                                 </@global.isNotAnonymous>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                            <a class="red-ware-btn" href="/loan-list">立即投资</a>
+                            <a class="red-ware-btn" href="/loan-list">马上投资</a>
                         </@global.isNotAnonymous>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                     <div class="top"></div>
                     <div class="content clearfix">
                         <dl class="fl left-desc">
-                            <dt>9<span>%</span><em class="plus">+</em><span class="newbie-dt">2<i>%<i></i></span></dt>
+                            <dt>8<span>%</span><em class="plus">+</em><span class="newbie-dt">2<i>%<i></i></span></dt>
                             <dd>约定年化利率</dd>
                         </dl>
 
@@ -226,7 +226,7 @@
                                             <div class="swiper-slide loan-wrap">
                                                 <h2 class="loan-title">车辆抵押借款</h2>
                                                 <div class="loan-con">
-                                                    <div class="loan-info"><span class="big-num">9</span><span class="percent">%</span>90<span
+                                                    <div class="loan-info"><span class="big-num">9</span><span class="percent">%</span>180<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
                                                     <p class="other"><span class="icon1"></span><span>银行存管</span> <span
@@ -237,7 +237,7 @@
                                             <div class="swiper-slide loan-wrap">
                                                 <h2 class="loan-title">车辆抵押借款</h2>
                                                 <div class="loan-con">
-                                                    <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>180<span
+                                                    <div class="loan-info"><span class="big-num">8</span><span class="percent">%</span>90<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
                                                     <p class="other"><span class="icon1"></span><span>银行存管</span> <span
@@ -286,7 +286,7 @@
                 <div class="advance-con">
                     <dl>
                         <dt class="icon-advance1"></dt>
-                        <dd><p class="profile">银行资金存管</p>
+                        <dd><p class="profile">资金存管</p>
                             <p class="font">与平台自有资金物理隔离</p></dd>
                     </dl>
                     <dl>
@@ -352,8 +352,17 @@
         </div>
 
     </div>
-
+    <div class="app-container-landing clearfix">
+        <div class="logo"></div>
+        <div class="app-detail">
+            拓天速贷<br/>
+            <em>互联网金融信息服务平台<em>
+        </div>
+        <div class="open-app">下载APP</div>
+        <div class="close-app"></div>
+    </div>
 </div>
+
 
 
     <#include '../module/register-agreement.ftl' />

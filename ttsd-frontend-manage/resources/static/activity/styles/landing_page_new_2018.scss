@@ -399,6 +399,7 @@ p {
                 .left-bot {
                   width: 295px;
                   height: 100%;
+                  padding: 0;
                   .swiper-container {
                     float: none;
                     .swiper-pagination-bullet-active {
@@ -406,7 +407,9 @@ p {
                     }
                   }
                   .loan-wrap {
+                    width: 295px;
                     .loan-title {
+                      width: 295px;
                       height: 46px;
                       line-height: 46px;
                       text-align: center;
@@ -763,7 +766,7 @@ p {
 
   }
   .bot {
-    height: 113px;
+    height: 111px;
     background: url("../images/landingpage/bot_bg.png") no-repeat center bottom;
     background-size: 100%;
   }
@@ -799,6 +802,7 @@ p {
 }
 
 @media screen and (max-width: 1024px){
+
   .wapStyleNone {
     display: none;
   }
@@ -820,7 +824,57 @@ body {
   background-size: contain;
 }
   .landing-page-container {
-
+    .app-container-landing {
+      height: 1.32rem;
+      background: rgba(0,0,0,0.6);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      .logo {
+        width: 0.83rem;
+        height: 0.83rem;
+        float: left;
+        background: url("../images/landingpage/landing_logo.png") no-repeat;
+        background-size: contain;
+        margin-left: 0.1rem;
+        margin-top: 0.26rem;
+        margin-right: 0.1rem;
+      }
+      .app-detail {
+        float: left;
+        color: #fff;
+        line-height: 0.4rem;
+        font-size: 0.38rem;
+        margin-top: 0.3rem;
+        em {
+          font-size: 0.26rem;
+        }
+      }
+      .open-app {
+        float: right;
+        width: 87px;
+        height: 30px;
+        background: #d0282e;
+        color: #fff;
+        font-size: 15px;
+        margin-right: 30px;
+        margin-top: 20px;
+        text-align: center;
+        line-height: 30px;
+      }
+      .close-app {
+        width: 13px;
+        height: 13px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: url("../../m-web/images/share/icon_close.png") no-repeat;
+        background-size: contain;
+        cursor: pointer;
+      }
+    }
     .banner {
       height: 15rem;
       background: none;
