@@ -61,7 +61,7 @@ public class SuperScholarActivityController {
         return new BaseResponse(superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer));
     }
 
-    @RequestMapping(value = "/view/result", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/result", method = RequestMethod.POST)
     public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType) {
         if (!superScholarActivityService.duringActivities()) {
             return new ModelAndView("redirect:/activity/super-scholar");
