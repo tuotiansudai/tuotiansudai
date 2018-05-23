@@ -42,6 +42,7 @@ public class BankWithdrawDto extends BankBaseDto {
     @Override
     public boolean isValid() {
         return super.isValid()
+                && withdrawId > 0
                 && amount > fee
                 && fee > 0;
     }

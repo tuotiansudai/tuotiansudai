@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -17,7 +18,7 @@ public interface InvestService {
      *
      * @param investDto
      */
-    BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
+    BankAsyncData invest(InvestDto investDto) throws InvestException;
 
     long estimateInvestIncome(long loanId, double investFeeRate, String loginName, long amount, Date investTime);
 
@@ -36,9 +37,6 @@ public interface InvestService {
 
     InvestModel findById(long investId);
 
-
-    InvestModel findLatestSuccessInvest(String loginName);
-
     BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
 
     boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip);
@@ -48,10 +46,6 @@ public interface InvestService {
     long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source);
 
     List<InvestModel> findContractFailInvest(long loanId);
-
-    boolean isNewUserForWechatLottery(String loginName);
-
-    boolean isFirstInvest(String loginName, Date investTime);
 
     BasePaginationDataDto<UserInvestRecordDataDto> generateUserInvestList(String loginName, int index,
                                                                           int pageSize,

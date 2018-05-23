@@ -16,7 +16,7 @@ public enum BankCallbackType {
 
     PHONE_UPDATE("", ""),
 
-    LOAN_INVEST("", ""),
+    LOAN_INVEST("投资成功", "/loan-list"),
     LOAN_FAST_INVEST("", ""),
     LOAN_CREDIT_INVEST("", ""),
 

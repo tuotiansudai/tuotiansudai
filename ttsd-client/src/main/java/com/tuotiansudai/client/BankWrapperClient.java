@@ -12,10 +12,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
-import com.tuotiansudai.fudian.dto.BankBaseDto;
-import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
-import com.tuotiansudai.fudian.dto.BankWithdrawDto;
+import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -60,13 +57,13 @@ public class BankWrapperClient {
                     return new GsonBuilder().create().fromJson(response.body().string(), new TypeToken<BaseDto<PayDataDto>>() {
                     }.getType());
                 } catch (JsonParseException e) {
-                    logger.error(MessageFormat.format("parse return return callback error, url: {}, data: {}, response: {}", path, response.body().string()), e);
+                    logger.error(MessageFormat.format("parse return return callback error, url: {0}, data: {1}, response: {2}", path, response.body().string()), e);
                 }
             } else {
-                logger.error(MessageFormat.format("bank return callback is invalid, url: {}, data: {}", path, bankReturnParams));
+                logger.error(MessageFormat.format("bank return callback is invalid, url: {0}, data: {1}", path, bankReturnParams));
             }
         } catch (IOException e) {
-            logger.error(MessageFormat.format("bank return callback error, url: {}, data: {}", path, bankReturnParams), e);
+            logger.error(MessageFormat.format("bank return callback error, url: {0}, data: {1}", path, bankReturnParams), e);
         }
 
         return null;
@@ -119,6 +116,11 @@ public class BankWrapperClient {
                 new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId));
     }
 
+    public BankAsyncData invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
+        return asyncExecute(MessageFormat.format("/loan-invest/source/{0}", source.name().toLowerCase()),
+                new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
+    }
+
     public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, long loanId, long loanAmount) {
         BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, String.valueOf(loanId), loanAmount);
 
@@ -155,12 +157,12 @@ public class BankWrapperClient {
                 try {
                     return new GsonBuilder().create().fromJson(response.body().string(), BankAsyncData.class);
                 } catch (JsonParseException e) {
-                    logger.error(MessageFormat.format("parse pay response error, url: {}, data: {}, response: {}", url, content, response.body().string()), e);
+                    logger.error(MessageFormat.format("parse pay response error, url: {0}, data: {1}, response: {2}", url, content, response.body().string()), e);
                 }
             }
-            logger.error(MessageFormat.format("call pay wrapper status: {}, url: {}, data: {}", response.code(), url, content));
+            logger.error(MessageFormat.format("call pay wrapper status: {0}, url: {1}, data: {2}", response.code(), url, content));
         } catch (IOException e) {
-            logger.error(MessageFormat.format("call pay wrapper error, url: {}, data: {}", url, content), e);
+            logger.error(MessageFormat.format("call pay wrapper error, url: {0}, data: {1}", url, content), e);
         }
 
         return new BankAsyncData();
@@ -182,9 +184,9 @@ public class BankWrapperClient {
             if (response.isSuccessful()) {
                 return response.body().string();
             }
-            logger.error(MessageFormat.format("call pay wrapper status: {}, url: {}, request: {}", response.code(), url, content));
+            logger.error(MessageFormat.format("call pay wrapper status: {0}, url: {1}, request: {2}", response.code(), url, content));
         } catch (IOException e) {
-            logger.error(MessageFormat.format("call pay wrapper error, url: {}, request: {}", url, content), e);
+            logger.error(MessageFormat.format("call pay wrapper error, url: {0}, request: {1}", url, content), e);
         }
 
         return null;

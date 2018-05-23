@@ -34,7 +34,7 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.InvestSuccess_CompletePointTask;
+        return MessageQueue.Invest_CompletePointTask;
     }
 
     @Transactional

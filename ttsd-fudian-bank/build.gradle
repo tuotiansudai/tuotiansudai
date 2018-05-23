@@ -34,6 +34,9 @@ dependencies {
     compile('javax.servlet:jstl')
     compile('com.squareup.okhttp3:okhttp:3.10.0')
     compile('mysql:mysql-connector-java:8.0.11')
+    compile ('org.redisson:redisson:3.6.5')
+
+
     providedCompile("org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion")
     providedCompile("org.apache.tomcat.embed:tomcat-embed-jasper:8.5.30")
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")

@@ -18,22 +18,22 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class InvestCallbackMessageConsumerTest {
-
+public class TransferInvestSuccessMessageConsumerTest {
     @MockBean
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    @Qualifier("investCallbackMessageConsumer")
+    @Qualifier("transferInvestCallbackMessageConsumer")
     private MessageConsumer consumer;
 
     @Test
-    public void shouldConsume() {
+    public void shouldConsumeSuccess() {
         final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        when(payWrapperClient.investCallback(captor.capture())).thenReturn(new BaseDto<PayDataDto>());
+        when(payWrapperClient.investTransferCallback(captor.capture())).thenReturn(new BaseDto<PayDataDto>());
         String message = "12345";
         consumer.consume(message);
         assertEquals("12345", captor.getValue());
@@ -41,7 +41,7 @@ public class InvestCallbackMessageConsumerTest {
 
     @Test(expected = RuntimeException.class)
     public void shouldConsumeFail() {
-        when(payWrapperClient.investCallback(anyString())).thenReturn(new BaseDto<PayDataDto>(false));
+        when(payWrapperClient.investTransferCallback(anyString())).thenReturn(new BaseDto<PayDataDto>(false));
         String message = "12345";
         consumer.consume(message);
     }

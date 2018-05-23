@@ -33,7 +33,7 @@ public class WithdrawService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(WithdrawService.class);
 
-    private static String WITHDRAW_ID_TEMPLATE = "BANK_WITHDRAW_{0}";
+    private final static String WITHDRAW_ID_TEMPLATE = "BANK_WITHDRAW_{0}";
 
     private final MessageQueueClient messageQueueClient;
 

@@ -64,45 +64,6 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldInvestSuccess() throws Exception {
-        InvestRequestDto investRequestDto = new InvestRequestDto();
-        investRequestDto.setBaseParam(BaseParamTest.getInstance());
-
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        payFormDataDto.setStatus(true);
-        payFormDataDto.setUrl("url");
-        BaseDto<PayFormDataDto> successResponseDto = new BaseDto<>();
-        successResponseDto.setSuccess(true);
-        successResponseDto.setData(payFormDataDto);
-
-        when(investService.invest(any(InvestDto.class))).thenReturn(successResponseDto);
-        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
-
-        BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
-        assert responseDto.isSuccess();
-        assert "url".equals(responseDto.getData().getUrl());
-    }
-
-    @Test
-    public void shouldInvestFail1() throws Exception {
-        InvestRequestDto investRequestDto = new InvestRequestDto();
-        investRequestDto.setBaseParam(BaseParamTest.getInstance());
-
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        payFormDataDto.setStatus(false);
-        payFormDataDto.setUrl("url");
-        BaseDto<PayFormDataDto> successResponseDto = new BaseDto<>();
-        successResponseDto.setSuccess(true);
-        successResponseDto.setData(payFormDataDto);
-
-        when(investService.invest(any(InvestDto.class))).thenReturn(successResponseDto);
-        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
-
-        BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
-        assert !responseDto.isSuccess();
-    }
-
-    @Test
     public void shouldInvestFail2() throws Exception {
         InvestRequestDto investRequestDto = new InvestRequestDto();
         investRequestDto.setBaseParam(BaseParamTest.getInstance());

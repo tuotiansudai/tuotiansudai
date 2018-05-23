@@ -23,7 +23,7 @@ public class InvestSuccessCouponUpdateMessageConsumer implements MessageConsumer
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.InvestSuccess_CouponUpdate;
+        return MessageQueue.Invest_CouponUpdate;
     }
 
     @Transactional
