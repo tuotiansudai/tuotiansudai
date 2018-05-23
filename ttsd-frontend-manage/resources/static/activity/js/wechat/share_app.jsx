@@ -38,19 +38,9 @@ var mySwiper = new Swiper ('#fuliList', {
     spaceBetween: -20,
     loopAdditionalSlides:1,
     nextButton: '.prevBtn',
-    prevButton: '.prevBtn',
+    prevButton: '.nextBtn'
 
 });
-let $prevBtn = $('.prevBtn'),
-    $nextBtn = $('.nextBtn');
-
-$prevBtn.on('click',function () {
-    mySwiper.slidePrev();
-})
-$nextBtn.on('click',function () {
-    mySwiper.slideNext();
-})
-
 
 
 let isVoice = false;

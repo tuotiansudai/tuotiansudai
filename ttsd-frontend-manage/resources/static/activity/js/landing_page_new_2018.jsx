@@ -24,14 +24,16 @@ if(urlObj.params.source == 'app'){
    $('#bannerBoxApp').show();
    $('.app-container-landing').hide();
 }
+if($('#fuliList').length){
+    $('#fuliList').find('.swiper-slide').each(function (index,item) {
+        let  _self = $(this);
+        let imgUrl = require('../images/landingpage/fuli'+(index+1)+'.png');
+        let img = new Image();
+        img.src = imgUrl;
+        _self.append(img);
+    })
+}
 
-$('#fuliList').find('.swiper-slide').each(function (index,item) {
-    let  _self = $(this);
-    let imgUrl = require('../images/landingpage/fuli'+(index+1)+'.png');
-    let img = new Image();
-    img.src = imgUrl;
-    _self.append(img);
-})
 
     var mySwiper = new Swiper ('#fuliList', {
         direction: 'horizontal',

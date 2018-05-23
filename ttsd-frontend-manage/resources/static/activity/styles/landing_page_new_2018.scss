@@ -37,9 +37,25 @@ p {
     height: 521px;
     background: url("../images/landingpage/banner_bg.png") no-repeat center center;
     .banner-img {
+      position: relative;
       width: 1462px;
       height: 521px;
+      margin: 0 auto;
       background: url("../images/landingpage/banner.png") no-repeat center top;
+      .invest-tip {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        margin-left: -130px;
+        width: 230px;
+        height: 24px;
+        color: rgba(255,255,255,0.6);
+        background: rgba(0,0,0,0.3);
+        line-height: 24px;
+        text-align: center;
+        border-radius: 12px;
+
+      }
       .banner-con {
         position: relative;
         .login-wrap {
@@ -240,7 +256,7 @@ p {
         }
 
       }
-      .wap-swiper {
+      .wap-con-swiper {
         display: none;
       }
       .red-ware-wrap {
@@ -891,6 +907,20 @@ body {
         height: 6.76rem;
         background: url("../images/landingpage/banner_wap.png") no-repeat center top;
         background-size: contain;
+        .invest-tip {
+          position: absolute;
+          bottom: 0rem;
+          left: 50%;
+          margin-left: -2.2rem;
+          width: 4.4rem;
+          height: 0.5rem;
+          color: rgba(255,255,255,0.6);
+          background: rgba(0,0,0,0.3);
+          line-height: 0.5rem;
+          text-align: center;
+          border-radius: 0.25rem;
+
+        }
         .banner-con {
           position: relative;
           .login-wrap {
@@ -992,11 +1022,11 @@ body {
                     font-size: 0.28rem;
                     &.mobileIcon {
                       background:#fff url("../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
-                      background-size: 18%;
+                      background-size: 8%;
                     }
                     &.passwordIcon {
                       background:#fff url("../images/landingpage/password_icon.png") no-repeat 0.3rem center;
-                      background-size: 18%;
+                      background-size: 8%;
                     }
                     &.captchaIcon {
                       background:#fff url("../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
@@ -1158,6 +1188,9 @@ body {
               }
             }
           }
+        }
+        .wap-con-swiper{
+          display: block;
         }
 
 

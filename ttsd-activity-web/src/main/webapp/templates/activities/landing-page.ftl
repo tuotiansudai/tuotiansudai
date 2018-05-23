@@ -60,6 +60,7 @@
                 </div>
 
             </div>
+            <div class="invest-tip">市场有风险，投资需谨慎！</div>
         </div>
     </div>
     </@global.isAnonymous>
