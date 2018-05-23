@@ -34,7 +34,7 @@
           question_answer = #{questionAnswer},
           user_answer = #{userAnswer},
           user_right = #{userRight},
-          coupon_id = #{couponId},
+          coupon_id = ifnull(coupon_id, #{couponId}),
           is_share_home = #{isShareHome},
           is_share_account = #{isShareAccount},
           is_share_invest = #{isShareInvest},
