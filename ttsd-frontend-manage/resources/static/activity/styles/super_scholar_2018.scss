@@ -8,7 +8,7 @@ p {
 }
 
 .super-scholar-container {
-  background: #3d3f4b  ;
+  background: #3d3f4b url("../images/2018/super-scholar/body_bg.png") repeat-y center top;
   padding-top: 37px;
   padding-bottom: 200px;
 }
@@ -502,7 +502,7 @@ p {
 
     .question-head {
       width: 7.5rem;
-      height: 1.64rem;
+      height: 1.6rem;
       background: url("../images/2018/super-scholar/question_title.png") no-repeat;
       background-size: 100%;
     }
@@ -510,7 +510,7 @@ p {
       position: relative;
       background: #1e2b2e url("../images/2018/super-scholar/question_bg.png") no-repeat;
       background-size: 100%;
-      height: 10.97rem;
+      height: 11rem;
       .question-inner {
         position: absolute;
         z-index: 20;
