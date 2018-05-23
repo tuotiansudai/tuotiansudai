@@ -284,7 +284,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
         return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 
