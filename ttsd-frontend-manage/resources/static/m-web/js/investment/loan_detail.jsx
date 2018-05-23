@@ -653,7 +653,7 @@ function submitData() {
     let isAuthentication = 'USER' === $transferDetail.data('authentication');
     let isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
     let hasBankCard = $transferDetail.data('has-bank-card');
-    if (!isInvestor) {
+    if (!isInvestor) {alert(isInvestor)
         location.href = '/m/register/account';//去实名认证
         return;
     }

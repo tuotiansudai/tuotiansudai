@@ -178,6 +178,8 @@ public interface InvestMapper {
 
     int sumSuccessInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
+    int sumSuccessNewbieInvestCountByLoginName(@Param(value = "loginName") String loginName);
+
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
 
     List<String> findAllChannels();
