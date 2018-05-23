@@ -65,7 +65,7 @@
     </@global.isAnonymous>
     <@global.isNotAnonymous>
         <div class="banner bannerNotLogin" id="bannerBoxLogin">
-            <div class="banner-img">
+            <div class="banner-img-no-login">
                 <div class="my-page-width banner-con">
 
                 </div>

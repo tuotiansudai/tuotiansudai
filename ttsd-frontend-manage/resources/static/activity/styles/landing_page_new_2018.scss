@@ -209,6 +209,11 @@ p {
       }
 
     }
+    .banner-img-no-login {
+      width: 100%;
+      height: 100%;
+      background: url("../images/landingpage/banner_top.png") no-repeat center top;
+    }
   }
   .landing-main {
     background: #c6242e url("../images/landingpage/body_bgs.png") no-repeat center top;
