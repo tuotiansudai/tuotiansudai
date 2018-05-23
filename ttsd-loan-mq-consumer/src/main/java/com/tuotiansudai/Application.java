@@ -12,7 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(
         scanBasePackages = {
                 "com.tuotiansudai.mq.consumer.loan",
-                "com.tuotiansudai.scheduler.loan"
+                "com.tuotiansudai.scheduler.loan",
+                "com.tuotiansudai.repository.mapper"
         },
         exclude = {FreeMarkerAutoConfiguration.class})
 @Import({MQConsumerConfig.class, MQProducerConfig.class})

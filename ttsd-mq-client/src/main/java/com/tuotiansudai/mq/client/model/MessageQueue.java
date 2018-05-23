@@ -88,7 +88,7 @@ public enum MessageQueue {
     Withdraw_WeChatMessage("Recharge-WeChatMessage"),
 
 
-    Invest_Success("Invest-CompletePointTask"),
+    Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
     Invest_CouponUpdate("Invest-CouponUpdate"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),

@@ -339,7 +339,7 @@ public class LoanServiceImpl implements LoanService {
                 String statusString = redisWrapperClient.hget(redisKey, transferKey);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
                     AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, invest.getLoginName(),
-                            invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
+                            invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS);
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                     redisWrapperClient.hset(redisKey, transferKey, SyncRequestStatus.SUCCESS.name());
                 }
@@ -360,7 +360,7 @@ public class LoanServiceImpl implements LoanService {
             if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
 
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, agentLoginName,
-                        loanId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+                        loanId, amount, UserBillBusinessType.LOAN_SUCCESS);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 redisWrapperClient.hset(redisKey, TRANSFER_IN_BALANCE, SyncRequestStatus.SUCCESS.name());
             }
@@ -416,7 +416,7 @@ public class LoanServiceImpl implements LoanService {
             if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
                 investModel.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
                 investMapper.update(investModel);
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
             }
         }

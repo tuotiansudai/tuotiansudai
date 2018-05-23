@@ -11,6 +11,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
@@ -60,9 +61,9 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
-            BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
+            BankAsyncData bankAsyncData = investService.invest(investDto);
 
-            if (!formDto.isSuccess()) {
+            if (!bankAsyncData.isStatus()) {
                 String userCouponIds = "";
                 for (Long userCouponId : investDto.getUserCouponIds()) {
                     userCouponIds += String.valueOf(userCouponId);
@@ -76,25 +77,19 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 return responseDto;
             }
 
-            if (formDto.getData().getStatus()) {
-                PayFormDataDto formDataDto = formDto.getData();
-                String requestData = CommonUtils.mapToFormData(formDataDto.getFields());
-
+            if (bankAsyncData.isStatus()) {
                 InvestResponseDataDto investResponseDataDto = new InvestResponseDataDto();
-                investResponseDataDto.setRequestData(requestData);
-                investResponseDataDto.setUrl(formDataDto.getUrl());
+                investResponseDataDto.setRequestData(bankAsyncData.getData());
+                investResponseDataDto.setUrl(bankAsyncData.getUrl());
                 responseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
                 responseDto.setData(investResponseDataDto);
             } else {
                 responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
+                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + bankAsyncData.getMessage());
             }
         } catch (InvestException e) {
             responseDto = new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), e.getType().getDescription());
-        } catch (UnsupportedEncodingException e) {
-            responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
-            responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
         }
         return responseDto;
     }

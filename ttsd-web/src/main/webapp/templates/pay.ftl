@@ -7,7 +7,7 @@
                 <#if pay.status>
                     <p>正在载入...</p>
                 <#else>
-                    <p>${pay.message}</p>
+                    <p>${pay.message!('交易失败，请联系客服！')}</p>
                 </#if>
             </div>
         </div>

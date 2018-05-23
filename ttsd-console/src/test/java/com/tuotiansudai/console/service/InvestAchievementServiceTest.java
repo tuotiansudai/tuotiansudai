@@ -47,7 +47,6 @@ public class InvestAchievementServiceTest {
         model.setCreatedTime(new Date());
         model.setTradingTime(new Date());
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);

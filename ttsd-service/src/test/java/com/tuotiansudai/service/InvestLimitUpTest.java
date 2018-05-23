@@ -96,7 +96,6 @@ public class InvestLimitUpTest {
         model.setAmount(10);
         model.setInvestTime(new Date());
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);

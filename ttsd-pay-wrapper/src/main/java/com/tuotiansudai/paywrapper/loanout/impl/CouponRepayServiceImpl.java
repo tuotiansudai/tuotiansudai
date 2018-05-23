@@ -383,12 +383,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualInterest(),
-                        couponModel.getCouponType().getUserBillBusinessType(), null, null);
+                        couponModel.getCouponType().getUserBillBusinessType());
 
                 AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, couponRepayModel.getLoginName(),
                         couponRepayModel.getUserCouponId(),
                         couponRepayModel.getActualFee(),
-                        UserBillBusinessType.INVEST_FEE, null, null);
+                        UserBillBusinessType.INVEST_FEE);
 
                 inAtm.setNext(outAtm);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);

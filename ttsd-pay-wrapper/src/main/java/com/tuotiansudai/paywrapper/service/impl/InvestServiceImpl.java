@@ -452,7 +452,7 @@ public class InvestServiceImpl implements InvestService {
     @Transactional
     public void investSuccess(InvestModel investModel) {
         // 冻结资金
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         // 改invest 本身状态为投资成功
@@ -505,7 +505,7 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
             // 返款失败，当作投资成功处理

@@ -54,29 +54,6 @@ public class InvestControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void invest() throws Exception {
-        mockLoginUser("investor");
-
-        AccountModel accountModel = new AccountModel();
-        accountModel.setAutoInvest(true);
-        accountModel.setNoPasswordInvest(false);
-
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-        baseDto.setSuccess(true);
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        payFormDataDto.setStatus(true);
-        baseDto.setData(payFormDataDto);
-
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        when(investService.invest(any(InvestDto.class))).thenReturn(baseDto);
-
-        this.mockMvc.perform(post("/invest")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("loginName", "investor").param("loanId", "1000000000").param("amount", "100").param("source", "WEB"))
-                .andExpect(view().name("/pay"));
-    }
-
-    @Test
     public void noPasswordInvest() throws Exception {
         mockLoginUser("investor");
 

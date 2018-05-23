@@ -49,9 +49,6 @@ public class PayController extends AsyncRequestController {
     private final MerchantTransferService merchantTransferService;
 
     @Autowired
-    private RedissonClient redissonClient;
-
-    @Autowired
     public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
         super(bankConfig);
         this.rechargeService = rechargeService;

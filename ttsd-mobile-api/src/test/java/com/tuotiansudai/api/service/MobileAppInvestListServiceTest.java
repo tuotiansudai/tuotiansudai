@@ -78,7 +78,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
         investModel1.setId(IdGenerator.generate());
-        investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
         investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
@@ -90,7 +89,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
         investModel2.setId(IdGenerator.generate());
-        investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
         investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
@@ -102,7 +100,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
         investModel3.setId(IdGenerator.generate());
-        investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
         investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);
@@ -215,7 +212,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
         investModel1.setId(IdGenerator.generate());
-        investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
         investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
@@ -228,7 +224,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
         investModel2.setId(IdGenerator.generate());
-        investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
         investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
@@ -241,7 +236,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
         investModel3.setId(IdGenerator.generate());
-        investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
         investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);
@@ -322,7 +316,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel1.setInvestTime(new Date());
         investModel1.setInvestTime(new Date());
         investModel1.setId(IdGenerator.generate());
-        investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
         investModel1.setLoanId(IdGenerator.generate());
         investModel1.setSource(Source.ANDROID);
@@ -334,7 +327,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel2.setInvestTime(new Date());
         investModel2.setInvestTime(new Date());
         investModel2.setId(IdGenerator.generate());
-        investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
         investModel2.setLoanId(IdGenerator.generate());
         investModel2.setSource(Source.WEB);
@@ -346,7 +338,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel3.setInvestTime(new Date());
         investModel3.setInvestTime(new Date());
         investModel3.setId(IdGenerator.generate());
-        investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
         investModel3.setLoanId(IdGenerator.generate());
         investModel3.setSource(Source.IOS);

@@ -26,6 +26,9 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
+    public BaseRequestDto() {
+    }
+
     public BaseRequestDto(Source source, String loginName, String mobile, ApiType apiType, Map<String, String> extraValues) {
         this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType, extraValues));
         this.source = source;

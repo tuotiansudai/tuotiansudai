@@ -4,8 +4,7 @@ package com.tuotiansudai.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BankAccountModel implements Serializable{
-
+public class BankAccountModel implements Serializable {
     private long id;
     private String loginName;
     private String bankUserName;
@@ -13,7 +12,7 @@ public class BankAccountModel implements Serializable{
     private String bankOrderNo;
     private String bankOrderDate;
     private long balance;
-    private long freeze;
+    private long membershipPoint;
     private boolean authorization;
     private boolean autoInvest;
     private boolean autoRepay;
@@ -87,12 +86,12 @@ public class BankAccountModel implements Serializable{
         this.balance = balance;
     }
 
-    public long getFreeze() {
-        return freeze;
+    public long getMembershipPoint() {
+        return membershipPoint;
     }
 
-    public void setFreeze(long freeze) {
-        this.freeze = freeze;
+    public void setMembershipPoint(long membershipPoint) {
+        this.membershipPoint = membershipPoint;
     }
 
     public boolean isAuthorization() {

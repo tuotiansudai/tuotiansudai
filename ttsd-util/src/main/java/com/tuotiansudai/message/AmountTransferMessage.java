@@ -15,25 +15,18 @@ public class AmountTransferMessage {
 
     private UserBillBusinessType businessType;
 
-    private String operatorLoginName;
-
-    private String interventionReason;
-
     private AmountTransferMessage next;
 
     public AmountTransferMessage() {
 
     }
 
-    public AmountTransferMessage(TransferType transferType, String loginName, long orderId, long amount,
-                                 UserBillBusinessType businessType, String operatorLoginName, String interventionReasonl) {
+    public AmountTransferMessage(TransferType transferType, String loginName, long orderId, long amount, UserBillBusinessType businessType) {
         this.transferType = transferType;
         this.loginName = loginName;
         this.orderId = orderId;
         this.amount = amount;
         this.businessType = businessType;
-        this.operatorLoginName = operatorLoginName;
-        this.interventionReason = interventionReasonl;
     }
 
     public TransferType getTransferType() {
@@ -74,22 +67,6 @@ public class AmountTransferMessage {
 
     public void setBusinessType(UserBillBusinessType businessType) {
         this.businessType = businessType;
-    }
-
-    public String getOperatorLoginName() {
-        return operatorLoginName;
-    }
-
-    public void setOperatorLoginName(String operatorLoginName) {
-        this.operatorLoginName = operatorLoginName;
-    }
-
-    public String getInterventionReason() {
-        return interventionReason;
-    }
-
-    public void setInterventionReason(String interventionReason) {
-        this.interventionReason = interventionReason;
     }
 
     public AmountTransferMessage getNext() {

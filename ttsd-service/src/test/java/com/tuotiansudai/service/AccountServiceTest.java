@@ -188,7 +188,6 @@ public class AccountServiceTest {
         userBillModel.setOperationType(UserBillOperationType.TI_BALANCE);
         userBillModel.setLoginName(loginName);
         userBillModel.setOrderId(IdGenerator.generate());
-        userBillModel.setOperatorLoginName(loginName);
         userBillMapper.create(userBillModel);
         return userBillModel;
     }

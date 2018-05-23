@@ -11,20 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    private final RedissonConfig redissonConfig;
-
-    @Autowired
-    public AppConfig(RedissonConfig redissonConfig) {
-        this.redissonConfig = redissonConfig;
-    }
-
     @Bean
     public ETCDPropertySourcesPlaceholderConfigurer propertyConfigurer() {
         return new ETCDPropertySourcesPlaceholderConfigurer();
     }
 
     @Bean
-    public RedissonClient redissonSingle() {
+    public RedissonClient redissonClient(@Autowired RedissonConfig redissonConfig) {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(redissonConfig.getAddress())

@@ -30,6 +30,10 @@ public class MessageQueueClient {
         runAfterCommit(() -> mqProducer.publishMessage(topic, messageString));
     }
 
+    public void publishMessage(final MessageTopic topic, String message) {
+        runAfterCommit(() -> mqProducer.publishMessage(topic, message));
+    }
+
     public void sendMessage(final MessageQueue queue, final String message) {
         runAfterCommit(() -> mqProducer.sendMessage(queue, message));
     }

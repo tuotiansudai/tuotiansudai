@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.QueryTradeRequestDto;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
+import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -27,7 +28,8 @@ public class QueryTradeService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String loginName, String mobile, String orderNo, String orderDate, QueryTradeType queryType) {
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto<QueryTradeContentDto> query(String loginName, String mobile, String orderNo, String orderDate, QueryTradeType queryType) {
         QueryTradeRequestDto dto = new QueryTradeRequestDto(loginName, mobile, orderNo, orderDate, queryType.getValue());
 
         signatureHelper.sign(dto);
@@ -47,7 +49,7 @@ public class QueryTradeService {
             return null;
         }
 
-        ResponseDto responseDto = ApiType.QUERY_TRADE.getParser().parse(responseData);
+        ResponseDto<QueryTradeContentDto> responseDto = (ResponseDto<QueryTradeContentDto>) ApiType.QUERY_TRADE.getParser().parse(responseData);
         if (responseDto == null) {
             logger.error("[query trade] parse response error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
             return null;

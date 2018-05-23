@@ -68,7 +68,7 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
             bankWithdrawMapper.update(bankWithdrawModel);
 
             if (bankWithdrawMessage.isStatus()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, bankWithdrawModel.getLoginName(), bankWithdrawModel.getId(), bankWithdrawModel.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, bankWithdrawModel.getLoginName(), bankWithdrawModel.getId(), bankWithdrawModel.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
             }
         } catch (Exception e) {

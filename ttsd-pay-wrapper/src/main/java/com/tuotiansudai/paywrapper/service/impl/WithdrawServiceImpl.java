@@ -121,7 +121,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
             } else {
@@ -171,11 +171,11 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
             } else {
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }

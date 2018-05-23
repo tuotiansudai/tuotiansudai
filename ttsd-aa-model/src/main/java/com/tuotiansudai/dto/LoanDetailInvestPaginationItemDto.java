@@ -18,8 +18,6 @@ public class LoanDetailInvestPaginationItemDto {
 
     private Date createdTime;
 
-    private boolean autoInvest;
-
     private String mobile;
 
     private List<InvestAchievement> achievements;
@@ -62,14 +60,6 @@ public class LoanDetailInvestPaginationItemDto {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
     }
 
     public List<InvestAchievement> getAchievements() {

@@ -11,14 +11,20 @@ public class BankInvestDto extends BankBaseDto {
 
     private String loanTxNo;
 
+    private long loanId;
+
+    private String loanName;
+
     public BankInvestDto() {
     }
 
-    public BankInvestDto(long investId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo) {
+    public BankInvestDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long investId, long amount, String loanTxNo, long loanId, String loanName) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.investId = investId;
         this.amount = amount;
         this.loanTxNo = loanTxNo;
+        this.loanId = loanId;
+        this.loanName = loanName;
     }
 
     public long getInvestId() {
@@ -33,12 +39,22 @@ public class BankInvestDto extends BankBaseDto {
         return loanTxNo;
     }
 
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public String getLoanName() {
+        return loanName;
+    }
+
     @Override
     public boolean isValid() {
         return super.isValid()
                 && investId > 0
+                && loanId > 0
                 && amount > 0
-                && !Strings.isNullOrEmpty(loanTxNo);
+                && !Strings.isNullOrEmpty(loanTxNo)
+                && !Strings.isNullOrEmpty(loanName);
     }
 
     @Override
