@@ -14,6 +14,11 @@ public interface SuperScholarRewardMapper {
 
     void update(SuperScholarRewardModel superScholarRewardModel);
 
+    int updateUserAnswer(@Param(value = "id") long id,
+                         @Param(value = "userAnswer") String userAnswer,
+                         @Param(value = "userRight") int userRight,
+                         @Param(value = "couponId") long couponId);
+
     SuperScholarRewardModel findById(@Param(value = "id") long id);
 
     SuperScholarRewardModel findByLoginNameAndAnswerTime(@Param(value = "loginName") String loginName,

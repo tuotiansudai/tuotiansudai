@@ -32,16 +32,22 @@
         update super_scholar_reward SET
           question_index = #{questionIndex},
           question_answer = #{questionAnswer},
-          user_answer = #{userAnswer},
-          user_right = #{userRight},
-          coupon_id = ifnull(coupon_id, #{couponId}),
           is_share_home = #{isShareHome},
           is_share_account = #{isShareAccount},
           is_share_invest = #{isShareInvest},
           is_cashback = #{isCashBack},
-          answer_time = #{answerTime},
           updated_time = #{updatedTime}
           where id = #{id}
+    </update>
+
+    <update id="updateUserAnswer" parameterType="map">
+        update super_scholar_reward SET
+          user_answer = #{userAnswer},
+          user_right = #{userRight},
+          coupon_id = #{couponId},
+          answer_time = now(),
+          updated_time = now()
+          where id = #{id} and user_answer is null
     </update>
 
     <select id="findById" parameterType="map" resultMap="superScholarRewardResultMap">

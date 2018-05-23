@@ -16,7 +16,7 @@ public class SuperScholarRewardModel implements Serializable{
     private String questionAnswer;
     private String userAnswer;
     private int userRight;
-    private long couponId;
+    private Long couponId;
     private boolean isShareHome;
     private boolean isShareAccount;
     private boolean isShareInvest;
@@ -141,12 +141,11 @@ public class SuperScholarRewardModel implements Serializable{
         this.answerTime = answerTime;
     }
 
-
-    public long getCouponId() {
+    public Long getCouponId() {
         return couponId;
     }
 
-    public void setCouponId(long couponId) {
+    public void setCouponId(Long couponId) {
         this.couponId = couponId;
     }
 

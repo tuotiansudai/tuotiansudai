@@ -124,13 +124,9 @@ public class SuperScholarActivityService {
         }
 
         long couponId = getCouponId();
-        superScholarRewardModel.setUserAnswer(answer);
-        superScholarRewardModel.setUserRight(userRight);
-        superScholarRewardModel.setAnswerTime(new Date());
-        superScholarRewardModel.setCouponId(couponId);
-        superScholarRewardMapper.update(superScholarRewardModel);
+        int result = superScholarRewardMapper.updateUserAnswer(superScholarRewardModel.getId(), answer, userRight, couponId);
 
-        if (superScholarRewardMapper.findById(superScholarRewardModel.getId()).getCouponId() == 0){
+        if (result > 0){
             mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
         }
 
