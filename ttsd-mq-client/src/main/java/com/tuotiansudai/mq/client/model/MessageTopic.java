@@ -7,7 +7,6 @@ public enum MessageTopic {
             MessageQueue.InvestSuccess_CompletePointTask,
             MessageQueue.InvestSuccess_MembershipUpdate,
             MessageQueue.InvestSuccess_CouponUpdate,
-            MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon,
             MessageQueue.InvestSuccess_YearEndAwards,
             MessageQueue.InvestSuccess_ActivityAnnualized,
             MessageQueue.InvestSuccess_CashSnowball,
