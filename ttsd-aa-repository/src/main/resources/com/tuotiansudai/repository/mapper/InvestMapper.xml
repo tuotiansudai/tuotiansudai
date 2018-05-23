@@ -563,7 +563,7 @@
         and invest.status = 'SUCCESS'
     </select>
 
-    <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="map" resultType="int">
+    <select id="countSuccessNewbieInvestByLoginName" parameterType="map" resultType="int">
         select count(*)
         from invest join loan on invest.loan_id = loan.id
         and loan.activity_type = 'NEWBIE' and loan.product_type != 'EXPERIENCE'
