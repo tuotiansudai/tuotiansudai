@@ -44,6 +44,10 @@
           where id = #{id}
     </update>
 
+    <select id="findById" parameterType="map" resultMap="superScholarRewardResultMap">
+        SELECT * from super_scholar_reward where id=#{id}
+    </select>
+
     <select id="findByLoginNameAndAnswerTime" parameterType="map" resultMap="superScholarRewardResultMap">
         select * from super_scholar_reward where login_name = #{loginName} and DATE(answer_time)= DATE(#{answerTime})
     </select>

@@ -2,6 +2,7 @@ package com.tuotiansudai.activity.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -78,7 +79,6 @@ public class SuperScholarActivityService {
 
     @Transactional
     public BaseResponse getQuestions(String loginName) throws IOException {
-        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         InputStream inputStream = SuperScholarActivityService.class.getClassLoader().getResourceAsStream(QUESTIONS);
         Map<String, Object> map = new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, Object>>() {
         });
@@ -97,7 +97,7 @@ public class SuperScholarActivityService {
                             .build());
                 })
                 .collect(Collectors.toList());
-
+        SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         if (superScholarRewardModel == null) {
             superScholarRewardMapper.create(new SuperScholarRewardModel(loginName, String.join(",", questionIndex), String.join(",", answers)));
         } else {
@@ -113,7 +113,7 @@ public class SuperScholarActivityService {
     public boolean submitAnswer(String loginName, String answer) {
         SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndCreatedTime(loginName, new Date());
         List<String> userAnswer = Arrays.asList(answer.split(","));
-        if (superScholarRewardModel == null || userAnswer.size() < 5) {
+        if (superScholarRewardModel == null || userAnswer.size() < 5 || !Strings.isNullOrEmpty(superScholarRewardModel.getUserAnswer())) {
             return false;
         }
 
@@ -124,13 +124,16 @@ public class SuperScholarActivityService {
         }
 
         long couponId = getCouponId();
-        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
-
         superScholarRewardModel.setUserAnswer(answer);
         superScholarRewardModel.setUserRight(userRight);
         superScholarRewardModel.setAnswerTime(new Date());
         superScholarRewardModel.setCouponId(couponId);
         superScholarRewardMapper.update(superScholarRewardModel);
+
+        if (superScholarRewardMapper.findById(superScholarRewardModel.getId()).getCouponId() == 0){
+            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+        }
+
         return true;
     }
 

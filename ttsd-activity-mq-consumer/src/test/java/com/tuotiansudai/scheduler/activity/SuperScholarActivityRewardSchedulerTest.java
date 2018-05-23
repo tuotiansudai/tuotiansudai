@@ -81,7 +81,7 @@ public class SuperScholarActivityRewardSchedulerTest {
         ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
         when(redisWrapperClient.hgetAll("SUPER_SCHOLAR_SEND_CASH_LOAN")).thenReturn(fakeLoanId());
-        when(activityInvestMapper.findByLoanId(anyLong())).thenReturn(fakeActivityInvestModels());
+        when(activityInvestMapper.findByLoanIdAndActivity(anyLong(), anyString())).thenReturn(fakeActivityInvestModels());
         when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName"), any())).thenReturn(fakeSuperScholarRewardModel("loginName"));
         when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName1"), any())).thenReturn(fakeSuperScholarRewardModel("loginName1"));
         when(redisWrapperClient.exists(anyString())).thenReturn(false);
@@ -115,7 +115,7 @@ public class SuperScholarActivityRewardSchedulerTest {
         ArgumentCaptor<TransferCashDto> transferCashDtoCaptor = ArgumentCaptor.forClass(TransferCashDto.class);
 
         when(redisWrapperClient.hgetAll("SUPER_SCHOLAR_SEND_CASH_LOAN")).thenReturn(fakeLoanId());
-        when(activityInvestMapper.findByLoanId(anyLong())).thenReturn(fakeActivityInvestModels());
+        when(activityInvestMapper.findByLoanIdAndActivity(anyLong(), anyString())).thenReturn(fakeActivityInvestModels());
         when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName"), any())).thenReturn(fakeSuperScholarRewardModel("loginName"));
         when(superScholarRewardMapper.findByLoginNameAndAnswerTime(eq("loginName1"), any())).thenReturn(fakeSuperScholarRewardModel("loginName1"));
         when(redisWrapperClient.exists(anyString())).thenReturn(false);

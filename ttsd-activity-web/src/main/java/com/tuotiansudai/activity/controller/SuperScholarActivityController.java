@@ -55,7 +55,7 @@ public class SuperScholarActivityController {
         return superScholarActivityService.getQuestions(loginName);
     }
 
-    @RequestMapping(value = "/submit/answer", method = RequestMethod.POST)
+    @RequestMapping(value = "/submit/answer", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponse submitAnswer(@RequestParam(value = "answer") String answer) {
         return new BaseResponse(superScholarActivityService.submitAnswer(LoginUserInfo.getLoginName(), answer));

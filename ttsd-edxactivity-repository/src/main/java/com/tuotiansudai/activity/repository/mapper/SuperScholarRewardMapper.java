@@ -14,6 +14,8 @@ public interface SuperScholarRewardMapper {
 
     void update(SuperScholarRewardModel superScholarRewardModel);
 
+    SuperScholarRewardModel findById(@Param(value = "id") long id);
+
     SuperScholarRewardModel findByLoginNameAndAnswerTime(@Param(value = "loginName") String loginName,
                                                          @Param(value = "answerTime") Date answerTime);
 

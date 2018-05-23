@@ -2,6 +2,7 @@ package com.tuotiansudai.scheduler.activity;
 
 import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
 import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
+import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -69,7 +71,7 @@ public class SuperScholarActivityRewardScheduler {
         for (Map.Entry<String, String> entry : loanIds.entrySet()) {
             if (new Date().after(DateTime.parse(entry.getValue(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate())) {
                 redisWrapperClient.hdel(SUPER_SCHOLAR_SEND_CASH_LOAN, entry.getKey());
-                List<ActivityInvestModel> investModels = activityInvestMapper.findByLoanId(Long.parseLong(entry.getKey()));
+                List<ActivityInvestModel> investModels = activityInvestMapper.findByLoanIdAndActivity(Long.parseLong(entry.getKey()), ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name());
                 for (ActivityInvestModel model : investModels) {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime());
                     if (superScholarRewardModel == null) {
