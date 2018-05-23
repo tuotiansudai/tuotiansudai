@@ -40,6 +40,7 @@ $('.invite-tip-btn').on('click',function () {
 
 var link = webServer + '/activity/super-scholar?come=wechat';
 var titleShare,descShare;
+let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
 
 if (shareType === 'activityHome'){
     link = webServer + '/activity/super-scholar?come=wechat';
@@ -49,7 +50,7 @@ if (shareType === 'activityHome'){
 }else{
     link = webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat';
     titleShare = '明明可以自己偷偷赚钱，但我还是想叫上你';
-    descShare = '友谊的小船变巨轮，耿佳慧送您6888元体验金，邀您一起来赚钱';
+    descShare = '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱';
 }
 
 wx.ready(function () {
