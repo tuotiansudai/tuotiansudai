@@ -180,25 +180,96 @@ html {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.8);
     &.share-tip {
-      background: rgba(0,0,0,0.4) url("../../images/2018/super-scholar/share_tip_top.png") no-repeat center top;
+      background: rgba(0,0,0,0.8) url("../../images/2018/super-scholar/share_tip_top.png") no-repeat center top;
       background-size: contain;
     }
     &.invite-tip {
-      background: rgba(0,0,0,0.4) url("../../images/2018/super-scholar/invite_tip_top.png") no-repeat center top;
+      background: rgba(0,0,0,0.8) url("../../images/2018/super-scholar/invite_tip_top.png") no-repeat center top;
       background-size: contain;
     }
     .known-btn {
       display: block;
       margin: 0 auto;
-      width: 2.4rem;
-      height: 0.93rem;
+      width: 3.33rem;
+      height: 0.84rem;
       background: url("../../images/2018/super-scholar/tip_btn.png") no-repeat center top;
       background-size: contain;
       margin-top: 5.6rem;
     }
   }
 
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
 }
 
