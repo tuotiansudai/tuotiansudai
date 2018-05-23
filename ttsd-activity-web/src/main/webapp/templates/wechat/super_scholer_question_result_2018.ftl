@@ -25,7 +25,7 @@
             <div class="today-reward">
                 <div class="triangle"></div>
             </div>
-            <#if coupon == 495>
+            <#if coupon == 496>
                 <div class="my-coupon coupon05"></div>
             <#else>
                 <div class="my-coupon coupon02"></div>
