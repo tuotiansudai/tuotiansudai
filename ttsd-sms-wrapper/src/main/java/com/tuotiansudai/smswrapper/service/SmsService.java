@@ -66,10 +66,6 @@ public class SmsService {
     }
 
     public BaseDto<SmsDataDto> sendRegisterSuccess(SmsRegisterSuccessNotifyDto notifyDto) {
-        if (!Strings.isNullOrEmpty(notifyDto.getReferrerMobile())){
-            String mobile = notifyDto.getMobile().substring(0, 3) + "****" + notifyDto.getMobile().substring(7);
-            sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_REFERRER_TEMPLATE, false, Lists.newArrayList(mobile), null);
-        }
         return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
     }
 
