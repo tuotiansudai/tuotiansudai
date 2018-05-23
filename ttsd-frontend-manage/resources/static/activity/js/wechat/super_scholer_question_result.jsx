@@ -39,17 +39,23 @@ $('.invite-tip-btn').on('click',function () {
 })
 
 var link = webServer + '/activity/super-scholar?come=wechat';
+var titleShare,descShare;
 
 if (shareType === 'activityHome'){
-    link = webServer + '/activity/super-scholar?come=wechat'
+    link = webServer + '/activity/super-scholar?come=wechat';
+    titleShare = '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数';
+    descShare = '你是学霸还是学渣？答题见分晓！';
+
 }else{
-    link = webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat'
+    link = webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat';
+    titleShare = '明明可以自己偷偷赚钱，但我还是想叫上你';
+    descShare = '友谊的小船变巨轮，耿佳慧送您6888元体验金，邀您一起来赚钱';
 }
 
 wx.ready(function () {
     wx.onMenuShareAppMessage({
-        title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
-        desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
+        title: titleShare, // 分享标题
+        desc: descShare, // 分享描述
         link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
         success: function () {

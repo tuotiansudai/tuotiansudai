@@ -23,8 +23,8 @@
             <li><span class="hight-light"></span>{{item}}</li>
             {{/each}}
         </ul>
-        <a href="javascript:;" class="question-btn"></a>{{index}}
-        <div class="page-num">{{index}}/5</div>
+        <a href="javascript:;" class="question-btn"></a>
+        <div class="page-num">{{index+1}}/5</div>
 
     </div>
     {{/each}}

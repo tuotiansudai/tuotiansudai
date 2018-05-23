@@ -28,6 +28,7 @@ if (isWeixin) {
             })
     })
     $qrcodeWap.hide();
+    $('.to-question-tip').hide();
 
 } else {
     $('.immediate-answer').hide();
@@ -72,7 +73,6 @@ let $qrcodeBox = $('#qrcodeBox');
 let qrcodeWidth = $qrcodeBox.width();
 let qrcodeHeight = $qrcodeBox.height();
 
-
 if ($questionContainer.length) {
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -84,6 +84,8 @@ if ($questionContainer.length) {
 
                 }, function (response) {
                     $questionList.html(tpl('questionTpl', {questions: response.data}));
+                    let pageNums = $('.question-inner').find('.page-num');
+                    pageNums.eq(0).show();
                     $('.question-inner').find('li').on('click', function () {
                         let _this = $(this);
                         _this.addClass('active').siblings().removeClass('active');
@@ -129,7 +131,8 @@ if ($questionContainer.length) {
                             }
 
                             if (_self.parents('.question-inner').index() !== 4) {
-                                _self.parents('.question-inner').hide()
+                                _self.parents('.question-inner').hide();
+                                pageNums.hide().eq(_self.parents('.question-inner').index()+1).show();
                             }
                         }
                     )

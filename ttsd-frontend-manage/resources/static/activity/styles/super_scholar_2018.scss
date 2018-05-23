@@ -61,7 +61,9 @@ p {
     background-size: 100%;
   }
 }
-
+.to-question-tip {
+  display: none;
+}
 .qrcode {
   position: relative;
   width: 285px;
@@ -313,6 +315,14 @@ p {
       background-size: 100%;
     }
   }
+  .to-question-tip {
+    display: block;
+    color: #fff;
+    font-size: 0.25rem;
+    text-align: center;
+    line-height: 0.34rem;
+    margin-top: 0.2rem;
+  }
 
   .qrcode {
     position: relative;
@@ -545,6 +555,9 @@ p {
             &.active {
               background: #a2a2a2;
             }
+            &:nth-child(1){
+              margin-top: 0.1rem;
+            }
             border: 2px solid #4b4b4b;
             border-radius: 2px;
             font-size: 0.27rem;
@@ -567,7 +580,7 @@ p {
          position: absolute;
           display: block;
           z-index: 2;
-          bottom: 0.6rem;
+          bottom: 1rem;
           left: 50%;
           margin-left: -2.15rem;
           width: 4.35rem;
@@ -590,6 +603,7 @@ p {
           margin-left: -3.43rem;
           color: #fff;
           font-weight: bold;
+          display: none;
         }
       }
     }

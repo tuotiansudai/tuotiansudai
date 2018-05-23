@@ -19,6 +19,10 @@
             <h4 class="notice"><span class="horn"></span>今日还未答题哦！赶快答题赢返现吧！</h4>
         </#if>
     </@global.isNotAnonymous>
+    <div class="to-question-tip">
+        微信扫码关注“拓天速贷服务号”，<br/>
+        回复“答题”，开始赢返现！
+    </div>
 
     <div class="qrcode qrcode-pc" id="qrcodePC">
         <div class="code" id="qrcodeBox"><span class="logo"></span><img id="rqcodeImg" src="" alt=""></div>
@@ -26,7 +30,6 @@
     </div>
     <div class="qrcode qrcode-wap" id="qrcodeWap">
         <div class="code code-wap"><img src="" alt=""></div>
-        <span class="tips"></span>
     </div>
     <#if !doQuestion?? || (doQuestion?? && !doQuestion)>
         <a class="immediate-answer" id="immediateAnswer" href="javascript:;"></a>
