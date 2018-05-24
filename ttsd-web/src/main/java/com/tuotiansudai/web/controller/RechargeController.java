@@ -1,10 +1,8 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.dto.UserRechargeDto;
+import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.UserBankCardModel;
@@ -25,7 +23,7 @@ import javax.validation.Valid;
 public class RechargeController {
 
     @Autowired
-    private UserRechargeService userRechargeService;
+    private BankRechargeService userRechargeService;
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -56,8 +54,11 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView recharge(@Valid @ModelAttribute UserRechargeDto userRechargeDto) {
-        userRechargeDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<PayFormDataDto> baseDto = userRechargeService.recharge(userRechargeDto);
+        BankAsyncData baseDto = userRechargeService.recharge(userRechargeDto.getSource(),
+                LoginUserInfo.getLoginName(),
+                LoginUserInfo.getMobile(),
+                AmountConverter.convertStringToCent(userRechargeDto.getAmount()),
+                userRechargeDto.getPayType());
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

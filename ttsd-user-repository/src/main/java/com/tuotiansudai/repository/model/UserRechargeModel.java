@@ -27,6 +27,18 @@ public class UserRechargeModel {
 
     private Date createdTime;
 
+    public UserRechargeModel() {
+    }
+
+    public UserRechargeModel(String loginName, long amount, Source source, String payType) {
+        this.loginName = loginName;
+        this.amount = amount;
+        this.fee = 0;
+        this.source = source;
+        this.PayType = payType;
+        this.status = UserRechargeStatus.WAIT_PAY;
+    }
+
     public long getId() {
         return id;
     }
