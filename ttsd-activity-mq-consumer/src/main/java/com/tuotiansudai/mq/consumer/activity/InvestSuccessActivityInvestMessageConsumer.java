@@ -94,7 +94,7 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
         long sumAmount = activityInvestMapper.sumInvestAmountByActivityLoginNameAndTime(loginName,
                 ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(),
                 DateTime.now().withTimeAtStartOfDay().toDate(),
-                new Date());
+                DateTime.now().withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
 
         String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
         String referrerKey = MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName);
