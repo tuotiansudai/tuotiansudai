@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class UserRechargeModel {
+public class BankRechargeModel {
 
     private long id;
 
@@ -13,15 +13,17 @@ public class UserRechargeModel {
 
     private long fee;
 
-    private Source source;
-
     private String PayType;
 
     private String bankOrderNo;
 
     private String bankOrderDate;
 
-    private UserRechargeStatus status;
+    private BankRechargeStatus status;
+
+    private Source source;
+
+    private String channel;
 
     private Date updatedTime;
 
@@ -71,14 +73,6 @@ public class UserRechargeModel {
         this.fee = fee;
     }
 
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
     public String getPayType() {
         return PayType;
     }
@@ -103,12 +97,28 @@ public class UserRechargeModel {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public UserRechargeStatus getStatus() {
+    public BankRechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(UserRechargeStatus status) {
+    public void setStatus(BankRechargeStatus status) {
         this.status = status;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public Date getUpdatedTime() {

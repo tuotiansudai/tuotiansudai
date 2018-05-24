@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
-public enum UserRechargeStatus implements Serializable{
+public enum BankRechargeStatus implements Serializable{
 
     WAIT_PAY("等待支付"),
     SUCCESS("充值成功"),
@@ -11,7 +11,7 @@ public enum UserRechargeStatus implements Serializable{
 
     private final String description;
 
-    UserRechargeStatus(String description) {
+    BankRechargeStatus(String description) {
         this.description = description;
     }
 
