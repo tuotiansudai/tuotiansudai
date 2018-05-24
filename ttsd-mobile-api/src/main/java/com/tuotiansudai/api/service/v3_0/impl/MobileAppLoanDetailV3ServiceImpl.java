@@ -405,11 +405,6 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
                     squareItemDto.setLabel("房屋面积");
                     squareItemDto.setValue(pledgeHouseModel.getSquare());
                     itemDtoList.add(squareItemDto);
-
-                    ItemDto estimateAmountItemDto = new ItemDto();
-                    estimateAmountItemDto.setLabel("房产估值");
-                    estimateAmountItemDto.setValue(pledgeHouseModel.getEstimateAmount());
-                    itemDtoList.add(estimateAmountItemDto);
                 }
             case VEHICLE:
                 if (pledgeVehicleModel != null) {
