@@ -75,8 +75,8 @@ wx.ready(function () {
     });
 
     wx.onMenuShareTimeline({
-        title: '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数', // 分享标题
-        desc: '你是学霸还是学渣？答题见分晓！', // 分享描述
+        title: titleShare, // 分享标题
+        desc: descShare, // 分享描述
         link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
         success: function () {
