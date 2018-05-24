@@ -4,10 +4,8 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
@@ -35,6 +33,12 @@ public class RechargeController {
     private AccountService accountService;
 
     @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
+    private UserBindBankCardService userBindBankCardService;
+
+    @Autowired
     private BindBankCardService bindBankCardService;
 
     @Autowired
@@ -42,16 +46,19 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-        boolean isBindCard = bankCard != null;
+//        boolean isBindCard = bankCard != null;
         boolean isFastPayOn = bankCard != null && bankCard.isFastPayOn();
 
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
-        modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
+        UserBankCardModel userBankCardModel = userBindBankCardService.findBankCard(LoginUserInfo.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
+
+        boolean isBindCard = userBankCardModel != null;
+
+
+        modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("isBindCard", isBindCard);
-        modelAndView.addObject("isFastPayOn", isFastPayOn);
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
 
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
