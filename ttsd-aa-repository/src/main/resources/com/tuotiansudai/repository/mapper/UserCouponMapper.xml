@@ -397,4 +397,10 @@
             </foreach>
         </if>
     </select>
+
+    <select id="isDrawRegisterCoupon" parameterType="map" resultType="boolean">
+        <![CDATA[
+         select count(1) from user_coupon join coupon on user_coupon.id = coupon.id  where user_coupon.login_name = #{loginName} and coupon.user_group='NEW_REGISTERED_USER'
+        ]]>
+    </select>
 </mapper>
