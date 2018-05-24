@@ -54,9 +54,6 @@ public class StartWorkActivityService {
     }
 
     public void sendDrawCouponMessage(String loginName) {
-        if (duringActivities()) {
-            mqWrapperClient.sendMessage(MessageQueue.StartWorkActivity_Coupon, loginName);
-        }
     }
 
     public Map<String, Object> exchangePrize(String mobile, ExchangePrize exchangePrize) {
