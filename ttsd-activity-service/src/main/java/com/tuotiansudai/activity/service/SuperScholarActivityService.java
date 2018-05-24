@@ -54,8 +54,7 @@ public class SuperScholarActivityService {
     private static final String QUESTIONS = "questions.json";
 
     public List<SuperScholarRewardView> activityHome(String loginName) {
-//        List<ActivityInvestModel> models = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(), activityStartTime, DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
-        List<ActivityInvestModel> models = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(), activityStartTime, DateTime.now().toDate());
+        List<ActivityInvestModel> models = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(), activityStartTime, DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         return models.stream()
                 .filter(model -> superScholarRewardMapper.findByLoginNameAndAnswerTime(loginName, model.getCreatedTime()) != null)
                 .map(model -> {
