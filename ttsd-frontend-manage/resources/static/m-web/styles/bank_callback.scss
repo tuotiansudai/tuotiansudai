@@ -1,0 +1,171 @@
+$fontGray:#808080;
+$fontGray52:#525252;
+$redf63:#FF635A;
+$fontGraya2:#a2a2a2;
+$fontGraya83:#838383;
+p {
+  margin: 0;
+}
+.info-container {
+  .status-container {
+    padding: 0.6rem 0;
+    background: #fff;
+    .icon-status {
+      display: block;
+      width: 0.8rem;
+      height: 0.8rem;
+      margin: 0 auto;
+      &.icon-success {
+        background: url('../images/icon-success.png') center center no-repeat;
+        background-size: 100%;
+      }
+      &.icon-failure {
+        background: url('../images/icon_failure.png') center center no-repeat;
+        background-size: 100%;
+      }
+
+    }
+    .desc {
+      text-align: center;
+      font-size: 0.3rem;
+      color: $fontGray;
+      margin-top: 0.34rem;
+    }
+    .reason-error {
+      text-align: center;
+      font-size: 0.26rem;
+      color: $fontGraya83;
+
+    }
+
+  }
+  .other-info-list {
+    background: #fff;
+    margin-top: 0.02rem;
+    padding: 0 0.24rem;
+    li {
+      height: 0.9rem;
+      line-height: 0.9rem;
+      font-size: 0.26rem;
+      .title {
+        color: $fontGray;
+      }
+      .content {
+        color: $fontGray52;
+      }
+    }
+  }
+}
+.btn-container {
+  text-align: center;
+  .btn-confirm {
+    display: inline-block;
+    width: 6rem;
+    height: 0.9rem;
+    background: $redf63;
+    margin-top: 1.2rem;
+    border-radius: 0.45rem;
+    color: #fff;
+    font-size: 0.4rem;
+    text-align: center;
+  }
+}
+.contact {
+  p {
+    font-size: 0.24rem;
+    color: $fontGraya2;
+    text-align: center;
+  }
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+//处理中页面
+.gif-container {
+  width: 4rem;
+  height: 3.1rem;
+  margin: 0 auto;
+  margin-top: 4rem;
+  img {
+    width: 100%;
+  }
+}
+//读秒页面
+.progress-container {
+  color: $fontGraya2;
+  font-size: 0.28rem;
+  text-align: center;
+  span {
+    color: $fontSeconed;
+  }
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
