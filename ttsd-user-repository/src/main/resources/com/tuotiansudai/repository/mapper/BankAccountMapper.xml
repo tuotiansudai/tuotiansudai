@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankAccountMapper">
+    <resultMap id="bankAccountResultMap" type="BankAccountModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="bank_user_name" property="bankUserName"/>
+        <result column="bank_account_no" property="bankAccountNo"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="balance" property="balance"/>
+        <result column="membership_point" property="membershipPoint"/>
+        <result column="authorization" property="authorization"/>
+        <result column="auto_invest" property="autoInvest"/>
+        <result column="auto_repay" property="autoRepay"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(login_name,bank_user_name,bank_account_no,bank_order_no,bank_order_date,created_time,updated_time)
+        values (#{loginName},#{bankUserName},#{bankAccountNo},#{bankOrderNo},#{bankOrderDate},now(),now())
+    </insert>
+
+    <select id="findByLoginName" parameterType="map" resultMap="bankAccountResultMap">
+        select * from bank_account where login_name = #{loginname}
+    </select>
+
+    <update id="updateMembershipPoint" parameterType="map">
+        update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName}
+    </update>
+
+    <update id="updateAutoInvest" parameterType="map">
+        update bank_account set auto_invest = #{autoInvest} where login_name = #{loginName}
+    </update>
+
+    <update id="updateBalance" parameterType="map">
+        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName}
+    </update>
+
+
+</mapper>

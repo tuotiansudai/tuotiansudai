@@ -398,14 +398,9 @@ h2,h4 {
                 }
               }
               .content {
-                position: relative;
                 display: inline-block;
-                top: -30px;
-                margin: 0 auto;
-                width: 737px;
-                height: 548px;
-                //background: url("../images/2018/rebate-station/add_rates_wechat.png") no-repeat;
-                //background-size: contain;
+                width: 70%;
+                margin-top: 100px;
               }
             }
           }
@@ -1225,13 +1220,8 @@ h2,h4 {
                   }
                 }
                 .content {
-                  position: relative;
-                  top: -1rem;
-                  margin: 0 auto;
-                  width: 15rem;
-                  height: 11.15rem;
-                  //background: url("../images/2018/rebate-station/add_rates_wechat_m.png") no-repeat;
-                  //background-size: contain;
+                  width: 100%;
+                  margin-top: 1rem;
                 }
               }
             }
@@ -1357,6 +1347,73 @@ h2,h4 {
         margin-bottom: .75rem;
       }
     }
+  }
+
+  .containerApp {
+    padding-bottom: 1rem;
+    .desc-activity {
+      font-size: .6rem;
+      line-height: .8rem;
+      color: #460c07;
+      text-align: center;
+    }
+    .line {
+      width: 13.3rem;
+      height: 1px;
+      background: #460c07;
+      margin: 0 auto;
+      margin-top: 1rem;
+      margin-bottom: .9rem;
+    }
+    .progress {
+      padding-left: 1.2rem;
+      p {
+        color: #460c07;
+        font-size: .6rem;
+        line-height: 1rem;
+        strong {
+          color: #ec192c;
+        }
+      }
+      margin-bottom: 1rem;
+    }
+    .qrcode {
+      width: 100%;
+      margin-bottom: .3rem;
+    }
+    .to-loan-btn {
+      display: block;
+      width: 7.3rem;
+      height: 2.4rem;
+      background: url("../images/2018/rebate-station/to_loan.png") no-repeat;
+      background-size: contain;
+      margin: 0 auto;
+      margin-top: .9rem;
+    }
+    .no-login-tip {
+      color:#460c07;
+      text-align:center;
+      margin-bottom: .5rem!important;
+    }
+    .login-news {
+      font-size: .6rem;
+      margin: 0rem auto auto auto;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 1.1rem;
+      strong {
+        font-size: .65rem;
+        color: #ec192c;
+      }
+    }
+  }
+  .login_btn {
+    margin: 0 auto .4rem auto;
+    width: 7.35rem;
+    height: 2.4rem;
+    background: url("../images/2018/rebate-station/login_btn_icon.png") no-repeat;
+    background-size: contain;
+    cursor: pointer;
   }
 }
 

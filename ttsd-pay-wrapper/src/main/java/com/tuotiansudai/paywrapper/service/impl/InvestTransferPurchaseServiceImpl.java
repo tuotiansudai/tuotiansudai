@@ -317,7 +317,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
 
         // generate transferee balance
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferee balance and user bill", String.valueOf(investId)));
@@ -398,8 +398,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
-                AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
+                AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT);
+                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE);
                 inAtm.setNext(outAtm);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
@@ -572,12 +572,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = new InvestModel(IdGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
-                transferrerModel.getAmount(),
-                loginName,
-                transferrerModel.getInvestTime(),
+                loginName, transferrerModel.getAmount(),
+                rate, false, transferrerModel.getInvestTime(),
                 investDto.getSource(),
-                investDto.getChannel(),
-                rate);
+                investDto.getChannel()
+        );
 
         investModel.setInvestFeeRate(membershipPrivilegePurchaseService.obtainServiceFee(loginName));
         investModel.setNoPasswordInvest(investDto.isNoPassword());

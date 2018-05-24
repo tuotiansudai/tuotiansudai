@@ -15,10 +15,14 @@ import java.text.MessageFormat;
 @Component
 public class AmountTransferMessageConsumer implements MessageConsumer {
 
-    static Logger logger = LoggerFactory.getLogger(AmountTransferMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(AmountTransferMessageConsumer.class);
+
+    private final AmountTransferService amountTransferService;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    public AmountTransferMessageConsumer(AmountTransferService amountTransferService) {
+        this.amountTransferService = amountTransferService;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -30,8 +34,8 @@ public class AmountTransferMessageConsumer implements MessageConsumer {
         logger.info("[AmountTransfer] receive message: {}: {}.", this.queue(), message);
 
         try {
-            AmountTransferMessage atm = JsonConverter.readValue(message, AmountTransferMessage.class);
-            amountTransferService.amountTransferProcess(atm);
+            AmountTransferMessage amountTransferMessage = JsonConverter.readValue(message, AmountTransferMessage.class);
+            amountTransferService.amountTransferProcess(amountTransferMessage);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] amount transfer consumer fail, message:{0}", message), e);
         }

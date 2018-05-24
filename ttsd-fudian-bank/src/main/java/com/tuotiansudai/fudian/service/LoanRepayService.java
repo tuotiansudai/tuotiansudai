@@ -2,9 +2,13 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
 import com.tuotiansudai.fudian.dto.request.LoanRepayRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -26,16 +30,19 @@ public class LoanRepayService implements AsyncCallbackInterface {
 
     private final BankClient bankClient;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public LoanRepayService(SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public LoanRepayService(SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public LoanRepayRequestDto repay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY);
+    public LoanRepayRequestDto repay(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_REPAY, null);
 
         signatureHelper.sign(dto);
 
@@ -49,8 +56,8 @@ public class LoanRepayService implements AsyncCallbackInterface {
         return dto;
     }
 
-    public ResponseDto fastRepay(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
-        LoanRepayRequestDto dto = new LoanRepayRequestDto(loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY);
+    public ResponseDto fastRepay(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest) {
+        LoanRepayRequestDto dto = new LoanRepayRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, capital, interest, ApiType.LOAN_FAST_REPAY, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -82,7 +89,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto);
+        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
         return responseDto;
     }
 
@@ -101,5 +108,18 @@ public class LoanRepayService implements AsyncCallbackInterface {
         updateMapper.updateLoanRepay(responseDto);
 
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.LOAN_REPAY.name(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<LoanRepayContentDto> responseDto = (ResponseDto<LoanRepayContentDto>) ApiType.LOAN_REPAY.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
     }
 }

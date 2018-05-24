@@ -1,7 +1,11 @@
 package com.tuotiansudai.fudian.controller;
 
+import com.google.common.base.Strings;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.service.AsyncCallbackInterface;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/callback")
@@ -57,16 +62,37 @@ public class CallbackController {
     }
 
     @RequestMapping(value = "/return-url/{apiType}", method = RequestMethod.POST)
-    public ResponseEntity<ResponseDto> returnCallback(HttpServletRequest request, @PathVariable ApiType apiType) {
+    public ResponseEntity<BankReturnCallbackMessage> returnCallback(HttpServletRequest request, @PathVariable ApiType apiType) {
         String reqData = request.getParameter("reqData");
 
-        boolean isCorrect = signatureHelper.verifySign(reqData);
-
-        logger.info("return callback type: {}, sign: {}, data: {}, ", apiType.name(), isCorrect, reqData);
+        try {
+            if (Strings.isNullOrEmpty(reqData) && !signatureHelper.verifySign(reqData)) {
+                logger.error(MessageFormat.format("verify sign failed, return callback type: {0}, data: {1} ", apiType.name(), reqData));
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (SecurityException e) {
+            logger.error(MessageFormat.format("verify sign exception, return callback type: {0}, data: {1} ", apiType.name(), reqData), e);
+            return ResponseEntity.badRequest().build();
+        }
 
         ResponseDto responseDto = apiType.getParser().parse(reqData);
-        responseDto.setReqData(reqData);
+        if (responseDto == null) {
+            logger.error("parse data error, return callback type: {}, data: {} ", apiType.name(), reqData);
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(new BankReturnCallbackMessage(responseDto.isSuccess(), responseDto.getRetMsg(), responseDto.getContent().getOrderNo()));
+    }
+
+    @RequestMapping(value = "/{apiType}/order-no/{orderNo}/is-success", method = RequestMethod.GET)
+    public ResponseEntity isCallbackSuccess(@PathVariable ApiType apiType, @PathVariable String orderNo) {
+        AsyncCallbackInterface asyncCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
+        Boolean isSuccess = asyncCallback.isSuccess(orderNo);
+
+        if (isSuccess == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return isSuccess ? ResponseEntity.ok().build() : ResponseEntity.status(-1).build();
     }
 }

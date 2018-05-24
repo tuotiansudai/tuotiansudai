@@ -317,7 +317,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         InvestModel model = new InvestModel();
         model.setAmount(5000);
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);

@@ -115,7 +115,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel getInvestModel(String loginName, long loanId) {
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         return investModel;
@@ -213,7 +213,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         extraLoanRateMapper.create(extraLoanRateModels);
         loanDetailsMapper.create(createLoanDetails(loanId));
 
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);

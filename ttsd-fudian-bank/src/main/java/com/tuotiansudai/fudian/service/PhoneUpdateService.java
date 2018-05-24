@@ -3,8 +3,11 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.PhoneUpdateRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.PhoneUpdateContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -23,19 +26,22 @@ public class PhoneUpdateService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public PhoneUpdateService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public PhoneUpdateService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public PhoneUpdateRequestDto update(String loginName, String mobile, String userName, String accountNo, String newPhone, String type) {
-        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(loginName, mobile, userName, accountNo, newPhone, type);
+    public PhoneUpdateRequestDto update(Source source, String loginName, String mobile, String userName, String accountNo, String newPhone) {
+        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(source, loginName, mobile, userName, accountNo, newPhone, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[phone update] sign error, userName: {}, accountNo: {}, newPhone: {}, type: {}", userName, accountNo, newPhone, type);
+            logger.error("[phone update] sign error, userName: {}, accountNo: {}, newPhone: {}, type: {}", userName, accountNo, newPhone);
             return null;
         }
 
@@ -57,5 +63,18 @@ public class PhoneUpdateService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updatePhoneUpdate(responseDto);
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.PHONE_UPDATE.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<PhoneUpdateContentDto> responseDto = (ResponseDto<PhoneUpdateContentDto>) ApiType.PHONE_UPDATE.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
     }
 }

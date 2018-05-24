@@ -4,16 +4,9 @@ import java.util.stream.Stream;
 
 public enum MessageTopic {
     InvestSuccess("InvestSuccess",
-            MessageQueue.InvestSuccess_CompletePointTask,
-            MessageQueue.InvestSuccess_MembershipUpdate,
-            MessageQueue.InvestSuccess_CouponUpdate,
-            MessageQueue.InvestSuccess_ExperienceAssignInterestCoupon,
-            MessageQueue.InvestSuccess_YearEndAwards,
-            MessageQueue.InvestSuccess_ActivityAnnualized,
-            MessageQueue.InvestSuccess_CashSnowball,
-            MessageQueue.InvestSuccess_StartWork,
-            MessageQueue.InvestSuccess_Ranking,
-            MessageQueue.InvestSuccess_WeChatHelp),
+            MessageQueue.Invest_Success,
+            MessageQueue.Invest_CompletePointTask,
+            MessageQueue.Invest_MembershipUpdate),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,
@@ -40,6 +33,13 @@ public enum MessageTopic {
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,
             MessageQueue.BindBankCard_CompletePointTask),
+
+    Withdraw("Withdraw",
+            MessageQueue.Withdraw_Success,
+            MessageQueue.Withdraw_EventMessage,
+            MessageQueue.Withdraw_PushMessage
+    ),
+
     ;
 
     final String topicName;

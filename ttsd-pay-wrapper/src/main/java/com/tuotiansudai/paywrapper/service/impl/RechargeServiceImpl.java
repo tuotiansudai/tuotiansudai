@@ -173,7 +173,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     private void postRechargeCallback(long orderId, String loginName, long amount) {
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
     }
 }

@@ -3,15 +3,18 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.UserOpType;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -28,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -50,26 +52,22 @@ public class InvestServiceImpl implements InvestService {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    @Value(value = "${web.coupon.lock.seconds}")
-    private int couponLockSeconds;
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
+
+    private final static int COUPON_LOCK_SECONDS = Integer.parseInt(ETCDConfigReader.getReader().getValue("web.coupon.lock.seconds"));
+
+    private final static int NEWBIE_INVEST_LIMIT = Integer.parseInt(ETCDConfigReader.getReader().getValue("web.newbie.invest.limit"));
+
+    private final static double DEFAULT_FEE = Double.parseDouble(ETCDConfigReader.getReader().getValue("pay.interest.fee"));
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Value(value = "${web.newbie.invest.limit}")
-    private int newbieInvestLimit;
-
-    @Autowired
-    private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
@@ -82,9 +80,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
-
-    @Value(value = "${pay.interest.fee}")
-    private double defaultFee;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -123,25 +118,64 @@ public class InvestServiceImpl implements InvestService {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Override
-    @Transactional
-    public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
-        accountMapper.lockByLoginName(investDto.getLoginName());
+    public BankAsyncMessage invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
-        this.checkInvestAvailable(investDto);
-        return payWrapperClient.invest(investDto);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        InvestModel investModel = this.generateInvest(investDto);
+        return bankWrapperClient.invest(investModel.getId(),
+                investDto.getSource(),
+                investModel.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                investModel.getAmount(),
+                loanModel.getLoanTxNo(),
+                loanModel.getId(),
+                loanModel.getName());
     }
 
     @Override
-    @Transactional
-    public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
-        accountMapper.lockByLoginName(investDto.getLoginName());
+    public BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        InvestModel investModel = this.generateInvest(investDto);
+        return bankWrapperClient.fastInvest(investModel.getId(),
+                investDto.getSource(),
+                investModel.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                investModel.getAmount(),
+                loanModel.getLoanTxNo(),
+                loanModel.getId(),
+                loanModel.getName());
+    }
+
+    private InvestModel generateInvest(InvestDto investDto) throws InvestException {
         this.checkInvestAvailable(investDto);
-        return payWrapperClient.noPasswordInvest(investDto);
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
+
+        InvestModel investModel = new InvestModel(IdGenerator.generate(),
+                Long.parseLong(investDto.getLoanId()),
+                null,
+                investDto.getLoginName(), AmountConverter.convertStringToCent(investDto.getAmount()),
+                rate,
+                investDto.isNoPassword(),
+                new Date(),
+                investDto.getSource(),
+                investDto.getChannel()
+        );
+        investMapper.create(investModel);
+
+        return investModel;
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -158,12 +192,12 @@ public class InvestServiceImpl implements InvestService {
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
-        if (accountModel.getBalance() < investAmount) {
+        if (bankAccountModel.getBalance() < investAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
 
         // 尚未开启免密投资
-        if (investDto.isNoPassword() && !accountModel.isNoPasswordInvest()) {
+        if (investDto.isNoPassword() && !bankAccountModel.isAutoInvest()) {
             throw new InvestException(InvestExceptionType.PASSWORD_INVEST_OFF);
         }
 
@@ -255,7 +289,7 @@ public class InvestServiceImpl implements InvestService {
                         String.valueOf(userCouponId),
                         usedTime,
                         userCouponModel.getStatus()));
-                if ((usedTime != null && new DateTime(usedTime).plusSeconds(couponLockSeconds).isAfter(new DateTime()))
+                if ((usedTime != null && new DateTime(usedTime).plusSeconds(COUPON_LOCK_SECONDS).isAfter(new DateTime()))
                         || !loginName.equalsIgnoreCase(userCouponModel.getLoginName())
                         || InvestStatus.SUCCESS == userCouponModel.getStatus()
                         || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !UserBirthdayUtil.isBirthMonth(userMapper.findByLoginName(loginName).getIdentityNumber()))
@@ -285,7 +319,7 @@ public class InvestServiceImpl implements InvestService {
 
     private boolean canInvestNewbieLoan(String loginName) {
         int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
-        return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
+        return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || NEWBIE_INVEST_LIMIT == 0 || newbieInvestCount < NEWBIE_INVEST_LIMIT;
     }
 
     @Override
@@ -373,78 +407,16 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    @Transactional
-    public boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto dto, String ip) {
-        if (Strings.isNullOrEmpty(loginName)) {
-            return false;
-        }
-
-        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
-        if (model != null) {
-            model.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
-            model.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
-            model.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
-            model.setAutoInvestPeriods(dto.getAutoInvestPeriods());
-            model.setCreatedTime(new Date());
-            model.setEnabled(true);
-            autoInvestPlanMapper.update(model);
-        } else {
-            AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
-            autoInvestPlanModel.setId(IdGenerator.generate());
-            autoInvestPlanModel.setLoginName(loginName);
-            autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
-            autoInvestPlanModel.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
-            autoInvestPlanModel.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
-            autoInvestPlanModel.setAutoInvestPeriods(dto.getAutoInvestPeriods());
-            autoInvestPlanModel.setCreatedTime(new Date());
-            autoInvestPlanModel.setEnabled(true);
-            autoInvestPlanMapper.create(autoInvestPlanModel);
-        }
-
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn On.");
-        return true;
-    }
-
-    @Override
-    public boolean turnOffAutoInvest(String loginName, String ip) {
-        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
-        if (model == null || !model.isEnabled()) {
-            return false;
-        }
-        autoInvestPlanMapper.disable(loginName);
-
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn Off.");
-        return true;
-    }
-
-    @Override
-    public AutoInvestPlanModel findAutoInvestPlan(String loginName) {
-        return autoInvestPlanMapper.findByLoginName(loginName);
-    }
-
-    @Override
     public InvestModel findById(long investId) {
         return investMapper.findById(investId);
     }
 
     @Override
-    public InvestModel findLatestSuccessInvest(String loginName) {
-        InvestModel investModel = investMapper.findLatestSuccessInvest(loginName);
-        if (investModel == null) {
-            return null;
-        }
-
-        return investModel;
-    }
-
-    @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        accountModel.setNoPasswordInvest(isTurnOn);
-        accountMapper.update(accountModel);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        bankAccountModel.setAutoInvest(isTurnOn);
+        bankAccountMapper.updateAutoInvest(loginName, isTurnOn);
         if (isTurnOn) {
             mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
         }
@@ -512,11 +484,11 @@ public class InvestServiceImpl implements InvestService {
             interest += perPeriodInterest;
         }
 
-        long originFee = new BigDecimal(interest).multiply(new BigDecimal(defaultFee)).longValue();
+        long originFee = new BigDecimal(interest).multiply(new BigDecimal(DEFAULT_FEE)).longValue();
         long membershipFee = new BigDecimal(interest).multiply(new BigDecimal(investFeeRate)).longValue();
-        long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long originCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(DEFAULT_FEE)).longValue();
         long membershipCouponFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(investFeeRate)).longValue();
-        long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(defaultFee)).longValue();
+        long originExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(DEFAULT_FEE)).longValue();
         long membershipExtraLoanRateExpectedInterest = new BigDecimal(extraLoanRateExpectedInterest).multiply(new BigDecimal(investFeeRate)).longValue();
         preference = originFee - membershipFee + originCouponFee - membershipCouponFee + originExtraLoanRateExpectedInterest - membershipExtraLoanRateExpectedInterest;
         return preference;
@@ -525,25 +497,6 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public List<InvestModel> findContractFailInvest(long loanId) {
         return investMapper.findNoContractNoInvest(loanId);
-    }
-
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.startTime}\")}")
-    private Date wechatLotteryStartTime;
-
-    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.wechat.lottery.endTime}\")}")
-    private Date wechatLotteryEndTime;
-
-    @Override
-    public boolean isNewUserForWechatLottery(String loginName) {
-        int count = investMapper.countInvestBeforeDate(loginName, wechatLotteryStartTime);
-        return count <= 0;
-    }
-
-    @Override
-    public boolean isFirstInvest(String loginName, Date investTime) {
-        int count = investMapper.countInvestBeforeDate(loginName, investTime);
-        return count == 1;
     }
 
     @Override

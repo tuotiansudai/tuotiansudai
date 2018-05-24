@@ -2,15 +2,18 @@ package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.config.ApiType;
 
+import java.util.Map;
+
 public class WithdrawRequestDto extends PayBaseRequestDto {
 
     private String amount;
 
-    private String fee = "0.00";
+    private String fee;
 
-    public WithdrawRequestDto(String loginName, String mobile, String userName, String accountNo, String amount) {
-        super(loginName, mobile, userName, accountNo, ApiType.WITHDRAW);
+    public WithdrawRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount, String fee, Map<String, String> extraValues) {
+        super(source, loginName, mobile, userName, accountNo, ApiType.WITHDRAW, extraValues);
         this.amount = amount;
+        this.fee = fee;
     }
 
     public String getAmount() {

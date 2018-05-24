@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.dto.request;
 import com.tuotiansudai.fudian.config.ApiType;
 
 import java.util.List;
+import java.util.Map;
 
 public class LoanCallbackRequestDto extends BaseRequestDto {
 
@@ -14,8 +15,8 @@ public class LoanCallbackRequestDto extends BaseRequestDto {
 
     private String notifyUrl; //异步回调地址
 
-    public LoanCallbackRequestDto( String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investList) {
-        super(loginName, mobile, ApiType.LOAN_CALLBACK);
+    public LoanCallbackRequestDto(String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investList, Map<String, String> extraValues) {
+        super(Source.WEB, loginName, mobile, ApiType.LOAN_CALLBACK, extraValues);
         this.loanTxNo = loanTxNo;
         this.investList = investList;
     }

@@ -3,8 +3,11 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.LoanCreditInvestRequestDto;
+import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.LoanCreateContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -23,15 +26,18 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final SelectResponseDataMapper selectResponseDataMapper;
+
     @Autowired
-    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public LoanCreditInvestRequestDto invest(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(loginName, mobile, userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee);
+    public LoanCreditInvestRequestDto invest(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
+        LoanCreditInvestRequestDto dto = new LoanCreditInvestRequestDto(source, loginName, mobile, userName, accountNo, loanTxNo, investOrderNo, investOrderDate, creditNo, creditAmount, amount, creditFee, null);
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -56,5 +62,18 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
         responseDto.setReqData(responseData);
         updateMapper.updateLoanCreditInvest(responseDto);
         return responseDto;
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Boolean isSuccess(String orderNo) {
+        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase(), orderNo);
+        if (Strings.isNullOrEmpty(responseData)) {
+            return null;
+        }
+
+        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
+
+        return responseDto.isSuccess();
     }
 }

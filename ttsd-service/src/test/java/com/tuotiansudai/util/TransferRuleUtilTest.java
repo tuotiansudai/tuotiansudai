@@ -109,7 +109,7 @@ public class TransferRuleUtilTest {
     }
 
     private InvestModel createInvest(String userId, long loanId, long amount, Date createTime) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, amount, userId, createTime, Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, userId, amount, 0.1, false, createTime, Source.WEB, null);
         model.setCreatedTime(createTime);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);

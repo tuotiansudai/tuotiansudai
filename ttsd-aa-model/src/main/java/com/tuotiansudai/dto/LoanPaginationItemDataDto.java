@@ -30,7 +30,6 @@ public class LoanPaginationItemDataDto implements Serializable {
 
 
     public LoanPaginationItemDataDto(LoanModel loanModel) {
-
         this.loanId = loanModel.getId();
         this.loanName = loanModel.getName();
         this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());

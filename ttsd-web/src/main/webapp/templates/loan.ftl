@@ -322,6 +322,9 @@
                             </@global.role>
                         </dl>
                     </form>
+                    <form name="isPaySuccess" id="isPaySuccess" method="post" style="display: none">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
                 </#if>
                 <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                     <form action="/loan-list" method="get">
@@ -764,10 +767,7 @@
     </thead>
     <tbody>
     <% for(var i = 0; i < records.length; i++) {
-
     var item = records[i];
-    console.log(item);
-    item.autoInvest=item.autoInvest ? '自动' : '手动';
     %>
     <tr>
     <td class="loan-td">
@@ -777,12 +777,11 @@
         <%=item.amount%>
     </td>
     <td class="responsive-hide">
-            <%=item.autoInvest%>
         <span class="invest-<%=item.source%>"></span>
-            </td>
-            <td class="responsive-hide tr">
-                <%=item.expectedInterest%>
-            </td>
+    </td>
+    <td class="responsive-hide tr">
+        <%=item.expectedInterest%>
+    </td>
     <td>
         <%=item.createdTime%>
     </td>

@@ -1,6 +1,8 @@
 package com.tuotiansudai.fudian.mapper;
 
+import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.service.LoanInvestService;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
@@ -37,13 +39,14 @@ public interface UpdateMapper {
     @Update("UPDATE loan_create SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanCreate(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update("UPDATE loan_invest SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
+    @Update("UPDATE loan_invest SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = #{status} WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
+    int updateLoanInvest(@Param(value = "dto") ResponseDto responseDto,
+                         @Param(value = "status") LoanInvestStatus status);
 
     @Update("UPDATE loan_credit_invest SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanCreditInvest(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update("UPDATE loan_full SET SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
+    @Update("UPDATE loan_full SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanFull(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_repay SET `response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")

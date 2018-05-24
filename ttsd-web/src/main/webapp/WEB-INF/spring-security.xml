@@ -96,12 +96,9 @@
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
 
-        <intercept-url pattern="/recharge/**" access="not isAnonymous()" method="GET"/>
-        <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
-        <intercept-url pattern="/withdraw/**" access="not isAnonymous()" method="GET"/>
-        <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
-        <intercept-url pattern="/bind-card/**" access="not isAnonymous()" method="GET"/>
-        <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
+        <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('INVESTOR')"/>
@@ -148,6 +145,7 @@
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.spring.CsrfSecurityRequestMatcher">
         <beans:property name="excludedUrls">
             <beans:list>
+                <beans:value>/callback/return-url/*</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

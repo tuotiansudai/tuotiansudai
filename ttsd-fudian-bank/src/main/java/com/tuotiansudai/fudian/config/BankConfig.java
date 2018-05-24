@@ -1,5 +1,8 @@
 package com.tuotiansudai.fudian.config;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.fudian.dto.request.Source;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +26,11 @@ public class BankConfig {
 
     private String bankUrl;
 
-    private String callbackReturnUrl;
+    private String webCallbackReturnUrl;
+
+    private String mCallbackReturnUrl;
+
+    private String mobileCallbackReturnUrl;
 
     private String callbackNotifyUrl;
 
@@ -91,12 +98,28 @@ public class BankConfig {
         this.bankUrl = bankUrl;
     }
 
-    public String getCallbackReturnUrl() {
-        return callbackReturnUrl;
+    public String getWebCallbackReturnUrl() {
+        return webCallbackReturnUrl;
     }
 
-    public void setCallbackReturnUrl(String callbackReturnUrl) {
-        this.callbackReturnUrl = callbackReturnUrl;
+    public void setWebCallbackReturnUrl(String webCallbackReturnUrl) {
+        this.webCallbackReturnUrl = webCallbackReturnUrl;
+    }
+
+    public String getMCallbackReturnUrl() {
+        return mCallbackReturnUrl;
+    }
+
+    public void setMCallbackReturnUrl(String mCallbackReturnUrl) {
+        this.mCallbackReturnUrl = mCallbackReturnUrl;
+    }
+
+    public String getMobileCallbackReturnUrl() {
+        return mobileCallbackReturnUrl;
+    }
+
+    public void setMobileCallbackReturnUrl(String mobileCallbackReturnUrl) {
+        this.mobileCallbackReturnUrl = mobileCallbackReturnUrl;
     }
 
     public String getCallbackNotifyUrl() {
@@ -105,6 +128,17 @@ public class BankConfig {
 
     public void setCallbackNotifyUrl(String callbackNotifyUrl) {
         this.callbackNotifyUrl = callbackNotifyUrl;
+    }
+
+    public String getCallbackReturnUrl(Source source) {
+        return Maps.newHashMap(ImmutableMap.<Source, String>builder()
+                .put(Source.WEB, this.webCallbackReturnUrl)
+                .put(Source.WECHAT, this.mCallbackReturnUrl)
+                .put(Source.M, this.mCallbackReturnUrl)
+                .put(Source.MOBILE, this.mobileCallbackReturnUrl)
+                .put(Source.IOS, this.mobileCallbackReturnUrl)
+                .put(Source.ANDROID, this.mobileCallbackReturnUrl)
+                .build()).get(source);
     }
 }
 

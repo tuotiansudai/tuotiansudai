@@ -237,7 +237,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 investReferrerRewardMapper.update(investReferrerRewardModel);
                 logger.info(MessageFormat.format("[标的放款-发送消息进队列]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
 
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
                 String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(investReferrerRewardModel.getInvestId()));

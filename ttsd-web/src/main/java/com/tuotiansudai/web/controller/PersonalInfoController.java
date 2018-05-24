@@ -2,10 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -34,13 +31,10 @@ public class PersonalInfoController {
     private AccountService accountService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private UserBindBankCardService userBindBankCardService;
 
     @Autowired
     private RiskEstimateService riskEstimateService;
-
-    @Autowired
-    private BankService bankService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
@@ -59,12 +53,13 @@ public class PersonalInfoController {
         if (accountModel != null) {
             mv.addObject("userName", userModel.getUserName());
             mv.addObject("identityNumber", userModel.getIdentityNumber());
-            BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
-            if (bankCard != null) {
-                mv.addObject("bankCard", bankCard.getCardNumber());
-                BankModel bankModel = bankService.findByBankCode(bankCard.getBankCode());
-                mv.addObject("bankName", bankModel.getName());
-            }
+
+        }
+
+        UserBankCardModel bankCard = userBindBankCardService.findBankCard(userModel.getLoginName());
+        if (bankCard != null) {
+            mv.addObject("bankCard", bankCard.getCardNumber());
+            mv.addObject("bankName", bankCard.getBank());
         }
         return mv;
     }

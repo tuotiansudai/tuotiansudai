@@ -6,12 +6,15 @@ import com.tuotiansudai.fudian.dto.ExtMarkDto;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class BaseRequestDto {
 
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     private transient long id;
+
+    private transient Source source;
 
     private String requestData;
 
@@ -23,8 +26,12 @@ public class BaseRequestDto {
 
     private String extMark; //参数扩展域
 
-    public BaseRequestDto(String loginName, String mobile, ApiType apiType) {
-        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType));
+    public BaseRequestDto() {
+    }
+
+    public BaseRequestDto(Source source, String loginName, String mobile, ApiType apiType, Map<String, String> extraValues) {
+        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile, apiType, extraValues));
+        this.source = source;
     }
 
     public long getId() {
@@ -33,6 +40,14 @@ public class BaseRequestDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public String getRequestData() {

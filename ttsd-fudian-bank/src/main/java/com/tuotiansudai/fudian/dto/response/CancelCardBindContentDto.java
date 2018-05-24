@@ -41,4 +41,8 @@ public class CancelCardBindContentDto extends UserBaseContentDto {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public boolean isSuccess() {
+        return "4".equalsIgnoreCase(status);
+    }
 }

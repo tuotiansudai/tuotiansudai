@@ -2,6 +2,8 @@ package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.config.ApiType;
 
+import java.util.Map;
+
 public class PayBaseRequestDto extends BaseRequestDto {
 
     private String userName; //用户名
@@ -12,8 +14,11 @@ public class PayBaseRequestDto extends BaseRequestDto {
 
     private String notifyUrl; //异步回调地址
 
-    public PayBaseRequestDto(String loginName, String mobile, String userName, String accountNo, ApiType apiType) {
-        super(loginName, mobile, apiType);
+    public PayBaseRequestDto() {
+    }
+
+    public PayBaseRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, ApiType apiType, Map<String, String> extraValues) {
+        super(source, loginName, mobile, apiType, extraValues);
         this.userName = userName;
         this.accountNo = accountNo;
     }

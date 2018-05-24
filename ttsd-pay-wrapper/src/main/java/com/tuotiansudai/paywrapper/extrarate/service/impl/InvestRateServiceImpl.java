@@ -34,9 +34,7 @@ public class InvestRateServiceImpl implements InvestRateService {
                 investExtraRateModel.getLoginName(),
                 investExtraRateModel.getId(),
                 amount,
-                UserBillBusinessType.EXTRA_RATE,
-                null,
-                null);
+                UserBillBusinessType.EXTRA_RATE);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 

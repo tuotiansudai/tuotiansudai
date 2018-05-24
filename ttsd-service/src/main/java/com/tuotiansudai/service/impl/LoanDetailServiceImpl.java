@@ -72,7 +72,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -128,9 +128,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                 LoanDetailInvestPaginationItemDto item = new LoanDetailInvestPaginationItemDto();
                 item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                 item.setSource(input.getSource());
-                item.setAutoInvest(input.isAutoInvest());
                 item.setMobile(randomUtils.encryptMobile(loginName, input.getLoginName(), input.getId()));
-
 
                 long amount = 0;
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
@@ -175,11 +173,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         boolean isAuthenticationRequired = anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus();
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
 
-        InvestorDto investorDto = accountModel == null ? new InvestorDto() : new InvestorDto(accountModel.getBalance(),
-                accountModel.isAutoInvest(),
-                accountModel.isNoPasswordInvest(),
+        InvestorDto investorDto = bankAccountModel == null ? new InvestorDto() : new InvestorDto(bankAccountModel.getBalance(),
+                bankAccountModel.isAuthorization(),
+                bankAccountModel.isAutoInvest(),
                 this.isRemindNoPassword(loginName),
                 this.calculateMaxAvailableInvestAmount(loginName, loanModel, investedAmount),
                 isAuthenticationRequired,
@@ -330,7 +328,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     private long calculateMaxAvailableInvestAmount(String loginName, LoanModel loanModel, long investedAmount) {
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName, true);
-        long balance = Strings.isNullOrEmpty(loginName) || accountMapper.findByLoginName(loginName) == null ? 0 : accountMapper.findByLoginName(loginName).getBalance();
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        long balance = Strings.isNullOrEmpty(loginName) || bankAccountModel == null ? 0 : bankAccountModel.getBalance();
 
         long maxAvailableInvestAmount = NumberUtils.min(balance, loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);
 
