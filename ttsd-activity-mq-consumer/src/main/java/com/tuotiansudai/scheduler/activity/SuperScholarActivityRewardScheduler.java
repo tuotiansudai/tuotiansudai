@@ -75,7 +75,7 @@ public class SuperScholarActivityRewardScheduler {
                 for (ActivityInvestModel model : investModels) {
                     SuperScholarRewardModel superScholarRewardModel = superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime());
                     if (superScholarRewardModel == null) {
-                        return;
+                        continue;
                     }
                     double rewardRate = superScholarRewardModel.getRewardRate();
                     long reward = (long) (model.getAnnualizedAmount() * rewardRate);

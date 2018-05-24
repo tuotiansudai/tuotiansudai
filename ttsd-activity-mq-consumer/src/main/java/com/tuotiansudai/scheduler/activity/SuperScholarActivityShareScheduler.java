@@ -36,8 +36,8 @@ public class SuperScholarActivityShareScheduler {
 
     private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST = "REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST:{0}:{1}";
 
-    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
-//    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/5 * * * ?", zone = "Asia/Shanghai")
     public void updateSuperScholarShareStatus() {
 
         if (new Date().before(new DateTime(activityStartTime).plusDays(1).toDate())
@@ -46,10 +46,10 @@ public class SuperScholarActivityShareScheduler {
             return;
         }
 
-        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now().minusDays(1));
-//        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
-        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().minusDays(1).toDate());
-//        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().toDate());
+//        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now().minusDays(1));
+        String yesterday = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
+//        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().minusDays(1).toDate());
+        List<SuperScholarRewardModel> models = superScholarRewardMapper.findByAnswerTime(DateTime.now().toDate());
 
         for(SuperScholarRewardModel model : models){
             model.setShareAccount(redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, yesterday, model.getLoginName())));

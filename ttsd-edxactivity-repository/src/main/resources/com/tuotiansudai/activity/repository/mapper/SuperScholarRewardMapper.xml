@@ -36,7 +36,7 @@
           is_share_account = #{isShareAccount},
           is_share_invest = #{isShareInvest},
           is_cashback = #{isCashBack},
-          updated_time = #{updatedTime}
+          updated_time = now()
           where id = #{id}
     </update>
 
