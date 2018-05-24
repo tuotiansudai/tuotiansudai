@@ -68,6 +68,4 @@ public interface UserCouponMapper {
     List<UserCouponModel> findExpireAfterFiveDays();
 
     long findSumAmountByCouponId(@Param("loginName") String loginName, @Param("couponIdList") List<Long> couponIdList);
-
-    boolean isDrawRegisterCoupon(@Param("loginName") String loginName);
 }
