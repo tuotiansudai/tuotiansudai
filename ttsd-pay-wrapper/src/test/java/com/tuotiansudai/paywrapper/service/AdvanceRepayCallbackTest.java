@@ -100,7 +100,7 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, investor.getLoginName(), loan.getLoanAmount(), membershipModel.getFee(), false, recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTradingTime(invest.getInvestTime());
         investMapper.create(invest);
@@ -157,13 +157,13 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, investor.getLoginName(), loan.getLoanAmount(), membershipModel.getFee(), false, recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         invest.setTradingTime(invest.getInvestTime());
         investMapper.create(invest);
 
-        InvestModel investTransferee = new InvestModel(IdGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
+        InvestModel investTransferee = new InvestModel(IdGenerator.generate(), loan.getId(), null, investor.getLoginName(), loan.getLoanAmount(), 0.1, false, recheckTime.minusDays(1).toDate(), Source.WEB, null);
         investTransferee.setTransferInvestId(invest.getId());
         investTransferee.setStatus(InvestStatus.SUCCESS);
         investTransferee.setInvestFeeRate(0.1);

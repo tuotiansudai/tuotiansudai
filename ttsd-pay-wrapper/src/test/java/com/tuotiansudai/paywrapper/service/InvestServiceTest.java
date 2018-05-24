@@ -224,7 +224,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, "testInvest", 100L, 1.0, false, new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -261,7 +261,7 @@ public class InvestServiceTest {
         LoanModel loanModel = createLoanModel();
         loanMapper.create(loanModel);
 
-        InvestModel modelOld = new InvestModel(IdGenerator.generate(), loanModelOld.getId(), null, 100L, "testInvest", new Date(), Source.WEB, null, 1.0);
+        InvestModel modelOld = new InvestModel(IdGenerator.generate(), loanModelOld.getId(), null, "testInvest", 100L, 1.0, false, new Date(), Source.WEB, null);
         modelOld.setStatus(InvestStatus.SUCCESS);
         investMapper.create(modelOld);
         createUserAutoInvestPlan("testInvest", AutoInvestMonthPeriod.Month_1.getPeriodValue(), -1);

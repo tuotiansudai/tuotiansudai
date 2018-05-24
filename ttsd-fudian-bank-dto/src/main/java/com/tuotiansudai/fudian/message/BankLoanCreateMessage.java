@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
-public class BankLoanCreateMessage extends SyncMessage {
+public class BankLoanCreateMessage extends BankBaseMessage {
 
     private String loanName;
 

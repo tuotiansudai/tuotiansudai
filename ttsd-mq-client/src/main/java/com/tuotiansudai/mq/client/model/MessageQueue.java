@@ -90,7 +90,6 @@ public enum MessageQueue {
 
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
-    Invest_CouponUpdate("Invest-CouponUpdate"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
     ;
 

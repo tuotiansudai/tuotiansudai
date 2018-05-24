@@ -7,29 +7,22 @@ import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.fudian.message.BankInvestMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestSuccessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class InvestSuccessMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessMessageConsumer.class);
-
-    private final InvestMapper investMapper;
 
     private final InvestSuccessService investSuccessService;
 
     private final Gson gson  = new GsonBuilder().create();
 
     @Autowired
-    public InvestSuccessMessageConsumer(InvestMapper investMapper, InvestSuccessService investSuccessService) {
-        this.investMapper = investMapper;
+    public InvestSuccessMessageConsumer(InvestSuccessService investSuccessService) {
         this.investSuccessService = investSuccessService;
     }
 

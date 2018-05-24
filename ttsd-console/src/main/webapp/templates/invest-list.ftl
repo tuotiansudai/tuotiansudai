@@ -111,7 +111,6 @@
                 <th>渠道</th>
                 <th>来源</th>
                 <th>投资时间</th>
-                <th>自动投标</th>
                 <th>投资金额(元)</th>
                 <th>使用优惠(使用优惠信息／实际返款)</th>
                 <th>阶梯加息优惠(阶梯加息利率/实际返款)</th>
@@ -142,7 +141,6 @@
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
                     <td>${invest.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.investAmount}</td>
                     <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>

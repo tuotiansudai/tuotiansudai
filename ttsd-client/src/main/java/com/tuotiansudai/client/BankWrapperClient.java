@@ -6,14 +6,16 @@ import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.*;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.fudian.dto.*;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.BankInvestDto;
+import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
+import com.tuotiansudai.fudian.dto.BankWithdrawDto;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -43,7 +45,7 @@ public class BankWrapperClient {
         this.okHttpClient.setWriteTimeout(180, TimeUnit.SECONDS);
     }
 
-    public BaseDto<PayDataDto> checkBankReturnUrl(String path, String bankReturnParams) {
+    public BankReturnCallbackMessage checkBankReturnUrl(String path, String bankReturnParams) {
         RequestBody requestBody = new FormEncodingBuilder().add("reqData", bankReturnParams).build();
         Request request = new Request.Builder()
                 .url(this.baseUrl + path)
@@ -54,8 +56,7 @@ public class BankWrapperClient {
             Response response = this.okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 try {
-                    return new GsonBuilder().create().fromJson(response.body().string(), new TypeToken<BaseDto<PayDataDto>>() {
-                    }.getType());
+                    return new GsonBuilder().create().fromJson(response.body().string(), BankReturnCallbackMessage.class);
                 } catch (JsonParseException e) {
                     logger.error(MessageFormat.format("parse return return callback error, url: {0}, data: {1}, response: {2}", path, response.body().string()), e);
                 }
@@ -90,7 +91,7 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BankAsyncData register(Source source, String loginName, String mobile, String realName, String identityCode) {
+    public BankAsyncMessage register(Source source, String loginName, String mobile, String realName, String identityCode) {
         return asyncExecute(MessageFormat.format("/user/register/source/{}", source.name().toLowerCase()),
                 Maps.newHashMap(ImmutableMap.<String, String>builder()
                         .put("loginName", loginName)
@@ -101,24 +102,41 @@ public class BankWrapperClient {
                         .build()));
     }
 
-    public BankAsyncData bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+    public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncData unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+    public BankAsyncMessage unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncData withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
+    public BankAsyncMessage withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
         return asyncExecute(MessageFormat.format("/withdraw/source/{0}", source.name().toLowerCase()),
                 new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId));
     }
 
-    public BankAsyncData invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
+    public BankAsyncMessage invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
         return asyncExecute(MessageFormat.format("/loan-invest/source/{0}", source.name().toLowerCase()),
                 new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
+    }
+
+    public BankReturnCallbackMessage fastInvest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
+        String json = syncExecute(MessageFormat.format("/loan-fast-invest/source/{0}", source.name().toLowerCase()),
+                new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankReturnCallbackMessage();
+        }
+
+        try {
+            return new GsonBuilder().create().fromJson(json, BankReturnCallbackMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Loan Fast Invest] parse response error, loanId: {0}", String.valueOf(loanId)), e);
+        }
+
+        return new BankReturnCallbackMessage();
     }
 
     public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, long loanId, long loanAmount) {
@@ -139,7 +157,7 @@ public class BankWrapperClient {
         return new BankLoanCreateMessage(false, null);
     }
 
-    private BankAsyncData asyncExecute(String path, Object requestData) {
+    private BankAsyncMessage asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
         String url = this.baseUrl + path;
 
@@ -155,7 +173,7 @@ public class BankWrapperClient {
 
             if (response.isSuccessful()) {
                 try {
-                    return new GsonBuilder().create().fromJson(response.body().string(), BankAsyncData.class);
+                    return new GsonBuilder().create().fromJson(response.body().string(), BankAsyncMessage.class);
                 } catch (JsonParseException e) {
                     logger.error(MessageFormat.format("parse pay response error, url: {0}, data: {1}, response: {2}", url, content, response.body().string()), e);
                 }
@@ -165,7 +183,7 @@ public class BankWrapperClient {
             logger.error(MessageFormat.format("call pay wrapper error, url: {0}, data: {1}", url, content), e);
         }
 
-        return new BankAsyncData();
+        return new BankAsyncMessage();
     }
 
     private String syncExecute(String path, Object requestData) {

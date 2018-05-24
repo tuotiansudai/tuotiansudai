@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.service.AsyncCallbackInterface;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
@@ -61,7 +62,7 @@ public class CallbackController {
     }
 
     @RequestMapping(value = "/return-url/{apiType}", method = RequestMethod.POST)
-    public ResponseEntity<String> returnCallback(HttpServletRequest request, @PathVariable ApiType apiType) {
+    public ResponseEntity<BankReturnCallbackMessage> returnCallback(HttpServletRequest request, @PathVariable ApiType apiType) {
         String reqData = request.getParameter("reqData");
 
         try {
@@ -80,7 +81,7 @@ public class CallbackController {
             return ResponseEntity.badRequest().build();
         }
 
-        return this.generateResponseJson(responseDto);
+        return ResponseEntity.ok(new BankReturnCallbackMessage(responseDto.isSuccess(), responseDto.getRetMsg(), responseDto.getContent().getOrderNo()));
     }
 
     @RequestMapping(value = "/{apiType}/order-no/{orderNo}/is-success", method = RequestMethod.GET)
@@ -93,22 +94,5 @@ public class CallbackController {
         }
 
         return isSuccess ? ResponseEntity.ok().build() : ResponseEntity.status(-1).build();
-    }
-
-    private ResponseEntity<String> generateResponseJson(ResponseDto responseDto) {
-        JsonObject extraValues = new JsonObject();
-        extraValues.addProperty("orderNo", responseDto.getContent().getOrderNo());
-
-        JsonObject payData = new JsonObject();
-        payData.addProperty("code", responseDto.getRetCode());
-        payData.addProperty("message", responseDto.getRetMsg());
-        payData.addProperty("status", responseDto.isSuccess());
-        payData.add("extraValues", extraValues);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("success", true);
-        jsonObject.add("data", payData);
-
-        return ResponseEntity.ok(new GsonBuilder().create().toJson(jsonObject));
     }
 }

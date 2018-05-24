@@ -6,8 +6,7 @@ public enum MessageTopic {
     InvestSuccess("InvestSuccess",
             MessageQueue.Invest_Success,
             MessageQueue.Invest_CompletePointTask,
-            MessageQueue.Invest_MembershipUpdate,
-            MessageQueue.Invest_CouponUpdate),
+            MessageQueue.Invest_MembershipUpdate),
 
     LoanOutSuccess("LoanOutSuccess",
             MessageQueue.LoanOutSuccess_GenerateRepay,

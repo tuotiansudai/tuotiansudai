@@ -1,11 +1,9 @@
 package com.tuotiansudai.point.service;
 
-import com.tuotiansudai.repository.model.InvestModel;
-
 import java.util.Map;
 
 public interface PointService {
-    void obtainPointInvest(InvestModel investModel);
+    void obtainPointInvest(long investId);
 
     long getAvailablePoint(String loginName);
 

@@ -2,13 +2,16 @@ package com.tuotiansudai.fudian.message;
 
 import java.io.Serializable;
 
-public class SyncMessage implements Serializable {
+public class BankBaseMessage implements Serializable {
 
     private boolean status;
 
     private String message;
 
-    public SyncMessage(boolean status, String message) {
+    public BankBaseMessage() {
+    }
+
+    public BankBaseMessage(boolean status, String message) {
         this.status = status;
         this.message = message;
     }

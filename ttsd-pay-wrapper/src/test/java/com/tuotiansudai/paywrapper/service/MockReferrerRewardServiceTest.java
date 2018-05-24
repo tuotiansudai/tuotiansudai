@@ -113,7 +113,7 @@ public class MockReferrerRewardServiceTest {
     }
 
     private InvestModel fakeInvestModel(){
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), 10000, null, 1000L, "investor", new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), 10000, null, "investor", 1000L, 0.1, false, new Date(), Source.WEB, null);
         investModel.setTradingTime(new Date());
         return investModel;
     }

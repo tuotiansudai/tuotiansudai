@@ -182,7 +182,7 @@ public class RepayServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName, TransferStatus transferStatus) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTransferStatus(transferStatus);
         investMapper.create(model);
