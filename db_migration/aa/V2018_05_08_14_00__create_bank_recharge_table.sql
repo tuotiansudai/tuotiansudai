@@ -1,4 +1,4 @@
-CREATE TABLE `aa`.`user_recharge` (
+CREATE TABLE `aa`.`bank_recharge` (
   `id`              BIGINT UNSIGNED NOT NULL,
   `login_name`      VARCHAR(25)     NOT NULL,
   `amount`          BIGINT UNSIGNED NOT NULL,
@@ -11,8 +11,8 @@ CREATE TABLE `aa`.`user_recharge` (
   `updated_time`    DATETIME        NOT NULL,
   `created_time`    DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_USER_RECHARGE_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
-  INDEX INDEX_USER_RECHARGE_BANK_ORDER_NO (bank_order_no)
+  CONSTRAINT FK_BANK_RECHARGE_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
+  INDEX INDEX_BANK_RECHARGE_BANK_ORDER_NO (bank_order_no)
 
 )
   ENGINE = InnoDB

@@ -75,7 +75,7 @@ public class PointTaskServiceImpl implements PointTaskService {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private UserRechargeMapper userRechargeMapper;
+    private BankRechargeMapper userRechargeMapper;
 
     @Autowired
     private InvestMapper investMapper;

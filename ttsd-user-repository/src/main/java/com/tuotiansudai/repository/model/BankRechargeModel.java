@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class UserRechargeModel {
+public class BankRechargeModel {
 
     private long id;
 
@@ -21,7 +21,7 @@ public class UserRechargeModel {
 
     private String bankOrderDate;
 
-    private UserRechargeStatus status;
+    private BankRechargeStatus status;
 
     private Date updatedTime;
 
@@ -91,11 +91,11 @@ public class UserRechargeModel {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public UserRechargeStatus getStatus() {
+    public BankRechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(UserRechargeStatus status) {
+    public void setStatus(BankRechargeStatus status) {
         this.status = status;
     }
 

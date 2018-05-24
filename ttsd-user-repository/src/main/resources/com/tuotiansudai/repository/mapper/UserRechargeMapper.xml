@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.UserRechargeMapper">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankRechargeMapper">
 
     <resultMap id="userRechargeResultMap" type="UserRechargeModel">
         <id column="id" property="id"/>
@@ -17,7 +17,7 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.UserRechargeModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_recharge(login_name, fee, source, pay_type, status, created_time, updated_time)
         value(#{loginName}, #{fee}, #{source}, #{payType}, #{status}, #{status}, now(), now())
     </insert>

@@ -11,9 +11,9 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.UserRechargeMapper;
-import com.tuotiansudai.repository.model.UserRechargeModel;
-import com.tuotiansudai.repository.model.UserRechargeStatus;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
+import com.tuotiansudai.repository.model.BankRechargeModel;
+import com.tuotiansudai.repository.model.BankRechargeStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class UserRechargeMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(UserRechargeMessageConsumer.class);
+public class BankRechargeMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(BankRechargeMessageConsumer.class);
 
     private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
-    private UserRechargeMapper userRechargeMapper;
+    private BankRechargeMapper userRechargeMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -53,19 +53,19 @@ public class UserRechargeMessageConsumer implements MessageConsumer {
             }.getType());
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
                 long rechargeId = Long.parseLong(map.get("rechargeId"));
-                UserRechargeModel userRechargeModel = userRechargeMapper.findById(rechargeId);
+                BankRechargeModel userRechargeModel = userRechargeMapper.findById(rechargeId);
                 if (userRechargeModel == null) {
                     logger.error("[MQ] receive message : {}, userRechargeModel is null user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
                     return;
                 }
 
-                if (userRechargeModel.getStatus() != UserRechargeStatus.WAIT_PAY) {
+                if (userRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
                     logger.error("[MQ] receive message : {}, userRechargeModel statue is not wait pay user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
                     return;
                 }
 
                 boolean isSuccess = Boolean.valueOf(map.get("isSuccess"));
-                userRechargeModel.setStatus(isSuccess ? UserRechargeStatus.SUCCESS : UserRechargeStatus.FAIL);
+                userRechargeModel.setStatus(isSuccess ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
                 userRechargeModel.setBankOrderNo(map.get("orderNo"));
                 userRechargeModel.setBankOrderDate(map.get("orderDate"));
                 userRechargeMapper.update(userRechargeModel);
