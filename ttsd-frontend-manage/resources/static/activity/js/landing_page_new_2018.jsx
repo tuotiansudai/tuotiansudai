@@ -440,6 +440,10 @@ $('.close-app').click(function (e) {
     $('.app-container-landing').hide();
 })
 
+$('.open-app').click(function (e) {
+    commonFun.toDownloadApp();
+})
+
 
 
 

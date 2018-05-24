@@ -33,29 +33,33 @@ p {
 .landing-page-container {
   font-family: "MICROSOFT YAHEI";
   width: 100%;
+  .app-container-landing {
+    display: none;
+  }
   .banner {
     height: 521px;
     background: url("../images/landingpage/banner_bg.png") no-repeat center center;
+    .invest-tip {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      margin-left: -130px;
+      width: 230px;
+      height: 24px;
+      color: rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.3);
+      line-height: 24px;
+      text-align: center;
+      border-radius: 12px;
+
+    }
     .banner-img {
       position: relative;
       width: 1462px;
       height: 521px;
       margin: 0 auto;
       background: url("../images/landingpage/banner.png") no-repeat center top;
-      .invest-tip {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        margin-left: -130px;
-        width: 230px;
-        height: 24px;
-        color: rgba(255,255,255,0.6);
-        background: rgba(0,0,0,0.3);
-        line-height: 24px;
-        text-align: center;
-        border-radius: 12px;
 
-      }
       .banner-con {
         position: relative;
         .login-wrap {
@@ -745,7 +749,7 @@ p {
     }
   }
   .top {
-    height: 107px;
+    height: 105px;
     top: 0;
     left: 0;
     background: url("../images/landingpage/top_bg.png") no-repeat;
@@ -846,6 +850,7 @@ body {
 }
   .landing-page-container {
     .app-container-landing {
+      display: block;
       height: 1.32rem;
       background: rgba(0,0,0,0.6);
       position: fixed;

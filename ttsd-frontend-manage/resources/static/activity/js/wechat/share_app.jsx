@@ -432,7 +432,9 @@ $voiceBtn.on('click', function(event) {
     }
 
 })();
-
+$('.open-app').click(function (e) {
+    commonFun.toDownloadApp();
+})
 
 
 

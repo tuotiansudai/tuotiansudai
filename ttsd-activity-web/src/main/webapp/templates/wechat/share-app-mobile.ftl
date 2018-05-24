@@ -293,6 +293,15 @@
         </div>
 
     </div>
+    <div class="app-container-landing clearfix">
+        <div class="logo"></div>
+        <div class="app-detail">
+            拓天速贷<br/>
+            <em>互联网金融信息服务平台<em>
+        </div>
+        <div class="open-app">下载APP</div>
+        <div class="close-app"></div>
+    </div>
 
 </div>
 <#include '../module/register-agreement.ftl'>

@@ -1,4 +1,5 @@
 // document.cookie="registerMobile="+18810985132;
+let commonFun = require('publicJs/commonFun');
 require('swiper/dist/css/swiper.css')
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
@@ -41,16 +42,12 @@ var mySwiper = new Swiper ('#fuliList', {
     spaceBetween: -20,
     loopAdditionalSlides:1,
     nextButton: '.prevBtn',
-    prevButton: '.prevBtn',
+    prevButton: '.nextBtn',
 
 });
-let $prevBtn = $('.prevBtn'),
-    $nextBtn = $('.nextBtn');
+$('.open-app').click(function (e) {
+    commonFun.toDownloadApp();
+})
 
-$prevBtn.on('click',function () {
-    mySwiper.slidePrev();
-})
-$nextBtn.on('click',function () {
-    mySwiper.slideNext();
-})
+
 

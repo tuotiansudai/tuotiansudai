@@ -66,7 +66,8 @@
     </@global.isAnonymous>
     <@global.isNotAnonymous>
         <div class="banner bannerNotLogin" id="bannerBoxLogin">
-            <div class="banner-img-no-login">
+            <div class="banner-img banner-img-no-login" style="position: relative">
+                <div class="invest-tip">市场有风险，投资需谨慎！</div>
                 <div class="my-page-width banner-con">
 
                 </div>

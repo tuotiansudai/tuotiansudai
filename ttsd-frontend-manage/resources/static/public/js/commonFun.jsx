@@ -386,6 +386,19 @@ function phoneModal() {
         //这个是ios操作系统
         return 'ios';
     }
+};
+function toDownloadApp() {
+
+    globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
+    let equipment=globalFun.equipment();
+    if(equipment.wechat && equipment.kind=='android') {
+        // 微信,并且是安卓，跳到页面
+        window.location.href = "/app/download?app=htracking";
+        return;
+    } else {
+        window.location.href =globalFun.categoryCodeUrl[equipment.kind];
+    }
+
 }
 
 function Cycle(options) {
@@ -450,5 +463,7 @@ exports.calculationFun = calculationFun;
 exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
 exports.Cycle = Cycle;
+exports.toDownloadApp = toDownloadApp;
+
 
 
