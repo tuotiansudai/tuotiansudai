@@ -13,8 +13,6 @@ public class BankRechargeModel {
 
     private long fee;
 
-    private Source source;
-
     private String PayType;
 
     private String bankOrderNo;
@@ -22,6 +20,10 @@ public class BankRechargeModel {
     private String bankOrderDate;
 
     private BankRechargeStatus status;
+
+    private Source source;
+
+    private String channel;
 
     private Date updatedTime;
 
@@ -59,14 +61,6 @@ public class BankRechargeModel {
         this.fee = fee;
     }
 
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
     public String getPayType() {
         return PayType;
     }
@@ -97,6 +91,22 @@ public class BankRechargeModel {
 
     public void setStatus(BankRechargeStatus status) {
         this.status = status;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public Date getUpdatedTime() {
