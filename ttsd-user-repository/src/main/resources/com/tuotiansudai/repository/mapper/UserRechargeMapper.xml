@@ -23,10 +23,21 @@
     </insert>
 
     <update id="update" parameterType="map">
-        update user_recharge
-        set 
+        update user_recharge SET
+        pay_type = #{payType},
+        bank_order_no = #{bankOrderNo},
+        bank_order_date = #{bankOrderDate},
+        status = #{status},
+        updated = now()
+        where id = #{id}
     </update>
 
+    <select id="findById" parameterType="map" resultMap="userRechargeResultMap">
+        SELECT * FROM user_recharge WHERE id = #{id}
+    </select>
 
+    <select id="sumRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
+        SELECT IFNULL(sum(amount),0) FROM user_recharge where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
 
 </mapper>

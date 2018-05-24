@@ -11,9 +11,9 @@ import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.mapper.UserRechargeMapper;
+import com.tuotiansudai.repository.model.UserRechargeModel;
+import com.tuotiansudai.repository.model.UserRechargeStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class RechargeMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(RechargeMessageConsumer.class);
+public class UserRechargeMessageConsumer implements MessageConsumer {
+    private static Logger logger = LoggerFactory.getLogger(UserRechargeMessageConsumer.class);
 
     private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "payType", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private UserRechargeMapper userRechargeMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -48,43 +48,43 @@ public class RechargeMessageConsumer implements MessageConsumer {
             logger.error("[MQ] Recharge_Success message is empty");
             return;
         }
-        try{
+        try {
             HashMap<String, String> map = new Gson().fromJson(message, new TypeToken<HashMap<String, String>>() {
             }.getType());
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
                 long rechargeId = Long.parseLong(map.get("rechargeId"));
-                RechargeModel rechargeModel = rechargeMapper.findById(rechargeId);
-                if (rechargeModel == null){
-                    logger.error("[MQ] receive message : {}, rechargeModel is null user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
+                UserRechargeModel userRechargeModel = userRechargeMapper.findById(rechargeId);
+                if (userRechargeModel == null) {
+                    logger.error("[MQ] receive message : {}, userRechargeModel is null user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
                     return;
                 }
 
-                if (rechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
-                    logger.error("[MQ] receive message : {}, rechargeModel statue is not wait pay user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
+                if (userRechargeModel.getStatus() != UserRechargeStatus.WAIT_PAY) {
+                    logger.error("[MQ] receive message : {}, userRechargeModel statue is not wait pay user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
                     return;
                 }
 
                 boolean isSuccess = Boolean.valueOf(map.get("isSuccess"));
-                rechargeModel.setStatus(isSuccess ? RechargeStatus.SUCCESS : RechargeStatus.FAIL);
-                rechargeModel.setPayType(map.get("payType"));
-                rechargeModel.setBankOrderNo(map.get("orderNo"));
-                rechargeModel.setBankOrderDate(map.get("orderDate"));
-                rechargeMapper.update(rechargeModel);
+                userRechargeModel.setStatus(isSuccess ? UserRechargeStatus.SUCCESS : UserRechargeStatus.FAIL);
+                userRechargeModel.setPayType(map.get("payType"));
+                userRechargeModel.setBankOrderNo(map.get("orderNo"));
+                userRechargeModel.setBankOrderDate(map.get("orderDate"));
+                userRechargeMapper.update(userRechargeModel);
 
                 if (isSuccess) {
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                            map.get("loginName"),
-                            rechargeId, rechargeModel.getAmount(),
-                            UserBillBusinessType.RECHARGE_SUCCESS,
-                            null,
-                            null));
+                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                            new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                                    map.get("loginName"),
+                                    rechargeId,
+                                    userRechargeModel.getAmount(),
+                                    UserBillBusinessType.RECHARGE_SUCCESS));
                 }
 
-            }else {
+            } else {
                 logger.error("[MQ] message is invalid {}", message);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
 
