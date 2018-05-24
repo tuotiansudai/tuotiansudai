@@ -4,7 +4,7 @@ CREATE TABLE `aa`.`user_recharge` (
   `amount`          BIGINT UNSIGNED NOT NULL,
   `fee`             BIGINT UNSIGNED NOT NULL,
   `source`          VARCHAR(20)     NOT NULL,
-  `pay_type`        VARCHAR(1),
+  `pay_type`        VARCHAR(20),     NOT NULL,
   `bank_order_no`   VARCHAR(20),
   `bank_order_date` VARCHAR(8),
   `status`          VARCHAR(16)     NOT NULL,

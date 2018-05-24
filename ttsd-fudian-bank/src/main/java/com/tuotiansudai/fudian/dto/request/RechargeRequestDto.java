@@ -1,8 +1,7 @@
 package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.config.ApiType;
-
-import java.util.Map;
+import com.tuotiansudai.fudian.dto.RechargePayType;
 
 public class RechargeRequestDto extends PayBaseRequestDto {
 

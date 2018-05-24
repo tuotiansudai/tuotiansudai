@@ -8,7 +8,7 @@ import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankRechargeDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
-import com.tuotiansudai.fudian.dto.request.RechargePayType;
+import com.tuotiansudai.fudian.dto.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
@@ -61,8 +61,8 @@ public class RechargeService implements AsyncCallbackInterface {
         this.redisTemplate = redisTemplate;
     }
 
-    public RechargeRequestDto recharge(Source source, RechargePayType rechargePayType, BankRechargeDto bankRechargeDto) {
-        RechargeRequestDto dto = new RechargeRequestDto(source, bankRechargeDto.getLoginName(), bankRechargeDto.getMobile(), bankRechargeDto.getBankUserName(), bankRechargeDto.getBankAccountNo(), AmountUtils.toYuan(bankRechargeDto.getAmount()), rechargePayType);
+    public RechargeRequestDto recharge(Source source, BankRechargeDto bankRechargeDto) {
+        RechargeRequestDto dto = new RechargeRequestDto(source, bankRechargeDto.getLoginName(), bankRechargeDto.getMobile(), bankRechargeDto.getBankUserName(), bankRechargeDto.getBankAccountNo(), AmountUtils.toYuan(bankRechargeDto.getAmount()), bankRechargeDto.getPayType());
 
         signatureHelper.sign(dto);
 
@@ -114,7 +114,6 @@ public class RechargeService implements AsyncCallbackInterface {
                 .put("loginName", extMarkDto.getLoginName())
                 .put("mobile", extMarkDto.getMobile())
                 .put("rechargeId", rechargeId)
-                .put("payType", rechargeContentDto.getPayType())
                 .put("orderDate", rechargeContentDto.getOrderDate())
                 .put("orderNo", rechargeContentDto.getOrderNo())
                 .put("isSuccess", String.valueOf(responseDto.isSuccess() && rechargeContentDto.isSuccess()))

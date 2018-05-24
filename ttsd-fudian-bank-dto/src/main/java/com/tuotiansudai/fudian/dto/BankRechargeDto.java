@@ -9,13 +9,16 @@ public class BankRechargeDto extends BankBaseDto{
 
     private long amount;
 
+    private RechargePayType payType;
+
     public BankRechargeDto() {
     }
 
-    public BankRechargeDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long rechargeId, long amount) {
+    public BankRechargeDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long rechargeId, long amount, RechargePayType payType) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.rechargeId = rechargeId;
         this.amount = amount;
+        this.payType = payType;
     }
 
     public long getRechargeId() {
@@ -34,11 +37,20 @@ public class BankRechargeDto extends BankBaseDto{
         this.amount = amount;
     }
 
+    public RechargePayType getPayType() {
+        return payType;
+    }
+
+    public void setPayType(RechargePayType payType) {
+        this.payType = payType;
+    }
+
     @Override
     public boolean isValid() {
         return super.isValid()
                 && rechargeId > 0
-                && amount > 0;
+                && amount > 0
+                && payType != null;
     }
 
     @Override

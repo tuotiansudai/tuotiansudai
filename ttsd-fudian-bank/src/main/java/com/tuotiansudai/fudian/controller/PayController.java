@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.controller;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
@@ -11,9 +9,6 @@ import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.service.*;
-import com.tuotiansudai.fudian.util.AmountUtils;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -60,13 +54,16 @@ public class PayController extends AsyncRequestController {
 
     @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.GET)
     public ResponseEntity<BankAsyncData> recharge(@PathVariable Source source,
-                                                  @RequestParam(value = "rechargePayType") RechargePayType rechargePayType,
                                                   @RequestBody BankRechargeDto params) {
         logger.info("[Fudian] call recharge");
 
-        RechargeRequestDto requestDto = rechargeService.recharge(source, rechargePayType, params);
+        RechargeRequestDto requestDto = rechargeService.recharge(source, params);
 
         BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.RECHARGE);
+
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call recharge, request data generation failure, data: {}", params);
+        }
 
         return ResponseEntity.ok(bankAsyncData);
 
