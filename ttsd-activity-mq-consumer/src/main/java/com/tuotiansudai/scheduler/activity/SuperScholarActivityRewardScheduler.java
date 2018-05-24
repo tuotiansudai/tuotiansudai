@@ -62,8 +62,7 @@ public class SuperScholarActivityRewardScheduler {
 
     private final int lifeSecond = 180 * 24 * 60 * 60;
 
-//    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0/10 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
     public void sendSuperScholarReward() {
 
         Map<String, String> loanIds = redisWrapperClient.hgetAll(SUPER_SCHOLAR_SEND_CASH_LOAN);

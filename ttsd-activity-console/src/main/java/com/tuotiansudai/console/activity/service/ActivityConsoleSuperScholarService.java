@@ -8,6 +8,7 @@ import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardView;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ActivityConsoleSuperScholarService {
         List<ActivityInvestModel> activityInvestModels = activityInvestMapper.findByUserNameOrMobile(keyWord,
                 ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(),
                 activityStartTime,
-                new Date().after(activityEndTime) ? activityEndTime : new Date());
+                new Date().after(activityEndTime) ? activityEndTime : DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate());
         List<SuperScholarRewardView> list = activityInvestModels.stream()
                 .filter(model -> superScholarRewardMapper.findByLoginNameAndAnswerTime(model.getLoginName(), model.getCreatedTime()) != null)
                 .map(model -> {
