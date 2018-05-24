@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.UserRechargeDto;
+import com.tuotiansudai.dto.request.BankRechargeRequestDto;
 import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankModel;
@@ -53,12 +53,13 @@ public class RechargeController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView recharge(@Valid @ModelAttribute UserRechargeDto userRechargeDto) {
-        BankAsyncData baseDto = userRechargeService.recharge(userRechargeDto.getSource(),
+    public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
+        BankAsyncData baseDto = userRechargeService.recharge(dto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),
-                AmountConverter.convertStringToCent(userRechargeDto.getAmount()),
-                userRechargeDto.getPayType());
+                AmountConverter.convertStringToCent(dto.getAmount()),
+                dto.getPayType(),
+                dto.getChannel());
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

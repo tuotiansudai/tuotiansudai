@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.dto.request;
 
 import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class UserRechargeDto implements Serializable {
+public class BankRechargeRequestDto implements Serializable {
 
     private String loginName;
 
@@ -20,6 +20,8 @@ public class UserRechargeDto implements Serializable {
 
     @NotEmpty
     private String PayType;
+
+    private String channel;
 
     public String getLoginName() {
         return loginName;
@@ -51,5 +53,13 @@ public class UserRechargeDto implements Serializable {
 
     public void setPayType(String payType) {
         PayType = payType;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

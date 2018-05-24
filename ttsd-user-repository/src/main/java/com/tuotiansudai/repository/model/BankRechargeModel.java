@@ -29,16 +29,17 @@ public class BankRechargeModel {
 
     private Date createdTime;
 
-    public UserRechargeModel() {
+    public BankRechargeModel() {
     }
 
-    public UserRechargeModel(String loginName, long amount, Source source, String payType) {
+    public BankRechargeModel(String loginName, long amount, String payType, Source source, String channel) {
         this.loginName = loginName;
         this.amount = amount;
         this.fee = 0;
         this.source = source;
+        this.channel = channel;
         this.PayType = payType;
-        this.status = UserRechargeStatus.WAIT_PAY;
+        this.status = BankRechargeStatus.WAIT_PAY;
     }
 
     public long getId() {

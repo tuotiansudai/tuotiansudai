@@ -112,7 +112,7 @@ public class BankWrapperClient {
     }
 
     public BankAsyncData recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType){
-        return asyncExecute(MessageFormat.format("/user/recharge/source/{0}", source.name().toLowerCase()),
+        return asyncExecute(MessageFormat.format("/recharge/source/{0}", source.name().toLowerCase()),
                 new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, amount, rechargeId, RechargePayType.valueOf(payType)));
     }
 
