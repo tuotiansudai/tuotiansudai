@@ -7,6 +7,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.PasswordResetContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -26,13 +27,16 @@ public class PasswordResetService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public PasswordResetService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public PasswordResetService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -51,7 +55,12 @@ public class PasswordResetService implements AsyncCallbackInterface {
     }
 
     @Override
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updatePasswordReset(responseData);
+    }
+
+    @Override
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[password reset callback] data is {}", responseData);
 
         ResponseDto responseDto = ApiType.PASSWORD_RESET.getParser().parse(responseData);

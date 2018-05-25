@@ -6,6 +6,7 @@ import com.tuotiansudai.fudian.dto.request.AuthorizationRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -25,13 +26,16 @@ public class AuthorizationService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public AuthorizationService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public AuthorizationService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -50,7 +54,12 @@ public class AuthorizationService implements AsyncCallbackInterface {
     }
 
     @Override
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateAuthorization(responseData);
+    }
+
+    @Override
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[authorization] data is {}", responseData);
 
         ResponseDto responseDto = ApiType.AUTHORIZATION.getParser().parse(responseData);

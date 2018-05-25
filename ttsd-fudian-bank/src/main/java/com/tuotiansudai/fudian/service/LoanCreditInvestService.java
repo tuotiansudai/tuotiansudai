@@ -7,6 +7,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanCreateContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -26,13 +27,16 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -51,7 +55,12 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
     }
 
     @Override
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateLoanCreditInvest(responseData);
+    }
+
+    @Override
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan credit invest] data is {}", responseData);
         ResponseDto responseDto = ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
 

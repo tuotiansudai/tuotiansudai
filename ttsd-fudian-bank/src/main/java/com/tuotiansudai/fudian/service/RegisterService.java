@@ -11,6 +11,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -32,15 +33,18 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final MessageQueueClient messageQueueClient;
 
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper) {
+    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.messageQueueClient = messageQueueClient;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
@@ -60,7 +64,13 @@ public class RegisterService implements AsyncCallbackInterface {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateRegister(responseData);
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[register callback] data is {}", responseData);
 
         ResponseDto<RegisterContentDto> responseDto = ApiType.REGISTER.getParser().parse(responseData);
