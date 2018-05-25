@@ -148,7 +148,6 @@ p {
                   }
                 }
                 &.recomender-iphone {
-                  margin-bottom: 0;
                   display: none;
                   &.show {
                     display: block;
@@ -659,6 +658,9 @@ p {
           font-size: 30px;
           color: #faf0c3;
           position: relative;
+          .squre {
+            display: none;
+          }
           .tip-line {
             width: 301px;
             height: 18px;
@@ -991,7 +993,6 @@ body {
                     }
                   }
                   &.recomender-iphone {
-                    margin-bottom: 0;
                     display: none;
                     &.show {
                       display: block;
@@ -1296,6 +1297,14 @@ body {
             position: relative;
             .tip-line {
               display: none;
+            }
+            .squre {
+              display: inline-block;
+              vertical-align: mi;
+              width: 0.16rem;
+              height: 0.16rem;
+              background: #faf0c3;
+              margin-right: 0.2rem;
             }
           }
           .kindly-tips-con {

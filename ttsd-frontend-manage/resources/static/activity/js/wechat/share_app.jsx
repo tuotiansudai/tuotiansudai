@@ -50,7 +50,7 @@ $inputImgCaptcha.on('keyup', function (event) {
 });
 disableCaptchaBtn();
 function disableCaptchaBtn() {
-    if ($('#mobile').val() != '' && /0?(13|14|15|18)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
+    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
         if(!isSmsSended){
             $fetchCaptcha.prop('disabled', false);
         }
@@ -436,6 +436,11 @@ $voiceBtn.on('click', function(event) {
 $('.open-app').click(function (e) {
     commonFun.toDownloadApp();
 })
+$('.close-app').click(function (e) {
+    e.stopPropagation();
+    $('.app-container-landing').hide();
+})
+
 
 
 

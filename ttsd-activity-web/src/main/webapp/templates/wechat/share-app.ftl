@@ -51,35 +51,27 @@
 
 
                 <div class="to-experience textCenter">
-                    <a class="gold-btn coupon-btn" href="javascript:;">领取6888元体验金</a>
+                    <a class="gold-btn coupon-btn" href="javascript:;">马上投资</a>
                 </div>
             </div>
             <div class="wap-con-swiper">
                 <div class="swiper-container" id="fuliList">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide item1">
-                            <@global.isAnonymous>
-                                <a class="get-btn coupon-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
-                            </@global.isNotAnonymous>
+
+
+                                <a class="get-btn" href="/loan-list">马上投资</a>
+
                         </div>
                         <div class="swiper-slide item2">
-                            <@global.isAnonymous>
-                                <a class="get-btn coupon-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
+
+                                <a class="get-btn" href="/loan-list">马上投资</a>
                             </@global.isNotAnonymous>
                         </div>
                         <div class="swiper-slide item3">
-                            <@global.isAnonymous>
-                                <a class="get-btn coupon-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
-                            </@global.isNotAnonymous>
+
+                                <a class="get-btn" href="/loan-list">马上投资</a>
+
                         </div>
                     </div>
                     <div class="controlsBtn prevBtn"></div>
@@ -90,12 +82,8 @@
                 <h2 class="red-ware-title"></h2>
                 <div class="red-ware">
                     <div class="red-ware-img">
-                        <@global.isAnonymous>
-                            <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
-                        </@global.isAnonymous>
-                        <@global.isNotAnonymous>
+
                             <a class="red-ware-btn" href="/loan-list">立即投资</a>
-                        </@global.isNotAnonymous>
                     </div>
                 </div>
             </div>
@@ -213,17 +201,18 @@
                             <p class="font">历史全额兑付，0逾期0坏账</p></dd>
                     </dl>
                     <dl>
-                        <dt class="icon-advance4"></dt>
+                        <dt class="icon-advance6"></dt>
                         <dd><p class="profile">获批ICP经营许可证</p>
                             <p class="font">稳健运营，合规披露</p></dd>
                     </dl>
                     <dl>
-                        <dt class="icon-advance5"></dt>
+                        <dt class="icon-advance4"></dt>
                         <dd><p class="profile">四大保障，12项措施</p>
                             <p class="font">资金、个人信息均安全</p></dd>
+
                     </dl>
                     <dl>
-                        <dt class="icon-advance6"></dt>
+                        <dt class="icon-advance5"></dt>
                         <dd><p class="profile">携手CFCA权威认证</p>
                             <p class="font">投资合同受法律保护</p></dd>
                     </dl>

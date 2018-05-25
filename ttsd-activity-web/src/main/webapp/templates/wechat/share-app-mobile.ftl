@@ -248,17 +248,18 @@
                             <p class="font">历史全额兑付，0逾期0坏账</p></dd>
                     </dl>
                     <dl>
-                        <dt class="icon-advance4"></dt>
+                        <dt class="icon-advance6"></dt>
                         <dd><p class="profile">获批ICP经营许可证</p>
                             <p class="font">稳健运营，合规披露</p></dd>
                     </dl>
                     <dl>
-                        <dt class="icon-advance5"></dt>
+                        <dt class="icon-advance4"></dt>
                         <dd><p class="profile">四大保障，12项措施</p>
                             <p class="font">资金、个人信息均安全</p></dd>
+
                     </dl>
                     <dl>
-                        <dt class="icon-advance6"></dt>
+                        <dt class="icon-advance5"></dt>
                         <dd><p class="profile">携手CFCA权威认证</p>
                             <p class="font">投资合同受法律保护</p></dd>
                     </dl>

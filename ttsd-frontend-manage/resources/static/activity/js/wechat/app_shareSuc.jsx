@@ -48,6 +48,10 @@ var mySwiper = new Swiper ('#fuliList', {
 $('.open-app').click(function (e) {
     commonFun.toDownloadApp();
 })
+$('.close-app').click(function (e) {
+    e.stopPropagation();
+    $('.app-container-landing').hide();
+})
 
 
 
