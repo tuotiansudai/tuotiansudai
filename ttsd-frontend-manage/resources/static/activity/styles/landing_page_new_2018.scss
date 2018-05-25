@@ -1128,7 +1128,8 @@ body {
             width: 5.96rem;
             height: 3.9rem;
             margin: 0 auto;
-            overflow: visible!important;
+            //overflow: visible!important;
+            float: none;
             .swiper-wrapper {
               .swiper-slide{
                 width: 5.96rem;

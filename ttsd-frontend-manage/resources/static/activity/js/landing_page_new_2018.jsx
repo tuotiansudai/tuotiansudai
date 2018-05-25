@@ -32,9 +32,6 @@ if($('#fuliList').length){
         img.src = imgUrl;
         _self.append(img);
     })
-}
-
-
     var mySwiper = new Swiper ('#fuliList', {
         direction: 'horizontal',
         loop: true,
@@ -48,17 +45,23 @@ if($('#fuliList').length){
         prevButton: '.nextBtn'
 
     });
+}
 
 
-//pc swiper
-var mySwiper = new Swiper ('#loanBoxList', {
-    direction: 'horizontal',
-    loop: true,
-    autoplay:5000,
-    autoplayDisableOnInteraction:false,
-    pagination: '.swiper-pagination'
 
-});
+
+
+if($('#loanBoxList').length){
+    //pc swiper
+    var mySwiper = new Swiper ('#loanBoxList', {
+        direction: 'horizontal',
+        loop: true,
+        autoplay:5000,
+        autoplayDisableOnInteraction:false,
+        pagination: '.swiper-pagination'
+
+    });
+}
 
 let isVoice = false;
 $inputImgCaptcha.on('keyup', function (event) {
@@ -70,7 +73,7 @@ $('#mobile').on('keyup',function () {
     disableCaptchaBtn();
 })
 function disableCaptchaBtn() {
-    if ($('#mobile').val() != '' && /0?(13|14|15|18|17)[0-9]{9}/.test($('#mobile').val()) && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
+    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
 
             $fetchCaptcha.prop('disabled', false);
 
