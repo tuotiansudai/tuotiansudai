@@ -21,6 +21,8 @@
                         <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
                     </li>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input type="hidden" name="activityReferrer" id="activityReferrer"
+                           value="<#if activityReferrerMobile??>${activityReferrerMobile!}</#if>">
                     <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius smsIcon"
                                                   placeholder="手机验证码"
                                                   name="captcha" type="text" maxlength="6" validate>

@@ -269,6 +269,7 @@ registerForm.onsubmit = function(event) {
     paramObj.password = registerForm.password.value;
     paramObj.referrer = referrerMobile;
     paramObj.agreement = $('#agreementInput').prop('checked');
+    paramObj.activityReferrer = $('#activityReferrer').val();
 
 
     commonFun.useAjax({

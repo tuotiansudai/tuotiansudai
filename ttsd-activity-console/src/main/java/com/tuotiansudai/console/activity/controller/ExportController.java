@@ -275,4 +275,18 @@ public class ExportController {
         List<List<String>> csvData = activityConsoleExportService.buildInviteHelpInvestRewardActivityCsvList(keyWord, minInvest, maxInvest);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InviteHelpInvestActivityHeader, csvData, response.getOutputStream());
     }
+
+    @RequestMapping(value = "/super-scholar", method = RequestMethod.GET)
+    public void superScholarExport(HttpServletResponse response,
+                                   @RequestParam(value = "keyWord", required = false) String keyWord) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(CsvHeaderType.SuperScholarActivityHeader.getDescription() + new DateTime().toString("yyyyMMddHHmmSS") + ".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> csvData = activityConsoleExportService.buildSuperScholarActivityCsvList(keyWord);
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.SuperScholarActivityHeader, csvData, response.getOutputStream());
+    }
 }

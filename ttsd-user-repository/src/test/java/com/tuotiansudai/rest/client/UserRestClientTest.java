@@ -55,7 +55,7 @@ public class UserRestClientTest {
 
     @Test
     public void shouldRegisterUser() throws JsonProcessingException {
-        RegisterRequestDto requestDto = new RegisterRequestDto("13800138012", "123abc", null, "Test", Source.WEB);
+        RegisterRequestDto requestDto = new RegisterRequestDto("13800138012", "123abc", null, "Test", Source.WEB, null);
         UserRestUserInfo mockResp = buildMockUserRestUserInfoResponse(requestDto.getMobile(), requestDto.getChannel(), requestDto.getSource(), null);
         this.mockServer.enqueue(buildCreateQuestionResponse(mockResp, 201));
 

@@ -360,6 +360,7 @@ function calculationFun(doc, win) {
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 };
+//把px除以100成rem,用于移动端.调用的时候commonFun.calculationRem(document, window)
 function calculationRem(doc, win) {
     let docEl = doc.documentElement,
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
