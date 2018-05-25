@@ -60,7 +60,13 @@ public class RegisterService implements AsyncCallbackInterface {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public void syncCallback(ResponseDto responseData) {
+        updateMapper.updateRegister(responseData);
+    }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto asyncCallback(String responseData) {
         logger.info("[register callback] data is {}", responseData);
 
         ResponseDto<RegisterContentDto> responseDto = ApiType.REGISTER.getParser().parse(responseData);
