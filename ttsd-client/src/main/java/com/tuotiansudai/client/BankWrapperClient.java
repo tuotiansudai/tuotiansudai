@@ -89,7 +89,7 @@ public class BankWrapperClient {
     }
 
     public BankAsyncMessage register(Source source, String loginName, String mobile, String realName, String identityCode) {
-        return asyncExecute(MessageFormat.format("/user/register/source/{}", source.name().toLowerCase()),
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
                 new BankRegisterDto(loginName, mobile, realName, identityCode));
     }
 
@@ -150,7 +150,8 @@ public class BankWrapperClient {
 
     private BankAsyncMessage asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
-        String url = this.baseUrl + path;
+//        String url = this.baseUrl + path;
+        String url = "http://192.168.80.88:30001" + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
 

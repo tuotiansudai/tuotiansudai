@@ -28,11 +28,11 @@ public class BankAccountService {
 
     public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(registerAccountDto.getLoginName());
-        if (bankAccountModel != null) {
-            return new BankAsyncMessage(null, null, false, "已实名认证");
-        }
+//        if (bankAccountModel != null) {
+//            return new BankAsyncMessage(null, null, false, "已实名认证");
+//        }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(Source.WEB, registerAccountDto.getLoginName(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber(), registerAccountDto.getMobile());
+        return bankWrapperClient.register(Source.WEB, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
     }
 
     public BankAccountModel findBankAccount(String loginName) {

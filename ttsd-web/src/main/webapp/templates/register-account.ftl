@@ -23,7 +23,7 @@
     </div>
 
 <div class="register-box ">
-    <form class="register-account-form" id="registerAccountForm" method="post">
+    <form class="register-account-form" id="registerAccountForm" method="post" action="/register/account">
         <ul class="reg-list tl register-step-two">
             <li>
                 <label class="title">真实姓名</label>
