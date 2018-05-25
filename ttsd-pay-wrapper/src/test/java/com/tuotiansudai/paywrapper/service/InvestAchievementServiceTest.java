@@ -43,7 +43,7 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel.setTradingTime(new Date());
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
@@ -67,12 +67,12 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investModel1.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(investModel1);
-        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);
@@ -93,25 +93,25 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan4 = getFakeLoan(loaner);
 
         UserModel investor1 = getFakeUser("investor1");
-        InvestModel loan1InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan1.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel loan1InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan1.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         loan1InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(1).toDate());
         loan1InvestModel.setStatus(InvestStatus.SUCCESS);
         loan1InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan1InvestModel);
 
-        InvestModel loan2InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan2.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel loan2InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan2.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         loan2InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(2).toDate());
         loan2InvestModel.setStatus(InvestStatus.SUCCESS);
         loan2InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan2InvestModel);
 
-        InvestModel loan3InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan3.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel loan3InvestModel = new InvestModel(IdGenerator.generate(), fakeLoan3.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         loan3InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().withTimeAtStartOfDay().plusSeconds(3).toDate());
         loan3InvestModel.setStatus(InvestStatus.SUCCESS);
         loan3InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan3InvestModel);
 
-        InvestModel loan4InvestModel1 = new InvestModel(IdGenerator.generate(), fakeLoan4.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel loan4InvestModel1 = new InvestModel(IdGenerator.generate(), fakeLoan4.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         loan4InvestModel1.setTradingTime(new Date());
         loan4InvestModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(loan4InvestModel1);
@@ -119,7 +119,7 @@ public class InvestAchievementServiceTest {
         investAchievementService.awardAchievement(loan4InvestModel1);
 
         UserModel investor2 = getFakeUser("investor2");
-        InvestModel loan4InvestModel2 = new InvestModel(IdGenerator.generate(), fakeLoan4.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel loan4InvestModel2 = new InvestModel(IdGenerator.generate(), fakeLoan4.getId(), null, investor2.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         loan4InvestModel2.setTradingTime(new Date());
         loan4InvestModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(loan4InvestModel2);
@@ -141,14 +141,14 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor1 = getFakeUser("investor1");
-        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
         UserModel investor2 = getFakeUser("investor2");
-        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 2, investor2.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor2.getLoginName(), 2, 0.1, false, null, Source.WEB, null);
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);
@@ -169,14 +169,14 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor1 = getFakeUser("investor1");
-        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor1.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor1.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
         UserModel investor2 = getFakeUser("investor2");
-        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor2.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor2.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);
@@ -197,13 +197,13 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, fakeLoan.getLoanAmount() - 1, investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel1 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), fakeLoan.getLoanAmount() - 1, 0.1, false, null, Source.WEB, null);
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, 1, investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel2 = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), 1, 0.1, false, null, Source.WEB, null);
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel2);
@@ -224,7 +224,7 @@ public class InvestAchievementServiceTest {
         LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, fakeLoan.getLoanAmount(), investor.getLoginName(), null, Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), fakeLoan.getId(), null, investor.getLoginName(), fakeLoan.getLoanAmount(), 0.1, false, null, Source.WEB, null);
         investModel.setTradingTime(new Date());
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);

@@ -4,17 +4,25 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
-import com.tuotiansudai.fudian.dto.*;
+import com.tuotiansudai.fudian.dto.BankInvestDto;
+import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
+import com.tuotiansudai.fudian.dto.BankRechargeDto;
+import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Map;
 
@@ -53,19 +61,19 @@ public class PayController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.GET)
-    public ResponseEntity<BankAsyncData> recharge(@PathVariable Source source,
+    public ResponseEntity<BankAsyncMessage> recharge(@PathVariable Source source,
                                                   @RequestBody BankRechargeDto params) {
         logger.info("[Fudian] call recharge");
 
         RechargeRequestDto requestDto = rechargeService.recharge(source, params);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.RECHARGE);
+        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, ApiType.RECHARGE);
 
-        if (!bankAsyncData.isStatus()) {
+        if (!bankAsyncMessage.isStatus()) {
             logger.error("[Fudian] call recharge, request data generation failure, data: {}", params);
         }
 
-        return ResponseEntity.ok(bankAsyncData);
+        return ResponseEntity.ok(bankAsyncMessage);
 
     }
 
@@ -81,7 +89,7 @@ public class PayController extends AsyncRequestController {
 
     @RequestMapping(path = "/withdraw/source/{source}", method = RequestMethod.POST)
     @SuppressWarnings(value = "unchecked")
-    public ResponseEntity<BankAsyncData> withdraw(@PathVariable Source source, @RequestBody BankWithdrawDto params) {
+    public ResponseEntity<BankAsyncMessage> withdraw(@PathVariable Source source, @RequestBody BankWithdrawDto params) {
         logger.info("[Fudian] call withdraw");
 
         if (!params.isValid()) {
@@ -91,7 +99,7 @@ public class PayController extends AsyncRequestController {
 
         WithdrawRequestDto requestDto = withdrawService.withdraw(source, params);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.WITHDRAW);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.WITHDRAW);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call withdraw, request data generation failure, data: {}", params);
@@ -124,7 +132,7 @@ public class PayController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/loan-invest/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> loanInvest(@PathVariable(name = "source") Source source, @RequestBody BankInvestDto params) {
+    public ResponseEntity<BankAsyncMessage> loanInvest(@PathVariable(name = "source") Source source, @RequestBody BankInvestDto params) {
         logger.info("[Fudian] call loan invest");
 
         if (!params.isValid()) {
@@ -134,7 +142,7 @@ public class PayController extends AsyncRequestController {
 
         LoanInvestRequestDto requestDto = loanInvestService.invest(source, params);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_INVEST);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_INVEST);
 
         return ResponseEntity.ok(bankAsyncData);
     }
@@ -149,13 +157,17 @@ public class PayController extends AsyncRequestController {
         return "post";
     }
 
-    @RequestMapping(path = "/loan-fast-invest", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanFastInvest(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-fast-invest/source/{source}", method = RequestMethod.POST)
+    public ResponseEntity<BankReturnCallbackMessage> loanFastInvest(@PathVariable(name = "source") Source source, @RequestBody BankInvestDto params) {
         logger.info("[Fudian] call loan fast invest");
 
-//        String data = loanInvestService.invest("UU02615960791461001", "UA02615960791501001", "1.00", "0.00", "LU02619459384521001");
-        ResponseDto responseDto = loanInvestService.fastInvest(Source.WEB, "UU02619471098561001", "UA02619471098591001", "1.00", "0.00", "LU02619459384521001", null, null);
-        return ResponseEntity.ok(responseDto);
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan fast invest bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        BankReturnCallbackMessage bankReturnCallbackMessage = loanInvestService.fastInvest(source, params);
+        return ResponseEntity.ok(bankReturnCallbackMessage);
     }
 
     @RequestMapping(path = "/loan-repay", method = RequestMethod.GET)

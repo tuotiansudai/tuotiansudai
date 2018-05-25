@@ -87,7 +87,7 @@ public class InvestModel implements Serializable {
     public InvestModel() {
     }
 
-    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel, double investFeeRate) {
+    public InvestModel(long id, long loanId, Long transferInvestId, String loginName, long amount, double investFeeRate, boolean isNoPassword, Date investTime, Source source, String channel) {
         this.id = id;
         this.transferInvestId = transferInvestId;
         this.loginName = loginName;

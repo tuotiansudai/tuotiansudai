@@ -135,7 +135,7 @@ public class InvestTransferServiceTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -367,11 +367,11 @@ public class InvestTransferServiceTest {
         createUserByUserId("transfereeTestUser");
         LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
 
-        InvestModel transferrerInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel transferrerInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         transferrerInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(transferrerInvestModel);
 
-        InvestModel transfereeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel transfereeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         transferrerInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(transfereeInvestModel);
 

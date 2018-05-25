@@ -1,9 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
@@ -35,7 +33,7 @@ public class BankWithdrawService {
         this.weChatUserMapper = weChatUserMapper;
     }
 
-    public BankAsyncData withdraw(Source source, String loginName, String mobile, long amount, long fee) {
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
         bankWithdrawMapper.create(bankWithdrawModel);

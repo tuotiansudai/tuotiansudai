@@ -86,7 +86,7 @@ public abstract class BaseMapperTest {
     }
 
     public InvestModel createFakeInvest(long loanId, long amount, String loginName) {
-        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, 0.1, false, new Date(), Source.WEB, null);
         fakeInvestModel.setTradingTime(new Date());
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(fakeInvestModel);

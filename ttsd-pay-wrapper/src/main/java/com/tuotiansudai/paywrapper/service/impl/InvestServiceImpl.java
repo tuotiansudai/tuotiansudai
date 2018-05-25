@@ -129,7 +129,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = dto.getLoginName();
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, dto.getLoginName(), AmountConverter.convertStringToCent(dto.getAmount()), rate, false, new Date(), dto.getSource(), dto.getChannel());
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -170,7 +170,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, rate, false, new Date(), source, channel);
 
         try {
             investModel.setNoPasswordInvest(true);

@@ -237,7 +237,7 @@ public class ContractServiceTest {
     }
 
     private InvestModel getInvest(long loanId, String loginName) throws ParseException {
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 2577, loginName, new Date(), Source.ANDROID, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 2577, 0.1, false, new Date(), Source.ANDROID, null);
         investModel.setCreatedTime(new Date());
         return investModel;
     }

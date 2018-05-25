@@ -246,7 +246,7 @@ public class CouponLoanOutServiceAspectTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, 0.1, false, new Date(), Source.WEB, null);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 

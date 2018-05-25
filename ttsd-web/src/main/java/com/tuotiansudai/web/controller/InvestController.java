@@ -1,12 +1,11 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -62,7 +61,7 @@ public class InvestController {
         if (!bindingResult.hasErrors()) {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
-                BankAsyncData bankAsyncData = investService.invest(investDto);
+                BankAsyncMessage bankAsyncData = investService.invest(investDto);
                 return new ModelAndView("/pay", "pay", bankAsyncData);
             } catch (InvestException e) {
                 redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -83,30 +82,17 @@ public class InvestController {
 
     @RequestMapping(path = "/no-password-invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request) {
-        try {
-            if (bindingResult.hasErrors()) {
-                String message = bindingResult.getFieldError().getDefaultMessage();
-                BaseDto<PayDataDto> dto = new BaseDto<>();
-                PayDataDto payDataDto = new PayDataDto();
-                dto.setData(payDataDto);
-                payDataDto.setMessage(message);
-                return dto;
-            }
+    public BankReturnCallbackMessage invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return new BankReturnCallbackMessage(false, bindingResult.getFieldError().getDefaultMessage(), null);
+        }
 
-            if (!StringUtils.isEmpty(request.getSession().getAttribute("weChatUserOpenid"))) {
-                investDto.setSource(Source.WE_CHAT);
-            } else {
-                investDto.setSource(Source.WEB);
-            }
+        try {
+            investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
             investDto.setLoginName(LoginUserInfo.getLoginName());
             return investService.noPasswordInvest(investDto);
         } catch (InvestException e) {
-            BaseDto<PayDataDto> dto = new BaseDto<>();
-            PayDataDto payDataDto = new PayDataDto();
-            dto.setData(payDataDto);
-            payDataDto.setMessage(e.getMessage());
-            return dto;
+            return new BankReturnCallbackMessage(false, e.getMessage(), null);
         }
     }
 

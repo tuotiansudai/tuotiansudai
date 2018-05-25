@@ -146,7 +146,7 @@ public class LoanDetailServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(IdGenerator.generate(), loanId, null, 50, loginName, null, Source.WEB, null, 0.1);
+        return new InvestModel(IdGenerator.generate(), loanId, null, loginName, 50, 0.1, false, null, Source.WEB, null);
     }
 
     private void createMockUser(String loginName) {

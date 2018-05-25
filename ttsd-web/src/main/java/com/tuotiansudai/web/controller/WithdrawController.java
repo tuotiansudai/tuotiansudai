@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.BankWithdrawService;
@@ -55,7 +55,7 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
-        BankAsyncData bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
+        BankAsyncMessage bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
                 LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee);
         return new ModelAndView("/pay", "pay", bankAsyncData);

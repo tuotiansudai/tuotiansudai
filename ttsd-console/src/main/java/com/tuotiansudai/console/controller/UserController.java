@@ -123,8 +123,7 @@ public class UserController {
                 editUserDto.setBankCardNumber(bankCard.getCardNumber());
             }
 
-            AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
-            editUserDto.setAutoInvestStatus(autoInvestPlan != null && autoInvestPlan.isEnabled() ? "1" : "0");
+            editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
             modelAndView.addObject("user", editUserDto);

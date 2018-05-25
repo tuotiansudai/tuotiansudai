@@ -44,7 +44,6 @@
         <result column="channel" property="channel"/>
         <result column="source" property="source"/>
         <result column="invest_time" property="investTime"/>
-        <result column="auto_invest" property="autoInvest"/>
         <result column="invest_amount" property="investAmount"/>
         <result column="coupon_id" property="couponId"/>
         <result column="extra_rate" property="extraRate"/>
@@ -112,7 +111,7 @@
         <include refid="columns"></include>
         )
         value(#{id}, #{bankOrderNo}, #{bankOrderDate},  #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
-        #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, now(), now(), #{investTime}, #{tradingTime},
+        #{channel}, #{isNoPasswordInvest}, now(), now(), #{investTime}, #{tradingTime},
         #{achievements, typeHandler=com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler},
         #{investFeeRate}, #{contractNo})
     </insert>

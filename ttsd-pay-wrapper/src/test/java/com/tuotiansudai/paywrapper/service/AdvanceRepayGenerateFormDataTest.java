@@ -83,7 +83,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, 0.1);
+        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, investor.getLoginName(), loan.getLoanAmount(), 0.1, false, recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTradingTime(invest.getInvestTime());
         invest.setInvestFeeRate(membershipModel.getFee());
@@ -131,7 +131,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), recheckTime.minusDays(1).toDate(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest = new InvestModel(IdGenerator.generate(), loan.getId(), null, investor.getLoginName(), loan.getLoanAmount(), membershipModel.getFee(), false, recheckTime.minusDays(1).toDate(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
         InvestRepayModel investRepay1 = new InvestRepayModel(IdGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);

@@ -26,7 +26,6 @@ public class InvestPaginationItemView implements Serializable {
     private String channel;
     private Source source;
     private Date investTime;
-    private boolean autoInvest;
     private long investAmount;
     private long couponId;
     private double extraRate;
@@ -176,14 +175,6 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setInvestTime(Date investTime) {
         this.investTime = investTime;
-    }
-
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
     }
 
     public long getInvestAmount() {

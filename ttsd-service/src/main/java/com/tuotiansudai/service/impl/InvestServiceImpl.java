@@ -5,7 +5,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
@@ -14,7 +13,8 @@ import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -61,9 +61,6 @@ public class InvestServiceImpl implements InvestService {
     private final static double DEFAULT_FEE = Double.parseDouble(ETCDConfigReader.getReader().getValue("pay.interest.fee"));
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
     private BankAccountMapper bankAccountMapper;
 
     @Autowired
@@ -71,9 +68,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
@@ -124,28 +118,13 @@ public class InvestServiceImpl implements InvestService {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Override
-    @Transactional
-    public BankAsyncData invest(InvestDto investDto) throws InvestException {
+    public BankAsyncMessage invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
-        this.checkInvestAvailable(investDto);
-
-        double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
-
-        InvestModel investModel = new InvestModel(IdGenerator.generate(),
-                Long.parseLong(investDto.getLoanId()),
-                null,
-                AmountConverter.convertStringToCent(investDto.getAmount()),
-                investDto.getLoginName(),
-                new Date(),
-                investDto.getSource(),
-                investDto.getChannel(),
-                rate);
-        investMapper.create(investModel);
-
-        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
-        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        BankAsyncData bankAsyncData = bankWrapperClient.invest(investModel.getId(),
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        InvestModel investModel = this.generateInvest(investDto);
+        return bankWrapperClient.invest(investModel.getId(),
                 investDto.getSource(),
                 investModel.getLoginName(),
                 userModel.getMobile(),
@@ -155,28 +134,44 @@ public class InvestServiceImpl implements InvestService {
                 loanModel.getLoanTxNo(),
                 loanModel.getId(),
                 loanModel.getName());
-
-        if (bankAsyncData.isStatus() && CollectionUtils.isNotEmpty(investDto.getUserCouponIds())) {
-            for (Long userCouponId : investDto.getUserCouponIds()) {
-                UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-                userCouponModel.setStatus(InvestStatus.WAIT_PAY);
-                userCouponModel.setInvestId(investModel.getId());
-                userCouponModel.setLoanId(investModel.getLoanId());
-                userCouponModel.setUsedTime(new Date());
-                userCouponMapper.update(userCouponModel);
-            }
-        }
-
-        return bankAsyncData;
     }
 
     @Override
-    @Transactional
-    public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
-        bankAccountMapper.findByLoginName(investDto.getLoginName());
+    public BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        InvestModel investModel = this.generateInvest(investDto);
+        return bankWrapperClient.fastInvest(investModel.getId(),
+                investDto.getSource(),
+                investModel.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                investModel.getAmount(),
+                loanModel.getLoanTxNo(),
+                loanModel.getId(),
+                loanModel.getName());
+    }
+
+    private InvestModel generateInvest(InvestDto investDto) throws InvestException {
         this.checkInvestAvailable(investDto);
-        return payWrapperClient.noPasswordInvest(investDto);
+        double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
+
+        InvestModel investModel = new InvestModel(IdGenerator.generate(),
+                Long.parseLong(investDto.getLoanId()),
+                null,
+                investDto.getLoginName(), AmountConverter.convertStringToCent(investDto.getAmount()),
+                rate,
+                investDto.isNoPassword(),
+                new Date(),
+                investDto.getSource(),
+                investDto.getChannel()
+        );
+        investMapper.create(investModel);
+
+        return investModel;
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
@@ -409,58 +404,6 @@ public class InvestServiceImpl implements InvestService {
         dto.setStatus(true);
 
         return dto;
-    }
-
-    @Override
-    @Transactional
-    public boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto dto, String ip) {
-        if (Strings.isNullOrEmpty(loginName)) {
-            return false;
-        }
-
-        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
-        if (model != null) {
-            model.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
-            model.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
-            model.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
-            model.setAutoInvestPeriods(dto.getAutoInvestPeriods());
-            model.setCreatedTime(new Date());
-            model.setEnabled(true);
-            autoInvestPlanMapper.update(model);
-        } else {
-            AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
-            autoInvestPlanModel.setId(IdGenerator.generate());
-            autoInvestPlanModel.setLoginName(loginName);
-            autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(dto.getMinInvestAmount()));
-            autoInvestPlanModel.setMaxInvestAmount(AmountConverter.convertStringToCent(dto.getMaxInvestAmount()));
-            autoInvestPlanModel.setRetentionAmount(AmountConverter.convertStringToCent(dto.getRetentionAmount()));
-            autoInvestPlanModel.setAutoInvestPeriods(dto.getAutoInvestPeriods());
-            autoInvestPlanModel.setCreatedTime(new Date());
-            autoInvestPlanModel.setEnabled(true);
-            autoInvestPlanMapper.create(autoInvestPlanModel);
-        }
-
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn On.");
-        return true;
-    }
-
-    @Override
-    public boolean turnOffAutoInvest(String loginName, String ip) {
-        AutoInvestPlanModel model = autoInvestPlanMapper.findByLoginName(loginName);
-        if (model == null || !model.isEnabled()) {
-            return false;
-        }
-        autoInvestPlanMapper.disable(loginName);
-
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.AUTO_INVEST, "Turn Off.");
-        return true;
-    }
-
-    @Override
-    public AutoInvestPlanModel findAutoInvestPlan(String loginName) {
-        return autoInvestPlanMapper.findByLoginName(loginName);
     }
 
     @Override

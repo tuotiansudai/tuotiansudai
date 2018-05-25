@@ -322,6 +322,9 @@
                             </@global.role>
                         </dl>
                     </form>
+                    <form name="isPaySuccess" id="isPaySuccess" method="post" style="display: none">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
                 </#if>
                 <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                     <form action="/loan-list" method="get">

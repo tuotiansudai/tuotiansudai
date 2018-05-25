@@ -1,12 +1,11 @@
 package com.tuotiansudai.fudian.controller;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.request.*;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -51,7 +49,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/register/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> register(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> register(@PathVariable Source source, @RequestBody Map<String, String> params) {
         logger.info("[Fudian] call register, params: {}", params);
 
         String loginName = params.get("loginName");
@@ -65,7 +63,7 @@ public class UserController extends AsyncRequestController {
 
         RegisterRequestDto requestDto = registerService.register(source, loginName, mobile, realName, identityCode);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call register, request data generation failure, data: {}");
@@ -75,7 +73,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> cardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+    public ResponseEntity<BankAsyncMessage> cardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -85,7 +83,7 @@ public class UserController extends AsyncRequestController {
 
         CardBindRequestDto requestDto = cardBindService.bind(source, params);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call bind card, request data generation failure, data: {}");
@@ -95,7 +93,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/cancel-card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> cancelCardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+    public ResponseEntity<BankAsyncMessage> cancelCardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call cancel bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -105,7 +103,7 @@ public class UserController extends AsyncRequestController {
 
         CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call cancel bind card, request data generation failure, data: {}");
@@ -115,7 +113,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/authorization/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> authorization(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> authorization(@PathVariable Source source, @RequestBody Map<String, String> params) {
         logger.info("[Fudian] call authorization, params: {}", params);
 
         String loginName = params.get("loginName");
@@ -129,7 +127,7 @@ public class UserController extends AsyncRequestController {
 
         AuthorizationRequestDto requestDto = authorizationService.auth(source, loginName, mobile, bankUserName, bankAccountNo);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call authorization, request data generation failure, data: {}");
@@ -139,7 +137,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/password-reset/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> passwordReset(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> passwordReset(@PathVariable Source source, @RequestBody Map<String, String> params) {
         logger.info("[Fudian] call password reset, params: {}", params);
 
         String loginName = params.get("loginName");
@@ -153,7 +151,7 @@ public class UserController extends AsyncRequestController {
 
         PasswordResetRequestDto requestDto = passwordResetService.reset(source, loginName, mobile, bankUserName, bankAccountNo);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PASSWORD_RESET);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PASSWORD_RESET);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call password reset, request data generation failure, data: {}");
@@ -163,7 +161,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/phone-update/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncData> phoneUpdate(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> phoneUpdate(@PathVariable Source source, @RequestBody Map<String, String> params) {
         logger.info("[Fudian] call phone update, params: {}", params);
 
         String loginName = params.get("loginName");
@@ -178,7 +176,7 @@ public class UserController extends AsyncRequestController {
 
         PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, loginName, mobile, bankUserName, bankAccountNo, newPhone);
 
-        BankAsyncData bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
 
         if (!bankAsyncData.isStatus()) {
             logger.error("[Fudian] call phone update, request data generation failure, data: {}");

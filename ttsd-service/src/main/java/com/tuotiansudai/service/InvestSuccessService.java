@@ -53,7 +53,7 @@ public class InvestSuccessService {
         InvestModel investModel = investMapper.findById(investId);
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            logger.warn(MessageFormat.format("[MQ] invest not found or status is incorrect, message: {}", new Gson().toJson(message)));
+            logger.warn(MessageFormat.format("[MQ] invest not found or status is incorrect, message: {0}", new Gson().toJson(message)));
             return;
         }
 
