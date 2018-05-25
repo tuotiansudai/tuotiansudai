@@ -51,8 +51,6 @@ function isDisabledButton() {
     }
 }
 
-//
-// //点击立即注册按钮
 // registerAccountForm.onsubmit = function (event) {
 //     event.preventDefault();
 //     $buttonLayer.find('.status').removeClass('error').html('请耐心等待');

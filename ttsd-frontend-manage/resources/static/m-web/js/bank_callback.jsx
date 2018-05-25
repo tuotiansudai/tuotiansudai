@@ -3,7 +3,7 @@ require('mWebStyle/bank_callback.scss');
 if($('.loading-page').length){
     var arrImg = [];
     for(let i = 0; i < 26; i++) {
-        arrImg.push(require('../../images/gif/gif' +(i+1) + '.png'))
+        arrImg.push(require('../images/gif/gif' +(i+1) + '.png'))
 
     }
     var count = 0;
@@ -13,7 +13,7 @@ if($('.loading-page').length){
             count = 0;
         }
         count++;
-        $('#gifImg').attr('src',require('../../images/gif/gif' +count + '.png'));
+        $('#gifImg').attr('src',require('../images/gif/gif' +count + '.png'));
 
     },20)
 
