@@ -53,7 +53,7 @@ public class CallbackController {
 
         if (isCorrect) {
             AsyncCallbackInterface asyncCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
-            asyncCallback.asynCallback(reqData);
+            asyncCallback.notifyCallback(reqData);
         } else {
             logger.error("[notify callback] sign is incorrect, type: {}, data: {}, ", apiType.name(), reqData);
         }
@@ -80,8 +80,8 @@ public class CallbackController {
             logger.error("parse data error, return callback type: {}, data: {} ", apiType.name(), reqData);
             return ResponseEntity.badRequest().build();
         }
-        AsyncCallbackInterface syncCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
-        syncCallback.syncCallback(responseDto);
+        AsyncCallbackInterface returnCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
+        returnCallback.returnCallback(responseDto);
 
         return ResponseEntity.ok(new BankReturnCallbackMessage(responseDto.isSuccess(), responseDto.getRetMsg(), responseDto.getContent().getOrderNo()));
     }

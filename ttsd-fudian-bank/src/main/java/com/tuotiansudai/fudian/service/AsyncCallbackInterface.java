@@ -6,7 +6,7 @@ public interface AsyncCallbackInterface {
 
     void returnCallback(ResponseDto responseData);
 
-    ResponseDto callback(String responseData);
+    ResponseDto notifyCallback(String responseData);
 
     Boolean isSuccess(String orderNo);
 }
