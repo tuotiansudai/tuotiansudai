@@ -88,7 +88,7 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/user/shared", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto;
         if (bindingResult.hasErrors()) {
@@ -98,7 +98,7 @@ public class RegisterUserController {
             baseDto.setData(baseDataDto);
             return baseDto;
         }
-        requestDto.setChannel("shareAB");
+        requestDto.setChannel((String) request.getSession().getAttribute("channel"));
         baseDataDto = prepareService.register(requestDto);
         if (baseDataDto.getStatus()) {
             Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());

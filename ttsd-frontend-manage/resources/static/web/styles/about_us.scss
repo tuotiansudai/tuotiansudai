@@ -391,6 +391,7 @@ $gray5:#333333;
     .model-container {
       float: left;
       width: 100%;
+      box-sizing: border-box;
       margin-bottom: 20px;
       margin-top: 10px;
       background: #fff!important;

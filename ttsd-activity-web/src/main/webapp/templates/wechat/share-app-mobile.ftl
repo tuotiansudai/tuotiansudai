@@ -13,6 +13,8 @@
 			</div>
 			<div class="item-form">
 				<form action="#" method="post" id="registerForm">
+                    <input type="hidden" name="activityReferrer" id="activityReferrer"
+                           value="<#if activityReferrerMobile??>${activityReferrerMobile!}</#if>">
 					<div class="item-int">
 						<input type="text" validate class="item-text" name="mobile" placeholder="请输入您的手机号码" id="mobile" maxlength="11">
 					</div>

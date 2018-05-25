@@ -8,6 +8,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -28,16 +29,19 @@ public class LoanRepayService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final BankClient bankClient;
 
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public LoanRepayService(SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanRepayService(SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -89,12 +93,17 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
+        this.updateMapper.updateLoanRepay(responseDto);
         return responseDto;
     }
 
     @Override
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateLoanRepay(responseData);
+    }
+
+    @Override
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan repay callback] data is {}", responseData);
 
         ResponseDto responseDto = ApiType.LOAN_REPAY.getParser().parse(responseData);
