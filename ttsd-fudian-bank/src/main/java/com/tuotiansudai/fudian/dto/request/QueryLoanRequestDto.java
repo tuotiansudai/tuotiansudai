@@ -8,8 +8,8 @@ public class QueryLoanRequestDto extends BaseRequestDto {
 
     private String loanTxNo;
 
-    public QueryLoanRequestDto(String loginName, String mobile, String loanTxNo) {
-        super(Source.WEB, loginName, mobile, ApiType.QUERY_LOAN, null);
+    public QueryLoanRequestDto(String loanTxNo) {
+        super(Source.WEB, null, null, ApiType.QUERY_LOAN, null);
         this.loanTxNo = loanTxNo;
     }
 

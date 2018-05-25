@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
-import java.io.Serializable;
-
-public class BankBindCardMessage implements Serializable {
+public class BankBindCardMessage extends BankBaseMessage {
 
     private String loginName;
 
@@ -25,14 +23,11 @@ public class BankBindCardMessage implements Serializable {
     public BankBindCardMessage() {
     }
 
-    public BankBindCardMessage(String loginName, String mobile, String bankUserName, String bankAccountNo, String bank, String bankCode, String cardNumber, String bankOrderNo, String bankOrderDate) {
+    public BankBindCardMessage(String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.bankUserName = bankUserName;
         this.bankAccountNo = bankAccountNo;
-        this.bank = bank;
-        this.bankCode = bankCode;
-        this.cardNumber = cardNumber;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
     }
@@ -57,12 +52,24 @@ public class BankBindCardMessage implements Serializable {
         return bank;
     }
 
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
     public String getBankCode() {
         return bankCode;
     }
 
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
     public String getCardNumber() {
         return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getBankOrderNo() {

@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
-import java.io.Serializable;
-
-public class BankInvestMessage implements Serializable {
+public class BankInvestMessage extends BankBaseMessage {
 
     private long loanId;
 

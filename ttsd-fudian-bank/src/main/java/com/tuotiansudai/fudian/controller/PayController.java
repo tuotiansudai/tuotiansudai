@@ -113,13 +113,13 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankLoanCreateMessage);
     }
 
-    @RequestMapping(path = "/loan-full", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanFull(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-full", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> loanFull(@RequestBody BankLoanFullDto bankLoanFullDto) {
         logger.info("[Fudian] call loan full");
 
-        ResponseDto responseDto = loanFullService.full("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "20180427000000000001", "20180427", "20180701", null, null);
+        loanFullService.full(bankLoanFullDto);
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(loanFullService.full(bankLoanFullDto));
     }
 
     @RequestMapping(path = "/loan-invest/source/{source}", method = RequestMethod.POST)

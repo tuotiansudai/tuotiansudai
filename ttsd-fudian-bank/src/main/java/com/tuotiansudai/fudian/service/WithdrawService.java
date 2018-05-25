@@ -1,12 +1,10 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankWithdrawDto;
-import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.request.WithdrawRequestDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
@@ -33,7 +31,7 @@ public class WithdrawService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(WithdrawService.class);
 
-    private final static String WITHDRAW_ID_TEMPLATE = "BANK_WITHDRAW_{0}";
+    private final static String BANK_WITHDRAW_KEY = "BANK_WITHDRAW_{0}";
 
     private final MessageQueueClient messageQueueClient;
 
@@ -46,6 +44,8 @@ public class WithdrawService implements AsyncCallbackInterface {
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final Gson gson = new GsonBuilder().create();
 
     @Autowired
     public WithdrawService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
@@ -64,8 +64,7 @@ public class WithdrawService implements AsyncCallbackInterface {
                 bankWithdrawDto.getBankUserName(),
                 bankWithdrawDto.getBankAccountNo(),
                 AmountUtils.toYuan(bankWithdrawDto.getAmount()),
-                AmountUtils.toYuan(bankWithdrawDto.getFee()),
-                Strings.isNullOrEmpty(bankWithdrawDto.getOpenId()) ? null : Maps.newHashMap(ImmutableMap.<String, String>builder().put("openId", bankWithdrawDto.getOpenId()).build()));
+                AmountUtils.toYuan(bankWithdrawDto.getFee()));
 
         signatureHelper.sign(dto);
 
@@ -76,7 +75,19 @@ public class WithdrawService implements AsyncCallbackInterface {
 
         insertMapper.insertWithdraw(dto);
 
-        redisTemplate.opsForValue().set(MessageFormat.format(WITHDRAW_ID_TEMPLATE, dto.getOrderNo()), String.valueOf(bankWithdrawDto.getWithdrawId()), 7, TimeUnit.DAYS);
+        BankWithdrawMessage message = new BankWithdrawMessage(bankWithdrawDto.getWithdrawId(),
+                bankWithdrawDto.getLoginName(),
+                bankWithdrawDto.getMobile(),
+                bankWithdrawDto.getBankUserName(),
+                bankWithdrawDto.getBankAccountNo(),
+                bankWithdrawDto.getAmount(),
+                bankWithdrawDto.getFee(),
+                dto.getOrderNo(),
+                dto.getOrderDate(),
+                bankWithdrawDto.getOpenId());
+
+        redisTemplate.<String, String>opsForHash().put(MessageFormat.format(BANK_WITHDRAW_KEY, dto.getOrderDate()), dto.getOrderNo(), gson.toJson(message));
+        redisTemplate.expire(MessageFormat.format(BANK_WITHDRAW_KEY, dto.getOrderDate()), 7, TimeUnit.DAYS);
 
         return dto;
     }
@@ -98,34 +109,20 @@ public class WithdrawService implements AsyncCallbackInterface {
 
         if (responseDto.isSuccess()) {
             WithdrawContentDto content = responseDto.getContent();
-            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(responseDto.getContent().getExtMark(), ExtMarkDto.class);
-
-            String withdrawId = redisTemplate.opsForValue().get(MessageFormat.format(WITHDRAW_ID_TEMPLATE, content.getOrderNo()));
-            if (Strings.isNullOrEmpty(withdrawId)) {
-                return responseDto;
-            }
 
             if (content.isApplying()) {
                 return responseDto;
             }
 
-            String openId = extMarkDto.getExtraValues() != null && extMarkDto.getExtraValues().containsKey("openId") ? extMarkDto.getExtraValues().get("openId") : null;
-            BankWithdrawMessage message = new BankWithdrawMessage(Long.parseLong(withdrawId),
-                    extMarkDto.getLoginName(),
-                    extMarkDto.getMobile(),
-                    content.getUserName(),
-                    content.getAccountNo(),
-                    AmountUtils.toCent(content.getAmount()),
-                    AmountUtils.toCent(content.getFee()),
-                    content.getBankCode(),
-                    content.getBankCardNo(),
-                    content.getBankName(),
-                    content.getOrderNo(),
-                    content.getOrderDate(),
-                    openId,
-                    content.isSuccess());
+            BankWithdrawMessage bankWithdrawMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(BANK_WITHDRAW_KEY, content.getOrderDate()), content.getOrderNo()), BankWithdrawMessage.class);
+            bankWithdrawMessage.setBankCode(content.getBankCode());
+            bankWithdrawMessage.setCardNumber(content.getBankCardNo());
+            bankWithdrawMessage.setBankName(content.getBankName());
+            bankWithdrawMessage.setStatus(responseDto.isSuccess() && responseDto.getContent().isSuccess());
+            bankWithdrawMessage.setMessage(responseDto.getRetMsg());
 
-            this.messageQueueClient.publishMessage(MessageTopic.Withdraw, message);
+
+            this.messageQueueClient.publishMessage(MessageTopic.Withdraw, bankWithdrawMessage);
         }
         return responseDto;
     }

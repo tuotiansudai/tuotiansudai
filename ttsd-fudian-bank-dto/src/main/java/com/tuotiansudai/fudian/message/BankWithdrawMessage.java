@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
-import java.io.Serializable;
-
-public class BankWithdrawMessage implements Serializable {
+public class BankWithdrawMessage extends BankBaseMessage {
 
     private long withdrawId;
 
@@ -30,12 +28,10 @@ public class BankWithdrawMessage implements Serializable {
 
     private String openId;
 
-    private boolean status;
-
     public BankWithdrawMessage() {
     }
 
-    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankCode, String cardNumber, String bankName, String bankOrderNo, String bankOrderDate, String openId, boolean status) {
+    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankOrderNo, String bankOrderDate, String openId) {
         this.withdrawId = withdrawId;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -43,13 +39,9 @@ public class BankWithdrawMessage implements Serializable {
         this.bankAccountNo = bankAccountNo;
         this.amount = amount;
         this.fee = fee;
-        this.bankCode = bankCode;
-        this.cardNumber = cardNumber;
-        this.bankName = bankName;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
         this.openId = openId;
-        this.status = status;
     }
 
     public long getWithdrawId() {
@@ -84,12 +76,24 @@ public class BankWithdrawMessage implements Serializable {
         return bankCode;
     }
 
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
     public String getCardNumber() {
         return cardNumber;
     }
 
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
     public String getBankName() {
         return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
     public String getBankOrderNo() {
@@ -102,9 +106,5 @@ public class BankWithdrawMessage implements Serializable {
 
     public String getOpenId() {
         return openId;
-    }
-
-    public boolean isStatus() {
-        return status;
     }
 }

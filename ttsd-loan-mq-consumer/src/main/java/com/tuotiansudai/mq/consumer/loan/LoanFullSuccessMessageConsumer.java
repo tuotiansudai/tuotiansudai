@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoanOutMessageConsumer implements MessageConsumer {
-    private static Logger logger = LoggerFactory.getLogger(LoanOutMessageConsumer.class);
+public class LoanFullSuccessMessageConsumer implements MessageConsumer {
+
+    private static Logger logger = LoggerFactory.getLogger(LoanFullSuccessMessageConsumer.class);
 
     private final static String ALREADY_LOAN_OUT_RETURN_CODE = "0001";
 
@@ -21,7 +22,7 @@ public class LoanOutMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.LoanOut;
+        return MessageQueue.LoanFull_Success;
     }
 
     @Override

@@ -99,7 +99,6 @@ public class LoanModel implements Serializable {
 
     private String bankOrderDate; //银行订单日期
 
-
     private Date nextRepayDate; //还款日
 
     private Date completedDate; //完成日期

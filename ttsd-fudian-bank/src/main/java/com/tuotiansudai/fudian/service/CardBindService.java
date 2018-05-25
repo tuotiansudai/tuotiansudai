@@ -1,12 +1,10 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
-import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.CardBindRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.CardBindContentDto;
@@ -21,12 +19,20 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CardBindService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(CardBindService.class);
+
+    private final static String BANK_CARD_BIND_KEY = "BANK_CARD_BIND_{0}";
+
+    private final RedisTemplate<String, String> redisTemplate;
 
     private final MessageQueueClient messageQueueClient;
 
@@ -38,8 +44,11 @@ public class CardBindService implements AsyncCallbackInterface {
 
     private final SelectResponseDataMapper selectResponseDataMapper;
 
+    private final Gson gson = new GsonBuilder().create();
+
     @Autowired
-    public CardBindService(MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public CardBindService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+        this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
@@ -48,7 +57,7 @@ public class CardBindService implements AsyncCallbackInterface {
     }
 
     public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto) {
-        CardBindRequestDto dto = new CardBindRequestDto(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo(), null);
+        CardBindRequestDto dto = new CardBindRequestDto(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo());
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -58,6 +67,15 @@ public class CardBindService implements AsyncCallbackInterface {
         }
 
         insertMapper.insertCardBind(dto);
+
+        redisTemplate.<String, String>opsForHash().put(MessageFormat.format(BANK_CARD_BIND_KEY, dto.getOrderDate()), dto.getOrderNo(),
+                gson.toJson(new BankBindCardMessage(bankBaseDto.getLoginName(),
+                        bankBaseDto.getMobile(),
+                        bankBaseDto.getBankUserName(),
+                        bankBaseDto.getBankAccountNo(),
+                        dto.getOrderNo(),
+                        dto.getOrderDate())));
+        redisTemplate.expire(MessageFormat.format(BANK_CARD_BIND_KEY, dto.getOrderDate()), 7, TimeUnit.DAYS);
         return dto;
     }
 
@@ -79,17 +97,13 @@ public class CardBindService implements AsyncCallbackInterface {
         CardBindContentDto content = responseDto.getContent();
 
         if (responseDto.isSuccess() && content.isSuccess()) {
-            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(responseDto.getContent().getExtMark(), ExtMarkDto.class);
-            BankBindCardMessage message = new BankBindCardMessage(extMarkDto.getLoginName(),
-                    extMarkDto.getMobile(),
-                    content.getUserName(),
-                    content.getAccountNo(),
-                    content.getBank(),
-                    content.getBankCode(),
-                    content.getBankAccountNo(),
-                    content.getOrderNo(),
-                    content.getOrderDate());
-            this.messageQueueClient.publishMessage(MessageTopic.BindBankCard, message);
+            BankBindCardMessage bankBindCardMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(BANK_CARD_BIND_KEY, content.getOrderDate()), content.getOrderNo()), BankBindCardMessage.class);
+            bankBindCardMessage.setBank(content.getBank());
+            bankBindCardMessage.setBankCode(content.getBankCode());
+            bankBindCardMessage.setCardNumber(content.getBankAccountNo());
+            bankBindCardMessage.setStatus(true);
+            bankBindCardMessage.setMessage(responseDto.getRetMsg());
+            this.messageQueueClient.publishMessage(MessageTopic.BindBankCard, bankBindCardMessage);
         }
         return responseDto;
     }

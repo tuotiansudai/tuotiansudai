@@ -6,18 +6,14 @@ public enum MessageTopic {
     InvestSuccess("InvestSuccess",
             MessageQueue.Invest_Success,
             MessageQueue.Invest_CompletePointTask,
-            MessageQueue.Invest_MembershipUpdate),
+            MessageQueue.Invest_MembershipUpdate,
+            MessageQueue.Invest_CheckLoanFull),
 
-    LoanOutSuccess("LoanOutSuccess",
+    LoanFullSuccess("LoanFullSuccess",
+            MessageQueue.LoanFull_Success,
+            MessageQueue.LoanFull_RewardReferrer,
             MessageQueue.LoanOutSuccess_GenerateRepay,
-            MessageQueue.LoanOutSuccess_RewardReferrer,
-            MessageQueue.LoanOutSuccess_AssignCoupon,
-            MessageQueue.LoanOutSuccess_AssignAchievement,
-            MessageQueue.LoanOutSuccess_GenerateAnXinContract,
-            MessageQueue.LoanOutSuccess_CashSnowball,
-            MessageQueue.LoanOutSuccess_StartWorkActivity,
-            MessageQueue.LoanOutSuccess_SendCashReward,
-            MessageQueue.LoanOutSuccess_InviteHelpActivity),
+            MessageQueue.LoanOutSuccess_GenerateAnXinContract),
 
     RepaySuccess("RepaySuccess",
             MessageQueue.RepaySuccess_InvestRepay,
@@ -37,8 +33,7 @@ public enum MessageTopic {
     Withdraw("Withdraw",
             MessageQueue.Withdraw_Success,
             MessageQueue.Withdraw_EventMessage,
-            MessageQueue.Withdraw_PushMessage
-    ),
+            MessageQueue.Withdraw_PushMessage),
 
     ;
 

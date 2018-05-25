@@ -1,13 +1,17 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
+import com.tuotiansudai.fudian.dto.response.QueryLoanContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.message.BankQueryLoanMessage;
 import com.tuotiansudai.fudian.service.*;
+import com.tuotiansudai.fudian.util.AmountUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,13 +51,22 @@ public class QueryController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @RequestMapping(path = "/loan", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> queryLoan(@RequestParam(name = "loanTxNo") String loanTxNo) {
+    @RequestMapping(path = "/loan/{loanTxNo}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryLoanMessage> queryLoan(@PathVariable(name = "loanTxNo") String loanTxNo) {
         logger.info("[Fudian] query loan loanTxNo: {}", loanTxNo);
 
-        ResponseDto responseDto = queryLoanService.query(loanTxNo, null, null);
+        ResponseDto<QueryLoanContentDto> responseDto = queryLoanService.query(loanTxNo);
 
-        return ResponseEntity.ok(responseDto);
+        if (responseDto == null || !responseDto.isSuccess()) {
+            return ResponseEntity.ok(new BankQueryLoanMessage(0, 0, null, false,
+                    responseDto != null ? responseDto.getRetMsg() : "查询失败"));
+        }
+
+        return ResponseEntity.ok(new BankQueryLoanMessage(AmountUtils.toCent(responseDto.getContent().getAmount()),
+                AmountUtils.toCent(responseDto.getContent().getBalance()),
+                responseDto.getContent().getStatus(),
+                responseDto.isSuccess(),
+                responseDto.getRetMsg()));
     }
 
     @RequestMapping(path = "/trade", method = RequestMethod.GET)

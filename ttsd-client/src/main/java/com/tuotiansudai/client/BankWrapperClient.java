@@ -3,19 +3,15 @@ package com.tuotiansudai.client;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.fudian.dto.BankBaseDto;
-import com.tuotiansudai.fudian.dto.BankInvestDto;
-import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
-import com.tuotiansudai.fudian.dto.BankWithdrawDto;
-import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
-import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
+import com.tuotiansudai.fudian.dto.*;
+import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -25,6 +21,8 @@ import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 public class BankWrapperClient {
+
+    public static final Gson gson = new GsonBuilder().create();
 
     private static Logger logger = Logger.getLogger(BankWrapperClient.class);
 
@@ -56,7 +54,7 @@ public class BankWrapperClient {
             Response response = this.okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 try {
-                    return new GsonBuilder().create().fromJson(response.body().string(), BankReturnCallbackMessage.class);
+                    return gson.fromJson(response.body().string(), BankReturnCallbackMessage.class);
                 } catch (JsonParseException e) {
                     logger.error(MessageFormat.format("parse return return callback error, url: {0}, data: {1}, response: {2}", path, response.body().string()), e);
                 }
@@ -131,7 +129,7 @@ public class BankWrapperClient {
         }
 
         try {
-            return new GsonBuilder().create().fromJson(json, BankReturnCallbackMessage.class);
+            return gson.fromJson(json, BankReturnCallbackMessage.class);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[Loan Fast Invest] parse response error, loanId: {0}", String.valueOf(loanId)), e);
         }
@@ -149,7 +147,7 @@ public class BankWrapperClient {
         }
 
         try {
-            return new GsonBuilder().create().fromJson(json, BankLoanCreateMessage.class);
+            return gson.fromJson(json, BankLoanCreateMessage.class);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", String.valueOf(loanId)), e);
         }
@@ -157,8 +155,46 @@ public class BankWrapperClient {
         return new BankLoanCreateMessage(false, null);
     }
 
+    public BankBaseMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, long time) {
+        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, time);
+
+        String json = syncExecute("/loan-full", bankLoanFullDto);
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankBaseMessage(false, "请求失败");
+        }
+
+        try {
+            return gson.fromJson(json, BankLoanCreateMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Loan Create] parse response error, response: {0}", json), e);
+        }
+
+        return new BankLoanCreateMessage(false, null);
+    }
+
+    public BankQueryLoanMessage queryLoan(String loanTxNo) {
+        try {
+
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + MessageFormat.format("/query/loan/{0}/", loanTxNo))
+                    .get()
+                    .build();
+
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return gson.fromJson(response.body().string(), BankQueryLoanMessage.class);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return new BankQueryLoanMessage(0, 0, null, false, "查询失败");
+    }
+
     private BankAsyncMessage asyncExecute(String path, Object requestData) {
-        String content = new GsonBuilder().create().toJson(requestData);
+        String content = gson.toJson(requestData);
         String url = this.baseUrl + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
@@ -173,7 +209,7 @@ public class BankWrapperClient {
 
             if (response.isSuccessful()) {
                 try {
-                    return new GsonBuilder().create().fromJson(response.body().string(), BankAsyncMessage.class);
+                    return gson.fromJson(response.body().string(), BankAsyncMessage.class);
                 } catch (JsonParseException e) {
                     logger.error(MessageFormat.format("parse pay response error, url: {0}, data: {1}, response: {2}", url, content, response.body().string()), e);
                 }
@@ -187,7 +223,7 @@ public class BankWrapperClient {
     }
 
     private String syncExecute(String path, Object requestData) {
-        String content = new GsonBuilder().create().toJson(requestData);
+        String content = gson.toJson(requestData);
         String url = this.baseUrl + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);

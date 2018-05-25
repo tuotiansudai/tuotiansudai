@@ -43,7 +43,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanInvestService.class);
 
-    private final static String BANK_INVEST_HISTORY_KEY_TEMPLATE = "BANK_INVEST_HISTORY_{0}";
+    private final static String BANK_INVEST_KEY = "BANK_INVEST_{0}";
 
     private final MessageQueueClient messageQueueClient;
 
@@ -99,7 +99,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
         insertMapper.insertLoanInvest(dto);
 
-        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, dto.getOrderDate());
+        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_KEY, dto.getOrderDate());
         redisTemplate.opsForHash().put(bankInvestHistoryKey, dto.getOrderNo(),
                 gson.toJson(new BankInvestMessage(bankInvestDto.getLoanId(),
                         bankInvestDto.getLoanName(),
@@ -134,7 +134,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
         insertMapper.insertLoanInvest(dto);
 
-        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, dto.getOrderDate());
+        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_KEY, dto.getOrderDate());
         redisTemplate.opsForHash().put(bankInvestHistoryKey, dto.getOrderNo(),
                 gson.toJson(new BankInvestMessage(bankInvestDto.getLoanId(),
                         bankInvestDto.getLoanName(),
@@ -177,7 +177,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
         if (responseDto.isSuccess() && count > 0) {
-            String message = hashOperations.get(MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, responseDto.getContent().getOrderDate()),
+            String message = hashOperations.get(MessageFormat.format(BANK_INVEST_KEY, responseDto.getContent().getOrderDate()),
                     responseDto.getContent().getOrderNo());
             if (Strings.isNullOrEmpty(message)) {
                 logger.error("[loan invest callback] callback is success, but queue message is not found, response data is {}", responseData);
@@ -199,7 +199,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
                 for (LoanInvestRequestDto loanInvestRequest : loanInvestRequests) {
                     try {
-                        String bankInvestValue = hashOperations.get(MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, loanInvestRequest.getOrderDate()), loanInvestRequest.getOrderNo());
+                        String bankInvestValue = hashOperations.get(MessageFormat.format(BANK_INVEST_KEY, loanInvestRequest.getOrderDate()), loanInvestRequest.getOrderNo());
                         BankInvestMessage bankInvestMessage = gson.fromJson(bankInvestValue, BankInvestMessage.class);
                         if (Strings.isNullOrEmpty(bankInvestValue)) {
                             logger.error("[Invest Status Schedule] fetch invest meta data from redis error, bank order no:{}, redis value: {}", loanInvestRequest.getOrderNo(), bankInvestValue);

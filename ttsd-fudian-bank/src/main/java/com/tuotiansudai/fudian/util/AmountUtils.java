@@ -28,7 +28,7 @@ public class AmountUtils {
     }
 
     public static long toCent(String yuan) {
-        if (!Pattern.matches("^\\d+\\.\\d{2}$", yuan)) {
+        if (Strings.isNullOrEmpty(yuan) || !Pattern.matches("^\\d+\\.\\d{2}$", yuan)) {
             return 0L;
         }
 

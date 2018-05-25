@@ -27,14 +27,8 @@ public enum MessageQueue {
     ExperienceRepayCallback("ExperienceRepayCallback"),
     MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
     LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
-    LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
-    LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
-    LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
+    LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
-    LoanOutSuccess_CashSnowball("LoanOutSuccess-CashSnowball"),
-    LoanOutSuccess_StartWorkActivity("LoanOutSuccess-StartWorkActivity"),
-    LoanOutSuccess_InviteHelpActivity("LoanOutSuccess-InviteHelpActivity"),
-    LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -91,6 +85,9 @@ public enum MessageQueue {
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
+    Invest_CheckLoanFull("Invest-Invest_CheckLoanFull"),
+
+    LoanFull_Success("LoanFull_Success")
     ;
 
     private final String queueName;
