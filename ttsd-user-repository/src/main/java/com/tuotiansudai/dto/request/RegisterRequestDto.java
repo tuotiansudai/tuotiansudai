@@ -10,13 +10,15 @@ public class RegisterRequestDto implements Serializable {
     private String referrer;
     private String channel;
     private Source source;
+    private String activityReferrer;
 
-    public RegisterRequestDto(String mobile, String password, String referrer, String channel, Source source) {
+    public RegisterRequestDto(String mobile, String password, String referrer, String channel, Source source, String activityReferrer) {
         this.mobile = mobile;
         this.password = password;
         this.referrer = referrer;
         this.channel = channel;
         this.source = source;
+        this.activityReferrer = activityReferrer;
     }
 
     public String getMobile() {
@@ -57,5 +59,13 @@ public class RegisterRequestDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getActivityReferrer() {
+        return activityReferrer;
+    }
+
+    public void setActivityReferrer(String activityReferrer) {
+        this.activityReferrer = activityReferrer;
     }
 }

@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.activity.service.InviteHelpActivityService;
@@ -142,9 +144,10 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/click-help/{id:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean clickHelp(@PathVariable long id, HttpServletRequest request) {
+    public Map<String, Boolean> clickHelp(@PathVariable long id, HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        return !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && !Strings.isNullOrEmpty(openId) && inviteHelpActivityService.clickHelp(id, openId);
+        boolean isSuccess = !Strings.isNullOrEmpty(openId) && !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && inviteHelpActivityService.clickHelp(id, openId);
+        return Maps.newHashMap(ImmutableMap.<String, Boolean>builder().put("status", isSuccess).build());
     }
 
     @RequestMapping(path = "/{isOwn}/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
