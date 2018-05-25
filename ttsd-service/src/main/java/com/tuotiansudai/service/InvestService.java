@@ -3,8 +3,8 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.Source;
@@ -18,7 +18,7 @@ public interface InvestService {
      *
      * @param investDto
      */
-    BankAsyncData invest(InvestDto investDto) throws InvestException;
+    BankAsyncMessage invest(InvestDto investDto) throws InvestException;
 
     long estimateInvestIncome(long loanId, double investFeeRate, String loginName, long amount, Date investTime);
 
@@ -29,15 +29,9 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
-    boolean turnOnAutoInvest(String loginName, AutoInvestPlanDto model, String ip);
-
-    boolean turnOffAutoInvest(String loginName, String ip);
-
-    AutoInvestPlanModel findAutoInvestPlan(String loginName);
-
     InvestModel findById(long investId);
 
-    BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
+    BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException;
 
     boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip);
 

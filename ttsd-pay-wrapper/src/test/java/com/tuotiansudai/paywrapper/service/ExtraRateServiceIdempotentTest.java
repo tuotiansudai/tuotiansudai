@@ -7,7 +7,6 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.impl.ExtraRateServiceImpl;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateTransferMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
@@ -298,7 +297,7 @@ public class ExtraRateServiceIdempotentTest {
     }
 
     private InvestModel getFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, loginName, amount, 0.1, false, investTime, Source.WEB, null);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = getMembershipModelByLevel(userMembershipLevelMap.get(loginName));

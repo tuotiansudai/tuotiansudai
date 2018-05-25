@@ -2,11 +2,14 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.request.BankRechargeRequestDto;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankModel;
 import com.tuotiansudai.repository.model.UserBankCardModel;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.BankRechargeService;
+import com.tuotiansudai.service.BankService;
+import com.tuotiansudai.service.UserBindBankCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,7 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
-        BankAsyncData baseDto = bankRechargeService.recharge(dto.getSource(),
+        BankAsyncMessage baseDto = bankRechargeService.recharge(dto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(dto.getAmount()),

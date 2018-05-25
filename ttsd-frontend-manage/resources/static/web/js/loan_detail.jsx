@@ -182,13 +182,14 @@ function sendSubmitRequest(){
     },function(response) {
         layer.closeAll();
         $investSubmit.removeClass("loading");
-        let data = response.data;
-        if (data.status) {
-            location.href = "/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
-        } else if (data.message == '新手标投资已超上限') {
+        if (response.status) {
+            let $isPaySuccessForm = $("#isPaySuccess");
+            $isPaySuccessForm.prop('action', '/callback/loan_fast_invest/order-no/' + response.bankOrderNo + '/is-success');
+            $isPaySuccessForm.submit();
+        } else if (response.message == '新手标投资已超上限') {
             showLayer();
         } else {
-            showInputErrorTips(data.message);
+            showInputErrorTips(response.message || '投资异常');
         }
     });
 }

@@ -4,6 +4,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.BankCallbackType;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,29 +36,24 @@ public class FrontCallbackController {
 
         logger.info(MessageFormat.format("front callback url: {0}, data: {1}", request.getRequestURI(), reqData));
 
-        BaseDto<PayDataDto> dto = this.bankWrapperClient.checkBankReturnUrl(request.getRequestURI(), reqData);
+        BankReturnCallbackMessage bankReturnCallbackMessage = this.bankWrapperClient.checkBankReturnUrl(request.getRequestURI(), reqData);
 
-        if (dto == null) {
+        if (bankReturnCallbackMessage == null) {
             return new ModelAndView("/error/404");
         }
 
-        if (dto.getData().getStatus()) {
-            return new ModelAndView("/pay-in-progress", "orderNo", dto.getData().getExtraValues().get("orderNo"))
+        if (bankReturnCallbackMessage.isStatus()) {
+            return new ModelAndView("/pay-in-progress", "orderNo", bankReturnCallbackMessage.getBankOrderNo())
                     .addObject("bankCallbackType", bankCallbackType);
         }
 
-        return new ModelAndView("/bank-result-failure", "message", dto.getData().getMessage())
+        return new ModelAndView("/bank-result-failure", "message", bankReturnCallbackMessage.getMessage())
                 .addObject("bankCallbackType", bankCallbackType);
     }
 
     @RequestMapping(value = "/{bankCallbackType}/order-no/{orderNo}/is-success", method = RequestMethod.POST)
-    public ModelAndView callbackSuccess(HttpServletRequest request,
-                                        @PathVariable BankCallbackType bankCallbackType,
+    public ModelAndView callbackSuccess(@PathVariable BankCallbackType bankCallbackType,
                                         @PathVariable String orderNo) {
-        String reqData = request.getParameter("reqData");
-
-        logger.info(MessageFormat.format("front callback url: {0}, data: {1}", request.getRequestURI(), reqData));
-
         Boolean isSuccess = this.bankWrapperClient.isCallbackSuccess(bankCallbackType, orderNo);
 
         if (isSuccess == null || isSuccess) {

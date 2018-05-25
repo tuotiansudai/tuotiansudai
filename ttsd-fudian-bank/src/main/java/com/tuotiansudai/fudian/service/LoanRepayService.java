@@ -89,7 +89,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSED);
+        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
         return responseDto;
     }
 

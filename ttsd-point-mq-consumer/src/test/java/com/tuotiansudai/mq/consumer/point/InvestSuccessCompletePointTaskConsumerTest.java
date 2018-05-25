@@ -56,10 +56,10 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
 
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<PointTask> pointTaskCaptor = ArgumentCaptor.forClass(PointTask.class);
-        final ArgumentCaptor<InvestModel> investModelCaptor = ArgumentCaptor.forClass(InvestModel.class);
+        final ArgumentCaptor<Long> investIdCaptor = ArgumentCaptor.forClass(Long.class);
         doNothing().when(pointTaskService).completeNewbieTask(pointTaskCaptor.capture(), loginNameCaptor.capture());
         doNothing().when(pointTaskService).completeAdvancedTask(pointTaskCaptor.capture(), loginNameCaptor.capture());
-        doNothing().when(pointService).obtainPointInvest(investModelCaptor.capture());
+        doNothing().when(pointService).obtainPointInvest(investIdCaptor.capture());
         when(investMapper.findById(investId)).thenReturn(mockedInvestModel);
 
         try {
@@ -77,7 +77,7 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         assertEquals(PointTask.FIRST_INVEST_180, pointTaskCaptor.getAllValues().get(4));
         assertEquals(PointTask.FIRST_INVEST_360, pointTaskCaptor.getAllValues().get(5));
 
-        assertEquals(mockedInvestModel.getId(), investModelCaptor.getValue().getId());
+        assertEquals(mockedInvestModel.getId(), (long) investIdCaptor.getValue());
     }
 
     private InvestModel buildMockInvestModel(long investId, String loginName) {

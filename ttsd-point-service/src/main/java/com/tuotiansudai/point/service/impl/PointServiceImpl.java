@@ -5,6 +5,7 @@ import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @Service
 public class PointServiceImpl implements PointService {
-    static Logger logger = Logger.getLogger(PointServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(PointServiceImpl.class);
 
     @Autowired
     private UserPointMapper userPointMapper;
@@ -30,11 +31,15 @@ public class PointServiceImpl implements PointService {
     private PointBillService pointBillService;
 
     @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
     private LoanMapper loanMapper;
 
     @Override
     @Transactional
-    public void obtainPointInvest(InvestModel investModel) {
+    public void obtainPointInvest(long investId) {
+        InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         int duration = loanModel.getDuration();
         long point = new BigDecimal((investModel.getAmount() * duration / InterestCalculator.DAYS_OF_YEAR)).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();

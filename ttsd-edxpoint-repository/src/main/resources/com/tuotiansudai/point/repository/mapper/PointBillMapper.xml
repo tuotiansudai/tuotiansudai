@@ -33,7 +33,7 @@
     </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into point_bill (order_id, login_name,mobile,user_name ,point, sudai_point, channel_point, business_type, note, created_time)
+        insert into point_bill (order_id, login_name, mobile, user_name, point, sudai_point, channel_point, business_type, note, created_time)
         value(#{orderId}, #{loginName},#{mobile},#{userName}, #{point}, #{sudaiPoint}, #{channelPoint}, #{businessType}, #{note}, #{createdTime})
     </insert>
 

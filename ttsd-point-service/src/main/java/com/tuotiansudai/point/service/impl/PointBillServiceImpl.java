@@ -36,7 +36,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PointBillServiceImpl implements PointBillService {
-    static Logger logger = Logger.getLogger(PointBillServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(PointBillServiceImpl.class);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -58,8 +59,6 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private LoanMapper loanMapper;
 
-
-    @Override
     @Transactional
     public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
         createPointBill(loginName, pointTaskId, PointBusinessType.TASK, point, note);
@@ -101,7 +100,7 @@ public class PointBillServiceImpl implements PointBillService {
         if (point > 0) {
             return 0;
         }
-        double channelRate = userPointModel.getPoint() == 0 ? 0.5 : (double)userPointModel.getChannelPoint() / userPointModel.getPoint();
+        double channelRate = userPointModel.getPoint() == 0 ? 0.5 : (double) userPointModel.getChannelPoint() / userPointModel.getPoint();
         // 分配积分时，如果产生小数，则将小数部分归到速贷积分中
         // 此时 point < 0, 因此在计算渠道积分时，应向上取整。 如计算结果为 -2.4 时，实际渠道积分应为 -2
         return (long) Math.ceil(point * channelRate);

@@ -53,7 +53,7 @@ public class MembershipInvestService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void afterInvestSuccess(String loginName, long investAmount, long investId, String loanName) {
         if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
             // 检查是否已经处理过，幂等操作
@@ -61,31 +61,26 @@ public class MembershipInvestService {
             return;
         }
 
-        try {
-            long investMembershipPoint = investAmount / 100;
-            bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
-            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-            membershipExperienceBillMapper.create(new MembershipExperienceBillModel(loginName,
-                    String.valueOf(investId),
-                    investMembershipPoint,
-                    bankAccountModel.getMembershipPoint(),
-                    MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount))));
+        long investMembershipPoint = investAmount / 100;
+        bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        membershipExperienceBillMapper.create(new MembershipExperienceBillModel(loginName,
+                String.valueOf(investId),
+                investMembershipPoint,
+                bankAccountModel.getMembershipPoint(),
+                MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount))));
 
-            int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
+        int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
 
-            MembershipModel newMembership = membershipMapper.findByExperience(bankAccountModel.getMembershipPoint());
-            if (newMembership.getLevel() > level) {
-                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
-                curUserMembershipModel.setExpiredTime(new Date());
-                userMembershipMapper.update(curUserMembershipModel);
+        MembershipModel newMembership = membershipMapper.findByExperience(bankAccountModel.getMembershipPoint());
+        if (newMembership.getLevel() > level) {
+            UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
+            curUserMembershipModel.setExpiredTime(new Date());
+            userMembershipMapper.update(curUserMembershipModel);
 
-                UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
-                userMembershipMapper.create(newUserMembershipModel);
-                this.sendMessage(loginName, newMembership.getLevel());
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            throw e;
+            UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
+            userMembershipMapper.create(newUserMembershipModel);
+            this.sendMessage(loginName, newMembership.getLevel());
         }
     }
 

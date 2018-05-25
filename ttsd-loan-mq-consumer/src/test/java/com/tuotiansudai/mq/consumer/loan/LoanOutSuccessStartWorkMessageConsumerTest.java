@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -216,7 +215,7 @@ public class LoanOutSuccessStartWorkMessageConsumerTest {
     }
 
     public InvestModel mockInvestModel(long investId, String date, long amount, String loginName) {
-        InvestModel investModel = new InvestModel(investId, 1234l, null, amount, loginName, DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), Source.WEB, "channel", 0.01);
+        InvestModel investModel = new InvestModel(investId, 1234l, null, loginName, amount, 0.01, false, DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate(), Source.WEB, "channel");
         investModel.setTradingTime(DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         return investModel;
     }

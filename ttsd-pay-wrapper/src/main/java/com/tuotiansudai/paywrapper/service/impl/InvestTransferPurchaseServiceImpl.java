@@ -572,12 +572,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         InvestModel investModel = new InvestModel(IdGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
-                transferrerModel.getAmount(),
-                loginName,
-                transferrerModel.getInvestTime(),
+                loginName, transferrerModel.getAmount(),
+                rate, false, transferrerModel.getInvestTime(),
                 investDto.getSource(),
-                investDto.getChannel(),
-                rate);
+                investDto.getChannel()
+        );
 
         investModel.setInvestFeeRate(membershipPrivilegePurchaseService.obtainServiceFee(loginName));
         investModel.setNoPasswordInvest(investDto.isNoPassword());

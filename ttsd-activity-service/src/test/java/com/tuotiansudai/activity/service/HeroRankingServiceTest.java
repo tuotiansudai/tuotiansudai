@@ -196,7 +196,7 @@ public class HeroRankingServiceTest {
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName, long loanId) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1000l, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1000l, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

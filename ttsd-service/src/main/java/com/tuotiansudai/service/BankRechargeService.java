@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
-import com.tuotiansudai.fudian.dto.BankAsyncData;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
@@ -25,7 +25,7 @@ public class BankRechargeService {
         this.bankAccountMapper = bankAccountMapper;
     }
 
-    public BankAsyncData recharge(Source source, String loginName, String mobile, long amount, String payType, String channel){
+    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel){
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
         bankRechargeMapper.create(bankRechargeModel);
