@@ -35,7 +35,7 @@ public interface ReturnUpdateMapper {
     void updatePhoneUpdate(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_invest SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")
-    int updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
+    void updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_credit_invest SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")
     void updateLoanCreditInvest(@Param(value = "dto") ResponseDto responseDto);
