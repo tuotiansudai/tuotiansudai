@@ -18,7 +18,7 @@ let isSmsSended = false;
 let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
-
+let referrerValidBool=true;
 
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
@@ -192,7 +192,41 @@ validator.newStrategy(registerForm.captcha,'isCaptchaValid',function(errorMsg,sh
     });
     return getResult;
 });
-
+//推荐人是否存在
+validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
+    var getResult='',
+        that=this,
+        _arguments=arguments;
+    //只验证推荐人是否存在，不验证是否为空
+    if(this.value=='') {
+        referrerValidBool=true;
+        getResult='';
+        ValidatorObj.isHaveError.no.apply(that,_arguments);
+        return '';
+    }
+    commonFun.useAjax({
+        type:'GET',
+        async: false,
+        url:'/register/user/referrer/'+this.value+'/is-exist'
+    },function(response) {
+        if(response.data.status) {
+            // 如果为true说明推荐人存在
+            referrerValidBool=true;
+            getResult='';
+            ValidatorObj.isHaveError.no.apply(that,_arguments);
+        }
+        else {
+            referrerValidBool=false;
+            getResult=errorMsg;
+            ValidatorObj.isHaveError.yes.apply(that,_arguments);
+        }
+    });
+    return getResult;
+});
+validator.add(registerForm.referrer, [{
+    strategy: 'isReferrerExist',
+    errorMsg: '推荐人不存在'
+}],true);
 validator.add(registerForm.mobile, [{
     strategy: 'isNonEmpty',
     errorMsg: '手机号不能为空',
@@ -237,7 +271,11 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 function isDisabledButton() {
     let mobile=registerForm.mobile,
         password=registerForm.password,
+        referrer=registerForm.referrer,
         captcha=registerForm.captcha;
+    if($(referrer).is(':hidden')) {
+        referrerValidBool=true;
+    }
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
@@ -249,7 +287,7 @@ function isDisabledButton() {
     !isDisabledCaptcha && $registerSubmit.prop('disabled',true);
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('#agreementInput').prop('checked');
+    let isDisabledSubmit= isMobileValid && isPwdValid&&referrerValidBool && captchaValid  && $('#agreementInput').prop('checked');
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 }
