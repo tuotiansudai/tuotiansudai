@@ -581,15 +581,15 @@ function sendSubmitRequest(){
         data: $investForm.serialize(),
         type: 'POST'
     },function(response) {
-
-        let data = response.data;
-        if (data.status) {
-            location.href = "/m/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
+        if (response.status) {
+            let $isPaySuccessForm = $("#isPaySuccess");
+            $isPaySuccessForm.prop('action', '/callback/loan_fast_invest/order-no/' + response.bankOrderNo + '/is-success');
+            $isPaySuccessForm.submit();
         }  else {
             commonFun.CommonLayerTip({
                 btn: ['我知道了'],
                 area:['280px', '160px'],
-                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${data.message}</span></div> `,
+                content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>${response.message}</span></div> `,
             },function() {
                 layer.closeAll();
             })

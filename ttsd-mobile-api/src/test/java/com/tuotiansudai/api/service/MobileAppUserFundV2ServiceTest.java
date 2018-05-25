@@ -234,7 +234,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createFakeInvest(long loanId, long amount, String loginName, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, 0.1, false, new Date(), Source.WEB, null);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         investMapper.create(fakeInvestModel);

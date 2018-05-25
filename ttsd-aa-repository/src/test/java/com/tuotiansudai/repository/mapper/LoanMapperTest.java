@@ -217,10 +217,10 @@ public class LoanMapperTest {
         assertThat(loanModels.size(), is(2));
 
         assertThat(loanModels.get(0).getId(), is(fakeCanceledLoan3.getId()));
-        assertThat(loanModels.get(0).getCanceledDate().getTime(), is(fakeCanceledLoan3.getRecheckTime().getTime()));
+        assertThat(loanModels.get(0).getRecheckTime().getTime(), is(fakeCanceledLoan3.getRecheckTime().getTime()));
 
         assertThat(loanModels.get(1).getId(), is(fakeCanceledLoan2.getId()));
-        assertThat(loanModels.get(1).getCanceledDate().getTime(), is(fakeCanceledLoan2.getRecheckTime().getTime()));
+        assertThat(loanModels.get(1).getRecheckTime().getTime(), is(fakeCanceledLoan2.getRecheckTime().getTime()));
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {

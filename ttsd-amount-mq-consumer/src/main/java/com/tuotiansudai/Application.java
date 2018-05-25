@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication(
         scanBasePackages = {
-                "com.tuotiansudai.mq.consumer.amount"
+                "com.tuotiansudai.mq.consumer.amount",
+                "com.tuotiansudai.repository.mapper"
         },
         exclude = {FreeMarkerAutoConfiguration.class})
 @Import({MQConsumerConfig.class, MQProducerConfig.class})

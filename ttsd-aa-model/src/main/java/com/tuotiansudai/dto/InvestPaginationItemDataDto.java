@@ -28,7 +28,6 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String channel;
     private Source source;
     private Date investTime;
-    private boolean autoInvest;
     private String investAmount;
     private String couponDetail;
     private String couponActualInterest;
@@ -55,7 +54,6 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.channel = view.getChannel();
         this.source = view.getSource();
         this.investTime = view.getInvestTime();
-        this.autoInvest = view.isAutoInvest();
         this.investAmount = AmountConverter.convertCentToString(view.getInvestAmount());
         this.extraDetail = view.getExtraRate() == 0 ? "-" : MessageFormat.format("{0,number,#.##}%", view.getExtraRate() * 100);
         this.extraActualInterest = view.getExtraActualInterest() == 0 ? "-" : AmountConverter.convertCentToString(view.getExtraActualInterest());
@@ -202,14 +200,6 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setInvestTime(Date investTime) {
         this.investTime = investTime;
-    }
-
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
     }
 
     public String getInvestAmount() {

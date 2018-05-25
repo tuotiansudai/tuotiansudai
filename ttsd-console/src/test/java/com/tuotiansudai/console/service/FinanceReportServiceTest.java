@@ -101,7 +101,7 @@ public class FinanceReportServiceTest {
     }
 
     private InvestModel createInvestModel(long investId, long loanId, AccountModel investor, Date investTime) {
-        InvestModel investModel = new InvestModel(investId, loanId, null, 1000L, investor.getLoginName(), investTime, Source.WEB, "channel", 0.01);
+        InvestModel investModel = new InvestModel(investId, loanId, null, investor.getLoginName(), 1000L, 0.01, false, investTime, Source.WEB, "channel");
         investMapper.create(investModel);
         return investModel;
     }

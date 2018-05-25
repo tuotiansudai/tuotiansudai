@@ -7,20 +7,18 @@ import com.coreos.jetcd.kv.GetResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class ETCDConfigReader {
 
-    private static Logger logger = Logger.getLogger(ETCDConfigReader.class);
+    private static Logger logger = LoggerFactory.getLogger(ETCDConfigReader.class);
 
     private static final String ENDPOINTS_ENV_VAR = "TTSD_ETCD_ENV";
 

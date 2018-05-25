@@ -247,7 +247,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         // update agent user bill
         UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), businessType, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), businessType);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         logger.info(MessageFormat.format("[Normal Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
                 String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
@@ -567,14 +567,13 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
                 investRepayId,
                 paybackAmount,
-                currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
-                null, null);
+                currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY);
 
         // fee user bill
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
                 investRepayId,
                 currentInvestRepay.getActualFee(),
-                UserBillBusinessType.INVEST_FEE, null, null);
+                UserBillBusinessType.INVEST_FEE);
 
         inAtm.setNext(outAtm);
 

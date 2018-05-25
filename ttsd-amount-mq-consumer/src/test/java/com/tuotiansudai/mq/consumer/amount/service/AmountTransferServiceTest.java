@@ -52,7 +52,7 @@ public class AmountTransferServiceTest {
         UserBillBusinessType businessType = UserBillBusinessType.RECHARGE_SUCCESS;
 
         AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId,
-                inAmount, businessType, null, null);
+                inAmount, businessType);
 
         amountTransferService.amountTransferProcess(inAtm);
         verifyBalance(loginName, inAmount);
@@ -60,7 +60,7 @@ public class AmountTransferServiceTest {
         // test transfer_out_balance
         long outAmount = 100000;
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId,
-                outAmount, businessType, null, null);
+                outAmount, businessType);
 
         amountTransferService.amountTransferProcess(outAtm);
         verifyBalance(loginName, inAmount - outAmount);
@@ -68,7 +68,7 @@ public class AmountTransferServiceTest {
         // test freeze
         long freezeAmount = 150000;
         AmountTransferMessage freezeAtm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId,
-                freezeAmount, businessType, null, null);
+                freezeAmount, businessType);
         amountTransferService.amountTransferProcess(freezeAtm);
 
         verifyBalance(loginName, inAmount - outAmount - freezeAmount);
@@ -78,7 +78,7 @@ public class AmountTransferServiceTest {
         long unfreezeAmount = 100000;
 
         AmountTransferMessage unfreezeAtm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId,
-                unfreezeAmount, businessType, null, null);
+                unfreezeAmount, businessType);
         amountTransferService.amountTransferProcess(unfreezeAtm);
         verifyBalance(loginName, inAmount - outAmount - freezeAmount + unfreezeAmount);
         verifyFreeze(loginName, freezeAmount - unfreezeAmount);
@@ -87,7 +87,7 @@ public class AmountTransferServiceTest {
         long toFreezeAmount = 40000;
 
         AmountTransferMessage toFreezeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId,
-                toFreezeAmount, businessType, null, null);
+                toFreezeAmount, businessType);
         amountTransferService.amountTransferProcess(toFreezeAtm);
         verifyFreeze(loginName, freezeAmount - unfreezeAmount - toFreezeAmount);
     }

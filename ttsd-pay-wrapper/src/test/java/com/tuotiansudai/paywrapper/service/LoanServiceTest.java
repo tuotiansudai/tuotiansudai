@@ -174,7 +174,7 @@ public class LoanServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long investId, String loginName) {
-        InvestModel model = new InvestModel(1, loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(1, loanId, null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

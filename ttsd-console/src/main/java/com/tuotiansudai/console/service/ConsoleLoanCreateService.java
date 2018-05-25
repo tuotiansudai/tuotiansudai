@@ -2,9 +2,11 @@ package com.tuotiansudai.console.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.repository.mapper.*;
@@ -78,6 +80,11 @@ public class ConsoleLoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
+
+    private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     protected final static String generateLoanName = "{0}{1}";
 
@@ -238,9 +245,9 @@ public class ConsoleLoanCreateService {
         LoanCreateRequestDto loanCreateRequestDto = new LoanCreateRequestDto();
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        loanModel.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanId));
+        List<LoanTitleRelationModel> loanTitles = loanTitleRelationMapper.findByLoanId(loanId);
 
-        loanCreateRequestDto.setLoan(new LoanCreateBaseRequestDto(loanModel));
+        loanCreateRequestDto.setLoan(new LoanCreateBaseRequestDto(loanModel, loanTitles));
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
@@ -287,13 +294,21 @@ public class ConsoleLoanCreateService {
             return baseDto;
         }
 
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
 
-        baseDto = payWrapperClient.createLoan(loanId);
+        BankLoanCreateMessage message = bankWrapperClient.createLoan(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), loanModel.getId(), loanModel.getLoanAmount());
 
-        if (baseDto.getData().getStatus()) {
+        payDataDto.setStatus(message.isStatus());
+        payDataDto.setMessage(message.getMessage());
+
+        if (message.isStatus()) {
             loanModel.setVerifyLoginName(loanCreateRequestDto.getLoan().getVerifyLoginName());
             loanModel.setVerifyTime(new Date());
             loanModel.setStatus(LoanStatus.PREHEAT);
+            loanModel.setLoanTxNo(message.getLoanTxNo());
+            loanModel.setLoanAccNo(message.getLoanAccNo());
+            loanModel.setBankOrderNo(message.getBankOrderNo());
+            loanModel.setBankOrderDate(message.getBankOrderDate());
             loanMapper.update(loanModel);
 
             DelayMessageDeliveryJobCreator.createOrReplaceStartRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingStartTime());
@@ -380,7 +395,7 @@ public class ConsoleLoanCreateService {
         }
 
         if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
-                return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());

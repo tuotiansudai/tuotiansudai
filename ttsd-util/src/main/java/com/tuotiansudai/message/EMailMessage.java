@@ -1,3 +1,4 @@
+
 package com.tuotiansudai.message;
 
 import java.io.Serializable;

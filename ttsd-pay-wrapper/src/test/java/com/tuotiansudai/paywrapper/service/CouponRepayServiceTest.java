@@ -590,7 +590,7 @@ public class CouponRepayServiceTest {
     }
 
     private InvestModel mockInvest(long loanId, String loginName, long amount) {
-        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel im = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, 0.1, false, new Date(), Source.WEB, null);
         im.setTradingTime(new Date());
         im.setStatus(InvestStatus.SUCCESS);
         return im;

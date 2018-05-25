@@ -129,7 +129,7 @@ public class InvestServiceImpl implements InvestService {
         String loginName = dto.getLoginName();
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, dto.getLoginName(), AmountConverter.convertStringToCent(dto.getAmount()), rate, false, new Date(), dto.getSource(), dto.getChannel());
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -170,7 +170,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, amount, rate, false, new Date(), source, channel);
 
         try {
             investModel.setNoPasswordInvest(true);
@@ -452,7 +452,7 @@ public class InvestServiceImpl implements InvestService {
     @Transactional
     public void investSuccess(InvestModel investModel) {
         // 冻结资金
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         // 改invest 本身状态为投资成功
@@ -505,7 +505,7 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
             // 返款失败，当作投资成功处理

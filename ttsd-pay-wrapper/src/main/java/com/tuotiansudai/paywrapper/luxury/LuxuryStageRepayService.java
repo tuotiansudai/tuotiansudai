@@ -162,9 +162,7 @@ public class LuxuryStageRepayService {
                         new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
                                 Long.parseLong(orderId),
                                 amount,
-                                period == 0 ? UserBillBusinessType.LUXURY_STAGE_DOWN_PAYMENT : UserBillBusinessType.LUXURY_STAGE_REPAY,
-                                null,
-                                null));
+                                period == 0 ? UserBillBusinessType.LUXURY_STAGE_DOWN_PAYMENT : UserBillBusinessType.LUXURY_STAGE_REPAY));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                         new CreditLoanBillModel(Long.parseLong(orderId) * 100 + period,

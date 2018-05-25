@@ -145,7 +145,7 @@ public class PayrollServiceImpl implements PayrollService {
         AmountTransferMessage atm = new AmountTransferMessage(
                 TransferType.TRANSFER_IN_BALANCE, payrollDetailModel.getLoginName(),
                 payrollDetailModel.getId(), payrollDetailModel.getAmount(),
-                UserBillBusinessType.PAYROLL, null, null);
+                UserBillBusinessType.PAYROLL);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         SystemBillMessage sbm = new SystemBillMessage(

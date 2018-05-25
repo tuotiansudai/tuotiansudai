@@ -178,7 +178,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         investRepayMapper.update(investRepayModel);
 
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
-                investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+                investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankWithdrawMapper">
+
+    <resultMap id="bankWithdrawResultMap" type="BankWithdrawModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="amount" property="amount"/>
+        <result column="fee" property="fee"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="card_number" property="cardNumber"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="source" property="source"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time)
+        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now())
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="bankWithdrawResultMap">
+        select * from bank_withdraw where id = #{id}
+    </select>
+
+    <update id="update" parameterType="BankWithdrawModel">
+        update bank_withdraw set
+        bank_order_no = #{bankOrderNo},
+        bank_order_date = #{bankOrderDate},
+        bank_name = #{bankName},
+        bank_code = #{bankCode},
+        card_number = #{cardNumber},
+        status = #{status},
+        updated_time = now()
+        where id = #{id}
+    </update>
+
+</mapper>

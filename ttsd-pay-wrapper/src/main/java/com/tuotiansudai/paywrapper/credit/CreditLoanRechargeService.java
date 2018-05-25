@@ -155,7 +155,7 @@ public class CreditLoanRechargeService{
             long amount = creditLoanRechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 creditLoanRechargeMapper.updateCreditLoanRechargeStatus(creditLoanRechargeModel.getId(), RechargeStatus.SUCCESS);
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.CREDIT_LOAN_RECHARGE);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_RECHARGE, creditLoanAgent));
             } else {

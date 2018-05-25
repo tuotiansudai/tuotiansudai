@@ -15,8 +15,8 @@ import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,62 +31,56 @@ public class MembershipInvestService {
 
     private static Logger logger = Logger.getLogger(MembershipInvestService.class);
 
-    @Autowired
-    private MembershipExperienceBillMapper membershipExperienceBillMapper;
+    private final MembershipExperienceBillMapper membershipExperienceBillMapper;
+
+    private final BankAccountMapper bankAccountMapper;
+
+    private final UserMembershipMapper userMembershipMapper;
+
+    private final MembershipMapper membershipMapper;
+
+    private final UserMembershipEvaluator userMembershipEvaluator;
+
+    private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private AccountMapper accountMapper;
+    public MembershipInvestService(MembershipExperienceBillMapper membershipExperienceBillMapper, BankAccountMapper bankAccountMapper, UserMembershipMapper userMembershipMapper, MembershipMapper membershipMapper, UserMembershipEvaluator userMembershipEvaluator, MQWrapperClient mqWrapperClient) {
+        this.membershipExperienceBillMapper = membershipExperienceBillMapper;
+        this.bankAccountMapper = bankAccountMapper;
+        this.userMembershipMapper = userMembershipMapper;
+        this.membershipMapper = membershipMapper;
+        this.userMembershipEvaluator = userMembershipEvaluator;
+        this.mqWrapperClient = mqWrapperClient;
+    }
 
-    @Autowired
-    private UserMembershipMapper userMembershipMapper;
-
-    @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
-    private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void afterInvestSuccess(String loginName, long investAmount, long investId, String loanName) {
-        try {
-            if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
-                // 检查是否已经处理过，幂等操作
-                logger.info(MessageFormat.format(
-                        "membership point has been processed already, won't do it again. loginName:{0}, investId:{1}", loginName, String.valueOf(investId)));
-                return;
-            }
+        if (membershipExperienceBillMapper.findByLoginNameAndInvestId(loginName, investId) != null) {
+            // 检查是否已经处理过，幂等操作
+            logger.info(MessageFormat.format("membership point has been processed already, won't do it again. loginName:{0}, investId:{1}", loginName, String.valueOf(investId)));
+            return;
+        }
 
-            AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-            long investMembershipPoint = investAmount / 100;
-            accountModel.setMembershipPoint(accountModel.getMembershipPoint() + investMembershipPoint);
-            accountMapper.update(accountModel);
+        long investMembershipPoint = investAmount / 100;
+        bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        membershipExperienceBillMapper.create(new MembershipExperienceBillModel(loginName,
+                String.valueOf(investId),
+                investMembershipPoint,
+                bankAccountModel.getMembershipPoint(),
+                MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount))));
 
-            MembershipExperienceBillModel billModel = new MembershipExperienceBillModel(loginName,
-                    String.valueOf(investId),
-                    investMembershipPoint,
-                    accountModel.getMembershipPoint(),
-                    MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount)));
+        int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
 
-            membershipExperienceBillMapper.create(billModel);
+        MembershipModel newMembership = membershipMapper.findByExperience(bankAccountModel.getMembershipPoint());
+        if (newMembership.getLevel() > level) {
+            UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
+            curUserMembershipModel.setExpiredTime(new Date());
+            userMembershipMapper.update(curUserMembershipModel);
 
-            int level = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
-            MembershipModel newMembership = membershipMapper.findByExperience(accountModel.getMembershipPoint());
-            if (newMembership.getLevel() > level) {
-                UserMembershipModel curUserMembershipModel = userMembershipMapper.findCurrentUpgradeMaxByLoginName(loginName);
-                curUserMembershipModel.setExpiredTime(new Date());
-                userMembershipMapper.update(curUserMembershipModel);
-
-                UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
-                userMembershipMapper.create(newUserMembershipModel);
-                this.sendMessage(loginName, newMembership.getLevel());
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            throw e;
+            UserMembershipModel newUserMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(loginName, newMembership.getId());
+            userMembershipMapper.create(newUserMembershipModel);
+            this.sendMessage(loginName, newMembership.getLevel());
         }
     }
 

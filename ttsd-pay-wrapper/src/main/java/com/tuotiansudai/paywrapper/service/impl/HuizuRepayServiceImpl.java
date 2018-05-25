@@ -280,7 +280,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
         UserModel userModel = userMapper.findByMobile(mobile);
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userModel.getLoginName(),
                 Long.parseLong(orderId),
-                Long.parseLong(redisWrapperClient.hget(String.format(REPAY_PLAN_STATUS_KEY_TEMPLATE, orderId), "actual_amount")), UserBillBusinessType.HUI_ZU_REPAY_IN, null, null);
+                Long.parseLong(redisWrapperClient.hget(String.format(REPAY_PLAN_STATUS_KEY_TEMPLATE, orderId), "actual_amount")), UserBillBusinessType.HUI_ZU_REPAY_IN);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
         mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
