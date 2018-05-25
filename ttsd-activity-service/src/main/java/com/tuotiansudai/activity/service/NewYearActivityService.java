@@ -41,9 +41,6 @@ public class NewYearActivityService {
     }
 
     public void sendDrawCouponMessage(String loginName) {
-        if ("START".equals(duringActivities())) {
-            mqWrapperClient.sendMessage(MessageQueue.NewYearActivity_Coupon, loginName);
-        }
     }
 }
 

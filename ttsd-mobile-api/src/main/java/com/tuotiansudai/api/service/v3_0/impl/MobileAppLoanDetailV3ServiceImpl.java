@@ -405,16 +405,6 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
                     squareItemDto.setLabel("房屋面积");
                     squareItemDto.setValue(pledgeHouseModel.getSquare());
                     itemDtoList.add(squareItemDto);
-
-                    ItemDto estimateAmountItemDto = new ItemDto();
-                    estimateAmountItemDto.setLabel("房产估值");
-                    estimateAmountItemDto.setValue(pledgeHouseModel.getEstimateAmount());
-                    itemDtoList.add(estimateAmountItemDto);
-
-                    ItemDto loanAmountItemDto = new ItemDto();
-                    loanAmountItemDto.setLabel("借款公证金额");
-                    loanAmountItemDto.setValue(pledgeHouseModel.getLoanAmount());
-                    itemDtoList.add(loanAmountItemDto);
                 }
             case VEHICLE:
                 if (pledgeVehicleModel != null) {
@@ -427,16 +417,6 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
                     modelItemDto.setLabel("车辆型号");
                     modelItemDto.setValue(pledgeVehicleModel.getModel());
                     itemDtoList.add(modelItemDto);
-
-                    ItemDto estimateAmountItemDto = new ItemDto();
-                    estimateAmountItemDto.setLabel("车辆估值");
-                    estimateAmountItemDto.setValue(pledgeVehicleModel.getEstimateAmount());
-                    itemDtoList.add(estimateAmountItemDto);
-
-                    ItemDto loanAmountItemDto = new ItemDto();
-                    loanAmountItemDto.setLabel("借款公证金额");
-                    loanAmountItemDto.setValue(pledgeVehicleModel.getLoanAmount());
-                    itemDtoList.add(loanAmountItemDto);
                 }
         }
 
@@ -491,11 +471,6 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         guaranteeItemDto.setLabel("担保方式");
         guaranteeItemDto.setValue(model.getGuarantee());
         itemDtoList.add(guaranteeItemDto);
-
-        ItemDto estimateAmountItemDto = new ItemDto();
-        estimateAmountItemDto.setLabel("抵押物估值");
-        estimateAmountItemDto.setValue(model.getEstimateAmount());
-        itemDtoList.add(estimateAmountItemDto);
 
         ItemDto pledgeLocationItemDto = new ItemDto();
         pledgeLocationItemDto.setLabel("抵押物所在地");

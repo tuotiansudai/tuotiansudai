@@ -136,12 +136,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean registerUserCommon(RegisterUserDto dto, UserModel referrerUserModel) {
+        String referrer = referrerUserModel != null ? referrerUserModel.getLoginName() : null;
         RegisterRequestDto registerDto = new RegisterRequestDto(
                 dto.getMobile(),
                 dto.getPassword(),
-                referrerUserModel != null ? referrerUserModel.getLoginName() : null,
+                referrer,
                 dto.getChannel(),
-                dto.getSource());
+                dto.getSource(),
+                Strings.isNullOrEmpty(dto.getActivityReferrer()) ? null : referrer);
         UserModel newUserModel = registerUserService.register(registerDto);
         if (newUserModel != null) {
             dto.setLoginName(newUserModel.getLoginName());
