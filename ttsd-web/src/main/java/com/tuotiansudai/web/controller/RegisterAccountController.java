@@ -37,7 +37,7 @@ public class RegisterAccountController {
     @ResponseBody
     public BaseDto<BaseDataDto> isIdentityNumberExist(@PathVariable String identityNumber) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
+        BaseDataDto dataDto = new BaseDataDto(true);
         baseDto.setData(dataDto);
         boolean isLegal = IdentityNumberValidator.validateIdentity(identityNumber);
         if (!isLegal) {
@@ -49,7 +49,7 @@ public class RegisterAccountController {
             dataDto.setMessage("身份证已存在");
             return baseDto;
         }
-        dataDto.setStatus(true);
+        dataDto.setStatus(false);
         return baseDto;
     }
 
