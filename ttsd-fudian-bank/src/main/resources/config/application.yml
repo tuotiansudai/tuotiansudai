@@ -40,7 +40,6 @@ bank:
   mobile-callback-return-url: http://118.187.56.164:30000/callback/return-url
   callback-notify-url: http://118.187.56.164:30000/callback/notify-url
 
-
 mybatis:
   type-aliases-package: com.tuotiansudai.fudian.mapper
 

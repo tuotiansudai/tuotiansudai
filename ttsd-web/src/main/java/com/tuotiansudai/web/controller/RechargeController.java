@@ -23,7 +23,7 @@ import javax.validation.Valid;
 public class RechargeController {
 
     @Autowired
-    private BankRechargeService userRechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -54,7 +54,7 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
-        BankAsyncData baseDto = userRechargeService.recharge(dto.getSource(),
+        BankAsyncData baseDto = bankRechargeService.recharge(dto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(dto.getAmount()),
