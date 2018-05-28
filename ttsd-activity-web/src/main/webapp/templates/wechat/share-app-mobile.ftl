@@ -316,4 +316,10 @@
 
 </div>
 <#include '../module/register-agreement.ftl'>
+<script>
+    webServer = '${webServer}';
+    commonStaticServer = '${commonStaticServer}';
+    mobile = '${mobile}';
+</script>
+
 </@global.main>
