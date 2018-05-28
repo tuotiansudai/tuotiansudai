@@ -82,6 +82,7 @@ p {
 	}
 	.error {
 		font-size: 0.24rem;
+		float: left;
 	}
 	.desc-container {
 		display: none;
@@ -273,6 +274,7 @@ p {
 					li {
 						height: 0.96rem;
 						margin-bottom: 0.6rem;
+						clear: both;
 						&.captcha-li {
 							position: relative;
 							margin-bottom: 0.4rem;

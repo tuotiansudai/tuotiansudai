@@ -18,7 +18,7 @@
                                            maxlength="11" type="text" autocomplete="off" validate></li>
                                 <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
                                            type="password" name="password" autocomplete="off" validate></li>
-                                <li>
+                                <li class="clearfix">
                                     <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
                                            name="appCaptcha"
                                            type="text" maxlength="5" validate>
@@ -340,7 +340,7 @@
             </div>
             <div class="link-bottom textCenter">
                 <@global.isAnonymous>
-                    <a class="gold-btn coupon-btn" href="javascript:;">注册领取新手大礼包</a>
+                    <a class="gold-btn coupon-btn-bottom" href="javascript:;">注册领取新手大礼包</a>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <a class="gold-btn" href="/loan-list">马上投资</a>

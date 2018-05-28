@@ -41,8 +41,8 @@ var mySwiper = new Swiper ('#fuliList', {
     centeredSlides:true,
     spaceBetween: -20,
     loopAdditionalSlides:1,
-    nextButton: '.prevBtn',
-    prevButton: '.nextBtn',
+    nextButton: '.nextBtn',
+    prevButton: '.prevBtn',
 
 });
 $('.open-app').click(function (e) {

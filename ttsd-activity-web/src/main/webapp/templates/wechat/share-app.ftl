@@ -187,7 +187,7 @@
                 <div class="advance-con">
                     <dl>
                         <dt class="icon-advance1"></dt>
-                        <dd><p class="profile">银行资金存管</p>
+                        <dd><p class="profile">资金存管</p>
                             <p class="font">与平台自有资金物理隔离</p></dd>
                     </dl>
                     <dl>

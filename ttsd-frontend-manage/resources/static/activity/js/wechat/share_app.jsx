@@ -76,7 +76,8 @@ $agreementLi.on('click', function (e) {
 
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('.icon-yesOrNo-checked').hasClass('checked');
+    alert(isDisabledSubmit)
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 })
@@ -343,6 +344,14 @@ $('.coupon-btn2').on('click',function (event) {
     }
 });
 $('.coupon-btn3').on('click',function (event) {
+    event.preventDefault();
+    if (urlObj.params.source == 'app') {
+        window.location.href = "/register/user";
+    } else {
+        $('body,html').animate({scrollTop: 0}, 'fast');
+    }
+});
+$('.coupon-btn-bottom').on('click', function (event) {
     event.preventDefault();
     if (urlObj.params.source == 'app') {
         window.location.href = "/register/user";

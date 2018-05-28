@@ -234,7 +234,7 @@
                 <div class="advance-con">
                     <dl>
                         <dt class="icon-advance1"></dt>
-                        <dd><p class="profile">银行资金存管</p>
+                        <dd><p class="profile">资金存管</p>
                             <p class="font">与平台自有资金物理隔离</p></dd>
                     </dl>
                     <dl>
@@ -280,7 +280,7 @@
             </div>
             <div class="link-bottom textCenter">
                 <@global.isAnonymous>
-                    <a class="gold-btn coupon-btn" href="javascript:;">注册领取新手大礼包</a>
+                    <a class="gold-btn coupon-btn-bottom" href="javascript:;">注册领取新手大礼包</a>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
                     <a class="gold-btn" href="/loan-list">马上投资</a>

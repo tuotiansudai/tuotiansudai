@@ -43,8 +43,8 @@ if($('#fuliList').length){
         centeredSlides:true,
         spaceBetween: -20,
         loopAdditionalSlides:1,
-        nextButton: '.prevBtn',
-        prevButton: '.nextBtn'
+        nextButton: '.nextBtn',
+        prevButton: '.prevBtn'
 
     });
 }
@@ -85,7 +85,7 @@ function disableCaptchaBtn() {
 }
 $('#agreementInput').prop('checked',true);
 
-$agreementLi.on('click', function (e) {
+$agreementLi.on('click', function (e) {alert(9)
 
     if($('.icon-yesOrNo-checked').hasClass('checked')){
         $('.icon-yesOrNo-checked').removeClass('checked');
@@ -106,7 +106,7 @@ $agreementLi.on('click', function (e) {
 
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('.icon-yesOrNo-checked').hasClass('checked');
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 })
@@ -379,6 +379,14 @@ if($registerContainer.length){
 
 //点击立即注册领取
 $btnCoupon.on('click', function (event) {
+    event.preventDefault();
+    if (urlObj.params.source == 'app') {
+        window.location.href = "/register/user";
+    } else {
+        $('body,html').animate({scrollTop: 0}, 'fast');
+    }
+});
+$('.coupon-btn-bottom').on('click', function (event) {
     event.preventDefault();
     if (urlObj.params.source == 'app') {
         window.location.href = "/register/user";
