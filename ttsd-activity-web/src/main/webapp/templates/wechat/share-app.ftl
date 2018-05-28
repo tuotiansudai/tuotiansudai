@@ -57,18 +57,18 @@
             <div class="wap-con-swiper">
                 <div class="swiper-container" id="fuliList">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide item1">
+                        <div class="swiper-slide item1 coupon-btn">
 
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
 
                         </div>
-                        <div class="swiper-slide item2">
+                        <div class="swiper-slide item2 coupon-btn">
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
-                            </@global.isNotAnonymous>
+
                         </div>
-                        <div class="swiper-slide item3">
+                        <div class="swiper-slide item3 coupon-btn">
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
 
@@ -240,10 +240,10 @@
                 </ul>
             </div>
             <div class="kindly-tips-wrap">
-                <div class="title">温馨提示</span>
+                <div class="title"><span class="squre"></span><span class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span class="squre"></span><span class="squre"></span></span>
                 </div>
                 <div class="kindly-tips-con">
-                    <p>1.活动时间：2018年X月X日起，本活动仅针对活动开始后注册的新用户；</p>
+                    <p>1.活动时间：2018年5月31日起，本活动仅针对活动开始后注册的新用户；</p>
                     <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
                     <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
                     <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端“我的”中查看；</p>

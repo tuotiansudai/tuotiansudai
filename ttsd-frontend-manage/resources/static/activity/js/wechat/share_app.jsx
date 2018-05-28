@@ -35,7 +35,7 @@ var mySwiper = new Swiper ('#fuliList', {
     autoplayDisableOnInteraction:false,
     slidesPerView: 'auto',
     centeredSlides:true,
-    spaceBetween: -20,
+    spaceBetween: -80,
     loopAdditionalSlides:1,
     nextButton: '.prevBtn',
     prevButton: '.nextBtn'
