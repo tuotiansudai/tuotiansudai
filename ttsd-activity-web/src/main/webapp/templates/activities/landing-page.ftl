@@ -285,7 +285,7 @@
             </div>
             <div class="six-advance-wrap clearfix">
                 <h2 class="title"></h2>
-                <div class="advance-con">
+                <div class="advance-con clearfix">
                     <dl>
                         <dt class="icon-advance1"></dt>
                         <dd><p class="profile">资金存管</p>
@@ -337,6 +337,14 @@
                         <li><div class="pro-item item3"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
                         <li><div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
                     </ul>
+            </div>
+            <div class="link-bottom textCenter">
+                <@global.isAnonymous>
+                    <a class="gold-btn coupon-btn" href="javascript:;">注册领取新手大礼包</a>
+                </@global.isAnonymous>
+                <@global.isNotAnonymous>
+                    <a class="gold-btn" href="/loan-list">马上投资</a>
+                </@global.isNotAnonymous>
             </div>
             <div class="kindly-tips-wrap">
                 <div class="title"><span class="tip-line left-line"></span><span class="squre"></span><span class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span class="squre"></span><span class="squre"></span><span class="tip-line right-line"></span>

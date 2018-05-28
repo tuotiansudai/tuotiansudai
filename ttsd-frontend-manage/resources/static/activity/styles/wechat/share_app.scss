@@ -49,6 +49,22 @@ p {
 }
 
 @media screen and (max-width: 1024px){
+	.gold-btn {
+		display: inline-block;
+		background: url("../../images/landingpage/button_bg.png") no-repeat center center;
+		background-size: 100%;
+		color: #8d080d;
+		font-size: 54px;
+		line-height: 134px;
+		text-align: center;
+		&:hover {
+			color: #8d080d;
+		}
+		width: 5.47rem;
+		height: 1.34rem;
+		line-height: 1.34rem;
+		font-size: 0.48rem;
+	}
 	.btn-red {
 		width: 2.08rem;
 		height: 0.56rem;
@@ -437,11 +453,9 @@ p {
 
 				.wap-con-swiper {
 					margin: 0 auto;
-					//width: 5.96rem;
 					width: 7.5rem;
 					height: 3.9rem;
 					.swiper-container {
-						//width: 5.96rem;
 						width: 7.5rem;
 						height: 3.9rem;
 						margin: 0 auto;

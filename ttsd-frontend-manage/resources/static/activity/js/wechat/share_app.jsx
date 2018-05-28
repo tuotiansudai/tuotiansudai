@@ -35,10 +35,10 @@ var mySwiper = new Swiper ('#fuliList', {
     autoplayDisableOnInteraction:false,
     slidesPerView: 'auto',
     centeredSlides:true,
-    spaceBetween: -80,
+    spaceBetween: -20,
     loopAdditionalSlides:1,
-    nextButton: '.prevBtn',
-    prevButton: '.nextBtn'
+    nextButton: '.nextBtn',
+    prevButton: '.prevBtn'
 
 });
 
@@ -328,7 +328,23 @@ registerForm.onsubmit = function(event) {
 
 
 //点击立即注册领取
-$btnCoupon.on('click', function (event) {
+$('.coupon-btn1').on('click',function (event) {
+    event.preventDefault();
+    if (urlObj.params.source == 'app') {
+        window.location.href = "/register/user";
+    } else {
+        $('body,html').animate({scrollTop: 0}, 'fast');
+    }
+});
+$('.coupon-btn2').on('click',function (event) {
+    event.preventDefault();
+    if (urlObj.params.source == 'app') {
+        window.location.href = "/register/user";
+    } else {
+        $('body,html').animate({scrollTop: 0}, 'fast');
+    }
+});
+$('.coupon-btn3').on('click',function (event) {
     event.preventDefault();
     if (urlObj.params.source == 'app') {
         window.location.href = "/register/user";

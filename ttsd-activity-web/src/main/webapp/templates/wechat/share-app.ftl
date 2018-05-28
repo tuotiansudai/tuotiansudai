@@ -57,18 +57,18 @@
             <div class="wap-con-swiper">
                 <div class="swiper-container" id="fuliList">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide item1 coupon-btn">
+                        <div class="swiper-slide item1 ">
 
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
 
                         </div>
-                        <div class="swiper-slide item2 coupon-btn">
+                        <div class="swiper-slide item2 ">
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
 
                         </div>
-                        <div class="swiper-slide item3 coupon-btn">
+                        <div class="swiper-slide item3 ">
 
                                 <a class="get-btn" href="/loan-list">马上投资</a>
 
@@ -238,6 +238,9 @@
                         <div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div>
                     </li>
                 </ul>
+            </div>
+            <div class="link-bottom textCenter">
+                    <a class="gold-btn" href="/loan-list">马上投资</a>
             </div>
             <div class="kindly-tips-wrap">
                 <div class="title"><span class="squre"></span><span class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span class="squre"></span><span class="squre"></span></span>

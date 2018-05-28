@@ -147,9 +147,12 @@
     <div class="bottom-close" style="display: none;"></div>
     <div class="bottom-open">
         <div class="page-width">
-            <div class="ren"></div>
-            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
-            <div class="to-close fr">
+            <div class="ren">
+                <a href="/activity/landing-page" class="btn-normal">立即领取</a>
+                <div class="to-close ">
+            </div>
+
+
             </div>
         </div>
     </div>

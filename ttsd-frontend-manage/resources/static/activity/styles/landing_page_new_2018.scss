@@ -650,6 +650,9 @@ p {
       .good-project-wap {
         display: none;
       }
+      .link-bottom {
+        display: none;
+      }
       .kindly-tips-wrap {
         width: 1083px;
         margin: 0 auto;
@@ -845,6 +848,12 @@ p {
     line-height: 0.56rem;
     font-size: 0.32rem;
     text-align: center;
+  }
+  .gold-btn {
+    width: 5.47rem;
+    height: 1.34rem;
+    line-height: 1.34rem;
+    font-size: 0.48rem;
   }
 body {
   background: #d32c31 url("../images/landingpage/body_bg_wap.png") no-repeat center top;
@@ -1249,7 +1258,7 @@ body {
             }
           }
           .gift-link {
-            display: none;
+           display: none;
           }
         }
         .good-project-wap {
@@ -1296,6 +1305,11 @@ body {
               }
 
           }
+        }
+        .link-bottom {
+          display: block;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
         }
         .kindly-tips-wrap {
           width: 6.64rem;

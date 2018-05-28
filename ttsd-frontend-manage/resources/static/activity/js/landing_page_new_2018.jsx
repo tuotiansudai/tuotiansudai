@@ -22,6 +22,7 @@ let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 let referrerValidBool=true;
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
+    $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
    $('.app-container-landing').hide();
 }
