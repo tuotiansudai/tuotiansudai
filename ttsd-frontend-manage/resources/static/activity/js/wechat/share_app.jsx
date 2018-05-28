@@ -492,7 +492,7 @@ $('.close-app').click(function (e) {
     e.stopPropagation();
     $('.app-container-landing').hide();
 })
-
+var mobile = urlObj.params.referrerMobile;
 let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
 wx.ready(function () {
     wx.onMenuShareAppMessage({

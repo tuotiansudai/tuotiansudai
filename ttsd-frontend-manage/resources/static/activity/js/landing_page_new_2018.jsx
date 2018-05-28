@@ -86,7 +86,12 @@ function disableCaptchaBtn() {
 $('#agreementInput').prop('checked',true);
 
 $agreementLi.on('click', function (e) {
-    $('.icon-yesOrNo-checked').toggleClass('checked');
+
+    if($('.icon-yesOrNo-checked').hasClass('checked')){
+        $('.icon-yesOrNo-checked').removeClass('checked');
+    }else {
+        $('.icon-yesOrNo-checked').addClass('checked');
+    }
     let mobile=registerForm.mobile,
         password=registerForm.password,
         captcha=registerForm.captcha;
@@ -106,8 +111,18 @@ $agreementLi.on('click', function (e) {
 
 })
 $('#recommendLabel').on('click', function () {
-    $('.icon-arrow-bottom').toggleClass('active');
-    $('.recomender-iphone').toggleClass('show');
+    // $('.icon-arrow-bottom').toggleClass('active');
+    if($('.icon-arrow-bottom').hasClass('active')){
+        $('.icon-arrow-bottom').removeClass('active')
+    }else {
+        $('.icon-arrow-bottom').addClass('active')
+    }
+    if($('.recomender-iphone').hasClass('show')){
+        $('.recomender-iphone').removeClass('show')
+    }else {
+        $('.recomender-iphone').addClass('show');
+    }
+
 })
 //刷新验证码
 $btnChangeImgCode.on('click', function (event) {

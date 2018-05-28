@@ -317,9 +317,8 @@
 </div>
 <#include '../module/register-agreement.ftl'>
 <script>
-    webServer = '${webServer}';
-    commonStaticServer = '${commonStaticServer}';
-    mobile = '${mobile}';
+webServer = '${webServer}';
+commonStaticServer = '${commonStaticServer}';
 </script>
 
 </@global.main>
