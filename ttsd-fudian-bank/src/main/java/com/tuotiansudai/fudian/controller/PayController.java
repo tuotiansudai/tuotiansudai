@@ -7,10 +7,7 @@ import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
-import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
-import com.tuotiansudai.fudian.message.BankBaseMessage;
+import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.service.*;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import org.slf4j.Logger;
@@ -180,13 +177,13 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @RequestMapping(path = "/merchant-transfer", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> merchantTransfer(Map<String, Object> model) {
+    @RequestMapping(path = "/merchant-transfer", method = RequestMethod.POST)
+    public ResponseEntity<BankMerchantTransferMessage> merchantTransfer(@RequestBody BankMerchantTransferDto params) {
         logger.info("[Fudian] call merchant transfer");
 
-        ResponseDto responseDto = merchantTransferService.transfer("UU02615960791461001", "UA02615960791501001", "0.01", null, null);
+        BankMerchantTransferMessage message = merchantTransferService.transfer(params);
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(message);
     }
 
     private ResponseEntity<Map<String, String>> generateResponseJson(BaseRequestDto requestDto, ApiType apiType) {

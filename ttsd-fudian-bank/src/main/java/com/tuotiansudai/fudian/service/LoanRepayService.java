@@ -2,7 +2,7 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
-import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
+import com.tuotiansudai.fudian.dto.request.BankResponseStatus;
 import com.tuotiansudai.fudian.dto.request.LoanRepayRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
@@ -89,7 +89,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
+        this.updateMapper.updateLoanInvest(responseDto, BankResponseStatus.BANK_RESPONSE);
         return responseDto;
     }
 

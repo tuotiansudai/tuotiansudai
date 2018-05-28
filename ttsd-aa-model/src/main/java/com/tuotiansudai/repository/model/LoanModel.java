@@ -95,9 +95,13 @@ public class LoanModel implements Serializable {
 
     private String loanAccNo; //银行标的账户
 
-    private String bankOrderNo; //银行订单
+    private String bankOrderNo; //银行开标订单
 
-    private String bankOrderDate; //银行订单日期
+    private String bankOrderDate; //银行开标订单日期
+
+    private String loanFullBankOrderNo; //银行放款订单
+
+    private String loanFullBankOrderDate; //银行放款订单日期
 
     private Date nextRepayDate; //还款日
 
@@ -542,6 +546,22 @@ public class LoanModel implements Serializable {
 
     public void setBankOrderDate(String bankOrderDate) {
         this.bankOrderDate = bankOrderDate;
+    }
+
+    public String getLoanFullBankOrderNo() {
+        return loanFullBankOrderNo;
+    }
+
+    public void setLoanFullBankOrderNo(String loanFullBankOrderNo) {
+        this.loanFullBankOrderNo = loanFullBankOrderNo;
+    }
+
+    public String getLoanFullBankOrderDate() {
+        return loanFullBankOrderDate;
+    }
+
+    public void setLoanFullBankOrderDate(String loanFullBankOrderDate) {
+        this.loanFullBankOrderDate = loanFullBankOrderDate;
     }
 
     public Date getNextRepayDate() {

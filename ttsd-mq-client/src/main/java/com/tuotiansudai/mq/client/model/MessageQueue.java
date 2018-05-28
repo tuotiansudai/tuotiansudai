@@ -25,10 +25,6 @@ public enum MessageQueue {
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     ExperienceRepayCallback("ExperienceRepayCallback"),
-    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
-    LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
-    LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
-    LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -87,7 +83,9 @@ public enum MessageQueue {
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
     Invest_CheckLoanFull("Invest-Invest_CheckLoanFull"),
 
-    LoanFull_Success("LoanFull_Success")
+    LoanFull_Success("LoanFull_Success"),
+    LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
+    LoanFull_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     ;
 
     private final String queueName;

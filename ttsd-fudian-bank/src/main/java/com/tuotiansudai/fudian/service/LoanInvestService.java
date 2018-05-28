@@ -7,7 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankInvestDto;
 import com.tuotiansudai.fudian.dto.request.LoanInvestRequestDto;
-import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
+import com.tuotiansudai.fudian.dto.request.BankResponseStatus;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanInvestContentDto;
@@ -173,7 +173,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
         }
 
         responseDto.setReqData(responseData);
-        int count = updateMapper.updateLoanInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
+        int count = updateMapper.updateLoanInvest(responseDto, BankResponseStatus.BANK_RESPONSE);
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
         if (responseDto.isSuccess() && count > 0) {
@@ -207,7 +207,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
                         }
 
                         ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankInvestMessage.getLoginName(), bankInvestMessage.getMobile(), bankInvestMessage.getBankOrderNo(), bankInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_INVEST);
-                        if (query.isSuccess() && !"0".equals(query.getContent().getQueryState()) && updateMapper.updateLoanInvest(query, LoanInvestStatus.MANUAL_QUERIED) > 0) {
+                        if (query.isSuccess() && !"0".equals(query.getContent().getQueryState()) && updateMapper.updateLoanInvest(query, BankResponseStatus.MANUAL_QUERIED) > 0) {
                             messageQueueClient.publishMessage(MessageTopic.InvestSuccess, bankInvestValue);
                             logger.error("[Invest Status Schedule] invest is success, but bank response is not found, should send topic: {}", bankInvestValue);
                         }

@@ -50,6 +50,8 @@
         <result column="loan_acc_no" property="loanAccNo"/>
         <result column="bank_order_no" property="bankOrderNo"/>
         <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="loan_full_bank_order_no" property="loanFullBankOrderNo"/>
+        <result column="loan_full_bank_order_date" property="loanFullBankOrderDate"/>
 
 
 
@@ -427,7 +429,12 @@
             <if test="bankOrderDate !=null">
                 bank_order_date = #{bankOrderDate},
             </if>
-
+            <if test="loanFullBankOrderNo !=null">
+                loan_full_bank_order_no = #{loanFullBankOrderNo},
+            </if>
+            <if test="loanFullBankOrderDate !=null">
+                loan_full_bank_order_date = #{loanFullBankOrderDate},
+            </if>
             update_time = now()
         </trim>
         where id = #{id}

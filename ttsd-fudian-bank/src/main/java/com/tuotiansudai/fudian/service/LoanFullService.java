@@ -36,7 +36,7 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     private static final String LOAN_FULL_DELAY_QUEUE = "BANK_LOAN_FULL_DELAY_QUEUE";
 
-    private static final String LOAN_FULL_KEY = "BANK_LOAN_FULL_{}";
+    private static final String LOAN_FULL_KEY = "BANK_LOAN_FULL_{0}";
 
     private final MessageQueueClient messageQueueClient;
 
@@ -118,10 +118,10 @@ public class LoanFullService implements AsyncCallbackInterface {
         }
 
         responseDto.setReqData(responseData);
-        updateMapper.updateLoanFull(responseDto);
+        int count = updateMapper.updateLoanFull(responseDto);
 
         LoanFullContentDto content = responseDto.getContent();
-        if (responseDto.isSuccess() && content.isSuccess()) {
+        if (count > 0 && responseDto.isSuccess() && content.isSuccess()) {
             BankLoanFullMessage bankLoanFullMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(LOAN_FULL_KEY, content.getOrderDate()), content.getOrderNo()), BankLoanFullMessage.class);
             bankLoanFullMessage.setStatus(true);
             bankLoanFullMessage.setMessage(responseDto.getRetMsg());
@@ -153,9 +153,14 @@ public class LoanFullService implements AsyncCallbackInterface {
                 Long size = listOperations.size(LOAN_FULL_DELAY_QUEUE);
                 for (long index = 0; index < (size == null ? 0 : size); index++) {
                     BankLoanFullDto bankLoanFullDto = gson.fromJson(listOperations.index(LOAN_FULL_DELAY_QUEUE, -1), BankLoanFullDto.class);
-                    if (bankLoanFullDto.getTime() > System.currentTimeMillis()) {
-                        this.full(bankLoanFullDto);
+                    if (bankLoanFullDto.getTime() < System.currentTimeMillis()) {
+                        BankBaseMessage bankBaseMessage = this.full(bankLoanFullDto);
                         listOperations.rightPop(LOAN_FULL_DELAY_QUEUE);
+                        if (bankBaseMessage.isStatus()) {
+                            logger.info("[loan full] loan full success, loanId: {}", bankLoanFullDto.getLoanId());
+                        } else {
+                            logger.error("[loan full] loan full failure, loanId: {}, error: {}", bankLoanFullDto.getLoanId(), bankBaseMessage.getMessage());
+                        }
                     } else {
                         listOperations.rightPopAndLeftPush(LOAN_FULL_DELAY_QUEUE, LOAN_FULL_DELAY_QUEUE);
                     }

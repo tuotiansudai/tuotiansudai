@@ -59,11 +59,6 @@ public class LoanCreateService {
 
         String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_CREATE);
 
-        if (Strings.isNullOrEmpty(responseData)) {
-            logger.error("[loan create] send error, data: {}", bankLoanCreateDto);
-            return new BankLoanCreateMessage(false, "请求银行失败");
-        }
-
         if (!signatureHelper.verifySign(responseData)) {
             logger.error("[loan create] verify sign error, data: {}", bankLoanCreateDto);
             return new BankLoanCreateMessage(false, "验签失败");

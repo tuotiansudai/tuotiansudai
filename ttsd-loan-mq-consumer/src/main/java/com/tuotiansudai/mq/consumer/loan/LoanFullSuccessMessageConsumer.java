@@ -1,24 +1,41 @@
 package com.tuotiansudai.mq.consumer.loan;
 
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.google.common.base.Strings;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.service.GenerateRepayService;
+import com.tuotiansudai.service.LoanFullService;
+import com.tuotiansudai.service.ReferrerRewardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.MessageFormat;
 
 @Component
 public class LoanFullSuccessMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(LoanFullSuccessMessageConsumer.class);
 
-    private final static String ALREADY_LOAN_OUT_RETURN_CODE = "0001";
+    private static Gson gson = new GsonBuilder().create();
+
+    private final LoanFullService loanFullService;
+
+    private final GenerateRepayService generateRepayService;
+
+    private final ReferrerRewardService referrerRewardService;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    public LoanFullSuccessMessageConsumer(LoanFullService loanFullService, GenerateRepayService generateRepayService, ReferrerRewardService referrerRewardService) {
+        this.loanFullService = loanFullService;
+        this.generateRepayService = generateRepayService;
+        this.referrerRewardService = referrerRewardService;
+    }
 
     @Override
     public MessageQueue queue() {
@@ -27,18 +44,20 @@ public class LoanFullSuccessMessageConsumer implements MessageConsumer {
 
     @Override
     public void consume(String message) {
-        logger.info("trigger auto loan out after raising complete job, prepare do job");
+        logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
+
+        if (Strings.isNullOrEmpty(message)) {
+            logger.warn("[MQ] message is empty");
+            return;
+        }
+
         try {
-            long loanId = Long.parseLong(message);
-            logger.info("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
-
-            BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
-            if (!dto.getData().getStatus() && !ALREADY_LOAN_OUT_RETURN_CODE.equals(dto.getData().getCode())) {
-                logger.info("loan has already been outed.[" + loanId + "]");
-            }
-
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            BankLoanFullMessage bankLoanFullMessage = gson.fromJson(message, BankLoanFullMessage.class);
+            loanFullService.processLoanFull(bankLoanFullMessage);
+            generateRepayService.generateRepay(bankLoanFullMessage);
+            referrerRewardService.rewardReferrer(bankLoanFullMessage);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[MQ] parse message failure, message: {0}", message), e);
         }
 
     }

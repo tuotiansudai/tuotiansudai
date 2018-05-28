@@ -173,6 +173,24 @@ public class BankWrapperClient {
         return new BankLoanCreateMessage(false, null);
     }
 
+    public BankMerchantTransferMessage merchantTransfer(String loginName, String mobile, String bankUserName, String bankAccountNo, long amount) {
+        BankMerchantTransferDto bankMerchantTransferDto = new BankMerchantTransferDto(loginName, mobile, bankUserName, bankAccountNo, amount);
+
+        String json = syncExecute("/merchant-transfer", bankMerchantTransferDto);
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankMerchantTransferMessage(false, "请求失败");
+        }
+
+        try {
+            return gson.fromJson(json, BankMerchantTransferMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Merchant Transfer] parse response error, response: {0}", json), e);
+        }
+
+        return new BankMerchantTransferMessage(false, null);
+    }
+
     public BankQueryLoanMessage queryLoan(String loanTxNo) {
         try {
 
