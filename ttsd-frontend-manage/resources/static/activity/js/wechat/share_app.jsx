@@ -77,7 +77,6 @@ $agreementLi.on('click', function (e) {
 
     let captchaValid = !$(captcha).hasClass('error') && captcha.value;
     let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && $('.icon-yesOrNo-checked').hasClass('checked');
-    alert(isDisabledSubmit)
     $registerSubmit.prop('disabled',!isDisabledSubmit);
 
 })

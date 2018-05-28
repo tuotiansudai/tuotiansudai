@@ -85,7 +85,7 @@ function disableCaptchaBtn() {
 }
 $('#agreementInput').prop('checked',true);
 
-$agreementLi.on('click', function (e) {alert(9)
+$agreementLi.on('click', function (e) {
 
     if($('.icon-yesOrNo-checked').hasClass('checked')){
         $('.icon-yesOrNo-checked').removeClass('checked');
