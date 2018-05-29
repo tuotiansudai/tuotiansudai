@@ -9,13 +9,58 @@
                 业务正在处理中，请稍后查询。
             <#else>
                 ${bankCallbackType.getTitle()}
+            <#--充值显示充值金额-->
+                充值成功，充值金额 1.00元
+                <#--申请提现成功-->
+                申请提现成功，申请提现金额 1.00元
+                <#--投资成功-->
+                支付成功，您已成功投资 100.00元
             </#if>
 
         </p>
+        <#--实名认证成功-->
+        <div class="handle_btn_container">
+            <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: inline-block;float:right">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="submit" value="去绑卡">
+            </form>
+
+        </div>
+        <#--充值成功-->
         <div class="handle_btn_container">
             <div class="see_my_account">查看我的账户</div>
 
             <div class="go_to_invest investBtn">去投资</div>
+        </div>
+    <#--授权成功-->
+        <div class="handle_btn_container">
+
+            <div class="go_to_invest investBtn">去投资</div>
+        </div>
+    <#--申请提现成功-->
+        <div class="handle_btn_container">
+            <div class="see_my_account">前往我的账户</div>
+
+        </div>
+    <#--银行卡绑定成功-->
+        <div class="handle_btn_container">
+
+            <div class="go_to_invest investBtn">去投资</div>
+        </div>
+    <#--充值成功-->
+        <div class="handle_btn_container">
+
+            <div class="go_to_invest investBtn">去投资</div>
+        </div>
+    <#--解绑成功-->
+        <div class="handle_btn_container">
+
+            <div class="go_to_invest investBtn">去投资</div>
+        </div>
+    <#--投资成功-->
+        <div class="handle_btn_container">
+
+            <div class="go_to_invest investBtn">查看其它项目</div>
         </div>
     </div>
 
