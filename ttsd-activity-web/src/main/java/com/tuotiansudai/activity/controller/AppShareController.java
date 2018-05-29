@@ -85,7 +85,6 @@ public class AppShareController {
         modelAndView.setViewName("/wechat/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-        modelAndView.addObject("mobile", mobile);
         return modelAndView;
     }
 

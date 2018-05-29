@@ -318,7 +318,7 @@ registerForm.onsubmit = function(event) {
         data: paramObj
     },function(data) {
         if (data.data.status) {
-            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile='+registerForm.mobile.value;
+            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobileShare='+registerForm.mobile.value;
         } else {
             layer.msg('请求失败，请重试！');
         }

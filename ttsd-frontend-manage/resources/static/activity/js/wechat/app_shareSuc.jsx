@@ -1,5 +1,7 @@
 // document.cookie="registerMobile="+18810985132;
 let commonFun = require('publicJs/commonFun');
+let urlObj = globalFun.parseURL(location.href);
+let shareMobile = urlObj.params.mobileShare;
 require('swiper/dist/css/swiper.css')
 if ($(document).width() <= 1024) {
     commonFun.calculationRem(document,window);
@@ -56,8 +58,10 @@ $('.close-app').click(function (e) {
     e.stopPropagation();
     $('.app-container-landing').hide();
 })
-
-let mobileStr = mobileShare.substring(0,3)+'****'+mobileShare.substring(8,11);
+let mobileStr;
+if(shareMobile){
+    mobileStr = shareMobile.substring(0,3)+'****'+shareMobile.substring(8,11);
+}
 wx.ready(function () {
     wx.onMenuShareAppMessage({
         title: '明明可以自己偷偷赚钱，但我还是想叫上你', // 分享标题

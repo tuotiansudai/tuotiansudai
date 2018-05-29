@@ -273,6 +273,5 @@
 <script>
     webServer = '${webServer}';
     commonStaticServer = '${commonStaticServer}';
-    mobileShare='${mobile!}';
 </script>
 </@global.main>
