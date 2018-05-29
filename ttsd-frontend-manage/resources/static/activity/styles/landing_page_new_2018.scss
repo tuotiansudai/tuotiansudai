@@ -1204,11 +1204,11 @@ body {
               background-size: 30%;
               cursor: pointer;
               &.prevBtn {
-                left: -0.08rem;
+                left: 0.6rem;
                 background-image: url("../images/2018/new-year-increase-interest/leftBtn.png");
               }
               &.nextBtn {
-                right:-0.08rem;
+                right:0.6rem;
                 background-image: url("../images/2018/new-year-increase-interest/rightBtn.png");
               }
             }

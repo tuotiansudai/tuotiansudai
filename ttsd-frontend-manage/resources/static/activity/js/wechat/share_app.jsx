@@ -317,7 +317,7 @@ registerForm.onsubmit = function(event) {
         data: paramObj
     },function(data) {
         if (data.data.status) {
-            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1];
+            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile='+registerForm.mobile.value;
         } else {
             layer.msg('请求失败，请重试！');
         }
@@ -500,20 +500,22 @@ $('.close-app').click(function (e) {
     e.stopPropagation();
     $('.app-container-landing').hide();
 })
+
 var mobile = urlObj.params.referrerMobile;
 let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
+
 wx.ready(function () {
     wx.onMenuShareAppMessage({
         title: '明明可以自己偷偷赚钱，但我还是想叫上你', // 分享标题
-        desc: '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱', // 分享描述
-        link: webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        desc: '友谊的小船变巨轮，'+refferInfoShare+'送您6888元体验金，邀您一起来赚钱', // 分享描述
+        link: webServer + '/activity/app-share?referrerMobile=' + mobile + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
     });
 
     wx.onMenuShareTimeline({
         title: '明明可以自己偷偷赚钱，但我还是想叫上你', // 分享标题
-        desc: '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱', // 分享描述
-        link: webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        desc: '友谊的小船变巨轮，'+refferInfoShare+'送您6888元体验金，邀您一起来赚钱', // 分享描述
+        link: webServer + '/activity/app-share?referrerMobile=' + mobile + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
     });
 });

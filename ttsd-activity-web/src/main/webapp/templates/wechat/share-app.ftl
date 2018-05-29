@@ -270,4 +270,9 @@
         <div class="close-app"></div>
     </div>
 </div>
+<script>
+    webServer = '${webServer}';
+    commonStaticServer = '${commonStaticServer}';
+    mobileShare='${mobile!}';
+</script>
 </@global.main>

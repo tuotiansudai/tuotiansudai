@@ -53,5 +53,22 @@ $('.close-app').click(function (e) {
     $('.app-container-landing').hide();
 })
 
+let mobileStr = mobileShare.substring(0,3)+'****'+mobileShare.substring(8,11);
+wx.ready(function () {
+    wx.onMenuShareAppMessage({
+        title: '明明可以自己偷偷赚钱，但我还是想叫上你', // 分享标题
+        desc: '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱', // 分享描述
+        link: webServer + '/activity/app-share?referrerMobile=' + mobileShare + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
+    });
+
+    wx.onMenuShareTimeline({
+        title: '明明可以自己偷偷赚钱，但我还是想叫上你', // 分享标题
+        desc: '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱', // 分享描述
+        link: webServer + '/activity/app-share?referrerMobile=' + mobileShare + '&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: commonStaticServer + '/images/icons/red_ware_money.png', // 分享图标
+    });
+});
+
 
 

@@ -319,6 +319,7 @@
 <script>
 webServer = '${webServer}';
 commonStaticServer = '${commonStaticServer}';
+refferInfoShare='${referrerInfo!}';
 </script>
 
 </@global.main>
