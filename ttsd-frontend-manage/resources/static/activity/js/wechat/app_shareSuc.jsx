@@ -1,6 +1,10 @@
 // document.cookie="registerMobile="+18810985132;
 let commonFun = require('publicJs/commonFun');
 require('swiper/dist/css/swiper.css')
+if ($(document).width() <= 1024) {
+    commonFun.calculationRem(document,window);
+}
+
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
 $('#register_btn').on('click',() => {

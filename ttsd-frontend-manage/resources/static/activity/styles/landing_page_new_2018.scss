@@ -1394,6 +1394,11 @@ body {
     font-size: 53.33px;
   }
 }
+@media screen and (max-width: 393px) {
+  html {
+    font-size: 52.4px;
+  }
+}
 @media screen and (max-width: 384px) {
   html {
     font-size: 51.2px;

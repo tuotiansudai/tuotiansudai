@@ -20,6 +20,10 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 let referrerValidBool=true;
+
+if ($(document).width() <= 1024) {
+    commonFun.calculationRem(document,window);
+}
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
     $('#bannerBoxLogin').hide();
