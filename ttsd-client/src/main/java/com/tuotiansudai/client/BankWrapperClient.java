@@ -45,7 +45,8 @@ public class BankWrapperClient {
     public BankReturnCallbackMessage checkBankReturnUrl(String path, String bankReturnParams) {
         RequestBody requestBody = new FormEncodingBuilder().add("reqData", bankReturnParams).build();
         Request request = new Request.Builder()
-                .url(this.baseUrl + path)
+//                .url(this.baseUrl + path)
+                .url("http://192.168.80.88:30001" + path)
                 .post(requestBody)
                 .build();
 
@@ -70,7 +71,7 @@ public class BankWrapperClient {
     public Boolean isCallbackSuccess(BankCallbackType bankCallbackType, String orderNo) {
         try {
             Request request = new Request.Builder()
-                    .url(this.baseUrl + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
+                    .url("http://192.168.80.88:30001" + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
                     .get()
                     .build();
 
