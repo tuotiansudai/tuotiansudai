@@ -8,7 +8,8 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.LoanRaisingCompleteNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
@@ -621,11 +622,10 @@ public class InvestServiceImpl implements InvestService {
         SimpleDateFormat sdfTime = new SimpleDateFormat("HH点mm分");
         String loanRaisingCompleteTime = sdfTime.format(loanModel.getRaisingCompleteTime());
 
-        LoanRaisingCompleteNotifyDto dto = new LoanRaisingCompleteNotifyDto(loanRaisingCompleteNotifyMobileList, loanRaisingStartDate, loanName, loanAmountStr,
-                loanDuration, loanerName, agentUserName, loanRaisingCompleteTime);
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
-        smsWrapperClient.sendLoanRaisingCompleteNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
+                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanId));
 

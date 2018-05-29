@@ -5,7 +5,8 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.SmsMembershipPrivilegeNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
@@ -57,9 +58,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
 
     @Autowired
     private MembershipPrivilegeMapper membershipPrivilegeMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Override
     public BaseDto<PayFormDataDto> purchase(MembershipPrivilegePurchaseDto dto) {
@@ -148,7 +146,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
                 Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()), title, content, membershipPrivilegePurchaseModel.getId()));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()),
                 PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
-
-        smsWrapperClient.sendMembershipPrivilegeBuySuccessNotify(new SmsMembershipPrivilegeNotifyDto(Lists.newArrayList(membershipPrivilegePurchaseModel.getMobile())));
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, Lists.newArrayList(membershipPrivilegePurchaseModel.getMobile())));
     }
 }

@@ -1,8 +1,10 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.LoanOutCompleteNotifyDto;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -18,14 +20,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessSmsInvestorMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -62,7 +63,7 @@ public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer
         List<String> mobiles = investMapper.findMobileByLoanId(loanModel.getId());
         if (CollectionUtils.isNotEmpty(mobiles)){
             String rate = String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%";
-            smsWrapperClient.sendLoanOutCompleteNotify(new LoanOutCompleteNotifyDto(mobiles, loanModel.getName(), rate));
+            mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE, mobiles, Lists.newArrayList(rate)));
         }
     }
 }

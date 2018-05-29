@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.*;
-import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
 import com.tuotiansudai.smswrapper.repository.model.JianZhouSmsHistoryModel;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -60,121 +59,15 @@ public class SmsService {
     @Autowired
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
-    public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
-    }
-
-    public BaseDto<SmsDataDto> sendRegisterSuccess(SmsRegisterSuccessNotifyDto notifyDto) {
-        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
-    }
-
-    public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
-    }
-
-    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, boolean isVoice, String ip) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE, isVoice, Lists.newArrayList(captcha), ip);
-    }
-
-    public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE, false, Lists.newArrayList(), "");
-    }
-
     public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
         List<String> mobiles = Lists.newArrayList(fatalNotifyQAMobiles);
         if (Environment.PRODUCTION == environment) {
             mobiles.addAll(fatalNotifyDevMobiles);
         }
-        return sendSMS(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
+        return sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
     }
 
-    public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String repayAmount) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE, false, Lists.newArrayList(repayAmount), null);
-    }
-
-    public BaseDto<SmsDataDto> cancelTransferLoan(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
-    }
-
-    public BaseDto<SmsDataDto> transferLoanSuccess(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
-    }
-
-    public BaseDto<SmsDataDto> transferLoanOverdue(String mobile, String transferLoanName) {
-        return sendSMS(Lists.newArrayList(mobile), JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, false, Lists.newArrayList(transferLoanName), null);
-    }
-
-    public BaseDto<SmsDataDto> advancedRepay(InvestSmsNotifyDto dto) {
-        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName()), null);
-    }
-
-    public BaseDto<SmsDataDto> membershipPrivilegeBySuccess(SmsMembershipPrivilegeNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, false, Lists.newArrayList(), null);
-    }
-
-    public BaseDto<SmsDataDto> membershipPrivilegeExpired(SmsMembershipPrivilegeNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_EXPIRED_TEMPLATE, false, Lists.newArrayList(), null);
-    }
-
-    public BaseDto<SmsDataDto> payroll(SmsPayrollNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, false, Lists.newArrayList(dto.getTitle()), null);
-    }
-
-    public BaseDto<SmsDataDto> usePoint(SmsUsePointNotifyDto dto) {
-        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_USE_POINT_NOTIFY_TEMPLATE, false, Lists.newArrayList(dto.getUsePoint(), dto.getSurplusPoint()), null);
-    }
-
-    public BaseDto<SmsDataDto> membershipUpgrade(SmsUserReceiveMembershipDto dto) {
-        return sendSMS(Lists.newArrayList(dto.getMobile()), JianZhouSmsTemplate.SMS_MEMBERSHIP_UPGRADE_TEMPLATE, false, Lists.newArrayList(dto.getLevel(), dto.getLevel()), null);
-    }
-
-    private String getCouponName(SmsCouponNotifyDto notifyDto) {
-        switch (notifyDto.getCouponType()) {
-            case RED_ENVELOPE:
-                return notifyDto.getAmount() + "元" + notifyDto.getCouponType().getName();
-            case INTEREST_COUPON:
-                return notifyDto.getRate() + "%优惠券";
-            default:
-                return null;
-        }
-    }
-
-    public BaseDto<SmsDataDto> assignCouponSuccessNotify(SmsCouponNotifyDto notifyDto) {
-        String couponName = getCouponName(notifyDto);
-        if (null == couponName) {
-            return new BaseDto<>(false);
-        }
-        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, false, Lists.newArrayList(couponName, String.valueOf(notifyDto.getDeadLine())), null);
-    }
-
-    public BaseDto<SmsDataDto> couponExpiredNotify(SmsCouponNotifyDto notifyDto) {
-        return sendSMS(Lists.newArrayList(notifyDto.getMobile()), JianZhouSmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, false, Lists.newArrayList(String.valueOf(notifyDto.getExpiredCount())), null);
-    }
-
-    public BaseDto<SmsDataDto> creditLoanBalanceAlert() {
-        return sendSMS(Lists.newArrayList(creditLoanAgent), JianZhouSmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, false, Lists.newArrayList(), null);
-    }
-
-    public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {
-        return sendSMS(mobiles, JianZhouSmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, false, Lists.newArrayList(warningLine), null);
-    }
-
-    public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId) {
-        return sendSMS(mobiles, JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, false, Lists.newArrayList(String.valueOf(businessId)), null);
-    }
-
-    public BaseDto<SmsDataDto> loanRaisingCompleteNotify(LoanRaisingCompleteNotifyDto dto) {
-        String[] paramArr = {dto.getLoanRaisingStartDate(), dto.getLoanDuration(), dto.getLoanAmount(),
-                dto.getLoanRaisingCompleteTime(), "借款人：" + dto.getLoanerName(), "代理人：" + dto.getAgentName()};
-        List<String> paramList = Arrays.asList(paramArr);
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, false, paramList, null);
-    }
-
-    public BaseDto<SmsDataDto> loanOutCompleteNotify(LoanOutCompleteNotifyDto dto) {
-        return sendSMS(dto.getMobiles(), JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, false, Lists.newArrayList(dto.getLoanName(), dto.getBaseRate()), null);
-    }
-
-    private BaseDto<SmsDataDto> sendSMS(List<String> mobileList, JianZhouSmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {
+    public BaseDto<SmsDataDto> sendSms(List<String> mobileList, JianZhouSmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {
         SmsDataDto data = new SmsDataDto();
         BaseDto<SmsDataDto> dto = new BaseDto<>(data);
 

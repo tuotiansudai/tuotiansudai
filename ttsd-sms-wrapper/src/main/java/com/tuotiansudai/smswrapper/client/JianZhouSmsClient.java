@@ -4,12 +4,10 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.client.OkHttpLoggingInterceptor;
-import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
-import com.tuotiansudai.util.WeChatClient;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

@@ -1,8 +1,8 @@
 package com.tuotiansudai.scheduler.user;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsMembershipPrivilegeNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.MessageEventType;
 import com.tuotiansudai.enums.PushSource;
@@ -33,9 +33,6 @@ public class MembershipExpiredNotifyScheduler {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
     @Scheduled(cron = "0 0 10 * * ?", zone = "Asia/Shanghai")
     public void membershipExpiredMessage() {
         List<MembershipPrivilegeExpiredUsersView> membershipPrivilegeExpiredUsers = membershipPrivilegeMapper.findMembershipPrivilegeExpiredUsers();
@@ -51,6 +48,7 @@ public class MembershipExpiredNotifyScheduler {
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_EXPIRED, loginNames, title, content, null));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(loginNames, PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_EXPIRED, title, AppUrl.MESSAGE_CENTER_LIST));
 
-        smsWrapperClient.sendMembershipPrivilegeExpiredNotify(new SmsMembershipPrivilegeNotifyDto(membershipPrivilegeExpiredUsers.stream().map(MembershipPrivilegeExpiredUsersView::getMobile).collect(Collectors.toList())));
+        List<String> mobiles = membershipPrivilegeExpiredUsers.stream().map(MembershipPrivilegeExpiredUsersView::getMobile).collect(Collectors.toList());
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_EXPIRED_TEMPLATE, mobiles));
     }
 }

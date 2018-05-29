@@ -7,7 +7,8 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -566,7 +567,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.ADVANCE_REPAY_SUCCESS, currentInvestRepay.getId()));
 
-        smsWrapperClient.sendAdvancedRepayNotify(new InvestSmsNotifyDto(userMapper.findByLoginName(investModel.getLoginName()).getMobile(), loanModel.getName(), null));
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()), Lists.newArrayList(loanModel.getName())));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {

@@ -1,6 +1,9 @@
 package com.tuotiansudai.mq.consumer.loan;
 
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -32,7 +35,7 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
     private CreditLoanBillMapper creditLoanBillMapper;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private JobManager jobManager;
@@ -50,6 +53,8 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
     @Value(value = "${credit.loan.balance.alert.send.hour}")
     private int sendHour;
 
+    @Value("${credit.loan.agent}")
+    private String creditLoanAgent;
 
     @Override
     public MessageQueue queue() {
@@ -95,7 +100,8 @@ public class CreditLoanBillMessageConsumer implements MessageConsumer {
         if (redis.setnx(key, "1")) {
             if (now.isAfter(startTime) && now.isBefore(endTime)) {
                 logger.info("[MQ] send credit loan balance alert immediately.");
-                smsWrapperClient.sendCreditLoanBalanceAlert();
+                mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, Lists.newArrayList(creditLoanAgent)));
+
             } else {
                 logger.info("[MQ] send credit loan balance alert delay.");
                 DelayMessageDeliveryJobCreator.createOrReplaceCreditLoanBalanceAlertDelayJob(jobManager, getNextSendTime());

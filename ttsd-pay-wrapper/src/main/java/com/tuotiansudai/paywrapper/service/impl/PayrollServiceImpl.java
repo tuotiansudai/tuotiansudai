@@ -5,8 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.dto.sms.SmsPayrollNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
@@ -25,7 +26,6 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -223,8 +223,7 @@ public class PayrollServiceImpl implements PayrollService {
                 Collections.singletonList(payrollDetailModel.getLoginName()),
                 title, message, null));
 
-        smsWrapperClient.sendPayrollNotify(new SmsPayrollNotifyDto(Lists.newArrayList(payrollDetailModel.getMobile()), payrollModel.getTitle()));
-
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, Lists.newArrayList(payrollDetailModel.getMobile()), Lists.newArrayList(payrollModel.getTitle())));
     }
 
 }
