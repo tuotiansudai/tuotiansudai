@@ -400,8 +400,45 @@
       letter-spacing: 0px;
     }
     .balance {
-      color: #ffac2a;
+      width: 300px;
+      color: #666;
+      font-size: 16px;
       padding: 0px 0 20px;
+      .money {
+        font-size: 46px;
+        color: #333333;
+      }
+    }
+
+    .recharge-cash {
+      font-size: 16px;
+      color: #999;
+      >span {
+        vert-align: middle;
+      }
+      .money {
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+      }
+     p {
+       position: relative;
+       .icon-small {
+         width: 18px;
+         height: 18px;
+         position: absolute;
+         left: 0;
+         top: 10px;
+         &.icon-recharge {
+           background: url('../../images/sign/icon_recharge.png') no-repeat left center;
+           background-size: contain;
+         }
+         &.icon-cash {
+           background: url('../../images/sign/icon_getCash.png') no-repeat left center;
+           background-size: contain;
+         }
+       }
+     }
     }
   }
 }
