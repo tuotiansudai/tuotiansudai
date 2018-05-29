@@ -1,12 +1,15 @@
 package com.tuotiansudai.scheduler.loan;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.RepayNotifyDto;
+import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayNotifyModel;
 import com.tuotiansudai.service.impl.LoanRepayServiceImpl;
@@ -46,7 +49,7 @@ public class LoanRepayNotifySchedulerTest {
     private PayWrapperClient payWrapperClient;
 
     @Mock
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() {
@@ -62,15 +65,13 @@ public class LoanRepayNotifySchedulerTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
-
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
 
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(4)).sendLoanRepayNotify(any(RepayNotifyDto.class));
+        verify(mqWrapperClient, times(4)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
 
     }
 
@@ -83,14 +84,12 @@ public class LoanRepayNotifySchedulerTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
-
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(3)).sendLoanRepayNotify(any(RepayNotifyDto.class));
+        verify(mqWrapperClient, times(3)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
 
     }
 
@@ -101,14 +100,12 @@ public class LoanRepayNotifySchedulerTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
-
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(RepayNotifyDto.class));
+        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
 
     }
 
@@ -121,14 +118,12 @@ public class LoanRepayNotifySchedulerTest {
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(smsWrapperClient.sendLoanRepayNotify(any(RepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
-
         when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(true));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(smsWrapperClient, times(0)).sendLoanRepayNotify(any(RepayNotifyDto.class));
+        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
 
     }
 

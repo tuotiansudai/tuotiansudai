@@ -77,44 +77,12 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String USE_POINT = "/sms/use-point";
 
-    public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
-        return send(dto, REGISTER_CAPTCHA_SMS_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendRegisterSuccessSms(SmsRegisterSuccessNotifyDto dto) {
-        return send(dto, REGISTER_SUCCESS_SMS_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptchaSms(SmsCaptchaDto dto) {
-        return send(dto, NO_PASSWORD_INVEST_CAPTCHA_SMS_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
-        return send(dto, RETRIEVE_PASSWORD_CAPTCHA_URI);
-    }
-
-    public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
-        return send(null, PASSWORD_CHANGED_NOTIFY_URI.replace("{mobile}", mobile));
+    public BaseDto<SmsDataDto> sendSms(SmsDto smsDto){
+        return send(smsDto, REGISTER_CAPTCHA_SMS_URI);
     }
 
     public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
         return send(notify, FATAL_NOTIFY_URL);
-    }
-
-    public BaseDto<SmsDataDto> sendPlatformBalanceLowNotify(PlatformBalanceLowNotifyDto notify) {
-        return send(notify, PLATFORM_BALANCE_LOW_NOTIFY);
-    }
-
-    public BaseDto<SmsDataDto> sendGenerateContractErrorNotify(GenerateContractErrorNotifyDto notify) {
-        return send(notify, GENERATE_CONTRACT_ERROR_NOTIFY);
-    }
-
-    public BaseDto<SmsDataDto> sendLoanRepayNotify(RepayNotifyDto dto) {
-        return send(dto, LOAN_REPAY_NOTIFY_URL);
-    }
-
-    public BaseDto<SmsDataDto> sendCancelTransferLoanNotify(SmsTransferLoanNotifyDto dto) {
-        return send(dto, CANCEL_TRANSFER_LOAN_URI);
     }
 
     public BaseDto<SmsDataDto> sendTransferLoanSuccessNotify(SmsTransferLoanNotifyDto dto) {

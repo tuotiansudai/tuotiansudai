@@ -1,11 +1,13 @@
 package com.tuotiansudai.mq.consumer.loan;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.AnxinContractMessage;
@@ -51,7 +53,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
     private JobManager jobManager;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -89,7 +91,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
             redisWrapperClient.del(ANXIN_CONTRACT_QUERY_TRY_TIMES_KEY + businessId);
 
             // 发短信报警
-            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+            sendSms(String.valueOf(businessId));
 
             if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
                 // 清redis中的inCreating标记
@@ -120,7 +122,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
                 if (CollectionUtils.isNotEmpty(contractFailList)) {
                     logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}, type:{1}", String.valueOf(businessId), anxinContractType));
                     // 有失败的，发短信
-                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+                    sendSms(String.valueOf(businessId));
                 }
                 // 清redis中的inCreating标记
                 redisWrapperClient.del(LOAN_CONTRACT_IN_CREATING_KEY + businessId);
@@ -130,11 +132,15 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
                 if (investModel != null && StringUtils.isEmpty(investModel.getContractNo())) {
                     logger.error(MessageFormat.format("some batch is fail. send sms. businessId:{0}, type:{1}", String.valueOf(businessId), anxinContractType));
                     // 失败了，发短信
-                    smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, businessId));
+                    sendSms(String.valueOf(businessId));
                 }
                 // 清redis中的inCreating标记
                 redisWrapperClient.del(TRANSFER_CONTRACT_IN_CREATING_KEY + businessId);
             }
         }
+    }
+
+    private void sendSms(String param){
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(param)));
     }
 }

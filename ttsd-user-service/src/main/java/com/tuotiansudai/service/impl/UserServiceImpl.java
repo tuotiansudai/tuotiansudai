@@ -1,12 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.request.ChangePasswordRequestDto;
 import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
@@ -159,7 +162,7 @@ public class UserServiceImpl implements UserService {
             UserRestUserInfo userInfoResp = userRestClient.changePassword(new ChangePasswordRequestDto(loginName, originalPassword, newPassword));
             returnValue = userInfoResp.isSuccess();
             if (returnValue) {
-                smsWrapperClient.sendPasswordChangedNotify(userInfoResp.getUserInfo().getMobile());
+                mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE, Lists.newArrayList(userInfoResp.getUserInfo().getMobile())));
             }
         } catch (RestException e) {
             if (e.getStatus() != 401) {

@@ -6,7 +6,8 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
-import com.tuotiansudai.dto.sms.SmsRegisterSuccessNotifyDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -71,7 +72,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         this.sendMessage(userModel);
 
-        smsWrapperClient.sendRegisterSuccessSms(new SmsRegisterSuccessNotifyDto(userModel.getMobile(), userModel.getReferrer()));
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
 
         return userModel;
     }

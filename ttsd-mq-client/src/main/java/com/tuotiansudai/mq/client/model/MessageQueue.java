@@ -78,6 +78,7 @@ public enum MessageQueue {
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
+    UserSms("UserSms"),
     ;
 
     private final String queueName;

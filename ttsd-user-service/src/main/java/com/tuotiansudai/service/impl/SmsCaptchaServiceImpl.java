@@ -1,10 +1,13 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.SmsCaptchaDto;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.SmsCaptchaType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -26,24 +29,33 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private SmsCaptchaMapper smsCaptchaMapper;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.NO_PASSWORD_INVEST);
-        return smsWrapperClient.sendNoPasswordInvestCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
+        return sendSms(JianZhouSmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE, mobile, captcha, isVoice, requestIP);
     }
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.REGISTER_CAPTCHA);
-        return smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
+        return sendSms(JianZhouSmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE, mobile, captcha, isVoice, requestIP);
     }
 
     @Override
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, boolean isVoice, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        return smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, isVoice, requestIP));
+        return sendSms(JianZhouSmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE, mobile, captcha, isVoice, requestIP);
+    }
+
+    private BaseDto<SmsDataDto> sendSms(JianZhouSmsTemplate jianZhouSmsTemplate,String mobile, String params, boolean isVoice, String requestIP){
+        SmsDto smsDto = new SmsDto(jianZhouSmsTemplate, Lists.newArrayList(mobile), Lists.newArrayList(params), isVoice, requestIP);
+        mqWrapperClient.sendMessage(MessageQueue.UserSms, smsDto);
+        SmsDataDto smsDataDto = new SmsDataDto();
+        smsDataDto.setStatus(true);
+        smsDataDto.setIsRestricted(false);
+        return new BaseDto<>(smsDataDto);
     }
 
     @Override
