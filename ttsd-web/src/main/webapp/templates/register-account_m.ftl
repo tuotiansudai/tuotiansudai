@@ -28,7 +28,7 @@ placeholder="请输入您的身份证号" maxlength="20">
 
 <div class="button-layer">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<input type="submit" class="btn-wap-normal next-step" value="立即认证" disabled/>
+<input type="submit" id="accountBtn" class="btn-wap-normal next-step" value="立即认证" disabled/>
 </div>
 </form>
 
