@@ -155,7 +155,7 @@ public class InviteHelpActivityController {
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
             request.getSession().setAttribute("channel", "fanlijiayouzhan");
-            return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
+            return new ModelAndView(String.format("redirect:/we-chat/authorize?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
         }
         if (isOwn){
             inviteHelpActivityService.updateEveryOneHelp(id, loginName, LoginUserInfo.getMobile());

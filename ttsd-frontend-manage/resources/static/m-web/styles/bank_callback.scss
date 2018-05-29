@@ -1,46 +1,9 @@
-
-.certification-box {
-  h3 {
-    padding:20px 0;
-    font-size: 14px;
-    color: #808080;
-    line-height: 22px;
-    font-weight: normal;
-    text-align: center;
-  }
-
-  .input-list li {
-    justify-content: flex-start;
-    input {
-      text-align: left;
-      font-size: 16px;
-      margin-left: 10px;
-      color: #525252;
-    }
-  }
-}
 $fontGray:#808080;
 $fontGray52:#525252;
 $redf63:#FF635A;
 $fontGraya2:#a2a2a2;
 $fontGraya83:#838383;
 $fontSeconed:#FF473C;
-.icon-success{
-  margin-top: 100px;
-}
-.certification-success {
-  background: #fff;
-  height: 100%;
-  overflow: hidden;
-  text-align: center;
-  box-sizing: border-box;
-  em {
-    display: block;
-    padding-top:10px;
-    font-size: 15px;
-    color: #808080;
-  }
-}
 p {
   margin: 0;
 }
@@ -54,11 +17,11 @@ p {
       height: 0.8rem;
       margin: 0 auto;
       &.icon-success {
-        background: url('../../images/icon-success.png') center center no-repeat;
+        background: url('../images/icon-success.png') center center no-repeat;
         background-size: 100%;
       }
       &.icon-failure {
-        background: url('../../images/icon_failure.png') center center no-repeat;
+        background: url('../images/icon_failure.png') center center no-repeat;
         background-size: 100%;
       }
 
@@ -118,6 +81,7 @@ p {
   padding-bottom: 0.5rem;
 }
 
+//处理中页面
 .gif-container {
   width: 4rem;
   height: 3.1rem;
@@ -127,6 +91,7 @@ p {
     width: 100%;
   }
 }
+//读秒页面
 .progress-container {
   color: $fontGraya2;
   font-size: 0.28rem;
