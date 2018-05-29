@@ -58,6 +58,7 @@ function showReferrerInfoIfNeeded() {
     if (referNum) {
         //有推荐人
         var mobileNum = commonFun.decrypt.uncompile(referNum);
+        $('input[name="referrer"]', $landingContainerBox).val(mobileNum);
         //通过手机号得到用户名
         commonFun.useAjax({
             type:'GET',

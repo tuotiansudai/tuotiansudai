@@ -5,7 +5,6 @@ import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -85,7 +84,6 @@ public class AppShareController {
         modelAndView.setViewName("/wechat/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-        modelAndView.addObject("mobile", mobile);
         return modelAndView;
     }
 

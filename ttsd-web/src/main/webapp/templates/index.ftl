@@ -22,7 +22,7 @@
                 <div class="register-ad-box fr tc">
                     <b class="h-title">约定年化利率</b>
                     <p class="num-text clearfix">
-                        <span class="percent">8%~10%</span>
+                        <span class="percent">8%~11%</span>
                     </p>
 
                     <p class="welcome-text">welcome</p>
@@ -68,7 +68,7 @@
                     <i class="guide sprite-homepage-icon-guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>约定年化利率8%~10%，<br>投资门槛50元起投</span>
+                        <span>约定年化利率8%~11%，<br>投资门槛50元起投</span>
                     </a>
                 </dd>
                 <dd>

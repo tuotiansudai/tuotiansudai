@@ -8,7 +8,7 @@
     </div>
     <div class="logo-note" id="logoNote">
         <i class="logo"></i>
-       <span>注册即拿6888元体验金+1000元投资红包！</span>
+       <span>注册即拿6888元体验金+668元现金红包！</span>
     </div>
 
     <div id="EntryPointForm">
