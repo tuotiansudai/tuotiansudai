@@ -1,6 +1,6 @@
 package com.tuotiansudai.smswrapper.exception;
 
-import com.tuotiansudai.smswrapper.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
 
 import java.util.List;
 

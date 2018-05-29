@@ -29,12 +29,14 @@ public class SmsDto implements Serializable{
         this.jianZhouSmsTemplate = jianZhouSmsTemplate;
         this.mobiles = mobiles;
         this.params = Lists.newArrayList();
+        this.requestIP = null;
     }
 
     public SmsDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params) {
         this.jianZhouSmsTemplate = jianZhouSmsTemplate;
         this.mobiles = mobiles;
         this.params = params;
+        this.requestIP = null;
     }
 
     public SmsDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params, boolean isVoice, String requestIP) {

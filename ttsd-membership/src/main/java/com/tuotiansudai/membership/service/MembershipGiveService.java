@@ -6,7 +6,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.sms.SmsUserReceiveMembershipDto;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
 import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
