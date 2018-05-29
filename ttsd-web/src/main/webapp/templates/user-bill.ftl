@@ -2,18 +2,21 @@
 <@global.main pageCss="${css.user_bill}" pageJavascript="${js.user_bill}" activeNav="我的账户" activeLeftNav="资金管理" title="资金管理">
 <div class="content-container user-bill-list-content">
     <h4 class="column-title"><em>资金管理</em></h4>
-    <div class="money-box borderBox clearfix">
+    <div class="money-box clearfix">
         <div class="fl">
             <div class="balance">可用余额（元）</span><br/>
                 <div class="money">${balance}</div>
             </div>
-                <a class="btn-recharge btn-primary" href="/recharge">充值</a>
-                <a class="btn-invest btn-action" href="/loan-list">投资</a>
-                <a class="btn-withdraw btn-normal" href="/withdraw">提现</a>
+
         </div>
         <div class="fl recharge-cash">
-            <p class="clearfix clear-blank-m"><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">${rechargeAmount} </span></p>
+            <p><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">${rechargeAmount} </span></p>
             <p><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span class="money">${withdrawAmount} </span></p>
+        </div>
+        <div class="btns">
+            <a class="btn-recharge btn-list" href="/recharge">充值</a>
+            <a class="btn-invest btn-list" href="/loan-list">投资</a>
+            <a class="btn-withdraw btn-list" href="/withdraw">提现</a>
         </div>
     </div>
 <div class="clear-blank-m"></div>
