@@ -15,19 +15,19 @@ public class BankLoanFullDto extends BankBaseDto {
 
     private String expectRepayTime;
 
-    private long time;
+    private long triggerTime;
 
     public BankLoanFullDto() {
     }
 
-    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, long time) {
+    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, long triggerTime) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.loanId = loanId;
         this.loanTxNo = loanTxNo;
         this.loanOrderNo = loanOrderNo;
         this.loanOrderDate = loanOrderDate;
         this.expectRepayTime = expectRepayTime;
-        this.time = time;
+        this.triggerTime = triggerTime;
     }
 
     public long getLoanId() {
@@ -50,15 +50,15 @@ public class BankLoanFullDto extends BankBaseDto {
         return expectRepayTime;
     }
 
-    public long getTime() {
-        return time;
+    public long getTriggerTime() {
+        return triggerTime;
     }
 
     @Override
     public boolean isValid() {
         return super.isValid()
                 && loanId > 0
-                && time > 0
+                && triggerTime > 0
                 && !Strings.isNullOrEmpty(loanTxNo)
                 && !Strings.isNullOrEmpty(loanOrderNo)
                 && !Strings.isNullOrEmpty(loanOrderDate)

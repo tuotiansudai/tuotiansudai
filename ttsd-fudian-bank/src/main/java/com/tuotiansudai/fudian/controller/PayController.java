@@ -89,10 +89,6 @@ public class PayController extends AsyncRequestController {
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.WITHDRAW);
 
-        if (!bankAsyncData.isStatus()) {
-            logger.error("[Fudian] call withdraw, request data generation failure, data: {}", params);
-        }
-
         return ResponseEntity.ok(bankAsyncData);
     }
 
@@ -111,12 +107,15 @@ public class PayController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/loan-full", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> loanFull(@RequestBody BankLoanFullDto bankLoanFullDto) {
+    public ResponseEntity<BankBaseMessage> loanFull(@RequestBody BankLoanFullDto params) {
         logger.info("[Fudian] call loan full");
 
-        loanFullService.full(bankLoanFullDto);
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan full bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.ok(loanFullService.full(bankLoanFullDto));
+        return ResponseEntity.ok(loanFullService.full(params));
     }
 
     @RequestMapping(path = "/loan-invest/source/{source}", method = RequestMethod.POST)
@@ -158,14 +157,20 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankReturnCallbackMessage);
     }
 
-    @RequestMapping(path = "/loan-repay", method = RequestMethod.GET)
-    public String loanRepay(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-repay/source/{source}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> loanRepay(@PathVariable(name = "source") Source source, @RequestBody BankLoanRepayDto params) {
         logger.info("[Fudian] call loan repay");
 
-        LoanRepayRequestDto requestDto = loanRepayService.repay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00", null, null);
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.LOAN_REPAY.getPath());
-        return "post";
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan repay bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        LoanRepayRequestDto requestDto = loanRepayService.repay(source, params);
+
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_REPAY);
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/loan-fast-repay", method = RequestMethod.GET)

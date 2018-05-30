@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.mapper;
 
 import com.tuotiansudai.fudian.dto.request.LoanInvestRequestDto;
+import com.tuotiansudai.fudian.dto.request.LoanRepayRequestDto;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +27,10 @@ public interface SelectRequestMapper {
     @Select("select id, request_data, merchant_no, user_name, account_no, amount, award, loan_tx_no, order_no, order_date, ext_mark " +
             "from loan_invest " +
             "where status = 'SENT' and DATE_ADD(request_time, INTERVAL 1 HOUR) > now() and DATE_ADD(request_time, INTERVAL 5 MINUTE) < now()")
-    List<LoanInvestRequestDto> selectNoInvestResponseInOneHour();
+    List<LoanInvestRequestDto> selectNoLoanInvestResponseInOneHour();
+
+    @Select("SELECT id, request_data, merchant_no, user_name, account_no, loan_tx_no, capital, interest, loan_fee, order_no, order_date, ext_mark " +
+            "FROM `loan_repay` " +
+            "WHERE `status` = 'SENT' AND DATE_ADD(request_time, INTERVAL 1 HOUR) > now()")
+    List<LoanRepayRequestDto> selectNoLoanRepayResponseInOneHour();
 }

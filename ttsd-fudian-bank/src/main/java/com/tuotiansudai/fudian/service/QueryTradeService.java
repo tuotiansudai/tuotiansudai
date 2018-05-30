@@ -29,8 +29,8 @@ public class QueryTradeService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto<QueryTradeContentDto> query(String loginName, String mobile, String orderNo, String orderDate, QueryTradeType queryType) {
-        QueryTradeRequestDto dto = new QueryTradeRequestDto(loginName, mobile, orderNo, orderDate, queryType.getValue());
+    public ResponseDto<QueryTradeContentDto> query(String orderNo, String orderDate, QueryTradeType queryType) {
+        QueryTradeRequestDto dto = new QueryTradeRequestDto(orderNo, orderDate, queryType.getValue());
 
         signatureHelper.sign(dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {

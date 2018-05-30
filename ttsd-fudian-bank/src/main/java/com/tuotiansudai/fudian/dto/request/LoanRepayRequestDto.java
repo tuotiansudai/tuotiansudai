@@ -14,8 +14,11 @@ public class LoanRepayRequestDto extends PayBaseRequestDto {
 
     private String loanFee = "0.00";
 
-    public LoanRepayRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest, ApiType apiType, Map<String, String> extraValues) {
-        super(source, loginName, mobile, userName, accountNo, apiType, extraValues);
+    public LoanRepayRequestDto() {
+    }
+
+    public LoanRepayRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest, ApiType apiType) {
+        super(source, loginName, mobile, userName, accountNo, apiType, null);
         this.loanTxNo = loanTxNo;
         this.capital = capital;
         this.interest = interest;

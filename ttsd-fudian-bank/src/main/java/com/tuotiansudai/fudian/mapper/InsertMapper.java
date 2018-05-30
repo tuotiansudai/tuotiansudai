@@ -73,8 +73,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanFull(LoanFullRequestDto dto);
 
-    @Insert("INSERT INTO loan_repay(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_tx_no`, `capital`, `interest`, `loan_fee`, `request_time`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanTxNo}, #{capital}, #{interest}, #{loanFee}, now())")
+    @Insert("INSERT INTO loan_repay(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_tx_no`, `capital`, `interest`, `loan_fee`, `request_time`, `status`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanTxNo}, #{capital}, #{interest}, #{loanFee}, now()), 'SENT'")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanRepay(LoanRepayRequestDto dto);
 

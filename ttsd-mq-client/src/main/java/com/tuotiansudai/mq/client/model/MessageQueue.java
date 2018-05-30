@@ -83,9 +83,11 @@ public enum MessageQueue {
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
     Invest_CheckLoanFull("Invest-Invest_CheckLoanFull"),
 
-    LoanFull_Success("LoanFull_Success"),
+    LoanFull_Success("LoanFull-Success"),
     LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanFull_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
+
+    LoanCallback_Success("LoanCallback-Success");
     ;
 
     private final String queueName;

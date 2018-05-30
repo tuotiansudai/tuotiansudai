@@ -15,8 +15,8 @@ public class LoanCallbackRequestDto extends BaseRequestDto {
 
     private String notifyUrl; //异步回调地址
 
-    public LoanCallbackRequestDto(String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investList, Map<String, String> extraValues) {
-        super(Source.WEB, loginName, mobile, ApiType.LOAN_CALLBACK, extraValues);
+    public LoanCallbackRequestDto(String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investList) {
+        super(Source.WEB, loginName, mobile, ApiType.LOAN_CALLBACK, null);
         this.loanTxNo = loanTxNo;
         this.investList = investList;
     }

@@ -1,14 +1,14 @@
 package com.tuotiansudai.fudian.message;
 
-public class BankInvestMessage extends BankBaseMessage {
+public class BankLoanRepayMessage extends BankBaseMessage {
 
     private long loanId;
 
-    private String loanName;
+    private long loanRepayId;
 
-    private long investId;
+    private long capital;
 
-    private long amount;
+    private long interest;
 
     private String loginName;
 
@@ -22,14 +22,15 @@ public class BankInvestMessage extends BankBaseMessage {
 
     private String bankOrderDate;
 
-    public BankInvestMessage() {
+    public BankLoanRepayMessage() {
     }
 
-    public BankInvestMessage(long loanId, String loanName, long investId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public
+    BankLoanRepayMessage(long loanId, long loanRepayId, long capital, long interest, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
         this.loanId = loanId;
-        this.loanName = loanName;
-        this.investId = investId;
-        this.amount = amount;
+        this.loanRepayId = loanRepayId;
+        this.capital = capital;
+        this.interest = interest;
         this.loginName = loginName;
         this.mobile = mobile;
         this.bankUserName = bankUserName;
@@ -42,16 +43,16 @@ public class BankInvestMessage extends BankBaseMessage {
         return loanId;
     }
 
-    public String getLoanName() {
-        return loanName;
+    public long getLoanRepayId() {
+        return loanRepayId;
     }
 
-    public long getInvestId() {
-        return investId;
+    public long getCapital() {
+        return capital;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getInterest() {
+        return interest;
     }
 
     public String getLoginName() {

@@ -61,7 +61,6 @@ public class CancelCardBindService implements AsyncCallbackInterface {
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[cancel card bind] sign error, data: {}", bankBaseDto);
-
             return null;
         }
 

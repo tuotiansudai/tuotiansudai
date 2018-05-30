@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import java.util.Map;
-
 public class LoanCallbackInvestItemRequestDto {
 
     private transient long id;
@@ -28,15 +26,16 @@ public class LoanCallbackInvestItemRequestDto {
 
     private String orderDate;
 
-    public LoanCallbackInvestItemRequestDto(String capital, String interest, String interestFee, String rateInterest, String investUserName, String investAccountNo, String investOrderNo, String investOrderDate) {
+    public LoanCallbackInvestItemRequestDto(String capital, String interest, String interestFee, String investUserName, String investAccountNo, String investOrderNo, String investOrderDate, String orderNo) {
         this.capital = capital;
         this.interest = interest;
         this.interestFee = interestFee;
-        this.rateInterest = rateInterest;
+        this.rateInterest = "0.00";
         this.investUserName = investUserName;
         this.investAccountNo = investAccountNo;
         this.investOrderNo = investOrderNo;
         this.investOrderDate = investOrderDate;
+        this.orderNo = orderNo;
     }
 
     public long getId() {

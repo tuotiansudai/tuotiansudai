@@ -34,9 +34,9 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanFullService.class);
 
-    private static final String LOAN_FULL_DELAY_QUEUE = "BANK_LOAN_FULL_DELAY_QUEUE";
+    private static final String BANK_LOAN_FULL_DELAY_QUEUE = "BANK_LOAN_FULL_DELAY_QUEUE";
 
-    private static final String LOAN_FULL_KEY = "BANK_LOAN_FULL_{0}";
+    private static final String BANK_LOAN_FULL_MESSAGE_KEY = "BANK_LOAN_FULL_MESSAGE_{0}";
 
     private final MessageQueueClient messageQueueClient;
 
@@ -70,8 +70,8 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     @SuppressWarnings(value = "unchecked")
     public BankBaseMessage full(BankLoanFullDto bankLoanFullDto) {
-        if (bankLoanFullDto.getTime() > System.currentTimeMillis()) {
-            redisTemplate.opsForList().leftPush(LOAN_FULL_DELAY_QUEUE, bankLoanFullDto.toString());
+        if (bankLoanFullDto.getTriggerTime() > System.currentTimeMillis()) {
+            redisTemplate.opsForList().leftPush(BANK_LOAN_FULL_DELAY_QUEUE, bankLoanFullDto.toString());
             return new BankBaseMessage(true, null);
         }
 
@@ -83,16 +83,18 @@ public class LoanFullService implements AsyncCallbackInterface {
                 bankLoanFullDto.getLoanOrderNo(),
                 bankLoanFullDto.getLoanOrderDate(),
                 bankLoanFullDto.getExpectRepayTime());
+
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[loan full] sign error, data: {}", bankLoanFullDto);
+            logger.error("[Loan Full] sign error, data: {}", bankLoanFullDto);
             return new BankBaseMessage(false, "数据签名失败");
         }
 
         insertMapper.insertLoanFull(dto);
 
-        redisTemplate.<String, String>opsForHash().put(MessageFormat.format(LOAN_FULL_KEY, dto.getOrderDate()), dto.getOrderNo(),
+        redisTemplate.<String, String>opsForHash().put(MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, dto.getOrderDate()),
+                dto.getOrderNo(),
                 gson.toJson(new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), dto.getOrderNo(), dto.getOrderDate())));
 
         String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_FULL);
@@ -109,23 +111,29 @@ public class LoanFullService implements AsyncCallbackInterface {
     @Override
     @SuppressWarnings(value = "unchecked")
     public ResponseDto callback(String responseData) {
-        logger.info("[loan full] data is {}", responseData);
+        logger.info("[Loan Full] data is {}", responseData);
 
         ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) ApiType.LOAN_FULL.getParser().parse(responseData);
         if (responseDto == null) {
-            logger.error("[loan full] parse callback data error, data is {}", responseData);
+            logger.error("[Loan Full] parse callback data error, data is {}", responseData);
             return null;
         }
 
         responseDto.setReqData(responseData);
         int count = updateMapper.updateLoanFull(responseDto);
 
+        if (!responseDto.isSuccess()) {
+            logger.error("[Loan Full] loan full is failure, data is {}", responseData);
+            return responseDto;
+        }
+
         LoanFullContentDto content = responseDto.getContent();
         if (count > 0 && responseDto.isSuccess() && content.isSuccess()) {
-            BankLoanFullMessage bankLoanFullMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(LOAN_FULL_KEY, content.getOrderDate()), content.getOrderNo()), BankLoanFullMessage.class);
+            BankLoanFullMessage bankLoanFullMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, content.getOrderDate()), content.getOrderNo()), BankLoanFullMessage.class);
             bankLoanFullMessage.setStatus(true);
             bankLoanFullMessage.setMessage(responseDto.getRetMsg());
             messageQueueClient.publishMessage(MessageTopic.LoanFullSuccess, bankLoanFullMessage);
+            logger.info("[Loan Full] loan full is success, send message: {}", bankLoanFullMessage);
         }
 
         return responseDto;
@@ -150,19 +158,14 @@ public class LoanFullService implements AsyncCallbackInterface {
         ListOperations<String, String> listOperations = redisTemplate.opsForList();
         if (lock.tryLock()) {
             try {
-                Long size = listOperations.size(LOAN_FULL_DELAY_QUEUE);
+                Long size = listOperations.size(BANK_LOAN_FULL_DELAY_QUEUE);
                 for (long index = 0; index < (size == null ? 0 : size); index++) {
-                    BankLoanFullDto bankLoanFullDto = gson.fromJson(listOperations.index(LOAN_FULL_DELAY_QUEUE, -1), BankLoanFullDto.class);
-                    if (bankLoanFullDto.getTime() < System.currentTimeMillis()) {
-                        BankBaseMessage bankBaseMessage = this.full(bankLoanFullDto);
-                        listOperations.rightPop(LOAN_FULL_DELAY_QUEUE);
-                        if (bankBaseMessage.isStatus()) {
-                            logger.info("[loan full] loan full success, loanId: {}", bankLoanFullDto.getLoanId());
-                        } else {
-                            logger.error("[loan full] loan full failure, loanId: {}, error: {}", bankLoanFullDto.getLoanId(), bankBaseMessage.getMessage());
-                        }
+                    BankLoanFullDto bankLoanFullDto = gson.fromJson(listOperations.index(BANK_LOAN_FULL_DELAY_QUEUE, -1), BankLoanFullDto.class);
+                    if (bankLoanFullDto.getTriggerTime() < System.currentTimeMillis()) {
+                        this.full(bankLoanFullDto);
+                        listOperations.rightPop(BANK_LOAN_FULL_DELAY_QUEUE);
                     } else {
-                        listOperations.rightPopAndLeftPush(LOAN_FULL_DELAY_QUEUE, LOAN_FULL_DELAY_QUEUE);
+                        listOperations.rightPopAndLeftPush(BANK_LOAN_FULL_DELAY_QUEUE, BANK_LOAN_FULL_DELAY_QUEUE);
                     }
                 }
             } finally {

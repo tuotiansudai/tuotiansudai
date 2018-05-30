@@ -3,7 +3,7 @@ package com.tuotiansudai.mq.consumer.point;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.point.repository.model.PointTask;
@@ -44,15 +44,15 @@ public class InvestSuccessCompletePointTaskConsumer implements MessageConsumer {
         }
 
         try {
-            BankInvestMessage bankInvestMessage = new Gson().fromJson(message, BankInvestMessage.class);
+            BankLoanInvestMessage bankLoanInvestMessage = new Gson().fromJson(message, BankLoanInvestMessage.class);
 
-            pointTaskService.completeNewbieTask(PointTask.FIRST_INVEST, bankInvestMessage.getLoginName());
-            pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, bankInvestMessage.getLoginName());
-            pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, bankInvestMessage.getLoginName());
-            pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, bankInvestMessage.getLoginName());
-            pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, bankInvestMessage.getLoginName());
-            pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, bankInvestMessage.getLoginName());
-            pointService.obtainPointInvest(bankInvestMessage.getInvestId());
+            pointTaskService.completeNewbieTask(PointTask.FIRST_INVEST, bankLoanInvestMessage.getLoginName());
+            pointTaskService.completeAdvancedTask(PointTask.EACH_SUM_INVEST, bankLoanInvestMessage.getLoginName());
+            pointTaskService.completeAdvancedTask(PointTask.FIRST_SINGLE_INVEST, bankLoanInvestMessage.getLoginName());
+            pointTaskService.completeAdvancedTask(PointTask.EACH_RECOMMEND_INVEST, bankLoanInvestMessage.getLoginName());
+            pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_180, bankLoanInvestMessage.getLoginName());
+            pointTaskService.completeAdvancedTask(PointTask.FIRST_INVEST_360, bankLoanInvestMessage.getLoginName());
+            pointService.obtainPointInvest(bankLoanInvestMessage.getInvestId());
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] parse message failed, message: {}", message);
             return;

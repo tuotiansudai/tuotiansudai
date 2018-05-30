@@ -17,7 +17,7 @@ import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -43,7 +43,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanInvestService.class);
 
-    private final static String BANK_INVEST_KEY = "BANK_INVEST_{0}";
+    private final static String BANK_LOAN_INVEST_MESSAGE_KEY = "BANK_LOAN_INVEST_{0}";
 
     private final MessageQueueClient messageQueueClient;
 
@@ -99,9 +99,9 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
         insertMapper.insertLoanInvest(dto);
 
-        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_KEY, dto.getOrderDate());
+        String bankInvestHistoryKey = MessageFormat.format(BANK_LOAN_INVEST_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.opsForHash().put(bankInvestHistoryKey, dto.getOrderNo(),
-                gson.toJson(new BankInvestMessage(bankInvestDto.getLoanId(),
+                gson.toJson(new BankLoanInvestMessage(bankInvestDto.getLoanId(),
                         bankInvestDto.getLoanName(),
                         bankInvestDto.getInvestId(),
                         bankInvestDto.getAmount(),
@@ -134,9 +134,9 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
         insertMapper.insertLoanInvest(dto);
 
-        String bankInvestHistoryKey = MessageFormat.format(BANK_INVEST_KEY, dto.getOrderDate());
+        String bankInvestHistoryKey = MessageFormat.format(BANK_LOAN_INVEST_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.opsForHash().put(bankInvestHistoryKey, dto.getOrderNo(),
-                gson.toJson(new BankInvestMessage(bankInvestDto.getLoanId(),
+                gson.toJson(new BankLoanInvestMessage(bankInvestDto.getLoanId(),
                         bankInvestDto.getLoanName(),
                         bankInvestDto.getInvestId(),
                         bankInvestDto.getAmount(),
@@ -174,16 +174,17 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
         responseDto.setReqData(responseData);
         int count = updateMapper.updateLoanInvest(responseDto, BankResponseStatus.BANK_RESPONSE);
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
         if (responseDto.isSuccess() && count > 0) {
-            String message = hashOperations.get(MessageFormat.format(BANK_INVEST_KEY, responseDto.getContent().getOrderDate()),
+            HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+            String message = hashOperations.get(MessageFormat.format(BANK_LOAN_INVEST_MESSAGE_KEY, responseDto.getContent().getOrderDate()),
                     responseDto.getContent().getOrderNo());
             if (Strings.isNullOrEmpty(message)) {
                 logger.error("[loan invest callback] callback is success, but queue message is not found, response data is {}", responseData);
                 return responseDto;
             }
             messageQueueClient.publishMessage(MessageTopic.InvestSuccess, message);
+            logger.info("[loan invest callback] callback is success, send message: {}", responseData);
         }
 
         return responseDto;
@@ -191,25 +192,24 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
     @Scheduled(fixedDelay = 1000 * 10, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
     public void schedule() {
-        RLock lock = redissonClient.getLock("BANK_INVEST_HISTORY");
+        RLock lock = redissonClient.getLock("BANK_LOAN_INVEST_HISTORY");
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         if (lock.tryLock()) {
             try {
-                List<LoanInvestRequestDto> loanInvestRequests = selectRequestMapper.selectNoInvestResponseInOneHour();
+                List<LoanInvestRequestDto> loanInvestRequests = selectRequestMapper.selectNoLoanInvestResponseInOneHour();
 
                 for (LoanInvestRequestDto loanInvestRequest : loanInvestRequests) {
                     try {
-                        String bankInvestValue = hashOperations.get(MessageFormat.format(BANK_INVEST_KEY, loanInvestRequest.getOrderDate()), loanInvestRequest.getOrderNo());
-                        BankInvestMessage bankInvestMessage = gson.fromJson(bankInvestValue, BankInvestMessage.class);
-                        if (Strings.isNullOrEmpty(bankInvestValue)) {
-                            logger.error("[Invest Status Schedule] fetch invest meta data from redis error, bank order no:{}, redis value: {}", loanInvestRequest.getOrderNo(), bankInvestValue);
+                        String bankLoanInvestValue = hashOperations.get(MessageFormat.format(BANK_LOAN_INVEST_MESSAGE_KEY, loanInvestRequest.getOrderDate()), loanInvestRequest.getOrderNo());
+                        if (Strings.isNullOrEmpty(bankLoanInvestValue)) {
+                            logger.error("[Invest Status Schedule] fetch invest meta data from redis error, bank order no:{}, redis value: {}", loanInvestRequest.getOrderNo(), bankLoanInvestValue);
                             continue;
                         }
-
-                        ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankInvestMessage.getLoginName(), bankInvestMessage.getMobile(), bankInvestMessage.getBankOrderNo(), bankInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_INVEST);
+                        BankLoanInvestMessage bankLoanInvestMessage = gson.fromJson(bankLoanInvestValue, BankLoanInvestMessage.class);
+                        ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankLoanInvestMessage.getBankOrderNo(), bankLoanInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_INVEST);
                         if (query.isSuccess() && !"0".equals(query.getContent().getQueryState()) && updateMapper.updateLoanInvest(query, BankResponseStatus.MANUAL_QUERIED) > 0) {
-                            messageQueueClient.publishMessage(MessageTopic.InvestSuccess, bankInvestValue);
-                            logger.error("[Invest Status Schedule] invest is success, but bank response is not found, should send topic: {}", bankInvestValue);
+                            messageQueueClient.publishMessage(MessageTopic.InvestSuccess, bankLoanInvestMessage);
+                            logger.info("[Invest Status Schedule] invest is success, send message: {}", bankLoanInvestMessage);
                         }
                     } catch (JsonSyntaxException ex) {
                         logger.error(ex.getLocalizedMessage(), ex);

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -46,7 +46,7 @@ public class InvestSuccessService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void processInvestSuccess(BankInvestMessage message) {
+    public void processInvestSuccess(BankLoanInvestMessage message) {
         long investId = message.getInvestId();
 
         InvestModel investModel = investMapper.findById(investId);

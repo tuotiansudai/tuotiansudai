@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -65,10 +65,10 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
         }
 
         try {
-            BankInvestMessage bankInvestMessage = gson.fromJson(message, BankInvestMessage.class);
+            BankLoanInvestMessage bankLoanInvestMessage = gson.fromJson(message, BankLoanInvestMessage.class);
 
-            LoanModel loanModel = loanMapper.findById(bankInvestMessage.getLoanId());
-            InvestModel investModel = investMapper.findById(bankInvestMessage.getInvestId());
+            LoanModel loanModel = loanMapper.findById(bankLoanInvestMessage.getLoanId());
+            InvestModel investModel = investMapper.findById(bankLoanInvestMessage.getInvestId());
             List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
             long sumInvestAmount = successInvests.stream().filter(successInvest -> successInvest.getId() != investModel.getId()).mapToLong(InvestModel::getAmount).sum();
