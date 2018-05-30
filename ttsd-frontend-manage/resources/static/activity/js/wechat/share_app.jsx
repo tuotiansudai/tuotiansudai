@@ -371,15 +371,6 @@ function showReferrerInfoIfNeeded() {
         $('#recommendLabelExist').show();
         $('.refer-info-other').show();
         $('#referMobile').text(mobileNum);
-        //通过手机号得到用户名
-        commonFun.useAjax({
-            type:'GET',
-            dataType: 'json',
-            url:"/activity/get-realRealName?mobile=" + mobileNum
-        },function(data) {
-            //姓名的第一个字母用*替换
-            $('.refer-name', $registerContainer).text(data);
-        });
     }
     else {
         //无推荐人

@@ -4,7 +4,7 @@
 <#--<#include "../pageLayout/header.ftl" />-->
 <div class="landing-page-container" id="landingTop">
     <div class="login-wrap" id="registerContainer">
-        <div class="refer-person-info"><span class="refer-name"></span><br/>送你<strong>1000元</strong>投资红包</div>
+        <div class="refer-person-info"><span class="refer-name">${referrerInfo!}</span><br/>送你<strong>1000元</strong>投资红包</div>
 
         <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
             <div class="login-con">
