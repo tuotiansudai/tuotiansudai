@@ -180,7 +180,7 @@
                                 <div class="split"></div>
                                 <div class="third">
                                     <p><a href="/loan-list" class="btn-red">马上投资</a></p>
-                                    <p class="bank"><span class="checkbox-red"></span><span>银行资金存管</span></p>
+                                    <p class="bank"><span class="checkbox-red"></span><span>资金存管</span></p>
                                 </div>
                             </div>
                             <div class="bot-content clearfix">
@@ -191,7 +191,7 @@
                                             <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
                                                     class="day">天</span></div>
                                             <p class="rate">约定年化利率</p>
-                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                            <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                     class="icon2"></span><span>按天计息 即投即生息</span></p>
                                             <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                         </div>
