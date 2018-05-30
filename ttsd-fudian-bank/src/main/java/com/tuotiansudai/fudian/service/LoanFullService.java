@@ -9,6 +9,7 @@ import com.tuotiansudai.fudian.dto.request.LoanFullRequestDto;
 import com.tuotiansudai.fudian.dto.response.LoanFullContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
@@ -52,12 +53,14 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public LoanFullService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, BankClient bankClient, SignatureHelper signatureHelper, RedissonClient redissonClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanFullService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, RedissonClient redissonClient, BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.redissonClient = redissonClient;
@@ -65,6 +68,7 @@ public class LoanFullService implements AsyncCallbackInterface {
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -99,7 +103,7 @@ public class LoanFullService implements AsyncCallbackInterface {
 
         String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_FULL);
 
-        ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) this.callback(responseData);
+        ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) this.notifyCallback(responseData);
 
         if (responseDto == null) {
             return new BankBaseMessage(false, "数据解析失败");
@@ -109,10 +113,13 @@ public class LoanFullService implements AsyncCallbackInterface {
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
-        logger.info("[Loan Full] data is {}", responseData);
+    public void returnCallback(ResponseDto responseData) {
+    }
 
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto notifyCallback(String responseData) {
+        logger.info("[Loan Full] data is {}", responseData);
         ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) ApiType.LOAN_FULL.getParser().parse(responseData);
         if (responseDto == null) {
             logger.error("[Loan Full] parse callback data error, data is {}", responseData);

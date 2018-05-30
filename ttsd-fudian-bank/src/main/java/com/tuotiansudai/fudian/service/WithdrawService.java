@@ -10,6 +10,7 @@ import com.tuotiansudai.fudian.dto.request.WithdrawRequestDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.dto.response.WithdrawContentDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
@@ -41,6 +42,8 @@ public class WithdrawService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final RedisTemplate<String, String> redisTemplate;
@@ -48,12 +51,13 @@ public class WithdrawService implements AsyncCallbackInterface {
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public WithdrawService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public WithdrawService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -93,8 +97,13 @@ public class WithdrawService implements AsyncCallbackInterface {
     }
 
     @Override
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateWithdraw(responseData);
+    }
+
+    @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[withdraw callback] data is {}", responseData);
 
         ResponseDto<WithdrawContentDto> responseDto = ApiType.WITHDRAW.getParser().parse(responseData);

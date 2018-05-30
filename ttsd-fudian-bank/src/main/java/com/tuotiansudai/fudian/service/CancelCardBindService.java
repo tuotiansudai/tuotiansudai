@@ -10,6 +10,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.CancelCardBindContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBindCardMessage;
@@ -42,16 +43,20 @@ public class CancelCardBindService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final Gson gson = new GsonBuilder().create();
+
     @Autowired
-    public CancelCardBindService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public CancelCardBindService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -79,8 +84,13 @@ public class CancelCardBindService implements AsyncCallbackInterface {
     }
 
     @Override
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateCancelCardBind(responseData);
+    }
+
+    @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[cancel card bind] data is {}", responseData);
 
         ResponseDto<CancelCardBindContentDto> responseDto = ApiType.CANCEL_CARD_BIND.getParser().parse(responseData);

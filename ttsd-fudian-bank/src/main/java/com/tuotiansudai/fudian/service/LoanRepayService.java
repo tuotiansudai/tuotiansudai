@@ -5,19 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
-import com.tuotiansudai.fudian.dto.request.BankResponseStatus;
 import com.tuotiansudai.fudian.dto.request.LoanRepayRequestDto;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.request.Source;
-import com.tuotiansudai.fudian.dto.response.LoanFullContentDto;
 import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
-import com.tuotiansudai.fudian.mapper.UpdateMapper;
-import com.tuotiansudai.fudian.message.BankLoanFullMessage;
+import com.tuotiansudai.fudian.mapper.*;
 import com.tuotiansudai.fudian.message.BankLoanRepayMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -63,6 +57,8 @@ public class LoanRepayService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final BankClient bankClient;
 
     private final SelectRequestMapper selectRequestMapper;
@@ -72,7 +68,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public LoanRepayService(MessageQueueClient messageQueueClient, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, SignatureHelper signatureHelper, BankClient bankClient, QueryTradeService queryTradeService, LoanCallbackService loanCallbackService, InsertMapper insertMapper, UpdateMapper updateMapper, SelectRequestMapper selectRequestMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanRepayService(MessageQueueClient messageQueueClient, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, SignatureHelper signatureHelper, BankClient bankClient, QueryTradeService queryTradeService, LoanCallbackService loanCallbackService, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectRequestMapper selectRequestMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.messageQueueClient = messageQueueClient;
         this.redisTemplate = redisTemplate;
         this.redissonClient = redissonClient;
@@ -83,6 +79,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.selectRequestMapper = selectRequestMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -158,14 +155,20 @@ public class LoanRepayService implements AsyncCallbackInterface {
             return null;
         }
 
-        this.updateMapper.updateLoanInvest(responseDto, BankResponseStatus.BANK_RESPONSE);
+        this.updateMapper.updateLoanRepay(responseDto);
         return responseDto;
     }
 
     @Override
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateLoanRepay(responseData);
+    }
+
+    @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[Loan Repay Callback] data is {}", responseData);
+
 
         ResponseDto<LoanRepayContentDto> responseDto = (ResponseDto<LoanRepayContentDto>) ApiType.LOAN_REPAY.getParser().parse(responseData);
 

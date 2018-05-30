@@ -18,6 +18,7 @@ import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
+import com.tuotiansudai.fudian.mapper.*;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -59,6 +60,8 @@ public class LoanInvestService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final BankClient bankClient;
 
     private final SelectRequestMapper selectRequestMapper;
@@ -68,13 +71,14 @@ public class LoanInvestService implements AsyncCallbackInterface {
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public LoanInvestService(MessageQueueClient messageQueueClient, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, QueryTradeService queryTradeService, SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectRequestMapper selectRequestMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanInvestService(MessageQueueClient messageQueueClient, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, QueryTradeService queryTradeService, SignatureHelper signatureHelper, BankClient bankClient, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectRequestMapper selectRequestMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.messageQueueClient = messageQueueClient;
         this.redisTemplate = redisTemplate;
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectRequestMapper = selectRequestMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
         this.redissonClient = redissonClient;
@@ -155,14 +159,19 @@ public class LoanInvestService implements AsyncCallbackInterface {
             return new BankReturnCallbackMessage();
         }
 
-        ResponseDto responseDto = this.callback(responseData);
+        ResponseDto responseDto = this.notifyCallback(responseData);
 
         return new BankReturnCallbackMessage(responseDto.isSuccess(), responseDto.getRetMsg(), responseDto.getContent().getOrderNo());
     }
 
     @Override
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateLoanInvest(responseData);
+    }
+
+    @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan invest callback] data is {}", responseData);
 
         ResponseDto<LoanInvestContentDto> responseDto = (ResponseDto<LoanInvestContentDto>) ApiType.LOAN_INVEST.getParser().parse(responseData);
