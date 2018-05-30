@@ -4,11 +4,7 @@ import java.io.Serializable;
 
 public class BankLoanCreditInvestMessage implements Serializable {
 
-    private long loanId;
-
-    private String loanName;
-
-    private long investId;
+    private long transferApplicationId;
 
     private long amount;
 
@@ -27,10 +23,8 @@ public class BankLoanCreditInvestMessage implements Serializable {
     public BankLoanCreditInvestMessage() {
     }
 
-    public BankLoanCreditInvestMessage(long loanId, String loanName, long investId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
-        this.loanId = loanId;
-        this.loanName = loanName;
-        this.investId = investId;
+    public BankLoanCreditInvestMessage(long transferApplicationId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+        this.transferApplicationId = transferApplicationId;
         this.amount = amount;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -40,16 +34,8 @@ public class BankLoanCreditInvestMessage implements Serializable {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public long getLoanId() {
-        return loanId;
-    }
-
-    public String getLoanName() {
-        return loanName;
-    }
-
-    public long getInvestId() {
-        return investId;
+    public long getTransferApplicationId() {
+        return transferApplicationId;
     }
 
     public long getAmount() {

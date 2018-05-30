@@ -6,10 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankInvestDto;
-import com.tuotiansudai.fudian.dto.request.LoanInvestRequestDto;
-import com.tuotiansudai.fudian.dto.request.LoanInvestStatus;
-import com.tuotiansudai.fudian.dto.request.QueryTradeType;
-import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.LoanInvestContentDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
@@ -200,14 +197,14 @@ public class LoanInvestService implements AsyncCallbackInterface {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         if (lock.tryLock()) {
             try {
-                List<LoanInvestRequestDto> loanInvestRequests = selectRequestMapper.selectNoInvestResponseInOneHour();
+                List<BaseRequestDto> baseRequestDtos = selectRequestMapper.selectResponseInOneHour(ApiType.LOAN_INVEST.name().toLowerCase());
 
-                for (LoanInvestRequestDto loanInvestRequest : loanInvestRequests) {
+                for (BaseRequestDto requestDto : baseRequestDtos) {
                     try {
-                        String bankInvestValue = hashOperations.get(MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, loanInvestRequest.getOrderDate()), loanInvestRequest.getOrderNo());
+                        String bankInvestValue = hashOperations.get(MessageFormat.format(BANK_INVEST_HISTORY_KEY_TEMPLATE, requestDto.getOrderDate()), requestDto.getOrderNo());
                         BankInvestMessage bankInvestMessage = gson.fromJson(bankInvestValue, BankInvestMessage.class);
                         if (Strings.isNullOrEmpty(bankInvestValue)) {
-                            logger.error("[Invest Status Schedule] fetch invest meta data from redis error, bank order no:{}, redis value: {}", loanInvestRequest.getOrderNo(), bankInvestValue);
+                            logger.error("[Invest Status Schedule] fetch invest meta data from redis error, bank order no:{}, redis value: {}", requestDto.getOrderNo(), bankInvestValue);
                             continue;
                         }
 

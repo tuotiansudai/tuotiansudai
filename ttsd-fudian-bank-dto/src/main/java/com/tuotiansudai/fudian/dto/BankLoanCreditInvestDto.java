@@ -1,15 +1,15 @@
 package com.tuotiansudai.fudian.dto;
 
 
-public class BankLoanCreditInvestDto extends BankBaseDto{
+public class BankLoanCreditInvestDto extends BankBaseDto {
 
-    private long creditNo;
+    private long transferApplicationId;
 
-    private long amount;
+    private long investAmount;
 
-    private long creditAmount;
+    private long transferAmount;
 
-    private long creditFee;
+    private long transferFee;
 
     private String investOrderDate;
 
@@ -17,36 +17,37 @@ public class BankLoanCreditInvestDto extends BankBaseDto{
 
     private String loanTxNo;
 
-    public long getCreditNo() {
-        return creditNo;
+
+    public long getTransferApplicationId() {
+        return transferApplicationId;
     }
 
-    public void setCreditNo(long creditNo) {
-        this.creditNo = creditNo;
+    public void setTransferApplicationId(long transferApplicationId) {
+        this.transferApplicationId = transferApplicationId;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getInvestAmount() {
+        return investAmount;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 
-    public long getCreditAmount() {
-        return creditAmount;
+    public long getTransferAmount() {
+        return transferAmount;
     }
 
-    public void setCreditAmount(long creditAmount) {
-        this.creditAmount = creditAmount;
+    public void setTransferAmount(long transferAmount) {
+        this.transferAmount = transferAmount;
     }
 
-    public long getCreditFee() {
-        return creditFee;
+    public long getTransferFee() {
+        return transferFee;
     }
 
-    public void setCreditFee(long creditFee) {
-        this.creditFee = creditFee;
+    public void setTransferFee(long transferFee) {
+        this.transferFee = transferFee;
     }
 
     public String getInvestOrderDate() {
