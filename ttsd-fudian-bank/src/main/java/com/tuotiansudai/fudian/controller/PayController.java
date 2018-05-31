@@ -62,7 +62,7 @@ public class PayController extends AsyncRequestController {
 
     @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.GET)
     public ResponseEntity<BankAsyncMessage> recharge(@PathVariable Source source,
-                                                  @RequestBody BankRechargeDto params) {
+                                                     @RequestBody BankRechargeDto params) {
         logger.info("[Fudian] call recharge");
 
         RechargeRequestDto requestDto = rechargeService.recharge(source, params);

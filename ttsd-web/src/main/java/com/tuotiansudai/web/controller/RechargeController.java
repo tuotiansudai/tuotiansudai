@@ -55,7 +55,7 @@ public class RechargeController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "ss", method = RequestMethod.GET)
     public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
         BankAsyncMessage baseDto = bankRechargeService.recharge(dto.getSource(),
                 LoginUserInfo.getLoginName(),
