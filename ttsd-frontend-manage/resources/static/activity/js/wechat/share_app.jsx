@@ -25,7 +25,8 @@ $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
     let imgUrl = require('../../images/landingpage/fuli'+(index+1)+'.png');
     let img = new Image();
-    img.src = imgUrl;
+    // img.src = imgUrl;
+    img.src = '';
     _self.append(img);
 })
 
