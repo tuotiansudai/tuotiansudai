@@ -45,8 +45,7 @@ public class BankWrapperClient {
     public BankReturnCallbackMessage checkBankReturnUrl(String path, String bankReturnParams) {
         RequestBody requestBody = new FormEncodingBuilder().add("reqData", bankReturnParams).build();
         Request request = new Request.Builder()
-//                .url(this.baseUrl + path)
-                .url("http://192.168.80.88:30001" + path)
+                .url(this.baseUrl + path)
                 .post(requestBody)
                 .build();
 
@@ -71,7 +70,7 @@ public class BankWrapperClient {
     public Boolean isCallbackSuccess(BankCallbackType bankCallbackType, String orderNo) {
         try {
             Request request = new Request.Builder()
-                    .url("http://192.168.80.88:30001" + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
+                    .url(this.baseUrl + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
                     .get()
                     .build();
 
@@ -151,8 +150,7 @@ public class BankWrapperClient {
 
     private BankAsyncMessage asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
-//        String url = this.baseUrl + path;
-        String url = "http://192.168.80.88:30001" + path;
+        String url = this.baseUrl + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
 
