@@ -11,10 +11,12 @@
 <div class="my-account-content" id="settingBox">
     <ul class="input-list">
         <li id="reset-password">
+            <form action="/personal-info/reset-bank-password" method="post" >
             <label for="perName">支付密码</label>
             <a class="update-payment-pwd">
-                修改 <i class="icon-more"></i>
+                <input type="submit" class="update-pwd-btn" value="重置"> <i class="icon-more"></i>
             </a>
+            </form>
         </li>
         <li id="anxinSign">
             <label for="perName">安心签</label>

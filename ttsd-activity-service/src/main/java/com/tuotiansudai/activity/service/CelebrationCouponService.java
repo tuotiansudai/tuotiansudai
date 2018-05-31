@@ -35,8 +35,6 @@ public class CelebrationCouponService {
     }
 
     public void sendDrawCouponMessage(String loginName) {
-        if (duringActivities())
-            mqWrapperClient.sendMessage(MessageQueue.Celebration_Coupon, loginName);
     }
 
 

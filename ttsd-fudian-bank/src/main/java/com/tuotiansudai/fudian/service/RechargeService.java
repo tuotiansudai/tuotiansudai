@@ -14,6 +14,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -46,6 +47,8 @@ public class RechargeService implements AsyncCallbackInterface {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
@@ -57,6 +60,7 @@ public class RechargeService implements AsyncCallbackInterface {
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.messageQueueClient = messageQueueClient;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
         this.redisTemplate = redisTemplate;
     }
@@ -92,9 +96,13 @@ public class RechargeService implements AsyncCallbackInterface {
         return dto;
     }
 
+    public void returnCallback(ResponseDto responseData) {
+        returnUpdateMapper.updateRecharge(responseData);
+    }
+
     @Override
     @SuppressWarnings(value = "unchecked")
-    public ResponseDto callback(String responseData) {
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[recharge callback] data is {}", responseData);
 
         ResponseDto<RechargeContentDto> responseDto = ApiType.RECHARGE.getParser().parse(responseData);

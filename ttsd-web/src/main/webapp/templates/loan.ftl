@@ -390,7 +390,7 @@
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号', '抵押物借款金额'] as key>
+                                            <#list ['抵押物所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>
@@ -410,7 +410,7 @@
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeVehicleDetail??>
-                                            <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
+                                            <#list ['抵押物所在地', '车辆品牌', '车辆型号'] as key>
                                                 <#if pledgeVehicleDetail[key]?? && pledgeVehicleDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeVehicleDetail[key]}</div>
                                                 </#if>
@@ -448,7 +448,7 @@
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeEnterpriseDetail??>
-                                            <#list ['担保方式', '抵押物估值', '抵押物所在地'] as key>
+                                            <#list ['担保方式', '抵押物所在地'] as key>
                                                 <#if pledgeEnterpriseDetail[key]?? && pledgeEnterpriseDetail[key] != ''>
                                                     <div class="col-md-12">${key}：${pledgeEnterpriseDetail[key]}</div>
                                                 </#if>

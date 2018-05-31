@@ -168,7 +168,7 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <div class="tc person-info-btn" style="margin-top:50px;">
             <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
-            <button class="btn btn-success btn-turn-on" type="submit">去联动优势授权</button>
+            <button class="btn btn-success btn-turn-on" type="submit">去授权</button>
         </div>
     </form>
 </div>

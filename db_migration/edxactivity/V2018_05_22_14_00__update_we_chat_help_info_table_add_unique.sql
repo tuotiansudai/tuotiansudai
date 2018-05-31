@@ -1,0 +1,1 @@
+ALTER TABLE we_chat_help_info ADD UNIQUE KEY(openId, we_chat_help_id);

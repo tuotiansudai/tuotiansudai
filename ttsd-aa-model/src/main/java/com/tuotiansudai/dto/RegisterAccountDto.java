@@ -1,7 +1,9 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
@@ -19,6 +21,9 @@ public class RegisterAccountDto implements Serializable {
     private String identityNumber;
 
     private String referrer;
+
+    @NotNull
+    private Source source;
 
     public String getLoginName() {
         return loginName;
@@ -58,6 +63,14 @@ public class RegisterAccountDto implements Serializable {
 
     public void setReferrer(String referrer) {
         this.referrer = referrer;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public RegisterAccountDto(String loginName, String mobile, String userName, String identityNumber) {

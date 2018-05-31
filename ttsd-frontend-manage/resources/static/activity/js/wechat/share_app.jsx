@@ -122,6 +122,7 @@ let shareAppFun = {
 		paramObj.password = registerForm.password.value;
 		paramObj.referrer = referrerMobile;
 		paramObj.agreement = $('#agreement').prop('checked');
+		paramObj.activityReferrer = $('#activityReferrer').val();
 
 
 		commonFun.useAjax({
