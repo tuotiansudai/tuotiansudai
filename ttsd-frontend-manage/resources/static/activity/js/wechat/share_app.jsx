@@ -494,7 +494,7 @@ $('.close-app').click(function (e) {
 })
 
 var mobile = urlObj.params.referrerMobile;
-let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
+let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(7,11);
 
 wx.ready(function () {
     wx.onMenuShareAppMessage({

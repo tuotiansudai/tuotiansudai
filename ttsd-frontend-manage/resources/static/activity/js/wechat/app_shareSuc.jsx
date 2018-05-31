@@ -63,7 +63,7 @@ $('.close-app').click(function (e) {
 })
 let mobileStr;
 if(shareMobile){
-    mobileStr = shareMobile.substring(0,3)+'****'+shareMobile.substring(8,11);
+    mobileStr = shareMobile.substring(0,3)+'****'+shareMobile.substring(7,11);
 }
 wx.ready(function () {
     wx.onMenuShareAppMessage({
