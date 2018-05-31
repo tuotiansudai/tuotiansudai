@@ -7,7 +7,6 @@
 
     <div class="m-header"><em id="iconRegister" class="icon-left"><i></i></em>开通存管账号</div>
 
-
     <h3>完成实名认证，即可开通富滇银行个人资金管理账户。<br/>
         资金安全有保障！</h3>
 
@@ -28,8 +27,8 @@
 
         <div class="button-layer">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="hidden" name="source" value="WEB">
-            <input type="submit" class="btn-wap-normal next-step" value="立即认证" disabled/>
+            <input name="source" type="hidden" value="M"/>
+            <input type="submit" id="accountBtn" class="btn-wap-normal next-step" value="立即认证" disabled/>
         </div>
     </form>
 

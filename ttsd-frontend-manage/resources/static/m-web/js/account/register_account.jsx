@@ -88,11 +88,9 @@ function isDisabledButton() {
 
 //点击立即注册按钮
 
-registerAccountForm.onsubmit = function(event) {
-    event.preventDefault();
-    $(registerAccountForm).submit();
-};
-$('#registerAccountForm').on('click',function () {
+$('#accountBtn').on('click',function (e) {
+    e.preventDefault();
+    $('#perNum').val($('#perNum').val().replace(/\s+/g, ""));
     $('#registerAccountForm').submit();
 })
 

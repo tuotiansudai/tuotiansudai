@@ -24,5 +24,7 @@ if($('.loading-page').length){
         time:5,
         textCounting:'',
         isAfterText:'0'
+    },function() {
+        $("#isPaySuccess").submit();
     });
 }
