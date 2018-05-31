@@ -156,7 +156,7 @@ public class BankWrapperClient {
     private BankAsyncMessage asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
 //        String url = this.baseUrl + path;
-        String url = "http://localhost:30001" + path;
+        String url = "http://192.168.80.88:30001" + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
 
