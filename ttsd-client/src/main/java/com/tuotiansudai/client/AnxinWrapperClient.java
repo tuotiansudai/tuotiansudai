@@ -41,6 +41,8 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String printAnxinContract = "/anxin-sign/print-anxin-contract";
 
+    private final static String batchAnxinContracts = "/anxin-sign/batch-anxin-contracts";
+
     private final static String isAuthenticationRequired= "/anxin-sign/is-authentication-required";
 
     public AnxinWrapperClient() {
@@ -92,6 +94,10 @@ public class AnxinWrapperClient extends BaseClient {
 
     public byte[] printAnxinContract(Object requestData) {
         return this.downPdf(printAnxinContract, requestData != null ? requestData.toString() : null);
+    }
+
+    public byte[] batchAnxinContracts(Object requestData) {
+        return this.downPdf(batchAnxinContracts, requestData != null ? requestData.toString() : null);
     }
 
     private BaseDto<AnxinDataDto> parsePayResponseJson(String json) {

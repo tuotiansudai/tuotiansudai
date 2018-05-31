@@ -327,6 +327,17 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return contract;
     }
 
+    @Override
+    public byte[] batchDownContracts(String contractNos) {
+        byte[] contract = null;
+        try {
+            contract = anxinSignConnectService.batchDownLoanContracts(contractNos);
+        } catch (PKIException | FileNotFoundException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return contract;
+    }
+
 
     @Override
     public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {

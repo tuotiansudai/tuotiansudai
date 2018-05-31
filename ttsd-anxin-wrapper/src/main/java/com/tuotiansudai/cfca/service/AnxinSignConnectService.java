@@ -24,6 +24,8 @@ public interface AnxinSignConnectService {
 
     byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException;
 
+    byte[] batchDownLoanContracts(String contractNos) throws PKIException, FileNotFoundException;
+
     List<ContractResponseView> queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);
 
 }

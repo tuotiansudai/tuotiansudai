@@ -237,6 +237,11 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         return anxinClient.getContractFile(contractNo);
     }
 
+    @Override
+    public byte[] batchDownLoanContracts(String contractNos) throws PKIException, FileNotFoundException {
+        return anxinClient.batchDownContracts(contractNos);
+    }
+
     private Tx3ResVO readResponse(String res, Class<? extends Tx3ResVO> cla) {
         try {
             if (res.indexOf("\"" + AnxinRetCode.SUCCESS + "\"") > 0) {

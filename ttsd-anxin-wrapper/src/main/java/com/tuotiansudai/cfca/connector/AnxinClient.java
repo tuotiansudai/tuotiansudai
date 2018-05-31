@@ -119,4 +119,22 @@ public class AnxinClient {
         }
     }
 
+    public byte[] batchDownContracts(String contractNos) {
+        try {
+            String url = URL + "platId/" + PLAT_ID + "/contractNos/" + contractNos + "/batchDownloading";
+
+            Request request = new Request.Builder().url(url).get().build();
+            Response response = httpClient.newCall(request).execute();
+
+            logger.info("get files, response code: " + response.code());
+            logger.info("get files, response message: " + response.message());
+
+            return response.body().bytes();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

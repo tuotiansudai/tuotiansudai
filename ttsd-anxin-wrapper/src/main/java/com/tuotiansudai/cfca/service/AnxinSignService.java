@@ -27,6 +27,8 @@ public interface AnxinSignService {
 
     byte[] downContractByContractNo(String contractNo);
 
+    byte[] batchDownContracts(String contractNos);
+
     BaseDto<AnxinDataDto> createLoanContracts(long loanId);
 
     BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId);

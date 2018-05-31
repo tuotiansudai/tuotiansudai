@@ -80,6 +80,12 @@ public class AnxinSignServerController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/batch-anxin-contracts")
+    public byte[] batchAnxinContracts(@Valid @RequestBody String contractNos){
+        return anxinSignService.batchDownContracts(contractNos);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/is-authentication-required")
     public BaseDto<AnxinDataDto> isAuthenticationRequired(@Valid @RequestBody String loginName){
         return new BaseDto(true, new AnxinDataDto(anxinSignService.isAuthenticationRequired(loginName), ""));

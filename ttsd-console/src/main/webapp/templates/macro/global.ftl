@@ -31,7 +31,8 @@
                         {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"项目合同","link":"","role":"'ADMIN'"},
-                        {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"}
+                        {"name":"contract","text":"CFCA创建合同","link":"/project-manage/contract","role":"'ADMIN'"},
+                        {"name":"down-contracts","text":"下载合同","link":"/project-manage/down-contracts","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {
