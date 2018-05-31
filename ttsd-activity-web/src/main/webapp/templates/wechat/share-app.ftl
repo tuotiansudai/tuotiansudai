@@ -3,6 +3,7 @@
 <@global.main pageCss="${css.share_app}" pageJavascript="${js.app_shareSuc}"  title="新手福利_拓天新手投资_拓天速贷">
 
 <div class="landing-page-container" id="landingTop">
+    <input type="hidden" id="registerName" value="${registerMobile!}">
     <div id="register_btn">注册</div>
     <div class="success-con">
         <#if isOldUser?? && isOldUser>

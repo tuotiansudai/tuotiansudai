@@ -55,7 +55,7 @@
             </div>
         </form>
         <div class="refer-info-other">
-            <p>好友<strong class="refer-name"></strong>邀请你来拓天速贷投资</p>
+            <p>好友<strong class="refer-name">${referrerInfo!}</strong>邀请你来拓天速贷投资</p>
             <p>私享2%加息标，再赠1000元投资红包！</p>
         </div>
         <div class="risk-tip">市场有风险，投资需谨慎！</div>

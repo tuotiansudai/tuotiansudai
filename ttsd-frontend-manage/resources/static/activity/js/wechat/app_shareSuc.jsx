@@ -6,6 +6,9 @@ require('swiper/dist/css/swiper.css')
 if ($(document).width() <= 1024) {
     commonFun.calculationRem(document,window);
 }
+if(!shareMobile){
+    shareMobile = $('#registerName').val();
+}
 
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
 let param = JSON.parse('{"' + decodeURI(location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
