@@ -33,12 +33,15 @@ public enum MessageTopic {
             MessageQueue.BindBankCard_Success,
             MessageQueue.BindBankCard_CompletePointTask),
 
+    Recharge("Recharge",
+            MessageQueue.Recharge_Success,
+            MessageQueue.Recharge_CompletePointTask),
+
     Withdraw("Withdraw",
             MessageQueue.Withdraw_Success,
             MessageQueue.Withdraw_EventMessage,
             MessageQueue.Withdraw_PushMessage
     ),
-
     ;
 
     final String topicName;

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankRechargeMapper">
+
+    <resultMap id="bankRechargeResultMap" type="BankRechargeModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="fee" property="fee"/>
+        <result column="pay_type" property="payType"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="channel" property="channel"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_recharge(login_name, fee, pay_type, status, source, channel, created_time, updated_time)
+        value(#{loginName}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, #{status}, now(), now())
+    </insert>
+
+    <update id="update" parameterType="map">
+        update bank_recharge SET
+        bank_order_no = #{bankOrderNo},
+        bank_order_date = #{bankOrderDate},
+        status = #{status},
+        updated = now()
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="map" resultMap="bankRechargeResultMap">
+        SELECT * FROM bank_recharge WHERE id = #{id}
+    </select>
+
+    <select id="sumRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
+        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
+</mapper>

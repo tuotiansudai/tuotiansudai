@@ -4,15 +4,16 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
-import com.tuotiansudai.fudian.dto.*;
+import com.tuotiansudai.fudian.dto.BankInvestDto;
+import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
+import com.tuotiansudai.fudian.dto.BankRechargeDto;
+import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
-import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.service.*;
-import com.tuotiansudai.fudian.util.AmountUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,21 @@ public class PayController extends AsyncRequestController {
         this.merchantTransferService = merchantTransferService;
     }
 
-    @RequestMapping(path = "/recharge", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, String>> recharge(@RequestBody Map<String, String> params) {
+    @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.GET)
+    public ResponseEntity<BankAsyncMessage> recharge(@PathVariable Source source,
+                                                  @RequestBody BankRechargeDto params) {
         logger.info("[Fudian] call recharge");
 
-        RechargeRequestDto requestDto = rechargeService.recharge(Source.valueOf(params.get("source")), params.get("loginName"), params.get("mobile"), params.get("bankUserName"), params.get("bankAccountNo"), AmountUtils.toYuan(params.get("amount")), RechargePayType.GATE_PAY);
+        RechargeRequestDto requestDto = rechargeService.recharge(source, params);
 
-        return this.generateResponseJson(requestDto, ApiType.RECHARGE);
+        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, ApiType.RECHARGE);
+
+        if (!bankAsyncMessage.isStatus()) {
+            logger.error("[Fudian] call recharge, request data generation failure, data: {}", params);
+        }
+
+        return ResponseEntity.ok(bankAsyncMessage);
+
     }
 
     @RequestMapping(path = "/merchant-recharge", method = RequestMethod.GET)
@@ -195,4 +204,5 @@ public class PayController extends AsyncRequestController {
                 .put("url", bankConfig.getBankUrl() + apiType.getPath())
                 .build()));
     }
+
 }

@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto.request;
+package com.tuotiansudai.fudian.dto;
 
 public enum RechargePayType {
 
