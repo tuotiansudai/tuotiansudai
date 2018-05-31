@@ -54,7 +54,7 @@ public class RechargeService implements AsyncCallbackInterface {
     private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
 
     @Autowired
-    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper, RedisTemplate<String, String> redisTemplate) {
+    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper, RedisTemplate<String, String> redisTemplate) {
         this.bankConfig = bankConfig;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
