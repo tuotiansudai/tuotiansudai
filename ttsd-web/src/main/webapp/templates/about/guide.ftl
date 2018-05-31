@@ -148,13 +148,14 @@
     <div class="bottom-open">
         <div class="page-width">
             <div class="ren">
-                <a href="/activity/landing-page" class="btn-normal">立即领取</a>
-                <div class="to-close ">
             </div>
-
-
+            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
+            <div class="to-shou fr">
+                <i class="fa fa-angle-left"></i><br/>
+                <span>收<br/>起</span>
             </div>
         </div>
+        <div class="to-close"></div>
     </div>
 </div>
 </@global.main>

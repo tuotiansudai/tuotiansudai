@@ -53,6 +53,9 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${web.coupon.lock.seconds}")
     private int couponLockSeconds;
 
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -285,7 +288,7 @@ public class InvestServiceImpl implements InvestService {
 
     private boolean canInvestNewbieLoan(String loginName) {
         int newbieInvestCount = investMapper.countSuccessNewbieInvestByLoginName(loginName);
-        return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
+        return showRandomLoginNameList.contains(loginName.toLowerCase()) || newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 
     @Override

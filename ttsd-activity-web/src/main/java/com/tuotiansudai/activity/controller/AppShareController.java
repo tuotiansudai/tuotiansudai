@@ -58,6 +58,7 @@ public class AppShareController {
             if (userService.mobileIsRegister(registerMobile)) {
                 ModelAndView modelAndView = new ModelAndView("/wechat/share-app");
                 modelAndView.addObject("responsive", true);
+                modelAndView.addObject("registerMobile", registerMobile);
                 modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
                 return modelAndView;
             }
@@ -85,7 +86,6 @@ public class AppShareController {
         modelAndView.setViewName("/wechat/share-app");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
-        modelAndView.addObject("mobile", mobile);
         return modelAndView;
     }
 

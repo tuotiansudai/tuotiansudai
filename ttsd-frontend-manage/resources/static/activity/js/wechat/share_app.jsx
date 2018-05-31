@@ -318,7 +318,7 @@ registerForm.onsubmit = function(event) {
         data: paramObj
     },function(data) {
         if (data.data.status) {
-            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobile='+registerForm.mobile.value;
+            location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobileShare='+registerForm.mobile.value;
         } else {
             layer.msg('请求失败，请重试！');
         }
@@ -371,15 +371,6 @@ function showReferrerInfoIfNeeded() {
         $('#recommendLabelExist').show();
         $('.refer-info-other').show();
         $('#referMobile').text(mobileNum);
-        //通过手机号得到用户名
-        commonFun.useAjax({
-            type:'GET',
-            dataType: 'json',
-            url:"/activity/get-realRealName?mobile=" + mobileNum
-        },function(data) {
-            //姓名的第一个字母用*替换
-            $('.refer-name', $registerContainer).text(data);
-        });
     }
     else {
         //无推荐人
@@ -503,7 +494,7 @@ $('.close-app').click(function (e) {
 })
 
 var mobile = urlObj.params.referrerMobile;
-let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
+let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(7,11);
 
 wx.ready(function () {
     wx.onMenuShareAppMessage({
