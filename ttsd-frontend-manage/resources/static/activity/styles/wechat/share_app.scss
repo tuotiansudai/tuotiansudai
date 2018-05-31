@@ -51,8 +51,8 @@ p {
 @media screen and (max-width: 1024px){
 	.gold-btn {
 		display: inline-block;
-		//background: url("../../images/landingpage/button_bg.png") no-repeat center center;
-		//background-size: 100%;
+		background: url("../../images/landingpage/button_bg.png") no-repeat center center;
+		background-size: 100%;
 		color: #8d080d;
 		font-size: 54px;
 		line-height: 134px;
@@ -95,8 +95,8 @@ p {
 		text-align: center;
 	}
 	body {
-		//background: #d32c31 url("../../images/landingpage/body_bg_wap.png") no-repeat center top;
-		//background-size: contain;
+		background: #d32c31 url("../../images/landingpage/body_bg_wap.png") no-repeat center top;
+		background-size: contain;
 	}
 	.landing-page-container {
 		.app-container-landing {
@@ -112,8 +112,8 @@ p {
 				width: 0.83rem;
 				height: 0.83rem;
 				float: left;
-				//background: url("../../images/landingpage/landing_logo.png") no-repeat;
-				//background-size: contain;
+				background: url("../../images/landingpage/landing_logo.png") no-repeat;
+				background-size: contain;
 				margin-left: 0.1rem;
 				margin-top: 0.26rem;
 				margin-right: 0.1rem;
@@ -146,8 +146,8 @@ p {
 				position: absolute;
 				top: 5px;
 				right: 5px;
-				//background: url("../../../m-web/images/share/icon_close.png") no-repeat;
-				//background-size: contain;
+				background: url("../../../m-web/images/share/icon_close.png") no-repeat;
+				background-size: contain;
 				cursor: pointer;
 			}
 		}
@@ -184,8 +184,8 @@ p {
           margin-top: 0.6rem;
           width: 5.93rem;
           height: 1.4rem;
-          //background: url("../../images/shareapp/share-old.png") no-repeat center top;
-          //background-size: contain;
+          background: url("../../images/shareapp/share-old.png") no-repeat center top;
+          background-size: contain;
 			margin-bottom: 0.3rem;
         }
         .gift-icon {
@@ -194,8 +194,8 @@ p {
           margin-bottom: 0.2rem;
           width: 5.36rem;
           height: 4.3rem;
-          //background: url("../../images/shareapp/gift-icon.png") no-repeat center top;
-          //background-size: 100%;
+          background: url("../../images/shareapp/gift-icon.png") no-repeat center top;
+          background-size: 100%;
         }
         .btn-app {
           color: #820401;
@@ -312,11 +312,11 @@ p {
 								vertical-align: middle;
 								width: 0.36rem;
 								height: 0.36rem;
-								//background: url("../../images/landingpage/checkbox_bg_no.png") no-repeat center center;
-								//background-size: 100%;
+								background: url("../../images/landingpage/checkbox_bg_no.png") no-repeat center center;
+								background-size: 100%;
 								&.checked {
-									//background: url("../../images/landingpage/checkboxed_bg.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/checkboxed_bg.png") no-repeat center center;
+									background-size: 100%;
 								}
 							}
 							.check-label {
@@ -345,12 +345,12 @@ p {
 							.icon-arrow-bottom {
 								width: 0.28rem;
 								height: 0.32rem;
-								//background: url("../../images/landingpage/traingle_right.png") no-repeat center center;
-								//background-size: 100%;
+								background: url("../../images/landingpage/traingle_right.png") no-repeat center center;
+								background-size: 100%;
 								margin-right: 5px;
 								&.active {
-									//background: url("../../images/landingpage/traingle_bg.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/traingle_bg.png") no-repeat center center;
+									background-size: 100%;
 								}
 							}
 						}
@@ -360,21 +360,21 @@ p {
 							text-indent: 1.04rem;
 							font-size: 0.28rem;
                           &.mobileIcon {
-                            //background:#fff url("../../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
-							 // background-size: 8%;
+                            background:#fff url("../../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+							  background-size: 8%;
                           }
                           &.passwordIcon {
-                            //background:#fff url("../../images/landingpage/password_icon.png") no-repeat 0.3rem center;
-							 // background-size: 8%;
+                            background:#fff url("../../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+							  background-size: 8%;
                           }
                           &.captchaIcon {
-                            //background:#fff url("../../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
-							 // background-size: 13%;
+                            background:#fff url("../../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+							  background-size: 13%;
                           }
                           &.smsIcon {
 							  width: 4.3rem;
-                            //background:#fff url("../../images/landingpage/email_icon.png") no-repeat 0.3rem center;
-							 // background-size: 13%;
+                            background:#fff url("../../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+							  background-size: 13%;
                           }
 						}
 						#input_img_captcha {
@@ -415,8 +415,8 @@ p {
 						}
 
 						.register-sub {
-							//background: url("../../images/landingpage/register_btn_bg.png") no-repeat center center;
-							//background-size: 100%;
+							background: url("../../images/landingpage/register_btn_bg.png") no-repeat center center;
+							background-size: 100%;
 							color: #820401;
 							font-size: 0.45rem;
 							text-indent: 0;
@@ -442,8 +442,8 @@ p {
 						margin-bottom: 0.2rem;
 						width: 6.51rem;
 						height: 1.16rem;
-						//background: url("../../images/landingpage/new_title_wap.png") no-repeat center center;
-						//background-size: 100%;
+						background: url("../../images/landingpage/new_title_wap.png") no-repeat center center;
+						background-size: 100%;
 					}
 
 					.to-experience {
@@ -472,8 +472,8 @@ p {
 									margin-left: -1.98rem;
 									width: 3.86rem;
 									height: 0.64rem;
-									//background: url("../../images/landingpage/get_btn_wap.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/get_btn_wap.png") no-repeat center center;
+									background-size: 100%;
 									color: #fff;
 									font-size: 0.26rem;
 									line-height: 0.64rem;
@@ -518,11 +518,11 @@ p {
 							cursor: pointer;
 							&.prevBtn {
 								left: 0.6rem;
-								//background-image: url("../../images/2018/new-year-increase-interest/leftBtn.png");
+								background-image: url("../../images/2018/new-year-increase-interest/leftBtn.png");
 							}
 							&.nextBtn {
 								right:0.6rem;
-								//background-image: url("../../images/2018/new-year-increase-interest/rightBtn.png");
+								background-image: url("../../images/2018/new-year-increase-interest/rightBtn.png");
 							}
 						}
 					}
@@ -544,8 +544,8 @@ p {
 						height: 1.16rem;
 						margin-top: 0;
 						margin-bottom: 0.2rem;
-						//background: url("../../images/landingpage/six_advance_wap.png") no-repeat center center;
-						//background-size: 100%;
+						background: url("../../images/landingpage/six_advance_wap.png") no-repeat center center;
+						background-size: 100%;
 					}
 					.advance-con {
 						width: 7.5rem;
@@ -560,28 +560,28 @@ p {
 								height: 1.98rem;
 								display: inline-block;
 								&.icon-advance1 {
-									//background: url("../../images/landingpage/icon_advance1.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance1.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.icon-advance2 {
-									//background: url("../../images/landingpage/icon_advance2.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance2.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.icon-advance3 {
-									//background: url("../../images/landingpage/icon_advance3.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance3.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.icon-advance4 {
-									//background: url("../../images/landingpage/icon_advance4.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance4.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.icon-advance5 {
-									//background: url("../../images/landingpage/icon_advance5.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance5.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.icon-advance6 {
-									//background: url("../../images/landingpage/icon_advance6.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/icon_advance6.png") no-repeat center center;
+									background-size: 100%;
 								}
 							}
 							dd {
@@ -613,8 +613,8 @@ p {
 						margin: 0 auto;
 						width: 5.38rem;
 						height: 1.16rem;
-						//background: url("../../images/landingpage/good_project.png") no-repeat center center;
-						//background-size: 100%;
+						background: url("../../images/landingpage/good_project.png") no-repeat center center;
+						background-size: 100%;
 					}
 					.project-list {
 						li {
@@ -623,20 +623,20 @@ p {
 								height: 2.52rem;
 								position: relative;
 								&.item1 {
-									//background: url("../../images/landingpage/good_project1.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/good_project1.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.item2 {
-									//background: url("../../images/landingpage/good_project2.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/good_project2.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.item3 {
-									//background: url("../../images/landingpage/good_project3.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/good_project3.png") no-repeat center center;
+									background-size: 100%;
 								}
 								&.item4 {
-									//background: url("../../images/landingpage/good_project4.png") no-repeat center center;
-									//background-size: 100%;
+									background: url("../../images/landingpage/good_project4.png") no-repeat center center;
+									background-size: 100%;
 								}
 								.btn-red {
 									position: absolute;
