@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SelectResponseDataMapper {
 
-    @Select("SELECT `response_data` FROM `${tableName}` where `order_no` = #{orderNo}")
+    @Select("SELECT `notify_response_data` FROM `${tableName}` where `order_no` = #{orderNo}")
     String selectResponseData(@Param("tableName") String tableName,
                               @Param(value = "orderNo") String orderNo);
 }

@@ -353,7 +353,6 @@ public class ExportService {
             row.add(record.getChannel() != null ? record.getChannel() : "");
             row.add(record.getSource().name());
             row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(record.isAutoInvest() ? "是" : "否");
             row.add(record.getInvestAmount());
 
             row.add((record.getCouponDetail() == null ? "-" : record.getCouponDetail()) + "/" + (record.getCouponActualInterest() == null ? "-" : record.getCouponActualInterest()));

@@ -16,7 +16,7 @@ let telephoneNum = '';
         recalc = function () {
             let clientWidth = docEl.clientWidth;
             if (!clientWidth) return;
-            let fSize = 20 * (clientWidth /375);
+            let fSize = 20 * (clientWidth / 375);
             fSize > 40 && (fSize = 39.36);
             docEl.style.fontSize = fSize + 'px';
         };
@@ -27,11 +27,13 @@ let telephoneNum = '';
 })(document, window);
 
 $(function () {
-    let bool=false;
-    setTimeout(function(){ bool=true;},300);
-    window.addEventListener("popstate", function(e) {
-        if(bool) hashFun();
-    },false);
+    let bool = false;
+    setTimeout(function () {
+        bool = true;
+    }, 300);
+    window.addEventListener("popstate", function (e) {
+        if (bool) hashFun();
+    }, false);
 });
 
 let backStatus = () => {  // 返回此页面判断手机号长度，确定是否需要点亮按钮
@@ -39,7 +41,7 @@ let backStatus = () => {  // 返回此页面判断手机号长度，确定是否
         $('.show-mobile-entry').html($('.telephoneInput').val());
         $('.show-mobile-entry').show();
         telephoneNum = $('.telephoneInput').val();
-        $('.step_one').prop('disabled',false);
+        $('.step_one').prop('disabled', false);
     }
 };
 backStatus();
@@ -62,6 +64,7 @@ let registerEv = () => {
     let telephoneNum = localStorage.getItem('login_telephone') || '';
     $('.show-mobile-register').html(telephoneNum);
 };
+
 function hashFun() {
     let hash_key = location.hash;
 
@@ -88,59 +91,59 @@ let pushHistory = (url) => {
     // location.reload();
 };
 
-let contentInput = (id,content,length) => {
-    $(id).find('input').on('keyup',(e) => {
-       if (!e.currentTarget.value) {
-           $(id).find('.close_btn').hide();
-           $(id).find(content).html('');
-           $(id).find(content).hide();
-       } else {
-           $(id).find('.close_btn').show();
-           $(id).find(content).html(e.currentTarget.value);
-           $(id).find(content).show();
-           if (!!length) {
-               if (e.currentTarget.value.length === length) {
-                   telephoneNum = e.currentTarget.value;
-                   $('.step_one').attr("disabled",false);
-               } else {
-                   $('.step_one').attr("disabled",true);
-               }
-           }
-       }
+let contentInput = (id, content, length) => {
+    $(id).find('input').on('keyup', (e) => {
+        if (!e.currentTarget.value) {
+            $(id).find('.close_btn').hide();
+            $(id).find(content).html('');
+            $(id).find(content).hide();
+        } else {
+            $(id).find('.close_btn').show();
+            $(id).find(content).html(e.currentTarget.value);
+            $(id).find(content).show();
+            if (!!length) {
+                if (e.currentTarget.value.length === length) {
+                    telephoneNum = e.currentTarget.value;
+                    $('.step_one').attr("disabled", false);
+                } else {
+                    $('.step_one').attr("disabled", true);
+                }
+            }
+        }
     })
 };
 
-let clearInputOneVal = (id,content,submitBtn) => {
-    $(id).find('.close_btn').on('click',() => {
+let clearInputOneVal = (id, content, submitBtn) => {
+    $(id).find('.close_btn').on('click', () => {
         $(id).find('input').val('');
         $(id).find(content).html('');
         $(id).find(content).hide();
         $(id).find('.close_btn').hide();
-        $(submitBtn).attr("disabled",true);
+        $(submitBtn).attr("disabled", true);
     })
 };
 
 let clearInputTwoVal = (id) => {
-    $(id).find('.close_btn').on('click',() => {
+    $(id).find('.close_btn').on('click', () => {
         $(id).find('input').val('');
         $(id).find('.close_btn').hide();
-        $('.step_two').attr("disabled",true);
+        $('.step_two').attr("disabled", true);
     })
 };
 
 let stepOneEv = () => {
-    $('.step_one').on('click',() => {
-        if (!/(^1[0-9]{10}$)/.test(telephoneNum))  { // 入口手机号码校验
+    $('.step_one').on('click', () => {
+        if (!/(^1[0-9]{10}$)/.test(telephoneNum)) { // 入口手机号码校验
             layer.msg('手机号格式不正确');
             return;
         }
-        localStorage.setItem('login_telephone',telephoneNum);
+        localStorage.setItem('login_telephone', telephoneNum);
         commonFun.useAjax({
-            type:'GET',
+            type: 'GET',
             async: false,
-            url:'/register/user/mobile/'+telephoneNum+'/is-exist'
-        },function(response) {
-            if(response.data.status) {
+            url: '/register/user/mobile/' + telephoneNum + '/is-exist'
+        }, function (response) {
+            if (response.data.status) {
                 pushHistory('#login'); // 登录
                 hashFun();
             }
@@ -152,27 +155,27 @@ let stepOneEv = () => {
 };
 
 let seePassword = () => {
-    $('.see_password').on('click',() => {
+    $('.see_password').on('click', () => {
         let input = $('.see_password').siblings('input');
         if (input.attr('type') == 'text') {
-            input.attr('type','password');
+            input.attr('type', 'password');
             $('.see_password').removeClass('open_eye');
         }
         else if (input.attr('type') == 'password') {
-            input.attr('type','text');
+            input.attr('type', 'text');
             $('.see_password').addClass('open_eye');
         }
     })
 };
 
 // 登录注册第一步入口
-contentInput('#EntryPointForm','.show-mobile-entry',11);
-clearInputOneVal('#EntryPointForm','.show-mobile-entry','.step_one');
+contentInput('#EntryPointForm', '.show-mobile-entry', 11);
+clearInputOneVal('#EntryPointForm', '.show-mobile-entry', '.step_one');
 stepOneEv();
 
 // 登录
-contentInput('.captcha_container','.show-mobile-login');
-contentInput('.password_container','.show-mobile-login');
+contentInput('.captcha_container', '.show-mobile-login');
+contentInput('.password_container', '.show-mobile-login');
 clearInputTwoVal('.captcha_container');
 clearInputTwoVal('.password_container');
 
@@ -213,11 +216,11 @@ Array.prototype.forEach.call(loginInputs, function (el) {
         if (errorMsg) {
             $errorBox.text(errorMsg);
         }
-        let hasValid = loginInputs.filter(function(key,option) {
+        let hasValid = loginInputs.filter(function (key, option) {
             return $(option).hasClass('valid');
         });
         let isAllValid = hasValid.length == loginInputs.length;
-        $('button',$(formLogin)).prop('disabled',!isAllValid);
+        $('button', $(formLogin)).prop('disabled', !isAllValid);
     })
 });
 
@@ -244,13 +247,18 @@ let formSubmit = function () {
             data: $(formLogin).serialize()
         }, function (data) {
             if (data.status) {
-                location.href = '/m/';
+                if ($('#redirectBox').val()!=='/') {
+                    location.href = $('#redirectBox').val();
+                }else {
+                    location.href = '/m/';
+                }
+
             } else {
                 loginSubmit.prop('disabled', false);
                 commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
                 $errorBox.text(data.message);
             }
-        },function () {
+        }, function () {
             loginSubmit.prop('disabled', false);
         }
     );

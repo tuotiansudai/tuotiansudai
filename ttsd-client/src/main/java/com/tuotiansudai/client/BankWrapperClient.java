@@ -89,14 +89,8 @@ public class BankWrapperClient {
     }
 
     public BankAsyncMessage register(Source source, String loginName, String mobile, String realName, String identityCode) {
-        return asyncExecute(MessageFormat.format("/user/register/source/{}", source.name().toLowerCase()),
-                Maps.newHashMap(ImmutableMap.<String, String>builder()
-                        .put("loginName", loginName)
-                        .put("mobile", mobile)
-                        .put("realName", realName)
-                        .put("" +
-                                "", identityCode)
-                        .build()));
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
+                new BankRegisterDto(loginName, mobile, realName, identityCode));
     }
 
     public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {

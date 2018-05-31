@@ -6,6 +6,7 @@ import com.tuotiansudai.fudian.dto.request.LoanFullRequestDto;
 import com.tuotiansudai.fudian.dto.response.LoanFullContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
 import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -28,14 +29,17 @@ public class LoanFullService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
+    private final ReturnUpdateMapper returnUpdateMapper;
+
     private final SelectResponseDataMapper selectResponseDataMapper;
 
     @Autowired
-    public LoanFullService(BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public LoanFullService(BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
+        this.returnUpdateMapper = returnUpdateMapper;
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
@@ -75,7 +79,11 @@ public class LoanFullService implements AsyncCallbackInterface {
     }
 
     @Override
-    public ResponseDto callback(String responseData) {
+    public void returnCallback(ResponseDto responseData) {
+    }
+
+    @Override
+    public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan full] data is {}", responseData);
 
         ResponseDto responseDto = ApiType.LOAN_FULL.getParser().parse(responseData);

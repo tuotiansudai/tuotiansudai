@@ -62,6 +62,7 @@ public class AppShareController {
             }
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/share-app-mobile");
+        httpServletRequest.getSession().setAttribute("channel", "shareAB");
         modelAndView.addObject("responsive", true);
         modelAndView.addObject("referrerInfo", getReferrerInfo(referrer));
         return modelAndView;
