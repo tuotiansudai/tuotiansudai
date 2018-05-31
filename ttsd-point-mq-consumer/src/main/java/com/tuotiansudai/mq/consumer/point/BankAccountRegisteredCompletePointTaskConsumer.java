@@ -31,7 +31,7 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.RechargeSuccess_CompletePointTask;
+        return MessageQueue.RegisterBankAccount_CompletePointTask;
     }
 
     @Override
