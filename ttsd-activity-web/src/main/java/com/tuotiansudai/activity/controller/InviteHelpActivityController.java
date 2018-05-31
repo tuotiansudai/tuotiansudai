@@ -152,6 +152,10 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/{isOwn}/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
     public ModelAndView wechatWithDraw(@PathVariable boolean isOwn, @PathVariable long id, HttpServletRequest request){
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)){
+            return new ModelAndView(String.format("redirect:/we-chat/active/authorize?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
+        }
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
             request.getSession().setAttribute("channel", "fanlijiayouzhan");
