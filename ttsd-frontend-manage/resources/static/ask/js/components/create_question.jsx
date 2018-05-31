@@ -160,7 +160,7 @@ $.fn.checkFrom = function () {
                 utils.validLen($ele, 1,100);
                 break;
             case 'addition':
-                utils.validLen($ele, 1,1000);
+                utils.validLen($ele, 1,2000);
                 break;
             case 'captcha':
                 utils.validLen($ele,5,5);
