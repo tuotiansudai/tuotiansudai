@@ -30,7 +30,7 @@ public class BankRechargeMessageConsumer implements MessageConsumer {
     private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
-    private BankRechargeMapper userRechargeMapper;
+    private BankRechargeMapper bankRechargeMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -53,7 +53,7 @@ public class BankRechargeMessageConsumer implements MessageConsumer {
             }.getType());
             if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
                 long rechargeId = Long.parseLong(map.get("rechargeId"));
-                BankRechargeModel userRechargeModel = userRechargeMapper.findById(rechargeId);
+                BankRechargeModel userRechargeModel = bankRechargeMapper.findById(rechargeId);
                 if (userRechargeModel == null) {
                     logger.error("[MQ] receive message : {}, userRechargeModel is null user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
                     return;
@@ -68,7 +68,7 @@ public class BankRechargeMessageConsumer implements MessageConsumer {
                 userRechargeModel.setStatus(isSuccess ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
                 userRechargeModel.setBankOrderNo(map.get("orderNo"));
                 userRechargeModel.setBankOrderDate(map.get("orderDate"));
-                userRechargeMapper.update(userRechargeModel);
+                bankRechargeMapper.update(userRechargeModel);
 
                 if (isSuccess) {
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,

@@ -49,13 +49,14 @@ public class RechargeController {
 
         if (isBindCard) {
             BankModel bankModel = bankService.findByBankCode(userBankCardModel.getBankCode());
+            modelAndView.addObject("cardNumber", userBankCardModel.getCardNumber());
             modelAndView.addObject("bankModel", bankModel);
         }
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "ss", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
         BankAsyncMessage baseDto = bankRechargeService.recharge(dto.getSource(),
                 LoginUserInfo.getLoginName(),

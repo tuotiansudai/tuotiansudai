@@ -28,7 +28,7 @@
         bank_order_no = #{bankOrderNo},
         bank_order_date = #{bankOrderDate},
         status = #{status},
-        updated = now()
+        updated_time = now()
         where id = #{id}
     </update>
 

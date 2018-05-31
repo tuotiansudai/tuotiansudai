@@ -45,7 +45,8 @@ public class BankWrapperClient {
     public BankReturnCallbackMessage checkBankReturnUrl(String path, String bankReturnParams) {
         RequestBody requestBody = new FormEncodingBuilder().add("reqData", bankReturnParams).build();
         Request request = new Request.Builder()
-                .url(this.baseUrl + path)
+//                .url(this.baseUrl + path)
+                .url("http://192.168.80.88:30001" + path)
                 .post(requestBody)
                 .build();
 
@@ -70,7 +71,7 @@ public class BankWrapperClient {
     public Boolean isCallbackSuccess(BankCallbackType bankCallbackType, String orderNo) {
         try {
             Request request = new Request.Builder()
-                    .url(this.baseUrl + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
+                    .url("http://192.168.80.88:30001" + MessageFormat.format("/callback/{0}/order-no/{1}/is-success", bankCallbackType.name().toLowerCase(), orderNo))
                     .get()
                     .build();
 
@@ -105,7 +106,7 @@ public class BankWrapperClient {
 
     public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType){
         return asyncExecute(MessageFormat.format("/recharge/source/{0}", source.name().toLowerCase()),
-                new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, amount, rechargeId, RechargePayType.valueOf(payType)));
+                new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, rechargeId, amount, RechargePayType.valueOf(payType)));
     }
 
     public BankAsyncMessage withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
@@ -156,7 +157,7 @@ public class BankWrapperClient {
     private BankAsyncMessage asyncExecute(String path, Object requestData) {
         String content = new GsonBuilder().create().toJson(requestData);
 //        String url = this.baseUrl + path;
-        String url = "http://192.168.80.88:30001" + path;
+        String url = "http://localhost:30001" + path;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
 

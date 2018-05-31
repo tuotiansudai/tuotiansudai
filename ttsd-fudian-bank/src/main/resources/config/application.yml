@@ -40,8 +40,8 @@ bank:
 #  mobile-callback-return-url: http://118.187.56.164:30000/callback/return-url
 #  callback-notify-url: http://118.187.56.164:30000/callback/notify-url
 
-  web-callback-return-url: http://192.168.80.88:8484/callback/return-url
-  m-callback-return-url: http://192.168.80.88:8484/m/callback/return-url
+  web-callback-return-url: http://localhost:8484/callback/return-url
+  m-callback-return-url: http://localhost:8484/m/callback/return-url
   mobile-callback-return-url: http://118.187.56.164:30000/callback/return-url
   callback-notify-url: http://118.187.56.164:30001/callback/notify-url
 
