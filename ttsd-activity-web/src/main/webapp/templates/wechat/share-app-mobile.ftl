@@ -4,7 +4,7 @@
 <#--<#include "../pageLayout/header.ftl" />-->
 <div class="landing-page-container" id="landingTop">
     <div class="login-wrap" id="registerContainer">
-        <div class="refer-person-info"><span class="refer-name"></span><br/>送你<strong>1000元</strong>投资红包</div>
+        <div class="refer-person-info"><span class="refer-name">${referrerInfo!}</span><br/>送你<strong>1000元</strong>投资红包</div>
 
         <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
             <div class="login-con">
@@ -55,7 +55,7 @@
             </div>
         </form>
         <div class="refer-info-other">
-            <p>好友<strong class="refer-name"></strong>邀请你来拓天速贷投资</p>
+            <p>好友<strong class="refer-name">${referrerInfo!}</strong>邀请你来拓天速贷投资</p>
             <p>私享2%加息标，再赠1000元投资红包！</p>
         </div>
         <div class="risk-tip">市场有风险，投资需谨慎！</div>
@@ -180,7 +180,7 @@
                                 <div class="split"></div>
                                 <div class="third">
                                     <p><a href="/loan-list" class="btn-red">马上投资</a></p>
-                                    <p class="bank"><span class="checkbox-red"></span><span>银行资金存管</span></p>
+                                    <p class="bank"><span class="checkbox-red"></span><span>资金存管</span></p>
                                 </div>
                             </div>
                             <div class="bot-content clearfix">
@@ -191,7 +191,7 @@
                                             <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
                                                     class="day">天</span></div>
                                             <p class="rate">约定年化利率</p>
-                                            <p class="other"><span class="icon1"></span><span>银行存管</span> <span
+                                            <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                     class="icon2"></span><span>按天计息 即投即生息</span></p>
                                             <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                         </div>

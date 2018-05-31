@@ -182,12 +182,14 @@
     <div class="bottom-close" style="display: none;"></div>
     <div class="bottom-open">
         <div class="page-width clearfix">
-            <div class="ren"></div>
+            <div class="ren">
+            </div>
             <a href="/activity/landing-page" class="btn-normal">立即领取</a>
-            <div class="to-close fr">
-                <i class="fa fa-angle-left"></i>
+            <div class="to-shou fr">
+                <i class="fa fa-angle-left"></i><br/>
                 <span>收<br/>起</span>
             </div>
         </div>
+        <div class="to-close"></div>
     </div>
 </@global.main>
