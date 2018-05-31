@@ -10,7 +10,7 @@ public class AnswerRequestDto implements Serializable {
     private long questionId;
 
     @NotEmpty
-    @Pattern(regexp = "^.{10,2000}$")
+    @Pattern(regexp = "^.{10,10000}$")
     private String answer;
 
     @NotEmpty
