@@ -103,17 +103,17 @@
                         <b class="title">请选择银行：</b>
                         <form action="/recharge" method="post"
                               <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-                            <ol>
-                                <#list banks as bank>
-                                    <li>
-                                        <input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode"
-                                               <#if bank_index == 0>checked="checked"</#if> value="${bank}">
-                                        <label for="bank-${bank}">
-                                            <span class="bank ${bank}"></span>
-                                        </label>
-                                    </li>
-                                </#list>
-                            </ol>
+                            <#--<ol>-->
+                                <#--<#list banks as bank>-->
+                                    <#--<li>-->
+                                        <#--<input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode"-->
+                                               <#--<#if bank_index == 0>checked="checked"</#if> value="${bank}">-->
+                                        <#--<label for="bank-${bank}">-->
+                                            <#--<span class="bank ${bank}"></span>-->
+                                        <#--</label>-->
+                                    <#--</li>-->
+                                <#--</#list>-->
+                            <#--</ol>-->
                             <div class="pad-m">
                                 账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
                                 输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny"

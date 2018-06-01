@@ -44,7 +44,7 @@ if (rechargeInputAmountElement) {
 
         layer.open({
             type: 1,
-            title: '登录到联动优势支付平台充值',
+            title: '登录到富滇银行支付平台充值',
             area: ['560px', '270px'],
             shadeClose: true,
             content: $('#popRecharge')
@@ -72,7 +72,7 @@ if (fastRechargeInputAmountElement) {
         fastRechargeAmountElement.val(amount);
         layer.open({
             type: 1,
-            title: '登录到联动优势支付平台充值',
+            title: '登录到富滇银行支付平台充值',
             area: ['500px', '290px'],
             shadeClose: true,
             content: $('#popRecharge')
@@ -89,11 +89,11 @@ if (fastRechargeInputAmountElement) {
         });
     });
 }
-if ($(".bind-card-nav")) {
-    $(".bind-card-nav .btn", $rechargeCon).click(function () {
-        window.location.href = $(this).data('url');
-    });
-}
+// if ($(".bind-card-nav")) {
+//     $(".bind-card-nav .btn", $rechargeCon).click(function () {
+//         window.location.href = $(this).data('url');
+//     });
+// }
 
 //tab切换
 
