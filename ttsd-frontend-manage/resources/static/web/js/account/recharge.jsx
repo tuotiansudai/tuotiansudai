@@ -79,15 +79,15 @@ if (fastRechargeInputAmountElement) {
         });
     });
     //开通快捷支付
-    turnOnFastSubmitElement.click(function () {
-        layer.open({
-            type: 1,
-            title: '开通快捷支付功能',
-            area: ['500px', '180px'],
-            shadeClose: true,
-            content: $('#openFastRecharge')
-        });
-    });
+    // turnOnFastSubmitElement.click(function () {
+    //     layer.open({
+    //         type: 1,
+    //         title: '开通快捷支付功能',
+    //         area: ['500px', '180px'],
+    //         shadeClose: true,
+    //         content: $('#openFastRecharge')
+    //     });
+    // });
 }
 // if ($(".bind-card-nav")) {
 //     $(".bind-card-nav .btn", $rechargeCon).click(function () {
