@@ -9,10 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.fudian.dto.BankBaseDto;
-import com.tuotiansudai.fudian.dto.BankInvestDto;
-import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
-import com.tuotiansudai.fudian.dto.BankWithdrawDto;
+import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
@@ -120,6 +117,11 @@ public class BankWrapperClient {
     public BankAsyncMessage invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
         return asyncExecute(MessageFormat.format("/loan-invest/source/{0}", source.name().toLowerCase()),
                 new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
+    }
+
+    public BankAsyncMessage loanCreditInvest(long transferApplicationId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long transferFee, String investOrderNo, String investOrderDate, String loanTxNo) {
+        return asyncExecute(MessageFormat.format("/loan-credit-invest/source/{0}", source.name().toLowerCase()),
+                new BankLoanCreditInvestDto(loginName, mobile, bankUserName, bankAccountNo, transferApplicationId, amount, transferFee, investOrderDate, investOrderNo, loanTxNo));
     }
 
     public BankReturnCallbackMessage fastInvest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {

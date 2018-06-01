@@ -5,13 +5,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanCreditInvestMessage;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
@@ -38,22 +35,16 @@ public class LoanCreditInvestSuccessService {
 
     private final TransferApplicationMapper transferApplicationMapper;
 
-    private final InvestExtraRateMapper investExtraRateMapper;
-
     private final InvestRepayMapper investRepayMapper;
 
     private final MQWrapperClient mqWrapperClient;
 
-    private final SmsWrapperClient smsWrapperClient;
-
     @Autowired
-    private LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestExtraRateMapper investExtraRateMapper, InvestRepayMapper investRepayMapper, SmsWrapperClient smsWrapperClient){
+    private LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper){
         this.investMapper = investMapper;
         this.transferApplicationMapper = transferApplicationMapper;
         this.mqWrapperClient = mqWrapperClient;
-        this.investExtraRateMapper = investExtraRateMapper;
         this.investRepayMapper = investRepayMapper;
-        this.smsWrapperClient = smsWrapperClient;
     }
 
     @Transactional(rollbackFor = Exception.class)

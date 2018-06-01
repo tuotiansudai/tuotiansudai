@@ -78,7 +78,7 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
         LoanCreditInvestRequestDto requestDto = new LoanCreditInvestRequestDto(source, dto.getLoginName(), dto.getMobile(),
                 dto.getBankUserName(), dto.getBankAccountNo(),
                 dto.getLoanTxNo(), dto.getInvestOrderNo(), dto.getInvestOrderDate(),
-                String.valueOf(dto.getTransferApplicationId()), AmountUtils.toYuan(dto.getTransferAmount()),
+                String.valueOf(dto.getTransferApplicationId()), AmountUtils.toYuan(dto.getInvestAmount()),
                 AmountUtils.toYuan(dto.getInvestAmount()), AmountUtils.toYuan(dto.getTransferFee()));
         signatureHelper.sign(requestDto);
 
