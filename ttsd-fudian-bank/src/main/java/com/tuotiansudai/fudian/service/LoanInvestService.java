@@ -7,18 +7,13 @@ import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankInvestDto;
 import com.tuotiansudai.fudian.dto.request.LoanInvestRequestDto;
-import com.tuotiansudai.fudian.dto.request.BankResponseStatus;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanInvestContentDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
-import com.tuotiansudai.fudian.mapper.UpdateMapper;
-import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.fudian.mapper.*;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -182,7 +177,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
         }
 
         responseDto.setReqData(responseData);
-        int count = updateMapper.updateLoanInvest(responseDto, BankResponseStatus.BANK_RESPONSE);
+        int count = updateMapper.updateLoanInvest(responseDto);
 
         if (responseDto.isSuccess() && count > 0) {
             HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
@@ -216,7 +211,7 @@ public class LoanInvestService implements AsyncCallbackInterface {
                         }
                         BankLoanInvestMessage bankLoanInvestMessage = gson.fromJson(bankLoanInvestValue, BankLoanInvestMessage.class);
                         ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankLoanInvestMessage.getBankOrderNo(), bankLoanInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_INVEST);
-                        if (query.isSuccess() && !"0".equals(query.getContent().getQueryState()) && updateMapper.updateLoanInvest(query, BankResponseStatus.MANUAL_QUERIED) > 0) {
+                        if (query.isSuccess() && !"0".equals(query.getContent().getQueryState()) && updateMapper.updateLoanInvestQuery(query) > 0) {
                             messageQueueClient.publishMessage(MessageTopic.InvestSuccess, bankLoanInvestMessage);
                             logger.info("[Invest Status Schedule] invest is success, send message: {}", bankLoanInvestMessage);
                         }

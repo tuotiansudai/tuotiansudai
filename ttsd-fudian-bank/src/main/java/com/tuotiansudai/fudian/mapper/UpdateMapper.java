@@ -41,9 +41,11 @@ public interface UpdateMapper {
     @Update("UPDATE loan_create SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanCreate(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update("UPDATE loan_invest SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = #{status} WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
-    int updateLoanInvest(@Param(value = "dto") ResponseDto responseDto,
-                         @Param(value = "status") BankResponseStatus status);
+    @Update("UPDATE loan_invest SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = 'BANK_RESPONSE' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
+    int updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
+
+    @Update("UPDATE loan_invest SET `query_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `query_time` = now(), `status` = 'MANUAL_QUERIED' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
+    int updateLoanInvestQuery(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_credit_invest SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
     void updateLoanCreditInvest(@Param(value = "dto") ResponseDto responseDto);
@@ -54,7 +56,7 @@ public interface UpdateMapper {
     @Update("UPDATE loan_repay SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = 'BANK_RESPONSE' WHERE `order_no` = #{dto.content.orderNo} AND `status`= 'SENT'")
     int updateLoanRepay(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update({"UPDATE loan_repay SET `query_response_data` = #{dto.reqData}, `query_response_time` = now(), `status` = 'MANUAL_QUERIED' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'"})
+    @Update({"UPDATE loan_repay SET `query_response_data` = #{dto.reqData}, `query_time` = now(), `status` = 'MANUAL_QUERIED' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'"})
     void updateLoanRepayQuery(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_callback SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")

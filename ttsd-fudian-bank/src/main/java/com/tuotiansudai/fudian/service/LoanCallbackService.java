@@ -144,24 +144,32 @@ public class LoanCallbackService {
 
     void pushLoanCallbackQueue(BankLoanRepayDto bankLoanRepayDto) {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-        List<LoanCallbackInvestItemRequestDto> loanCallbackInvestItemRequests = bankLoanRepayDto.getBankLoanRepayInvests().stream().map(bankLoanRepayInvest -> {
-            LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(AmountUtils.toYuan(bankLoanRepayInvest.getCapital()),
-                    AmountUtils.toYuan(bankLoanRepayInvest.getInterest()),
-                    AmountUtils.toYuan(bankLoanRepayInvest.getInterestFee()),
-                    bankLoanRepayInvest.getBankUserName(),
-                    bankLoanRepayInvest.getBankAccountNo(),
-                    bankLoanRepayInvest.getInvestOrderNo(),
-                    bankLoanRepayInvest.getInvestOrderDate(),
-                    OrderIdGenerator.generate(redisTemplate));
-            hashOperations.put(MessageFormat.format(BANK_LOAN_CALLBACK_MESSAGE_KEY, loanCallbackInvestItemRequest.getInvestOrderNo()),
-                    loanCallbackInvestItemRequest.getOrderDate(),
-                    gson.toJson(new BankLoanCallbackMessage(bankLoanRepayInvest.getInvestId(),
-                            bankLoanRepayInvest.getInvestRepayId(),
+        List<LoanCallbackInvestItemRequestDto> loanCallbackInvestItemRequests = bankLoanRepayDto.getBankLoanRepayInvests()
+                .stream()
+                .map(bankLoanRepayInvest -> {
+                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(AmountUtils.toYuan(bankLoanRepayInvest.getCapital()),
+                            AmountUtils.toYuan(bankLoanRepayInvest.getInterest()),
+                            AmountUtils.toYuan(bankLoanRepayInvest.getInterestFee()),
+                            bankLoanRepayInvest.getBankUserName(),
+                            bankLoanRepayInvest.getBankAccountNo(),
+                            bankLoanRepayInvest.getInvestOrderNo(),
+                            bankLoanRepayInvest.getInvestOrderDate(),
+                            OrderIdGenerator.generate(redisTemplate));
+
+                    hashOperations.put(MessageFormat.format(BANK_LOAN_CALLBACK_MESSAGE_KEY, loanCallbackInvestItemRequest.getOrderDate()),
                             loanCallbackInvestItemRequest.getOrderNo(),
-                            loanCallbackInvestItemRequest.getInvestOrderDate())));
-            redisTemplate.expire(MessageFormat.format(BANK_LOAN_CALLBACK_MESSAGE_KEY, loanCallbackInvestItemRequest.getInvestOrderNo()), 3, TimeUnit.DAYS);
-            return loanCallbackInvestItemRequest;
-        }).collect(Collectors.toList());
+                            gson.toJson(new BankLoanCallbackMessage(bankLoanRepayInvest.getInvestId(),
+                                    bankLoanRepayInvest.getInvestRepayId(),
+                                    bankLoanRepayInvest.getCapital(),
+                                    bankLoanRepayInvest.getInterest(),
+                                    bankLoanRepayInvest.getDefaultInterest(),
+                                    bankLoanRepayInvest.getInterestFee(),
+                                    loanCallbackInvestItemRequest.getOrderNo(),
+                                    loanCallbackInvestItemRequest.getInvestOrderDate(),
+                                    bankLoanRepayDto.isNormalRepay())));
+                    redisTemplate.expire(MessageFormat.format(BANK_LOAN_CALLBACK_MESSAGE_KEY, loanCallbackInvestItemRequest.getOrderDate()), 3, TimeUnit.DAYS);
+                    return loanCallbackInvestItemRequest;
+                }).collect(Collectors.toList());
 
         LoanCallbackRequestDto loanCallbackRequestDto = new LoanCallbackRequestDto(bankLoanRepayDto.getLoginName(),
                 bankLoanRepayDto.getMobile(),

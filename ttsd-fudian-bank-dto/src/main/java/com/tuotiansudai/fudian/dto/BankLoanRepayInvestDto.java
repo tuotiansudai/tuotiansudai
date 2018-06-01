@@ -15,6 +15,8 @@ public class BankLoanRepayInvestDto extends BankBaseDto {
 
     private long interest;
 
+    private long defaultInterest;
+
     private long interestFee;
 
     private String investOrderNo;
@@ -24,13 +26,14 @@ public class BankLoanRepayInvestDto extends BankBaseDto {
     public BankLoanRepayInvestDto() {
     }
 
-    public BankLoanRepayInvestDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long investId, long investRepayId, String loanTxNo, long capital, long interest, long interestFee, String investOrderNo, String investOrderDate) {
+    public BankLoanRepayInvestDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long investId, long investRepayId, String loanTxNo, long capital, long interest, long defaultInterest, long interestFee, String investOrderNo, String investOrderDate) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.investId = investId;
         this.investRepayId = investRepayId;
         this.loanTxNo = loanTxNo;
         this.capital = capital;
         this.interest = interest;
+        this.defaultInterest = defaultInterest;
         this.interestFee = interestFee;
         this.investOrderNo = investOrderNo;
         this.investOrderDate = investOrderDate;
@@ -54,6 +57,10 @@ public class BankLoanRepayInvestDto extends BankBaseDto {
 
     public long getInterest() {
         return interest;
+    }
+
+    public long getDefaultInterest() {
+        return defaultInterest;
     }
 
     public long getInterestFee() {

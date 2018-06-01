@@ -17,7 +17,7 @@ import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.BankClient;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
-import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -109,6 +109,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
                         bankLoanRepayDto.getLoanRepayId(),
                         bankLoanRepayDto.getCapital(),
                         bankLoanRepayDto.getInterest(),
+                        bankLoanRepayDto.isNormalRepay(),
                         bankLoanRepayDto.getLoginName(),
                         bankLoanRepayDto.getMobile(),
                         bankLoanRepayDto.getBankUserName(),
@@ -195,7 +196,7 @@ public class LoanRepayService implements AsyncCallbackInterface {
         BankLoanRepayMessage bankLoanRepayMessage = gson.fromJson(message, BankLoanRepayMessage.class);
         bankLoanRepayMessage.setStatus(true);
         bankLoanRepayMessage.setMessage(responseDto.getRetMsg());
-        messageQueueClient.publishMessage(MessageTopic.RepaySuccess, bankLoanRepayMessage);
+        messageQueueClient.sendMessage(MessageQueue.LoanRepay_Success, bankLoanRepayMessage);
         loanCallbackService.pushLoanCallbackQueue(gson.fromJson(
                 redisTemplate.opsForValue().get(MessageFormat.format(BANK_LOAN_CALLBACK_DATA_KEY, content.getOrderNo())),
                 BankLoanRepayDto.class));
@@ -220,13 +221,16 @@ public class LoanRepayService implements AsyncCallbackInterface {
                         if (query.isSuccess() && "1".equals(query.getContent().getQueryState())) {
                             updateMapper.updateLoanRepayQuery(query);
 
-                            String bankLoanRepayValue = hashOperations.get(MessageFormat.format(BANK_LOAN_REPAY_MESSAGE_KEY, loanRepayRequest.getOrderDate()), loanRepayRequest.getOrderNo());
-                            if (Strings.isNullOrEmpty(bankLoanRepayValue)) {
+                            String message = hashOperations.get(MessageFormat.format(BANK_LOAN_REPAY_MESSAGE_KEY, loanRepayRequest.getOrderDate()), loanRepayRequest.getOrderNo());
+                            if (Strings.isNullOrEmpty(message)) {
                                 logger.error("[Repay Status Schedule] loan repay status is success, but queue message is not found, response: {}", query.getReqData());
                                 continue;
                             }
-                            messageQueueClient.publishMessage(MessageTopic.RepaySuccess, bankLoanRepayValue);
-                            logger.info("[Repay Status Schedule] repay is success, send message: {}", bankLoanRepayValue);
+                            BankLoanRepayMessage bankLoanRepayMessage = gson.fromJson(message, BankLoanRepayMessage.class);
+                            bankLoanRepayMessage.setStatus(true);
+                            bankLoanRepayMessage.setMessage(query.getRetMsg());
+                            messageQueueClient.sendMessage(MessageQueue.LoanRepay_Success, bankLoanRepayMessage);
+                            logger.info("[Repay Status Schedule] repay is success, send message: {}", message);
                             String loanCallbackData = redisTemplate.opsForValue().get(MessageFormat.format(BANK_LOAN_CALLBACK_DATA_KEY, loanRepayRequest.getOrderNo()));
                             loanCallbackService.pushLoanCallbackQueue(gson.fromJson(loanCallbackData, BankLoanRepayDto.class));
                             logger.info("[Repay Status Schedule] repay is success, trigger loan callback: {}", loanCallbackData);

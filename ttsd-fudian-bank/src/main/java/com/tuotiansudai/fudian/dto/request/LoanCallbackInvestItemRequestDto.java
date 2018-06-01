@@ -1,5 +1,8 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class LoanCallbackInvestItemRequestDto {
 
     private transient long id;
@@ -36,6 +39,7 @@ public class LoanCallbackInvestItemRequestDto {
         this.investOrderNo = investOrderNo;
         this.investOrderDate = investOrderDate;
         this.orderNo = orderNo;
+        this.orderDate = new SimpleDateFormat("yyyyMMdd").format(new Date()); //订单日期
     }
 
     public long getId() {

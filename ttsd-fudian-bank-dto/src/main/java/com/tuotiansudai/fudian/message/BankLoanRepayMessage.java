@@ -22,15 +22,17 @@ public class BankLoanRepayMessage extends BankBaseMessage {
 
     private String bankOrderDate;
 
+    private boolean isNormalRepay;
+
     public BankLoanRepayMessage() {
     }
 
-    public
-    BankLoanRepayMessage(long loanId, long loanRepayId, long capital, long interest, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public BankLoanRepayMessage(long loanId, long loanRepayId, long capital, long interest, boolean isNormalRepay, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
         this.loanId = loanId;
         this.loanRepayId = loanRepayId;
         this.capital = capital;
         this.interest = interest;
+        this.isNormalRepay = isNormalRepay;
         this.loginName = loginName;
         this.mobile = mobile;
         this.bankUserName = bankUserName;
@@ -53,6 +55,10 @@ public class BankLoanRepayMessage extends BankBaseMessage {
 
     public long getInterest() {
         return interest;
+    }
+
+    public boolean isNormalRepay() {
+        return isNormalRepay;
     }
 
     public String getLoginName() {

@@ -33,7 +33,6 @@ public enum MessageTopic {
             MessageQueue.Withdraw_Success,
             MessageQueue.Withdraw_EventMessage,
             MessageQueue.Withdraw_PushMessage),
-
     ;
 
     final String topicName;

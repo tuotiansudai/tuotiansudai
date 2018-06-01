@@ -17,18 +17,21 @@ public class BankLoanRepayDto extends BankBaseDto {
 
     private String loanTxNo;
 
+    private boolean isNormalRepay;
+
     private List<BankLoanRepayInvestDto> bankLoanRepayInvests;
 
     public BankLoanRepayDto() {
     }
 
-    public BankLoanRepayDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, long loanRepayId, long capital, long interest, String loanTxNo, List<BankLoanRepayInvestDto> bankLoanRepayInvests) {
+    public BankLoanRepayDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, long loanRepayId, String loanTxNo, boolean isNormalRepay, List<BankLoanRepayInvestDto> bankLoanRepayInvests) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.loanId = loanId;
         this.loanRepayId = loanRepayId;
-        this.capital = capital;
-        this.interest = interest;
+        this.capital = bankLoanRepayInvests.stream().mapToLong(BankLoanRepayInvestDto::getCapital).sum();
+        this.interest = bankLoanRepayInvests.stream().mapToLong(bankLoanRepayInvest-> bankLoanRepayInvest.getInterest() + bankLoanRepayInvest.getDefaultInterest()).sum();
         this.loanTxNo = loanTxNo;
+        this.isNormalRepay = isNormalRepay;
         this.bankLoanRepayInvests = bankLoanRepayInvests;
     }
 
@@ -50,6 +53,10 @@ public class BankLoanRepayDto extends BankBaseDto {
 
     public String getLoanTxNo() {
         return loanTxNo;
+    }
+
+    public boolean isNormalRepay() {
+        return isNormalRepay;
     }
 
     public List<BankLoanRepayInvestDto> getBankLoanRepayInvests() {
