@@ -91,7 +91,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private InvestModel generateInvestModel(InvestDto investDto, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) throws InvestException{
-//        this.checkTransferPurchase(investDto);
+        this.checkTransferPurchase(investDto);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
         InvestModel investModel = new InvestModel(IdGenerator.generate(),
                 transferApplicationModel.getLoanId(),
