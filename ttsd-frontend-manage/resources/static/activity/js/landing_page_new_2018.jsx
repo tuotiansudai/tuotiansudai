@@ -23,14 +23,16 @@ let referrerValidBool=true;
 
 if ($(document).width() <= 1024) {
     commonFun.calculationRem(document,window);
+    if(urlObj.params.source == 'app'){
+        $('.app-container-landing').hide();
+    }else {
+        $('.app-container-landing').show();
+    }
 }
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
     $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
-   $('.app-container-landing').hide();
-}else {
-    $('.app-container-landing').show();
 }
 if($('#fuliList').length){
     $('#fuliList').find('.swiper-slide').each(function (index,item) {
@@ -77,17 +79,22 @@ $inputImgCaptcha.on('keyup', function (event) {
     disableCaptchaBtn();
 });
 disableCaptchaBtn();
-$('#mobile').on('keyup',function () {
+$('#mobile').on('keyup',function () {console.log(9)
+    disableCaptchaBtn();
+})
+$('#passwordInput').on('keyup',function () {
+
     disableCaptchaBtn();
 })
 function disableCaptchaBtn() {
-    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
+    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&$('#mobile').hasClass('valid')&&$('#passwordInput').hasClass('valid')) {
 
             $fetchCaptcha.prop('disabled', false);
 
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
+   console.log($('#mobile').hasClass('valid'))
 }
 $('#agreementInput').prop('checked',true);
 
@@ -408,7 +415,7 @@ $voiceBtn.on('click', function(event) {
     event.preventDefault();
     let mobile=registerForm.mobile,
         password=registerForm.password,
-        captcha=registerForm.captcha;
+        captcha=registerForm.appCaptcha;
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
@@ -419,8 +426,8 @@ $voiceBtn.on('click', function(event) {
     //通过获取验证码按钮来判断
 
 
-    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    let captchaValid = !globalFun.hasClass(captcha,'error')&& captcha.value;
+    let isDisabledSubmit= !!isMobileValid && !!isPwdValid && !!captchaValid  && $('#agreementInput').prop('checked');
     if(isDisabledSubmit){
         getSmsCaptcha();
     }
