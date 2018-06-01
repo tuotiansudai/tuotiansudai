@@ -9,7 +9,7 @@
                     <div class="login-wrap" id="registerContainer">
 
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
-                        <h2 class="title"><span class="icon-title"></span><span>出借资金全程由银行存管</span></h2>
+                        <h2 class="title"><span class="icon-title"></span><span>出借资金全程由联动优势存管</span></h2>
                         <div class="login-con">
                             <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                             <ul>
@@ -350,7 +350,7 @@
                 <div class="title"><span class="tip-line left-line"></span><span class="squre"></span><span class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span class="squre"></span><span class="squre"></span><span class="tip-line right-line"></span>
                 </div>
                 <div class="kindly-tips-con">
-                    <p>1.活动时间：2018年5月31日起，本活动仅针对活动开始后注册的新用户；</p>
+                    <p>1.活动时间：2018年6月1日起，本活动仅针对活动开始后注册的新用户；</p>
                     <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
                     <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
                     <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端“我的”中查看；</p>
@@ -364,7 +364,7 @@
         </div>
 
     </div>
-    <div class="app-container-landing clearfix">
+    <div class="app-container-landing clearfix" style="display: none">
         <div class="logo"></div>
         <div class="app-detail">
             拓天速贷<br/>

@@ -29,6 +29,8 @@ if(urlObj.params.source == 'app'){
     $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
    $('.app-container-landing').hide();
+}else {
+    $('.app-container-landing').show();
 }
 if($('#fuliList').length){
     $('#fuliList').find('.swiper-slide').each(function (index,item) {
@@ -162,7 +164,7 @@ $('.show-agreement').on('click', function (event) {
     layer.open({
         type: 1,
         title: '拓天速贷服务协议',
-        area: $(window).width() < 700 ? ['100%', '100%'] : ['950px', '600px'],
+        area: $(window).width() <=1024 ? ['100%', '100%'] : ['950px', '600px'],
         shadeClose: true,
         move: false,
         scrollbar: true,
