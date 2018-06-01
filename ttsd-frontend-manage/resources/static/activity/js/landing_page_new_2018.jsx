@@ -52,8 +52,8 @@ if($('#fuliList').length){
         spaceBetween: -20,
         loopAdditionalSlides:1,
         nextButton: '.nextBtn',
-        prevButton: '.prevBtn'
-
+        prevButton: '.prevBtn',
+        freeMode:true
     });
 }
 
