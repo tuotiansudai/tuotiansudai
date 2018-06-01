@@ -43,6 +43,7 @@ public class RechargeContentDto extends PayBaseContentDto {
     }
 
     public boolean isSuccess() {
-        return "1".equalsIgnoreCase(status);
+        return "1".equalsIgnoreCase(this.status);
     }
+
 }

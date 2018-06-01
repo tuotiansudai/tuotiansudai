@@ -72,6 +72,9 @@ public enum MessageQueue {
     RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
     RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
 
+    Recharge_Success("Recharge-Success"),
+    Recharge_CompletePointTask("Recharge-CompletePointTask"),
+
     Withdraw_Success("Recharge-Success"),
     Withdraw_EventMessage("Recharge-EventMessage"),
     Withdraw_PushMessage("Recharge-PushMessage"),

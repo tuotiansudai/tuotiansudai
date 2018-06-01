@@ -40,6 +40,7 @@
         </ul>
         <div class="button-layer account-button">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input name="source" type="hidden" value="WEB"/>
             <div class="status"></div>
             <div class="loading-effect"></div>
             <input type="submit" class="register-account btn-success" value="认证" disabled/>

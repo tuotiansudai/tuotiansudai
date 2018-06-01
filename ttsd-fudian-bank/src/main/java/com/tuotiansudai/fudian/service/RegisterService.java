@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
@@ -49,12 +50,12 @@ public class RegisterService implements AsyncCallbackInterface {
         this.selectResponseDataMapper = selectResponseDataMapper;
     }
 
-    public RegisterRequestDto register(Source source, String loginName, String mobile, String realName, String identityCode) {
-        RegisterRequestDto dto = new RegisterRequestDto(source, loginName, mobile, realName, identityCode);
+    public RegisterRequestDto register(Source source, BankRegisterDto bankRegisterDto) {
+        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), bankRegisterDto.getIdentityCode());
         signatureHelper.sign(dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[register] sign error, realName: {}, identityCode: {}, mobilePhone: {}", realName, identityCode, mobile);
+            logger.error("[register] sign error, data{}", bankRegisterDto);
             return null;
         }
 
@@ -90,7 +91,7 @@ public class RegisterService implements AsyncCallbackInterface {
                     .put("realName", registerContentDto.getRealName())
                     .put("accountNo", registerContentDto.getAccountNo())
                     .put("userName", registerContentDto.getUserName())
-                    .put("orderDate", registerContentDto.getRegDate())
+                    .put("orderDate", registerContentDto.getOrderDate())
                     .put("orderNo", registerContentDto.getOrderNo())
                     .build()));
         }

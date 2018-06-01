@@ -1,8 +1,9 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -58,7 +59,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }
