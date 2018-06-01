@@ -156,7 +156,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private InvestModel generateInvest(InvestDto investDto) throws InvestException {
-        this.checkInvestAvailable(investDto);
+//        this.checkInvestAvailable(investDto);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(),

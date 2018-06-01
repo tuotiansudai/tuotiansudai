@@ -111,13 +111,12 @@ public class TransferApplicationController {
         return baseDataDto;
     }
 
-    @RequestMapping(path = "/purchase", method = RequestMethod.POST)
+    @RequestMapping(path = "/purchase", method = RequestMethod.GET)
     public ModelAndView purchase(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
-        investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
+
         try {
-            investDto.setLoginName(LoginUserInfo.getLoginName());
+//            investDto.setLoginName(LoginUserInfo.getLoginName());
             BankAsyncMessage baseDto = transferService.transferPurchase(investDto);
             return new ModelAndView("/pay", "pay", baseDto);
 

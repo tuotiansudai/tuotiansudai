@@ -90,15 +90,16 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
         insertMapper.insertLoanCreditInvest(requestDto);
         String bankLoanCreditInvestHistory = MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, requestDto.getOrderDate());
         redisTemplate.opsForHash().put(bankLoanCreditInvestHistory, requestDto.getInvestOrderNo(),
-                new BankLoanCreditInvestMessage(dto.getTransferApplicationId(),
+                new Gson().toJson(new BankLoanCreditInvestMessage(dto.getTransferApplicationId(),
+                        dto.getInvestId(),
                         dto.getInvestAmount(),
                         dto.getLoginName(),
                         dto.getMobile(),
                         dto.getBankUserName(),
                         dto.getBankAccountNo(),
                         requestDto.getOrderNo(),
-                        requestDto.getOrderDate()));
-        redisTemplate.expire(bankLoanCreditInvestHistory, 30, TimeUnit.DAYS);
+                        requestDto.getOrderDate())));
+        redisTemplate.expire(bankLoanCreditInvestHistory,30, TimeUnit.DAYS);
 
         return requestDto;
     }
@@ -112,7 +113,7 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
     @SuppressWarnings(value = "unchecked")
     public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan credit invest] data is {}", responseData);
-        ResponseDto<LoanCreditInvestContentDto> responseDto = (ResponseDto<LoanCreditInvestContentDto>)ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
+        ResponseDto<LoanCreditInvestContentDto> responseDto = (ResponseDto<LoanCreditInvestContentDto>) ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
 
         if (responseDto == null) {
             logger.error("[loan credit invest] parse callback data error, data is {}", responseData);
@@ -122,9 +123,9 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
         int count = updateMapper.updateLoanCreditInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-        if (responseDto.isSuccess() && count > 0){
+        if (responseDto.isSuccess() && count > 0) {
             String message = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, responseDto.getContent().getOriOrderDate()), responseDto.getContent().getCreditNo());
-            if(Strings.isNullOrEmpty(message)){
+            if (Strings.isNullOrEmpty(message)) {
                 logger.error("[loan credit invest callback] callback is success, but queue message is not found, response data is {}", responseData);
                 return responseDto;
             }
@@ -134,7 +135,7 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
     }
 
     @Scheduled(fixedDelay = 1000 * 10, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
-    public void schedule(){
+    public void schedule() {
         RLock lock = redissonClient.getLock("BANK_CREDIT_INVEST_HISTORY");
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         if (lock.tryLock()) {

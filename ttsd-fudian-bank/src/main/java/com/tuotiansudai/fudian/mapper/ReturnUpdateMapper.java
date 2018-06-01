@@ -34,7 +34,7 @@ public interface ReturnUpdateMapper {
     @Update("UPDATE phone_update SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")
     void updatePhoneUpdate(@Param(value = "dto") ResponseDto responseDto);
 
-    @Update("UPDATE loan_invest SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")
+    @Update("UPDATE loan_invest SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")
     void updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
 
     @Update("UPDATE loan_credit_invest SET `return_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo} and return_response_data is null")

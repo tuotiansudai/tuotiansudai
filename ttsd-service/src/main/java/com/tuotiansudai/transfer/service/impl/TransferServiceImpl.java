@@ -29,8 +29,7 @@ public class TransferServiceImpl implements TransferService {
 
     static Logger logger = Logger.getLogger(TransferServiceImpl.class);
 
-    @Autowired
-    private BankWrapperClient bankWrapperClient;
+    private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     @Autowired
     private LoanMapper loanMapper;
@@ -69,11 +68,16 @@ public class TransferServiceImpl implements TransferService {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
+        investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
 
-        InvestModel investModel = generateInvestModel(investDto, transferApplicationModel);
+        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        InvestModel investModel = generateInvestModel(investDto, transferApplicationModel, transferrerModel);
+        transferApplicationModel.setInvestId(investModel.getId());
+        transferApplicationMapper.update(transferApplicationModel);
 
         return bankWrapperClient.loanCreditInvest(
-                Long.parseLong(investDto.getTransferApplicationId()),
+                transferApplicationModel.getId(),
+                investModel.getId(),
                 investDto.getSource(),
                 investDto.getLoginName(),
                 userModel.getMobile(),
@@ -81,15 +85,14 @@ public class TransferServiceImpl implements TransferService {
                 bankAccountModel.getBankAccountNo(),
                 transferApplicationModel.getTransferAmount(),
                 transferApplicationModel.getTransferFee(),
-                investModel.getBankOrderNo(),
-                investModel.getBankOrderDate(),
+                transferrerModel.getBankOrderNo(),
+                transferrerModel.getBankOrderDate(),
                 loanModel.getLoanTxNo());
     }
 
-    private InvestModel generateInvestModel(InvestDto investDto, TransferApplicationModel transferApplicationModel) throws InvestException{
-        this.checkTransferPurchase(investDto);
+    private InvestModel generateInvestModel(InvestDto investDto, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) throws InvestException{
+//        this.checkTransferPurchase(investDto);
         double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
-        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         InvestModel investModel = new InvestModel(IdGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),

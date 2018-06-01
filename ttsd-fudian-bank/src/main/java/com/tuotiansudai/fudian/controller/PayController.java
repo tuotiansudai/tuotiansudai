@@ -138,7 +138,7 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/loan-credit-invest/source/{source}", method = RequestMethod.GET)
+    @RequestMapping(path = "/loan-credit-invest/source/{source}", method = RequestMethod.POST)
     public ResponseEntity<BankAsyncMessage> loanCreditInvest(@PathVariable(name = "source") Source source, @RequestBody BankLoanCreditInvestDto params) {
         logger.info("[Fudian] call loan credit invest");
 

@@ -54,13 +54,13 @@ public class InvestController {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.POST)
+    @RequestMapping(value = "/invest", method = RequestMethod.GET)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
 
         if (!bindingResult.hasErrors()) {
             try {
-                investDto.setLoginName(LoginUserInfo.getLoginName());
+//                investDto.setLoginName(LoginUserInfo.getLoginName());
                 BankAsyncMessage bankAsyncData = investService.invest(investDto);
                 return new ModelAndView("/pay", "pay", bankAsyncData);
             } catch (InvestException e) {

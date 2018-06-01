@@ -40,7 +40,7 @@ public class LoanCreditInvestSuccessService {
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper){
+    public LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper){
         this.investMapper = investMapper;
         this.transferApplicationMapper = transferApplicationMapper;
         this.mqWrapperClient = mqWrapperClient;
@@ -73,6 +73,7 @@ public class LoanCreditInvestSuccessService {
         }
 
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setInvestId(bankLoanCreditInvestMessage.getInvestId());
         transferApplicationMapper.update(transferApplicationModel);
 
         transferInvestModel.setTransferStatus(TransferStatus.SUCCESS);

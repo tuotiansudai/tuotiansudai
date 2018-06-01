@@ -6,6 +6,8 @@ public class BankLoanCreditInvestMessage implements Serializable {
 
     private long transferApplicationId;
 
+    private long investId;
+
     private long amount;
 
     private String loginName;
@@ -23,8 +25,9 @@ public class BankLoanCreditInvestMessage implements Serializable {
     public BankLoanCreditInvestMessage() {
     }
 
-    public BankLoanCreditInvestMessage(long transferApplicationId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public BankLoanCreditInvestMessage(long transferApplicationId, long investId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
         this.transferApplicationId = transferApplicationId;
+        this.investId = investId;
         this.amount = amount;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -36,6 +39,10 @@ public class BankLoanCreditInvestMessage implements Serializable {
 
     public long getTransferApplicationId() {
         return transferApplicationId;
+    }
+
+    public long getInvestId() {
+        return investId;
     }
 
     public long getAmount() {
