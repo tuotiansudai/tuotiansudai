@@ -44,10 +44,12 @@
                 <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
                 <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: inline-block;float:right">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard bandBindCard" value="绑定"/>
+                </span>
 
-                    <span class="binding-set">
-                        <i class="fa fa-times-circle no"></i>未绑定<input type="submit" class="setlink setBankCard" value="绑定" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
-                    </span>
+
                 </form>
             </#if>
         </li>

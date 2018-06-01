@@ -216,14 +216,16 @@ var strategies = {
         if(this.value.replace(/\s+/g, "").length!=18) {
             return;
         }
+        console.log ('hhahahah')
         commonFun.useAjax({
             type:'GET',
             async: false,
             url: '/register/account/verify/identity-number/'+this.value.replace(/\s+/g, "")
         },function(response) {
-            if(response.data.status) {
+            console.log(response)
+            if(!response.data.status) {
                 //身份证号已存在
-                getResult=errorMsg;
+                getResult='hahahaha哈哈';
                 isHaveError.yes.apply(that,_arguments);
             }
             else {
