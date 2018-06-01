@@ -31,7 +31,7 @@
                                                               name="captcha" type="text" maxlength="6" validate>
                                     <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
                                            value="获取验证码" disabled/><br/>
-                                    <span class="voice-captcha" id="voice_captcha" style="display: block">如收不到短信，可使用 <a
+                                    <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a
                                             href="javascript:;" id="voice_btn">语音验证</a> </span>
                                 </li>
                                 <li class="recommend" id="recommendLabel" style="display: none"><span

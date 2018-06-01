@@ -399,8 +399,8 @@ $voiceBtn.on('click', function(event) {
     //通过获取验证码按钮来判断
 
 
-    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    let captchaValid = !globalFun.hasClass(captcha,'error')&& captcha.value;
+    let isDisabledSubmit= !!isMobileValid && !!isPwdValid && !!captchaValid  && $('#agreementInput').prop('checked');
     if(isDisabledSubmit){
         getSmsCaptcha();
     }
