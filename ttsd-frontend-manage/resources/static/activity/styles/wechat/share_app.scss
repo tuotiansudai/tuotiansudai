@@ -1,438 +1,765 @@
-$width:640px;
-form .error {
-	color: #fff700;
+body {
+	font-size: 12px;
 }
-input[type="button"],
-input[type="submit"],
-input[type="reset"]{
-   -webkit-appearance: none;
+.main-frame {
+	width: 100%;
 }
-textarea {
-	-webkit-appearance: none;
+.width100 {
+	width: 100%;
+}
+.height100 {
+	height: 100%;
+}
+input {
+	padding: 0;
+	margin: 0;
+}
+.error {
+	color: #fff;
+}
+.borderRadius {
+	border-radius: 3px;
 }
 
-form .error.noAgree {
-	display: none;
+p {
+	margin-bottom: 0;
+	line-height: 1;
 }
-.recommender {
-	color: #fff;
-	font-size: 13px;
+.my-page-width {
+	width: 1100px;
+	margin: 0 auto;
 }
-#recommender {
-	display: inline-block;
-	margin-bottom: 15px;
-}
-#register_btn {
-	font-size: 13px;
-	position: absolute;
-	right: 3%;
-	top: 10px;
-	color: #fff;
-	width: 57px;
-	height: 30px;
-	line-height: 30px;
-	background: #2d2544;
+
+.textCenter {
 	text-align: center;
-	border-radius: 5px;
 }
 
-@mixin mobilehide () {
-	@media (max-width: $width) {
+.border-section {
+	box-sizing: border-box;
+	border-radius: 8px;
+	border: 3px solid #e2b573;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+@media screen and (max-width: 1024px){
+	.gold-btn {
+		display: inline-block;
+		background: url("../../images/landingpage/button_bg.png") no-repeat center center;
+		background-size: 100%;
+		color: #8d080d;
+		font-size: 54px;
+		line-height: 134px;
+		text-align: center;
+		&:hover {
+			color: #8d080d;
+		}
+		width: 5.47rem;
+		height: 1.34rem;
+		line-height: 1.34rem;
+		font-size: 0.48rem;
+	}
+	.btn-red {
+		width: 2.08rem;
+		height: 0.56rem;
+		line-height: 0.56rem;
+		font-size: 0.32rem;
+		text-align: center;
+		background: #bc3434;
+		box-sizing: border-box;
+		border-radius: 8px;
+		color: #fff;
+		display: inline-block;
+		&:hover {
+			color: #fff;
+		}
+	}
+	.error {
+		font-size: 0.24rem;
+		float: left;
+	}
+	.desc-container {
 		display: none;
 	}
-}
-@mixin PChide () {
-	@media (min-width: $width + 1px) {
-		display: none;
+	.btn-red {
+		width: 2.08rem;
+		height: 0.56rem;
+		line-height: 0.56rem;
+		font-size: 0.32rem;
+		text-align: center;
 	}
-}
-
-.nav-container,.footer-container{
-	display: none;
-}
-.tip-item{
-	padding:20px;
-	p{
-		text-align:left;
-		font-size:14px;
-		color:#4c4c4c;
+	body {
+		background: #d32c31 url("../../images/landingpage/body_bg_wap.png") no-repeat center top;
+		background-size: contain;
 	}
-	a{
-		display:inline-block;
-		width:150px;
-		height:30px;
-		text-align:center;
-		color:#fff;
-		font-size:14px;
-		background:#ff7633;
-	}
-}
-.header-container{
-	@media (min-width: $width + 1px){
-		width:375px;
-		margin:0 auto;
-	}
-	.header-download{
-		display:block;
-	}
-	.header{
-		@include PChide;
-		@include mobilehide;
-	}
-}
-.main-frame{
-	@media (max-width: $width) {
-		width:100%;
-	}
-	@media (min-width: $width + 1px) {
-		width:375px;
-		margin:0 auto;
-	}
-}
-.share-app-container{
-	background:#fffbe5;
-	@media (max-width: $width) {
-		width:100%;
-	}
-	@media (min-width: $width + 1px) {
-	  width: 375px;
-	}
-	.share-container{
-		float:left;
-		width:100%;
-		background: #362c51;
-		.share-item{
-			float:left;
-			width:90%;
-			margin:0 5%;
-			.item-tel{
-				float:left;
-				width:100%;
-				margin-top:30px;
-				text-align:center;
-				span{
-					display:inline-block;
-					padding:0 30px;
-					text-align:center;
-					font-size:25px;
-					color:#ffe500;
-					line-height:40px;
+	.landing-page-container {
+		.app-container-landing {
+			display: block;
+			height: 1.32rem;
+			background: rgba(0,0,0,0.6);
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			z-index: 9999;
+			.logo {
+				width: 0.83rem;
+				height: 0.83rem;
+				float: left;
+				background: url("../../images/landingpage/landing_logo.png") no-repeat;
+				background-size: contain;
+				margin-left: 0.1rem;
+				margin-top: 0.26rem;
+				margin-right: 0.1rem;
+			}
+			.app-detail {
+				float: left;
+				color: #fff;
+				line-height: 0.4rem;
+				font-size: 0.38rem;
+				margin-top: 0.3rem;
+				em {
+					font-size: 0.26rem;
 				}
 			}
-			.item-intro{
-				float:left;
-				width:100%;
-				margin-top:20px;
-				font-size:18px;
-				color:#ff635a;
-				text-align:center;
-				&.share-old {
-					background: url('../../images/shareapp/share-old.png') center top no-repeat;
-					height: 86px;
-					background-size: 90%;
-				}
+			.open-app {
+				float: right;
+				width: 87px;
+				height: 30px;
+				background: #d0282e;
+				color: #fff;
+				font-size: 15px;
+				margin-right: 30px;
+				margin-top: 20px;
+				text-align: center;
+				line-height: 30px;
+			}
+			.close-app {
+				width: 13px;
+				height: 13px;
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				background: url("../../../m-web/images/share/icon_close.png") no-repeat;
+				background-size: contain;
+				cursor: pointer;
+			}
+		}
+      #register_btn {
+        font-size: 13px;
+        position: absolute;
+        right: 3%;
+        top: 10px;
+        color: #fff;
+        width: 57px;
+        height: 30px;
+        line-height: 30px;
+        background: #2d2544;
+        text-align: center;
+        border-radius: 5px;
+      }
+      .success-con {
+        .share-refer-info {
+          text-align: center;
+          color: #fff0b5;
+          padding-top: 0.35rem;
+          padding-bottom: 0.35rem;
+          line-height: 0.6rem;
+          span {
+            font-size: 0.4rem;
+          }
+          strong {
+            font-size: 0.42rem;
+            font-weight: normal;
+          }
+        }
+        .share-old {
+          margin: 0 auto;
+          margin-top: 0.6rem;
+          width: 5.93rem;
+          height: 1.4rem;
+          background: url("../../images/shareapp/share-old.png") no-repeat center top;
+          background-size: contain;
+			margin-bottom: 0.3rem;
+        }
+        .gift-icon {
+          margin: 0 auto;
+          margin-top: 0.2rem;
+          margin-bottom: 0.2rem;
+          width: 5.36rem;
+          height: 4.3rem;
+          background: url("../../images/shareapp/gift-icon.png") no-repeat center top;
+          background-size: 100%;
+        }
+        .btn-app {
+          color: #820401;
+          background: #fff0b5;
+          display: inline-block;
+          width: 6rem;
+          height: 0.8rem;
+          line-height: 0.8rem;
+          margin-bottom: 0.4rem;
+          font-size: 0.3rem;
+          border-radius: 0.12rem ;
+        }
+      .invite-friend-invest {
+       p {
+         color: #fff0b5;
+         font-size: 0.3rem;
+         text-align: center;
+         line-height: 0.5rem;
+         span {
+           font-size: 0.36rem;
+         }
+       }
+      }
 
-				span{
-					color:#ffe500;
+      }
+
+		.login-wrap {
+			width: 7.5rem;
+			position: static;
+			font-size: 0.37rem;
+			.refer-person-info {
+				text-align: center;
+				color: #fff0b5;
+				padding-top: 0.35rem;
+				padding-bottom: 0.35rem;
+				line-height: 0.8rem;
+				span {
+					font-size: 0.37rem;
+				}
+				strong {
+					font-size: 0.48rem;
 				}
 			}
-			.item-form{
-				float:left;
-				width:100%;
-				margin-top:30px;
-				.item-int{
-					float:left;
-					width:100%;
-					margin-bottom:15px;
-					position: relative;
-					.gift-icon {
-						display: inline-block;
-						height:220px;
-						width: 100%;
-						background: url('../../images/shareapp/gift-icon.png') center top no-repeat;
-						background-size: contain;
+			.refer-info-other {
+				display: none;
+				font-size: 0.24rem;
+				line-height: 0.4rem;
+				p {
+					font-size: 0.24rem;
+					text-align: center;
+					color: #fff;
+					line-height: 0.4rem;
+					strong {
+						color: #fff0b5;
 					}
-					&:last-child{
-						margin-bottom:0;
-					}
+				}
+			}
+			.risk-tip {
+				width: 3.86rem;
+				height: 0.4rem;
+				background: rgba(0,0,0,0.3);
+				color: rgba(255,255,255,0.5);
+				text-align: center;
+				border-radius: 0.16rem;
+				margin: 0 auto;
+				margin-top: 0.2rem;
+				margin-bottom: 0.1rem;
+				font-size: 0.16rem;
+				line-height: 0.4rem;
+			}
 
-					.item-text{
-						float:left;
-						width:100%;
-						border:3px solid #ffe500;
-						border-radius:10px;
-						background:#fff;
-						color:#4c4c4c;
-						font-size:16px;
-						line-height:36px;
-						box-sizing: border-box;
-					}
-					.item-submit{
-						float:left;
-						width:100%;
-						border:none;
-						color:#fff;
-						font-size:20px;
-						height:54px;
-						background:#ff635a;
-						box-sizing: border-box;
-					}
-					.get-code{
-						position: absolute;
-						top: 13px;
-						right: 13px;
-						height: 30px;
-						color: #fff;
-						border: none;
-						background: #ff635a;
-						border-radius: 26px;
-						padding: 0 10px;
-						&[disabled] {
-							background: #666;
+			.login-con {
+				background: none;
+				box-sizing: border-box;
+				padding: 0.12rem  0.3rem;
+				ul {
+					li {
+						height: 0.96rem;
+						margin-bottom: 0.6rem;
+						clear: both;
+						&.captcha-li {
+							position: relative;
+							margin-bottom: 0.4rem;
+							.voice-captcha {
+								position: absolute;
+								right: 0;
+								bottom: -0.64rem;
+								color: #fff;
+								font-size: 0.24rem;
+								a {
+									color: #fff0b5;
+								}
+							}
 						}
-					}
-					label{
-						&.agree{
-							color:#fff;
-							font-size:14px;
-							span{
-								color:#ff635a;
+						&.agreement-li {
+							height: 0.6rem;
+							margin-bottom: 5px;
+							font-size: 0.3rem;
+							margin-left: -0.5rem;
+							a {
+								color: #3a84cf;
+								vertical-align: middle;
+								font-size: 0.3rem;
+							}
+							#agreementLable {
+								display: inline-block;
+							}
+							.agreement-check {
+								visibility: hidden;
+								vertical-align: middle;
+							}
+							.icon-yesOrNo-checked {
+								display: inline-block;
+								vertical-align: middle;
+								width: 0.36rem;
+								height: 0.36rem;
+								background: url("../../images/landingpage/checkbox_bg_no.png") no-repeat center center;
+								background-size: 100%;
+								&.checked {
+									background: url("../../images/landingpage/checkboxed_bg.png") no-repeat center center;
+									background-size: 100%;
+								}
+							}
+							.check-label {
+								color: #fff;
+								vertical-align: middle;
+							}
+						}
+						&.recomender-iphone {
+							margin-bottom: 0;
+							display: none;
+							&.show {
+								display: block;
+							}
+						}
+						&.recommend {
+							height: 0.6rem;
+							color: #fff;
+							margin-bottom: 0;
+							cursor: pointer;
+							margin-top: 0.2rem;
+							>span {
+								vertical-align: middle;
+								display: inline-block;
+								font-size: 0.34rem;
+							}
+							.icon-arrow-bottom {
+								width: 0.28rem;
+								height: 0.32rem;
+								background: url("../../images/landingpage/traingle_right.png") no-repeat center center;
+								background-size: 100%;
+								margin-right: 5px;
+								&.active {
+									background: url("../../images/landingpage/traingle_bg.png") no-repeat center center;
+									background-size: 100%;
+								}
+							}
+						}
+						input{
+							border: 0;
+							color: #959794;
+							text-indent: 1.04rem;
+							font-size: 0.28rem;
+                          &.mobileIcon {
+                            background:#fff url("../../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+							  background-size: 8%;
+                          }
+                          &.passwordIcon {
+                            background:#fff url("../../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+							  background-size: 8%;
+                          }
+                          &.captchaIcon {
+                            background:#fff url("../../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+							  background-size: 13%;
+                          }
+                          &.smsIcon {
+							  width: 4.3rem;
+                            background:#fff url("../../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+							  background-size: 13%;
+                          }
+						}
+						#input_img_captcha {
+							width: 4.3rem;
+						}
+						.image-captcha {
+							display: inline-block;
+							width: 2.1rem;
+							height: 0.96rem;
+							float: right;
+							margin-right: 0;
+							img {
+								width: 100%;
+								height: 100%;
+							}
+						}
+						.nextImg {
+							font-size: 0.32rem;
+							color: #3a84cf;
+							cursor: pointer;
+						}
+						.get-captcha {
+							width: 2.1rem;
+							vertical-align: middle;
+							display: inline-block;
+							background: #fce9a0;
+							color: #d0282e;
+							text-align: center;
+							line-height: 0.8rem;
+							float: right;
+							text-indent: 0;
+							cursor: pointer;
+							&:disabled {
+								background: #ccc;
+								cursor: default;
+								color: #fff;
+							}
+						}
+
+						.register-sub {
+							background: url("../../images/landingpage/register_btn_bg.png") no-repeat center center;
+							background-size: 100%;
+							color: #820401;
+							font-size: 0.45rem;
+							text-indent: 0;
+							border-radius: 0.16rem;
+							&:disabled {
+								background: #ccc;
+								color: #fff;
 							}
 						}
 					}
-					p{
-						font-size:14px;
-						color:#fff;
-						margin-bottom:0;
-						span{
-							color:#fff700;
+				}
+			}
+		}
+		.landing-main {
+			background: none;
+			.star-content {
+				background: none;
+
+				.newbie-register-wrap {
+					padding-top: 0.1rem;
+					.newbie-register-title {
+                      margin: 0 auto;
+						margin-bottom: 0.2rem;
+						width: 6.51rem;
+						height: 1.16rem;
+						background: url("../../images/landingpage/new_title_wap.png") no-repeat center center;
+						background-size: 100%;
+					}
+
+					.to-experience {
+						display: none;
+						margin-top: 60px;
+						margin-bottom: 60px;
+					}
+
+				}
+
+				.wap-con-swiper {
+					margin: 0 auto;
+					width: 7.5rem;
+					height: 3.9rem;
+					.swiper-container {
+						width: 7.5rem;
+						height: 3.9rem;
+						margin: 0 auto;
+						.swiper-wrapper {
+							.swiper-slide{
+								width: 5.96rem;
+								.get-btn {
+									position: absolute;
+									bottom: 0.6rem;
+									left: 50%;
+									margin-left: -1.98rem;
+									width: 3.86rem;
+									height: 0.64rem;
+									background: url("../../images/landingpage/get_btn_wap.png") no-repeat center center;
+									background-size: 100%;
+									color: #fff;
+									font-size: 0.26rem;
+									line-height: 0.64rem;
+									text-align: center;
+								}
+								img{
+									width: 100%;
+								}
+							}
+							.swiper-slide-prev {
+								margin-top: 0.5rem;
+								height: 2.9rem!important;
+								img{
+									height: 2.9rem!important;
+								}
+							}
+							.swiper-slide-next{
+								margin-top: 0.5rem;
+								height: 2.9rem!important;
+								img{
+									height: 2.9rem!important;
+								}
+							}
+							.swiper-slide-active{
+								width: 5.96rem;
+								height: 3.9rem;
+							}
+
+						}
+						.controlsBtn {
+							width: 0.7rem;
+							height: 0.7rem;
+							position: absolute;
+							top: 50%;
+							margin-top: -0.35rem;
+							background: rgba(0,0,0,0.3);
+							border-radius: 0.35rem;
+							z-index: 3000;
+							background-repeat: no-repeat;
+							background-position: center center;
+							background-size: 30%;
+							cursor: pointer;
+							&.prevBtn {
+								left: 0.6rem;
+								background-image: url("../../images/2018/new-year-increase-interest/leftBtn.png");
+							}
+							&.nextBtn {
+								right:0.6rem;
+								background-image: url("../../images/2018/new-year-increase-interest/rightBtn.png");
+							}
 						}
 					}
 				}
-			}
-		}
-	}
-	.newbie-step-one {
-		float:left;
-		width:100%;
-		background:#fff;
-		color: #ff473c;
-		padding-top: 40px;
-		padding-bottom: 40px;
-		.image-title {
-			background: url("../../images/landingpage/newbie-step1-title-app.png") center top no-repeat;
-			height: 50px;
-			background-size: auto 50px;
-		}
-	}
-	.newbie-step-two {
-		float:left;
-		width:100%;
-		position: relative;
-		background-color: #362d50;
-		padding-top: 20px;
-		padding-bottom: 20px;
 
-		.image-decoration-bg-app-l {
-			width: 110px;
-			height: 116px;
-			position: absolute;
-			left: 0;
-			background: url("../../images/landingpage/newbie-decoration-bg-app-l.png");
-			background-size: auto 116px;
-			top: -20px;
-		}
-		.image-decoration-bg-app-r {
-			width: 106px;
-			height: 145px;
-			position: absolute;
-			right: 0;
-			background: url("../../images/landingpage/newbie-decoration-bg-app-r.png");
-			background-size: auto 145px;
-			top: -20px;
-		}
-		.image-title {
-			background: url("../../images/landingpage/newbie-step2-title-app.png") center top no-repeat;
-			height: 50px;
-			background-size: auto 50px;
-		}
 
-		.image-red-envelope {
-			margin-top: 15px;
-			margin-bottom: 20px;
-			background: url("../../images/landingpage/newbie-step2-red-envelope.png") center top no-repeat;
-			height: 114px;
-			background-size: auto 114px;
-		}
-	}
-	.newbie-step-three {
-		float:left;
-		width:100%;
-		background-color: #ffffff;
-		padding-top: 20px;
-		padding-bottom: 20px;
+				.red-ware-wrap {
+					display: none;
+				}
+				.newbie-increase-wrap {
+					display: none;
+				}
 
-		.image-title {
-			background: url("../../images/landingpage/newbie-step3-title-app-new.png") center top no-repeat;
-			height: 50px;
-			background-size: auto 50px;
-		}
+				.six-advance-wrap {
+					margin: 0 auto;
+					.title {
+						margin: 0 auto;
+						width: 7.5rem;
+						height: 1.16rem;
+						margin-top: 0;
+						margin-bottom: 0.2rem;
+						background: url("../../images/landingpage/six_advance_wap.png") no-repeat center center;
+						background-size: 100%;
+					}
+					.advance-con {
+						width: 7.5rem;
+						margin: 0 auto;
+						dl {
+							width: 3.75rem;
+							margin-bottom: 0.26rem;
+							float: left;
+							text-align: center;
+							dt {
+								width: 1.97rem;
+								height: 1.98rem;
+								display: inline-block;
+								&.icon-advance1 {
+									background: url("../../images/landingpage/icon_advance1.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.icon-advance2 {
+									background: url("../../images/landingpage/icon_advance2.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.icon-advance3 {
+									background: url("../../images/landingpage/icon_advance3.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.icon-advance4 {
+									background: url("../../images/landingpage/icon_advance4.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.icon-advance5 {
+									background: url("../../images/landingpage/icon_advance5.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.icon-advance6 {
+									background: url("../../images/landingpage/icon_advance6.png") no-repeat center center;
+									background-size: 100%;
+								}
+							}
+							dd {
+								.profile {
+									font-size: 0.34rem;
+									line-height: 0.34rem;
+									color: #fbf1c5;
+								}
+								.font {
+									font-size: 0.24rem;
+									line-height: 0.34rem;
+									color: #fbf1c5;
+								}
 
-		.subtitle {
-			height: 80px;
-			margin-top: 15px;
-			.subtitle-container {
-				display: inline-block;
-				margin-left: 25px;
-				margin-right: 25px;
-				background-color: #ffe500;
-				padding: 5px 30px 5px 30px;
-				border-top-left-radius: 20px;
-				border-bottom-right-radius: 20px;
-				i {
-					color: #803c04;
-					line-height: 15px;
-					font-size: 15px;
+							}
+						}
+					}
+					.gift-link {
+						display: none;
+					}
+				}
+				.good-project-wap {
+					display: block;
+					width: 7.5rem;
+					margin: 0 auto;
+					margin-top: 0.2rem;
+					margin-bottom: 0.25rem;
+					.title {
+						margin: 0 auto;
+						width: 5.38rem;
+						height: 1.16rem;
+						background: url("../../images/landingpage/good_project.png") no-repeat center center;
+						background-size: 100%;
+					}
+					.project-list {
+						li {
+							.pro-item {
+								width: 7.5rem;
+								height: 2.52rem;
+								position: relative;
+								&.item1 {
+									background: url("../../images/landingpage/good_project1.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.item2 {
+									background: url("../../images/landingpage/good_project2.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.item3 {
+									background: url("../../images/landingpage/good_project3.png") no-repeat center center;
+									background-size: 100%;
+								}
+								&.item4 {
+									background: url("../../images/landingpage/good_project4.png") no-repeat center center;
+									background-size: 100%;
+								}
+								.btn-red {
+									position: absolute;
+									right: 0.7rem;
+									bottom: 0.6rem;
+								}
+							}
+						}
+
+					}
+				}
+				.kindly-tips-wrap {
+					width: 6.64rem;
+					margin: 0 auto;
+					.title {
+						font-size: 0.38rem;
+						position: relative;
+						text-align: center;
+						color: #faf0c3;
+					}
+					.tip-line {
+						display: none;
+					}
+					.squre {
+						display: inline-block;
+						vertical-align: middle;
+						width: 0.16rem;
+						height: 0.16rem;
+						background: #faf0c3;
+						margin-right: 0.2rem;
+						&.right-first {
+							margin-left: 0.2rem;
+						}
+					}
+					.kindly-tips-con {
+						padding-bottom: 0.4rem;
+						p {
+							line-height: 0.34rem;
+							margin-bottom: 1px;
+							font-size: 0.24rem;
+							color: #faf0c3;
+						}
+					}
+
 				}
 			}
 		}
 	}
 
-	.newbie-step-four {
-		float:left;
-		width:100%;
-		position: relative;
-		background-color: #362d50;
-		padding-bottom: 20px;
-		padding-top: 15px;
+}
 
-		.image-decoration-bg-app-l {
-			width: 110px;
-			height: 116px;
-			position: absolute;
-			left: 0;
-			background: url("../../images/landingpage/newbie-decoration-bg-app-l.png");
-			background-size: auto 116px;
-			top: -20px;
-
-		}
-		.image-decoration-bg-app-r {
-			width: 106px;
-			height: 145px;
-			position: absolute;
-			right: 0;
-			background: url("../../images/landingpage/newbie-decoration-bg-app-r.png");
-			background-size: auto 145px;
-			top: -20px;
-		}
-
-		.image-title {
-			background: url("../../images/landingpage/newbie-step4-title-app.png") center top no-repeat;
-			height: 50px;
-			background-size: auto 50px;
-		}
-
-		.subtitle {
-			margin-top: 25px;
-			z-index: -1;
-			.subtitle-container {
-				display: inline-block;
-				background-color: #ffe500;
-				margin-left: 25px;
-				margin-right: 25px;
-				padding: 5px 30px 5px 30px;
-				border-top-left-radius: 20px;
-				border-bottom-right-radius: 20px;
-				i {
-					line-height: 15px;
-					font-size: 15px;
-					color: #803c04;
-				}
-			}
-		}
-
-		.image-coupon {
-			margin-top: 20px;
-			background: url("../../images/landingpage/newbie-step4-coupon.png") center top no-repeat;
-			height: 132px;
-			background-size: auto 132px;
-		}
-		.image-steps {
-			margin-bottom: 30px;
-			margin-bottom: 30px;
-			span {
-				display: block;
-				height:100px;
-				width:100%;
-				margin-top: 20px;
-				&.step-one {
-					background: url('../../images/landingpage/newbie-step4-1.png') center top no-repeat;
-					background-size:contain;
-				}
-				&.step-two {
-					background: url('../../images/landingpage/newbie-step4-2.png') center top no-repeat;
-					background-size:contain;
-				}
-				&.step-three {
-					background: url('../../images/landingpage/newbie-step4-3.png') center top no-repeat;
-					background-size:contain;
-				}
-			}
-
-
-			img {
-				margin-top: 15px;
-				margin-right: 15px;
-				width: 70%;
-			}
-		}
+@media screen and (max-width: 768px) {
+	html {
+		font-size: 102.4px;
 	}
-	.newbie-step-six {
-		float:left;
-		width: 100%;
-		padding-top: 15px;
-		background: #362d50;
-		text-align: center;
-
-		.newbie-step-six-box {
-			width: 92%;
-			min-width: 20px;
-			display: inline-block;
-			padding-left: 15px;
-			padding-right: 15px;
-			p {
-				text-align: left;
-				color: #ffe500;
-				font-size: 14px;
-				line-height: 20px;
-				margin: 10px 0;
-				font-weight: lighter;
-			}
-		}
+}
+@media screen and (max-width: 750px) {
+	html {
+		font-size: 100px;
 	}
-	.new-user-list {
-		color: #ff473c;
-		line-height: 15px;
-		margin-bottom: 20px;
-
-		dt {
-			font-size: 15px;
-			margin-top: 15px;
-			margin-bottom: 20px;
-		}
-		dd {
-			width: 50%;
-			float: left;
-			font-size: 15px;
-			text-align: center;
-			i {
-				font-size: 30px;
-			}
-			em {
-				line-height: 20px;
-				color: #a2a2a2;
-				font-size: 11px;
-			}
-		}
+}
+@media screen and (max-width: 720px) {
+	html {
+		font-size: 96px;
+	}
+}
+@media screen and (max-width: 640px) {
+	html {
+		font-size: 85.33px;
+	}
+}
+@media screen and (max-width: 600px) {
+	html {
+		font-size: 80px;
+	}
+}
+@media screen and (max-width: 540px) {
+	html {
+		font-size: 72px;
+	}
+}
+@media screen and (max-width: 480px) {
+	html {
+		font-size: 64px;
+	}
+}
+@media screen and (max-width: 414px) {
+	html {
+		font-size: 55.2px;
+	}
+}
+@media screen and (max-width: 400px) {
+	html {
+		font-size: 53.33px;
+	}
+}
+@media screen and (max-width: 393px) {
+	html {
+		font-size: 52.4px;
+	}
+}
+@media screen and (max-width: 384px) {
+	html {
+		font-size: 51.2px;
+	}
+}
+@media screen and (max-width: 375px) {
+	html {
+		font-size: 50px;
+	}
+}
+@media screen and (max-width: 360px) {
+	html {
+		font-size: 48px;
+	}
+}
+@media screen and (max-width: 320px) {
+	html {
+		font-size: 42.66px;
+	}
+}
+@media screen and (max-width: 240px) {
+	html {
+		font-size: 32px;
 	}
 }
