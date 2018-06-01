@@ -17,7 +17,7 @@
                                            name="mobile"
                                            maxlength="11" type="text" autocomplete="off" validate></li>
                                 <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
-                                           type="text" name="password" id="passwordInput" autocomplete="off" validate></li>
+                                           type="password" name="password" id="passwordInput" autocomplete="off" validate></li>
                                 <li class="clearfix">
                                     <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
                                            name="appCaptcha"
