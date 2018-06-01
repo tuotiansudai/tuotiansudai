@@ -137,7 +137,7 @@ function getSmsCaptcha() {
         url: '/register/user/send-register-captcha',
         type: 'POST',
         dataType: 'json',
-        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:isVoice}
+        data: {imageCaptcha: captchaVal, mobile: mobileNum,voice:isVoice}
     },function(data) {
         console.log(data)
         if (data.data.status && !data.data.isRestricted) {

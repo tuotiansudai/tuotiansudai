@@ -79,22 +79,29 @@ $inputImgCaptcha.on('keyup', function (event) {
     disableCaptchaBtn();
 });
 disableCaptchaBtn();
-$('#mobile').on('keyup',function () {console.log(9)
+$('#mobile').on('input',function () {console.log(999)
     disableCaptchaBtn();
 })
-$('#passwordInput').on('keyup',function () {
+$('#passwordInput').on('input',function () {
 
     disableCaptchaBtn();
 })
 function disableCaptchaBtn() {
-    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&$('#mobile').hasClass('valid')&&$('#passwordInput').hasClass('valid')) {
+    let mobile=registerForm.mobile,
+        password=registerForm.password;
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&!!isMobileValid&&!!isPwdValid) {
 
             $fetchCaptcha.prop('disabled', false);
 
     } else {
         $fetchCaptcha.prop('disabled', true);
     }
-   console.log($('#mobile').hasClass('valid'))
+    console.log($('#mobile').val().length == 11)
+    console.log($inputImgCaptcha.val().length == 5)
+   console.log(isMobileValid)
+    console.log(isPwdValid)
 }
 $('#agreementInput').prop('checked',true);
 
@@ -159,6 +166,7 @@ $inputImgCaptcha.on('click',function () {
 
 })
 $fetchCaptcha.on('click',function () {
+    isVoice = false;
     getSmsCaptcha();
 })
 require.ensure(['publicJs/placeholder'], function (require) {
@@ -192,7 +200,7 @@ function getSmsCaptcha() {
         url: '/register/user/send-register-captcha',
         type: 'POST',
         dataType: 'json',
-        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:isVoice}
+        data: {imageCaptcha: captchaVal, mobile: mobileNum,voice:isVoice}
     },function(data) {
         console.log(data)
         if (data.data.status && !data.data.isRestricted) {
