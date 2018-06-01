@@ -136,11 +136,18 @@ refreshImgCaptcha();
 $inputImgCaptcha.on('click',function () {
 
 })
+let focusFlag = true;
 $fetchCaptcha.on('click',function () {
     isVoice = false;
-    $('#mobile').focus();
-    $('#passwordInput').focus();
-    $('#input_img_captcha').focus();
+    if(focusFlag){
+        $('#input_img_captcha').focus();
+        $('#passwordInput').focus();
+        $('#mobile').focus();
+
+        focusFlag = false;
+    }
+
+
     getSmsCaptcha();
 })
 require.ensure(['publicJs/placeholder'], function (require) {
