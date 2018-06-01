@@ -92,6 +92,10 @@ $inputImgCaptcha.on('click',function () {
 
 })
 $fetchCaptcha.on('click',function () {
+    isVoice = false;
+    $('#mobile').focus();
+    $('#passwordInput').focus();
+    $('#input_img_captcha').focus();
     getSmsCaptcha();
 })
 require.ensure(['publicJs/placeholder'], function (require) {
