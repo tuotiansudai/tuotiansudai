@@ -1,3 +1,6 @@
+html {
+  font-size: 100px;
+}
 body {
   font-size: 12px;
 }
@@ -862,7 +865,7 @@ body {
 }
   .landing-page-container {
     .app-container-landing {
-      display: block;
+      display: none;
       height: 1.32rem;
       background: rgba(0,0,0,0.6);
       position: fixed;

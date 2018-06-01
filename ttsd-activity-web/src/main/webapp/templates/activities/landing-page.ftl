@@ -17,7 +17,7 @@
                                            name="mobile"
                                            maxlength="11" type="text" autocomplete="off" validate></li>
                                 <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
-                                           type="password" name="password" autocomplete="off" validate></li>
+                                           type="password" name="password" id="passwordInput" autocomplete="off" validate></li>
                                 <li class="clearfix">
                                     <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
                                            name="appCaptcha"
@@ -30,7 +30,7 @@
                                                               placeholder="手机验证码"
                                                               name="captcha" type="text" maxlength="6" validate>
                                     <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
-                                           value="获取验证码" disabled/><br/>
+                                           value="获取验证码" /><br/>
                                     <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a
                                             href="javascript:;" id="voice_btn">语音验证</a> </span>
                                 </li>
@@ -364,7 +364,7 @@
         </div>
 
     </div>
-    <div class="app-container-landing clearfix" style="display: none">
+    <div class="app-container-landing clearfix" >
         <div class="logo"></div>
         <div class="app-detail">
             拓天速贷<br/>

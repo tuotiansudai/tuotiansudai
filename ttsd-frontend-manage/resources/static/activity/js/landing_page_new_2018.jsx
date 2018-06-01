@@ -23,14 +23,16 @@ let referrerValidBool=true;
 
 if ($(document).width() <= 1024) {
     commonFun.calculationRem(document,window);
+    if(urlObj.params.source == 'app'){
+        $('.app-container-landing').hide();
+    }else {
+        $('.app-container-landing').show();
+    }
 }
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
     $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
-   $('.app-container-landing').hide();
-}else {
-    $('.app-container-landing').show();
 }
 if($('#fuliList').length){
     $('#fuliList').find('.swiper-slide').each(function (index,item) {
@@ -50,8 +52,8 @@ if($('#fuliList').length){
         spaceBetween: -20,
         loopAdditionalSlides:1,
         nextButton: '.nextBtn',
-        prevButton: '.prevBtn'
-
+        prevButton: '.prevBtn',
+        freeMode:true
     });
 }
 
@@ -72,23 +74,7 @@ if($('#loanBoxList').length){
 }
 
 let isVoice = false;
-$inputImgCaptcha.on('keyup', function (event) {
-    event.preventDefault();
-    disableCaptchaBtn();
-});
-disableCaptchaBtn();
-$('#mobile').on('keyup',function () {
-    disableCaptchaBtn();
-})
-function disableCaptchaBtn() {
-    if ($('#mobile').val().length == 11 && $inputImgCaptcha.val().length == 5&&!$('#mobile').hasClass('error')) {
 
-            $fetchCaptcha.prop('disabled', false);
-
-    } else {
-        $fetchCaptcha.prop('disabled', true);
-    }
-}
 $('#agreementInput').prop('checked',true);
 
 $agreementLi.on('click', function (e) {
@@ -117,7 +103,6 @@ $agreementLi.on('click', function (e) {
 
 })
 $('#recommendLabel').on('click', function () {
-    // $('.icon-arrow-bottom').toggleClass('active');
     if($('.icon-arrow-bottom').hasClass('active')){
         $('.icon-arrow-bottom').removeClass('active')
     }else {
@@ -151,7 +136,18 @@ refreshImgCaptcha();
 $inputImgCaptcha.on('click',function () {
 
 })
+let focusFlag = true;
 $fetchCaptcha.on('click',function () {
+    isVoice = false;
+    if(focusFlag){
+        $('#input_img_captcha').focus();
+        $('#passwordInput').focus();
+        $('#mobile').focus();
+
+        focusFlag = false;
+    }
+
+
     getSmsCaptcha();
 })
 require.ensure(['publicJs/placeholder'], function (require) {
@@ -176,36 +172,55 @@ $('.show-agreement').on('click', function (event) {
 function getSmsCaptcha() {
     var captchaVal = $inputImgCaptcha.val();
     var mobileNum = $('#mobile').val();
-    if(captchaVal.length !==5){
-        layer.msg('图形验证码错误');
-        return;
-    }
 
-    commonFun.useAjax({
-        url: '/register/user/send-register-captcha',
-        type: 'POST',
-        dataType: 'json',
-        data: {imageCaptcha: captchaVal, mobile: mobileNum,isVoice:isVoice}
-    },function(data) {
-        console.log(data)
-        if (data.data.status && !data.data.isRestricted) {
-            $voiceCaptcha.hide();
-        commonFun.countDownLoan({
-            btnDom:$fetchCaptcha
-        },function () {
-            $voiceCaptcha.show();
-        })
+    let mobile=registerForm.mobile,
+        password=registerForm.password,
+        captcha=registerForm.appCaptcha;
+
+    //获取验证码点亮
+    let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
+    let isPwdValid = !globalFun.hasClass(password,'error') && password.value;
+
+    let isDisabledCaptcha = isMobileValid && isPwdValid;
+
+    //通过获取验证码按钮来判断
+
+
+    let captchaValid = !globalFun.hasClass(captcha,'error')&& captcha.value;
+    let isDisabledSubmit= !!isMobileValid && !!isPwdValid && !!captchaValid  && $('#agreementInput').prop('checked');
+    if(isDisabledSubmit){
+        if(captchaVal.length !==5){
+            layer.msg('图形验证码错误');
             return;
         }
-        if (!data.data.status && data.data.isRestricted) {
-            layer.msg('短信发送频繁,请稍后再试');
-        }
+        commonFun.useAjax({
+            url: '/register/user/send-register-captcha',
+            type: 'POST',
+            dataType: 'json',
+            data: {imageCaptcha: captchaVal, mobile: mobileNum,voice:isVoice}
+        },function(data) {
+            console.log(data)
+            if (data.data.status && !data.data.isRestricted) {
+                $voiceCaptcha.hide();
+                commonFun.countDownLoan({
+                    btnDom:$fetchCaptcha
+                },function () {
+                    $voiceCaptcha.show();
+                })
+                return;
+            }
+            if (!data.data.status && data.data.isRestricted) {
+                layer.msg('短信发送频繁,请稍后再试');
+            }
 
-        if (!data.data.status && !data.data.isRestricted) {
-            layer.msg('图形验证码错误');
-        }
-        refreshImgCaptcha();
-    });
+            if (!data.data.status && !data.data.isRestricted) {
+                layer.msg('图形验证码错误');
+            }
+            refreshImgCaptcha();
+        });
+    }
+
+
 }
 
 //用户注册表单校验
@@ -408,7 +423,7 @@ $voiceBtn.on('click', function(event) {
     event.preventDefault();
     let mobile=registerForm.mobile,
         password=registerForm.password,
-        captcha=registerForm.captcha;
+        captcha=registerForm.appCaptcha;
 
     //获取验证码点亮
     let isMobileValid=!globalFun.hasClass(mobile,'error') && mobile.value;
@@ -419,8 +434,8 @@ $voiceBtn.on('click', function(event) {
     //通过获取验证码按钮来判断
 
 
-    let captchaValid = !$(captcha).hasClass('error') && captcha.value;
-    let isDisabledSubmit= isMobileValid && isPwdValid && captchaValid  && !$('#agreementInput').prop('checked');
+    let captchaValid = !globalFun.hasClass(captcha,'error')&& captcha.value;
+    let isDisabledSubmit= !!isMobileValid && !!isPwdValid && !!captchaValid  && $('#agreementInput').prop('checked');
     if(isDisabledSubmit){
         getSmsCaptcha();
     }
