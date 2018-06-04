@@ -17,7 +17,7 @@ public class QueryUserServiceTest {
 
     @Test
     public void name() {
-        ResponseDto responseDto = queryUserService.query("UA02615960791501001", "UU02615960791461001", "", "");
+        ResponseDto responseDto = queryUserService.query("UA02615960791501001", "UU02615960791461001");
 
         System.out.println(responseDto);
     }

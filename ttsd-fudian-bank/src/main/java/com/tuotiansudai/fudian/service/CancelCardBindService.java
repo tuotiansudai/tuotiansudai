@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.request.CancelCardBindRequestDto;
@@ -10,8 +8,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.CancelCardBindContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBindCardMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -27,11 +24,13 @@ import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class CancelCardBindService implements AsyncCallbackInterface {
+public class CancelCardBindService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(CancelCardBindService.class);
 
-    private final static String BANK_CANCEL_CARD_BIND_KEY = "BANK_CANCEL_CARD_BIND_{0}";
+    private static final ApiType API_TYPE = ApiType.CANCEL_CARD_BIND;
+
+    private final static String BANK_CANCEL_CARD_BIND_MESSAGE_KEY = "BANK_CANCEL_CARD_BIND_MESSAGE_{0}";
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -43,69 +42,72 @@ public class CancelCardBindService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
-
-    private final Gson gson = new GsonBuilder().create();
+    private final SelectMapper selectMapper;
 
     @Autowired
-    public CancelCardBindService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public CancelCardBindService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, SelectMapper selectMapper, InsertMapper insertMapper, UpdateMapper updateMapper) {
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.selectResponseDataMapper = selectResponseDataMapper;
+        this.selectMapper = selectMapper;
     }
 
     public CancelCardBindRequestDto cancel(Source source, BankBaseDto bankBaseDto) {
-        CancelCardBindRequestDto dto = new CancelCardBindRequestDto(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo());
-        signatureHelper.sign(dto);
+        CancelCardBindRequestDto dto = new CancelCardBindRequestDto(source, bankBaseDto);
+
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[cancel card bind] sign error, data: {}", bankBaseDto);
+            logger.error("[Cancel Card Bind] failed to sign, data: {}", bankBaseDto);
             return null;
         }
 
         insertMapper.insertCancelCardBind(dto);
 
-        redisTemplate.<String, String>opsForHash().put(MessageFormat.format(BANK_CANCEL_CARD_BIND_KEY, dto.getOrderDate()), dto.getOrderNo(),
-                gson.toJson(new BankBindCardMessage(bankBaseDto.getLoginName(),
-                        bankBaseDto.getMobile(),
-                        bankBaseDto.getBankUserName(),
-                        bankBaseDto.getBankAccountNo(),
-                        dto.getOrderNo(),
-                        dto.getOrderDate())));
-        redisTemplate.expire(MessageFormat.format(BANK_CANCEL_CARD_BIND_KEY, dto.getOrderDate()), 7, TimeUnit.DAYS);
+        BankBindCardMessage bankBindCardMessage = new BankBindCardMessage(bankBaseDto.getLoginName(),
+                bankBaseDto.getMobile(),
+                bankBaseDto.getBankUserName(),
+                bankBaseDto.getBankAccountNo(),
+                dto.getOrderNo(),
+                dto.getOrderDate());
+
+        String bankCancelCardBindMessageKey = MessageFormat.format(BANK_CANCEL_CARD_BIND_MESSAGE_KEY, dto.getOrderDate());
+        redisTemplate.<String, String>opsForHash().put(bankCancelCardBindMessageKey, dto.getOrderNo(), gson.toJson(bankBindCardMessage));
+        redisTemplate.expire(bankCancelCardBindMessageKey, 7, TimeUnit.DAYS);
 
         return dto;
     }
 
     @Override
     public void returnCallback(ResponseDto responseData) {
-        returnUpdateMapper.updateCancelCardBind(responseData);
+        updateMapper.updateReturnResponse(API_TYPE.name().toLowerCase(), responseData);
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
     public ResponseDto notifyCallback(String responseData) {
-        logger.info("[cancel card bind] data is {}", responseData);
+        logger.info("[Cancel Card Bind] callback data is {}", responseData);
 
-        ResponseDto<CancelCardBindContentDto> responseDto = ApiType.CANCEL_CARD_BIND.getParser().parse(responseData);
+        ResponseDto<CancelCardBindContentDto> responseDto = API_TYPE.getParser().parse(responseData);
 
         if (responseDto == null) {
-            logger.error("[cancel card bind] parse callback data error, data is {}", responseData);
+            logger.error("[Cancel Card Bind] failed to parse callback data: {}", responseData);
             return null;
         }
 
+        if (!responseDto.isSuccess()) {
+            logger.error("[Cancel Card Bind] callback is failure, orderNo: {}, message {}", responseDto.getContent().getOrderNo(), responseDto.getRetMsg());
+        }
+
         responseDto.setReqData(responseData);
-        updateMapper.updateCancelCardBind(responseDto);
+        updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
 
         CancelCardBindContentDto content = responseDto.getContent();
         if (responseDto.isSuccess() && responseDto.getContent().isSuccess()) {
-            BankBindCardMessage bankBindCardMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(BANK_CANCEL_CARD_BIND_KEY, content.getOrderDate()), content.getOrderNo()), BankBindCardMessage.class);
+            String bankCancelCardBindMessageKey = MessageFormat.format(BANK_CANCEL_CARD_BIND_MESSAGE_KEY, content.getOrderDate());
+            BankBindCardMessage bankBindCardMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(bankCancelCardBindMessageKey, content.getOrderNo()), BankBindCardMessage.class);
             bankBindCardMessage.setBank(content.getBank());
             bankBindCardMessage.setBankCode(content.getBankCode());
             bankBindCardMessage.setCardNumber(content.getBankAccountNo());
@@ -119,12 +121,12 @@ public class CancelCardBindService implements AsyncCallbackInterface {
     @Override
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.CANCEL_CARD_BIND.name().toLowerCase(), orderNo);
+        String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
         if (Strings.isNullOrEmpty(responseData)) {
             return null;
         }
 
-        ResponseDto<CancelCardBindContentDto> responseDto = (ResponseDto<CancelCardBindContentDto>) ApiType.CANCEL_CARD_BIND.getParser().parse(responseData);
+        ResponseDto<CancelCardBindContentDto> responseDto = (ResponseDto<CancelCardBindContentDto>) API_TYPE.getParser().parse(responseData);
 
         return responseDto.isSuccess() && responseDto.getContent().isSuccess();
     }

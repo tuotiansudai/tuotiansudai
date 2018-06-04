@@ -1,10 +1,8 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankLoanFullDto;
 
-import java.util.Map;
-
-public class LoanFullRequestDto extends PayBaseRequestDto {
+public class LoanFullRequestDto extends BaseRequestDto {
 
     private String loanFee = "0.00";
 
@@ -16,12 +14,14 @@ public class LoanFullRequestDto extends PayBaseRequestDto {
 
     private String expectRepayTime;
 
-    public LoanFullRequestDto(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
-        super(Source.WEB, loginName, mobile, userName, accountNo, ApiType.LOAN_FULL, null);
-        this.loanTxNo = loanTxNo;
-        this.loanOrderNo = loanOrderNo;
-        this.loanOrderDate = loanOrderDate;
-        this.expectRepayTime = expectRepayTime;
+    private String notifyUrl; //异步回调地址
+
+    public LoanFullRequestDto(BankLoanFullDto bankLoanFullDto) {
+        super(Source.WEB, bankLoanFullDto.getLoginName(), bankLoanFullDto.getMobile(), bankLoanFullDto.getBankUserName(), bankLoanFullDto.getBankAccountNo());
+        this.loanTxNo = bankLoanFullDto.getLoanTxNo();
+        this.loanOrderNo = bankLoanFullDto.getLoanOrderDate();
+        this.loanOrderDate = bankLoanFullDto.getLoanOrderDate();
+        this.expectRepayTime = bankLoanFullDto.getExpectRepayTime();
     }
 
     public String getLoanFee() {
@@ -62,5 +62,13 @@ public class LoanFullRequestDto extends PayBaseRequestDto {
 
     public void setExpectRepayTime(String expectRepayTime) {
         this.expectRepayTime = expectRepayTime;
+    }
+
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 }

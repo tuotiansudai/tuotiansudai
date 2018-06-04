@@ -15,13 +15,12 @@ CREATE TABLE `fudian`.`loan_repay` (
   `notify_url`           VARCHAR(256),
   `return_response_data` TEXT,
   `notify_response_data` TEXT,
-  `query_response_date`  TEXT,
+  `query_response_data`  TEXT,
   `ret_code`             VARCHAR(4),
   `ret_msg`              VARCHAR(128),
   `request_time`         DATETIME,
   `response_time`        DATETIME,
   `query_time`           DATETIME,
-  `status`               VARCHAR(100),
   PRIMARY KEY (`id`),
   KEY `INDEX_LOAN_REPAY_ORDER_NO` (`order_no`)
 )

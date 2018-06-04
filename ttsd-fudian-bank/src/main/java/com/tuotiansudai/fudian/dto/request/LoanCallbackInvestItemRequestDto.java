@@ -1,9 +1,13 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
+import com.tuotiansudai.fudian.util.AmountUtils;
+
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoanCallbackInvestItemRequestDto {
+public class LoanCallbackInvestItemRequestDto implements Serializable {
 
     private transient long id;
 
@@ -29,15 +33,15 @@ public class LoanCallbackInvestItemRequestDto {
 
     private String orderDate;
 
-    public LoanCallbackInvestItemRequestDto(String capital, String interest, String interestFee, String investUserName, String investAccountNo, String investOrderNo, String investOrderDate, String orderNo) {
-        this.capital = capital;
-        this.interest = interest;
-        this.interestFee = interestFee;
+    public LoanCallbackInvestItemRequestDto(String orderNo, BankLoanRepayInvestDto bankLoanRepayInvestDto) {
+        this.capital = AmountUtils.toYuan(bankLoanRepayInvestDto.getCapital());
+        this.interest = AmountUtils.toYuan(bankLoanRepayInvestDto.getInterest());
+        this.interestFee = AmountUtils.toYuan(bankLoanRepayInvestDto.getInterestFee());
         this.rateInterest = "0.00";
-        this.investUserName = investUserName;
-        this.investAccountNo = investAccountNo;
-        this.investOrderNo = investOrderNo;
-        this.investOrderDate = investOrderDate;
+        this.investUserName = bankLoanRepayInvestDto.getBankUserName();
+        this.investAccountNo = bankLoanRepayInvestDto.getBankAccountNo();
+        this.investOrderNo = bankLoanRepayInvestDto.getInvestOrderNo();
+        this.investOrderDate = bankLoanRepayInvestDto.getInvestOrderDate();
         this.orderNo = orderNo;
         this.orderDate = new SimpleDateFormat("yyyyMMdd").format(new Date()); //订单日期
     }

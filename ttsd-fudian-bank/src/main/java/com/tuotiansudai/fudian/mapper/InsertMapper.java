@@ -58,8 +58,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreate(LoanCreateRequestDto dto);
 
-    @Insert("INSERT INTO loan_invest(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `amount`, `award`, `loan_tx_no`, `request_time`, `status`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{amount}, #{award}, #{loanTxNo}, now(), 'SENT')")
+    @Insert("INSERT INTO loan_invest(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `amount`, `award`, `loan_tx_no`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{amount}, #{award}, #{loanTxNo}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanInvest(LoanInvestRequestDto dto);
 
@@ -68,13 +68,13 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreditInvest(LoanCreditInvestRequestDto dto);
 
-    @Insert("INSERT INTO loan_full(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_fee`, `loan_order_date`, `loan_order_no`, `loan_tx_no`, `expect_repay_time`, `request_time`, `status`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanFee}, #{loanOrderDate}, #{loanOrderNo}, #{loanTxNo}, #{expectRepayTime}, now(), 'SENT')")
+    @Insert("INSERT INTO loan_full(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_fee`, `loan_order_date`, `loan_order_no`, `loan_tx_no`, `expect_repay_time`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanFee}, #{loanOrderDate}, #{loanOrderNo}, #{loanTxNo}, #{expectRepayTime}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanFull(LoanFullRequestDto dto);
 
-    @Insert("INSERT INTO loan_repay(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_tx_no`, `capital`, `interest`, `loan_fee`, `request_time`, `status`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanTxNo}, #{capital}, #{interest}, #{loanFee}, now()), 'SENT'")
+    @Insert("INSERT INTO loan_repay(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_tx_no`, `capital`, `interest`, `loan_fee`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanTxNo}, #{capital}, #{interest}, #{loanFee}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanRepay(LoanRepayRequestDto dto);
 

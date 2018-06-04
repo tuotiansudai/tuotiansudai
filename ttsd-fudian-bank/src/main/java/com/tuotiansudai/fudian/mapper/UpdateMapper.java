@@ -1,6 +1,5 @@
 package com.tuotiansudai.fudian.mapper;
 
-import com.tuotiansudai.fudian.dto.request.BankResponseStatus;
 import com.tuotiansudai.fudian.dto.response.LoanCallbackInvestItemContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,54 +12,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface UpdateMapper {
-
-    @Update("UPDATE register SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateRegister(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE card_bind SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateCardBind(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE cancel_card_bind SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateCancelCardBind(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE recharge SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateRecharge(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE withdraw SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateWithdraw(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE authorization SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateAuthorization(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE password_reset SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updatePasswordReset(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE phone_update SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updatePhoneUpdate(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_create SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateLoanCreate(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_invest SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = 'BANK_RESPONSE' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
-    int updateLoanInvest(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_invest SET `query_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `query_time` = now(), `status` = 'MANUAL_QUERIED' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
-    int updateLoanInvestQuery(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_credit_invest SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateLoanCreditInvest(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_full SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = 'BANK_RESPONSE'  WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'")
-    int updateLoanFull(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_repay SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now(), `status` = 'BANK_RESPONSE' WHERE `order_no` = #{dto.content.orderNo} AND `status`= 'SENT'")
-    int updateLoanRepay(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update({"UPDATE loan_repay SET `query_response_data` = #{dto.reqData}, `query_time` = now(), `status` = 'MANUAL_QUERIED' WHERE `order_no` = #{dto.content.orderNo} AND `status` = 'SENT'"})
-    void updateLoanRepayQuery(@Param(value = "dto") ResponseDto responseDto);
-
-    @Update("UPDATE loan_callback SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateLoanCallback(@Param(value = "dto") ResponseDto responseDto);
 
     @Update({"<script>",
             "<foreach collection='investItems' item='investItem' separator=';'>",
@@ -75,6 +26,16 @@ public interface UpdateMapper {
             "</script>"})
     void updateLoanCallbackInvestItems(@Param("investItems") List<LoanCallbackInvestItemContentDto> investItems);
 
-    @Update("UPDATE merchant_transfer SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now() WHERE `order_no` = #{dto.content.orderNo}")
-    void updateMerchantTransfer(@Param(value = "dto") ResponseDto responseDto);
+    @Update("UPDATE ${tableName} SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now()  WHERE `order_no` = #{dto.content.orderNo} and `notify_response_data` is null")
+    int updateNotifyResponseData(@Param(value = "tableName") String tableName,
+                                 @Param(value = "dto") ResponseDto responseDto);
+
+    @Update("UPDATE ${tableName} SET `return_response_data` = #{dto.reqData} WHERE `order_no` = #{dto.content.orderNo} AND return_response_data is null")
+    void updateReturnResponse(@Param(value = "tableName") String tableName,
+                              @Param(value = "dto") ResponseDto responseDto);
+
+    @Update("UPDATE ${tableName} SET `query_response_data` = #{dto.reqData}, `query_time` = now() WHERE `order_no` = #{dto.content.queryOrderNo} AND `query_response_data` is null")
+    void updateQueryResponse(@Param(value = "tableName") String tableName,
+                            @Param(value = "dto") ResponseDto responseDto);
+
 }

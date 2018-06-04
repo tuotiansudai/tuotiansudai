@@ -2,8 +2,10 @@ package com.tuotiansudai.fudian.controller;
 
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.response.QueryLoanContentDto;
+import com.tuotiansudai.fudian.dto.response.QueryUserContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.BankQueryLoanMessage;
+import com.tuotiansudai.fudian.message.BankQueryUserMessage;
 import com.tuotiansudai.fudian.service.*;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import org.slf4j.Logger;
@@ -41,32 +43,41 @@ public class QueryController {
         this.queryLogLoanAccountService = queryLogLoanAccountService;
     }
 
-    @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> queryUser(@RequestParam(name = "userName") String userName,
-                                                 @RequestParam(name = "accountNo") String accountNo) {
-        logger.info("[Fudian] query user userName: {}, accountNo: {}", userName, accountNo);
+    @RequestMapping(path = "/user/user-name/{userName}/account-no/{accountNo}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryUserMessage> queryUser(@PathVariable(name = "userName") String userName,
+                                                          @PathVariable(name = "accountNo") String accountNo) {
+        ResponseDto<QueryUserContentDto> responseDto = queryUserService.query(userName, accountNo);
 
-        ResponseDto responseDto = queryUserService.query(userName, accountNo, null, null);
-
-        return ResponseEntity.ok(responseDto);
+        if (responseDto == null || !responseDto.isSuccess()) {
+            return ResponseEntity.ok(new BankQueryUserMessage(false,
+                    responseDto != null ? responseDto.getRetMsg() : "查询失败"));
+        }
+        QueryUserContentDto content = responseDto.getContent();
+        return ResponseEntity.ok(new BankQueryUserMessage(
+                userName,
+                accountNo,
+                content.getAuthorization(),
+                AmountUtils.toCent(content.getBalance()),
+                AmountUtils.toCent(content.getWithdrawBalance()),
+                AmountUtils.toCent(content.getFreezeBalance()),
+                content.getIdentityCode(),
+                content.getStatus()));
     }
 
-    @RequestMapping(path = "/loan/{loanTxNo}", method = RequestMethod.GET)
-    public ResponseEntity<BankQueryLoanMessage> queryLoan(@PathVariable(name = "loanTxNo") String loanTxNo) {
-        logger.info("[Fudian] query loan loanTxNo: {}", loanTxNo);
-
+    @RequestMapping(path = "/loan/loan-tx-no/{loanTxNo}/loan-acc-no/{loanAccNo}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryLoanMessage> queryLoan(@PathVariable(name = "loanTxNo") String loanTxNo,
+                                                          @PathVariable(name = "loanAccNo") String loanAccNo) {
         ResponseDto<QueryLoanContentDto> responseDto = queryLoanService.query(loanTxNo);
 
         if (responseDto == null || !responseDto.isSuccess()) {
-            return ResponseEntity.ok(new BankQueryLoanMessage(0, 0, null, false,
-                    responseDto != null ? responseDto.getRetMsg() : "查询失败"));
+            return ResponseEntity.ok(new BankQueryLoanMessage(false, responseDto != null ? responseDto.getRetMsg() : "查询失败"));
         }
 
-        return ResponseEntity.ok(new BankQueryLoanMessage(AmountUtils.toCent(responseDto.getContent().getAmount()),
+        return ResponseEntity.ok(new BankQueryLoanMessage(loanTxNo,
+                loanAccNo,
+                AmountUtils.toCent(responseDto.getContent().getAmount()),
                 AmountUtils.toCent(responseDto.getContent().getBalance()),
-                responseDto.getContent().getStatus(),
-                responseDto.isSuccess(),
-                responseDto.getRetMsg()));
+                responseDto.getContent().getStatus()));
     }
 
     @RequestMapping(path = "/trade", method = RequestMethod.GET)
@@ -96,7 +107,7 @@ public class QueryController {
                                                            @RequestParam(name = "loanTxNo") String loanTxNo) {
         logger.info("[Fudian] query log loan account loanAccNo: {}, loanTxNo: {}", loanAccNo, loanTxNo);
 
-        ResponseDto responseDto = queryLogLoanAccountService.query(loanAccNo, loanTxNo, null, null);
+        ResponseDto responseDto = queryLogLoanAccountService.query(null, null);
 
         return ResponseEntity.ok(responseDto);
     }

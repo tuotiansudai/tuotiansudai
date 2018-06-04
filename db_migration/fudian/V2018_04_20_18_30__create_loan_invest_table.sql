@@ -20,7 +20,6 @@ CREATE TABLE `fudian`.`loan_invest` (
   `request_time`         DATETIME,
   `response_time`        DATETIME,
   `query_time`           DATETIME,
-  `status`               VARCHAR(100),
   PRIMARY KEY (`id`),
   KEY `INDEX_LOAN_INVEST_ORDER_NO` (`order_no`)
 )

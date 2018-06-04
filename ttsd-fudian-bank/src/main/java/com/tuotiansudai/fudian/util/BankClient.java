@@ -32,7 +32,7 @@ public class BankClient {
                 .build();
     }
 
-    public String send(String data, ApiType apiType) {
+    public String send(ApiType apiType, String data) {
         RequestBody formBody = new FormBody.Builder()
                 .add("reqData", data)
                 .build();
@@ -43,23 +43,14 @@ public class BankClient {
                 .build();
 
         try (Response response = CLIENT.newCall(request).execute()) {
-            logger.info("[Bank Client] call bank, api type: {}, request data: {}, status: {}, response data: {}",
-                    apiType, data, response.code(), response.body() == null ? null : response.body().string());
-
             if (!response.isSuccessful()) {
-                logger.error("[Bank Client] call bank is not 200, api type: {}, request data: {}, status: {}, response data: {}",
-                        apiType, data, response.code(), response.body() == null ? null : response.body().string());
+                logger.error("[Bank Client] call bank is not 200, api type: {}, request data: {}, status: {}", apiType, data, response.code());
                 return null;
             }
 
             ResponseBody body = response.body();
-            if (body == null) {
-                logger.info("[Bank Client] call bank response is empty, api type: {}, request data: {}, status: {}, response data: {}",
-                        apiType, data, response.code(), response.body() == null ? null : response.body().string());
-                return null;
-            }
 
-            return body.string();
+            return body == null ? null : body.string();
         } catch (IOException e) {
             logger.error(MessageFormat.format("[Bank Client] call bank exception, api type: {0}, data: {1}",  apiType, data), e);
         }

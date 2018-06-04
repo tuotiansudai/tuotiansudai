@@ -1,15 +1,11 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
-import java.util.Map;
-
-public class MerchantTransferRequestDto extends PayBaseRequestDto {
+public class MerchantTransferRequestDto extends NotifyRequestDto {
 
     private String amount;
 
     public MerchantTransferRequestDto(String loginName, String mobile, String userName, String accountNo, String amount) {
-        super(Source.WEB, loginName, mobile, userName, accountNo, ApiType.MERCHANT_TRANSFER, null);
+        super(Source.WEB, loginName, mobile, userName, accountNo);
         this.amount = amount;
     }
 

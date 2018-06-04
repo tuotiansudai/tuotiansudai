@@ -18,6 +18,8 @@ public class QueryTradeService {
 
     private static Logger logger = LoggerFactory.getLogger(QueryTradeService.class);
 
+    private static final ApiType API_TYPE = ApiType.QUERY_TRADE;
+
     private final SignatureHelper signatureHelper;
 
     private final BankClient bankClient;
@@ -32,29 +34,18 @@ public class QueryTradeService {
     public ResponseDto<QueryTradeContentDto> query(String orderNo, String orderDate, QueryTradeType queryType) {
         QueryTradeRequestDto dto = new QueryTradeRequestDto(orderNo, orderDate, queryType.getValue());
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[query trade] sign error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
             return null;
         }
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.QUERY_TRADE);
-        if (Strings.isNullOrEmpty(responseData)) {
-            logger.error("[query trade] send error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
-            return null;
-        }
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[query trade] verify sign error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
+            logger.warn("[query trade] failed to verify sign, orderNo: {}, orderDate: {}, queryType: {}, response: {}", orderNo, orderDate, queryType, responseData);
             return null;
         }
 
-        ResponseDto<QueryTradeContentDto> responseDto = (ResponseDto<QueryTradeContentDto>) ApiType.QUERY_TRADE.getParser().parse(responseData);
-        if (responseDto == null) {
-            logger.error("[query trade] parse response error, orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
-            return null;
-        }
-
-        return responseDto;
+        return (ResponseDto<QueryTradeContentDto>) API_TYPE.getParser().parse(responseData);
     }
 }

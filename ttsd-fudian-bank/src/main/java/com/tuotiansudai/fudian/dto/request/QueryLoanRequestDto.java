@@ -1,15 +1,11 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
-import java.util.Map;
-
 public class QueryLoanRequestDto extends BaseRequestDto {
 
     private String loanTxNo;
 
     public QueryLoanRequestDto(String loanTxNo) {
-        super(Source.WEB, null, null, ApiType.QUERY_LOAN, null);
+        super(Source.WEB, null, null, null, null);
         this.loanTxNo = loanTxNo;
     }
 

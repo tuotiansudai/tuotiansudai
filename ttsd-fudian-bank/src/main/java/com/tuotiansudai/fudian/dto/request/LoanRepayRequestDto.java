@@ -1,10 +1,9 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
+import com.tuotiansudai.fudian.util.AmountUtils;
 
-import java.util.Map;
-
-public class LoanRepayRequestDto extends PayBaseRequestDto {
+public class LoanRepayRequestDto extends NotifyRequestDto {
 
     private String loanTxNo;
 
@@ -17,11 +16,11 @@ public class LoanRepayRequestDto extends PayBaseRequestDto {
     public LoanRepayRequestDto() {
     }
 
-    public LoanRepayRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String capital, String interest, ApiType apiType) {
-        super(source, loginName, mobile, userName, accountNo, apiType, null);
-        this.loanTxNo = loanTxNo;
-        this.capital = capital;
-        this.interest = interest;
+    public LoanRepayRequestDto(Source source, BankLoanRepayDto bankLoanRepayDto) {
+        super(source, bankLoanRepayDto.getLoginName(), bankLoanRepayDto.getMobile(), bankLoanRepayDto.getBankUserName(), bankLoanRepayDto.getBankAccountNo());
+        this.loanTxNo = bankLoanRepayDto.getLoanTxNo();
+        this.capital = AmountUtils.toYuan(bankLoanRepayDto.getCapital());
+        this.interest = AmountUtils.toYuan(bankLoanRepayDto.getInterest());
     }
 
     public String getLoanTxNo() {

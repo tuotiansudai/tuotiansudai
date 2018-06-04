@@ -22,6 +22,8 @@ public class MerchantTransferService {
 
     private static Logger logger = LoggerFactory.getLogger(MerchantTransferService.class);
 
+    private static final ApiType API_TYPE = ApiType.MERCHANT_TRANSFER;
+
     private final BankClient bankClient;
 
     private final SignatureHelper signatureHelper;
@@ -46,7 +48,7 @@ public class MerchantTransferService {
                 bankMerchantTransferDto.getBankAccountNo(),
                 AmountUtils.toYuan(bankMerchantTransferDto.getAmount()));
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[merchant transfer] sign error, date: {}", bankMerchantTransferDto);
@@ -55,19 +57,19 @@ public class MerchantTransferService {
 
         insertMapper.insertMerchantTransfer(dto);
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.MERCHANT_TRANSFER);
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
         if (!signatureHelper.verifySign(responseData)) {
             logger.error("[merchant transfer] verify sign error, response: {}", responseData);
             return new BankMerchantTransferMessage(false, "验签失败");
         }
 
-        ResponseDto<MerchantTransferContentDto> responseDto = (ResponseDto<MerchantTransferContentDto>) ApiType.MERCHANT_TRANSFER.getParser().parse(responseData);
+        ResponseDto<MerchantTransferContentDto> responseDto = (ResponseDto<MerchantTransferContentDto>) API_TYPE.getParser().parse(responseData);
         if (responseDto == null) {
             logger.error("[merchant transfer] parse response error, response: {}", responseData);
             return new BankMerchantTransferMessage(false, "银行数据解析失败");
         }
 
-        this.updateMapper.updateMerchantTransfer(responseDto);
+        this.updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
 
         if (responseDto.isSuccess() && responseDto.getContent().isSuccess()) {
             new BankMerchantTransferMessage(responseDto.getContent().getOrderNo(), responseDto.getContent().getOrderDate());

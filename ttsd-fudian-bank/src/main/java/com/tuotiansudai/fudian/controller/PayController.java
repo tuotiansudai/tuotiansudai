@@ -178,15 +178,6 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/loan-fast-repay", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanFastRepay(Map<String, Object> model) {
-        logger.info("[Fudian] call loan fast repay");
-
-        ResponseDto responseDto = loanRepayService.fastRepay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02619459384521001", "1.00", "0.00", null, null);
-
-        return ResponseEntity.ok(responseDto);
-    }
-
     @RequestMapping(path = "/merchant-transfer", method = RequestMethod.POST)
     public ResponseEntity<BankMerchantTransferMessage> merchantTransfer(@RequestBody BankMerchantTransferDto params) {
         logger.info("[Fudian] call merchant transfer");

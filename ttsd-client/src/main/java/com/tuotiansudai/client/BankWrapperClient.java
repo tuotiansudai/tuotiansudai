@@ -187,11 +187,31 @@ public class BankWrapperClient {
         return new BankMerchantTransferMessage(false, null);
     }
 
-    public BankQueryLoanMessage queryLoan(String loanTxNo) {
+    public BankQueryUserMessage queryUser(String bankUserName, String bankAccountNo) {
         try {
 
             Request request = new Request.Builder()
-                    .url(this.baseUrl + MessageFormat.format("/query/loan/{0}/", loanTxNo))
+                    .url(this.baseUrl + MessageFormat.format("/query/user/user-name/{0}/account-no/{1}", bankUserName, bankAccountNo))
+                    .get()
+                    .build();
+
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return gson.fromJson(response.body().string(), BankQueryUserMessage.class);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return new BankQueryUserMessage(false, "查询失败");
+    }
+
+    public BankQueryLoanMessage queryLoan(String loanTxNo, String loanAccNo) {
+        try {
+
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + MessageFormat.format("/query/loan/loan-tx-no/{0}/loan-acc-no/{1}", loanTxNo, loanAccNo))
                     .get()
                     .build();
 
@@ -204,7 +224,7 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return new BankQueryLoanMessage(0, 0, null, false, "查询失败");
+        return new BankQueryLoanMessage(false, "查询失败");
     }
 
     private BankAsyncMessage asyncExecute(String path, Object requestData) {

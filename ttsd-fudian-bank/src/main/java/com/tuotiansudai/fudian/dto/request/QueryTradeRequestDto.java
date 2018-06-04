@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
 public class QueryTradeRequestDto extends BaseRequestDto {
 
     private String queryOrderNo;
@@ -11,7 +9,7 @@ public class QueryTradeRequestDto extends BaseRequestDto {
     private String queryType; /*01充值 02提现 03投标 04借款人还款 05投资人回款 06债权认购 07满标放款*/
 
     public QueryTradeRequestDto(String queryOrderNo, String queryOrderDate, String queryType) {
-        super(Source.WEB, null, null, ApiType.QUERY_TRADE, null);
+        super(Source.WEB, null, null, null, null);
         this.queryOrderNo = queryOrderNo;
         this.queryOrderDate = queryOrderDate;
         this.queryType = queryType;

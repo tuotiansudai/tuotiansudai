@@ -1,8 +1,5 @@
 package com.tuotiansudai.fudian.dto.response;
 
-import com.tuotiansudai.fudian.config.ApiType;
-import com.tuotiansudai.fudian.dto.request.PayBaseRequestDto;
-
 public class LoanCreditInvestContentDto extends PayBaseContentDto {
 
     private String creditNo; //债权挂牌ID

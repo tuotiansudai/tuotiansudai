@@ -75,11 +75,7 @@ public enum MessageQueue {
     Recharge_Success("Recharge-Success"),
     Recharge_CompletePointTask("Recharge-CompletePointTask"),
 
-    Withdraw_Success("Recharge-Success"),
-    Withdraw_EventMessage("Recharge-EventMessage"),
-    Withdraw_PushMessage("Recharge-PushMessage"),
-    Withdraw_WeChatMessage("Recharge-WeChatMessage"),
-
+    Withdraw_Success("Withdraw-Success"),
 
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),

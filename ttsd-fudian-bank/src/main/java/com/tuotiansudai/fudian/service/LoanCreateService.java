@@ -10,7 +10,6 @@ import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
-import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.BankClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class LoanCreateService {
 
     private static Logger logger = LoggerFactory.getLogger(LoanCreateService.class);
+
+    private static final ApiType API_TYPE = ApiType.LOAN_CREATE;
 
     private final SignatureHelper signatureHelper;
 
@@ -40,37 +41,31 @@ public class LoanCreateService {
 
     @SuppressWarnings(value = "unchecked")
     public BankLoanCreateMessage create(BankLoanCreateDto bankLoanCreateDto) {
-        LoanCreateRequestDto dto = new LoanCreateRequestDto(bankLoanCreateDto.getLoginName(),
-                bankLoanCreateDto.getMobile(),
-                bankLoanCreateDto.getBankUserName(),
-                bankLoanCreateDto.getBankAccountNo(),
-                bankLoanCreateDto.getLoanName(),
-                AmountUtils.toYuan(bankLoanCreateDto.getAmount()),
-                null);
+        LoanCreateRequestDto dto = new LoanCreateRequestDto(bankLoanCreateDto);
 
-        signatureHelper.sign(dto);
-
-        insertMapper.insertLoanCreate(dto);
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[loan create] sign error, data: {}", bankLoanCreateDto);
+            logger.error("[Loan Create] failed to sign, data: {}", bankLoanCreateDto);
             return new BankLoanCreateMessage(false, "签名失败");
         }
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_CREATE);
+        insertMapper.insertLoanCreate(dto);
+
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[loan create] verify sign error, data: {}", bankLoanCreateDto);
+            logger.error("[Loan Create] failed to verify sign, response data: {}", bankLoanCreateDto);
             return new BankLoanCreateMessage(false, "验签失败");
         }
 
-        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) ApiType.LOAN_CREATE.getParser().parse(responseData);
+        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) API_TYPE.getParser().parse(responseData);
         if (responseDto == null) {
-            logger.error("[loan create] parse response error, data: {}", bankLoanCreateDto);
-            return new BankLoanCreateMessage(false, "银行数据解析失败");
+            logger.error("[Loan Create] failed to parse response data: {}", responseData);
+            return new BankLoanCreateMessage(false, "解析银行数据失败");
         }
 
-        this.updateMapper.updateLoanCreate(responseDto);
+        this.updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
 
         if (responseDto.isSuccess()) {
             LoanCreateContentDto content = responseDto.getContent();

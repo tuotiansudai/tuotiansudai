@@ -16,22 +16,14 @@ public class BankWithdrawMessage extends BankBaseMessage {
 
     private long fee;
 
-    private String bankCode;
-
-    private String cardNumber;
-
-    private String bankName;
-
     private String bankOrderNo;
 
     private String bankOrderDate;
 
-    private String openId;
-
     public BankWithdrawMessage() {
     }
 
-    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankOrderNo, String bankOrderDate, String openId) {
+    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankOrderNo, String bankOrderDate) {
         this.withdrawId = withdrawId;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -41,7 +33,6 @@ public class BankWithdrawMessage extends BankBaseMessage {
         this.fee = fee;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
-        this.openId = openId;
     }
 
     public long getWithdrawId() {
@@ -72,39 +63,11 @@ public class BankWithdrawMessage extends BankBaseMessage {
         return fee;
     }
 
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
     public String getBankOrderNo() {
         return bankOrderNo;
     }
 
     public String getBankOrderDate() {
         return bankOrderDate;
-    }
-
-    public String getOpenId() {
-        return openId;
     }
 }
