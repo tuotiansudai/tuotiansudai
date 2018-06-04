@@ -42,8 +42,6 @@
         <input type="hidden" name="bankCode" value="${bankCode}"/>
         <input type="hidden" name="amount" value=""/>
         <input type="hidden" name="source" value="M"/>
-        <input type="hidden" name="fastPay" value="true"/>
-        <input type="hidden" name="publicPay" value="false"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
     </form>

@@ -42,9 +42,6 @@ public interface LoanRepayMapper {
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 
-    List<LoanRepayModel> findByLoanIdAndLTPeriod(@Param(value = "loanId") long loanId,
-                                                 @Param(value = "period") int period);
-
     void update(LoanRepayModel loanRepayModel);
 
     long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
@@ -56,7 +53,7 @@ public interface LoanRepayMapper {
     List<LoanRepayModel> findByLoginNameAndTimeRepayList(@Param(value = "loginName") String loginName, @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime,
                                                          @Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
 
-    List<LoanRepayModel> findNotCompleteLoanRepay();
+    List<LoanRepayModel> findIncompleteLoanRepay();
 
     List<LoanRepayNotifyModel> findLoanRepayNotifyToday(@Param(value = "today") String today);
 

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.service.*;
@@ -49,24 +50,15 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/register/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> register(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> register(@PathVariable Source source, @RequestBody BankRegisterDto params) {
         logger.info("[Fudian] call register, params: {}", params);
 
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String realName = params.get("realName");
-        String identityCode = params.get("identityCode");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, realName, identityCode))) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        RegisterRequestDto requestDto = registerService.register(source, loginName, mobile, realName, identityCode);
+        RegisterRequestDto requestDto = registerService.register(source, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
 
         if (!bankAsyncData.isStatus()) {
-            logger.error("[Fudian] call register, request data generation failure, data: {}");
+            logger.error("[Fudian] call register, request data generation failure, data: {}", bankAsyncData.getData());
         }
 
         return ResponseEntity.ok(bankAsyncData);

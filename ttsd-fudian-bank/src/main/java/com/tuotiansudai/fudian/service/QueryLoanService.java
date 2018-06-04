@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.QueryLoanRequestDto;
+import com.tuotiansudai.fudian.dto.response.QueryLoanContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -16,6 +17,8 @@ public class QueryLoanService {
 
     private static Logger logger = LoggerFactory.getLogger(QueryLoanService.class);
 
+    private static final ApiType API_TYPE = ApiType.QUERY_LOAN;
+
     private final SignatureHelper signatureHelper;
 
     private final BankClient bankClient;
@@ -26,32 +29,22 @@ public class QueryLoanService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String loginName, String mobile, String loanTxNo) {
-        QueryLoanRequestDto dto = new QueryLoanRequestDto(loginName, mobile, loanTxNo);
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto<QueryLoanContentDto> query(String loanTxNo) {
+        QueryLoanRequestDto dto = new QueryLoanRequestDto(loanTxNo);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[query loan] sign error, loanTxNo: {}", loanTxNo);
             return null;
         }
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.QUERY_LOAN);
-        if (Strings.isNullOrEmpty(responseData)) {
-            logger.error("[query loan] send error, loanTxNo: {}", loanTxNo);
-            return null;
-        }
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[query loan] verify sign error, loanTxNo: {}", loanTxNo);
+            logger.warn("[Query Loan] failed to verify sign, loanTxNo: {}, response: {}", loanTxNo, responseData);
             return null;
         }
 
-        ResponseDto responseDto = ApiType.QUERY_LOAN.getParser().parse(responseData);
-        if (responseDto == null) {
-            logger.error("[query loan] parse response error, loanTxNo: {}", loanTxNo);
-            return null;
-        }
-
-        return responseDto;
+        return (ResponseDto<QueryLoanContentDto>) API_TYPE.getParser().parse(responseData);
     }
 }

@@ -24,6 +24,16 @@
       background: #FF473C;
     }
   }
+  form {
+    width: 100%;
+    display: block;
+  }
+  .update-payment-pwd {
+    float: right;
+    .update-pwd-btn {
+      display: inline-block;
+    }
+  }
 }
 
 .tip-to-close,.tip-result-success {

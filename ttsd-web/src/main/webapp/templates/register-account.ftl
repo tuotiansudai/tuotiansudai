@@ -23,7 +23,7 @@
     </div>
 
 <div class="register-box ">
-    <form class="register-account-form" id="registerAccountForm" method="post">
+    <form class="register-account-form" action="/register/account" id="registerAccountForm" method="post">
         <ul class="reg-list tl register-step-two">
             <li>
                 <label class="title">真实姓名</label>
@@ -40,6 +40,7 @@
         </ul>
         <div class="button-layer account-button">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input name="source" type="hidden" value="WEB"/>
             <div class="status"></div>
             <div class="loading-effect"></div>
             <input type="submit" class="register-account btn-success" value="认证" disabled/>

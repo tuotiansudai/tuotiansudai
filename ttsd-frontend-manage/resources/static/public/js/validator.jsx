@@ -219,7 +219,7 @@ var strategies = {
         commonFun.useAjax({
             type:'GET',
             async: false,
-            url: '/register/account/identity-number/'+this.value.replace(/\s+/g, "")+'/is-exist'
+            url: '/register/account/verify/identity-number/'+this.value.replace(/\s+/g, "")
         },function(response) {
             if(response.data.status) {
                 //身份证号已存在

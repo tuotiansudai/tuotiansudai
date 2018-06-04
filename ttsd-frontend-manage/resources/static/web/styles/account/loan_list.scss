@@ -391,8 +391,8 @@
 .user-bill-list-content {
   .money-box {
     font-size: 12px;
-    background: url("../../images/sign/invest-record.png") 360px 30px no-repeat;
-
+    padding-bottom: 30px;
+    box-shadow: 10px 10px 20px #f4f6fb;
     a {
       display: inline-block;
       margin-right: 10px;
@@ -401,9 +401,62 @@
       letter-spacing: 0px;
     }
     .balance {
-      color: #ffac2a;
-      padding: 0px 0 20px;
+      width: 300px;
+      color: #666;
+      font-size: 16px;
+      padding: 0px;
+      .money {
+        font-size: 46px;
+        color: #333333;
+      }
     }
+
+    .recharge-cash {
+      font-size: 16px;
+      color: #999;
+      >span {
+        vert-align: middle;
+      }
+      .money {
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+      }
+     p {
+       position: relative;
+       text-indent: 30px;
+       .icon-small {
+         width: 18px;
+         height: 18px;
+         position: absolute;
+         left: 0;
+         top: 10px;
+         &.icon-recharge {
+           background: url('../../images/sign/icon_recharge.png') no-repeat left center;
+           background-size: contain;
+         }
+         &.icon-cash {
+           background: url('../../images/sign/icon_getCash.png') no-repeat left center;
+           background-size: contain;
+         }
+       }
+     }
+    }
+    .btns {
+      clear: both;
+      .btn-list {
+        width: 120px;
+        height: 40px;
+        border: 1px solid #ff7200;
+        padding: 0;
+        box-sizing: border-box;
+        color: #ff7200;
+        text-align: center;
+        line-height: 40px;
+        font-size: 16px;
+      }
+    }
+
   }
 }
 

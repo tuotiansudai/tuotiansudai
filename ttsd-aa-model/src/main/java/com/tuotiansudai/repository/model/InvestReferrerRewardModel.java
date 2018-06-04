@@ -19,6 +19,10 @@ public class InvestReferrerRewardModel implements Serializable {
 
     private ReferrerRewardStatus status;
 
+    private String bankOrderNo;
+
+    private String bankOrderDate;
+
     private Date createdTime = new Date();
 
     public InvestReferrerRewardModel() {
@@ -79,6 +83,22 @@ public class InvestReferrerRewardModel implements Serializable {
 
     public void setStatus(ReferrerRewardStatus status) {
         this.status = status;
+    }
+
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
     }
 
     public Date getCreatedTime() {

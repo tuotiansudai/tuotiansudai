@@ -96,6 +96,9 @@
     width: 60px;
     height: 60px;
     background: url("../../images/icons/success-tip.png") no-repeat center center;
+    &.failure {
+      background: url("../../images/icons/failure_icon.png") no-repeat center center;
+    }
     &.success_tip_icon_changeCard {
       margin: 70px auto 27px auto;
     }
@@ -234,14 +237,37 @@
 .loading-wrap {
   padding-bottom: 100px;
   .loading {
-    width: 30px;
-    height:22px;
+    width: 84px;
+    height:66px;
     margin: 0 auto;
     margin-bottom: 10px;
     margin-top: 200px;
-    background: url("../../images/icons/loading.gif") no-repeat left center;
+    background: url("../../images/icons/loading_text.png") no-repeat left center;
     cursor: default;
     text-indent: -9999px;
+  }
+  .loading-handling {
+    position: relative;
+    width: 84px;
+    height:66px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 200px;
+    background: url("../../images/icons/handling.png") no-repeat left center;
+    cursor: default;
+    text-indent: -9999px;
+    span {
+      position: absolute;
+      right: 12px;
+      bottom: 4px;
+      color: #ef8e04;
+      font-size: 16px;
+      width:20px;
+      height:20px;
+      text-indent: 0;
+      text-align: center;
+      line-height: 20px;
+    }
   }
   p {
     text-align: center;

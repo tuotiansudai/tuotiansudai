@@ -60,7 +60,9 @@ if($('#bankResult').length){
 
     commonFun.countDownLoan({
         btnDom:$countTime,
-        time:5
+        time:5,
+        textCounting:'',
+        isAfterText:'1'
     },function() {
         $("#isPaySuccess").submit();
     });

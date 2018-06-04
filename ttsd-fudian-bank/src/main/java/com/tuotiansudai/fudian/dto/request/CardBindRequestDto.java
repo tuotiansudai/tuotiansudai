@@ -1,12 +1,10 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 
-import java.util.Map;
+public class CardBindRequestDto extends NotifyRequestDto {
 
-public class CardBindRequestDto extends UserBaseRequestDto {
-
-    public CardBindRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, Map<String, String> extraValues) {
-        super(source, loginName, mobile, userName, accountNo, ApiType.CARD_BIND, extraValues);
+    public CardBindRequestDto(Source source, BankBaseDto bankBaseDto) {
+        super(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo());
     }
 }

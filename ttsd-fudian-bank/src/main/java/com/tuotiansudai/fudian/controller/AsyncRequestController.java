@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class AsyncRequestController {
 
-    protected BankConfig bankConfig;
+    BankConfig bankConfig;
 
     public AsyncRequestController(BankConfig bankConfig) {
         this.bankConfig = bankConfig;
@@ -25,7 +25,7 @@ public abstract class AsyncRequestController {
         dataBinder.registerCustomEditor(Source.class, new SourcePropertyEditor());
     }
 
-    protected BankAsyncMessage generateAsyncRequestData(BaseRequestDto requestDto, ApiType apiType) {
+    BankAsyncMessage generateAsyncRequestData(BaseRequestDto requestDto, ApiType apiType) {
         if (requestDto == null || Strings.isNullOrEmpty(requestDto.getRequestData())) {
             return new BankAsyncMessage(null, null, false, "请求数据生成失败");
         }
@@ -33,7 +33,7 @@ public abstract class AsyncRequestController {
         return new BankAsyncMessage(bankConfig.getBankUrl() + apiType.getPath(), requestDto.getRequestData(), true, "SUCCESS");
     }
 
-    protected boolean isBadRequest(List<String> values) {
+    boolean isBadRequest(List<String> values) {
         return Lists.newArrayList(values).stream().anyMatch(Strings::isNullOrEmpty);
     }
 }

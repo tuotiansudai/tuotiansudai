@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -59,6 +60,9 @@ public class InvestServiceImpl implements InvestService {
     private final static int NEWBIE_INVEST_LIMIT = Integer.parseInt(ETCDConfigReader.getReader().getValue("web.newbie.invest.limit"));
 
     private final static double DEFAULT_FEE = Double.parseDouble(ETCDConfigReader.getReader().getValue("pay.interest.fee"));
+
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
 
     @Autowired
     private BankAccountMapper bankAccountMapper;
@@ -318,8 +322,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
-        return Lists.newArrayList("zr0612", "liangjinhua").contains(loginName.toLowerCase()) || NEWBIE_INVEST_LIMIT == 0 || newbieInvestCount < NEWBIE_INVEST_LIMIT;
+        int newbieInvestCount = investMapper.countSuccessNewbieInvestByLoginName(loginName);
+        return showRandomLoginNameList.contains(loginName.toLowerCase()) || NEWBIE_INVEST_LIMIT == 0 || newbieInvestCount < NEWBIE_INVEST_LIMIT;
     }
 
     @Override

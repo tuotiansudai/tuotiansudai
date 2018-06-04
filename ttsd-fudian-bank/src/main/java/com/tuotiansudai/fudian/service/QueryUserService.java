@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.QueryUserRequestDto;
+import com.tuotiansudai.fudian.dto.response.QueryUserContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -16,43 +17,34 @@ public class QueryUserService {
 
     private static Logger logger = LoggerFactory.getLogger(QueryUserService.class);
 
+    private static final ApiType API_TYPE = ApiType.QUERY_USER;
+
     private final SignatureHelper signatureHelper;
 
     private final BankClient bankClient;
 
     @Autowired
-    public QueryUserService(SignatureHelper signatureHelper, BankClient bankClient) {
+    public  QueryUserService(SignatureHelper signatureHelper, BankClient bankClient) {
         this.signatureHelper = signatureHelper;
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String loginName, String mobile, String userName, String accountNo) {
-        QueryUserRequestDto dto = new QueryUserRequestDto(loginName, mobile, accountNo, userName);
-        signatureHelper.sign(dto);
+    @SuppressWarnings(value = "unchecked")
+    public ResponseDto<QueryUserContentDto> query(String userName, String accountNo) {
+        QueryUserRequestDto dto = new QueryUserRequestDto(userName, accountNo);
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[query user] sign error, userName: {}, accountNo: {}", userName, accountNo);
             return null;
         }
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.QUERY_USER);
-
-        if (Strings.isNullOrEmpty(responseData)) {
-            logger.error("[query user] send error, request data", dto.getRequestData());
-            return null;
-        }
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[query user] verify sign error, request data: {}, response: {}", dto.getRequestData(), responseData);
+            logger.error("[Query User] failed to verify sign, userName: {}, accountNo: {}, response: {}", userName, accountNo, responseData);
             return null;
         }
 
-        ResponseDto responseDto = ApiType.QUERY_USER.getParser().parse(responseData);
-        if (responseDto == null) {
-            logger.error("[query user] parse response error, request data: {}, response: {}", dto.getRequestData(), responseData);
-            return null;
-        }
-
-        return responseDto;
+        return (ResponseDto<QueryUserContentDto>) API_TYPE.getParser().parse(responseData);
     }
 }

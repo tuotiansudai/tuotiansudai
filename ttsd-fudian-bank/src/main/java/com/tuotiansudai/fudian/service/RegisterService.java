@@ -5,14 +5,14 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
@@ -23,9 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegisterService implements AsyncCallbackInterface {
+public class RegisterService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(RegisterService.class);
+
+    private static final ApiType API_TYPE = ApiType.REGISTER;
+
+    private final MessageQueueClient messageQueueClient;
 
     private final SignatureHelper signatureHelper;
 
@@ -33,28 +37,23 @@ public class RegisterService implements AsyncCallbackInterface {
 
     private final UpdateMapper updateMapper;
 
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final MessageQueueClient messageQueueClient;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
+    private final SelectMapper selectMapper;
 
     @Autowired
-    public RegisterService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, MessageQueueClient messageQueueClient, SelectResponseDataMapper selectResponseDataMapper) {
+    public RegisterService(MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper) {
+        this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.messageQueueClient = messageQueueClient;
-        this.selectResponseDataMapper = selectResponseDataMapper;
+        this.selectMapper = selectMapper;
     }
 
-    public RegisterRequestDto register(Source source, String loginName, String mobile, String realName, String identityCode) {
-        RegisterRequestDto dto = new RegisterRequestDto(source, loginName, mobile, realName, identityCode);
-        signatureHelper.sign(dto);
+    public RegisterRequestDto register(Source source, BankRegisterDto bankRegisterDto) {
+        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), bankRegisterDto.getIdentityCode());
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[register] sign error, realName: {}, identityCode: {}, mobilePhone: {}", realName, identityCode, mobile);
+            logger.error("[register] sign error, data{}", bankRegisterDto);
             return null;
         }
 
@@ -65,7 +64,7 @@ public class RegisterService implements AsyncCallbackInterface {
     @Override
     @SuppressWarnings(value = "unchecked")
     public void returnCallback(ResponseDto responseData) {
-        returnUpdateMapper.updateRegister(responseData);
+        updateMapper.updateReturnResponse(API_TYPE.name(), responseData);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class RegisterService implements AsyncCallbackInterface {
     public ResponseDto notifyCallback(String responseData) {
         logger.info("[register callback] data is {}", responseData);
 
-        ResponseDto<RegisterContentDto> responseDto = ApiType.REGISTER.getParser().parse(responseData);
+        ResponseDto<RegisterContentDto> responseDto = API_TYPE.getParser().parse(responseData);
 
         if (responseDto == null) {
             logger.error("[register callback] parse callback data error, data is {}", responseData);
@@ -90,25 +89,25 @@ public class RegisterService implements AsyncCallbackInterface {
                     .put("realName", registerContentDto.getRealName())
                     .put("accountNo", registerContentDto.getAccountNo())
                     .put("userName", registerContentDto.getUserName())
-                    .put("orderDate", registerContentDto.getRegDate())
+                    .put("orderDate", registerContentDto.getOrderDate())
                     .put("orderNo", registerContentDto.getOrderNo())
                     .build()));
         }
 
         responseDto.setReqData(responseData);
-        updateMapper.updateRegister(responseDto);
+        updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
         return responseDto;
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.REGISTER.name().toLowerCase(), orderNo);
+        String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
         if (Strings.isNullOrEmpty(responseData)) {
             return null;
         }
 
-        ResponseDto<RegisterContentDto> responseDto = (ResponseDto<RegisterContentDto>) ApiType.REGISTER.getParser().parse(responseData);
+        ResponseDto<RegisterContentDto> responseDto = (ResponseDto<RegisterContentDto>) API_TYPE.getParser().parse(responseData);
 
         return responseDto.isSuccess();
     }

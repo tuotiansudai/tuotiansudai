@@ -6,12 +6,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankLoanCreditInvestDto;
-import com.tuotiansudai.fudian.dto.request.*;
+import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
+import com.tuotiansudai.fudian.dto.request.LoanCreditInvestRequestDto;
+import com.tuotiansudai.fudian.dto.request.QueryTradeType;
+import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanCreateContentDto;
-import com.tuotiansudai.fudian.dto.response.LoanCreditInvestContentDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.mapper.*;
+import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
+import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
+import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankLoanCreditInvestMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -32,21 +37,19 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class LoanCreditInvestService implements AsyncCallbackInterface {
+public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanCreditInvestService.class);
 
     private final static String BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE = "BANK_LOAN_CREDIT_INVEST_HISTORY_{0}";
+
+    private static final ApiType API_TYPE = ApiType.LOAN_CREDIT_INVEST;
 
     private final SignatureHelper signatureHelper;
 
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
-
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -58,20 +61,21 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
 
     private final QueryTradeService queryTradeService;
 
+    private final SelectMapper selectMapper;
+
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper, RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, RedissonClient redissonClient, SelectRequestMapper selectRequestMapper, QueryTradeService queryTradeService) {
+    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, RedissonClient redissonClient, SelectRequestMapper selectRequestMapper, QueryTradeService queryTradeService, SelectMapper selectMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.selectResponseDataMapper = selectResponseDataMapper;
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.redissonClient = redissonClient;
         this.selectRequestMapper = selectRequestMapper;
         this.queryTradeService = queryTradeService;
+        this.selectMapper = selectMapper;
     }
 
     public LoanCreditInvestRequestDto invest(Source source, BankLoanCreditInvestDto dto) {
@@ -80,7 +84,8 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
                 dto.getLoanTxNo(), dto.getInvestOrderNo(), dto.getInvestOrderDate(),
                 String.valueOf(dto.getTransferApplicationId()), AmountUtils.toYuan(dto.getInvestAmount()),
                 AmountUtils.toYuan(dto.getInvestAmount()), AmountUtils.toYuan(dto.getTransferFee()));
-        signatureHelper.sign(requestDto);
+
+        signatureHelper.sign(API_TYPE, requestDto);
 
         if (Strings.isNullOrEmpty(requestDto.getRequestData())) {
             logger.error("[loan credit invest] sign error, data: {}", requestDto.getRequestData());
@@ -106,40 +111,35 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
 
     @Override
     public void returnCallback(ResponseDto responseData) {
-        returnUpdateMapper.updateLoanCreditInvest(responseData);
+        updateMapper.updateReturnResponse(API_TYPE.name().toLowerCase(), responseData);
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
     public ResponseDto notifyCallback(String responseData) {
         logger.info("[loan credit invest] data is {}", responseData);
-        ResponseDto<LoanCreditInvestContentDto> responseDto = (ResponseDto<LoanCreditInvestContentDto>) ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
+        ResponseDto responseDto = API_TYPE.getParser().parse(responseData);
 
         if (responseDto == null) {
             logger.error("[loan credit invest] parse callback data error, data is {}", responseData);
             return null;
         }
-        responseDto.setReqData(responseData);
-        int count = updateMapper.updateLoanCreditInvest(responseDto, LoanInvestStatus.BANK_RESPONSE);
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-        if (responseDto.isSuccess() && count > 0) {
-            String message = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, responseDto.getContent().getOriOrderDate()), responseDto.getContent().getCreditNo());
-            if (Strings.isNullOrEmpty(message)) {
-                logger.error("[loan credit invest callback] callback is success, but queue message is not found, response data is {}", responseData);
-                return responseDto;
-            }
-            messageQueueClient.sendMessage(MessageQueue.LoanCreditInvest_Success, message);
+        if (!responseDto.isSuccess()) {
+            logger.error("[Loan credit Invest] callback is failure, orderNo: {}, message {}", responseDto.getContent().getOrderNo(), responseDto.getRetMsg());
         }
+
+        responseDto.setReqData(responseData);
+        updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
         return responseDto;
     }
 
     @Scheduled(fixedDelay = 1000 * 10, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
     public void schedule() {
         RLock lock = redissonClient.getLock("BANK_CREDIT_INVEST_HISTORY");
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         if (lock.tryLock()) {
             try {
+                HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
                 List<BaseRequestDto> baseRequestDtos = selectRequestMapper.selectResponseInOneHour(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase());
 
                 for (BaseRequestDto baseRequestDto : baseRequestDtos) {
@@ -150,9 +150,9 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
                             logger.error("[LoanCreditInvest Status Schedule] fetch LoanCreditInvest meta data from redis error, bank order no:{}, redis value: {}", baseRequestDto.getOrderNo(), bankLoanCreditInvestValue);
                             continue;
                         }
-
-                        ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankLoanCreditInvestMessage.getLoginName(), bankLoanCreditInvestMessage.getMobile(), bankLoanCreditInvestMessage.getBankOrderNo(), bankLoanCreditInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_CREDIT_INVEST);
-                        if (query.isSuccess() && "1".equals(query.getContent().getQueryState()) && updateMapper.updateLoanCreditInvest(query, LoanInvestStatus.MANUAL_QUERIED) > 0) {
+                        ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankLoanCreditInvestMessage.getBankOrderNo(), bankLoanCreditInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_CREDIT_INVEST);
+                        if (query.isSuccess() && "1".equals(query.getContent().getQueryState())) {
+                            updateMapper.updateQueryResponse(API_TYPE.name().toLowerCase(), query);
                             messageQueueClient.sendMessage(MessageQueue.LoanCreditInvest_Success, bankLoanCreditInvestValue);
                             logger.error("[LoanCreditInvest Status Schedule] LoanCreditInvest is success, but bank response is not found, should send topic: {}", bankLoanCreditInvestValue);
                         }
@@ -170,12 +170,12 @@ public class LoanCreditInvestService implements AsyncCallbackInterface {
     @Override
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase(), orderNo);
+        String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
         if (Strings.isNullOrEmpty(responseData)) {
             return null;
         }
 
-        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) ApiType.LOAN_CREDIT_INVEST.getParser().parse(responseData);
+        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) API_TYPE.getParser().parse(responseData);
 
         return responseDto.isSuccess();
     }

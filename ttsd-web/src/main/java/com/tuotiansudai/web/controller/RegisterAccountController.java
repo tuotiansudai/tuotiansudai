@@ -1,8 +1,9 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -37,7 +38,7 @@ public class RegisterAccountController {
     @ResponseBody
     public BaseDto<BaseDataDto> isIdentityNumberExist(@PathVariable String identityNumber) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
+        BaseDataDto dataDto = new BaseDataDto(true);
         baseDto.setData(dataDto);
         boolean isLegal = IdentityNumberValidator.validateIdentity(identityNumber);
         if (!isLegal) {
@@ -49,7 +50,7 @@ public class RegisterAccountController {
             dataDto.setMessage("身份证已存在");
             return baseDto;
         }
-        dataDto.setStatus(true);
+        dataDto.setStatus(false);
         return baseDto;
     }
 
@@ -58,7 +59,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, Source.WEB, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

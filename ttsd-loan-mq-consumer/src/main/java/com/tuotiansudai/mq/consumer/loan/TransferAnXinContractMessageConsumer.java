@@ -74,7 +74,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
 
         BaseDto baseDto = anxinWrapperClient.createTransferContract(transferId);
         if (!baseDto.isSuccess()) {
-            logger.error(MessageFormat.format("[债权转让] LoanOutSuccess_GenerateAnXinContract is fail. transferId:{0}", String.valueOf(transferId)));
+            logger.error(MessageFormat.format("[债权转让] LoanFull_GenerateAnXinContract is fail. transferId:{0}", String.valueOf(transferId)));
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
             return;
         }

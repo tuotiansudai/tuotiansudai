@@ -145,6 +145,16 @@
   }
   & .e-bank-recharge {
     overflow: hidden;
+    .bind-card-nav {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      span {
+        font-size: 15px;
+        display: inline-block;
+        padding-bottom: 10px;
+      }
+    }
   }
   & ol.fast-pay li {
     width: auto;
