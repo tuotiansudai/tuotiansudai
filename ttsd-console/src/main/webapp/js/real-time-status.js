@@ -13,11 +13,13 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
         var queryParam = "type=" + type;
 
         if (type === 'user') {
-            queryParam += '&' + "mobile=" +  $('input[name="login-name"]').val();
+            location.href = "/finance-manage/real-time-status/user?loginNameOrMobile=" + $('input[name="loginNameOrMobile"]').val();
+            return false;
         }
 
         if (type === 'loan') {
-            queryParam += '&' + "loanId=" +  $('input[name="loan-id"]').val();
+            location.href = "/finance-manage/real-time-status/loan?loanId=" + $('input[name="loanId"]').val();
+            return false;
         }
 
         if (type === 'transfer') {
@@ -48,21 +50,6 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
 
         if (selected === 'transfer') {
             $("div.transfer").show();
-        }
-    });
-
-    $('#loginName').autocomplete({
-        minLength: 0,
-        source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
-                return process(respData);
-            });
-        },
-        change: function (event, ui) {
-            if (!ui.item) {
-                this.value = '';
-            }
         }
     });
 });

@@ -98,7 +98,7 @@
                 </dd>
                 <dd>
                     <i class="icon-two"></i>
-                    <span>预期年化8%-11%</span>
+                    <span>约定年化利率8%-10%</span>
                 </dd>
                 <dd>
                     <i class="icon-three"></i>

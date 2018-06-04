@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
 public class QueryLogAccountRequestDto extends BaseRequestDto {
 
     private String userName;
@@ -11,7 +9,7 @@ public class QueryLogAccountRequestDto extends BaseRequestDto {
     private String queryOrderDate;
 
     public QueryLogAccountRequestDto(String loginName, String mobile, String userName, String accountNo, String queryOrderDate) {
-        super(Source.WEB, loginName, mobile, ApiType.QUERY_LOG_ACCOUNT, null);
+        super(Source.WEB, loginName, mobile, null, null);
         this.userName = userName;
         this.accountNo = accountNo;
         this.queryOrderDate = queryOrderDate;

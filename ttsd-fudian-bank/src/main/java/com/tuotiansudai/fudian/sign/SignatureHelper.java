@@ -6,8 +6,8 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
-import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
 import com.tuotiansudai.fudian.util.OrderIdGenerator;
 import org.slf4j.Logger;
@@ -73,23 +73,26 @@ public class SignatureHelper {
 
     }
 
-    public <T extends BaseRequestDto> void sign(T dto) {
+    public <T extends BaseRequestDto> void sign(ApiType apiType, T dto) {
         dto.setMerchantNo(this.bankConfig.getMerchant());
         dto.setOrderNo(OrderIdGenerator.generate(redisTemplate));
         Class<?> dtoClass = dto.getClass();
         try {
-            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(dto.getExtMark(), ExtMarkDto.class);
             Method returnUrlMethod = dtoClass.getMethod("setReturnUrl", String.class);
-            Method notifyUrlMethod = dtoClass.getMethod("setNotifyUrl", String.class);
-            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(dto.getSource()), extMarkDto.getApiType().name().toLowerCase());
-            String notifyUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackNotifyUrl(), extMarkDto.getApiType().name().toLowerCase());
+            String returnUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackReturnUrl(dto.getSource()), apiType.name().toLowerCase());
             returnUrlMethod.invoke(dto, returnUrl);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        }
+
+        try {
+            Method notifyUrlMethod = dtoClass.getMethod("setNotifyUrl", String.class);
+            String notifyUrl = MessageFormat.format("{0}/{1}", this.bankConfig.getCallbackNotifyUrl(), apiType.name().toLowerCase());
             notifyUrlMethod.invoke(dto, notifyUrl);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
         }
 
         String originalData = gson.toJson(dto);
-        logger.info("origin data: {}", originalData);
+        logger.info("[Signature] origin data: {}", originalData);
 
         try {
             byte[] signedData = originalData.getBytes("utf-8");
@@ -105,14 +108,12 @@ public class SignatureHelper {
                     .put("certInfo", this.byteToHex(SignatureHelper.PFX.getCert().getEncoded()))
                     .build()));
 
-
-            logger.info("origin data: {}, sign: {}", originalData, signedData);
-
             dto.setRequestData(signedJson);
 
+            logger.info("[Signature] origin data: {}, sign: {}", originalData, signedData);
         } catch (Exception e) {
             dto.setRequestData(null);
-            logger.error(MessageFormat.format("sign error, data {}", originalData), e);
+            logger.error(MessageFormat.format("[Signature] sign exception, data {0}", originalData), e);
         }
     }
 
@@ -136,7 +137,7 @@ public class SignatureHelper {
             signet.update(inDataBytes);
             return signet.verify(signDataBytes);
         } catch (Exception ex) {
-            logger.error(MessageFormat.format("verify sign exception, data: {}", data), ex);
+            logger.error(MessageFormat.format("verify sign exception, data: {0}", data), ex);
         }
 
         return false;

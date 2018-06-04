@@ -474,7 +474,7 @@ public class LoanServiceImpl implements LoanService {
 
         LoanOutSuccessMessage loanOutInfo = new LoanOutSuccessMessage(loanId);
         try {
-            mqWrapperClient.publishMessage(MessageTopic.LoanOutSuccess, loanOutInfo);
+            mqWrapperClient.publishMessage(MessageTopic.LoanFullSuccess, loanOutInfo);
             logger.info(MessageFormat.format("[标的放款]: 放款成功,发送MQ消息,标的ID:{0}", String.valueOf(loanId)));
         } catch (JsonProcessingException e) {
             // 记录日志，发短信通知管理员

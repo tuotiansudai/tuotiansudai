@@ -331,14 +331,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Override
     public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
+
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
+
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
             // 如果 代理人/借款人 未授权安心签，该标的所有投资都使用旧版合同，更新contractNo为OLD
             investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
-            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
+            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanId:{0}, loginName:{1}",
                     String.valueOf(loanId), loanModel.getAgentLoginName()));
             return new BaseDto<>(new AnxinDataDto(false, AGENT_IS_NOT_SIGN));
         }

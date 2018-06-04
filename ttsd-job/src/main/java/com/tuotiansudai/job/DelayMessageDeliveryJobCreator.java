@@ -14,15 +14,13 @@ import java.util.Date;
 public class DelayMessageDeliveryJobCreator {
     private static Logger logger = Logger.getLogger(DelayMessageDeliveryJobCreator.class);
 
-    private final static int AUTO_LOAN_OUT_DELAY_SECONDS = 30 * 60;
+    private final static int AUTO_LOAN_FULL_DELAY_SECONDS = 30 * 60;
 
     private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 60 * 10;
 
-    private final static int PAYROLL_FAIL_WAIT_SECONDS = 30 * 60;
-
     public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
         String messageBody = String.valueOf(loanId);
-        create(jobManager, AUTO_LOAN_OUT_DELAY_SECONDS, MessageQueue.LoanOut, messageBody, String.valueOf(loanId), true);
+        create(jobManager, AUTO_LOAN_FULL_DELAY_SECONDS, MessageQueue.LoanOut, messageBody, String.valueOf(loanId), true);
     }
 
     public static void createAnxinContractQueryDelayJob(JobManager jobManager, long businessId, String anxinContractType) {

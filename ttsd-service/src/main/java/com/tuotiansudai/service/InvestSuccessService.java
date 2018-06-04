@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
@@ -14,8 +14,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service
 public class InvestSuccessService {
 
-    private static Logger logger = Logger.getLogger(InvestSuccessService.class);
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(InvestSuccessService.class);
 
     private final static int FIRST_INVEST_MAX_TIMES_EACH_MONTH = 3;
 
@@ -46,14 +46,13 @@ public class InvestSuccessService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void processInvestSuccess(BankInvestMessage message) {
+    public void processInvestSuccess(BankLoanInvestMessage message) {
         long investId = message.getInvestId();
 
-        LoanModel loanModel = loanMapper.findById(message.getLoanId());
         InvestModel investModel = investMapper.findById(investId);
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            logger.warn(MessageFormat.format("[MQ] invest not found or status is incorrect, message: {0}", new Gson().toJson(message)));
+            logger.warn("[MQ] invest not found or status is incorrect, message: {}", new Gson().toJson(message));
             return;
         }
 
@@ -61,11 +60,7 @@ public class InvestSuccessService {
         investModel.setBankOrderDate(message.getBankOrderDate());
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTradingTime(new Date());
-
-        this.processInvestAchievement(investModel, loanModel);
-
         investMapper.update(investModel);
-        loanMapper.update(loanModel);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
                 new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS));
@@ -84,20 +79,23 @@ public class InvestSuccessService {
         if (isFirstInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.FIRST_INVEST);
             loanModel.setFirstInvestAchievementId(investModel.getId());
-            logger.info(MessageFormat.format("{0} get the FIRST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
+            logger.info("{} get the FIRST_INVEST of loan({})", investModel.getLoginName(), String.valueOf(investModel.getLoanId()));
         }
 
         if (isMaxAmountAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.MAX_AMOUNT);
             loanModel.setMaxAmountAchievementId(investModel.getId());
-            logger.info(MessageFormat.format("{0} get the MAX_AMOUNT of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
+            logger.info("{} get the MAX_AMOUNT of loan({})", investModel.getLoginName(), String.valueOf(investModel.getLoanId()));
         }
 
         if (isLastInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.LAST_INVEST);
             loanModel.setLastInvestAchievementId(investModel.getId());
-            logger.info(MessageFormat.format("{0} get the LAST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
+            logger.info("{} get the LAST_INVEST of loan({})", investModel.getLoginName(), String.valueOf(investModel.getLoanId()));
         }
+
+        investMapper.update(investModel);
+        loanMapper.update(loanModel);
     }
 
     private boolean isFirstInvestAchievement(InvestModel investModel, List<InvestModel> successInvestModels) {

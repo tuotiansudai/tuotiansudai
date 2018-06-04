@@ -150,7 +150,7 @@
                 or
                  (exists(select 1 from loan where loan.id = #{loanId} and status = 'OVERDUE')
                  and enabled_repay.status in ('OVERDUE', 'WAIT_PAY')
-                 and enabled_repay.period = (select max(period)
+                 and enabled_repay.period = (select min(period)
                                              from loan_repay overdue_repay
                                              where overdue_repay.loan_id = #{loanId} and
                                                    overdue_repay.status in ('OVERDUE', 'WAIT_PAY'))))
@@ -166,10 +166,6 @@
 
     <select id="findByLoanIdAndLTPeriod" parameterType="map" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} and period &lt; #{period}
-    </select>
-
-    <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
     </select>
 
     <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
@@ -276,7 +272,7 @@
         and status = 'COMPLETE'
     </select>
 
-    <select id="findNotCompleteLoanRepay" resultMap="loanRepayResultMap">
+    <select id="findIncompleteLoanRepay" resultMap="loanRepayResultMap">
         select * from loan_repay where status != 'COMPLETE' and loan_id != 1
     </select>
 

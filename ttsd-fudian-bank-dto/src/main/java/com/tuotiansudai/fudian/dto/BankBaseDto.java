@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.dto;
 
 import com.google.common.base.Strings;
+import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 
@@ -46,5 +47,10 @@ public class BankBaseDto implements Serializable, BankDtoValidator {
                 && !Strings.isNullOrEmpty(mobile)
                 && !Strings.isNullOrEmpty(bankUserName)
                 && !Strings.isNullOrEmpty(bankAccountNo);
+    }
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().create().toJson(this);
     }
 }

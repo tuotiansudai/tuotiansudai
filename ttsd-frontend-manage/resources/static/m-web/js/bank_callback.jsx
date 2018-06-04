@@ -15,7 +15,7 @@ if($('.loading-page').length){
         count++;
         $('#gifImg').attr('src',require('../images/gif/gif' +count + '.png'));
 
-    },20)
+    },100)
 
     let $countTime = $('#secondsCountDown');
 
@@ -23,7 +23,7 @@ if($('.loading-page').length){
         btnDom:$countTime,
         time:5,
         textCounting:'',
-        isAfterText:'0'
+        isAfterText:'1'
     },function() {
         $("#isPaySuccess").submit();
     });

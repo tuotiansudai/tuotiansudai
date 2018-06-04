@@ -86,8 +86,7 @@ public interface LoanMapper {
     int findLoanListCount(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
                           @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime);
 
-    void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
-                                   @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
+    void updateRaisingCompleteTime(@Param(value = "loanId") long loanId);
 
     LoanModel findHomeNewbieLoan();
 

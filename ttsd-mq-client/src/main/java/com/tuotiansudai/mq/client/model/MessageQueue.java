@@ -18,19 +18,17 @@ public enum MessageQueue {
     GenerateReferrerRelation("GenerateReferrerRelation"),
     AccountRegistered_CompletePointTask("AccountRegistered-CompletePointTask"),
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
+    InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
+    InvestSuccess_Ranking("InvestSuccess-Ranking"),
+    InvestSuccess_WeChatHelp("InvestSuccess-WeChatHelp"),
+    InvestSuccess_ActivityInvest("InvestSuccess-ActivityInvest"),
     ActivityWeChatCoupon("ActivityWeChatCoupon"),
+    Celebration_Coupon("Celebration-Coupon"),
+    NewYearActivity_Coupon("NewYearActivity-Coupon"),
+    StartWorkActivity_Coupon("StartWorkActivity-Coupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
     TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
     ExperienceRepayCallback("ExperienceRepayCallback"),
-    MembershipUpgrade_SendJpushMessage("MembershipUpgrade-SendJpushMessage"),
-    LoanOutSuccess_GenerateRepay("LoanOutSuccess-GenerateRepay"),
-    LoanOutSuccess_RewardReferrer("LoanOutSuccess-RewardReferrer"),
-    LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
-    LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
-    LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
-    LoanOutSuccess_InviteHelpActivity("LoanOutSuccess-InviteHelpActivity"),
-    LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
-    LoanOutSuccess_SuperScholarActivity("LoanOutSuccess-SuperScholarActivity"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -81,16 +79,19 @@ public enum MessageQueue {
     Recharge_Success("Recharge-Success"),
     Recharge_CompletePointTask("Recharge-CompletePointTask"),
 
-    Withdraw_Success("Recharge-Success"),
-    Withdraw_EventMessage("Recharge-EventMessage"),
-    Withdraw_PushMessage("Recharge-PushMessage"),
-    Withdraw_WeChatMessage("Recharge-WeChatMessage"),
-
+    Withdraw_Success("Withdraw-Success"),
 
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
-    ;
+    Invest_CheckLoanFull("Invest-Invest_CheckLoanFull"),
+
+    LoanFull_Success("LoanFull-Success"),
+    LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
+    LoanFull_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
+
+    LoanRepay_Success("LoanRepay-Success"),
+    LoanCallback_Success("LoanCallback-Success");
 
     private final String queueName;
 

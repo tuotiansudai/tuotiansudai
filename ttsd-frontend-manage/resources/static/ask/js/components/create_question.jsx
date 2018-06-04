@@ -160,13 +160,13 @@ $.fn.checkFrom = function () {
                 utils.validLen($ele, 1,100);
                 break;
             case 'addition':
-                utils.validLen($ele, 1,500);
+                utils.validLen($ele, 1,2000);
                 break;
             case 'captcha':
                 utils.validLen($ele,5,5);
                 break;
             case 'answer':
-                utils.validLen($ele, 10,1000);
+                utils.validLen($ele, 10,5000);
                 break;
             default:
                 utils.radioChecked($ele)
