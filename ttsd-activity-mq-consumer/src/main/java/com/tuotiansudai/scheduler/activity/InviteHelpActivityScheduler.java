@@ -102,7 +102,7 @@ public class InviteHelpActivityScheduler {
                 redisWrapperClient.hdel(EVERYONE_HELP_WAIT_SEND_CASH, String.valueOf(id));
                 WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(id);
                 if (weChatHelpModel.getLoginName() == null || weChatHelpModel.getReward() <= 0) {
-                    return;
+                    continue;
                 }
                 if (!redisWrapperClient.exists(MessageFormat.format(EVERYONE_HELP_SEND_CASH_TO_CREATOR, weChatHelpModel.getLoginName()))) {
                     try {
