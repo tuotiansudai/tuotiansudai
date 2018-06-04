@@ -11,9 +11,9 @@ public class BankRegisterMessage {
 
     private String realName;
 
-    private String BankAccountNo;
+    private String bankAccountNo;
 
-    private String BankUserName;
+    private String bankUserName;
 
     private String bankOrderDate;
 
@@ -27,8 +27,8 @@ public class BankRegisterMessage {
         this.mobile = mobile;
         this.identityCode = identityCode;
         this.realName = realName;
-        BankAccountNo = bankAccountNo;
-        BankUserName = bankUserName;
+        this.bankOrderDate = bankAccountNo;
+        this.bankUserName = bankUserName;
         this.bankOrderDate = bankOrderDate;
         this.bankOrderNo = bankOrderNo;
     }
@@ -50,11 +50,11 @@ public class BankRegisterMessage {
     }
 
     public String getBankAccountNo() {
-        return BankAccountNo;
+        return bankAccountNo;
     }
 
     public String getBankUserName() {
-        return BankUserName;
+        return bankUserName;
     }
 
     public String getBankOrderDate() {
