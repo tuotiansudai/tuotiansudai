@@ -63,8 +63,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanInvest(LoanInvestRequestDto dto);
 
-    @Insert("INSERT INTO loan_credit_invest(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `credit_no`, `credit_no_amount`, `loan_tx_no`, `credit_amount`, `amount`, `credit_fee`, `credit_fee_type`, `invest_order_no`, `invest_order_date`, `ori_order_no`, `ori_order_date`, `repayed_amount`, `request_time`, `status`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{creditNo}, #{creditNoAmount}, #{loanTxNo}, #{creditAmount}, #{amount}, #{creditFee}, #{creditFeeType}, #{investOrderNo}, #{investOrderDate}, #{oriOrderNo}, #{oriOrderDate}, #{repayedAmount}, now(), 'SEND')")
+    @Insert("INSERT INTO loan_credit_invest(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `credit_no`, `credit_no_amount`, `loan_tx_no`, `credit_amount`, `amount`, `credit_fee`, `credit_fee_type`, `invest_order_no`, `invest_order_date`, `ori_order_no`, `ori_order_date`, `repayed_amount`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{creditNo}, #{creditNoAmount}, #{loanTxNo}, #{creditAmount}, #{amount}, #{creditFee}, #{creditFeeType}, #{investOrderNo}, #{investOrderDate}, #{oriOrderNo}, #{oriOrderDate}, #{repayedAmount}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreditInvest(LoanCreditInvestRequestDto dto);
 

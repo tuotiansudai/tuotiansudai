@@ -60,7 +60,7 @@ public class InvestController {
 
         if (!bindingResult.hasErrors()) {
             try {
-//                investDto.setLoginName(LoginUserInfo.getLoginName());
+                investDto.setLoginName(LoginUserInfo.getLoginName());
                 BankAsyncMessage bankAsyncData = investService.invest(investDto);
                 return new ModelAndView("/pay", "pay", bankAsyncData);
             } catch (InvestException e) {

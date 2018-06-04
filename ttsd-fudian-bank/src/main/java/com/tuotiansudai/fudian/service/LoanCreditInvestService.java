@@ -10,14 +10,14 @@ import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
 import com.tuotiansudai.fudian.dto.request.LoanCreditInvestRequestDto;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.request.Source;
-import com.tuotiansudai.fudian.dto.response.*;
+import com.tuotiansudai.fudian.dto.response.LoanCreditInvestContentDto;
+import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
+import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectMapper;
-import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankLoanCreditInvestMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
-import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.redisson.api.RLock;
@@ -55,8 +55,6 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
 
     private final RedissonClient redissonClient;
 
-    private final SelectRequestMapper selectRequestMapper;
-
     private final QueryTradeService queryTradeService;
 
     private final SelectMapper selectMapper;
@@ -64,14 +62,13 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, RedissonClient redissonClient, SelectRequestMapper selectRequestMapper, QueryTradeService queryTradeService, SelectMapper selectMapper) {
+    public LoanCreditInvestService(SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, RedissonClient redissonClient, QueryTradeService queryTradeService, SelectMapper selectMapper) {
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.redissonClient = redissonClient;
-        this.selectRequestMapper = selectRequestMapper;
         this.queryTradeService = queryTradeService;
         this.selectMapper = selectMapper;
     }
@@ -134,7 +131,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
         if (lock.tryLock()) {
             try {
                 HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-                List<BaseRequestDto> baseRequestDtos = selectRequestMapper.selectResponseInOneHour(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase());
+                List<BaseRequestDto> baseRequestDtos = selectMapper.selectResponseInOneHour(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase());
 
                 for (BaseRequestDto baseRequestDto : baseRequestDtos) {
                     try {
