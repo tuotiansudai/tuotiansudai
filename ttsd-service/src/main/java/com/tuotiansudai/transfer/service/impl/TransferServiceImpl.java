@@ -83,6 +83,7 @@ public class TransferServiceImpl implements TransferService {
                 userModel.getMobile(),
                 bankAccountModel.getBankUserName(),
                 bankAccountModel.getBankAccountNo(),
+                transferApplicationModel.getInvestAmount(),
                 transferApplicationModel.getTransferAmount(),
                 transferApplicationModel.getTransferFee(),
                 transferrerModel.getBankOrderNo(),

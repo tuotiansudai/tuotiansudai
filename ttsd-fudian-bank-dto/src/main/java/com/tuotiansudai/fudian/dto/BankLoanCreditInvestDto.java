@@ -12,6 +12,8 @@ public class BankLoanCreditInvestDto extends BankBaseDto {
 
     private long investAmount;
 
+    private long transferAmount;
+
     private long transferFee;
 
     private String investOrderDate;
@@ -23,11 +25,12 @@ public class BankLoanCreditInvestDto extends BankBaseDto {
     public BankLoanCreditInvestDto() {
     }
 
-    public BankLoanCreditInvestDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long transferApplicationId, long investId, long investAmount, long transferFee, String investOrderDate, String investOrderNo, String loanTxNo) {
+    public BankLoanCreditInvestDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long transferApplicationId, long investId, long investAmount, long transferAmount, long transferFee, String investOrderDate, String investOrderNo, String loanTxNo) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.transferApplicationId = transferApplicationId;
         this.investId = investId;
         this.investAmount = investAmount;
+        this.transferAmount = transferAmount;
         this.transferFee = transferFee;
         this.investOrderDate = investOrderDate;
         this.investOrderNo = investOrderNo;
@@ -56,6 +59,14 @@ public class BankLoanCreditInvestDto extends BankBaseDto {
 
     public void setInvestAmount(long investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public long getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(long transferAmount) {
+        this.transferAmount = transferAmount;
     }
 
     public long getTransferFee() {
@@ -96,6 +107,7 @@ public class BankLoanCreditInvestDto extends BankBaseDto {
                 && transferApplicationId > 0
                 && investId > 0
                 && investAmount > 0
+                && transferAmount > 0
                 && transferFee >= 0
                 && !Strings.isNullOrEmpty(loanTxNo)
                 && !Strings.isNullOrEmpty(investOrderNo)

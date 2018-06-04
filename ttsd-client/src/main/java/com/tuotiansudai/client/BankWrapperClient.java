@@ -120,9 +120,9 @@ public class BankWrapperClient {
                 new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
     }
 
-    public BankAsyncMessage loanCreditInvest(long transferApplicationId, long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long transferFee, String investOrderNo, String investOrderDate, String loanTxNo) {
+    public BankAsyncMessage loanCreditInvest(long transferApplicationId, long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long investAmount, long transferAmount, long transferFee, String investOrderNo, String investOrderDate, String loanTxNo) {
         return asyncExecute(MessageFormat.format("/loan-credit-invest/source/{0}", source.name().toLowerCase()),
-                new BankLoanCreditInvestDto(loginName, mobile, bankUserName, bankAccountNo, transferApplicationId, investId, amount, transferFee, investOrderDate, investOrderNo, loanTxNo));
+                new BankLoanCreditInvestDto(loginName, mobile, bankUserName, bankAccountNo, transferApplicationId, investId, investAmount, transferAmount, transferFee, investOrderDate, investOrderNo, loanTxNo));
     }
 
     public BankReturnCallbackMessage fastInvest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
