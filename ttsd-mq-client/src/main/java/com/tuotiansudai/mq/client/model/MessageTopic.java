@@ -40,8 +40,11 @@ public enum MessageTopic {
     Withdraw("Withdraw",
             MessageQueue.Withdraw_Success,
             MessageQueue.Withdraw_EventMessage,
-            MessageQueue.Withdraw_PushMessage
-    ),
+            MessageQueue.Withdraw_PushMessage),
+
+    Authorization("Authorization",
+            MessageQueue.Authorization_Success,
+            MessageQueue.Authorization_CompletePointTask),
     ;
 
     final String topicName;

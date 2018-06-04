@@ -28,6 +28,15 @@
         select * from bank_account where login_name = #{loginname}
     </select>
 
+    <update id="update" parameterType="map">
+        update bank_account set
+        authorization = #{authorization},
+        auto_invest = #{autoInvest},
+        auto_repay = #{autoRepay},
+        updated_time = now()
+        where id = #{id}
+    </update>
+
     <update id="updateMembershipPoint" parameterType="map">
         update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName}
     </update>

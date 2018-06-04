@@ -90,6 +90,9 @@ public enum MessageQueue {
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
+
+    Authorization_Success("Authorization-Success"),
+    Authorization_CompletePointTask("Authorization-CompletePointTask"),
     ;
 
     private final String queueName;
