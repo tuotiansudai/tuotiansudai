@@ -1,0 +1,377 @@
+$orange: #ff5d0e;
+$orangeBorder:#ffd43d;
+$redActivityTime:#d20304;
+$redStrong:#e53d22;
+$grayContentFont:#8f8f8f;
+$greenBtn:#119d4c;
+$gray333:#333333;
+
+p {
+  margin-bottom: 5px;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+body {
+  background: $orange;
+}
+.activity-page {
+  width: 1225px;
+  margin: 0 auto;
+}
+.content-page {
+  width: 1080px;
+  margin: 0 auto;
+}
+.borderYellow {
+  border-bottom: 4px solid $orangeBorder;
+  border-left: 4px solid $orangeBorder;
+  border-right: 4px solid $orangeBorder;
+}
+.gold-btn {
+  width: 307px;
+  height: 118px;
+  display: block;
+  margin: 0 auto;
+  &.open-ball-btn {
+    background: url("../images/2018/july-activity/open_ball_btn.png") no-repeat center center;
+    background-size: 100%;
+    margin-bottom: 56px;
+    position: relative;
+    top:-18px;
+    z-index: 1;
+  }
+  &.to_invest_btn {
+    background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
+    background-size: 100%;
+  }
+}
+.swiper-container {
+  float: none!important;
+}
+.july-banner {
+  height: 800px;
+  background: url("../images/2018/july-activity/pc_banner.png") no-repeat center center;
+}
+
+.july-container {
+
+}
+.part {
+  .part-top {
+    height: 111px;
+    margin: 0 auto;
+    background: url("../images/2018/july-activity/pc_part_title.png") no-repeat center center;
+    background-size: 100%;
+  }
+}
+.country-btn {
+  box-sizing: border-box;
+  padding-left: 36px;
+  padding-right: 36px;
+  height: 34px;
+  line-height: 34px;
+  border: 2px solid $greenBtn;
+  border-radius: 17px;
+  color: $gray333;
+  display: inline-block;
+
+}
+.content-section {
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding-left: 60px;
+  padding-right: 60px;
+  .content-title {
+    position: absolute;
+    width: 511px;
+    height: 47px;
+    line-height: 49px;
+    left: 50%;
+    top: -23px;
+    margin-left: -255px;
+    background: url("../images/2018/july-activity/pc_content_title.png") no-repeat center center;
+    background-size: 100%;
+    color: $redActivityTime;
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+  }
+
+}
+
+.team-logo-wrap {
+  .team-logo-rules {
+    padding-top: 60px;
+    padding-bottom: 30px;
+    p {
+      line-height: 36px;
+      margin-bottom: 36px;
+      font-size: 24px;
+      color: $grayContentFont;
+      strong {
+        color: $redStrong;
+        font-size: 24px;
+      }
+      &.last {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .open-balls-content {
+    margin-top: 40px;
+    .big-ball {
+      width: 701px;
+      height: 409px;
+      margin: 0 auto;
+      background: url("../images/2018/july-activity/ball_big.png") no-repeat center center;
+      background-size: 100%;
+      position: relative;
+      left: 20px;
+      z-index: 2;
+    }
+    .my-logo {
+      margin: 0 auto;
+      margin-bottom: 30px;
+      width: 265px;
+      font-size: 35px;
+      font-weight: bold;
+      height: 66px;
+      line-height: 66px;
+      text-indent: 80px;
+      color: $redStrong;
+      background: url("../images/2018/july-activity/icon_my_ball.png") no-repeat left center;
+    }
+    .my-team-logos {
+      padding-bottom: 70px;
+      ul {
+        li {
+          text-align: center;
+          .team-logo {
+            display: inline-block;
+            width: 160px;
+            height: 160px;
+            &.agenting {
+              background: url("../images/2018/july-activity/agenting.png") no-repeat;
+              background-size: 100%;
+            }
+            &.aiji {
+              background: url("../images/2018/july-activity/aiji.png") no-repeat;
+              background-size: 100%;
+            }
+            &.aodaliya {
+              background: url("../images/2018/july-activity/aodaliya.png") no-repeat;
+              background-size: 100%;
+            }
+            &.banama {
+              background: url("../images/2018/july-activity/banama.png") no-repeat;
+              background-size: 100%;
+            }
+            &.baxi {
+              background: url("../images/2018/july-activity/baxi.png") no-repeat;
+              background-size: 100%;
+            }
+            //5
+
+            &.bilishi {
+              background: url("../images/2018/july-activity/bilishi.png") no-repeat;
+              background-size: 100%;
+            }
+            &.bingdao {
+              background: url("../images/2018/july-activity/bingdao.png") no-repeat;
+              background-size: 100%;
+            }
+            &.bolan {
+              background: url("../images/2018/july-activity/bolan.png") no-repeat;
+              background-size: 100%;
+            }
+            &.danmai {
+              background: url("../images/2018/july-activity/danmai.png") no-repeat;
+              background-size: 100%;
+            }
+            &.deguo {
+              background: url("../images/2018/july-activity/deguo.png") no-repeat;
+              background-size: 100%;
+            }
+            //10
+
+            &.eluosi {
+              background: url("../images/2018/july-activity/eluosi.png") no-repeat;
+              background-size: 100%;
+            }
+            &.faguo {
+              background: url("../images/2018/july-activity/faguo.png") no-repeat;
+              background-size: 100%;
+            }
+            &.gelunbiya {
+              background: url("../images/2018/july-activity/gelunbiya.png") no-repeat;
+              background-size: 100%;
+            }
+            &.gesidani {
+              background: url("../images/2018/july-activity/gesidani.png") no-repeat;
+              background-size: 100%;
+            }
+            &.hanguo {
+              background: url("../images/2018/july-activity/hanguo.png") no-repeat;
+              background-size: 100%;
+            }
+            //15
+
+            &.keluodiya {
+              background: url("../images/2018/july-activity/keluodiya.png") no-repeat;
+              background-size: 100%;
+            }
+            &.milu {
+              background: url("../images/2018/july-activity/milu.png") no-repeat;
+              background-size: 100%;
+            }
+            &.moluoge {
+              background: url("../images/2018/july-activity/moluoge.png") no-repeat;
+              background-size: 100%;
+            }
+            &.moxige {
+              background: url("../images/2018/july-activity/moxige.png") no-repeat;
+              background-size: 100%;
+            }
+            &.niriliya {
+              background: url("../images/2018/july-activity/niriliya.png") no-repeat;
+              background-size: 100%;
+            }
+            //20
+
+            &.putaoya {
+              background: url("../images/2018/july-activity/putaoya.png") no-repeat;
+              background-size: 100%;
+            }
+            &.riben {
+              background: url("../images/2018/july-activity/riben.png") no-repeat;
+              background-size: 100%;
+            }
+            &.ruidian {
+              background: url("../images/2018/july-activity/ruidian.png") no-repeat;
+              background-size: 100%;
+            }
+            &.ruishi {
+              background: url("../images/2018/july-activity/ruishi.png") no-repeat;
+              background-size: 100%;
+            }
+            &.saierweiya {
+              background: url("../images/2018/july-activity/saierweiya.png") no-repeat;
+              background-size: 100%;
+            }
+            //25
+            &.sainajiaer {
+              background: url("../images/2018/july-activity/sainajiaer.png") no-repeat;
+              background-size: 100%;
+            }
+            &.shatealabo {
+              background: url("../images/2018/july-activity/shatealabo.png") no-repeat;
+              background-size: 100%;
+            }
+            &.tunisi {
+              background: url("../images/2018/july-activity/tunisi.png") no-repeat;
+              background-size: 100%;
+            }
+            &.wulajia {
+              background: url("../images/2018/july-activity/wulajia.png") no-repeat;
+              background-size: 100%;
+            }
+            &.xibanya {
+              background: url("../images/2018/july-activity/xibanya.png") no-repeat;
+              background-size: 100%;
+            }
+            //30
+
+            &.yilang {
+              background: url("../images/2018/july-activity/yilang.png") no-repeat;
+              background-size: 100%;
+            }
+            &.yinggelan {
+              background: url("../images/2018/july-activity/yinggelan.png") no-repeat;
+              background-size: 100%;
+            }
+
+          }
+          .country {
+
+          }
+        }
+      }
+
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
