@@ -1,5 +1,10 @@
 package com.tuotiansudai.fudian.dto.response;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.HashMap;
+
 public class QueryUserContentDto extends BaseContentDto {
 
     private String authorization;
@@ -60,5 +65,11 @@ public class QueryUserContentDto extends BaseContentDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isAuthorization(){
+        HashMap<String, String> map = new Gson().fromJson(authorization, new TypeToken<HashMap<String, String>>() {
+        }.getType());
+        return "0000".equals(map.get("loanInvest"));
     }
 }
