@@ -13,6 +13,6 @@ public interface BankRechargeMapper {
 
     BankRechargeModel findById(@Param(value = "id") long id);
 
-    long sumRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
+    int sumRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
 
 }

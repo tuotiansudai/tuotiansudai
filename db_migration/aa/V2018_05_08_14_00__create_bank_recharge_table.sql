@@ -1,5 +1,5 @@
 CREATE TABLE `aa`.`bank_recharge` (
-  `id`              BIGINT UNSIGNED NOT NULL,
+  `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`      VARCHAR(25)     NOT NULL,
   `amount`          BIGINT UNSIGNED NOT NULL,
   `fee`             BIGINT UNSIGNED NOT NULL,

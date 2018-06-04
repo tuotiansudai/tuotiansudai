@@ -35,10 +35,7 @@
                                        data-url="${requestContext.getContextPath()}/bind-card"/>
                             </form>
                         </div>
-                    </#if>
-
-
-                    <#if isFastPayOn>
+                    <#else>
                         <div class="fast-recharge-form">
                             <form id="form2" action="/recharge" method="post"
                                   <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
@@ -49,7 +46,7 @@
 
                                 <input type="hidden" name="amount" value=""/>
                                 <input type="hidden" name="source" value="WEB"/>
-
+                                <input type="hidden" name="PayType" value="FAST_PAY"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <#if bankModel??>
@@ -75,25 +72,27 @@
                                        data-url="${requestContext.getContextPath()}/bind-card"/>
                             </form>
                         </div>
-                    </#if>
-                    <div class="recharge-form">
-                        <b class="title">请选择银行：</b>
-                        <form action="/recharge" method="post"
-                              <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-                            <div class="pad-m">
-                                账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
-                                输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny"
-                                              data-v-min="0.00" placeholder="0.00"> 元
-                                <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
-                                <input type="hidden" name="amount" value=""/>
-                                <input type="hidden" name="source" value="WEB"/>
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="tc clear-blank-m">
-                                    <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+
+                    <#else>
+                        <div class="recharge-form">
+                            <form action="/recharge" method="post"
+                                  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                                <div class="pad-m">
+                                    账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
+                                    输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny"
+                                                  data-v-min="0.00" placeholder="0.00"> 元
+                                    <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
+                                    <input type="hidden" name="amount" value=""/>
+                                    <input type="hidden" name="PayType" value="GATE_PAY"/>
+                                    <input type="hidden" name="source" value="WEB"/>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <div class="tc clear-blank-m">
+                                        <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    </#if>
                 </div>
             </div>
             <div class="clear-blank"></div>
@@ -120,11 +119,5 @@
         <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
     </div>
 
-    <#--<div id="openFastRecharge" class="pad-m" style="display: none;">-->
-        <#--<a href="${requestContext.getContextPath()}/recharge" class="btn-normal" data-category="继续充值"-->
-           <#--data-label="recharge">继续充值</a>-->
-        <#--<div class="clear-blank"></div>-->
-        <#--<span class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>-->
-    <#--</div>-->
 </div>
 </@global.main>

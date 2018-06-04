@@ -29,6 +29,19 @@ public class BankRechargeModel {
 
     private Date createdTime;
 
+    public BankRechargeModel() {
+    }
+
+    public BankRechargeModel(String loginName, long amount, String payType, Source source, String channel) {
+        this.loginName = loginName;
+        this.amount = amount;
+        this.fee = 0;
+        this.source = source;
+        this.channel = channel;
+        this.PayType = payType;
+        this.status = BankRechargeStatus.WAIT_PAY;
+    }
+
     public long getId() {
         return id;
     }
