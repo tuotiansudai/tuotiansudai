@@ -37,9 +37,9 @@
         <div class="user-money">
             <p>账户余额：<span>${balance}</span>元</p>
         </div>
-        <input type="hidden" name="bankCode" value="${bankCode}"/>
         <input type="hidden" name="amount" value=""/>
         <input type="hidden" name="source" value="M"/>
+        <input type="hidden" name="PayType" value="FAST_PAY"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
     </form>
