@@ -1,6 +1,8 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.tuotiansudai.fudian.dto.BankRechargeDto;
 import com.tuotiansudai.fudian.dto.RechargePayType;
+import com.tuotiansudai.fudian.util.AmountUtils;
 
 public class RechargeRequestDto extends NotifyRequestDto {
 
@@ -10,10 +12,10 @@ public class RechargeRequestDto extends NotifyRequestDto {
 
     private String payType;
 
-    public RechargeRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String amount, RechargePayType payType) {
-        super(source, loginName, mobile, userName, accountNo);
-        this.amount = amount;
-        this.payType = payType.getValue();
+    public RechargeRequestDto(Source source, BankRechargeDto bankRechargeDto) {
+        super(source, bankRechargeDto.getLoginName(), bankRechargeDto.getMobile(), bankRechargeDto.getBankUserName(), bankRechargeDto.getBankAccountNo());
+        this.amount = AmountUtils.toYuan(bankRechargeDto.getAmount());
+        this.payType = bankRechargeDto.getPayType().getValue();
     }
 
     public String getAmount() {

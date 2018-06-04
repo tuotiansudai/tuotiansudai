@@ -53,9 +53,9 @@ public class PayController extends AsyncRequestController {
         this.merchantTransferService = merchantTransferService;
     }
 
-    @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.GET)
+    @RequestMapping(path = "/recharge/source/{source}", method = RequestMethod.POST)
     public ResponseEntity<BankAsyncMessage> recharge(@PathVariable Source source,
-                                                  @RequestBody BankRechargeDto params) {
+                                                     @RequestBody BankRechargeDto params) {
         logger.info("[Fudian] call recharge");
 
         RechargeRequestDto requestDto = rechargeService.recharge(source, params);
@@ -74,7 +74,7 @@ public class PayController extends AsyncRequestController {
     public String merchantRecharge(Map<String, Object> model) {
         logger.info("[Fudian] call merchant recharge");
 
-        RechargeRequestDto requestDto = rechargeService.merchantRecharge(Source.WEB, null, null, "1000000.00");
+        RechargeRequestDto requestDto = rechargeService.merchantRecharge(Source.WEB, null, null, 12313212, 1000000);
         model.put("message", requestDto.getRequestData());
         model.put("path", ApiType.RECHARGE.getPath());
         return "post";

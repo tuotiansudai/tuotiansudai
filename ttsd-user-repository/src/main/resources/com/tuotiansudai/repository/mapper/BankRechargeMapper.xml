@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_recharge(login_name, fee, pay_type, status, source, channel, created_time, updated_time)
-        value(#{loginName}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, #{status}, now(), now())
+        insert into bank_recharge(login_name, amount, fee, pay_type, status, source, channel, created_time, updated_time)
+        value(#{loginName}, #{amount}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, now(), now())
     </insert>
 
     <update id="update" parameterType="map">
@@ -28,7 +28,7 @@
         bank_order_no = #{bankOrderNo},
         bank_order_date = #{bankOrderDate},
         status = #{status},
-        updated = now()
+        updated_time = now()
         where id = #{id}
     </update>
 
