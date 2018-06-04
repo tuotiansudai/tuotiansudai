@@ -74,7 +74,7 @@
     </div>
     <div class="footer-responsive">
         <ul>
-            <li><a href="${webServer}/about/refer-reward">推荐奖励</a></li>
+            <li><a href="${webServer}/activity/invite-friend">推荐奖励</a></li>
             <li><a href="${webServer}/about/guide">新手指引</a></li>
             <li><a href="${webServer}/about/assurance">安全保障</a></li>
         </ul>
