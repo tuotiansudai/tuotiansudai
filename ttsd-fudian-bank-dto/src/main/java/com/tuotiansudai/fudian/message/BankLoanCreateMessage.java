@@ -12,6 +12,9 @@ public class BankLoanCreateMessage extends BankBaseMessage {
 
     private String bankOrderDate;
 
+    public BankLoanCreateMessage() {
+    }
+
     public BankLoanCreateMessage(boolean status, String message) {
         super(status, message);
     }

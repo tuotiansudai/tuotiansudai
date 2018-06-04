@@ -1,3 +1,4 @@
+
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="业务失败">
 <div class="head-banner"></div>

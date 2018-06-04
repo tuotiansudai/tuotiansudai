@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.tuotiansudai.fudian.message.BankInvestMessage;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.service.InvestSuccessService;
@@ -41,8 +41,8 @@ public class InvestSuccessMessageConsumer implements MessageConsumer {
         }
 
         try {
-            BankInvestMessage bankInvestMessage = gson.fromJson(message, BankInvestMessage.class);
-            investSuccessService.processInvestSuccess(bankInvestMessage);
+            BankLoanInvestMessage bankLoanInvestMessage = gson.fromJson(message, BankLoanInvestMessage.class);
+            investSuccessService.processInvestSuccess(bankLoanInvestMessage);
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] message is invalid: {}", message);
         }

@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.request;
 
-public enum LoanInvestStatus {
+public enum BankResponseStatus {
 
     SENT, //已发送
     BANK_RESPONSE, //银行已响应

@@ -62,7 +62,6 @@ public class WithdrawServiceImpl implements WithdrawService {
     /**
      * 联动优势提现手续费2元(200分)
      */
-
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 

@@ -37,15 +37,15 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.LoanOutSuccess_RewardReferrer;
+        return MessageQueue.LoanFull_RewardReferrer;
     }
 
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer receive message: {}: {}.", this.queue(), message);
+        logger.info("[标的放款MQ] LoanFull_RewardReferrer receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[标的放款MQ] LoanOutSuccess_RewardReferrer receive message is empty");
+            logger.error("[标的放款MQ] LoanFull_RewardReferrer receive message is empty");
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放推荐人奖励失败, MQ消息为空"));
             return;
         }
@@ -54,34 +54,34 @@ public class LoanOutSuccessRewardReferrerMessageConsumer implements MessageConsu
         try {
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
-                logger.error("[标的放款MQ] LoanOutSuccess_RewardReferrer loanId is empty");
+                logger.error("[标的放款MQ] LoanFull_RewardReferrer loanId is empty");
                 smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放推荐人奖励失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
-            logger.error("[标的放款MQ] LoanOutSuccess_RewardReferrer json convert LoanOutSuccessMessage is fail, message:{}", message);
+            logger.error("[标的放款MQ] LoanFull_RewardReferrer json convert LoanOutSuccessMessage is fail, message:{}", message);
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放推荐人奖励失败, 解析消息失败"));
             return;
         }
 
         long loanId = loanOutInfo.getLoanId();
 
-        logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer is executing，loanId:" + loanId);
+        logger.info("[标的放款MQ] LoanFull_RewardReferrer is executing，loanId:" + loanId);
         boolean result;
         try {
             result = payWrapperClient.sendRewardReferrer(loanId).isSuccess();
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer sendRewardReferrer is fail,loanId({0}), error:{0}", String.valueOf(loanId), e));
+            logger.error(MessageFormat.format("[标的放款MQ] LoanFull_RewardReferrer sendRewardReferrer is fail,loanId({0}), error:{0}", String.valueOf(loanId), e));
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("放款发放推荐人奖励失败, 业务处理异常"));
             return;
         }
 
         if (!result) {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("发放推荐人奖励失败,标的ID:{0}", String.valueOf(loanId))));
-            logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_RewardReferrer is fail (loanId = {0})", String.valueOf(loanId)));
-            throw new RuntimeException("[标的放款MQ] LoanOutSuccess_RewardReferrer is fail. loanOutInfo: " + message);
+            logger.error(MessageFormat.format("[标的放款MQ] LoanFull_RewardReferrer is fail (loanId = {0})", String.valueOf(loanId)));
+            throw new RuntimeException("[标的放款MQ] LoanFull_RewardReferrer is fail. loanOutInfo: " + message);
         }
 
-        logger.info("[标的放款MQ] LoanOutSuccess_RewardReferrer consume success.");
+        logger.info("[标的放款MQ] LoanFull_RewardReferrer consume success.");
     }
 }

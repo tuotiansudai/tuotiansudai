@@ -10,8 +10,6 @@ public class BankWithdrawDto extends BankBaseDto {
 
     private long fee;
 
-    private String openId;
-
     public BankWithdrawDto() {
     }
 
@@ -20,7 +18,6 @@ public class BankWithdrawDto extends BankBaseDto {
         this.withdrawId = withdrawId;
         this.amount = amount;
         this.fee = fee;
-        this.openId = openId;
     }
 
     public long getWithdrawId() {
@@ -33,10 +30,6 @@ public class BankWithdrawDto extends BankBaseDto {
 
     public long getFee() {
         return fee;
-    }
-
-    public String getOpenId() {
-        return openId;
     }
 
     @Override

@@ -85,6 +85,25 @@
         </association>
     </resultMap>
 
+    <resultMap id="bankLoanRepayInvestResultMap" type="BankLoanRepayInvestDataView">
+        <result column="invest_id" property="investId"/>
+        <result column="invest_repay_id" property="investRepayId"/>
+        <result column="transfer_invest_id" property="transferInvestId"/>
+        <result column="invest_amount" property="investAmount"/>
+        <result column="loan_tx_no" property="loanTxNo"/>
+        <result column="login_name" property="loginName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="bank_user_name" property="bankUserName"/>
+        <result column="bank_account_no" property="bankAccountNo"/>
+        <result column="corpus" property="corpus"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="trading_time" property="tradingTime"/>
+        <result column="invest_bank_order_no" property="investBankOrderNo"/>
+        <result column="invest_bank_order_date" property="investBankOrderDate"/>
+    </resultMap>
+
     <sql id="columns">
         id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
     </sql>
@@ -431,6 +450,33 @@
             null and DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day}))
         </if>
         ORDER BY r.repay_date
+    </select>
+    
+    <select id="queryBankInvestRepayData" parameterType="map" resultMap="bankLoanRepayInvestResultMap">
+        select
+        `invest`.`id` as invest_id,
+        `invest`.`transfer_invest_id` as transfer_invest_id,
+        `invest`.`amount` as invest_amount,
+        `invest_repay`.`id` as invest_repay_id,
+        `loan`.`loan_tx_no` as loan_tx_no,
+        `user`.`login_name` as login_name,
+        `user`.`mobile` as mobile,
+        `bank_account`.`bank_user_name` as bank_user_name,
+        `bank_account`.`bank_account_no` as bank_account_no,
+        `invest_repay`.`corpus` as `corpus`,
+        `invest_repay`.`expected_interest` as expected_interest,
+        `invest_repay`.`default_interest` as default_interest,
+        `invest_repay`.`expected_fee` as expected_fee,
+        `invest`.`bank_order_no` as invest_bank_order_no,
+        `invest`.`bank_order_date` as invest_bank_order_date,
+        `invest`.`invest_fee_rate` as invest_fee_rate,
+        `invest`.`trading_time` as trading_time
+        from `invest_repay`
+        join `invest` on `invest_repay`.`invest_id` = `invest`.`id` and `invest_repay`.`is_transferred` = false and `invest`.`loan_id` = #{loanId} and `invest_repay`.`period` = #{period}
+        join `loan` on `invest`.`loan_id` = `loan`.`id`
+        join `user` on `invest`.`login_name` = `user`.`login_name`
+        join `bank_account` on `bank_account`.`login_name` = `user`.`login_name`
+        order by invest_id
     </select>
 
 </mapper>

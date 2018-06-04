@@ -21,12 +21,6 @@ public class BankWithdrawModel implements Serializable {
 
     private String bankOrderDate;
 
-    private String bankName;
-
-    private String bankCode;
-
-    private String cardNumber;
-
     private WithdrawStatus status;
 
     private Date createdTime;
@@ -98,30 +92,6 @@ public class BankWithdrawModel implements Serializable {
 
     public void setBankOrderDate(String bankOrderDate) {
         this.bankOrderDate = bankOrderDate;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
     }
 
     public WithdrawStatus getStatus() {

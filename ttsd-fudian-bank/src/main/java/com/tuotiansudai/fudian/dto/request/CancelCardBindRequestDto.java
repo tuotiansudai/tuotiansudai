@@ -1,12 +1,10 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 
-import java.util.Map;
+public class CancelCardBindRequestDto extends NotifyRequestDto {
 
-public class CancelCardBindRequestDto extends UserBaseRequestDto {
-
-    public CancelCardBindRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, Map<String, String> extraValues) {
-        super(source, loginName, mobile, userName, accountNo, ApiType.CANCEL_CARD_BIND, extraValues);
+    public CancelCardBindRequestDto(Source source, BankBaseDto bankBaseDto) {
+        super(source, bankBaseDto.getLoginName(), bankBaseDto.getMobile(), bankBaseDto.getBankUserName(), bankBaseDto.getBankAccountNo());
     }
 }

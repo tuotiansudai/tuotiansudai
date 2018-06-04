@@ -1,8 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.service.RepayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +16,16 @@ import javax.validation.Valid;
 @RequestMapping(value = "/repay")
 public class RepayController {
 
+    private final RepayService repayService;
+
     @Autowired
-    private RepayService repayService;
+    public RepayController(RepayService repayService) {
+        this.repayService = repayService;
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView repay(@Valid @ModelAttribute RepayDto repayDto) {
-        BaseDto<PayFormDataDto> baseDto = repayService.repay(repayDto);
-        return new ModelAndView("/pay", "pay", baseDto);
+        BankAsyncMessage bankAsyncMessage = repayDto.isAdvanced() ? repayService.advancedRepay(repayDto) : repayService.normalRepay(repayDto);
+        return new ModelAndView("/pay", "pay", bankAsyncMessage);
     }
 }

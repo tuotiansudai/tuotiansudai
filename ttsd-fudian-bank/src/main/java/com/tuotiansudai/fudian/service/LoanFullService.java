@@ -2,112 +2,162 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankLoanFullDto;
 import com.tuotiansudai.fudian.dto.request.LoanFullRequestDto;
 import com.tuotiansudai.fudian.dto.response.LoanFullContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.message.BankBaseMessage;
+import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
+import com.tuotiansudai.fudian.util.MessageQueueClient;
+import com.tuotiansudai.mq.client.model.MessageTopic;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+
 @Service
-public class LoanFullService implements AsyncCallbackInterface {
+public class LoanFullService implements NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(LoanFullService.class);
 
-    private final SignatureHelper signatureHelper;
+    private static final ApiType API_TYPE = ApiType.LOAN_FULL;
+
+    private static final String BANK_LOAN_FULL_DELAY_QUEUE = "BANK_LOAN_FULL_DELAY_QUEUE";
+
+    private static final String BANK_LOAN_FULL_MESSAGE_KEY = "BANK_LOAN_FULL_MESSAGE_{0}";
+
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private final RedissonClient redissonClient;
 
     private final BankClient bankClient;
+
+    private final MessageQueueClient messageQueueClient;
+
+    private final SignatureHelper signatureHelper;
+
+    private final QueryTradeService queryTradeService;
 
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
 
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
+    private final SelectMapper selectMapper;
 
     @Autowired
-    public LoanFullService(BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
-        this.signatureHelper = signatureHelper;
+    public LoanFullService(RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, BankClient bankClient, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, QueryTradeService queryTradeService, SelectMapper selectMapper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+        this.redisTemplate = redisTemplate;
+        this.redissonClient = redissonClient;
         this.bankClient = bankClient;
+        this.messageQueueClient = messageQueueClient;
+        this.signatureHelper = signatureHelper;
+        this.queryTradeService = queryTradeService;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.selectResponseDataMapper = selectResponseDataMapper;
+        this.selectMapper = selectMapper;
     }
 
-    public ResponseDto full(String loginName, String mobile, String userName, String accountNo, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime) {
-        LoanFullRequestDto dto = new LoanFullRequestDto(loginName, mobile, userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, null);
-        signatureHelper.sign(dto);
+    @SuppressWarnings(value = "unchecked")
+    public BankBaseMessage full(BankLoanFullDto bankLoanFullDto) {
+        if (bankLoanFullDto.getTriggerTime() > System.currentTimeMillis()) {
+            redisTemplate.opsForList().leftPush(BANK_LOAN_FULL_DELAY_QUEUE, bankLoanFullDto.toString());
+            return new BankBaseMessage(true, null);
+        }
+
+        LoanFullRequestDto dto = new LoanFullRequestDto(bankLoanFullDto);
+
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[loan full] sign error, userName: {}, accountNo: {}, loanTxNo: {}, loanOrderNo: {}, loanOrderDate: {}, expectRepayTime: {}",
-                    userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
-            return null;
+            logger.error("[Loan Full] failed to sign, data: {}", bankLoanFullDto);
+            return new BankBaseMessage(false, "签名失败");
         }
 
         insertMapper.insertLoanFull(dto);
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_FULL);
-        if (responseData == null) {
-            logger.error("[loan full] send error, userName: {}, accountNo: {}, loanTxNo: {}, loanOrderNo: {}, loanOrderDate: {}, expectRepayTime: {}",
-                    userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
-            return null;
-        }
+        String bankLoanFullMessageKey = MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, dto.getOrderDate());
+        BankLoanFullMessage bankLoanFullMessage = new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), dto.getOrderNo(), dto.getOrderDate());
+        redisTemplate.<String, String>opsForHash().put(bankLoanFullMessageKey, dto.getOrderNo(), gson.toJson(bankLoanFullMessage));
+
+        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[loan full] verify sign error, userName: {}, accountNo: {}, loanTxNo: {}, loanOrderNo: {}, loanOrderDate: {}, expectRepayTime: {}",
-                    userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
-            return null;
+            logger.warn("[Loan Full] failed to verify sign, data: {}, response: {}", bankLoanFullDto, responseData);
+            return new BankBaseMessage(false, "验签失败");
         }
 
-        ResponseDto responseDto = ApiType.LOAN_FULL.getParser().parse(responseData);
+        ResponseDto<LoanFullContentDto> responseDto = this.notifyCallback(responseData);
+
         if (responseDto == null) {
-            logger.error("[loan full] parse response error, userName: {}, accountNo: {}, loanTxNo: {}, loanOrderNo: {}, loanOrderDate: {}, expectRepayTime: {}",
-                    userName, accountNo, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime);
-            return null;
+            return new BankBaseMessage(false, "解析银行数据失败");
         }
 
-        return responseDto;
-    }
-
-    @Override
-    public void returnCallback(ResponseDto responseData) {
-    }
-
-    @Override
-    public ResponseDto notifyCallback(String responseData) {
-        logger.info("[loan full] data is {}", responseData);
-
-        ResponseDto responseDto = ApiType.LOAN_FULL.getParser().parse(responseData);
-        if (responseDto == null) {
-            logger.error("[loan full] parse callback data error, data is {}", responseData);
-            return null;
-        }
-
-        responseDto.setReqData(responseData);
-        updateMapper.updateLoanFull(responseDto);
-        return responseDto;
+        return new BankBaseMessage(responseDto.isSuccess() && responseDto.getContent().isSuccess(), responseDto.getRetMsg());
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.LOAN_FULL.name().toLowerCase(), orderNo);
-        if (Strings.isNullOrEmpty(responseData)) {
+    public ResponseDto<LoanFullContentDto> notifyCallback(String responseData) {
+        logger.info("[Loan Full] callback data is {}", responseData);
+
+        ResponseDto responseDto = ApiType.LOAN_FULL.getParser().parse(responseData);
+
+        if (responseDto == null) {
+            logger.error("[Loan Full] failed to parse callback data: {}", responseData);
             return null;
         }
 
-        ResponseDto<LoanFullContentDto> responseDto = (ResponseDto<LoanFullContentDto>) ApiType.LOAN_FULL.getParser().parse(responseData);
+        if (!responseDto.isSuccess()) {
+            logger.error("[Loan Full] callback is failure, orderNo: {}, message {}", responseDto.getContent().getOrderNo(), responseDto.getRetMsg());
+        }
 
-        return responseDto.isSuccess() && responseDto.getContent().isSuccess();
+        responseDto.setReqData(responseData);
+        int count = updateMapper.updateNotifyResponseData(ApiType.LOAN_FULL.name().toLowerCase(), responseDto);
+
+        LoanFullContentDto content = ((ResponseDto<LoanFullContentDto>) responseDto).getContent();
+        if (count > 0 && responseDto.isSuccess() && content.isSuccess()) {
+            BankLoanFullMessage bankLoanFullMessage = gson.fromJson(redisTemplate.<String, String>opsForHash().get(MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, content.getOrderDate()), content.getOrderNo()), BankLoanFullMessage.class);
+            bankLoanFullMessage.setStatus(true);
+            bankLoanFullMessage.setMessage(responseDto.getRetMsg());
+            messageQueueClient.publishMessage(MessageTopic.LoanFullSuccess, bankLoanFullMessage);
+            logger.info("[Loan Full] loan full is success, send message: {}", bankLoanFullMessage);
+        }
+
+        return responseDto;
     }
 
+    @Scheduled(fixedDelay = 1000 * 60, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
+    public void delaySchedule() {
+        RLock lock = redissonClient.getLock("BANK_LOAN_FULL_DELAY_QUEUE_LOCK");
+
+        if (lock.tryLock()) {
+            try {
+                ListOperations<String, String> listOperations = redisTemplate.opsForList();
+                Long size = listOperations.size(BANK_LOAN_FULL_DELAY_QUEUE);
+                for (long index = 0; index < (size == null ? 0 : size); index++) {
+                    BankLoanFullDto bankLoanFullDto = gson.fromJson(listOperations.index(BANK_LOAN_FULL_DELAY_QUEUE, -1), BankLoanFullDto.class);
+                    if (bankLoanFullDto.getTriggerTime() < System.currentTimeMillis()) {
+                        this.full(bankLoanFullDto);
+                        listOperations.rightPop(BANK_LOAN_FULL_DELAY_QUEUE);
+                    } else {
+                        listOperations.rightPopAndLeftPush(BANK_LOAN_FULL_DELAY_QUEUE, BANK_LOAN_FULL_DELAY_QUEUE);
+                    }
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+    }
 }
