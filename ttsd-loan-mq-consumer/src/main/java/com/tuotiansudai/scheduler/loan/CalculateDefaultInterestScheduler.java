@@ -43,67 +43,64 @@ public class CalculateDefaultInterestScheduler {
 
     @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
     public void calculateDefaultInterest() {
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findIncompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             try {
                 calculateDefaultInterestEveryLoan(loanRepayModel);
-
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
     }
 
-    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception {
+    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) {
+        if (loanRepayModel.getRepayDate().after(new Date())) {
+            return;
+        }
+
+        logger.info("[Default Interest] loan repay is overdue, loanId: {}, loanRepayId: {}", loanRepayModel.getLoanId(), loanRepayModel.getId());
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (InvestRepayModel investRepayModel : investRepayModels) {
             if (investRepayModel.getRepayDate().before(new Date())) {
-                investRepayModel.setStatus(RepayStatus.OVERDUE);
                 if (isNeedCalculateDefaultInterestInvestRepay(investRepayModel)) {
                     long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
                             .setScale(0, BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
                 }
+                investRepayModel.setStatus(RepayStatus.OVERDUE);
                 investRepayMapper.update(investRepayModel);
             }
         }
-        if (loanRepayModel.getRepayDate().before(new Date())) {
-            loanRepayModel.setStatus(RepayStatus.OVERDUE);
-            if (isNeedCalculateDefaultInterestLoanRepay(loanRepayModel)) {
-                long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
-                        .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()) + 1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-                loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
-            }
-            loanRepayMapper.update(loanRepayModel);
-            loanModel.setStatus(LoanStatus.OVERDUE);
-            loanMapper.update(loanModel);
-            boolean isLastPeriod = loanRepayMapper.findLastLoanRepay(loanRepayModel.getLoanId()).getPeriod() == loanRepayModel.getPeriod();
-            if (isLastPeriod) {
-                List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanRepayModel.getLoanId());
-                investExtraRateModels.forEach(investExtraRateModel -> {
-                    investExtraRateModel.setStatus(RepayStatus.OVERDUE);
-                    investExtraRateMapper.update(investExtraRateModel);
-                });
-                logger.info("investExtraRate status to overdue");
-            }
+        loanRepayModel.setDefaultInterest(investRepayModels.stream().mapToLong(InvestRepayModel::getDefaultInterest).sum());
+        loanRepayModel.setStatus(RepayStatus.OVERDUE);
+        loanRepayMapper.update(loanRepayModel);
+        loanModel.setStatus(LoanStatus.OVERDUE);
+        loanMapper.update(loanModel);
+    }
+
+    private void calculateExtraRateDefaultInterest(LoanRepayModel loanRepayModel) {
+        boolean isLastPeriod = loanRepayMapper.findLastLoanRepay(loanRepayModel.getLoanId()).getPeriod() == loanRepayModel.getPeriod();
+        if (isLastPeriod) {
+            List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanRepayModel.getLoanId());
+            investExtraRateModels.forEach(investExtraRateModel -> {
+                investExtraRateModel.setStatus(RepayStatus.OVERDUE);
+                investExtraRateMapper.update(investExtraRateModel);
+            });
+            logger.info("investExtraRate status to overdue");
         }
+    }
+
+    private void calculateCouponRepayDefaultInterest(LoanRepayModel loanRepayModel) {
         logger.info(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
-        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+        List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanRepayModel.getLoanId(), loanRepayModel.getPeriod());
         for (CouponRepayModel couponRepayModel : couponRepayModels) {
             if (couponRepayModel.getRepayDate().before(new Date())) {
                 couponRepayModel.setStatus(RepayStatus.OVERDUE);
                 couponRepayMapper.update(couponRepayModel);
             }
         }
-    }
-
-    private boolean isNeedCalculateDefaultInterestLoanRepay(LoanRepayModel loanRepayModel) {
-        long loanId = loanRepayModel.getLoanId();
-        int period = loanRepayModel.getPeriod();
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdAndLTPeriod(loanId, period);
-        return CollectionUtils.isEmpty(loanRepayModels) || loanRepayModels.stream().noneMatch(input -> input.getStatus() == RepayStatus.OVERDUE);
     }
 
     private boolean isNeedCalculateDefaultInterestInvestRepay(InvestRepayModel investRepayModel) {

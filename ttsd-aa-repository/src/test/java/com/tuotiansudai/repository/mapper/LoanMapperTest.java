@@ -287,19 +287,6 @@ public class LoanMapperTest {
     }
 
     @Test
-    public void updateRaisingCompleteTimeTest() {
-        UserModel fakeUserModel = this.getFakeUserModel();
-        userMapper.create(fakeUserModel);
-
-        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
-        loanMapper.create(fakeCanceledLoan1);
-        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId(), new Date());
-
-        LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
-        assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
-    }
-
-    @Test
     public void shouldFindLoanListMobileAppIsOk(){
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);

@@ -1,27 +1,47 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
+import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
 import com.tuotiansudai.fudian.dto.request.LoanCallbackInvestItemRequestDto;
 import com.tuotiansudai.fudian.dto.request.LoanCallbackRequestDto;
+import com.tuotiansudai.fudian.dto.response.LoanCallbackContentDto;
+import com.tuotiansudai.fudian.dto.response.LoanCallbackInvestItemContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.message.BankLoanCallbackMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
+import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.fudian.util.OrderIdGenerator;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanCallbackService {
 
     private static Logger logger = LoggerFactory.getLogger(LoanCallbackService.class);
+
+    private static final ApiType API_TYPE = ApiType.LOAN_CALLBACK;
+
+    private static final String BANK_LOAN_CALLBACK_QUEUE = "BANK_LOAN_CALLBACK_QUEUE";
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -29,66 +49,112 @@ public class LoanCallbackService {
 
     private final SignatureHelper signatureHelper;
 
+    private final RedissonClient redissonClient;
+
+    private final MessageQueueClient messageQueueClient;
+
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
 
+
+    private final Gson gson = new GsonBuilder().create();
+
     @Autowired
-    public LoanCallbackService(RedisTemplate<String, String> redisTemplate, BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+    public LoanCallbackService(RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, MessageQueueClient messageQueueClient, BankClient bankClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper) {
         this.bankClient = bankClient;
+        this.redissonClient = redissonClient;
         this.signatureHelper = signatureHelper;
+        this.messageQueueClient = messageQueueClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.redisTemplate = redisTemplate;
     }
 
-    public ResponseDto loanCallback(String loginName, String mobile, String loanTxNo, List<LoanCallbackInvestItemRequestDto> investItems) {
-        LoanCallbackRequestDto dto = new LoanCallbackRequestDto(loginName, mobile, loanTxNo, investItems, null);
+    void pushLoanCallbackQueue(BankLoanRepayDto bankLoanRepayDto) {
+        redisTemplate.opsForList().leftPushAll(BANK_LOAN_CALLBACK_QUEUE, gson.toJson(bankLoanRepayDto));
+    }
 
-        investItems.forEach(investItem -> {
-            investItem.setOrderNo(OrderIdGenerator.generate(redisTemplate));
-            investItem.setOrderDate(dto.getOrderDate());
-        });
+    @Scheduled(fixedDelay = 1000 * 60, initialDelay = 1000 * 10, zone = "Asia/Shanghai")
+    public void sendSchedule() {
+        RLock lock = redissonClient.getLock("BANK_LOAN_CALLBACK_QUEUE_LOCK");
+        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        if (lock.tryLock()) {
+            try {
+                String value = listOperations.rightPop(BANK_LOAN_CALLBACK_QUEUE);
+                if (Strings.isNullOrEmpty(value)) {
+                    return;
+                }
+                logger.info("[Loan Callback Send Schedule] loan callback data: {}", value);
+                this.loanCallback(gson.fromJson(value, BankLoanRepayDto.class));
+            } finally {
+                lock.unlock();
+            }
+        }
+    }
 
-        signatureHelper.sign(dto);
+    @SuppressWarnings(value = "unchecked")
+    private void loanCallback(BankLoanRepayDto bankLoanRepayDto) {
+        Map<String, BankLoanCallbackMessage> message_map = Maps.newHashMap();
+        List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayDto.getBankLoanRepayInvests();
+        List<LoanCallbackInvestItemRequestDto> loanCallbackInvestItemRequests = bankLoanRepayInvests
+                .stream()
+                .map(bankLoanRepayInvestDto -> {
+                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(OrderIdGenerator.generate(redisTemplate), bankLoanRepayInvestDto);
+                    message_map.put(loanCallbackInvestItemRequest.getOrderNo(),
+                            new BankLoanCallbackMessage(bankLoanRepayInvestDto.getInvestId(),
+                                    bankLoanRepayInvestDto.getInvestRepayId(),
+                                    bankLoanRepayInvestDto.getCapital(),
+                                    bankLoanRepayInvestDto.getInterest(),
+                                    bankLoanRepayInvestDto.getDefaultInterest(),
+                                    bankLoanRepayInvestDto.getInterestFee(),
+                                    loanCallbackInvestItemRequest.getOrderNo(),
+                                    loanCallbackInvestItemRequest.getOrderDate(),
+                                    bankLoanRepayDto.isNormalRepay()));
+                    return loanCallbackInvestItemRequest;
+                }).collect(Collectors.toList());
 
-        if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[loan callback] sign error, loanTxNo: {}", loanTxNo);
-            investItems.forEach(investItem -> logger.warn("[loan callback] sign error, capital: {}, interest: {}, interestFee: {}, rateInterest: {}, investUserName: {}, investAccountNo: {}, investOrderNo: {}, investOrderDate;",
-                    investItem.getCapital(), investItem.getInterest(), investItem.getInterestFee(), investItem.getRateInterest(), investItem.getInvestUserName(), investItem.getInvestAccountNo(), investItem.getInvestOrderNo(), investItem.getInvestOrderDate()));
-            return null;
+        LoanCallbackRequestDto loanCallbackRequestDto = new LoanCallbackRequestDto(bankLoanRepayDto.getLoginName(), bankLoanRepayDto.getMobile(), bankLoanRepayDto.getLoanTxNo(), loanCallbackInvestItemRequests);
+
+        signatureHelper.sign(API_TYPE, loanCallbackRequestDto);
+
+        if (Strings.isNullOrEmpty(loanCallbackRequestDto.getRequestData())) {
+            logger.error("[Loan Callback] failed to sign, data: {}", gson.toJson(loanCallbackRequestDto));
+            return;
         }
 
-        insertMapper.insertLoanCallback(dto);
-        investItems.forEach(investItem -> {
-            investItem.setLoanCallbackId(dto.getId());
-        });
-        insertMapper.insertLoanCallbackInvestItems(investItems);
+        insertMapper.insertLoanCallback(loanCallbackRequestDto);
+        loanCallbackRequestDto.getInvestList().forEach(loanCallbackInvestItemRequest -> loanCallbackInvestItemRequest.setLoanCallbackId(loanCallbackRequestDto.getId()));
+        insertMapper.insertLoanCallbackInvestItems(loanCallbackRequestDto.getInvestList());
 
-        String responseData = bankClient.send(dto.getRequestData(), ApiType.LOAN_CALLBACK);
-        if (Strings.isNullOrEmpty(responseData)) {
-            logger.error("[loan callback] send error, loanTxNo: {}", loanTxNo);
-            investItems.forEach(investItem -> logger.warn("[loan callback] send error, capital: {}, interest: {}, interestFee: {}, rateInterest: {}, investUserName: {}, investAccountNo: {}, investOrderNo: {}, investOrderDate;",
-                    investItem.getCapital(), investItem.getInterest(), investItem.getInterestFee(), investItem.getRateInterest(), investItem.getInvestUserName(), investItem.getInvestAccountNo(), investItem.getInvestOrderNo(), investItem.getInvestOrderDate()));
-            return null;
-        }
+        String responseData = bankClient.send(API_TYPE, loanCallbackRequestDto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.error("[loan callback] verify sign error, loanTxNo: {}", loanTxNo);
-            investItems.forEach(investItem -> logger.warn("[loan callback] send error, capital: {}, interest: {}, interestFee: {}, rateInterest: {}, investUserName: {}, investAccountNo: {}, investOrderNo: {}, investOrderDate;",
-                    investItem.getCapital(), investItem.getInterest(), investItem.getInterestFee(), investItem.getRateInterest(), investItem.getInvestUserName(), investItem.getInvestAccountNo(), investItem.getInvestOrderNo(), investItem.getInvestOrderDate()));
-            return null;
+            logger.error("[Loan Callback] failed to verify sign, data: {}, response: {}", gson.toJson(loanCallbackRequestDto), responseData);
+            return;
         }
 
-        ResponseDto responseDto = ApiType.LOAN_CALLBACK.getParser().parse(responseData);
+        ResponseDto<LoanCallbackContentDto> responseDto = (ResponseDto<LoanCallbackContentDto>) API_TYPE.getParser().parse(responseData);
         if (responseDto == null) {
-            logger.error("[loan callback] parse response error, loanTxNo: {}", loanTxNo);
-            investItems.forEach(investItem -> logger.warn("[loan callback] parse response error, capital: {}, interest: {}, interestFee: {}, rateInterest: {}, investUserName: {}, investAccountNo: {}, investOrderNo: {}, investOrderDate;",
-                    investItem.getCapital(), investItem.getInterest(), investItem.getInterestFee(), investItem.getRateInterest(), investItem.getInvestUserName(), investItem.getInvestAccountNo(), investItem.getInvestOrderNo(), investItem.getInvestOrderDate()));
-            return null;
+            logger.error("[Loan Callback] failed to parse response, request: {}, response: {}", gson.toJson(loanCallbackRequestDto), responseData);
+            return;
         }
 
-        this.updateMapper.updateLoanCallback(responseDto);
-        return responseDto;
+        this.updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
+        this.updateMapper.updateLoanCallbackInvestItems(responseDto.getContent().getInvestList());
+
+        if (!responseDto.isSuccess()) {
+            logger.error("[Loan Callback] response is not success, request: {}, response: {}", gson.toJson(loanCallbackRequestDto), responseData);
+            return;
+        }
+
+        for (LoanCallbackInvestItemContentDto loanCallbackInvestItemContentDto : responseDto.getContent().getInvestList()) {
+            if (loanCallbackInvestItemContentDto.isSuccess()) {
+                logger.info("[Loan Callback] invest repay success, send message: {}", gson.toJson(message_map.get(loanCallbackInvestItemContentDto.getOrderNo())));
+                messageQueueClient.sendMessage(MessageQueue.LoanCallback_Success, message_map.get(loanCallbackInvestItemContentDto.getOrderNo()));
+            } else {
+                logger.error("[Loan Callback] invest repay failure, request: {}, response: {}", gson.toJson(loanCallbackRequestDto), responseData);
+            }
+        }
     }
 }

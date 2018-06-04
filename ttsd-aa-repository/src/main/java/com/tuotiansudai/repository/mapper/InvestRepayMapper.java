@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.BankLoanRepayInvestDataView;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.RepayStatus;
@@ -64,4 +65,7 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "day") String day);
 
     List<InvestRepayModel> findByInvestId(long investId);
+
+    List<BankLoanRepayInvestDataView> queryBankInvestRepayData(@Param(value = "loanId") long loanId,
+                                                               @Param(value = "period") int period);
 }

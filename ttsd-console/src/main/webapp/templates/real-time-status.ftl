@@ -7,20 +7,20 @@
             <label for="type">查询类型</label>
             <select class="selectpicker" id="type" name="type">
                 <option value="user" <#if !(type??) || type=='user'>selected</#if>>用户账户</option>
-                <option value="platform" <#if type?? && type=='platform'>selected</#if>>平台账户</option>
                 <option value="loan" <#if type?? && type=='loan'>selected</#if>>标的账户</option>
+                <option value="platform" <#if type?? && type=='platform'>selected</#if>>平台账户</option>
                 <option value="transfer" <#if type?? && type=='transfer'>selected</#if>>交易状态</option>
             </select>
         </div>
 
         <div class="login-name form-group" <#if type?? && type != 'user'>style="display: none"</#if>>
-            <label for="loginName">电话号码</label>
-            <input type="text" id="loginName" name="login-name" class="form-control ui-autocomplete-input" value="${mobile!}"/>
+            <label for="loginNameOrMobile">手机号或用户ID</label>
+            <input type="text" id="loginNameOrMobile" name="loginNameOrMobile" class="form-control" value="${loginNameOrMobile!}"/>
         </div>
 
         <div class="loan form-group" <#if !(type??) || type != 'loan'>style="display: none"</#if>>
             <label for="loanId">标的号</label>
-            <input type="text" id="loanId" name="loan-id" class="form-control" value="${loanId!}"/>
+            <input type="text" id="loanId" name="loanId" class="form-control" value="${loanId?c}"/>
         </div>
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
@@ -35,7 +35,7 @@
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
             <label for="orderId">订单号</label>
-            <input type="text" id="orderId" name="order-id" class="form-control" value="${orderId!}"/>
+            <input type="text" id="orderId" name="order-id" class="form-control" value="${loanId?c}"/>
         </div>
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
@@ -51,20 +51,76 @@
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
     </form>
 
-    <#if data??>
+    <#if type?? && type=='user' && data?? >
         <div class="panel panel-default">
             <div class="panel-body form-horizontal">
-                <#list data?keys as key>
+                <#if data.status>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">${key}</label>
-
-                        <div class="col-sm-3">
-                            <p class="form-control-static">${data[key]}</p>
-                        </div>
+                        <label class="col-sm-3 control-label">存管用户名</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.bankUserName}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">存管账户名</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.bankAccountName}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">授权</label>
+                        <div class="col-sm-3"><p class="form-control-static">投资授权: ${data.loanInvestAuthorization?string('是', '否')} 还款授权: ${data.loanRepayAuthorization?string('是', '否')}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">可用余额</label>
+                        <div class="col-sm-3"><p class="form-control-static">${(data.balance/100)?string["0.##"]}元</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">可提现余额</label>
+                        <div class="col-sm-3"><p class="form-control-static">${(data.withdrawBalance/100)?string["0.##"]}元</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">冻结金额</label>
+                        <div class="col-sm-3"><p class="form-control-static">${(data.freezeBalance/100)?string["0.##"]}元</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">身份证号</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.identityCode}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">账户状态</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.userStatus}</p></div>
                     </div>
                 <#else>
-                    无结果
-                </#list>
+                    ${data.message}
+                </#if>
+            </div>
+        </div>
+    </#if>
+
+    <#if type?? && type=='loan' && data?? >
+        <div class="panel panel-default">
+            <div class="panel-body form-horizontal">
+                <#if data.status>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">存管标的ID</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.loanTxNo}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">存管标的账户号</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.loanAccNo}</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">筹款金额</label>
+                        <div class="col-sm-3"><p class="form-control-static">${(data.amount/100)?string["0.##"]}元</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">账户余额</label>
+                        <div class="col-sm-3"><p class="form-control-static">${(data.balance/100)?string["0.##"]}元</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态</label>
+                        <div class="col-sm-3"><p class="form-control-static">${data.loanStatus}</p></div>
+                    </div>
+                <#else>
+                    ${data.message}
+                </#if>
             </div>
         </div>
     </#if>

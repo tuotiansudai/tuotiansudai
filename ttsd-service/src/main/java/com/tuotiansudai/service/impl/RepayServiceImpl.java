@@ -1,45 +1,47 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
+import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RepayServiceImpl implements RepayService {
 
-    private static Logger logger = Logger.getLogger(RepayServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(RepayServiceImpl.class);
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private PayWrapperClient payWrapperClient;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -51,7 +53,7 @@ public class RepayServiceImpl implements RepayService {
     private InvestMapper investMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
@@ -63,13 +65,12 @@ public class RepayServiceImpl implements RepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private MembershipMapper membershipMapper;
-
-    @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
 
@@ -87,8 +88,128 @@ public class RepayServiceImpl implements RepayService {
             .build());
 
     @Override
-    public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
-        return payWrapperClient.repay(repayDto);
+    public BankAsyncMessage normalRepay(RepayDto repayDto) {
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(repayDto.getLoanId());
+
+        if (enabledLoanRepay == null || enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY) {
+            logger.error("[Normal Repay] There is no enabled loan repay (loanId = {})", repayDto.getLoanId());
+            return new BankAsyncMessage(null, null, false, "该标的今天没有待还款，或还款等待支付，请半小时后重试");
+        }
+
+        LoanModel loanModel = loanMapper.findById(repayDto.getLoanId());
+        UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
+
+        List<BankLoanRepayInvestDataView> bankLoanRepayInvestData = investRepayMapper.queryBankInvestRepayData(enabledLoanRepay.getLoanId(), enabledLoanRepay.getPeriod());
+        List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayInvestData.stream().map(data -> new BankLoanRepayInvestDto(data.getLoginName(),
+                data.getMobile(),
+                data.getBankUserName(),
+                data.getBankAccountNo(),
+                data.getInvestId(),
+                data.getInvestRepayId(),
+                data.getLoanTxNo(),
+                data.getCorpus(),
+                data.getExpectedInterest(),
+                data.getDefaultInterest(),
+                data.getExpectedFee(),
+                data.getInvestBankOrderNo(),
+                data.getInvestBankOrderDate())).collect(Collectors.toList());
+
+        BankLoanRepayDto bankLoanRepayDto = new BankLoanRepayDto(userModel.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                enabledLoanRepay.getLoanId(),
+                enabledLoanRepay.getId(),
+                loanModel.getLoanTxNo(),
+                true,
+                bankLoanRepayInvests);
+
+        BankAsyncMessage bankAsyncMessage = bankWrapperClient.loanRepay(bankLoanRepayDto);
+
+        if (bankAsyncMessage.isStatus()) {
+            enabledLoanRepay.setActualInterest(bankLoanRepayDto.getInterest());
+            enabledLoanRepay.setActualRepayDate(new Date());
+            enabledLoanRepay.setRepayAmount(bankLoanRepayDto.getCapital() + bankLoanRepayDto.getInterest());
+            enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
+            loanRepayMapper.update(enabledLoanRepay);
+        }
+        return bankAsyncMessage;
+    }
+
+    @Override
+    public BankAsyncMessage advancedRepay(RepayDto repayDto) {
+        LoanModel loanModel = loanMapper.findById(repayDto.getLoanId());
+
+        if (loanModel.getStatus() != LoanStatus.REPAYING) {
+            logger.error("[Advance Repay] loan({}) status({}) is not REPAYING", loanModel.getStatus(), loanModel.getStatus().name());
+            return new BankAsyncMessage(null, null, false, "该标的当前不支持提前还款");
+        }
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+
+        Optional<LoanRepayModel> enabledLoanRepayOptional = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING).findFirst();
+
+        if (!enabledLoanRepayOptional.isPresent()) {
+            logger.error("[Advance Repay] There is no enabled loan repay (loanId = {})", loanModel.getId());
+            return new BankAsyncMessage(null, null, false, "该标的当前不支持提前还款");
+        }
+
+        LoanRepayModel enabledLoanRepay = enabledLoanRepayOptional.get();
+
+        DateTime currentRepayDate = new DateTime();
+        DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
+        List<BankLoanRepayInvestDataView> bankLoanRepayInvestData = investRepayMapper.queryBankInvestRepayData(enabledLoanRepay.getLoanId(), enabledLoanRepay.getPeriod());
+        List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayInvestData
+                .stream()
+                .map(data -> {
+                    InvestModel transferInvestModel = data.getTransferInvestId() != null ? investMapper.findById(data.getTransferInvestId()) : null;
+                    long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, data.getInvestAmount(),
+                            transferInvestModel == null ? data.getTradingTime() : transferInvestModel.getTradingTime(), lastSuccessRepayDate, currentRepayDate);
+                    long actualFee = new BigDecimal(actualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(data.getInvestFeeRate())).longValue();
+                    return new BankLoanRepayInvestDto(data.getLoginName(),
+                            data.getMobile(),
+                            data.getBankUserName(),
+                            data.getBankAccountNo(),
+                            data.getInvestId(),
+                            data.getInvestRepayId(),
+                            data.getLoanTxNo(),
+                            data.getInvestAmount(),
+                            actualInterest,
+                            0,
+                            actualFee,
+                            data.getInvestBankOrderNo(),
+                            data.getInvestBankOrderDate());
+                })
+                .collect(Collectors.toList());
+
+        UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
+        BankLoanRepayDto bankLoanRepayDto = new BankLoanRepayDto(userModel.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                enabledLoanRepay.getLoanId(),
+                enabledLoanRepay.getId(),
+                loanModel.getLoanTxNo(),
+                false,
+                bankLoanRepayInvests);
+
+        BankAsyncMessage bankAsyncMessage = bankWrapperClient.loanRepay(bankLoanRepayDto);
+
+        logger.info("[Advance Repay] generate repay loanId: {}, corpus:{}, interest: {}", bankLoanRepayDto.getLoanId(), bankLoanRepayDto.getCapital(), bankLoanRepayDto.getInterest());
+
+        if (bankAsyncMessage.isStatus()) {
+            enabledLoanRepay.setActualInterest(bankLoanRepayDto.getInterest());
+            enabledLoanRepay.setRepayAmount(bankLoanRepayDto.getCapital() + bankLoanRepayDto.getInterest());
+            enabledLoanRepay.setActualRepayDate(currentRepayDate.toDate());
+            enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
+            loanRepayMapper.update(enabledLoanRepay);
+        }
+
+        logger.info(MessageFormat.format("[Advance Repay {0}] generate repay form data to update loan repay status to WAIT_PAY", String.valueOf(enabledLoanRepay.getId())));
+
+        return bankAsyncMessage;
     }
 
     @Override
@@ -100,35 +221,20 @@ public class RepayServiceImpl implements RepayService {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(loginName, loanId);
         if (loanRepayModels.isEmpty()) {
-            logger.error(MessageFormat.format("login user({0}) is not agent({1}) of loan({2})",
-                    loginName, loanModel.getAgentLoginName(), String.valueOf(loanId)));
+            logger.error("login user({}) is not agent({}) of loan({})", loginName, loanModel.getAgentLoginName(), loanId);
             return baseDto;
         }
 
-        final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-        boolean isWaitPayLoanRepayExist = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-            @Override
-            public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.WAIT_PAY;
-            }
-        });
-
-        boolean isRepayingLoanRepayExist = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-            @Override
-            public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.REPAYING;
-            }
-        });
+        LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+        boolean isWaitPayLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.WAIT_PAY);
+        boolean isRepayingLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING);
 
         dataDto.setLoanId(loanId);
-        dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
+        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginName(loginName).getBalance()));
 
         if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
             dataDto.setNormalRepayEnabled(true);
-            long defaultInterest = 0;
-            for (LoanRepayModel loanRepayModel : loanRepayModels) {
-                defaultInterest += loanRepayModel.getDefaultInterest();
-            }
+            long defaultInterest = loanRepayModels.stream().mapToLong(LoanRepayModel::getDefaultInterest).sum();
             dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
         }
 
@@ -137,36 +243,27 @@ public class RepayServiceImpl implements RepayService {
             DateTime now = new DateTime();
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
             List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
-            long advanceRepayInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastSuccessRepayDate, now);
+            long advanceRepayInterest = 0;
+            for (InvestModel investModel : successInvests) {
+                //实际利息
+                InvestModel transferInvestModel = investModel.getTransferInvestId() != null ? investMapper.findById(investModel.getTransferInvestId()) : null;
+                long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel.getAmount(),
+                        transferInvestModel == null ? investModel.getTradingTime() : transferInvestModel.getTradingTime(), lastSuccessRepayDate, now);
+                advanceRepayInterest += actualInterest;
+            }
+
             long corpus = loanRepayMapper.findLastLoanRepay(loanId).getCorpus();
             dataDto.setAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + advanceRepayInterest));
         }
 
-        List<LoanerLoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanerLoanRepayDataItemDto>() {
-            @Override
-            public LoanerLoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
-                boolean isEnabledLoanRepay = enabledLoanRepayModel != null && loanRepayModel.getId() == enabledLoanRepayModel.getId();
-                return new LoanerLoanRepayDataItemDto(loanRepayModel, isEnabledLoanRepay);
-            }
-        });
+        List<LoanerLoanRepayDataItemDto> records = loanRepayModels.stream().map(loanRepayModel -> {
+            boolean isEnabledLoanRepay = enabledLoanRepayModel != null && loanRepayModel.getId() == enabledLoanRepayModel.getId();
+            return new LoanerLoanRepayDataItemDto(loanRepayModel, isEnabledLoanRepay);
+        }).collect(Collectors.toList());
 
         dataDto.setStatus(true);
         dataDto.setRecords(records);
         return baseDto;
-    }
-
-    @Override
-    @Transactional
-    public void resetPayExpiredLoanRepay(long loanId) {
-        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-        if (enabledLoanRepay != null && enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY &&
-                new DateTime(enabledLoanRepay.getActualRepayDate()).plusMinutes(30).isBefore(new DateTime())) {
-            enabledLoanRepay.setActualInterest(0);
-            enabledLoanRepay.setRepayAmount(0);
-            enabledLoanRepay.setStatus(enabledLoanRepay.getActualRepayDate().before(enabledLoanRepay.getRepayDate()) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
-            enabledLoanRepay.setActualRepayDate(null);
-            loanRepayMapper.update(enabledLoanRepay);
-        }
     }
 
     @Override
@@ -269,5 +366,14 @@ public class RepayServiceImpl implements RepayService {
 
     private static String covertRate(String rate) {
         return rate.contains(".00") ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));
+    }
+
+    private long calculateLoanRepayActualInterest(long loanId, LoanRepayModel enabledLoanRepay) {
+        if (enabledLoanRepay.getStatus() == RepayStatus.REPAYING) {
+            return enabledLoanRepay.getExpectedInterest();
+        }
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+        return loanRepayModels.stream().mapToLong(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0).sum();
     }
 }

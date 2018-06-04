@@ -14,8 +14,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
@@ -31,44 +30,43 @@ import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class RechargeService implements AsyncCallbackInterface {
+public class RechargeService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(RechargeService.class);
+
+    private static final ApiType API_TYPE = ApiType.RECHARGE;
+
+    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
+
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private final MessageQueueClient messageQueueClient;
 
     private final BankConfig bankConfig;
 
     private final SignatureHelper signatureHelper;
 
+    private final SelectMapper selectMapper;
+
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
 
-    private final MessageQueueClient messageQueueClient;
-
-    private final RedisTemplate<String, String> redisTemplate;
-
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
-
-    private final String RECHARGE_BIND_ORDER_NO = "RECHARGE_BIND_ORDER_NO:{0}";
-
     @Autowired
-    public RechargeService(BankConfig bankConfig, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, MessageQueueClient messageQueueClient, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper, RedisTemplate<String, String> redisTemplate) {
+    public RechargeService(RedisTemplate<String, String> redisTemplate, BankConfig bankConfig, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, SelectMapper selectMapper, InsertMapper insertMapper, UpdateMapper updateMapper) {
         this.bankConfig = bankConfig;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.messageQueueClient = messageQueueClient;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.selectResponseDataMapper = selectResponseDataMapper;
+        this.selectMapper = selectMapper;
         this.redisTemplate = redisTemplate;
     }
 
     public RechargeRequestDto recharge(Source source, BankRechargeDto bankRechargeDto) {
         RechargeRequestDto dto = new RechargeRequestDto(source, bankRechargeDto.getLoginName(), bankRechargeDto.getMobile(), bankRechargeDto.getBankUserName(), bankRechargeDto.getBankAccountNo(), AmountUtils.toYuan(bankRechargeDto.getAmount()), bankRechargeDto.getPayType());
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
 
         redisTemplate.opsForValue().set(MessageFormat.format(RECHARGE_BIND_ORDER_NO, dto.getOrderNo()), String.valueOf(bankRechargeDto.getRechargeId()), 30 * 24 * 60 * 60, TimeUnit.SECONDS);
 
@@ -84,7 +82,7 @@ public class RechargeService implements AsyncCallbackInterface {
     public RechargeRequestDto merchantRecharge(Source source, String loginName, String mobile, String amount) {
         RechargeRequestDto dto = new RechargeRequestDto(source, loginName, mobile, bankConfig.getMerchantUserName(), bankConfig.getMerchantAccountNo(), amount, RechargePayType.GATE_PAY);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[merchant recharge sign] sign error, userName: {}, accountNo: {}, amount: {}, payType: {}",
@@ -97,7 +95,7 @@ public class RechargeService implements AsyncCallbackInterface {
     }
 
     public void returnCallback(ResponseDto responseData) {
-        returnUpdateMapper.updateRecharge(responseData);
+        updateMapper.updateReturnResponse(ApiType.RECHARGE.name(), responseData);
     }
 
     @Override
@@ -112,7 +110,7 @@ public class RechargeService implements AsyncCallbackInterface {
             return null;
         }
         responseDto.setReqData(responseData);
-        updateMapper.updateRecharge(responseDto);
+        updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
 
         RechargeContentDto rechargeContentDto = responseDto.getContent();
         String rechargeKey = MessageFormat.format(RECHARGE_BIND_ORDER_NO, rechargeContentDto.getOrderNo());
@@ -133,7 +131,7 @@ public class RechargeService implements AsyncCallbackInterface {
     @Override
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.RECHARGE.name().toLowerCase(), orderNo);
+        String responseData = this.selectMapper.selectNotifyResponseData(ApiType.RECHARGE.name().toLowerCase(), orderNo);
         if (Strings.isNullOrEmpty(responseData)) {
             return null;
         }

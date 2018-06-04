@@ -17,6 +17,7 @@ public class HandlerExceptionLoggingResolver implements HandlerExceptionResolver
             "org.springframework.core.convert.ConversionFailedException",
             "org.springframework.web.HttpRequestMethodNotSupportedException",
             "org.springframework.web.method.annotation.MethodArgumentTypeMismatchException",
+            "org.springframework.web.bind.MissingServletRequestParameterException",
             "org.apache.catalina.connector.ClientAbortException");
 
     @Override

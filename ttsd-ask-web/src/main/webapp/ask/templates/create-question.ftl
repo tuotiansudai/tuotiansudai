@@ -29,7 +29,7 @@
                             <textarea name="addition" class="addition" placeholder="请注意不要随意透漏您的个人信息"></textarea>
                         </@global.isNotAnonymous>
                         <span class="error fl" style="display: none"></span>
-                        <span class="words-tip fr"><em>0</em>/500</span>
+                        <span class="words-tip fr"><em>0</em>/2000</span>
                     </dd>
                     <dt>选择问题分类 <i class="fr">最多选择三个分类</i></dt>
                     <dd class="tag-list">

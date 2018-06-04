@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
-public class RegisterRequestDto extends UserBaseRequestDto {
+public class RegisterRequestDto extends NotifyRequestDto {
 
     private String realName;
 
@@ -13,7 +11,7 @@ public class RegisterRequestDto extends UserBaseRequestDto {
     private String mobilePhone;
 
     public RegisterRequestDto(Source source, String loginName, String mobile, String realName, String identityCode) {
-        super(source, loginName, mobile, null, null, ApiType.REGISTER, null);
+        super(source, loginName, mobile, null, null);
         this.realName = realName;
         this.identityCode = identityCode;
         this.mobilePhone = mobile;

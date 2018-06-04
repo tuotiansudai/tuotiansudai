@@ -1,12 +1,11 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
-import com.tuotiansudai.fudian.service.AsyncCallbackInterface;
+import com.tuotiansudai.fudian.service.NotifyCallbackInterface;
+import com.tuotiansudai.fudian.service.ReturnCallbackInterface;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class CallbackController {
         logger.info("[notify callback] type: {}, sign: {}, data: {}, ", apiType.name(), isCorrect, reqData);
 
         if (isCorrect) {
-            AsyncCallbackInterface asyncCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
+            NotifyCallbackInterface asyncCallback = (NotifyCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
             asyncCallback.notifyCallback(reqData);
         } else {
             logger.error("[notify callback] sign is incorrect, type: {}, data: {}, ", apiType.name(), reqData);
@@ -80,7 +79,7 @@ public class CallbackController {
             logger.error("parse data error, return callback type: {}, data: {} ", apiType.name(), reqData);
             return ResponseEntity.badRequest().build();
         }
-        AsyncCallbackInterface returnCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
+        ReturnCallbackInterface returnCallback = (ReturnCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
         returnCallback.returnCallback(responseDto);
 
         return ResponseEntity.ok(new BankReturnCallbackMessage(responseDto.isSuccess(), responseDto.getRetMsg(), responseDto.getContent().getOrderNo()));
@@ -88,8 +87,8 @@ public class CallbackController {
 
     @RequestMapping(value = "/{apiType}/order-no/{orderNo}/is-success", method = RequestMethod.GET)
     public ResponseEntity isCallbackSuccess(@PathVariable ApiType apiType, @PathVariable String orderNo) {
-        AsyncCallbackInterface asyncCallback = (AsyncCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
-        Boolean isSuccess = asyncCallback.isSuccess(orderNo);
+        ReturnCallbackInterface returnCallback = (ReturnCallbackInterface) this.context.getBean(apiType.getCallbackHandlerClass());
+        Boolean isSuccess = returnCallback.isSuccess(orderNo);
 
         if (isSuccess == null) {
             return ResponseEntity.noContent().build();

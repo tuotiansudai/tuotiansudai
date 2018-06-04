@@ -2,22 +2,24 @@ package com.tuotiansudai.mq.consumer.user;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.EventMessage;
+import com.tuotiansudai.message.PushMessage;
+import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
@@ -28,12 +30,12 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
 
     private final BankWithdrawMapper bankWithdrawMapper;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
+    private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public BankWithdrawMessageConsumer(BankWithdrawMapper bankWithdrawMapper) {
+    public BankWithdrawMessageConsumer(BankWithdrawMapper bankWithdrawMapper, MQWrapperClient mqWrapperClient) {
         this.bankWithdrawMapper = bankWithdrawMapper;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     @Override
@@ -42,7 +44,6 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
     }
 
     @Override
-    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 
@@ -59,9 +60,6 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
                 return;
             }
 
-            bankWithdrawModel.setBankCode(bankWithdrawMessage.getBankCode());
-            bankWithdrawModel.setBankName(bankWithdrawMessage.getBankName());
-            bankWithdrawModel.setCardNumber(bankWithdrawMessage.getCardNumber());
             bankWithdrawModel.setBankOrderNo(bankWithdrawMessage.getBankOrderNo());
             bankWithdrawModel.setBankOrderDate(bankWithdrawMessage.getBankOrderDate());
             bankWithdrawModel.setStatus(bankWithdrawMessage.isStatus() ? WithdrawStatus.SUCCESS : WithdrawStatus.FAIL);
@@ -70,6 +68,21 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
             if (bankWithdrawMessage.isStatus()) {
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, bankWithdrawModel.getLoginName(), bankWithdrawModel.getId(), bankWithdrawModel.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+
+                String title = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(bankWithdrawMessage.getAmount()));
+                String content = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getContentTemplate(), AmountConverter.convertCentToString(bankWithdrawMessage.getAmount()));
+                mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.WITHDRAW_SUCCESS,
+                        Lists.newArrayList(bankWithdrawMessage.getLoginName()),
+                        title,
+                        content,
+                        bankWithdrawModel.getId()
+                ));
+                mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(bankWithdrawMessage.getLoginName()),
+                        PushSource.ALL,
+                        PushType.WITHDRAW_SUCCESS,
+                        title,
+                        AppUrl.MESSAGE_CENTER_LIST));
+                mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(bankWithdrawMessage.getLoginName(), WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, bankWithdrawMessage.getWithdrawId()));
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
