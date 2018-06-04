@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.AgreementDto;
+import com.tuotiansudai.dto.AuthorizationDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.service.BankAuthorizationService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -23,14 +23,14 @@ public class AgreementController {
     private BankAuthorizationService bankAuthorizationService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto, HttpServletRequest request){
-        agreementDto.setIp(RequestIPParser.parse(request));
+    public ModelAndView agreement(@Valid @ModelAttribute AuthorizationDto authorizationDto, HttpServletRequest request){
+        authorizationDto.setIp(RequestIPParser.parse(request));
         BankAsyncMessage baseDto = bankAuthorizationService.authorization(
-                agreementDto.getSource(),
+                authorizationDto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),
-                agreementDto.getIp(),
-                agreementDto.getDeviceId());
+                authorizationDto.getIp(),
+                authorizationDto.getDeviceId());
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankRegisterDto;
@@ -14,6 +12,7 @@ import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -53,7 +52,7 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
         signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[register] sign error, data{}", bankRegisterDto);
+            logger.error("[register] failed to sign, data{}", bankRegisterDto);
             return null;
         }
 
@@ -82,16 +81,16 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
         if (responseDto.isSuccess()) {
             RegisterContentDto registerContentDto = responseDto.getContent();
             ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(registerContentDto.getExtMark(), ExtMarkDto.class);
-            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount, Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("loginName", extMarkDto.getLoginName())
-                    .put("mobile", registerContentDto.getMobilePhone())
-                    .put("identityCode", registerContentDto.getIdentityCode())
-                    .put("realName", registerContentDto.getRealName())
-                    .put("accountNo", registerContentDto.getAccountNo())
-                    .put("userName", registerContentDto.getUserName())
-                    .put("orderDate", registerContentDto.getOrderDate())
-                    .put("orderNo", registerContentDto.getOrderNo())
-                    .build()));
+            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount,
+                    new BankRegisterMessage(
+                            extMarkDto.getLoginName(),
+                            extMarkDto.getMobile(),
+                            registerContentDto.getIdentityCode(),
+                            registerContentDto.getRealName(),
+                            registerContentDto.getAccountNo(),
+                            registerContentDto.getUserName(),
+                            registerContentDto.getOrderDate(),
+                            registerContentDto.getOrderNo()));
         }
 
         responseDto.setReqData(responseData);

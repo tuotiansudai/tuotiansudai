@@ -71,10 +71,9 @@ public enum MessageQueue {
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     UnbindBankCard_Success("UnbindBankCard-Success"),
+
     RegisterBankAccount_Success("RegisterBankAccount-Success"),
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),
-    RegisterBankAccount_EventMessage("RegisterBankAccount-EventMessage"),
-    RegisterBankAccount_PushMessage("RegisterBankAccount-PushMessage"),
 
     Recharge_Success("Recharge-Success"),
     Recharge_CompletePointTask("Recharge-CompletePointTask"),

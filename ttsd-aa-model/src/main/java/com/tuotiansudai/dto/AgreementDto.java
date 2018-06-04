@@ -8,7 +8,13 @@ public class AgreementDto implements Serializable {
 
     private String loginName;
 
+    private boolean fastPay;
+
+    private boolean autoRepay;
+
     private boolean noPasswordInvest;
+
+    private boolean huizuAutoRepay;
 
     private Source source = Source.WEB;
 
@@ -24,12 +30,12 @@ public class AgreementDto implements Serializable {
         this.loginName = loginName;
     }
 
-    public boolean isNoPasswordInvest() {
-        return noPasswordInvest;
+    public boolean isFastPay() {
+        return fastPay;
     }
 
-    public void setNoPasswordInvest(boolean noPasswordInvest) {
-        this.noPasswordInvest = noPasswordInvest;
+    public void setFastPay(boolean fastPay) {
+        this.fastPay = fastPay;
     }
 
     public Source getSource() {
@@ -38,6 +44,22 @@ public class AgreementDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isAutoRepay() {
+        return autoRepay;
+    }
+
+    public void setAutoRepay(boolean autoRepay) {
+        this.autoRepay = autoRepay;
+    }
+
+    public boolean isNoPasswordInvest() {
+        return noPasswordInvest;
+    }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) {
+        this.noPasswordInvest = noPasswordInvest;
     }
 
     public String getIp() {
@@ -54,5 +76,13 @@ public class AgreementDto implements Serializable {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public boolean isHuizuAutoRepay() {
+        return huizuAutoRepay;
+    }
+
+    public void setHuizuAutoRepay(boolean huizuAutoRepay) {
+        this.huizuAutoRepay = huizuAutoRepay;
     }
 }

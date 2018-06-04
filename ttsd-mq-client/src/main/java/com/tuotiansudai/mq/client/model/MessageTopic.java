@@ -21,9 +21,7 @@ public enum MessageTopic {
 
     RegisterBankAccount("RegisterBankAccount",
             MessageQueue.RegisterBankAccount_Success,
-            MessageQueue.RegisterBankAccount_CompletePointTask,
-            MessageQueue.RegisterBankAccount_EventMessage,
-            MessageQueue.RegisterBankAccount_PushMessage),
+            MessageQueue.RegisterBankAccount_CompletePointTask),
 
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,

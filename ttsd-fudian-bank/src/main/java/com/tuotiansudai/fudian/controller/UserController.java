@@ -112,7 +112,7 @@ public class UserController extends AsyncRequestController {
             return ResponseEntity.badRequest().build();
         }
 
-        AuthorizationRequestDto requestDto = authorizationService.auth(source, params.getLoginName(), params.getMobile(), params.getBankUserName(), params.getBankAccountNo());
+        AuthorizationRequestDto requestDto = authorizationService.auth(source, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
 

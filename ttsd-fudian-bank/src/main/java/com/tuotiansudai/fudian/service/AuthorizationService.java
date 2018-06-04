@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.AuthorizationRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
@@ -49,13 +50,12 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
         this.selectMapper = selectMapper;
     }
 
-    public AuthorizationRequestDto auth(Source source, String loginName, String mobile, String userName, String accountNo) {
-        AuthorizationRequestDto dto = new AuthorizationRequestDto(source, loginName, mobile, userName, accountNo, null);
+    public AuthorizationRequestDto auth(Source source, BankBaseDto bankBaseDto) {
+        AuthorizationRequestDto dto = new AuthorizationRequestDto(source, bankBaseDto);
 
         signatureHelper.sign(API_TYPE, dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[authorization] sign error, userName: {}, accountNo: {}", userName, accountNo);
-
+            logger.error("[authorization callback] parse callback data error, data is {}", bankBaseDto);
             return null;
         }
 
