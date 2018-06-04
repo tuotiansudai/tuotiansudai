@@ -1,13 +1,11 @@
 package com.tuotiansudai.mq.consumer.user;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.fudian.message.BankRechargeMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -20,14 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class BankRechargeMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(BankRechargeMessageConsumer.class);
-
-    private List<String> JSON_KEYS = Lists.newArrayList("loginName", "mobile", "rechargeId", "orderDate", "orderNo", "isSuccess");
 
     @Autowired
     private BankRechargeMapper bankRechargeMapper;
@@ -49,38 +43,25 @@ public class BankRechargeMessageConsumer implements MessageConsumer {
             return;
         }
         try {
-            HashMap<String, String> map = new Gson().fromJson(message, new TypeToken<HashMap<String, String>>() {
-            }.getType());
-            if (Sets.difference(map.keySet(), Sets.newHashSet(JSON_KEYS)).isEmpty()) {
-                long rechargeId = Long.parseLong(map.get("rechargeId"));
-                BankRechargeModel userRechargeModel = bankRechargeMapper.findById(rechargeId);
-                if (userRechargeModel == null) {
-                    logger.error("[MQ] receive message : {}, userRechargeModel is null user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
-                    return;
-                }
+            BankRechargeMessage bankRechargeMessage = new Gson().fromJson(message, BankRechargeMessage.class);
+            BankRechargeModel userRechargeModel = bankRechargeMapper.findById(bankRechargeMessage.getRechargeId());
 
-                if (userRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
-                    logger.error("[MQ] receive message : {}, userRechargeModel statue is not wait pay user:{}, rechargeId:{} ", this.queue(), map.get("loginName"), map.get("rechargeId"));
-                    return;
-                }
+            if (userRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
+                logger.error("[MQ] receive message : {}, userRechargeModel statue is not wait rechargeId:{} ", this.queue(), bankRechargeMessage.getRechargeId());
+                return;
+            }
+            userRechargeModel.setStatus(bankRechargeMessage.isStatus() ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
+            userRechargeModel.setBankOrderNo(bankRechargeMessage.getBankOrderNo());
+            userRechargeModel.setBankOrderDate(bankRechargeMessage.getBankOrderDate());
+            bankRechargeMapper.update(userRechargeModel);
 
-                boolean isSuccess = Boolean.valueOf(map.get("isSuccess"));
-                userRechargeModel.setStatus(isSuccess ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
-                userRechargeModel.setBankOrderNo(map.get("orderNo"));
-                userRechargeModel.setBankOrderDate(map.get("orderDate"));
-                bankRechargeMapper.update(userRechargeModel);
-
-                if (isSuccess) {
-                    mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                            new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                                    map.get("loginName"),
-                                    rechargeId,
-                                    userRechargeModel.getAmount(),
-                                    UserBillBusinessType.RECHARGE_SUCCESS));
-                }
-
-            } else {
-                logger.error("[MQ] message is invalid {}", message);
+            if (bankRechargeMessage.isStatus()) {
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                        new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                                bankRechargeMessage.getLoginName(),
+                                bankRechargeMessage.getRechargeId(),
+                                userRechargeModel.getAmount(),
+                                UserBillBusinessType.RECHARGE_SUCCESS));
             }
 
         } catch (Exception e) {
@@ -88,5 +69,5 @@ public class BankRechargeMessageConsumer implements MessageConsumer {
         }
 
     }
-}
 
+}
