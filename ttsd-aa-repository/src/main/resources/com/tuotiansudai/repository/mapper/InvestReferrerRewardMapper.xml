@@ -11,6 +11,8 @@
         <result column="referrer_login_name" property="referrerLoginName"/>
         <result column="referrer_role" property="referrerRole"/>
         <result column="status" property="status"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
@@ -32,7 +34,9 @@
     </select>
 
     <update id="update" parameterType="InvestReferrerRewardModel">
-        update invest_referrer_reward set status = #{status} where id = #{id}
+        update invest_referrer_reward
+        set status = #{status}, bank_order_no = #{bankOrderNo}, bank_order_date = #{bankOrderDate}
+        where id = #{id}
     </update>
 
 </mapper>

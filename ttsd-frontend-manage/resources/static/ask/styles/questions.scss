@@ -6,7 +6,7 @@
   padding:30px 10px;
 }
 .banner-box {
-  background: red url("../images/ba070228.jpg") no-repeat;
+  background: red url("../images/ask_banner.jpg") no-repeat;
   height:140px;
   a {
     display: block;
@@ -433,6 +433,8 @@
         i.error {
           visibility: visible;
           display: block;
+          margin-top: 3px;
+          margin-bottom: 6px;
         }
         .captcha {
           width:85px;

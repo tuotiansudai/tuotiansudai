@@ -41,7 +41,7 @@ $('.invite-tip-btn').on('click',function () {
 var link = webServer + '/activity/super-scholar?come=wechat';
 var titleShare = '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数';
 var descShare = '你是学霸还是学渣？答题见分晓！';
-let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(8,11);
+let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(7,11);
 
 if (shareType === 'activityHome'){
     link = webServer + '/activity/super-scholar?come=wechat';

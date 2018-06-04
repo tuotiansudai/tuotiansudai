@@ -125,7 +125,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum()));
         operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
         operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCount()));
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findIncompleteLoanRepay();
         long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
         long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
         operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));

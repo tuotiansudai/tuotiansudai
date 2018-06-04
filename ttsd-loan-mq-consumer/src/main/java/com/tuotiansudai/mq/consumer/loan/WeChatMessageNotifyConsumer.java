@@ -94,8 +94,8 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     }
 
     private String fetchOpenId(String loginName) {
-        Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(s -> s.isBound()).findFirst();
-        return optional.map(o -> o.getOpenid()).orElse(null);
+        Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
+        return optional.map(WeChatUserModel::getOpenid).orElse(null);
     }
 
     private void loanCompleteMessageNotify(WeChatMessageNotify weChatMessageNotify) {

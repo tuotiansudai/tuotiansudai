@@ -1,18 +1,11 @@
 package com.tuotiansudai.fudian.controller;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
-import com.tuotiansudai.fudian.dto.BankInvestDto;
-import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
-import com.tuotiansudai.fudian.dto.BankRechargeDto;
-import com.tuotiansudai.fudian.dto.BankWithdrawDto;
+import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
-import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
+import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,10 +94,6 @@ public class PayController extends AsyncRequestController {
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.WITHDRAW);
 
-        if (!bankAsyncData.isStatus()) {
-            logger.error("[Fudian] call withdraw, request data generation failure, data: {}", params);
-        }
-
         return ResponseEntity.ok(bankAsyncData);
     }
 
@@ -122,13 +111,16 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankLoanCreateMessage);
     }
 
-    @RequestMapping(path = "/loan-full", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanFull(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-full", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> loanFull(@RequestBody BankLoanFullDto params) {
         logger.info("[Fudian] call loan full");
 
-        ResponseDto responseDto = loanFullService.full("UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "20180427000000000001", "20180427", "20180701", null, null);
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan full bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(loanFullService.full(params));
     }
 
     @RequestMapping(path = "/loan-invest/source/{source}", method = RequestMethod.POST)
@@ -170,39 +162,28 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankReturnCallbackMessage);
     }
 
-    @RequestMapping(path = "/loan-repay", method = RequestMethod.GET)
-    public String loanRepay(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-repay/source/{source}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> loanRepay(@PathVariable(name = "source") Source source, @RequestBody BankLoanRepayDto params) {
         logger.info("[Fudian] call loan repay");
 
-        LoanRepayRequestDto requestDto = loanRepayService.repay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02625453517541001", "0.00", "1.00", null, null);
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.LOAN_REPAY.getPath());
-        return "post";
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan repay bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        LoanRepayRequestDto requestDto = loanRepayService.repay(source, params);
+
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_REPAY);
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/loan-fast-repay", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> loanFastRepay(Map<String, Object> model) {
-        logger.info("[Fudian] call loan fast repay");
-
-        ResponseDto responseDto = loanRepayService.fastRepay(Source.WEB, "UU02615960791461001", "UA02615960791501001", "LU02619459384521001", "1.00", "0.00", null, null);
-
-        return ResponseEntity.ok(responseDto);
-    }
-
-    @RequestMapping(path = "/merchant-transfer", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> merchantTransfer(Map<String, Object> model) {
+    @RequestMapping(path = "/merchant-transfer", method = RequestMethod.POST)
+    public ResponseEntity<BankMerchantTransferMessage> merchantTransfer(@RequestBody BankMerchantTransferDto params) {
         logger.info("[Fudian] call merchant transfer");
 
-        ResponseDto responseDto = merchantTransferService.transfer("UU02615960791461001", "UA02615960791501001", "0.01", null, null);
+        BankMerchantTransferMessage message = merchantTransferService.transfer(params);
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(message);
     }
-
-    private ResponseEntity<Map<String, String>> generateResponseJson(BaseRequestDto requestDto, ApiType apiType) {
-        return ResponseEntity.ok(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("data", requestDto.getRequestData())
-                .put("url", bankConfig.getBankUrl() + apiType.getPath())
-                .build()));
-    }
-
 }

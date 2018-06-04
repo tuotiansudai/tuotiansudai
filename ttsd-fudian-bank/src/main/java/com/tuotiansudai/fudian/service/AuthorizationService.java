@@ -10,8 +10,7 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.AuthorizationContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.ReturnUpdateMapper;
-import com.tuotiansudai.fudian.mapper.SelectResponseDataMapper;
+import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankAuthorizationMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -23,38 +22,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorizationService implements AsyncCallbackInterface {
+public class AuthorizationService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(AuthorizationService.class);
+
+    private static final ApiType API_TYPE = ApiType.AUTHORIZATION;
 
     private final SignatureHelper signatureHelper;
 
     private final MessageQueueClient messageQueueClient;
 
+    private final SelectMapper selectMapper;
+
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
 
-    private final ReturnUpdateMapper returnUpdateMapper;
-
-    private final SelectResponseDataMapper selectResponseDataMapper;
-
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public AuthorizationService(SignatureHelper signatureHelper, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, ReturnUpdateMapper returnUpdateMapper, SelectResponseDataMapper selectResponseDataMapper) {
+    public AuthorizationService(SignatureHelper signatureHelper, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper) {
         this.signatureHelper = signatureHelper;
         this.messageQueueClient = messageQueueClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.returnUpdateMapper = returnUpdateMapper;
-        this.selectResponseDataMapper = selectResponseDataMapper;
+        this.selectMapper = selectMapper;
     }
 
     public AuthorizationRequestDto auth(Source source, String loginName, String mobile, String userName, String accountNo) {
         AuthorizationRequestDto dto = new AuthorizationRequestDto(source, loginName, mobile, userName, accountNo, null);
 
-        signatureHelper.sign(dto);
+        signatureHelper.sign(API_TYPE, dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[authorization] sign error, userName: {}, accountNo: {}", userName, accountNo);
 
@@ -67,13 +65,13 @@ public class AuthorizationService implements AsyncCallbackInterface {
 
     @Override
     public void returnCallback(ResponseDto responseData) {
-        returnUpdateMapper.updateAuthorization(responseData);
+        updateMapper.updateReturnResponse(API_TYPE.name().toLowerCase(), responseData);
     }
 
     @Override
     @SuppressWarnings(value = "unchecked")
     public ResponseDto notifyCallback(String responseData) {
-        logger.info("[authorization] data is {}", responseData);
+        logger.info("[authorization] callback data is {}", responseData);
 
         ResponseDto<AuthorizationContentDto> responseDto = ApiType.AUTHORIZATION.getParser().parse(responseData);
 
@@ -82,7 +80,11 @@ public class AuthorizationService implements AsyncCallbackInterface {
             return null;
         }
 
-        updateMapper.updateAuthorization(responseDto);
+        if (!responseDto.isSuccess()) {
+            logger.error("[authorization] callback is failure, orderNo: {}, message {}", responseDto.getContent().getOrderNo(), responseDto.getRetMsg());
+        }
+
+        updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
         responseDto.setReqData(responseData);
 
         if (responseDto.isSuccess()) {
@@ -97,12 +99,12 @@ public class AuthorizationService implements AsyncCallbackInterface {
 
     @Override
     public Boolean isSuccess(String orderNo) {
-        String responseData = this.selectResponseDataMapper.selectResponseData(ApiType.AUTHORIZATION.name().toLowerCase(), orderNo);
+        String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
         if (Strings.isNullOrEmpty(responseData)) {
             return null;
         }
 
-        ResponseDto responseDto = ApiType.AUTHORIZATION.getParser().parse(responseData);
+        ResponseDto responseDto = API_TYPE.getParser().parse(responseData);
 
         return responseDto.isSuccess();
     }

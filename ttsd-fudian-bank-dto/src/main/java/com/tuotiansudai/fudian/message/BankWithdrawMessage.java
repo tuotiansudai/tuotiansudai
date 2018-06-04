@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
-import java.io.Serializable;
-
-public class BankWithdrawMessage implements Serializable {
+public class BankWithdrawMessage extends BankBaseMessage {
 
     private long withdrawId;
 
@@ -18,24 +16,14 @@ public class BankWithdrawMessage implements Serializable {
 
     private long fee;
 
-    private String bankCode;
-
-    private String cardNumber;
-
-    private String bankName;
-
     private String bankOrderNo;
 
     private String bankOrderDate;
 
-    private String openId;
-
-    private boolean status;
-
     public BankWithdrawMessage() {
     }
 
-    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankCode, String cardNumber, String bankName, String bankOrderNo, String bankOrderDate, String openId, boolean status) {
+    public BankWithdrawMessage(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String bankOrderNo, String bankOrderDate) {
         this.withdrawId = withdrawId;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -43,13 +31,8 @@ public class BankWithdrawMessage implements Serializable {
         this.bankAccountNo = bankAccountNo;
         this.amount = amount;
         this.fee = fee;
-        this.bankCode = bankCode;
-        this.cardNumber = cardNumber;
-        this.bankName = bankName;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
-        this.openId = openId;
-        this.status = status;
     }
 
     public long getWithdrawId() {
@@ -80,31 +63,11 @@ public class BankWithdrawMessage implements Serializable {
         return fee;
     }
 
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
     public String getBankOrderNo() {
         return bankOrderNo;
     }
 
     public String getBankOrderDate() {
         return bankOrderDate;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public boolean isStatus() {
-        return status;
     }
 }

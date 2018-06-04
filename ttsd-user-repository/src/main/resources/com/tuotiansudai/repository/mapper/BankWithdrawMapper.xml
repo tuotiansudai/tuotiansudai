@@ -9,9 +9,6 @@
         <result column="login_name" property="loginName"/>
         <result column="amount" property="amount"/>
         <result column="fee" property="fee"/>
-        <result column="bank_name" property="bankName"/>
-        <result column="bank_code" property="bankCode"/>
-        <result column="card_number" property="cardNumber"/>
         <result column="bank_order_no" property="bankOrderNo"/>
         <result column="bank_order_date" property="bankOrderDate"/>
         <result column="source" property="source"/>
@@ -33,9 +30,6 @@
         update bank_withdraw set
         bank_order_no = #{bankOrderNo},
         bank_order_date = #{bankOrderDate},
-        bank_name = #{bankName},
-        bank_code = #{bankCode},
-        card_number = #{cardNumber},
         status = #{status},
         updated_time = now()
         where id = #{id}

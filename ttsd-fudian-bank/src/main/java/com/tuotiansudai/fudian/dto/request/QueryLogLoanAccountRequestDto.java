@@ -1,15 +1,13 @@
 package com.tuotiansudai.fudian.dto.request;
 
-import com.tuotiansudai.fudian.config.ApiType;
-
 public class QueryLogLoanAccountRequestDto extends BaseRequestDto {
 
     private String loanAccNo;
 
     private String loanTxNo;
 
-    public QueryLogLoanAccountRequestDto(String loginName, String mobile, String loanAccNo, String loanTxNo) {
-        super(Source.WEB, loginName, mobile, ApiType.QUERY_LOG_LOAN_ACCOUNT, null);
+    public QueryLogLoanAccountRequestDto(String loanAccNo, String loanTxNo) {
+        super(Source.WEB, null, null, null, null);
         this.loanAccNo = loanAccNo;
         this.loanTxNo = loanTxNo;
     }

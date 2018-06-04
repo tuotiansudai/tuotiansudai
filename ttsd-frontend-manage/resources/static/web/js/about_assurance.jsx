@@ -35,3 +35,8 @@ $bottomClose.on('click',function() {
     $bottomClose.hide();
     $bottomOpen.show();
 });
+
+$('.to-shou').on('click',function() {
+    $bottomClose.show();
+    $bottomOpen.hide();
+});

@@ -416,7 +416,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        int newbieInvestCount = investMapper.countSuccessNewbieInvestByLoginName(loginName);
         return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 
@@ -583,7 +583,6 @@ public class InvestServiceImpl implements InvestService {
         // 改标的状态为满标 RECHECK
         loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
         // 更新筹款完成时间
-        loanMapper.updateRaisingCompleteTime(loanId, new Date());
 
         try {
             // 发送满标提醒
