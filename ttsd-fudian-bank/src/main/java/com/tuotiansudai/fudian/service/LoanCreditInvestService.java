@@ -174,7 +174,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
 
         if (!Strings.isNullOrEmpty(queryResponseData)) {
             ResponseDto<QueryTradeContentDto> queryResponseDto = (ResponseDto<QueryTradeContentDto>) ApiType.QUERY_TRADE.getParser().parse(queryResponseData);
-            return queryResponseDto.isSuccess() && !"0".equals(queryResponseDto.getContent().getQueryState());
+            return queryResponseDto.isSuccess() && "1".equals(queryResponseDto.getContent().getQueryState());
         }
 
         return null;
