@@ -3,13 +3,10 @@ package com.tuotiansudai.mq.consumer.user;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.tuotiansudai.fudian.message.BankAuthorizationMessage;
-import com.tuotiansudai.fudian.message.BankBindCardMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
-import com.tuotiansudai.repository.model.UserBankCardModel;
-import com.tuotiansudai.repository.model.UserBankCardStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,8 @@ public class BankAuthorizationMessageConsumer implements MessageConsumer{
             }
             bankAccountModel.setAutoInvest(true);
             bankAccountModel.setAuthorization(true);
-            bankAccountModel.setAutoRepay(true);
+            bankAccountModel.setBankAuthorizationOrderNo(bankAuthorizationMessage.getBankOrderNo());
+            bankAccountModel.setBankAuthorizationOrderDate(bankAuthorizationMessage.getBankOrderDate());
             bankAccountMapper.update(bankAccountModel);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);

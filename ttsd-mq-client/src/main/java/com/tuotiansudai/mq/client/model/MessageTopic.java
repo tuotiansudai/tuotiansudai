@@ -33,11 +33,6 @@ public enum MessageTopic {
             MessageQueue.Recharge_Success,
             MessageQueue.Recharge_CompletePointTask),
 
-    Withdraw("Withdraw",
-            MessageQueue.Withdraw_Success,
-            MessageQueue.Withdraw_EventMessage,
-            MessageQueue.Withdraw_PushMessage),
-
     Authorization("Authorization",
             MessageQueue.Authorization_Success,
             MessageQueue.Authorization_CompletePointTask),

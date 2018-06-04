@@ -80,10 +80,6 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
             return null;
         }
 
-        if (!responseDto.isSuccess()) {
-            logger.error("[authorization] callback is failure, orderNo: {}, message {}", responseDto.getContent().getOrderNo(), responseDto.getRetMsg());
-        }
-
         updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);
         responseDto.setReqData(responseData);
 

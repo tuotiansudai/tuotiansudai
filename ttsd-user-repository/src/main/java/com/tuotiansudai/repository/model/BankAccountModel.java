@@ -9,25 +9,26 @@ public class BankAccountModel implements Serializable {
     private String loginName;
     private String bankUserName;
     private String bankAccountNo;
-    private String bankOrderNo;
-    private String bankOrderDate;
+    private String bankAccountOrderNo;
+    private String bankAccountOrderDate;
     private long balance;
     private long membershipPoint;
     private boolean authorization;
     private boolean autoInvest;
-    private boolean autoRepay;
+    private String bankAuthorizationOrderNo;
+    private String bankAuthorizationOrderDate;
     private Date createdTime;
     private Date updatedTime;
 
     public BankAccountModel() {
     }
 
-    public BankAccountModel(String loginName, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public BankAccountModel(String loginName, String bankUserName, String bankAccountNo, String bankAccountOrderNo, String bankAccountOrderDate) {
         this.loginName = loginName;
         this.bankUserName = bankUserName;
         this.bankAccountNo = bankAccountNo;
-        this.bankOrderNo = bankOrderNo;
-        this.bankOrderDate = bankOrderDate;
+        this.bankAccountOrderNo = bankAccountOrderNo;
+        this.bankAccountOrderDate = bankAccountOrderDate;
     }
 
     public long getId() {
@@ -62,20 +63,20 @@ public class BankAccountModel implements Serializable {
         this.bankAccountNo = bankAccountNo;
     }
 
-    public String getBankOrderNo() {
-        return bankOrderNo;
+    public String getBankAccountOrderNo() {
+        return bankAccountOrderNo;
     }
 
-    public void setBankOrderNo(String bankOrderNo) {
-        this.bankOrderNo = bankOrderNo;
+    public void setBankAccountOrderNo(String bankAccountOrderNo) {
+        this.bankAccountOrderNo = bankAccountOrderNo;
     }
 
-    public String getBankOrderDate() {
-        return bankOrderDate;
+    public String getBankAccountOrderDate() {
+        return bankAccountOrderDate;
     }
 
-    public void setBankOrderDate(String bankOrderDate) {
-        this.bankOrderDate = bankOrderDate;
+    public void setBankAccountOrderDate(String bankAccountOrderDate) {
+        this.bankAccountOrderDate = bankAccountOrderDate;
     }
 
     public long getBalance() {
@@ -110,12 +111,20 @@ public class BankAccountModel implements Serializable {
         this.autoInvest = autoInvest;
     }
 
-    public boolean isAutoRepay() {
-        return autoRepay;
+    public String getBankAuthorizationOrderNo() {
+        return bankAuthorizationOrderNo;
     }
 
-    public void setAutoRepay(boolean autoRepay) {
-        this.autoRepay = autoRepay;
+    public void setBankAuthorizationOrderNo(String bankAuthorizationOrderNo) {
+        this.bankAuthorizationOrderNo = bankAuthorizationOrderNo;
+    }
+
+    public String getBankAuthorizationOrderDate() {
+        return bankAuthorizationOrderDate;
+    }
+
+    public void setBankAuthorizationOrderDate(String bankAuthorizationOrderDate) {
+        this.bankAuthorizationOrderDate = bankAuthorizationOrderDate;
     }
 
     public Date getCreatedTime() {

@@ -1,11 +1,10 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.AgreementDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.service.AgreementService;
-import com.tuotiansudai.util.RequestIPParser;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.service.BankAuthorizationService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,17 +20,17 @@ import javax.validation.Valid;
 public class AgreementController {
 
     @Autowired
-    private AgreementService agreementService;
+    private BankAuthorizationService bankAuthorizationService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto, HttpServletRequest request){
         agreementDto.setIp(RequestIPParser.parse(request));
-        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(LoginUserInfo.getLoginName(), agreementDto);
+        BankAsyncMessage baseDto = bankAuthorizationService.authorization(
+                agreementDto.getSource(),
+                LoginUserInfo.getLoginName(),
+                LoginUserInfo.getMobile(),
+                agreementDto.getIp(),
+                agreementDto.getDeviceId());
         return new ModelAndView("/pay", "pay", baseDto);
-    }
-
-    @RequestMapping(value = "/repay", method = RequestMethod.GET)
-    public ModelAndView agreementRepay() {
-        return new ModelAndView("/auto-repay-agreement");
     }
 }

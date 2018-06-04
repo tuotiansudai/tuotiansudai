@@ -31,6 +31,9 @@ public class PersonalInfoController {
     private AccountService accountService;
 
     @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
     private UserBindBankCardService userBindBankCardService;
 
     @Autowired
@@ -41,16 +44,16 @@ public class PersonalInfoController {
         ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
 
-        AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(userModel.getLoginName());
 
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
-        mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
-        mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
+        mv.addObject("authorization", bankAccountModel != null && bankAccountModel.isAuthorization());
+        mv.addObject("autoInvest", bankAccountModel != null && bankAccountModel.isAutoInvest());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
 
-        if (accountModel != null) {
+        if (bankAccountModel != null) {
             mv.addObject("userName", userModel.getUserName());
             mv.addObject("identityNumber", userModel.getIdentityNumber());
 
