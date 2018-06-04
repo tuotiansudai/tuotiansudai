@@ -1,5 +1,8 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.tuotiansudai.fudian.dto.BankLoanCreditInvestDto;
+import com.tuotiansudai.fudian.util.AmountUtils;
+
 public class LoanCreditInvestRequestDto extends NotifyRequestDto {
 
     private String creditNo; //债权挂牌ID
@@ -26,18 +29,18 @@ public class LoanCreditInvestRequestDto extends NotifyRequestDto {
 
     private String repayedAmount = "0.00"; //已还款金额
 
-    public LoanCreditInvestRequestDto(Source source, String loginName, String mobile, String userName, String accountNo, String loanTxNo, String investOrderNo, String investOrderDate, String creditNo, String creditAmount, String amount, String creditFee) {
-        super(source, loginName, mobile, userName, accountNo);
-        this.loanTxNo = loanTxNo;
-        this.investOrderNo = investOrderNo;
-        this.oriOrderNo = investOrderNo;
-        this.investOrderDate = investOrderDate;
-        this.oriOrderDate = investOrderDate;
-        this.creditNo = creditNo;
-        this.creditAmount = creditAmount;
-        this.creditNoAmount = creditAmount;
-        this.amount = amount;
-        this.creditFee = creditFee;
+    public LoanCreditInvestRequestDto(Source source, BankLoanCreditInvestDto dto) {
+        super(source, dto.getLoginName(), dto.getMobile(), dto.getBankUserName(), dto.getBankAccountNo());
+        this.loanTxNo = dto.getLoanTxNo();
+        this.investOrderNo = dto.getInvestOrderNo();
+        this.oriOrderNo = dto.getInvestOrderNo();
+        this.investOrderDate = dto.getInvestOrderDate();
+        this.oriOrderDate = dto.getInvestOrderDate();
+        this.creditNo = String.valueOf(dto.getTransferApplicationId());
+        this.creditAmount = AmountUtils.toYuan(dto.getInvestAmount());
+        this.creditNoAmount = AmountUtils.toYuan(dto.getInvestAmount());
+        this.amount = AmountUtils.toYuan(dto.getInvestAmount());
+        this.creditFee = AmountUtils.toYuan(dto.getTransferFee());
     }
 
     public String getCreditNo() {

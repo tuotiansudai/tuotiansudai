@@ -10,9 +10,7 @@ import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
 import com.tuotiansudai.fudian.dto.request.LoanCreditInvestRequestDto;
 import com.tuotiansudai.fudian.dto.request.QueryTradeType;
 import com.tuotiansudai.fudian.dto.request.Source;
-import com.tuotiansudai.fudian.dto.response.LoanCreateContentDto;
-import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
-import com.tuotiansudai.fudian.dto.response.ResponseDto;
+import com.tuotiansudai.fudian.dto.response.*;
 import com.tuotiansudai.fudian.mapper.InsertMapper;
 import com.tuotiansudai.fudian.mapper.SelectMapper;
 import com.tuotiansudai.fudian.mapper.SelectRequestMapper;
@@ -79,11 +77,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
     }
 
     public LoanCreditInvestRequestDto invest(Source source, BankLoanCreditInvestDto dto) {
-        LoanCreditInvestRequestDto requestDto = new LoanCreditInvestRequestDto(source, dto.getLoginName(), dto.getMobile(),
-                dto.getBankUserName(), dto.getBankAccountNo(),
-                dto.getLoanTxNo(), dto.getInvestOrderNo(), dto.getInvestOrderDate(),
-                String.valueOf(dto.getTransferApplicationId()), AmountUtils.toYuan(dto.getInvestAmount()),
-                AmountUtils.toYuan(dto.getInvestAmount()), AmountUtils.toYuan(dto.getTransferFee()));
+        LoanCreditInvestRequestDto requestDto = new LoanCreditInvestRequestDto(source, dto);
 
         signatureHelper.sign(API_TYPE, requestDto);
 
@@ -171,12 +165,18 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
         String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
-        if (Strings.isNullOrEmpty(responseData)) {
-            return null;
+        String queryResponseData = this.selectMapper.selectQueryResponseData(API_TYPE.name().toLowerCase(), orderNo);
+
+        if (!Strings.isNullOrEmpty(responseData)) {
+            ResponseDto<LoanCreditInvestContentDto> responseDto = (ResponseDto<LoanCreditInvestContentDto>) API_TYPE.getParser().parse(responseData);
+            return responseDto.isSuccess();
         }
 
-        ResponseDto<LoanCreateContentDto> responseDto = (ResponseDto<LoanCreateContentDto>) API_TYPE.getParser().parse(responseData);
+        if (!Strings.isNullOrEmpty(queryResponseData)) {
+            ResponseDto<QueryTradeContentDto> queryResponseDto = (ResponseDto<QueryTradeContentDto>) ApiType.QUERY_TRADE.getParser().parse(queryResponseData);
+            return queryResponseDto.isSuccess() && !"0".equals(queryResponseDto.getContent().getQueryState());
+        }
 
-        return responseDto.isSuccess();
+        return null;
     }
 }
