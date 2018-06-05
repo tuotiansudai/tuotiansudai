@@ -66,12 +66,12 @@
             </li>
         </#if>
         <li><span class="info-title"> 免密投资</span>
-            <#if noPasswordInvest>
+            <#if autoInvest>
                 <em class="info">您已开启免密投资，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
-            <#elseif autoInvest>
+            <#elseif authorization>
                 <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest"  href="javascript:void(0);">开启</a>

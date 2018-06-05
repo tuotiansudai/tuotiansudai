@@ -8,13 +8,14 @@
         <result column="login_name" property="loginName"/>
         <result column="bank_user_name" property="bankUserName"/>
         <result column="bank_account_no" property="bankAccountNo"/>
-        <result column="bank_order_no" property="bankOrderNo"/>
-        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="bank_account_order_no" property="bankAccountOrderNo"/>
+        <result column="bank_account_order_date" property="bankAccountOrderDate"/>
         <result column="balance" property="balance"/>
         <result column="membership_point" property="membershipPoint"/>
         <result column="authorization" property="authorization"/>
         <result column="auto_invest" property="autoInvest"/>
-        <result column="auto_repay" property="autoRepay"/>
+        <result column="bank_authorization_order_no" property="bankAuthorizationOrderNo"/>
+        <result column="bank_authorization_order_date" property="bankAuthorizationOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
@@ -27,6 +28,16 @@
     <select id="findByLoginName" parameterType="map" resultMap="bankAccountResultMap">
         select * from bank_account where login_name = #{loginname}
     </select>
+
+    <update id="update" parameterType="map">
+        update bank_account set
+        authorization = #{authorization},
+        auto_invest = #{autoInvest},
+        bank_authorization_order_no = #{bankAuthorizationOrderNo},
+        bank_authorization_order_date = #{bankAuthorizationOrderDate},
+        updated_time = now()
+        where id = #{id}
+    </update>
 
     <update id="updateMembershipPoint" parameterType="map">
         update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName}

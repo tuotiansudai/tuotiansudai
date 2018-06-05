@@ -95,6 +95,11 @@ public class BankWrapperClient {
                 new BankRegisterDto(loginName, mobile, realName, identityCode));
     }
 
+    public BankAsyncMessage authorization(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/authorization/source/{0}", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
     public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));

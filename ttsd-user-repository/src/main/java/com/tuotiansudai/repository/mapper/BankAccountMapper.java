@@ -10,6 +10,8 @@ public interface BankAccountMapper {
 
     void create(BankAccountModel bankAccountModel);
 
+    void update(BankAccountModel bankAccountModel);
+
     BankAccountModel findByLoginName(String loginName);
 
     void updateMembershipPoint(@Param("loginName") String loginName,

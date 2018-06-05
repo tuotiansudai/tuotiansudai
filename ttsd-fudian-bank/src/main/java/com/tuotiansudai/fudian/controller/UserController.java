@@ -105,19 +105,14 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/authorization/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> authorization(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> authorization(@PathVariable Source source, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call authorization, params: {}", params);
-
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String bankUserName = params.get("bankUserName");
-        String bankAccountNo = params.get("bankAccountNo");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo))) {
+        if (!params.isValid()) {
+            logger.error("[Fudian] call authorization bad request, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
-        AuthorizationRequestDto requestDto = authorizationService.auth(source, loginName, mobile, bankUserName, bankAccountNo);
+        AuthorizationRequestDto requestDto = authorizationService.auth(source, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
 
