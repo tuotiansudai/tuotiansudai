@@ -13,13 +13,18 @@ if (sourceKind.port) {
 }
 
 let Swiper = require('swiper/dist/js/swiper.jquery.min');
-
+let slideLen = 5;
+if($(document).width() <= 1024){
+    slideLen = 3;
+}else {
+    slideLen = 5;
+}
 var mySwiper = new Swiper ('.my-team-logos', {
     direction: 'horizontal',
     loop: true,
     autoplay:0,
-     slidesPerGroup: 5,
-    slidesPerView:5,
+     slidesPerGroup: slideLen,
+    slidesPerView:slideLen,
     nextButton: '.nextBtn',
     prevButton: '.prevBtn',
     freeMode:true,

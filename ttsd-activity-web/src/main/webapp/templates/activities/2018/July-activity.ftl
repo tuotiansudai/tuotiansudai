@@ -24,7 +24,7 @@
                    <ul class="swiper-wrapper">
                        <li class="swiper-slide">
                            <div class="team-logo deguo"><span class="amount">1</span></div>
-                           <div class="country-btn">德国队</div>
+                           <div class="country-btn">德还款国队</div>
                        </li>
                        <li class="swiper-slide">
                            <div class="team-logo eluosi"><span class="amount">2</span></div>
@@ -168,7 +168,7 @@
                    <div class="swiper-pagination"></div>
                </div>
                <div class="prize">
-                   <p>世界杯四强是<strong>中国队</strong>、<strong>美国队</strong>、<strong>英国队</strong>、<strong>法国队</strong>，当前共有120000人集齐队标</p>
+                   <p>世界杯四强是<strong>塞尔维亚队</strong>、<strong>美国队</strong>、<strong>英国队</strong>、<strong>法国队</strong>，当前共有120000人集齐队标</p>
                </div>
            </div>
        </div>
@@ -184,9 +184,9 @@
                 <div class="content-title time2">活动时间：7月1日-7月31日</div>
                 <div class="invest-records">
                     <ul class="clearfix">
-                        <li>当前累计年化投资额 <strong>1000元</strong></li>
-                        <li>当前返现比例 <strong>0.5%</strong> </li>
-                        <li>当前返现金额  <strong>6元</strong></li>
+                        <li class="first">当前累计年化<span class="wap-style">投资额 <strong>1000元</strong></span></li>
+                        <li class="second">当前返现<span class="wap-style">比例 <strong>0.5%</strong> </span></li>
+                        <li class="thrid">当前返现<span class="wap-style">金额  <strong>6元</strong></span></li>
                     </ul>
                     <div class="progress-wrap">
                         <div class="progress">
