@@ -51,6 +51,13 @@ public class FrontCallbackController {
                 .addObject("bankCallbackType", bankCallbackType);
     }
 
+    @RequestMapping(value = "/{bankCallbackType}/order-no/{orderNo}/in-progress", method = RequestMethod.POST)
+    public ModelAndView bankInProgress(@PathVariable BankCallbackType bankCallbackType,
+                                       @PathVariable String orderNo) {
+        return new ModelAndView("/pay-in-progress", "orderNo", orderNo)
+                .addObject("bankCallbackType", bankCallbackType);
+    }
+
     @RequestMapping(value = "/{bankCallbackType}/order-no/{orderNo}/is-success", method = RequestMethod.POST)
     public ModelAndView callbackSuccess(@PathVariable BankCallbackType bankCallbackType,
                                         @PathVariable String orderNo) {

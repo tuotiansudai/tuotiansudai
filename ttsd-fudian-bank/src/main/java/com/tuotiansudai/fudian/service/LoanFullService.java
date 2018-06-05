@@ -48,13 +48,9 @@ public class LoanFullService implements NotifyCallbackInterface {
 
     private final SignatureHelper signatureHelper;
 
-    private final QueryTradeService queryTradeService;
-
     private final InsertMapper insertMapper;
 
     private final UpdateMapper updateMapper;
-
-    private final SelectMapper selectMapper;
 
     @Autowired
     public LoanFullService(RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, BankClient bankClient, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, QueryTradeService queryTradeService, SelectMapper selectMapper, InsertMapper insertMapper, UpdateMapper updateMapper) {
@@ -63,10 +59,8 @@ public class LoanFullService implements NotifyCallbackInterface {
         this.bankClient = bankClient;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
-        this.queryTradeService = queryTradeService;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
-        this.selectMapper = selectMapper;
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -138,7 +132,7 @@ public class LoanFullService implements NotifyCallbackInterface {
         return responseDto;
     }
 
-    @Scheduled(fixedDelay = 1000 * 60, initialDelay = 1000 * 60, zone = "Asia/Shanghai")
+    @Scheduled(fixedDelay = 1000 * 60, initialDelay = 1000 * 10, zone = "Asia/Shanghai")
     public void delaySchedule() {
         RLock lock = redissonClient.getLock("BANK_LOAN_FULL_DELAY_QUEUE_LOCK");
 

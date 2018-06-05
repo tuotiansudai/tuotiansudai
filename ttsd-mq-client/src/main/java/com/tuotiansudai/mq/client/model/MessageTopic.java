@@ -11,7 +11,6 @@ public enum MessageTopic {
 
     LoanFullSuccess("LoanFullSuccess",
             MessageQueue.LoanFull_Success,
-            MessageQueue.LoanFull_RewardReferrer,
             MessageQueue.LoanFull_GenerateAnXinContract),
 
     RepaySuccess("RepaySuccess",

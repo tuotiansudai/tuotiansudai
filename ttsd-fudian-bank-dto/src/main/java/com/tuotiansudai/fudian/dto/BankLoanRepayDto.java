@@ -17,21 +17,21 @@ public class BankLoanRepayDto extends BankBaseDto {
 
     private String loanTxNo;
 
-    private boolean isNormalRepay;
+    private boolean normalRepay;
 
     private List<BankLoanRepayInvestDto> bankLoanRepayInvests;
 
     public BankLoanRepayDto() {
     }
 
-    public BankLoanRepayDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, long loanRepayId, String loanTxNo, boolean isNormalRepay, List<BankLoanRepayInvestDto> bankLoanRepayInvests) {
+    public BankLoanRepayDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, long loanRepayId, String loanTxNo, boolean normalRepay, List<BankLoanRepayInvestDto> bankLoanRepayInvests) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.loanId = loanId;
         this.loanRepayId = loanRepayId;
         this.capital = bankLoanRepayInvests.stream().mapToLong(BankLoanRepayInvestDto::getCapital).sum();
         this.interest = bankLoanRepayInvests.stream().mapToLong(bankLoanRepayInvest-> bankLoanRepayInvest.getInterest() + bankLoanRepayInvest.getDefaultInterest()).sum();
         this.loanTxNo = loanTxNo;
-        this.isNormalRepay = isNormalRepay;
+        this.normalRepay = normalRepay;
         this.bankLoanRepayInvests = bankLoanRepayInvests;
     }
 
@@ -56,7 +56,7 @@ public class BankLoanRepayDto extends BankBaseDto {
     }
 
     public boolean isNormalRepay() {
-        return isNormalRepay;
+        return normalRepay;
     }
 
     public List<BankLoanRepayInvestDto> getBankLoanRepayInvests() {
@@ -68,8 +68,9 @@ public class BankLoanRepayDto extends BankBaseDto {
         return super.isValid()
                 && loanId > 0
                 && loanRepayId > 0
-                && capital > 0
-                && interest > 0
+                && capital >= 0
+                && interest >= 0
+                && capital + interest > 0
                 && !Strings.isNullOrEmpty(loanTxNo)
                 && bankLoanRepayInvests != null
                 && bankLoanRepayInvests.size() > 0

@@ -85,10 +85,10 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
 
         insertMapper.insertLoanCreditInvest(requestDto);
         String bankLoanCreditInvestHistory = MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, requestDto.getOrderDate());
-        redisTemplate.opsForHash().put(bankLoanCreditInvestHistory, requestDto.getInvestOrderNo(),
+        redisTemplate.opsForHash().put(bankLoanCreditInvestHistory, requestDto.getOrderNo(),
                 new Gson().toJson(new BankLoanCreditInvestMessage(dto.getTransferApplicationId(),
                         dto.getInvestId(),
-                        dto.getInvestAmount(),
+                        dto.getTransferAmount(),
                         dto.getLoginName(),
                         dto.getMobile(),
                         dto.getBankUserName(),
@@ -131,21 +131,21 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
         if (lock.tryLock()) {
             try {
                 HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-                List<BaseRequestDto> baseRequestDtos = selectMapper.selectResponseInOneHour(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase());
+                List<BaseRequestDto> loanCreditInvestRequests = selectMapper.selectResponseInOneHour(ApiType.LOAN_CREDIT_INVEST.name().toLowerCase());
 
-                for (BaseRequestDto baseRequestDto : baseRequestDtos) {
+                for (BaseRequestDto loanCreditInvestRequest : loanCreditInvestRequests) {
                     try {
-                        String bankLoanCreditInvestValue = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, baseRequestDto.getOrderDate()), baseRequestDto.getOrderNo());
+                        String bankLoanCreditInvestValue = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, loanCreditInvestRequest.getOrderDate()), loanCreditInvestRequest.getOrderNo());
                         BankLoanCreditInvestMessage bankLoanCreditInvestMessage = gson.fromJson(bankLoanCreditInvestValue, BankLoanCreditInvestMessage.class);
                         if (Strings.isNullOrEmpty(bankLoanCreditInvestValue)) {
-                            logger.error("[LoanCreditInvest Status Schedule] fetch LoanCreditInvest meta data from redis error, bank order no:{}, redis value: {}", baseRequestDto.getOrderNo(), bankLoanCreditInvestValue);
+                            logger.error("[LoanCreditInvest Status Schedule] fetch LoanCreditInvest meta data from redis error, bank order no:{}, redis value: {}", loanCreditInvestRequest.getOrderNo(), bankLoanCreditInvestValue);
                             continue;
                         }
                         ResponseDto<QueryTradeContentDto> query = queryTradeService.query(bankLoanCreditInvestMessage.getBankOrderNo(), bankLoanCreditInvestMessage.getBankOrderDate(), QueryTradeType.LOAN_CREDIT_INVEST);
                         if (query.isSuccess() && "1".equals(query.getContent().getQueryState())) {
                             updateMapper.updateQueryResponse(API_TYPE.name().toLowerCase(), query);
                             messageQueueClient.sendMessage(MessageQueue.LoanCreditInvest_Success, bankLoanCreditInvestValue);
-                            logger.error("[LoanCreditInvest Status Schedule] LoanCreditInvest is success, but bank response is not found, should send topic: {}", bankLoanCreditInvestValue);
+                            logger.info("[LoanCreditInvest Status Schedule] LoanCreditInvest is success, but bank response is not found, should send topic: {}", bankLoanCreditInvestValue);
                         }
                     } catch (JsonSyntaxException ex) {
                         logger.error(ex.getLocalizedMessage(), ex);

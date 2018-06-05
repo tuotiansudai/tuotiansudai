@@ -19,6 +19,8 @@
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
     </resultMap>
 
 
@@ -188,7 +190,9 @@
             actual_repay_date = #{actualRepayDate},
             default_interest = #{defaultInterest},
             repay_amount = #{repayAmount},
-            status = #{status}
+            status = #{status},
+            bank_order_no = #{bankOrderNo},
+            bank_order_date = #{bankOrderDate}
         where id = #{id}
     </update>
 

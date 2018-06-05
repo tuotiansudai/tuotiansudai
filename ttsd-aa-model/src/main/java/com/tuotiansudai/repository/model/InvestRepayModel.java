@@ -36,17 +36,13 @@ public class InvestRepayModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    private String bankOrderNo;
+
+    private String bankOrderDate;
+
     private TransferStatus transferStatus;
 
-    @Override
-    public String toString() {
-        return MessageFormat.format("id:{0} investId:{1} period:{2} corpus:{3} expectedInterest:{4} actualInterest:{5} " +
-                        "defaultInterest:{6} expectedFee:{7} actualFee:{8} repayAmount:{9} repayDate:{10} actualRepayDate:{11} " +
-                        "status: {12} isTransferred:{13} createdTime:{14} transferStatus:{15}", this.id, this.investId,
-                this.period, this.corpus, this.expectedInterest, this.actualInterest, this.defaultInterest, this.expectedFee,
-                this.actualFee, this.repayAmount, this.repayDate, this.actualRepayDate, this.status, this.isTransferred,
-                this.createdTime, this.transferStatus);
-    }
+    private LoanModel loan;
 
     public InvestRepayModel() {
     }
@@ -62,7 +58,7 @@ public class InvestRepayModel implements Serializable {
         this.status = status;
     }
 
-    private LoanModel loan;
+
 
     public long getId() {
         return id;
@@ -184,6 +180,22 @@ public class InvestRepayModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
+    }
+
     public LoanModel getLoan() {
         return loan;
     }
@@ -199,4 +211,15 @@ public class InvestRepayModel implements Serializable {
     public void setTransferStatus(TransferStatus transferStatus) {
         this.transferStatus = transferStatus;
     }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("id:{0} investId:{1} period:{2} corpus:{3} expectedInterest:{4} actualInterest:{5} " +
+                        "defaultInterest:{6} expectedFee:{7} actualFee:{8} repayAmount:{9} repayDate:{10} actualRepayDate:{11} " +
+                        "status: {12} isTransferred:{13} createdTime:{14} transferStatus:{15}", this.id, this.investId,
+                this.period, this.corpus, this.expectedInterest, this.actualInterest, this.defaultInterest, this.expectedFee,
+                this.actualFee, this.repayAmount, this.repayDate, this.actualRepayDate, this.status, this.isTransferred,
+                this.createdTime, this.transferStatus);
+    }
+
 }

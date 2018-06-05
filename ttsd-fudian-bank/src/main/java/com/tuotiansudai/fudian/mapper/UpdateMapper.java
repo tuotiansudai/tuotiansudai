@@ -14,12 +14,12 @@ import java.util.List;
 public interface UpdateMapper {
     @Update({"<script>",
             "<foreach collection='investItems' item='investItem' separator=';'>",
-            "UPDATE loan_callback_invest ",
+            "UPDATE loan_callback_invest",
             "<set> ",
-            "`ret_code` = #{investItem.retCode}, `ret_msg` = #{investItem.retMsg} ",
+            "`ret_code` = #{investItem.retCode}, `ret_msg` = #{investItem.retMsg}",
             "</set>",
             "<where>",
-            "`order_no` = #{investItem.orderNo} ",
+            "`order_no` = #{investItem.orderNo}",
             "</where>",
             "</foreach>",
             "</script>"})

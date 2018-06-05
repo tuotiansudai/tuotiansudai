@@ -68,8 +68,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreditInvest(LoanCreditInvestRequestDto dto);
 
-    @Insert("INSERT INTO loan_full(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `loan_fee`, `loan_order_date`, `loan_order_no`, `loan_tx_no`, `expect_repay_time`, `request_time`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanFee}, #{loanOrderDate}, #{loanOrderNo}, #{loanTxNo}, #{expectRepayTime}, now())")
+    @Insert("INSERT INTO loan_full(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `notify_url`, `user_name`, `account_no`, `loan_fee`, `loan_order_date`, `loan_order_no`, `loan_tx_no`, `expect_repay_time`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{notifyUrl}, #{userName}, #{accountNo}, #{loanFee}, #{loanOrderDate}, #{loanOrderNo}, #{loanTxNo}, #{expectRepayTime}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanFull(LoanFullRequestDto dto);
 
@@ -78,8 +78,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanRepay(LoanRepayRequestDto dto);
 
-    @Insert("INSERT INTO loan_callback(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `loan_tx_no`, `request_time`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{loanTxNo}, now())")
+    @Insert("INSERT INTO loan_callback(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `loan_tx_no`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{loanTxNo}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCallback(LoanCallbackRequestDto dto);
 

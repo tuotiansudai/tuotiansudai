@@ -99,15 +99,15 @@ public class LoanCallbackService {
         List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayDto.getBankLoanRepayInvests();
         List<LoanCallbackInvestItemRequestDto> loanCallbackInvestItemRequests = bankLoanRepayInvests
                 .stream()
-                .map(bankLoanRepayInvestDto -> {
-                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(OrderIdGenerator.generate(redisTemplate), bankLoanRepayInvestDto);
+                .map(bankLoanRepayInvest -> {
+                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(OrderIdGenerator.generate(redisTemplate), bankLoanRepayInvest);
                     message_map.put(loanCallbackInvestItemRequest.getOrderNo(),
-                            new BankLoanCallbackMessage(bankLoanRepayInvestDto.getInvestId(),
-                                    bankLoanRepayInvestDto.getInvestRepayId(),
-                                    bankLoanRepayInvestDto.getCapital(),
-                                    bankLoanRepayInvestDto.getInterest(),
-                                    bankLoanRepayInvestDto.getDefaultInterest(),
-                                    bankLoanRepayInvestDto.getInterestFee(),
+                            new BankLoanCallbackMessage(bankLoanRepayInvest.getInvestId(),
+                                    bankLoanRepayInvest.getInvestRepayId(),
+                                    bankLoanRepayInvest.getCapital(),
+                                    bankLoanRepayInvest.getInterest(),
+                                    bankLoanRepayInvest.getDefaultInterest(),
+                                    bankLoanRepayInvest.getInterestFee(),
                                     loanCallbackInvestItemRequest.getOrderNo(),
                                     loanCallbackInvestItemRequest.getOrderDate(),
                                     bankLoanRepayDto.isNormalRepay()));

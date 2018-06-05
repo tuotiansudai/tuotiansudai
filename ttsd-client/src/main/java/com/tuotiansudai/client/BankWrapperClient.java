@@ -179,7 +179,7 @@ public class BankWrapperClient {
     }
 
     public BankAsyncMessage loanRepay(BankLoanRepayDto bankLoanRepayDto) {
-        return asyncExecute("/user/card-bind/source/web", bankLoanRepayDto);
+        return asyncExecute("/loan-repay/source/web", bankLoanRepayDto);
     }
 
     public BankMerchantTransferMessage merchantTransfer(String loginName, String mobile, String bankUserName, String bankAccountNo, long amount) {

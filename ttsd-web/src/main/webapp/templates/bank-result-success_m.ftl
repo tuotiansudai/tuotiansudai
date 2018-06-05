@@ -40,8 +40,6 @@
             <input type="submit" class="btn-confirm btn-next"  value="下一步"/>
         </div>
     </form>
-
-    <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
 </div>
 
 </@global.main>

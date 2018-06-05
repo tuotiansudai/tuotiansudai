@@ -8,7 +8,7 @@ spring:
       prefix: /WEB-INF/view/
       suffix: .jsp
   datasource:
-    url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/fudian?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/fudian?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8
     username: ${common.jdbc.username}
     password: ${common.jdbc.password}
     driver-class-name: com.mysql.cj.jdbc.Driver

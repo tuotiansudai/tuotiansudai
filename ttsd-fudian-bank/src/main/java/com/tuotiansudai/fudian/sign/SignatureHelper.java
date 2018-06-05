@@ -92,7 +92,6 @@ public class SignatureHelper {
         }
 
         String originalData = gson.toJson(dto);
-        logger.info("[Signature] origin data: {}", originalData);
 
         try {
             byte[] signedData = originalData.getBytes("utf-8");
@@ -110,7 +109,6 @@ public class SignatureHelper {
 
             dto.setRequestData(signedJson);
 
-            logger.info("[Signature] origin data: {}, sign: {}", originalData, signedData);
         } catch (Exception e) {
             dto.setRequestData(null);
             logger.error(MessageFormat.format("[Signature] sign exception, data {0}", originalData), e);

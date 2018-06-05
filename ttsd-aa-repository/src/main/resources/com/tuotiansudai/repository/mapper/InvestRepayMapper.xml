@@ -7,37 +7,39 @@
     <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
 
     <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
-        <result column="created_time" property="investTime"></result>
-        <result column="loanName" property="loanName"></result>
-        <result column="loanId" property="loanId"></result>
-        <result column="investId" property="investId"></result>
-        <result column="repay_date" property="repayDate"></result>
-        <result column="corpus" property="corpus"></result>
-        <result column="expected_interest" property="expectedInterest"></result>
-        <result column="default_interest" property="defaultInterest"></result>
-        <result column="expected_fee" property="expectedFee"></result>
-        <result column="amount" property="investAmount"></result>
-        <result column="repay_amount" property="repayAmount"></result>
-        <result column="status" property="status"></result>
-        <result column="product_type" property="productType"></result>
+        <result column="created_time" property="investTime"/>
+        <result column="loanName" property="loanName"/>
+        <result column="loanId" property="loanId"/>
+        <result column="investId" property="investId"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="corpus" property="corpus"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="amount" property="investAmount"/>
+        <result column="repay_amount" property="repayAmount"/>
+        <result column="status" property="status"/>
+        <result column="product_type" property="productType"/>
     </resultMap>
 
     <resultMap id="investRepayResultMap" type="InvestRepayModel">
-        <id column="id" property="id"></id>
-        <result column="invest_id" property="investId"></result>
-        <result column="corpus" property="corpus"></result>
-        <result column="expected_interest" property="expectedInterest"></result>
-        <result column="actual_interest" property="actualInterest"></result>
-        <result column="default_interest" property="defaultInterest"></result>
-        <result column="expected_fee" property="expectedFee"></result>
-        <result column="actual_fee" property="actualFee"></result>
-        <result column="repay_amount" property="repayAmount"></result>
-        <result column="period" property="period"></result>
-        <result column="repay_date" property="repayDate"></result>
-        <result column="actual_repay_date" property="actualRepayDate"></result>
-        <result column="status" property="status"></result>
-        <result column="is_transferred" property="isTransferred"></result>
-        <result column="transfer_status" property="transferStatus"></result>
+        <id column="id" property="id"/>
+        <result column="invest_id" property="investId"/>
+        <result column="corpus" property="corpus"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="actual_fee" property="actualFee"/>
+        <result column="repay_amount" property="repayAmount"/>
+        <result column="period" property="period"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="actual_repay_date" property="actualRepayDate"/>
+        <result column="status" property="status"/>
+        <result column="is_transferred" property="isTransferred"/>
+        <result column="transfer_status" property="transferStatus"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -164,6 +166,8 @@
             is_transferred = #{isTransferred},
             repay_amount = #{repayAmount},
             status = #{status},
+            bank_order_no = #{bankOrderNo},
+            bank_order_date = #{bankOrderDate},
             updated_time = now()
         where id = #{id}
     </update>

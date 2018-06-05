@@ -50,6 +50,8 @@ public class LoanRepaySuccessService {
         LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
         // update current loan repay status
         currentLoanRepay.setStatus(RepayStatus.COMPLETE);
+        currentLoanRepay.setBankOrderNo(message.getBankOrderNo());
+        currentLoanRepay.setBankOrderDate(message.getBankOrderDate());
         loanRepayMapper.update(currentLoanRepay);
         logger.info("[Normal Loan Repay Success] update loan repay status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
 
@@ -81,8 +83,10 @@ public class LoanRepaySuccessService {
         // update other loan repay status
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() != RepayStatus.COMPLETE) {
-                loanRepayModel.setStatus(RepayStatus.COMPLETE);
                 loanRepayModel.setActualRepayDate(currentLoanRepay.getActualRepayDate());
+                loanRepayModel.setStatus(RepayStatus.COMPLETE);
+                loanRepayModel.setBankOrderNo(message.getBankOrderNo());
+                loanRepayModel.setBankOrderDate(message.getBankOrderDate());
                 loanRepayMapper.update(loanRepayModel);
             }
         }
