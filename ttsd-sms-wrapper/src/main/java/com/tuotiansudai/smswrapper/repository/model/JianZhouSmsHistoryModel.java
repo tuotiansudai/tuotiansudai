@@ -3,10 +3,10 @@ package com.tuotiansudai.smswrapper.repository.model;
 
 import java.util.Date;
 
-public class JianZhouSmsHistoryModel {
+public class JianZhouSmsHistoryModel{
 
     private long id;
-    private String mobiles;
+    private String mobile;
     private String content;
     private boolean isVoice;
     private Date sendTime;
@@ -16,7 +16,7 @@ public class JianZhouSmsHistoryModel {
     }
 
     public JianZhouSmsHistoryModel(String mobiles, String content, boolean isVoice) {
-        this.mobiles = mobiles;
+        this.mobile = mobile;
         this.content = content;
         this.isVoice = isVoice;
     }
@@ -29,12 +29,12 @@ public class JianZhouSmsHistoryModel {
         this.id = id;
     }
 
-    public String getMobiles() {
-        return mobiles;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMobiles(String mobiles) {
-        this.mobiles = mobiles;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getContent() {

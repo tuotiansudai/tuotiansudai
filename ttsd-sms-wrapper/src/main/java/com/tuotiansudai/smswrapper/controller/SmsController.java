@@ -16,10 +16,12 @@ public class SmsController {
     @Autowired
     private SmsService smsService;
 
+
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendSms(@Valid @RequestBody SmsDto smsDto) {
-        return smsService.sendSms(smsDto.getMobiles(), smsDto.getJianZhouSmsTemplate(), smsDto.isVoice(), smsDto.getParams(), smsDto.getRequestIP());
+        return smsService.sendSms(smsDto);
     }
 
     @RequestMapping(value = "/fatal-notify", method = RequestMethod.POST)

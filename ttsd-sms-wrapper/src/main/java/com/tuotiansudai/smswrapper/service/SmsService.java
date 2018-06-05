@@ -1,25 +1,19 @@
 package com.tuotiansudai.smswrapper.service;
 
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
-import com.tuotiansudai.smswrapper.repository.model.JianZhouSmsHistoryModel;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,108 +39,19 @@ public class SmsService {
     @Value("#{'${sms.antiCooldown.ipList}'.split('\\|')}")
     private List<String> antiCoolDownIpList;
 
-    private final static int QA_DAILY_LIMIT = 100;
-
-    private final static String SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE = "sms_ip_restricted:{0}";
-
-    private final static String QA_SEND_COUNT_PER_DAY = "qa_send_count_per_day:{0}";
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
     @Autowired
     private JianZhouSmsClient jianZhouSmsClient = JianZhouSmsClient.getClient();
-
-    @Autowired
-    private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
     public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
         List<String> mobiles = Lists.newArrayList(fatalNotifyQAMobiles);
         if (Environment.PRODUCTION == environment) {
             mobiles.addAll(fatalNotifyDevMobiles);
         }
-        return sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
+        return jianZhouSmsClient.sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
     }
 
-    public BaseDto<SmsDataDto> sendSms(List<String> mobileList, JianZhouSmsTemplate template, boolean isVoice, List<String> paramList, String restrictedIP) {
-        SmsDataDto data = new SmsDataDto();
-        BaseDto<SmsDataDto> dto = new BaseDto<>(data);
-
-        if (Lists.newArrayList(Environment.SMOKE, Environment.DEV).contains(environment)) {
-            logger.info(MessageFormat.format("sms sending ignored in {0} environment", environment));
-            data.setStatus(true);
-            return dto;
-        }
-
-        if (hasExceedQALimit(mobileList)) {
-            data.setIsRestricted(true);
-            data.setMessage(MessageFormat.format("已超出QA环境当日发送限额{0}", QA_DAILY_LIMIT));
-            return dto;
-        }
-
-        if (isInCoolDown(restrictedIP)) {
-            data.setIsRestricted(true);
-            data.setMessage(MessageFormat.format("IP: {0} 受限", restrictedIP));
-            return dto;
-        }
-
-        List<JianZhouSmsHistoryModel> models = createSmsHistory(mobileList, template, paramList, isVoice);
-        String response = jianZhouSmsClient.sendSms(isVoice, mobileList, template, paramList, null);
-        updateSmsHistory(models, response);
-
-        if(response == null || Long.parseLong(response) < 0){
-            data.setIsRestricted(true);
-            data.setMessage("短信网关返回失败");
-        }
-
-        this.setIntoCoolDown(restrictedIP);
-
-        return dto;
+    public BaseDto<SmsDataDto> sendSms(SmsDto smsDto) {
+        return jianZhouSmsClient.sendSms(smsDto.getMobiles(), smsDto.getJianZhouSmsTemplate(), smsDto.isVoice(), smsDto.getParams(), smsDto.getRequestIP());
     }
 
-    private boolean hasExceedQALimit(List<String> mobileList) {
-        String hKey = DateTime.now().toString("yyyyMMdd");
-        String redisValue = redisWrapperClient.hget(QA_SEND_COUNT_PER_DAY, hKey);
-
-        int smsSendSize = Strings.isNullOrEmpty(redisValue) ? 0 : Integer.parseInt(redisValue);
-        boolean exceed = smsSendSize + mobileList.size() >= QA_DAILY_LIMIT;
-        if (!exceed) {
-            smsSendSize += mobileList.size();
-            redisWrapperClient.hset(QA_SEND_COUNT_PER_DAY, hKey, String.valueOf(smsSendSize), 172800);
-        }
-        return Environment.QA == environment && exceed;
-    }
-
-    private boolean isInCoolDown(String ip) {
-        String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
-        return redisWrapperClient.exists(redisKey);
-    }
-
-    private void setIntoCoolDown(String ip) {
-        if (!Strings.isNullOrEmpty(ip) && !antiCoolDownIpList.contains(ip)) {
-            String redisKey = MessageFormat.format(SMS_IP_RESTRICTED_REDIS_KEY_TEMPLATE, ip);
-            redisWrapperClient.setex(redisKey, second, ip);
-        }
-    }
-
-    private List<JianZhouSmsHistoryModel> createSmsHistory(List<String> mobileList, JianZhouSmsTemplate template, List<String> paramList, boolean isVoice){
-        List<JianZhouSmsHistoryModel> models = new ArrayList<>();
-        int count = mobileList.size();
-        int batchSize = count / 10 + (count % 1000 > 0 ? 1 : 0);
-        for (int batch = 0 ; batch < batchSize ; batchSize++){
-            JianZhouSmsHistoryModel model = new JianZhouSmsHistoryModel(
-                    String.join(", ", mobileList.subList(batch * 10, (batch + 1) * 10 > count ? count : ((batch + 1) * 10))),
-                    template.generateContent(isVoice, paramList),
-                    isVoice);
-            jianZhouSmsHistoryMapper.create(model);
-            models.add(model);
-        }
-        return models;
-    }
-
-    private void updateSmsHistory(List<JianZhouSmsHistoryModel> models, String response){
-        models.forEach(model -> {
-            model.setResponse(response);
-            jianZhouSmsHistoryMapper.update(model);
-        });
-    }
 }
