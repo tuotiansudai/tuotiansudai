@@ -27,7 +27,7 @@ public class MybatisPointConfig {
     @Bean(name = "hikariCPPointConfig")
     public HikariConfig hikariCPPointConfig(MybatisPointConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8",
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
                 connConfig.getDbHost(), connConfig.getDbPort(), connConfig.getDbName()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());

@@ -31,7 +31,7 @@
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
                 <property name="jdbcUrl"
-                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${job.job.minimumIdle}"/>

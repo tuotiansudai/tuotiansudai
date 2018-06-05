@@ -31,7 +31,7 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${pay.aa.minimumIdle}"/>
@@ -52,7 +52,7 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${pay.job.minimumIdle}"/>
@@ -73,7 +73,7 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${anxin.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${anxin.jdbc.username}"/>
                 <property name="password" value="${anxin.jdbc.password}"/>
                 <property name="minimumIdle" value="${anxin.anxin.minimumIdle}"/>
