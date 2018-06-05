@@ -2,9 +2,12 @@ $orange: #ff5d0e;
 $orangeBorder:#ffd43d;
 $redActivityTime:#d20304;
 $redStrong:#e53d22;
+$redInvest:#ff5d0d;
 $grayContentFont:#8f8f8f;
+$gray8f:#8f8f8f;
 $greenBtn:#119d4c;
 $gray333:#333333;
+$grayd1:#d1d1d1;
 
 p {
   margin-bottom: 5px;
@@ -13,11 +16,17 @@ p {
   width: 100%;
   margin: 0 auto;
 }
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
 body {
   background: $orange;
 }
 .activity-page {
-  width: 1225px;
+  width: 1219.5px;
   margin: 0 auto;
 }
 .content-page {
@@ -25,9 +34,9 @@ body {
   margin: 0 auto;
 }
 .borderYellow {
-  border-bottom: 4px solid $orangeBorder;
-  border-left: 4px solid $orangeBorder;
-  border-right: 4px solid $orangeBorder;
+  border-bottom: 3.5px solid $orangeBorder;
+  border-left: 3.5px solid $orangeBorder;
+  border-right: 3.5px solid $orangeBorder;
 }
 .gold-btn {
   width: 307px;
@@ -56,14 +65,19 @@ body {
 }
 
 .july-container {
-
+  padding-bottom: 547px;
 }
 .part {
+  position: relative;
   .part-top {
+    position: absolute;
     height: 111px;
     margin: 0 auto;
     background: url("../images/2018/july-activity/pc_part_title.png") no-repeat center center;
     background-size: 100%;
+  }
+  .main-content {
+    padding-bottom: 60px;
   }
 }
 .country-btn {
@@ -77,6 +91,9 @@ body {
   color: $gray333;
   display: inline-block;
 
+}
+.swiper-pagination-bullet-active {
+  color: $greenBtn;
 }
 .content-section {
   position: relative;
@@ -224,8 +241,8 @@ body {
               background: url("../images/2018/july-activity/keluodiya.png") no-repeat;
               background-size: 100%;
             }
-            &.milu {
-              background: url("../images/2018/july-activity/milu.png") no-repeat;
+            &.bilu {
+              background: url("../images/2018/july-activity/bilu.png") no-repeat;
               background-size: 100%;
             }
             &.moluoge {
@@ -263,8 +280,8 @@ body {
               background-size: 100%;
             }
             //25
-            &.sainajiaer {
-              background: url("../images/2018/july-activity/sainajiaer.png") no-repeat;
+            &.saineijiaer {
+              background: url("../images/2018/july-activity/saineijiaer.png") no-repeat;
               background-size: 100%;
             }
             &.shatealabo {
@@ -275,8 +292,8 @@ body {
               background: url("../images/2018/july-activity/tunisi.png") no-repeat;
               background-size: 100%;
             }
-            &.wulajia {
-              background: url("../images/2018/july-activity/wulajia.png") no-repeat;
+            &.wulagui {
+              background: url("../images/2018/july-activity/wulagui.png") no-repeat;
               background-size: 100%;
             }
             &.xibanya {
@@ -302,8 +319,178 @@ body {
       }
 
     }
+    .prize {
+      color: $gray8f;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      padding-bottom: 40px;
+      strong {
+        font-size: 26px;
+        color: $redStrong;
+      }
+    }
   }
 }
+.part-two {
+  .invest-records {
+    padding-top: 54px;
+    ul {
+      margin-left: -60px;
+      li {
+        color: $redInvest;
+        font-size: 24px;
+        font-weight: bold;
+        float: left;
+        margin-left: 60px;
+        strong {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+  .progress-wrap {
+    .progress {
+      .percent {
+
+      }
+    }
+    .invest-money {
+
+    }
+    .support-amout {
+
+    }
+  }
+}
+.part-three {
+  padding-top: 249px;
+  .part-top {
+    width: 1417px;
+    height: 249px;
+    left: -100px;
+    background: url("../images/2018/july-activity/part_title_invite.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .main-content {
+    margin-top: 249px;
+    .content-section {
+      padding-top: 50px;
+      padding-bottom: 30px;
+    }
+    .inveite-friend-desc {
+
+      p {
+        line-height: 38px;
+        font-size: 24px;
+        color: $gray8f;
+        strong {
+          color: $redStrong;
+          font-size: 24px;
+          font-weight: bold;
+        }
+
+      }
+      .open-red-ware-tab {
+        border: 1px solid $grayd1;
+        border-bottom: none;
+        margin-top: 46px;
+        margin-bottom: 40px;
+        table {
+          tr {
+            td {
+              border-bottom: 1px solid $grayd1;
+              border-right: 1px solid $grayd1;
+              padding: 0;
+              height: 66px;
+              line-height: 66px;
+              font-size: 24px;
+              color: $gray8f;
+              &.ren {
+                width: 305px;
+              }
+            }
+          }
+        }
+      }
+      .qrcode  {
+        width: 326px;
+        height: 326px;
+        margin: 0 auto;
+        padding-top: 18px;
+        box-sizing: border-box;
+        .code {
+          position: relative;
+          width: 284px;
+          height: 284px;
+          margin: 0 auto;
+          .logo {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            width: 77px;
+            height: 75px;
+            margin: auto;
+            background: url("../images/2018/july-activity/logo.png") no-repeat center center;
+            background-size: 100%;
+          }
+        }
+      }
+      .qrcpde-tip {
+        width: 186px;
+        height: 28px;
+        margin: 0 auto;
+        background: url("../images/2018/july-activity/qrcode_tip.png") no-repeat center center;
+        background-size: 100%;
+      }
+    }
+  }
+
+
+
+
+}
+.part-four {
+  margin-top: 85px;
+  .part-top {
+    width: 1380px;
+    height: 162px;
+    left: -81px;
+    background: url("../images/2018/july-activity/kindly_title.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .main-content {
+    padding-top: 162px;
+    width: 1225px;
+    box-sizing: border-box;
+    .content-section {
+      padding-top: 50px;
+      padding-bottom: 30px;
+      P {
+        line-height: 34px;
+        font-size: 21px;
+        color: $gray8f;
+      }
+      .calculation-formula {
+        border: 1px solid $grayd1;
+        border-bottom: none;
+        table {
+          tr {
+            td {
+              border-bottom: 1px solid $grayd1;
+              border-right: 1px solid $grayd1;
+              font-size: 21px;
+              color: $gray8f;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 
 @media screen and (max-width: 768px) {
   html {
