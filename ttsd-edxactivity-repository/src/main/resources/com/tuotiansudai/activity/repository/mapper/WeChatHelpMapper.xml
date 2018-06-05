@@ -44,11 +44,19 @@
         where id = #{id}
     </update>
 
+    <update id="updateHelpUserCount" parameterType="map">
+        UPDATE we_chat_help SET help_user_count = help_user_count + 1 where id = #{id}
+    </update>
+
+    <select id="getHelpUserCount" parameterType="map" resultType="int">
+        SELECT help_user_count where id = #{id}
+    </select>
+
     <select id="findById" parameterType="map" resultMap="weChatHelpModel">
         SELECT * from we_chat_help where id = #{id}
     </select>
 
-    <select id="lockById" resultType="map" resultMap="weChatHelpModel">
+    <select id="lockById" resultType="map" resultMap="weChatHelpModel" useCache="false">
         SELECT * from we_chat_help where id = #{id} FOR UPDATE
     </select>
 

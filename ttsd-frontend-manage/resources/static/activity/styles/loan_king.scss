@@ -2,6 +2,17 @@
   width: 100%;
   margin: 0 auto;
 }
+.compliance-banner {
+  .tip-width {
+    width: 887px;
+    @media screen and(max-width: 1024px){
+      width: 80%;
+      text-align: left;
+      bottom: -5px;
+    }
+  }
+}
+
 .loan-king-container{
   background:#4f99fc;
   .media-pc{

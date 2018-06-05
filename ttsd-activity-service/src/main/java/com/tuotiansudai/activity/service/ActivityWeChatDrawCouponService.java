@@ -58,7 +58,7 @@ public class ActivityWeChatDrawCouponService {
     public List<Date> getActivityTime(WeChatDrawCoupon weChatDrawCoupon){
         return Maps.newHashMap(new ImmutableMap.Builder<WeChatDrawCoupon, List<Date>>()
                 .put(WeChatDrawCoupon.SPRING_BREEZE_ACTIVITY_WECHAT, Lists.newArrayList(activitySpringBreezeStartTime, activitySpringBreezeEndTime))
-                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, Lists.newArrayList(activityInviteHelpStartTime, activitySpringBreezeEndTime))
+                .put(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT, Lists.newArrayList(activityInviteHelpStartTime, activityInviteHelpEndTime))
                 .build()).get(weChatDrawCoupon);
     }
 

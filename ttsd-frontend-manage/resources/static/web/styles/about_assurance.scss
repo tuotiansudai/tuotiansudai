@@ -1024,7 +1024,7 @@
 		color: #fff;
 		text-align: center;
 		font-size:16px;
-		margin:0 45px;
+		margin:0 90px;
 		@media (min-width:701px) and (max-width:999px) {
 			margin:0 20px;
 		}
@@ -1102,7 +1102,7 @@
 	height:138px;
 	position: fixed;
 	bottom:0px;
-	background: rgba(0,0,0,0.65) ;
+	background: rgba(0,0,0,0.44) ;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#25000000, endColorstr=#25000000);
 	left:0;
 	width:100%;
@@ -1115,34 +1115,51 @@
 	cursor: pointer;
 }
 .bottom-open {
+	.to-close {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		height: 25px;
+		width: 25px;
+		background: url('../images/icons/icon-close.png') left top no-repeat;
+		background-size: contain;
+		cursor: pointer;
+	}
 	.page-width {
 		position: relative;
-		top: 20px;
+		top: 30px;
 		.ren {
-			background: url("../images/sign/assure/bottom-ren.png") left 0px no-repeat;
+			position: relative;
+			background: url("../images/sign/assure/bottom-ren.png") no-repeat;
+			background-size: contain;
 			width: 727px;
 			height: 112px;
 			display: inline-block;
 			vertical-align: middle;
-			background-size: 100%;
+			text-align: center;
 			@media (min-width:701px) and (max-width:999px) {
 				width:65%;
 			}
-		}
-		.btn-normal {
-			margin-top: 0px;
-			margin-left: 30px;
-			display: inline-block;
-		}
-		.to-close {
-			height: 25px;
-			width: 25px;
-			background: url('../images/icons/icon-close.png') left top no-repeat;
-			margin-top: 46px;
-			margin-right: 40px;
-			cursor: pointer;
 
 		}
+		.btn-normal {
+			box-sizing: border-box;
+			width: 116px;
+			height: 27px;
+			line-height: 27px;
+			background: #d6291a;
+			border-radius: 6px;
+			border: none;
+			border-bottom: 3px solid #810a00;
+			padding: 0;
+		}
+
+		.to-shou {
+			color: #fff;
+			cursor: pointer;
+		}
+
+
 	}
 }
 

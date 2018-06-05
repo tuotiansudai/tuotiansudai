@@ -1,6 +1,8 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.model.WeChatHelpModel;
 import com.tuotiansudai.activity.service.ActivityWeChatDrawCouponService;
 import com.tuotiansudai.activity.service.InviteHelpActivityService;
@@ -103,7 +105,7 @@ public class InviteHelpActivityController {
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/invest/help", method = RequestMethod.GET)
     public ModelAndView wechatShareInvestHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)){
+        if (Strings.isNullOrEmpty(openId) || inviteHelpActivityService.getHelpModel(id) == null){
             return new ModelAndView("redirect:/activity/invite-help");
         }
 
@@ -123,7 +125,7 @@ public class InviteHelpActivityController {
     @RequestMapping(path = "/wechat/share/{id:^\\d+$}/everyone/help", method = RequestMethod.GET)
     public ModelAndView wechatShareEveryoneHelpDetail(@PathVariable long id, HttpServletRequest request){
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        if (Strings.isNullOrEmpty(openId)){
+        if (Strings.isNullOrEmpty(openId) || inviteHelpActivityService.getHelpModel(id) == null){
             return new ModelAndView("redirect:/activity/invite-help");
         }
 
@@ -142,13 +144,18 @@ public class InviteHelpActivityController {
 
     @RequestMapping(path = "/click-help/{id:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean clickHelp(@PathVariable long id, HttpServletRequest request) {
+    public Map<String, Boolean> clickHelp(@PathVariable long id, HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
-        return !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && !Strings.isNullOrEmpty(openId) && inviteHelpActivityService.clickHelp(id, openId);
+        boolean isSuccess = !Strings.isNullOrEmpty(openId) && !inviteHelpActivityService.isOwnHelp(LoginUserInfo.getLoginName(), openId, id) && inviteHelpActivityService.clickHelp(id, openId);
+        return Maps.newHashMap(ImmutableMap.<String, Boolean>builder().put("status", isSuccess).build());
     }
 
     @RequestMapping(path = "/{isOwn}/wechat/{id:^\\d+$}/withdraw", method = RequestMethod.GET)
     public ModelAndView wechatWithDraw(@PathVariable boolean isOwn, @PathVariable long id, HttpServletRequest request){
+        String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
+        if (Strings.isNullOrEmpty(openId)){
+            return new ModelAndView(String.format("redirect:/we-chat/active/authorize?redirect=/activity/invite-help/%s/wechat/%s/withdraw", isOwn, id));
+        }
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)) {
             request.getSession().setAttribute("channel", "fanlijiayouzhan");
@@ -164,7 +171,7 @@ public class InviteHelpActivityController {
     public ModelAndView startWorkActivityWechat(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activities/2018/rebate-station");
+            return new ModelAndView("redirect:/activity/invite-help");
         }
         ModelAndView modelAndView = new ModelAndView("/wechat/rebate-station-coupons");
         modelAndView.addObject("activityStartTime", startTime);
@@ -180,7 +187,7 @@ public class InviteHelpActivityController {
     public ModelAndView newYearActivityDrawCoupon(HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute("weChatUserOpenid");
         if (Strings.isNullOrEmpty(openId)) {
-            return new ModelAndView("redirect:/activities/2018/rebate-station");
+            return new ModelAndView("redirect:/activity/invite-help");
         }
         boolean duringActivities = activityWeChatService.duringActivities(WeChatDrawCoupon.INVITE_HELP_ACTIVITY_WECHAT);
         if (!duringActivities) {

@@ -9,7 +9,7 @@
         </div>
         <div class="table-row">
             <em class="percent-number">
-                <s class="app">预期年化收益</s>
+                <s class="app">约定年化利率</s>
                 <#--<h1>${loan.baseRate}</h1>-->
                 <#--<h1>${loan.activityRate}</h1>-->
             <#if loan.extraRate != 0>

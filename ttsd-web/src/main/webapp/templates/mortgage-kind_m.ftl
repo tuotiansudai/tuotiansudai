@@ -1,10 +1,21 @@
 <div class="pledge-box house">
 
+<#if loan.introduce??>
+    <div class="section">
+        <div class="title">项目介绍</div>
+        <div class="project-desc">
+            ${loan.introduce}
+        </div>
+    </div>
+</#if>
+
+
+
 <#if loan.loanerDetail??>
     <div class="section">
         <div class="title">借款人基本信息</div>
         <dl>
-            <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率'] as key>
+            <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
                 <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                     <dd><span>${key}：</span><span>${loan.loanerDetail[key]}</span></dd>
                 </#if>
@@ -19,7 +30,7 @@
         <div class="title">抵押档案<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></div>
         <#if pledgeHouseDetail??>
             <dl>
-            <#list ['抵押物所在地', '抵押物估值', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '抵押物借款金额'] as key>
+            <#list ['抵押物所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明'] as key>
                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                     <dd><span>${key}：</span><span>${pledgeHouseDetail[key]}</span></dd>
                 </#if>
@@ -36,7 +47,7 @@
         <div class="title">抵押档案<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></div>
         <#if pledgeVehicleDetail??>
             <dl>
-            <#list ['抵押物所在地', '车辆品牌', '车辆型号', '抵押物估值', '抵押物借款金额'] as key>
+            <#list ['抵押物所在地', '车辆品牌', '车辆型号'] as key>
                 <#if pledgeVehicleDetail[key]?? && pledgeVehicleDetail[key] != ''>
                     <dd><span>${key}：</span><span>${pledgeVehicleDetail[key]}</span></dd>
                 </#if>
@@ -69,7 +80,7 @@
             抵押物信息<#if (loan.pledgeEnterpriseDetailList?size > 1)>${pledgeEnterpriseDetail_index+1}</#if></div>
         <#if pledgeEnterpriseDetail??>
             <dl>
-            <#list ['担保方式', '抵押物估值', '抵押物所在地'] as key>
+            <#list ['担保方式', '抵押物所在地'] as key>
                 <#if pledgeEnterpriseDetail[key]?? && pledgeEnterpriseDetail[key] != ''>
                     <dd><span>${key}：</span><span>${pledgeEnterpriseDetail[key]}</span></dd>
                 </#if>

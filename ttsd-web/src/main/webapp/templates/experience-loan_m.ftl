@@ -1,6 +1,6 @@
 <#import "macro/global_m.ftl" as global>
 <@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要投资" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
-<div class="my-account-content experience-amount" id="experienceAmount" style="display: none">
+<div class="my-account-content experience-amount" id="experienceAmount" style="display: none" data-estimate="${estimate?string('true', 'false')}">
     <div class="account-summary">
         <div style="height: 44px;line-height: 44px;font-size: 17px; width: 100%;text-align: center;">
             <a class="go-back-container" id="goBack_experienceAmount" href="javascript:history.go(-1)" style="top: 6px;">
@@ -9,10 +9,11 @@
             <span class="title">${loan.name}</span>
         </div>
         <div class="collection">
+            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">保守型</i>的用户<em id="closeRisk"></em></span>
             <span class="summary-box">
                 <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                     <i>%</i></b>
-                <em>预期年化收益</em>
+                <em>约定年化利率</em>
             </span>
         </div>
 
@@ -53,7 +54,8 @@
             <span>${.now?string('yyyy-MM-dd')} 00:00:00</span>
         </li>
     </ul>
-
+    <br/>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
     <button class="to-invest-project" type="button" id="investment_btn">立即投资</button>
 </div>
 
@@ -81,7 +83,7 @@
                     <span>
                         <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                             %</b>
-                         <i>预期年化收益</i>
+                         <i>约定年化利率</i>
                     </span>
                 </li>
                 <li class="experience-total1">
@@ -113,6 +115,7 @@
                 </li>
             </ul>
         </div>
+        <div class="invest-tips-m exper_buy" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
 
         <button type="submit" class="btn-wap-normal" id="submitBtn">立即体验</button>
         <div class="shade_mine" style="display: none"></div>

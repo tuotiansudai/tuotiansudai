@@ -160,13 +160,13 @@ $.fn.checkFrom = function () {
                 utils.validLen($ele, 1,100);
                 break;
             case 'addition':
-                utils.validLen($ele, 1,500);
+                utils.validLen($ele, 1,2000);
                 break;
             case 'captcha':
                 utils.validLen($ele,5,5);
                 break;
             case 'answer':
-                utils.validLen($ele, 10,1000);
+                utils.validLen($ele, 10,5000);
                 break;
             default:
                 utils.radioChecked($ele)
@@ -246,10 +246,12 @@ if($questionDetailTag.length) {
 
             }
             else {
-                commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'../captcha',false,function () {
+                    $formAnswerSubmit.prop('disabled',true);
+                });
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
-                        $formAnswer.find('.answer').next().show().text('您输入的内容不能包含敏感词');
+                        $formAnswer.find('.answer').next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                     }
                 }
                 else {
@@ -353,14 +355,17 @@ if($createQuestion.length) {
                 location.href='question/my-questions';
             }
             else {
-                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'/captcha');
+                commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'captcha',false,function () {
+                    $formSubmit.prop('disabled',true);
+                });
+
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {
-                        $question.next().show().text('您输入的内容不能包含敏感词');
+                        $question.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                         return;
                     }
                     if(response.isQuestionSensitiveValid && !response.isAdditionSensitiveValid) {
-                        $addition.next().show().text('您输入的内容不能包含敏感词');
+                        $addition.next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
                     }
                 }
                 else {

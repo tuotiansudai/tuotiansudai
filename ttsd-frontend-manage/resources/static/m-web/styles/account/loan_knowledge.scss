@@ -1,0 +1,186 @@
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+}
+.knowledge-list {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+.knowledge-list .footer-wap-container {
+  display: flex;
+}
+.knowledge-banner {
+  width: 100%;
+  height: 3.4rem;
+  background: url("../../images/account/knowledge_banner.png") no-repeat;
+  background-size: contain;
+}
+.knowledges-list {
+
+  dl {
+    margin-top: .2rem;
+    background: #fff;
+    padding: .24rem;
+    dt {
+      float: left;
+      width: 1.5rem;
+      height: 1.5rem;
+      img {
+        width: 100%;
+        display: block;
+      }
+
+    }
+    dd {
+      float: right;
+      width: 5.12rem;
+      line-height: .42rem;
+      font-size: .3rem;
+      color: #333;
+      &.date-time {
+        margin-top: .4rem;
+        font-size: .24rem;
+        color: #A2A2A2;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.knowledge-list-frame {
+  position: absolute;
+  top: 3.4rem;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+}
+#pullUp {
+  text-align: center;
+  height: .7rem;
+  line-height: .7rem;
+}
+.knowledge-detail-container {
+  padding:  .24rem .24rem .5rem .24rem;
+  h4 {
+    font-size: .4rem;
+    color: #000;
+    text-align: left;
+    line-height: .6rem;
+  }
+  .article-origin {
+    margin-top: .36rem;
+    color: #999;
+    .origin {
+      float: left;
+    }
+    .time {
+      float: right;
+    }
+  }
+  .detail-content-m {
+    margin-top: .4rem;
+    padding-bottom: .3rem;
+    p {
+      font-size: .26rem;
+      line-height: .52rem;
+      color: #666;
+      margin-bottom: .1rem;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+}
+#noData {
+  text-align: center;
+  height: .6rem;
+  line-height: .6rem;
+}
+
+.back-link{
+  position: fixed;
+  top:8px;
+  left:5px;
+  background:url('../../images/share/back-icon.png') no-repeat center;
+  background-size:100%;
+  width:40px;
+  height:40px;
+  line-height:40px;
+  text-align:center;
+  border-radius:50%;
+  font-size:10px;
+  color:#fff;
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}

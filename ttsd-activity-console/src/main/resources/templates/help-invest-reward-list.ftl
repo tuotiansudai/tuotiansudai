@@ -52,7 +52,7 @@
                     <td>${item.helpUserCount}</td>
                     <td>${item.rate}</td>
                     <td>${(item.reward/100)?string('0.00')}</td>
-                    <td><a href="/activity-console/activity-manage/invite-help/help/${item.id}/detail" class="btn btn-default btn-primary">查看详情</a></td>
+                    <td><a href="/activity-console/activity-manage/invite-help/help/${item.id?c}/detail" class="btn btn-default btn-primary">查看详情</a></td>
                 </tr>
                 <#else>
                 <tr>

@@ -19,8 +19,11 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +85,14 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
+
+    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT = "REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT:{0}:{1}";
+
+    private final int seconds = 60 * 24 * 60 * 60;
 
     @Override
     @Transactional
@@ -346,6 +357,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST:
                 couponId =  402l;
                 break;
+            case REGISTER:
+                referrerSuperScholarActivityAccount(loginName, referrer);
+                break;
         }
 
         if(couponId != null){
@@ -353,4 +367,12 @@ public class PointTaskServiceImpl implements PointTaskService {
             mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
         }
     }
+
+    private void referrerSuperScholarActivityAccount(String loginName, String referrer){
+        String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
+        if (redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName))){
+            redisWrapperClient.setex(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, currentDate, referrer), seconds, "SUCCESS");
+        }
+    }
+
 }

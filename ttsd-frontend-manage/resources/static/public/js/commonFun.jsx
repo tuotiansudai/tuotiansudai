@@ -1,9 +1,10 @@
-function refreshCaptcha(dom, url, flush) {
+function refreshCaptcha(dom, url, flush,callback) {
     let captcha= url +'?'+ new Date().getTime().toString();
     if (flush === false) {
         captcha += '&flush=false'
     }
     dom.setAttribute('src',captcha);
+    callback&&callback();
 }
 /* init radio style */
 function initRadio($radio,$radioLabel) {
@@ -359,6 +360,21 @@ function calculationFun(doc, win) {
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 };
+//把px除以100成rem,用于移动端.调用的时候commonFun.calculationRem(document, window)
+function calculationRem(doc, win) {
+    let docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            let clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            let fSize = 100 * (clientWidth /750);
+            fSize > 100 && (fSize = 98.4);
+            docEl.style.fontSize = fSize + 'px';
+        };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+};
 
 function phoneModal() {
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -371,6 +387,19 @@ function phoneModal() {
         //这个是ios操作系统
         return 'ios';
     }
+};
+function toDownloadApp() {
+
+    globalFun.categoryCodeUrl['android'] = window.commonStaticServer+'/images/apk/tuotiansudai_htracking.apk';
+    let equipment=globalFun.equipment();
+    if(equipment.wechat && equipment.kind=='android') {
+        // 微信,并且是安卓，跳到页面
+        window.location.href = "/app/download?app=htracking";
+        return;
+    } else {
+        window.location.href =globalFun.categoryCodeUrl[equipment.kind];
+    }
+
 }
 
 function Cycle(options) {
@@ -432,7 +461,10 @@ exports.activityStatus = activityStatus;
 exports.CommonLayerTip = CommonLayerTip;
 exports.repeatBgSquare = repeatBgSquare;
 exports.calculationFun = calculationFun;
+exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
 exports.Cycle = Cycle;
+exports.toDownloadApp = toDownloadApp;
+
 
 

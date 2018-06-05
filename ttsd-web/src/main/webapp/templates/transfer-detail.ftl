@@ -5,12 +5,17 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
-            <span class="product-tip">拓天速贷提醒您：投资非存款，投资需谨慎！</span>
+            <div class="tips-wrap">
+    <#if loanDto.estimate??>
+            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
+    </#if>
+            <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
+            </div>
         </div>
         <div class="transfer-info">
             <div class="transfer-info-dl">
@@ -27,7 +32,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt>预期年化收益</dt>
+                    <dt>约定年化利率</dt>
                     <dd><em>${transferApplication.baseRate!}
                         <#if loanDto.activityRate != '0.0'>
                             <i class="data-extra-rate">+ ${100 * loanDto.activityRate?number}</i>
@@ -116,7 +121,7 @@
         <div class="detail-record-info">
             <div class="record-title"><span>原始项目信息</span></div>
             <div class="old-project">
-                <span>预期年化收益率：${100 * (loanDto.basicRate?number + loanDto.activityRate?number)}%</span>
+                <span>约定年化利率：${100 * (loanDto.basicRate?number + loanDto.activityRate?number)}%</span>
                 <span>项目期限：${30 * loanDto.periods}天（${loanDto.periods}期）</span>
                 <span>项目总额：${loanDto.loanAmount}元</span>
                 <span>还款方式：${loanDto.type.getRepayType()}</span>
@@ -129,13 +134,13 @@
             <div class="question-list">
                 <dl>
                     <dt>1. 转让项目的优势？<i class="fa fa-chevron-circle-down fr"></i> </dt>
-                    <dd>转让债权和原始债权的预期年化收益、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回投资。同时还可享受到出让人的价格折让。</dd>
+                    <dd>转让债权和原始债权的约定年化利率、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回投资。同时还可享受到出让人的价格折让。</dd>
                 </dl>
 
                 <dl>
                     <dt>2. 债权转让的收益怎么计算？
                         <i class="fa fa-chevron-circle-down fr"></i></dt>
-                    <dd>债权转让项目按照原债权的预期年化收益计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。 <br/>
+                    <dd>债权转让项目按照原债权的约定年化利率计算收益，转让达成后，该债权当期及之后各期的收益均归债权受让人所有。 <br/>
                         例如：一笔3期的债权，4月1号完成了一次回款，下次回款在5月1号，最后一次回款在5月31号，该笔债权在4月10号成功转让，则受让人将获得2期60天（4月2号至5月31号）的收益。</dd>
                 </dl>
 
@@ -218,6 +223,15 @@
     <#include "component/anxin-qian.ftl" />
     <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
+</div>
+<#--风险测评-->
+<div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+    </div>
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />

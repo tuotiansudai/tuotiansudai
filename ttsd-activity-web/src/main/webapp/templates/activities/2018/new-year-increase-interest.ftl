@@ -1,6 +1,7 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.new_year_increase_interest_2018}" pageJavascript="${js.new_year_increase_interest_2018}" activeNav="" activeLeftNav="" title="新年加息活动_活动中心_拓天速贷" keywords="拓天速贷,加息券,秒杀标,实物奖励" description='拓天速贷新年加息活动,活动期间微信关注"拓天速贷服务号"即可领取8张加息券,投资秒杀标可获得在原收益基础上增加1%的福利,累计投资1万元以上即可获得实物奖励.'>
-<div class="increase-rate-banner">
+<div class="increase-rate-banner compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
 </div>
 <div class="activity-wrap-main" id="increase_interest">
     <div class="activity-page-frame " id="activityPageFrame">
@@ -50,7 +51,7 @@
                         <div class="top-bg"></div>
                         <div class="desc-body">
                             <h4> 2月1日-2月5日活动期间，每日随机上线带有“新年秒杀”标签<br/>的项目，
-                                投资该项目，预期年化收益在原收益基础上增加1%。</h4>
+                                投资该项目，约定年化利率在原收益基础上增加1%。</h4>
                         </div>
 
                         <div class="bottom-bg"></div>

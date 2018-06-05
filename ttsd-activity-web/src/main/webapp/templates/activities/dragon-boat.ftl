@@ -2,9 +2,10 @@
 
 <@global.main pageCss="${css.dragon_boat}" pageJavascript="${js.dragon_boat}" activeNav="" activeLeftNav="" title="端午节活动_活动中心_拓天速贷" keywords="拓天速贷,端午节活动,粽子节活动,体验金奖励,加息券奖励" description="拓天速贷粽子节活动,使用微信打卡,邀请好友可获得5000元体验金奖励，投资端午专享标可获得投资额等额体验金奖励和香槟塔中红包,加息券,实物大奖.">
 <div class="dragon-boat-container" id="dragonBoatContainer">
-	<div class="top-item">
+	<div class="top-item compliance-banner">
 		<img src="" width="100%" class="media-pc">
 		<img src="" width="100%" class="media-phone">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item border-no">

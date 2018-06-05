@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="" activeLeftNav="" title="拓天速贷解答_专业的P2P理财_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P理财/网络贷款用户,提供大量P2P理财/网络贷款知识,满足有相同或类似投资问题的用户需求.">
+<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="" activeLeftNav="" title="拓天速贷解答_专业的P2P投资_网络贷款咨询解答平台" keywords="拓天速贷,P2P平台,网络投资,网贷解答平台" description="拓天速贷解答为广大P2P投资/网络贷款用户,提供大量P2P投资/网络贷款知识,满足有相同或类似投资问题的用户需求.">
 <div class="help-center-container clearfix" id="helpCenter">
     <div class="picture-group">
         <img class="help-center-bar" width="100%">

@@ -1,8 +1,8 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.mid_national_2017}" pageJavascript="${js.mid_national_2017}" activeNav="" activeLeftNav="" title="中秋遇上国庆_拓天周国庆节_活动中心_拓天速贷" keywords="拓天速贷,国庆节,实物大奖,加息券" description="拓天周年庆-英雄排位场活动,每天24点计算当日新增投资排名,上榜者可获得实物大奖及加息券奖励,奖励丰厚礼物多多.">
 
-    <div class="header">
-
+    <div class="header compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
     </div>
 <div  id="activityPageFrame">
     <!--第一部分 begin-->

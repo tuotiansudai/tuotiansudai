@@ -1,6 +1,8 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.year_award_2017}" pageJavascript="${js.year_award_2017}" activeNav="" activeLeftNav="" title="年终奖活动_活动中心_拓天速贷" keywords="拓天速贷,年终奖,抽奖,岁末专享,实物奖励" description='拓天速贷年终奖活动,活动期间用户每日登录即可获得一次抽奖,投资"岁末专享"项目累计年化投资额可按对应比率获得返现奖励,每日24点计算当日新增投资排名,上榜者可获丰厚实物奖励.'>
-<div class="banner"></div>
+<div class="banner compliance-banner">
+    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+</div>
 <div id="doubleElevenContainer">
     <div class="show_middle_box">
         <div class="title_sign title_sign1"></div>

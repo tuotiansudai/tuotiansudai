@@ -12,7 +12,7 @@
             <div class="desc">
                 <div>您的朋友${name!}邀请你帮他助力</div>
             </div>
-            <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id}"></div>
+            <div class="help_rightNow" id="nowHelpId" data-help-id="${helpModel.id?c}"></div>
             <div class="help_too" data-start-time="${activityStartTime}" data-over-time="${activityEndTime}" data-own-help="${existOwnHelp?c}"></div>
         </div>
     <#else >
@@ -82,9 +82,9 @@
 <script>
     wx.ready(function () {
         wx.onMenuShareAppMessage({
-            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
+            title: '我正在拓天速贷领10元现金，就差你助力了！', // 分享标题
             desc: '我在拓天速贷app发现了一个助力得现金奖励的活动，快来参加吧！', // 分享描述
-            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id?c}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
             },
@@ -93,8 +93,8 @@
         });
 
         wx.onMenuShareTimeline({
-            title: '返利加油站-邀请好友助力，最高返现1%×2', // 分享标题
-            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            title: '我正在拓天速贷领10元现金，就差你助力了！', // 分享标题
+            link: '${webServer}/we-chat/active/authorize?redirect=/activity/invite-help/wechat/share/${helpModel.id?c}/everyone/help?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: '${commonStaticServer}/images/icons/logo-tip.png', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数

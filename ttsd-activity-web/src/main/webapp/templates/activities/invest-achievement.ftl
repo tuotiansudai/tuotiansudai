@@ -1,7 +1,8 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.invest_achievement}" pageJavascript="${js.invest_achievement}" activeNav="" activeLeftNav="" title="投资称号_拓天称号_拓天速贷" keywords="拓荒先锋,拓天标王,一锤定音,投资称号,拓天称号" description="拓天速贷依据投资用户的投资金额,投资期限,给予相应的投资称号,投资称号可获得相应的称号奖励，">
 <div class="invest-achievement-container clearfix">
-    <div class="container-model">
+    <div class="container-model compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
     </div>
     <div class="content-list">
         <div class="wp clearfix">
@@ -57,7 +58,9 @@
     </div>
 </div>
 <div class="invest-achievement-phone clearfix">
-    <div class="phone-model top-img">
+    <div class="phone-model top-img compliance-banner">
+        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+
     </div>
     <div class="phone-model">
         <div class="actor-intro">

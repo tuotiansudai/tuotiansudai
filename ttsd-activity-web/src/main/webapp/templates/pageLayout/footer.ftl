@@ -2,7 +2,7 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要投资</li>
-            <li><a href="/loan-list" onclick="cnzzPush.trackClick('47底部导航','理财产品')">投资产品</a></li>
+            <li><a href="/loan-list" onclick="cnzzPush.trackClick('47底部导航','投资产品')">投资产品</a></li>
             <li><a href="/account" onclick="cnzzPush.trackClick('48底部导航','我的帐户')">我的帐户</a></li>
             <li><a href="/about/notice" onclick="cnzzPush.trackClick('49底部导航','拓天公告')">拓天公告</a></li>
         </ul>
@@ -71,7 +71,7 @@
     </div>
     <div class="footer-responsive">
         <ul>
-            <li><a href="/about/refer-reward">推荐奖励</a></li>
+            <li><a href="/activity/invite-friend">推荐奖励</a></li>
             <li><a href="/about/guide">新手指引</a></li>
             <li><a href="/about/assurance">安全保障</a></li>
         </ul>
