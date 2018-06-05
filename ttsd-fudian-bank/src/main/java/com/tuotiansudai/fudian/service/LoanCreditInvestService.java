@@ -39,7 +39,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
 
     private static Logger logger = LoggerFactory.getLogger(LoanCreditInvestService.class);
 
-    private final static String BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE = "BANK_LOAN_CREDIT_INVEST_HISTORY_{0}";
+    private final static String BANK_LOAN_CREDIT_INVEST_MESSAGE_KEY = "BANK_LOAN_CREDIT_INVEST_MESSAGE_KEY_{0}";
 
     private static final ApiType API_TYPE = ApiType.LOAN_CREDIT_INVEST;
 
@@ -84,7 +84,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
         }
 
         insertMapper.insertLoanCreditInvest(requestDto);
-        String bankLoanCreditInvestHistory = MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, requestDto.getOrderDate());
+        String bankLoanCreditInvestHistory = MessageFormat.format(BANK_LOAN_CREDIT_INVEST_MESSAGE_KEY, requestDto.getOrderDate());
         redisTemplate.opsForHash().put(bankLoanCreditInvestHistory, requestDto.getOrderNo(),
                 new Gson().toJson(new BankLoanCreditInvestMessage(dto.getTransferApplicationId(),
                         dto.getInvestId(),
@@ -135,7 +135,7 @@ public class LoanCreditInvestService implements ReturnCallbackInterface, NotifyC
 
                 for (BaseRequestDto loanCreditInvestRequest : loanCreditInvestRequests) {
                     try {
-                        String bankLoanCreditInvestValue = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_HISTORY_KEY_TEMPLATE, loanCreditInvestRequest.getOrderDate()), loanCreditInvestRequest.getOrderNo());
+                        String bankLoanCreditInvestValue = hashOperations.get(MessageFormat.format(BANK_LOAN_CREDIT_INVEST_MESSAGE_KEY, loanCreditInvestRequest.getOrderDate()), loanCreditInvestRequest.getOrderNo());
                         BankLoanCreditInvestMessage bankLoanCreditInvestMessage = gson.fromJson(bankLoanCreditInvestValue, BankLoanCreditInvestMessage.class);
                         if (Strings.isNullOrEmpty(bankLoanCreditInvestValue)) {
                             logger.error("[LoanCreditInvest Status Schedule] fetch LoanCreditInvest meta data from redis error, bank order no:{}, redis value: {}", loanCreditInvestRequest.getOrderNo(), bankLoanCreditInvestValue);
