@@ -184,7 +184,7 @@ function sendSubmitRequest(){
         $investSubmit.removeClass("loading");
         if (response.status) {
             let $isPaySuccessForm = $("#isPaySuccess");
-            $isPaySuccessForm.prop('action', '/callback/loan_fast_invest/order-no/' + response.bankOrderNo + '/is-success');
+            $isPaySuccessForm.prop('action', '/callback/loan_fast_invest/order-no/' + response.bankOrderNo + '/in-progress');
             $isPaySuccessForm.submit();
         } else if (response.message == '新手标投资已超上限') {
             showLayer();

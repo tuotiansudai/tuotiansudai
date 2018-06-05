@@ -20,7 +20,8 @@
 
         <div class="loan form-group" <#if !(type??) || type != 'loan'>style="display: none"</#if>>
             <label for="loanId">标的号</label>
-            <input type="text" id="loanId" name="loanId" class="form-control" value="${loanId?c}"/>
+            <input type="text" id="loanId" name="loanId" class="form-control"
+                    <#if type?? && type == 'loan'>value="${loanId?c}"</#if>/>
         </div>
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
@@ -35,7 +36,7 @@
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
             <label for="orderId">订单号</label>
-            <input type="text" id="orderId" name="order-id" class="form-control" value="${loanId?c}"/>
+            <input type="text" id="orderId" name="order-id" class="form-control" value="${loanId!}"/>
         </div>
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>

@@ -33,6 +33,9 @@ public class LoanCallbackInvestItemRequestDto implements Serializable {
 
     private String orderDate;
 
+    public LoanCallbackInvestItemRequestDto() {
+    }
+
     public LoanCallbackInvestItemRequestDto(String orderNo, BankLoanRepayInvestDto bankLoanRepayInvestDto) {
         this.capital = AmountUtils.toYuan(bankLoanRepayInvestDto.getCapital());
         this.interest = AmountUtils.toYuan(bankLoanRepayInvestDto.getInterest());

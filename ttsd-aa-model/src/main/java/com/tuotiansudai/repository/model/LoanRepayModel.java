@@ -29,6 +29,10 @@ public class LoanRepayModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    private String bankOrderNo;
+
+    private String bankOrderDate;
+
     private LoanModel loan;
 
     public LoanRepayModel() {
@@ -52,20 +56,28 @@ public class LoanRepayModel implements Serializable {
         this.id = id;
     }
 
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
     public long getCorpus() {
         return corpus;
     }
 
     public void setCorpus(long corpus) {
         this.corpus = corpus;
-    }
-
-    public long getDefaultInterest() {
-        return defaultInterest;
-    }
-
-    public void setDefaultInterest(long defaultInterest) {
-        this.defaultInterest = defaultInterest;
     }
 
     public long getExpectedInterest() {
@@ -84,20 +96,20 @@ public class LoanRepayModel implements Serializable {
         this.actualInterest = actualInterest;
     }
 
+    public long getDefaultInterest() {
+        return defaultInterest;
+    }
+
+    public void setDefaultInterest(long defaultInterest) {
+        this.defaultInterest = defaultInterest;
+    }
+
     public long getRepayAmount() {
         return repayAmount;
     }
 
     public void setRepayAmount(long repayAmount) {
         this.repayAmount = repayAmount;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
     }
 
     public Date getRepayDate() {
@@ -132,12 +144,20 @@ public class LoanRepayModel implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public long getLoanId() {
-        return loanId;
+    public String getBankOrderNo() {
+        return bankOrderNo;
     }
 
-    public void setLoanId(long loanId) {
-        this.loanId = loanId;
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
     }
 
     public LoanModel getLoan() {

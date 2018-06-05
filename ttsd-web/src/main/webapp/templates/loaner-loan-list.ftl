@@ -3,9 +3,6 @@
 <div class="content-container loan-list-content">
     <h4 class="column-title">
         <em class="tc">借款记录</em>
-        <#if !autoRepay>
-            <i class="fr"><a href="/agreement/repay">开通自动还款 ></a></i>
-        </#if>
     </h4>
 
     <div class="item-block date-filter">

@@ -25,7 +25,8 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class
+AccountServiceImpl implements AccountService {
 
     static Logger logger = Logger.getLogger(AccountServiceImpl.class);
 
