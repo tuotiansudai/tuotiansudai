@@ -6,6 +6,7 @@ $redInvest:#ff5d0d;
 $grayContentFont:#8f8f8f;
 $gray8f:#8f8f8f;
 $greenBtn:#119d4c;
+$greenAmout:#016739;
 $gray333:#333333;
 $grayd1:#d1d1d1;
 
@@ -66,6 +67,7 @@ body {
 
 .july-container {
   padding-bottom: 547px;
+  background: url("../images/2018/july-activity/bot_bg.png") no-repeat center bottom;
 }
 .part {
   position: relative;
@@ -93,7 +95,7 @@ body {
 
 }
 .swiper-pagination-bullet-active {
-  color: $greenBtn;
+  background: $greenBtn!important;
 }
 .content-section {
   position: relative;
@@ -121,6 +123,16 @@ body {
 }
 
 .team-logo-wrap {
+  .part-top {
+    width: 1354px;
+    height: 213px;
+    left: -68px;
+    background: url("../images/2018/july-activity/part_one_title.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .main-content {
+    padding-top: 213px;
+  }
   .team-logo-rules {
     padding-top: 60px;
     padding-bottom: 30px;
@@ -156,11 +168,15 @@ body {
       width: 265px;
       font-size: 35px;
       font-weight: bold;
-      height: 66px;
-      line-height: 66px;
-      text-indent: 80px;
+      height: 80px;
+      line-height: 80px;
+      text-indent: 90px;
       color: $redStrong;
       background: url("../images/2018/july-activity/icon_my_ball.png") no-repeat left center;
+      &.collected-all {
+        text-indent: 100px;
+        background: url("../images/2018/july-activity/collected_all.png") no-repeat left center;
+      }
     }
     .my-team-logos {
       padding-bottom: 70px;
@@ -171,6 +187,20 @@ body {
             display: inline-block;
             width: 160px;
             height: 160px;
+            position: relative;
+            .amount {
+              position: absolute;
+              right: 8px;
+              top: 8px;
+              width: 42px;
+              height: 42px;
+              line-height: 42px;
+              font-size: 24px;
+              text-align: center;
+              border-radius: 21px;
+              background: $greenAmout;
+              color: #fff;
+            }
             &.agenting {
               background: url("../images/2018/july-activity/agenting.png") no-repeat;
               background-size: 100%;
@@ -333,6 +363,21 @@ body {
   }
 }
 .part-two {
+  margin-top: 80px;
+  .content-section {
+    padding-bottom: 50px;
+  }
+  .part-top {
+    width: 1354px;
+    height: 222px;
+    left: -68px;
+    background: url("../images/2018/july-activity/three_birthday_title.png") no-repeat center center;
+    background-size: 100%;
+  }
+  .main-content {
+    padding-top: 222px;
+    box-sizing: border-box;
+  }
   .invest-records {
     padding-top: 54px;
     ul {
@@ -351,20 +396,122 @@ body {
   }
   .progress-wrap {
     .progress {
+      margin: 0 auto;
+      margin-top: 15px;
+      width: 1003px;
+      height: 41px;
+      background: url("../images/2018/july-activity/progress_bg.png") no-repeat;
+      background-size: 100%;
+      border-radius: 20px;
       .percent {
+        height: 41px;
 
+        .percent-left {
+          display: block;
+          float: left;
+          width: 17px;
+          height: 40px;
+          background: url("../images/2018/july-activity/percent_left.png") no-repeat;
+          background-size: 100%;
+        }
+        .percent-con {
+          position: relative;
+          display: block;
+          float: left;
+          height: 41px;
+          background: url("../images/2018/july-activity/percent_bg.png") repeat-x;
+          .ball {
+            width: 179px;
+            height: 129px;
+            position: absolute;
+            right: -44px;
+            top: -34px;
+            background: url("../images/2018/july-activity/progress_ball.png") no-repeat;
+            background-size: 100%;
+          }
+        }
       }
     }
     .invest-money {
-
+      margin-top: 25px;
+      >div {
+        color: $redInvest;
+        font-size: 24px;
+        font-weight: bold;
+      }
     }
     .support-amout {
+      >a {
+        display: block;
+        width: 278px;
+        height: 99px;
+        cursor: pointer;
+        span {
+          display: inline-block;
+          color: #fff;
+          font-size: 18px;
+          float: right;
+          margin-top: 26px;
 
+        }
+        &.red-square {
+          background: url("../images/2018/july-activity/red_squre.png") no-repeat;
+          background-size: 100%;
+          span {
+            padding-right: 35px;
+          }
+          &.disabled {
+            background: url("../images/2018/july-activity/red_disabled.png") no-repeat;
+            background-size: 100%;
+          }
+          &.already_support {
+            background: url("../images/2018/july-activity/already_support_red.png") no-repeat;
+            background-size: 100%;
+          }
+
+        }
+        &.blue-square {
+          background: url("../images/2018/july-activity/blue_squre.png") no-repeat;
+          background-size: 100%;
+          span {
+            padding-right: 0px;
+          }
+          &:disabled {
+            background: url("../images/2018/july-activity/blue_disabled.png") no-repeat;
+            background-size: 100%;
+          }
+          &.already_support {
+            background: url("../images/2018/july-activity/already_support_blue.png") no-repeat;
+            background-size: 100%;
+          }
+        }
+
+      }
+    }
+  }
+  .which-to-chose {
+    width: 680px;
+    margin: 0 auto;
+    margin-top: 60px;
+    color: $redStrong;
+    font-size: 40px;
+    font-weight: bold;
+    height: 73px;
+    line-height: 73px;
+    background: url("../images/2018/july-activity/calendar.png") no-repeat left center;
+    text-indent: 85px;
+  }
+  .red-and-blue-rules {
+    p {
+      font-size: 24px;
+      color: $gray8f;
+      margin-top: 34px;
+      line-height: 36px;
     }
   }
 }
 .part-three {
-  padding-top: 249px;
+  margin-top: 80px;
   .part-top {
     width: 1417px;
     height: 249px;
@@ -373,7 +520,7 @@ body {
     background-size: 100%;
   }
   .main-content {
-    margin-top: 249px;
+    padding-top: 249px;
     .content-section {
       padding-top: 50px;
       padding-bottom: 30px;

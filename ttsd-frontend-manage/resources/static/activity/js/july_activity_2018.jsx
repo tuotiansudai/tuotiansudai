@@ -16,11 +16,10 @@ let Swiper = require('swiper/dist/js/swiper.jquery.min');
 
 var mySwiper = new Swiper ('.my-team-logos', {
     direction: 'horizontal',
-    loop: false,
-    autoplay:5000,
+    loop: true,
+    autoplay:0,
      slidesPerGroup: 5,
     slidesPerView:5,
-    // loopedSlides:5,
     nextButton: '.nextBtn',
     prevButton: '.prevBtn',
     freeMode:true,

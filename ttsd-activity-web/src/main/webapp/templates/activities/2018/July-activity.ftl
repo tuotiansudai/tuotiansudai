@@ -1,7 +1,6 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='答题赢加"薪"_学霸升值季_拓天速贷' keywords="拓天速贷,答题赢加薪,邀请好友,返现奖励" description='拓天速贷答题赢加"薪"活动,用户每日答题,投资可获得年化0.2%-0.6%返现奖励,完成答题赠送最高0.5%加息券,分享答题、邀请好友注册、投资还可增加年化返现,返现+加息高至2%.'>
 <div class="july-banner">
-    集四强队标，,瓜分8888元现金奖池
 </div>
 <div class="july-container">
    <div class="part team-logo-wrap activity-page">
@@ -20,27 +19,27 @@
            <div class="content-section open-balls-content content-page marginTop40">
                <div class="big-ball"></div>
                <a href="javascript:;" class="gold-btn open-ball-btn"></a>
-               <h2 class="my-logo">我的对标</h2>
+               <h2 class="my-logo collected-all">我的对标</h2>
                <div class="my-team-logos swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper">
                        <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount"></span></div>
+                           <div class="team-logo deguo"><span class="amount">1</span></div>
                            <div class="country-btn">德国队</div>
                        </li>
                        <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount"></span></div>
+                           <div class="team-logo eluosi"><span class="amount">2</span></div>
                            <div class="country-btn">俄罗斯队</div>
                        </li>
                        <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount"></span></div>
+                           <div class="team-logo baxi"><span class="amount">3</span></div>
                            <div class="country-btn">巴西队</div>
                        </li>
                        <li class="swiper-slide">
-                           <div class="team-logo yinggelan"><span class="amount"></span></div>
+                           <div class="team-logo yinggelan"><span class="amount">4</span></div>
                            <div class="country-btn">英国队</div>
                        </li>
                        <li class="swiper-slide">
-                           <div class="team-logo faguo"><span class="amount"></span></div>
+                           <div class="team-logo faguo"><span class="amount">5</span></div>
                            <div class="country-btn">法国队</div>
                        </li>
                        <#--5-->
@@ -181,7 +180,7 @@
     <div class="part part-two activity-page">
         <div class="part-top"></div>
         <div class="main-content borderYellow">
-            <div class="content-section three-birthday">
+            <div class="content-section three-birthday content-page">
                 <div class="content-title time2">活动时间：7月1日-7月31日</div>
                 <div class="invest-records">
                     <ul class="clearfix">
@@ -191,15 +190,15 @@
                     </ul>
                     <div class="progress-wrap">
                         <div class="progress">
-                            <div class="percent"></div>
+                            <div class="percent"><span class="percent-left"></span><span class="percent-con" style="width: 80%"><em class="ball"></em></span></div>
                         </div>
-                        <div class="invest-money">
+                        <div class="invest-money clearfix">
                             <div class="fl">1111.11元</div>
                             <div class="fr">1111.11元</div>
                         </div>
-                        <div class="support-amout">
-                            <div class="red-square"></div>
-                            <div class="blue-square"></div>
+                        <div class="support-amout clearfix">
+                            <a class="support-btn red-square disabled fl" href="javascript:;" ><span>（8000人）</span></a>
+                            <a class="support-btn blue-square fr" href="javascript:;"><span>（8000人）</span></a>
                         </div>
                     </div>
                 </div>
