@@ -54,7 +54,7 @@ public class InvestController {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.GET)
+    @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
 
