@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface UpdateMapper {
+
     @Update({"<script>",
             "<foreach collection='investItems' item='investItem' separator=';'>",
             "UPDATE loan_callback_invest",
@@ -23,6 +24,7 @@ public interface UpdateMapper {
             "</where>",
             "</foreach>",
             "</script>"})
+    
     void updateLoanCallbackInvestItems(@Param("investItems") List<LoanCallbackInvestItemContentDto> investItems);
 
     @Update("UPDATE ${tableName} SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now()  WHERE `order_no` = #{dto.content.orderNo} and `notify_response_data` is null")
