@@ -18,7 +18,7 @@ public class LoanInvestRequestDto extends NotifyRequestDto {
         super(source, bankInvestDto.getLoginName(), bankInvestDto.getMobile(), bankInvestDto.getBankUserName(), bankInvestDto.getBankAccountNo());
         this.amount = AmountUtils.toYuan(bankInvestDto.getAmount());
         this.award = "0.00";
-        this.loanTxNo = AmountUtils.toYuan(bankInvestDto.getLoanTxNo());
+        this.loanTxNo = bankInvestDto.getLoanTxNo();
     }
 
     public String getAmount() {

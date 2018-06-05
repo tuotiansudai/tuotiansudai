@@ -64,6 +64,8 @@ public class InvestRepaySuccessService {
         investRepayModel.setRepayAmount(bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest() - bankLoanCallbackMessage.getInterestFee());
         investRepayModel.setActualRepayDate(loanRepayModel.getActualRepayDate());
         investRepayModel.setStatus(RepayStatus.COMPLETE);
+        investRepayModel.setBankOrderNo(bankLoanCallbackMessage.getBankOrderNo());
+        investRepayModel.setBankOrderDate(bankLoanCallbackMessage.getBankOrderDate());
         investRepayMapper.update(investRepayModel);
 
         // interest user bill
@@ -116,6 +118,8 @@ public class InvestRepaySuccessService {
         investRepayModel.setRepayAmount(bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest() - bankLoanCallbackMessage.getInterestFee());
         investRepayModel.setActualRepayDate(loanRepayModel.getActualRepayDate());
         investRepayModel.setStatus(RepayStatus.COMPLETE);
+        investRepayModel.setBankOrderNo(bankLoanCallbackMessage.getBankOrderNo());
+        investRepayModel.setBankOrderDate(bankLoanCallbackMessage.getBankOrderDate());
         investRepayMapper.update(investRepayModel);
 
         // update other REPAYING invest repay
@@ -123,6 +127,8 @@ public class InvestRepaySuccessService {
         investRepayModels.stream().filter(item -> item.getStatus() == RepayStatus.REPAYING).forEach(item -> {
             item.setStatus(RepayStatus.COMPLETE);
             item.setActualRepayDate(loanRepayModel.getActualRepayDate());
+            item.setBankOrderNo(bankLoanCallbackMessage.getBankOrderNo());
+            item.setBankOrderDate(bankLoanCallbackMessage.getBankOrderDate());
             investRepayMapper.update(item);
         });
 

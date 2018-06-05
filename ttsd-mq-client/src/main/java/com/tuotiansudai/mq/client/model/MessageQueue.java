@@ -84,7 +84,7 @@ public enum MessageQueue {
     Invest_Success("Invest-Success"),
     Invest_CompletePointTask("Invest-CompletePointTask"),
     Invest_MembershipUpdate("Invest-MembershipUpdate"),
-    Invest_CheckLoanFull("Invest-Invest_CheckLoanFull"),
+    Invest_CheckLoanFull("Invest-CheckLoanFull"),
 
     LoanFull_Success("LoanFull-Success"),
     LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),

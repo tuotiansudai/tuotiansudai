@@ -10,7 +10,5 @@
             <div class="retry" data-redirect-to="${bankCallbackType.getRetryPath()}">再次尝试</div>
         </div>
     </div>
-
-    <p class="pay-problem">如有其他疑问请致电客服 400-169-1188<br/>（服务时间：9:00－20:00）</p>
 </div>
 </@global.main>

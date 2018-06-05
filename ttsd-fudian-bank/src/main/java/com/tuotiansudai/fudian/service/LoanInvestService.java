@@ -188,6 +188,7 @@ public class LoanInvestService implements ReturnCallbackInterface, NotifyCallbac
 
                         if (query.isSuccess() && !"0".equals(query.getContent().getQueryState())) {
                             updateMapper.updateQueryResponse(API_TYPE.name().toLowerCase(), query);
+                            bankLoanInvestMessage.setStatus(true);
                             messageQueueClient.publishMessage(MessageTopic.InvestSuccess, bankLoanInvestMessage);
                             logger.info("[Invest Status Schedule] invest is success, send message: {}", bankLoanInvestMessage);
                         }

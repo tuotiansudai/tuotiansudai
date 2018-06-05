@@ -20,7 +20,7 @@ public enum BankCallbackType {
     LOAN_FAST_INVEST("投资成功", "/loan-list"),
     LOAN_CREDIT_INVEST("", ""),
 
-    LOAN_REPAY("", ""),
+    LOAN_REPAY("还款成功", "/loaner/loan-list"),
     LOAN_FAST_REPAY("", ""),
 
     MERCHANT_TRANSFER("", ""),

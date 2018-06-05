@@ -80,9 +80,10 @@ public class BankLoanRepayInvestDto extends BankBaseDto {
         return super.isValid()
                 && investId > 0
                 && investRepayId > 0
-                && capital > 0
-                && interest > 0
-                && interestFee > 0
+                && capital >= 0
+                && interest >= 0
+                && interestFee >= 0
+                && capital + interest > 0
                 && !Strings.isNullOrEmpty(investOrderNo)
                 && !Strings.isNullOrEmpty(investOrderDate);
     }

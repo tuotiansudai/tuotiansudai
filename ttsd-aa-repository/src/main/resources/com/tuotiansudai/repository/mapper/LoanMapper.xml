@@ -435,6 +435,9 @@
             <if test="loanFullBankOrderDate !=null">
                 loan_full_bank_order_date = #{loanFullBankOrderDate},
             </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
             update_time = now()
         </trim>
         where id = #{id}

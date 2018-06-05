@@ -19,7 +19,7 @@ public class LoanFullRequestDto extends BaseRequestDto {
     public LoanFullRequestDto(BankLoanFullDto bankLoanFullDto) {
         super(Source.WEB, bankLoanFullDto.getLoginName(), bankLoanFullDto.getMobile(), bankLoanFullDto.getBankUserName(), bankLoanFullDto.getBankAccountNo());
         this.loanTxNo = bankLoanFullDto.getLoanTxNo();
-        this.loanOrderNo = bankLoanFullDto.getLoanOrderDate();
+        this.loanOrderNo = bankLoanFullDto.getLoanOrderNo();
         this.loanOrderDate = bankLoanFullDto.getLoanOrderDate();
         this.expectRepayTime = bankLoanFullDto.getExpectRepayTime();
     }
