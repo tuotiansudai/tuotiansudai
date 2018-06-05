@@ -36,6 +36,5 @@ public interface UpdateMapper {
 
     @Update("UPDATE ${tableName} SET `query_response_data` = #{dto.reqData}, `query_time` = now() WHERE `order_no` = #{dto.content.queryOrderNo} AND `query_response_data` is null")
     void updateQueryResponse(@Param(value = "tableName") String tableName,
-                            @Param(value = "dto") ResponseDto responseDto);
-
+                             @Param(value = "dto") ResponseDto responseDto);
 }

@@ -139,14 +139,19 @@ public class PayController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/loan-credit-invest", method = RequestMethod.GET)
-    public String loanCreditInvest(Map<String, Object> model) {
+    @RequestMapping(path = "/loan-credit-invest/source/{source}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> loanCreditInvest(@PathVariable(name = "source") Source source, @RequestBody BankLoanCreditInvestDto params) {
         logger.info("[Fudian] call loan credit invest");
 
-        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest(Source.WEB, "UU02624634769241001", "UA02624634769281001", "LU02625453517541001", "20180427000000000002", "20180427", "3", "1.00", "1.00", "100.00", null, null);
-        model.put("message", requestDto.getRequestData());
-        model.put("path", ApiType.LOAN_CREDIT_INVEST.getPath());
-        return "post";
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan credit investt bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        LoanCreditInvestRequestDto requestDto = loanCreditInvestService.invest(source, params);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.LOAN_CREDIT_INVEST);
+
+        return ResponseEntity.ok(bankAsyncData);
     }
 
     @RequestMapping(path = "/loan-fast-invest/source/{source}", method = RequestMethod.POST)

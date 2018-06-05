@@ -1,7 +1,14 @@
 package com.tuotiansudai.fudian.message;
 
+import java.io.Serializable;
 
-public class BankAuthorizationMessage {
+public class BankLoanCreditInvestMessage implements Serializable {
+
+    private long transferApplicationId;
+
+    private long investId;
+
+    private long amount;
 
     private String loginName;
 
@@ -15,16 +22,31 @@ public class BankAuthorizationMessage {
 
     private String bankOrderDate;
 
-    public BankAuthorizationMessage() {
+    public BankLoanCreditInvestMessage() {
     }
 
-    public BankAuthorizationMessage(String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public BankLoanCreditInvestMessage(long transferApplicationId, long investId, long amount, String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+        this.transferApplicationId = transferApplicationId;
+        this.investId = investId;
+        this.amount = amount;
         this.loginName = loginName;
         this.mobile = mobile;
         this.bankUserName = bankUserName;
         this.bankAccountNo = bankAccountNo;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
+    }
+
+    public long getTransferApplicationId() {
+        return transferApplicationId;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public long getAmount() {
+        return amount;
     }
 
     public String getLoginName() {

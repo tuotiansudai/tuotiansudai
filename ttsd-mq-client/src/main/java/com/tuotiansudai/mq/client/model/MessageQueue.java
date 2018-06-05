@@ -87,6 +87,8 @@ public enum MessageQueue {
     Authorization_Success("Authorization-Success"),
     Authorization_CompletePointTask("Authorization-CompletePointTask"),
 
+    LoanCreditInvest_Success("LoanCreditInvest-Success"),
+
     Invest_CheckLoanFull("Invest-CheckLoanFull"),
 
     LoanFull_Success("LoanFull-Success"),

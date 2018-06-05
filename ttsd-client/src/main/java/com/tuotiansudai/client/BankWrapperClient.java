@@ -9,6 +9,9 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -120,6 +123,11 @@ public class BankWrapperClient {
     public BankAsyncMessage invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {
         return asyncExecute(MessageFormat.format("/loan-invest/source/{0}", source.name().toLowerCase()),
                 new BankInvestDto(loginName, mobile, bankUserName, bankAccountNo, investId, amount, loanTxNo, loanId, loanName));
+    }
+
+    public BankAsyncMessage loanCreditInvest(long transferApplicationId, long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long investAmount, long transferAmount, long transferFee, String investOrderNo, String investOrderDate, String loanTxNo) {
+        return asyncExecute(MessageFormat.format("/loan-credit-invest/source/{0}", source.name().toLowerCase()),
+                new BankLoanCreditInvestDto(loginName, mobile, bankUserName, bankAccountNo, transferApplicationId, investId, investAmount, transferAmount, transferFee, investOrderDate, investOrderNo, loanTxNo));
     }
 
     public BankReturnCallbackMessage fastInvest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {

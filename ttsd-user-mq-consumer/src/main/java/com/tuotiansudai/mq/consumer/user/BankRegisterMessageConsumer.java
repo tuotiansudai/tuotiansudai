@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 
 @Component
-public class BankRegisteredMessageConsumer implements MessageConsumer {
+public class BankRegisterMessageConsumer implements MessageConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(BankRegisteredMessageConsumer.class);
+    private static Logger logger = LoggerFactory.getLogger(BankRegisterMessageConsumer.class);
 
     private final BankAccountService bankAccountService;
 
-    public BankRegisteredMessageConsumer(BankAccountService bankAccountService) {
+    public BankRegisterMessageConsumer(BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
 
