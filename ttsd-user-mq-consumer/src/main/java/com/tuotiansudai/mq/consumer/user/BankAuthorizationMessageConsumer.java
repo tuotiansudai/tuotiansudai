@@ -5,8 +5,7 @@ import com.google.gson.Gson;
 import com.tuotiansudai.fudian.message.BankAuthorizationMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.service.BankAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +14,15 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 
 @Component
-public class BankAuthorizationMessageConsumer implements MessageConsumer{
+public class BankAuthorizationMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(BankAuthorizationMessageConsumer.class);
 
-    private final BankAccountMapper bankAccountMapper;
+    private final BankAccountService bankAccountService;
 
     @Autowired
-    public  BankAuthorizationMessageConsumer(BankAccountMapper bankAccountMapper){
-        this.bankAccountMapper = bankAccountMapper;
+    public BankAuthorizationMessageConsumer(BankAccountService bankAccountService) {
+        this.bankAccountService = bankAccountService;
     }
 
     @Override
@@ -43,23 +42,10 @@ public class BankAuthorizationMessageConsumer implements MessageConsumer{
 
         try {
             BankAuthorizationMessage bankAuthorizationMessage = new Gson().fromJson(message, BankAuthorizationMessage.class);
-            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(bankAuthorizationMessage.getLoginName());
-            if (bankAccountModel == null) {
-                logger.error("[MQ] bank account is not exist, message: {}", message);
-                return;
-            }
-            if (bankAccountModel.isAuthorization()){
-                return;
-            }
-            bankAccountModel.setAutoInvest(true);
-            bankAccountModel.setAuthorization(true);
-            bankAccountModel.setBankAuthorizationOrderNo(bankAuthorizationMessage.getBankOrderNo());
-            bankAccountModel.setBankAuthorizationOrderDate(bankAuthorizationMessage.getBankOrderDate());
-            bankAccountMapper.update(bankAccountModel);
+            bankAccountService.authorization(bankAuthorizationMessage);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
-
 
     }
 }
