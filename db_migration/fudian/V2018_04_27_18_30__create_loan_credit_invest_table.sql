@@ -23,10 +23,12 @@ CREATE TABLE `fudian`.`loan_credit_invest` (
   `notify_url`           VARCHAR(256),
   `return_response_data` TEXT,
   `notify_response_data` TEXT,
+  `query_response_data`  TEXT,
   `ret_code`             VARCHAR(4),
   `ret_msg`              VARCHAR(128),
   `request_time`         DATETIME,
   `response_time`        DATETIME,
+  `query_time`           DATETIME,
   PRIMARY KEY (`id`),
   KEY `INDEX_LOAN_CREDIT_INVEST_ORDER_NO` (`order_no`)
 )

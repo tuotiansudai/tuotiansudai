@@ -24,6 +24,7 @@ public interface UpdateMapper {
             "</where>",
             "</foreach>",
             "</script>"})
+    
     void updateLoanCallbackInvestItems(@Param("investItems") List<LoanCallbackInvestItemContentDto> investItems);
 
     @Update("UPDATE ${tableName} SET `notify_response_data` = #{dto.reqData}, `ret_code` = #{dto.retCode}, `ret_msg` = #{dto.retMsg}, `response_time` = now()  WHERE `order_no` = #{dto.content.orderNo} and `notify_response_data` is null")
@@ -37,5 +38,4 @@ public interface UpdateMapper {
     @Update("UPDATE ${tableName} SET `query_response_data` = #{dto.reqData}, `query_time` = now() WHERE `order_no` = #{dto.content.queryOrderNo} AND `query_response_data` is null")
     void updateQueryResponse(@Param(value = "tableName") String tableName,
                             @Param(value = "dto") ResponseDto responseDto);
-
 }

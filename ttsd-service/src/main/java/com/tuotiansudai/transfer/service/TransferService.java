@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
@@ -13,9 +14,7 @@ import java.util.List;
 
 public interface TransferService {
 
-    BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException;
-
-    BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException;
+    BankAsyncMessage transferPurchase(InvestDto investDto) throws InvestException;
 
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus,
                                                                                                              double rateStart,
