@@ -48,6 +48,9 @@ public class BankAuthorizationMessageConsumer implements MessageConsumer{
                 logger.error("[MQ] bank account is not exist, message: {}", message);
                 return;
             }
+            if (bankAccountModel.isAuthorization()){
+                return;
+            }
             bankAccountModel.setAutoInvest(true);
             bankAccountModel.setAuthorization(true);
             bankAccountModel.setBankAuthorizationOrderNo(bankAuthorizationMessage.getBankOrderNo());

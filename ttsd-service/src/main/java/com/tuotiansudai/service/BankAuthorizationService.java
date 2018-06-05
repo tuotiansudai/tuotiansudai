@@ -20,9 +20,9 @@ public class BankAuthorizationService {
     private final UserOpLogService userOpLogService;
 
     @Autowired
-    public BankAuthorizationService(BankAccountMapper bankAccountMapper, BankWrapperClient bankWrapperClient, UserOpLogService userOpLogService){
+    public BankAuthorizationService(BankAccountMapper bankAccountMapper, UserOpLogService userOpLogService){
         this.bankAccountMapper = bankAccountMapper;
-        this.bankWrapperClient = bankWrapperClient;
+        this.bankWrapperClient = new BankWrapperClient();
         this.userOpLogService = userOpLogService;
     }
 

@@ -28,7 +28,7 @@ public class BankAuthorizationCompletePointTaskConsumer implements MessageConsum
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.AccountRegistered_CompletePointTask;
+        return MessageQueue.Authorization_CompletePointTask;
     }
 
     @Override
