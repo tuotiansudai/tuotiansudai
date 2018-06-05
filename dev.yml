@@ -10,7 +10,6 @@ user-rest-service:
   ports:
     - "20001:80"
   links:
-    - "redis-server"
   command: ["/usr/bin/supervisord"]
 
 web:
@@ -28,7 +27,6 @@ web:
   links:
     - "pay-wrapper"
     - "sms-wrapper"
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "anxin-wrapper"
@@ -48,7 +46,6 @@ console:
   links:
     - "pay-wrapper"
     - "sms-wrapper"
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "ask-rest-service"
@@ -63,14 +60,9 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
-    - /workspace/deploy-config/ttsd-pay-wrapper/:/workspace/deploy-config/ttsd-pay-wrapper
-    - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
+    - ./ttsd-fudian-bank/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
-  links:
-    - "sms-wrapper"
-    - "user-rest-service"
-    - "redis-server"
 
 sms-wrapper:
   image: "andreptb/tomcat:8-jdk8"
@@ -84,8 +76,6 @@ sms-wrapper:
     - ./ttsd-sms-wrapper/war:/usr/local/tomcat/webapps
     - /var/log/tuotian/sms-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/sms-wrapper:/var/log/tomcat
-  links:
-    - "redis-server"
 
 mobile-api:
   image: "andreptb/tomcat:8-jdk8"
@@ -104,7 +94,6 @@ mobile-api:
     - "static-server"
     - "pay-wrapper"
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
     - "anxin-wrapper"
 
@@ -121,7 +110,6 @@ activity:
     - /var/log/tuotian/activity:/usr/local/tomcat/logs
     - /var/log/tuotian/activity:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
 
@@ -150,22 +138,9 @@ ask:
     - /var/log/tuotian/ask-web:/usr/local/tomcat/logs
     - /var/log/tuotian/ask-web:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "ask-rest-service"
-
-redis-server:
-  image: "grokzen/redis-cluster"
-  ports:
-    - "20010:7000"
-    - "20011:7001"
-    - "20012:7002"
-    - "20013:7003"
-    - "20014:7004"
-    - "20015:7005"
-    - "20016:7006"
-    - "20017:7007"
 
 point:
   image: "andreptb/tomcat:8-jdk8"
@@ -180,7 +155,6 @@ point:
     - /var/log/tuotian/point-web:/usr/local/tomcat/logs
     - /var/log/tuotian/point-web:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
 
@@ -197,7 +171,6 @@ activity-console:
     - /var/log/tuotian/activity-console:/usr/local/tomcat/logs
     - /var/log/tuotian/activity-console:/var/log/tomcat
   links:
-    - "redis-server"
     - "user-rest-service"
 
 static-server:
@@ -223,7 +196,6 @@ anxin-wrapper:
     - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 nginx-server_console:
@@ -248,7 +220,6 @@ worker-all:
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 auditLog-mq-consumer:
@@ -262,7 +233,6 @@ auditLog-mq-consumer:
     - /var/log/tuotian/ttsd-auditLog-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-auditLog-mq-consumer/bin/ttsd-auditLog-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 loan-mq-consumer:
@@ -278,7 +248,6 @@ loan-mq-consumer:
   links:
     - "pay-wrapper"
     - "sms-wrapper"
-    - "redis-server"
     - "anxin-wrapper"
     - "user-rest-service"
 
@@ -294,7 +263,6 @@ message-mq-consumer:
   command: bash -c "/opt/worker/ttsd-message-mq-consumer/bin/ttsd-message-mq-consumer"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 email-mq-consumer:
@@ -308,7 +276,6 @@ email-mq-consumer:
     - /var/log/tuotian/ttsd-email-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-email-mq-consumer/bin/ttsd-email-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 point-mq-consumer:
@@ -323,7 +290,6 @@ point-mq-consumer:
   command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 activity-mq-consumer:
@@ -338,7 +304,6 @@ activity-mq-consumer:
   command: bash -c "/opt/worker/ttsd-activity-mq-consumer/bin/ttsd-activity-mq-consumer"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
     - "pay-wrapper"
 
@@ -354,7 +319,6 @@ user-mq-consumer:
   command: bash -c "/opt/worker/ttsd-user-mq-consumer/bin/ttsd-user-mq-consumer"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 amount-mq-consumer:
@@ -368,7 +332,6 @@ amount-mq-consumer:
     - /var/log/tuotian/ttsd-amount-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-amount-mq-consumer/bin/ttsd-amount-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 ask-rest-service:
@@ -386,7 +349,6 @@ ask-rest-service:
   command: bash -c "/opt/worker/ttsd-ask-rest/bin/ttsd-ask-rest"
   links:
     - "sms-wrapper"
-    - "redis-server"
     - "user-rest-service"
 
 diagnosis:
@@ -400,7 +362,6 @@ diagnosis:
     - /var/log/tuotian/diagnosis:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
   links:
-    - "redis-server"
     - "pay-wrapper"
 
 worker-monitor:
@@ -414,5 +375,4 @@ worker-monitor:
     - /var/log/tuotian/worker-monitor:/var/log/job-worker
   command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
   links:
-    - "redis-server"
     - "sms-wrapper"

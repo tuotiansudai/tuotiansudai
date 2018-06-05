@@ -6,13 +6,12 @@ import etcd_client
 
 class Deployment(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
-    _gradle = '/opt/gradle/latest/bin/gradle'
-    _dockerCompose = '/usr/local/bin/docker-compose'
-    _paver = '/usr/bin/paver'
+    _gradle = 'gradle'
+    _dockerCompose = 'docker-compose'
+    _paver = 'paver'
 
-    def __init__(self, env='DEV', pay_fake=None):
+    def __init__(self, env='DEV'):
         self.env = env
-        self.pay_fake = pay_fake
         self.etcd = etcd_client.client(env)
 
     def deploy(self, type):
@@ -20,7 +19,6 @@ class Deployment(object):
         getattr(self, type)()
 
     def all(self):
-
         self.clean()
         self.config_file()
         self.clean_class()
@@ -140,7 +138,7 @@ class Deployment(object):
 
     def config_file(self):
         print "Generate config file..."
-        config_deploy.deploy(self.etcd, self.env, self.pay_fake)
+        config_deploy.deploy(self.etcd, self.env)
 
     def migrate(self):
         from scripts import migrate_db

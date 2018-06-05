@@ -4,9 +4,9 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/fudian_bank/fudian_bank.log</file>
+        <file>/var/log/tomcat/fudian_bank.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/var/log/fudian_bank/fudian_bank.log_%d{yyyy-MM-dd}</FileNamePattern>
+            <FileNamePattern>/var/log/tomcat/fudian_bank.log_%d{yyyy-MM-dd}</FileNamePattern>
             <MaxHistory>30</MaxHistory>
             <CleanHistoryOnStart>false</CleanHistoryOnStart>
         </rollingPolicy>
