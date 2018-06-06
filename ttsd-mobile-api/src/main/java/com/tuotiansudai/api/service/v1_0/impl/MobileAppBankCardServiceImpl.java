@@ -8,9 +8,9 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -41,7 +41,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Override
     public BaseResponseDto<BankCardResponseDto> bindBankCard(BankCardRequestDto requestDto) {
@@ -49,8 +49,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         try {
             BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
             String loginName = requestDto.getBaseParam().getUserId();
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
-            if (accountModel == null) {
+            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+            if (bankAccountModel == null) {
                 return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
             }
             BaseDto<PayFormDataDto> requestFormData = bindBankCardService.bindBankCard(bindBankCardDto);

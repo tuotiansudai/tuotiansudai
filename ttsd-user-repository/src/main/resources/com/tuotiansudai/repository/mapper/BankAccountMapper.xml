@@ -29,6 +29,10 @@
         select * from bank_account where login_name = #{loginname}
     </select>
 
+    <select id="lockByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
+        select * from bank_account where login_name = #{loginName} for update
+    </select>
+
     <update id="update" parameterType="map">
         update bank_account set
         authorization = #{authorization},

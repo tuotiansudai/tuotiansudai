@@ -3,10 +3,9 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -31,9 +30,6 @@ public class LoanApplicationController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {

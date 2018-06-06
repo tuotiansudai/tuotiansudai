@@ -31,7 +31,7 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
     private FakeUserHelper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -227,9 +227,9 @@ public class MobileAppUserFundV2ServiceTest extends ServiceTestBase {
         return loanModel;
     }
 
-    private AccountModel createFakeAccount(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), RandomStringUtils.randomNumeric(32), RandomStringUtils.randomNumeric(14), userModel.getRegisterTime());
-        accountMapper.create(accountModel);
+    private BankAccountModel createFakeAccount(UserModel userModel) {
+        BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), "payUserId", "payAccountId", "111", "111");
+        bankAccountMapper.create(accountModel);
         return accountModel;
     }
 

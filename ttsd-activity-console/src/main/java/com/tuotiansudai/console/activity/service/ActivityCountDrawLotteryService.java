@@ -7,10 +7,7 @@ import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -34,7 +31,7 @@ public class ActivityCountDrawLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private BankCardMapper bankCardMapper;
@@ -248,8 +245,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case CERTIFICATION:
-                    AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-                    if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;

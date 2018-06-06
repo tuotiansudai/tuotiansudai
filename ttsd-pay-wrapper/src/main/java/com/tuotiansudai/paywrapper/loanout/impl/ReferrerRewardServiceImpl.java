@@ -51,7 +51,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -138,8 +138,8 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             return false;
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(referrerLoginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(referrerLoginName);
+        if (bankAccountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
             investReferrerRewardMapper.update(model);
             logger.warn(MessageFormat.format("[标的放款] 推荐人没有实名认证, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
@@ -161,10 +161,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount > 0) {
             try {
-                TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardTransferRequest(String.valueOf(orderId), accountModel.getPayUserId(), accountModel.getPayAccountId(), String.valueOf(amount));
+                TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardTransferRequest(String.valueOf(orderId), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), String.valueOf(amount));
                 TransferResponseModel responseModel = paySyncClient.send(ReferrerRewardTransferMapper.class, requestModel, TransferResponseModel.class);
                 logger.info(MessageFormat.format("[标的放款] pay sync transfer referrer reward, result:{0}, investReferrerRewardId:{1}, loginName:{2}", responseModel.isSuccess(),
-                        String.valueOf(orderId), accountModel.getLoginName()));
+                        String.valueOf(orderId), bankAccountModel.getLoginName()));
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[标的放款] referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
                         String.valueOf(model.getInvestId()),

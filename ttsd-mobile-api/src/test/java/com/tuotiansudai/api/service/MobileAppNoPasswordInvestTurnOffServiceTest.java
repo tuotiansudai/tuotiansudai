@@ -5,8 +5,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOffRequestDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestTurnOffServiceImpl;
 import com.tuotiansudai.enums.SmsCaptchaType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -33,7 +31,7 @@ import static org.mockito.Mockito.when;
     private MobileAppNoPasswordInvestTurnOffServiceImpl mobileAppNoPasswordInvestTurnOffService;
 
     @Mock
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Mock
     private UserMapper userMapper;
@@ -44,7 +42,7 @@ import static org.mockito.Mockito.when;
     @Ignore
     @Test
     public void shouldNoPasswordInvestTurnOffIsOk() {
-        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
+        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
         UserModel userModel = new UserModel();
         userModel.setMobile("13688888888");
         BaseResponseDto baseResponseDto = new BaseResponseDto();
@@ -57,7 +55,7 @@ import static org.mockito.Mockito.when;
         NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto = new NoPasswordInvestTurnOffRequestDto();
         noPasswordInvestTurnOffRequestDto.setBaseParam(baseParam);
         noPasswordInvestTurnOffRequestDto.setCaptcha("123456");
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
         baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, "127.0.0.1");
 
         assertEquals("0000", baseResponseDto.getCode());

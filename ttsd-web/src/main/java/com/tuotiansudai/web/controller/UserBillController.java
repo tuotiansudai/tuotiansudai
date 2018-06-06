@@ -3,8 +3,8 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
@@ -34,7 +34,7 @@ public class UserBillController {
     private UserBillService userBillService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private RechargeService rechargeService;
@@ -44,8 +44,8 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        String balance = AmountConverter.convertCentToString(accountModel != null ? accountModel.getBalance() : 0);
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
+        String balance = AmountConverter.convertCentToString(bankAccountModel != null ? bankAccountModel.getBalance() : 0);
         String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
         String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
 

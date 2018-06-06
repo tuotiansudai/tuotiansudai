@@ -10,14 +10,11 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
@@ -42,7 +39,7 @@ public class PointBillServiceImpl implements PointBillService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -74,8 +71,8 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        if (bankAccountModel == null) {
             logger.info(String.format("createPointBill: %s no account", loginName));
             return;
         }
@@ -202,8 +199,8 @@ public class PointBillServiceImpl implements PointBillService {
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        AccountModel accountModel = userModel == null ? null : accountMapper.findByLoginName(userModel.getLoginName());
-        List<UserModel> userModels = accountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
+        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findByLoginName(userModel.getLoginName());
+        List<UserModel> userModels = bankAccountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
         List<UserPointItemDataDto> records = userModels.stream()
                 .map(u -> new UserPointItemDataDto(
                         u.getLoginName(),
