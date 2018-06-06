@@ -90,9 +90,6 @@ public class AccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
-        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
-        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
-        modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
         modelAndView.addObject("hasAccount", bankAccount != null);
         modelAndView.addObject("hasBankCard", bankCard != null);
 
