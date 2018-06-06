@@ -63,7 +63,7 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
     @Override
     @SuppressWarnings(value = "unchecked")
     public void returnCallback(ResponseDto responseData) {
-        updateMapper.updateReturnResponse(API_TYPE.name(), responseData);
+        updateMapper.updateReturnResponse(API_TYPE.name().toLowerCase(), responseData);
     }
 
     @Override
