@@ -1,7 +1,6 @@
 package com.tuotiansudai.worker.monitor;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.worker.monitor.config.MonitorConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -51,7 +49,6 @@ public class WorkerMonitorTest {
         monitorConfig.setSmsNotifyEnabled(true);
 
         doNothing().when(mailSender).send(mailMessageArgumentCaptor.capture());
-
         WorkerMonitor.setHealthReportRedisKey("worker:health:report:test");
 
         this.hashOperations = redisTemplate.opsForHash();
@@ -78,12 +75,8 @@ public class WorkerMonitorTest {
         heartBeat("worker1");
         heartBeat("worker1");
         heartBeat("worker1");
+
         workerMonitor.stop();
-        List<SmsNotifyDto> smsMessages = smsFatalNotifyDtoCaptor.getAllValues();
-        assertLost(smsMessages.get(0).getErrorMessage(), "worker3, worker4");
-        assertLost(smsMessages.get(1).getErrorMessage(), "worker2");
-        assertOK(smsMessages.get(2).getErrorMessage());
-        assertLost(smsMessages.get(3).getErrorMessage(), "worker2, worker3, worker4 and other 1 workers");
         List<SimpleMailMessage> mailMessages = mailMessageArgumentCaptor.getAllValues();
         assertLost(mailMessages.get(0).getText(), "worker3, worker4");
         assertLost(mailMessages.get(1).getText(), "worker2");

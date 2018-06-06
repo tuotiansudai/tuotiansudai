@@ -1,6 +1,7 @@
 package com.tuotiansudai.worker.monitor;
 
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.worker.monitor.config.MonitorConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,10 +134,8 @@ public class WorkerMonitor {
     private void sendNotification(String smsText, String emailText) {
         if (monitorConfig.isSmsNotifyEnabled()) {
             logger.info("[monitor] send sms {}", smsText);
-//            SmsFatalNotifyDto dto = new SmsFatalNotifyDto(smsText);
             try {
-//                smsWrapperClient.sendFatalNotify(dto);
-                mqWrapperClient.sendMessage(MessageQueue);
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, smsText);
             } catch (Exception e) {
                 logger.error("[monitor] send sms {} failed", smsText, e);
             }
