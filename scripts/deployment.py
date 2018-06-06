@@ -215,7 +215,7 @@ class Deployment(object):
 
     def build_worker_monitor(self):
         print "Making diagnosis build..."
-        sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
+        sh('cd ./ttsd-worker-monitor && {0} bootJar'.format(self._gradle))
 
     def mk_static_package(self):
         print "Making static package..."

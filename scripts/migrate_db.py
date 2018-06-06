@@ -11,13 +11,10 @@ def migrate(gradle, etcd, exec_fun):
         'aa':
             {'username': etcd.get('common.jdbc.username'),
              'password': etcd.get('common.jdbc.password')},
-        'ump_operations':
-            {'username': etcd.get('common.jdbc.username'),
-             'password': etcd.get('common.jdbc.password')},
         'sms_operations':
             {'username': etcd.get('common.jdbc.username'),
              'password': etcd.get('common.jdbc.password')},
-        'fudian_bank':
+        'fudian':
             {'username': etcd.get('common.jdbc.username'),
              'password': etcd.get('common.jdbc.password')},
         'anxin_operations':
