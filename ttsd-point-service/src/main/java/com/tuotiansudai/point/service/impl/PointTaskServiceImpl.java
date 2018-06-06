@@ -77,7 +77,7 @@ public class PointTaskServiceImpl implements PointTaskService {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private BankRechargeMapper userRechargeMapper;
+    private BankRechargeMapper bankRechargeMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -285,7 +285,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case BIND_BANK_CARD:
                 return bankCardMapper.findPassedBankCardByLoginName(loginName) != null;
             case FIRST_RECHARGE:
-                return userRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName) > 0;
+                return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName) > 0;
             case FIRST_INVEST:
                 return investMapper.sumSuccessInvestAmountByLoginName(null, loginName, true) > 0;
         }

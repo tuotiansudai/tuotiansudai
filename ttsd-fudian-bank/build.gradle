@@ -34,11 +34,17 @@ dependencies {
     compile('javax.servlet:jstl')
     compile('com.squareup.okhttp3:okhttp:3.10.0')
     compile('mysql:mysql-connector-java:8.0.11')
-    compile ('org.redisson:redisson:3.6.5')
+    compile('org.redisson:redisson:3.6.5')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
     compile project(':ttsd-fudian-bank-dto')
     compile project(':ttsd-etcd')
     compile project(':ttsd-mq-client')
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/build/libs/ttsd-fudian-bank.war").renameTo(file("${project.projectDir.getPath()}/build/libs/ROOT.war"))
+    }
 }

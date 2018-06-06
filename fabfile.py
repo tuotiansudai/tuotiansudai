@@ -38,7 +38,7 @@ def migrate():
 
 def mk_war(targets=None):
     if not targets:
-        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle bootWar war renameWar')
         return
 
     for target in targets:
@@ -48,7 +48,7 @@ def mk_war(targets=None):
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootJar')
 
 
 def mk_mq_consumer():
@@ -132,7 +132,7 @@ def deploy_console():
 def deploy_pay():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-pay-wrapper/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-fudian-bank/build/libs/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
     sudo('service nginx restart')
 

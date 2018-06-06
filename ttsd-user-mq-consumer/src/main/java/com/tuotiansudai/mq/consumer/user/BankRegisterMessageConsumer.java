@@ -10,7 +10,6 @@ import com.tuotiansudai.service.BankAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
@@ -31,7 +30,6 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
     }
 
     @Override
-    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 

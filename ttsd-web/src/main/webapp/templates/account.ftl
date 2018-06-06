@@ -30,7 +30,7 @@
     </div>
 
     <div class="column-box bg-w clearfix amount-sum">
-        <h3><b>账户总额：</b><span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
+        <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
             <ul class="proList fr">
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
@@ -40,11 +40,6 @@
 
     <div class="column-box bg-w clearfix amount-sum ">
         <h3><b>可用余额：</b><span>${((balance/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i> </h3>
-
-        <ul class="detail-list">
-            <li>提现冻结中：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
-            <li>投资冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
-        </ul>
     </div>
 
     <div class="column-box bg-w clearfix amount-sum ">

@@ -9,7 +9,6 @@ user-rest-service:
     - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
-  links:
   command: ["/usr/bin/supervisord"]
 
 web:
@@ -60,7 +59,7 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
-    - ./ttsd-fudian-bank/war:/usr/local/tomcat/webapps
+    - ./ttsd-fudian-bank/build/libs:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
 

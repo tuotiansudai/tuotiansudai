@@ -25,7 +25,7 @@
         <result column="mobile" property="mobile"/>
     </resultMap>
 
-    <insert id="create" parameterType="activityInvestModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="ActivityInvestModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `edxactivity`.`activity_invest`
         (`loan_id`,
         `invest_id`,

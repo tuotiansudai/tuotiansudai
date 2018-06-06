@@ -15,8 +15,6 @@
         <result column="expected_total_interest" property="expectedTotalInterest"/>
         <result column="expected_total_extra_interest" property="expectedTotalExtraInterest"/>
         <result column="expected_coupon_interest" property="expectedCouponInterest"/>
-        <result column="invest_froze_amount" property="investFrozeAmount"/>
-        <result column="withdraw_froze_amount" property="withdrawFrozeAmount"/>
         <result column="current_month_invest_repay_count" property="currentMonthInvestRepayCount"/>
         <result column="expected_experience_interest" property="expectedExperienceInterest"/>
         <result column="actual_experience_interest" property="actualExperienceInterest"/>
@@ -25,7 +23,7 @@
 
     <select id="findByLoginName" parameterType="string" resultMap="userFundResultMap">
         select
-              (select balance from account where login_name = #{loginName}) as balance,
+              (select balance from bank_account where login_name = #{loginName}) as balance,
 
               (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
               from invest_repay join invest on invest_repay.invest_id= invest.id
@@ -64,13 +62,6 @@
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
               from invest_extra_rate
               where login_name = #{loginName} and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
-
-              (select ifnull(sum(invest.amount), 0)
-              from invest join loan on invest.loan_id = loan.id
-              where invest.login_name = #{loginName} and loan.id != 1 and invest.status = 'SUCCESS' and loan.status in ('RAISING', 'RECHECK')) as invest_froze_amount,
-
-              (select ifnull(sum(amount), 0)
-              from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
 
               (select count(1)
               from invest_repay join invest on invest_repay.invest_id = invest.id

@@ -61,7 +61,7 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public AuthorizationService(SignatureHelper signatureHelper, RedisTemplate redisTemplate, RedissonClient redissonClient, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper, QueryUserService queryUserService) {
+    public AuthorizationService(SignatureHelper signatureHelper, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper, QueryUserService queryUserService) {
         this.signatureHelper = signatureHelper;
         this.redisTemplate = redisTemplate;
         this.redissonClient = redissonClient;

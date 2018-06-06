@@ -6,8 +6,8 @@ import etcd_client
 
 class Deployment(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
-    _gradle = 'gradle'
-    _dockerCompose = 'docker-compose'
+    _gradle = '/usr/local/bin/gradle'
+    _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = 'paver'
 
     def __init__(self, env='DEV'):
@@ -108,15 +108,15 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_class(('ttsd-job-worker',
-                           'ttsd-loan-mq-consumer',
-                           'ttsd-message-mq-consumer',
-                           'ttsd-point-mq-consumer',
-                           'ttsd-activity-mq-consumer',
-                           'ttsd-user-mq-consumer',
-                           'ttsd-auditLog-mq-consumer',
-                           'ttsd-email-mq-consumer',
-                           'ttsd-amount-mq-consumer',
-                           'ttsd-diagnosis'))
+                          'ttsd-loan-mq-consumer',
+                          'ttsd-message-mq-consumer',
+                          'ttsd-point-mq-consumer',
+                          'ttsd-activity-mq-consumer',
+                          'ttsd-user-mq-consumer',
+                          'ttsd-auditLog-mq-consumer',
+                          'ttsd-email-mq-consumer',
+                          'ttsd-amount-mq-consumer',
+                          'ttsd-diagnosis'))
         self.mk_worker_zip()
         self.init_docker(('worker-all', 'auditLog-mq-consumer',
                           'loan-mq-consumer',
@@ -163,7 +163,7 @@ class Deployment(object):
     def mk_war(self, targets=None):
         print "mk_war..."
         if not targets:
-            sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
+            sh('TTSD_ETCD_ENV={0} {1} bootWar war renameWar'.format(self.env, self._gradle))
             sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
             return
         for target in targets:
@@ -215,7 +215,7 @@ class Deployment(object):
 
     def build_worker_monitor(self):
         print "Making diagnosis build..."
-        sh('cd ./ttsd-worker-monitor && {0} bootRepackage'.format(self._gradle))
+        sh('cd ./ttsd-worker-monitor && {0} bootJar'.format(self._gradle))
 
     def mk_static_package(self):
         print "Making static package..."
@@ -238,16 +238,17 @@ class Deployment(object):
 
     def _remove_old_container(self, suoder, targets):
         if not targets:
-            sh('{0} {1} -f dev.yml stop '.format(suoder, self._dockerCompose))
-            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
-                                                                                                   self._dockerCompose))
+            sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml stop '.format(suoder, self.env, self._dockerCompose))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml rm -f"'.format(
+                suoder,
+                self.env,
+                self._dockerCompose))
             return
 
         for target in targets:
-            sh('{0} {1} -f dev.yml stop {2}'.format(suoder, self._dockerCompose, target))
-            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml  rm -f {2}"'.format(suoder,
-                                                                                                        self._dockerCompose,
-                                                                                                        target))
+            sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml stop {3}'.format(suoder, self.env, self._dockerCompose, target))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml  rm -f {3}"'
+               .format(suoder, self.env, self._dockerCompose, target))
 
     def _start_new_container(self, sudoer, targets):
         if not targets:

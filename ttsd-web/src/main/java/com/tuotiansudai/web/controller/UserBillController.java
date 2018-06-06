@@ -44,8 +44,8 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
-        String balance = AmountConverter.convertCentToString(bankAccountModel != null ? bankAccountModel.getBalance() : 0);
+        BankAccountModel bankAccount = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
+        String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
         String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
         String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
 
