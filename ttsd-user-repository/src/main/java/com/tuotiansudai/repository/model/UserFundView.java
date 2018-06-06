@@ -20,9 +20,6 @@ public class UserFundView implements Serializable {
     private long expectedCouponInterest;//待收优惠券奖励(分)
     private long expectedTotalExtraInterest; //待收投资奖励(阶梯加息)(分)
 
-    private long investFrozeAmount; //投资冻结资金(分)
-    private long withdrawFrozeAmount; //提现冻结资金(分)
-
     private long currentMonthInvestRepayCount; //本月回款笔数
 
     private long expectedExperienceInterest;//未收体验金收益
@@ -108,22 +105,6 @@ public class UserFundView implements Serializable {
 
     public void setExpectedTotalExtraInterest(long expectedTotalExtraInterest) {
         this.expectedTotalExtraInterest = expectedTotalExtraInterest;
-    }
-
-    public long getInvestFrozeAmount() {
-        return investFrozeAmount;
-    }
-
-    public void setInvestFrozeAmount(long investFrozeAmount) {
-        this.investFrozeAmount = investFrozeAmount;
-    }
-
-    public long getWithdrawFrozeAmount() {
-        return withdrawFrozeAmount;
-    }
-
-    public void setWithdrawFrozeAmount(long withdrawFrozeAmount) {
-        this.withdrawFrozeAmount = withdrawFrozeAmount;
     }
 
     public long getCurrentMonthInvestRepayCount() {

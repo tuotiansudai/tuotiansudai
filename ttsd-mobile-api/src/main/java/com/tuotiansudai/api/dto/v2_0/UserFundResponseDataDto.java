@@ -109,8 +109,8 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.expectedTotalCouponInterest = userFundView.getExpectedCouponInterest();
         this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.expectedExperienceInterest+this.expectedTotalCouponInterest;
 
-        this.investFrozeAmount = userFundView.getInvestFrozeAmount();
-        this.withdrawFrozeAmount = userFundView.getWithdrawFrozeAmount();
+        this.investFrozeAmount = 0;
+        this.withdrawFrozeAmount = 0;
 
         this.investAmount = userFundView.getInvestAmount();
 
