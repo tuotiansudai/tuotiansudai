@@ -82,13 +82,13 @@ public class HomeServiceImpl implements HomeService {
         }
 
         public static SiteMapType getSiteMapType(String subSiteMapType) {
-            if (subSiteMapType.indexOf("ask") > -1) {
+            if (subSiteMapType.contains("ask")) {
                 return ASK;
-            } else if (subSiteMapType.indexOf("new") > -1) {
+            } else if (subSiteMapType.contains("new")) {
                 return NEW;
-            } else if (subSiteMapType.indexOf("baike") > -1) {
+            } else if (subSiteMapType.contains("baike")) {
                 return BAIKE;
-            } else if (subSiteMapType.indexOf("column") > -1) {
+            } else if (subSiteMapType.contains("column")) {
                 return COLUMN;
             }
             return ASK;
@@ -187,7 +187,8 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public Map<String, String> siteMapIndex() {
         Map<String, String> siteMap = Maps.newHashMap();
-        if (siteMapRedisWrapperClient.exists(CMS_SITE_MAP_COLUMN_KEY)) {
+        Boolean isExist = siteMapRedisWrapperClient.exists(CMS_SITE_MAP_COLUMN_KEY);
+        if (isExist) {
             String column = siteMapRedisWrapperClient.get(CMS_SITE_MAP_COLUMN_KEY);
             generateSiteMapByType(SiteMapType.COLUMN, column, siteMap);
         }

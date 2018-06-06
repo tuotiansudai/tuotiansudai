@@ -37,17 +37,20 @@ public class SiteMapRedisWrapperClient {
     private static JedisPool jedisPool;
 
     private <T> T execute(JedisAction<T> jedisAction) {
-        Jedis jedis = null;
-        try {
-            jedis = getJedis(this.sitemapRedisDb);
-            return jedisAction.action(jedis);
-        } finally {
-            closeResource(jedis);
+        try (Jedis jedis = getJedis(this.sitemapRedisDb)) {
+            if (jedis != null) {
+                return jedisAction.action(jedis);
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getLocalizedMessage(), ex);
         }
+
+        return null;
     }
 
     public boolean exists(final String key) {
-        return execute(jedis -> jedis.exists(key));
+        Boolean isExisted = execute(jedis -> jedis.exists(key));
+        return isExisted != null && isExisted;
     }
 
     public Long hset(final String key, final String hkey, final String value) {
@@ -70,7 +73,9 @@ public class SiteMapRedisWrapperClient {
     }
 
     public boolean hexists(final String key, final String field) {
-        return execute(jedis -> jedis.hexists(key, field));
+        Boolean isExisted = execute(jedis -> jedis.hexists(key, field));
+
+        return isExisted != null && isExisted;
     }
 
     public String get(final String key) {
@@ -83,10 +88,9 @@ public class SiteMapRedisWrapperClient {
 
     protected Jedis getJedis(int db) {
         int timeoutCount = 0;
-        Jedis jedis;
         while (true) {
             try {
-                jedis = getJedisPool().getResource();
+                Jedis jedis = getJedisPool().getResource();
                 if (!Strings.isNullOrEmpty(getRedisPassword())) {
                     jedis.auth(getRedisPassword());
                 }
@@ -96,11 +100,10 @@ public class SiteMapRedisWrapperClient {
                 logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
                     logger.error("Get Redis pool failure more than 3 times.", e);
-                    throw e;
                 }
             }
         }
-        return jedis;
+        return null;
     }
 
     public boolean del(final String... keys) {
@@ -124,12 +127,6 @@ public class SiteMapRedisWrapperClient {
 
     public interface JedisAction<T> {
         T action(Jedis jedis);
-    }
-
-    protected void closeResource(Jedis jedis) {
-        if (jedis != null) {
-            jedis.close();
-        }
     }
 
     public String getRedisHost() {
