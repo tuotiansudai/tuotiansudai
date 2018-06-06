@@ -133,6 +133,9 @@
     font-size: 0;
     text-align: center;
     overflow: hidden;
+    .btn-wrap {}
+    display: inline-block;
+    width: 400px;
     .see_my_account, .my_personal-info{
       display: inline-block;
       margin-right: 20px;
