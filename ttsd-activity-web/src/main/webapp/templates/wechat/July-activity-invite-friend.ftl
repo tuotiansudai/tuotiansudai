@@ -1,8 +1,80 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript=""  title="520元开工红包">
-dgfdgfdgdf
+<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="520元开工红包">
 
+<div class="invite-friend-container" id="inviteContainer" data-startTimee="2018-07-01" data-overTime="2018-07-15">
+    <div class="invite-banner"></div>
+    <div class="invite-friend-fonts"></div>
+    <div class="red-ware">
+        <div class="invite-wrap">
+            <a class="invite-btn circle-btn" href="javascript:;"></a>
+
+                <p>累计年化投资金额：<br/>
+                    <strong>10000.00元</strong><br/>
+                    当前已获返现金额：<br/>
+                    <strong>0.00元</strong>
+                </p>
+                <a class="to-join-btn" href="javascript:;"></a>
+
+        </div>
+    </div>
+    <div class="part part-one marginTop100">
+        <a class="circle left-circle" href="javascript:;"></a>
+        <a class="circle right-circle" href="javascript:;"></a>
+        <div class="part-title"></div>
+        <div class="main-content">
+            <div class="time">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="part part-two marginTop100">
+        <span class="circle left-circle"></span>
+        <span class="circle right-circle"></span>
+        <div class="part-title"></div>
+        <div class="main-content">
+            <ul>
+                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
+                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
+                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="part part-three marginTop100">
+        <span class="circle left-circle"></span>
+        <span class="circle right-circle"></span>
+        <div class="part-title"></div>
+        <div class="main-content">
+            <p>1.活动期间，在平台投资过的用户通过微信“拓天速贷服务号”进入活动页面，可分享现金红包给好友，邀请好友拆红包；</p>
+            <p>2.拆开红包的好友需未注册过拓天速贷账户，并在活动页面完成注册+实名认证，实名认证后方可拆开红包；</p>
+            <p>3.拆红包流程：点击活动页面的“拆红包”按钮-注册拓天速贷账户-完成实名认证-拆红包成功；</p>
+            <p>4.投资用户及其好友的现金红包金额，将于分享成功后72小时内发放至双方用户账户，您可以直接提现；</p>
+            <p>5.截止发放时间为止，如果拆开红包的好友未登录拓天速贷并进行实名认证，好友将无法收到现金；</p>
+            <p>6.本活动仅限直投项目，债权转让、体验项目及新手专享项目不参与累计；</p>
+            <p>7.年化投资额计算公式：</p>
+            <div class="calculation-formula">
+                <table>
+                    <tr>
+                        <td>60天-90天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额*90/360</span></td>
+                    </tr>
+                    <tr>
+                        <td>120天-180天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额*180/360</span></td>
+                    </tr>
+                    <tr>
+                        <td>330天-360天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额</span></td>
+                    </tr>
+                </table>
+
+            </div>
+            <p>8.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
+            <p>9.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</p>
+
+    </div>
+
+</div>
     <#include "../module/login-tip.ftl" />
 <script>
     <#--wx.ready(function () {-->

@@ -1,0 +1,199 @@
+$orangeBg:#ff5d0d;
+$orangeBorder:#ffd200;
+$yellowFont:#fdff62;
+$yellowCircle:#fffe18;
+body {
+
+}
+p {
+  margin-bottom: 2px;
+}
+
+.marginTop100 {
+  margin-top: 1rem;
+}
+.circle-btn {
+  width: 2.79rem;
+  height: 2.79rem;
+  margin: 0 auto;
+  display: block;
+  &.invite-btn {
+    background: url("../../images/2018/july-activity/invite_btn.png") no-repeat;
+    background-size: contain;
+  }
+  &.cash-btn {
+    background: url("../../images/2018/july-activity/cash_btn.png") no-repeat;
+    background-size: contain;
+  }
+  &.open-btn {
+    background: url("../../images/2018/july-activity/open_btn.png") no-repeat;
+    background-size: contain;
+  }
+}
+.part {
+  width: 5.1rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0.02rem solid $orangeBorder;
+  border-radius: 0.08rem;
+  box-sizing: border-box;
+  position: relative;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  .circle {
+    width: 0.12rem;
+    height: 0.12rem;
+    border-radius: 0.06rem;
+    background: $yellowCircle;
+    position: absolute;
+    top: -0.06rem;
+    &.left-circle {
+      left: 1.09rem;
+    }
+    &.right-circle {
+      right: 1.09rem;
+    }
+
+  }
+  .part-title {
+    width: 2.64rem;
+    height: 0.67rem;
+    position: absolute;
+    left: 50%;
+    margin-left: -1.32rem;
+    top: -0.34rem;
+    background-color: $orangeBg;
+  }
+  .main-content {
+    p {
+      color: #fff;
+    }
+  }
+}
+.invite-friend-container {
+  background: $orangeBg;
+  padding-bottom: 1.1rem;
+  .invite-banner {
+    height: 4.8rem;
+    background: url("../../images/2018/july-activity/wechat_banner.png") no-repeat;
+    background-size: contain;
+  }
+  .invite-friend-fonts {
+    margin: 0 auto;
+    width: 4.75rem;
+    height: 1.55rem;
+    background: url("../../images/2018/july-activity/invite_friend_fonts.png") no-repeat;
+    background-size: contain;
+  }
+  .red-ware {
+    width: 7.5rem;
+    height: 7.29rem;
+    background: url("../../images/2018/july-activity/red_ware_big.png") no-repeat;
+    background-size: contain;
+    padding-top: 1.1rem;
+    box-sizing: border-box;
+    .invite-wrap {
+      width: 3.5rem;
+      margin: 0 auto;
+      p {
+        font-size: 0.24rem;
+        color: $yellowFont;
+        text-align: center;
+        line-height: 0.34rem;
+        strong {
+          font-size: 0.28rem;
+        }
+      }
+      .to-join-btn {
+        display: block;
+        margin: 0 auto;
+        margin-top: 0.9rem;
+        width: 3.07rem;
+        height: 1.18rem;
+        background: url("../../images/2018/july-activity/to_join_btn.png") no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+  .part-one {
+    .part-title {
+      background: $orangeBg url("../../images/2018/july-activity/end_btn.png") no-repeat;
+      background-size: contain;
+    }
+    .main-content {
+      padding-top: 0.52rem;
+      padding-bottom: 0.4rem;
+      .time {
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+      }
+    }
+  }
+  .part-two {
+    .part-title {
+      background: $orangeBg url("../../images/2018/july-activity/has_got_btn.png") no-repeat;
+      background-size: contain;
+    }
+    .main-content {
+      padding-top: 0.8rem;
+      padding-bottom: 0.2rem;
+      ul {
+        li {
+          color: #fff;
+          height: 0.6rem;
+          line-height: 0.6rem;
+          font-size: 0.24rem;
+        }
+      }
+    }
+  }
+  .part-three {
+    .part-title {
+      background: $orangeBg url("../../images/2018/july-activity/activity_rules.png") no-repeat;
+      background-size: contain;
+    }
+    .main-content {
+      padding-top: 0.46rem;
+      padding-bottom: 0.45rem;
+      p {
+        font-size: 0.21rem;
+        line-height: 0.34rem;
+        color: #fff;
+      }
+      .calculation-formula {
+        border: 1px solid #fff;
+        border-bottom: none;
+        border-right: none;
+        margin-top: 0.25rem;
+        margin-bottom: 0.3rem;
+        table {
+          tr {
+            td {
+              color: #fff;
+              font-size: 0.18rem;
+              height: 0.7rem;
+              line-height: 0.7rem;
+              padding: 0;
+              margin: 0;
+              border-bottom: 1px solid #fff;
+              border-right: 1px solid #fff;
+              box-sizing: border-box;
+              &.last-td {
+                width: 2.3rem;
+                line-height: 0.3rem;
+                box-sizing: border-box;
+                span {
+                  display: block;
+                  text-align: left;
+                  padding-left: 0.3rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

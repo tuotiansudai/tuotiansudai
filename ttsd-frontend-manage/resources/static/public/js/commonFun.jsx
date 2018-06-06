@@ -401,7 +401,42 @@ function toDownloadApp() {
     }
 
 }
-
+// 距离一个结束时间的倒计时，传参是这种格式countTimePop($('.time'),'2018-06-06 18:33:50')
+function countTimePop(dom,time) {
+    var timer;
+    time = time.replace(/-/g,'/');
+    let end = new Date(time).getTime();
+    let now = new Date().getTime();
+    let leftTime = (end-now)/1000;
+    console.log(time);
+    timerCount();
+    timer = setInterval(() => {
+        timerCount();
+    },1000);
+    function timerCount() {
+        let h,m,s;
+        if (leftTime > 0) {
+            if (leftTime <= 0) {
+                clearInterval(timer);
+                return;
+            }
+            h = Math.floor(leftTime/60/60%24);
+            m = Math.floor(leftTime/60%60);
+            s = Math.floor(leftTime%60);
+            h = h < '10' ? '0' + h : h + '';
+            m = m < '10' ? '0' + m : m + '';
+            s = s < '10' ? '0' + s : s + '';
+            --leftTime;
+        }
+        else {
+            clearInterval(timer);
+            h='00';
+            m='00';
+            s='00';
+        }
+        dom.text(h+':'+m+':'+s);
+    }
+}
 function Cycle(options) {
     this.id = options.id;
     this.width = options.width;
@@ -465,6 +500,7 @@ exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
 exports.Cycle = Cycle;
 exports.toDownloadApp = toDownloadApp;
+exports.countTimePop = countTimePop;
 
 
 
