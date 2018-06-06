@@ -9,7 +9,6 @@ user-rest-service:
     - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
-  links:
   command: ["/usr/bin/supervisord"]
 
 web:

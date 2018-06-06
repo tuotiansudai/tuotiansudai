@@ -108,15 +108,15 @@ class Deployment(object):
         self.clean()
         self.config_file()
         self.clean_class(('ttsd-job-worker',
-                           'ttsd-loan-mq-consumer',
-                           'ttsd-message-mq-consumer',
-                           'ttsd-point-mq-consumer',
-                           'ttsd-activity-mq-consumer',
-                           'ttsd-user-mq-consumer',
-                           'ttsd-auditLog-mq-consumer',
-                           'ttsd-email-mq-consumer',
-                           'ttsd-amount-mq-consumer',
-                           'ttsd-diagnosis'))
+                          'ttsd-loan-mq-consumer',
+                          'ttsd-message-mq-consumer',
+                          'ttsd-point-mq-consumer',
+                          'ttsd-activity-mq-consumer',
+                          'ttsd-user-mq-consumer',
+                          'ttsd-auditLog-mq-consumer',
+                          'ttsd-email-mq-consumer',
+                          'ttsd-amount-mq-consumer',
+                          'ttsd-diagnosis'))
         self.mk_worker_zip()
         self.init_docker(('worker-all', 'auditLog-mq-consumer',
                           'loan-mq-consumer',
@@ -238,16 +238,17 @@ class Deployment(object):
 
     def _remove_old_container(self, suoder, targets):
         if not targets:
-            sh('{0} {1} -f dev.yml stop '.format(suoder, self._dockerCompose))
-            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml rm -f"'.format(suoder,
-                                                                                                   self._dockerCompose))
+            sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml stop '.format(suoder, self.env, self._dockerCompose))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml rm -f"'.format(
+                suoder,
+                self.env,
+                self._dockerCompose))
             return
 
         for target in targets:
             sh('{0} {1} -f dev.yml stop {2}'.format(suoder, self._dockerCompose, target))
-            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && {1} -f dev.yml  rm -f {2}"'.format(suoder,
-                                                                                                        self._dockerCompose,
-                                                                                                        target))
+            sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml  rm -f {3}"'
+               .format(suoder, self.env, self._dockerCompose, target))
 
     def _start_new_container(self, sudoer, targets):
         if not targets:
