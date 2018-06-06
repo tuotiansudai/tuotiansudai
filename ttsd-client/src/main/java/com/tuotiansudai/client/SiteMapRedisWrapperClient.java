@@ -97,9 +97,9 @@ public class SiteMapRedisWrapperClient {
                 jedis.select(db);
                 break;
             } catch (JedisConnectionException e) {
-                logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
+                logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)));
                 if (++timeoutCount >= 3) {
-                    logger.error("Get Redis pool failure more than 3 times.", e);
+                    logger.error("Get Redis pool failure more than 3 times.");
                     break;
                 }
             }

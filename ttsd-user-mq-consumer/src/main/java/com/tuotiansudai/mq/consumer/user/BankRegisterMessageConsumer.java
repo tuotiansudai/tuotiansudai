@@ -31,7 +31,6 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
     }
 
     @Override
-    @Transactional
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
 

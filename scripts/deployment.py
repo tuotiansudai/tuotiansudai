@@ -246,7 +246,7 @@ class Deployment(object):
             return
 
         for target in targets:
-            sh('{0} {1} -f dev.yml stop {2}'.format(suoder, self._dockerCompose, target))
+            sh('{0} TTSD_ETCD_ENV={1} {2} -f dev.yml stop {3}'.format(suoder, self.env, self._dockerCompose, target))
             sh('{0} /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && TTSD_ETCD_ENV={1} {2} -f dev.yml  rm -f {3}"'
                .format(suoder, self.env, self._dockerCompose, target))
 
