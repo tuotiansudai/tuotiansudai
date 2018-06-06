@@ -163,7 +163,7 @@ class Deployment(object):
     def mk_war(self, targets=None):
         print "mk_war..."
         if not targets:
-            sh('TTSD_ETCD_ENV={0} {1} war renameWar'.format(self.env, self._gradle))
+            sh('TTSD_ETCD_ENV={0} {1} bootWar war renameWar'.format(self.env, self._gradle))
             sh('cp {0}/signin_service/settings_local.py ./ttsd-user-rest-service/'.format(self._config_path))
             return
         for target in targets:
