@@ -11,7 +11,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         "com.tuotiansudai.util",
         "com.tuotiansudai.cache",
         "com.tuotiansudai.client",
-        "com.tuotiansudai.membership"
+        "com.tuotiansudai.membership",
+        "com.tuotiansudai.service",
+        "com.tuotiansudai.log.service"
 })
 @EnableAspectJAutoProxy(exposeProxy = true)
 @Import(UserMapperConfiguration.class)

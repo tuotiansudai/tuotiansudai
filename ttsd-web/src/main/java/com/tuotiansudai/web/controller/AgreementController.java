@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.AuthorizationDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.service.BankAuthorizationService;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ import javax.validation.Valid;
 public class AgreementController {
 
     @Autowired
-    private BankAuthorizationService bankAuthorizationService;
+    private BankAccountService bankAccountService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView agreement(@Valid @ModelAttribute AuthorizationDto authorizationDto, HttpServletRequest request){
         authorizationDto.setIp(RequestIPParser.parse(request));
-        BankAsyncMessage baseDto = bankAuthorizationService.authorization(
+        BankAsyncMessage baseDto = bankAccountService.authorization(
                 authorizationDto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),

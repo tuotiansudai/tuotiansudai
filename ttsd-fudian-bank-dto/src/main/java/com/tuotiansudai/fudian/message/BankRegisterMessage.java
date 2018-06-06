@@ -27,7 +27,7 @@ public class BankRegisterMessage {
         this.mobile = mobile;
         this.identityCode = identityCode;
         this.realName = realName;
-        this.bankOrderDate = bankAccountNo;
+        this.bankAccountNo = bankAccountNo;
         this.bankUserName = bankUserName;
         this.bankOrderDate = bankOrderDate;
         this.bankOrderNo = bankOrderNo;

@@ -21,8 +21,8 @@
     </resultMap>
 
     <insert id="create" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,bank_user_name,bank_account_no,bank_order_no,bank_order_date,created_time,updated_time)
-        values (#{loginName},#{bankUserName},#{bankAccountNo},#{bankOrderNo},#{bankOrderDate},now(),now())
+        insert into bank_account(login_name,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
+        values (#{loginName},#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
     </insert>
 
     <select id="findByLoginName" parameterType="map" resultMap="bankAccountResultMap">

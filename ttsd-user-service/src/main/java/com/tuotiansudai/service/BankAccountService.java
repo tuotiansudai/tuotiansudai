@@ -57,6 +57,16 @@ public class BankAccountService {
         return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
     }
 
+    public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        if (bankAccountModel.isAuthorization()){
+            return new BankAsyncMessage(null, null, false, "已开通免密投资");
+        }
+        userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.INVEST_NO_PASSWORD, null);
+
+        return bankWrapperClient.authorization(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void createBankAccount(BankRegisterMessage bankRegisterMessage) {
         if (bankAccountMapper.findByLoginName(bankRegisterMessage.getLoginName()) != null) {
@@ -75,7 +85,7 @@ public class BankAccountService {
         sendMessage(bankRegisterMessage);
     }
 
-    public void authorization(BankAuthorizationMessage bankAuthorizationMessage) {
+    public void authorizationSuccess(BankAuthorizationMessage bankAuthorizationMessage) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(bankAuthorizationMessage.getLoginName());
         if (bankAccountModel == null) {
             logger.error("[MQ] bank account is not exist, message: {}", new Gson().toJson(bankAuthorizationMessage));
