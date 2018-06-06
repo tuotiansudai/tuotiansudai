@@ -6,8 +6,8 @@ import etcd_client
 
 class Deployment(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
-    _gradle = 'gradle'
-    _dockerCompose = 'docker-compose'
+    _gradle = '/usr/local/bin/gradle'
+    _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = 'paver'
 
     def __init__(self, env='DEV'):
