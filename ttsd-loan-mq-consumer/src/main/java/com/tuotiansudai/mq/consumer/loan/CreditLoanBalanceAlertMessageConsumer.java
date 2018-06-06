@@ -2,8 +2,8 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class CreditLoanBalanceAlertMessageConsumer implements MessageConsumer {
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, Lists.newArrayList(creditLoanAgent)));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, Lists.newArrayList(creditLoanAgent)));
         logger.info("[MQ] consume message success.");
     }
 

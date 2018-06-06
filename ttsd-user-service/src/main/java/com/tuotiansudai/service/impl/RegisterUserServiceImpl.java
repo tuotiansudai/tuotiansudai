@@ -3,11 +3,9 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -44,9 +42,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
     private static final long EXPERIENCE_AMOUNT = 688800L;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -72,7 +67,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         this.sendMessage(userModel);
 
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
 
         return userModel;
     }

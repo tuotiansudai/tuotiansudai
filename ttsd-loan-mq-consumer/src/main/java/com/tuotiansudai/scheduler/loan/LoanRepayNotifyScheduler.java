@@ -5,8 +5,8 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayNotifyModel;
@@ -78,7 +78,7 @@ public class LoanRepayNotifyScheduler {
                     logger.info("will send loanRepay notify, mobile: " + entry.getKey() + ", amount: " + amount);
                     if (amount > 0) {
                         logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
-                        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE, Lists.newArrayList(((String) entry.getKey()).trim()), Lists.newArrayList(AmountConverter.convertCentToString(amount))));
+                        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE, Lists.newArrayList(((String) entry.getKey()).trim()), Lists.newArrayList(AmountConverter.convertCentToString(amount))));
 
                     }
                 }

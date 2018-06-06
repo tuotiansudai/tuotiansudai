@@ -5,14 +5,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.EventMessage;
@@ -83,10 +77,6 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -241,7 +231,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 AppUrl.MESSAGE_CENTER_LIST));
 
         String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
 
         return true;
     }

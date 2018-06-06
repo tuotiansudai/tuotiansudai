@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper">
+<mapper namespace="com.tuotiansudai.sms.repository.mapper.JianZhouSmsHistoryMapper">
 
     <resultMap id="jianZhouSmsHistoryModel" type="JianZhouSmsHistoryModel">
         <id property="id" column="id"/>

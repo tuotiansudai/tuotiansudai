@@ -5,9 +5,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.JianZhouSmsClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +38,17 @@ public class SmsService {
 
     @Autowired
     private JianZhouSmsClient jianZhouSmsClient = JianZhouSmsClient.getClient();
-
-    public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
-        List<String> mobiles = Lists.newArrayList(fatalNotifyQAMobiles);
-        if (Environment.PRODUCTION == environment) {
-            mobiles.addAll(fatalNotifyDevMobiles);
-        }
-        return jianZhouSmsClient.sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
-    }
-
-    public BaseDto<SmsDataDto> sendSms(SmsDto smsDto) {
-        return jianZhouSmsClient.sendSms(smsDto.getMobiles(), smsDto.getJianZhouSmsTemplate(), smsDto.isVoice(), smsDto.getParams(), smsDto.getRequestIP());
-    }
+//
+//    public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
+//        List<String> mobiles = Lists.newArrayList(fatalNotifyQAMobiles);
+//        if (Environment.PRODUCTION == environment) {
+//            mobiles.addAll(fatalNotifyDevMobiles);
+//        }
+//        return jianZhouSmsClient.sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(notify.getErrorMessage()), null);
+//    }
+//
+//    public BaseDto<SmsDataDto> sendSms(SmsNotifyDto smsNotifyDto) {
+//        return jianZhouSmsClient.sendSms(smsNotifyDto.getMobiles(), smsNotifyDto.getJianZhouSmsTemplate(), smsNotifyDto.isVoice(), smsNotifyDto.getParams(), smsNotifyDto.getRequestIP());
+//    }
 
 }

@@ -6,11 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
@@ -86,9 +82,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private CouponInvestService couponInvestService;
@@ -624,7 +617,7 @@ public class InvestServiceImpl implements InvestService {
 
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
                 Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanId));
@@ -656,7 +649,6 @@ public class InvestServiceImpl implements InvestService {
 
     private void sendSmsErrNotify(String errMsg) {
         logger.info("sent invest fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
     }
 }

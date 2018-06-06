@@ -19,14 +19,14 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class MybatisSmsConfig {
     @Bean
-    public MybatisAAConnectionConfig mybatisAAConnectionConfig() {
-        return new MybatisAAConnectionConfig();
+    public MybatisSmsConnectionConfig mybatisSmsConnectionConfig() {
+        return new MybatisSmsConnectionConfig();
     }
 
     @Bean(name = "hikariCPSmsConfig")
-    public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
+    public HikariConfig hikariCPSmsConfig(MybatisSmsConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/sms_operations?useUnicode=true&characterEncoding=UTF-8",
                 connConfig.getDbHost(), connConfig.getDbPort()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());
@@ -37,34 +37,32 @@ public class MybatisSmsConfig {
     }
 
     @Bean
-    public DataSource hikariCPAADataSource(@Autowired @Qualifier("hikariCPAAConfig") HikariConfig hikariConfig) {
+    public DataSource hikariCPSmsDataSource(@Autowired @Qualifier("hikariCPSmsConfig") HikariConfig hikariConfig) {
         return new HikariDataSource(hikariConfig);
     }
 
     @Bean
-    public MapperScannerConfigurer aaMapperScannerConfigurer() {
+    public MapperScannerConfigurer smsMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper," +
-                "com.tuotiansudai.membership.repository.mapper");
-        configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
+        configurer.setBasePackage("com.tuotiansudai.sms.repository.mapper");
+        configurer.setSqlSessionFactoryBeanName("smsSqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager aaTransactionManager(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) {
+    public DataSourceTransactionManager smsTransactionManager(@Qualifier("hikariCPSmsDataSource") DataSource hikariCPAADataSource) {
         return new DataSourceTransactionManager(hikariCPAADataSource);
     }
 
     @Bean
-    public SqlSessionFactory aaSqlSessionFactory(@Qualifier("hikariCPAADataSource") DataSource hikariCPAADataSource) throws Exception {
+    public SqlSessionFactory smsSqlSessionFactory(@Qualifier("hikariCPSmsDataSource") DataSource hikariCPSmsDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(hikariCPAADataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.repository.model," +
-                "com.tuotiansudai.membership.repository.model");
+        sessionFactory.setDataSource(hikariCPSmsDataSource);
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.sms.repository.model");
         return sessionFactory.getObject();
     }
 
-    public static class MybatisAAConnectionConfig {
+    public static class MybatisSmsConnectionConfig {
         @Value("${common.jdbc.host}")
         private String dbHost;
         @Value("${common.jdbc.port}")

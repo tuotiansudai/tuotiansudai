@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
@@ -49,9 +49,9 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         return sendSms(JianZhouSmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE, mobile, captcha, isVoice, requestIP);
     }
 
-    private BaseDto<SmsDataDto> sendSms(JianZhouSmsTemplate jianZhouSmsTemplate,String mobile, String params, boolean isVoice, String requestIP){
-        SmsDto smsDto = new SmsDto(jianZhouSmsTemplate, Lists.newArrayList(mobile), Lists.newArrayList(params), isVoice, requestIP);
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, smsDto);
+    private BaseDto<SmsDataDto> sendSms(JianZhouSmsTemplate jianZhouSmsTemplate, String mobile, String params, boolean isVoice, String requestIP){
+        SmsNotifyDto smsNotifyDto = new SmsNotifyDto(jianZhouSmsTemplate, Lists.newArrayList(mobile), Lists.newArrayList(params), isVoice, requestIP);
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, smsNotifyDto);
         SmsDataDto smsDataDto = new SmsDataDto();
         smsDataDto.setStatus(true);
         smsDataDto.setIsRestricted(false);

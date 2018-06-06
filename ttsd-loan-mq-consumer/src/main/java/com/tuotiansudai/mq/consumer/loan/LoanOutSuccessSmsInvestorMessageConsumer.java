@@ -3,8 +3,8 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -60,10 +60,10 @@ public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer
         }
 
         LoanModel loanModel = loanMapper.findById(loanOutInfo.getLoanId());
-        List<String> mobiles = investMapper.findMobileByLoanId(loanModel.getId());
+        List<String> mobiles = investMapper.findInvestorMobileByLoanId(loanModel.getId());
         if (CollectionUtils.isNotEmpty(mobiles)){
             String rate = String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%";
-            mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE, mobiles, Lists.newArrayList(rate)));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE, mobiles, Lists.newArrayList(rate)));
         }
     }
 }

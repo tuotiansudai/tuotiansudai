@@ -9,10 +9,9 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.message.CouponAssignSmsNotifyMessage;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -277,7 +276,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         if (Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
-            mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
         }
 
         return userCouponModel;

@@ -1,19 +1,16 @@
-package com.tuotiansudai.dto.sms;
+package com.tuotiansudai.dto;
 
 
 import com.google.common.collect.Lists;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-public class SmsDto implements Serializable{
+public class SmsNotifyDto implements Serializable{
 
-    @NotNull
     private JianZhouSmsTemplate jianZhouSmsTemplate;
 
-    @NotEmpty
     private List<String> mobiles;
 
     private List<String> params;
@@ -22,27 +19,23 @@ public class SmsDto implements Serializable{
 
     private String requestIP;
 
-    public SmsDto() {
+    public SmsNotifyDto() {
     }
 
-    public SmsDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles) {
+    public SmsNotifyDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles) {
         this.jianZhouSmsTemplate = jianZhouSmsTemplate;
         this.mobiles = mobiles;
         this.params = Lists.newArrayList();
         this.requestIP = null;
     }
 
-    public SmsDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params) {
-        this.jianZhouSmsTemplate = jianZhouSmsTemplate;
-        this.mobiles = mobiles;
+    public SmsNotifyDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params) {
+        this(jianZhouSmsTemplate, mobiles);
         this.params = params;
-        this.requestIP = null;
     }
 
-    public SmsDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params, boolean isVoice, String requestIP) {
-        this.jianZhouSmsTemplate = jianZhouSmsTemplate;
-        this.mobiles = mobiles;
-        this.params = params;
+    public SmsNotifyDto(JianZhouSmsTemplate jianZhouSmsTemplate, List<String> mobiles, List<String> params, boolean isVoice, String requestIP) {
+        this(jianZhouSmsTemplate, mobiles, params);
         this.isVoice = isVoice;
         this.requestIP = requestIP;
     }

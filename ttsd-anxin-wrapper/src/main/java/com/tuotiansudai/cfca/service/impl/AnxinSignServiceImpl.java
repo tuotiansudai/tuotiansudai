@@ -12,10 +12,8 @@ import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -55,9 +53,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -614,6 +609,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     }
 
     private void sendSms(String params){
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }

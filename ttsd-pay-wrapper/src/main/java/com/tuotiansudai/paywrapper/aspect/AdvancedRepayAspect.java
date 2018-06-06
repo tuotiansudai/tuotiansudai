@@ -2,8 +2,8 @@ package com.tuotiansudai.paywrapper.aspect;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -66,7 +66,7 @@ public class AdvancedRepayAspect {
             logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of advanced repay.", transferApplicationModel.getId()));
 
             String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-            mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
         }
 
         logger.info(MessageFormat.format("[advanced repay {0}] return Value ({1}) aspect is done",

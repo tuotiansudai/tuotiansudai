@@ -2,7 +2,6 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -57,9 +56,6 @@ public class MembershipGiveService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private ImportService importService;

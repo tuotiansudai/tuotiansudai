@@ -2,14 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.*;
@@ -92,9 +85,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     protected AdvanceRepayNotifyMapper advanceRepayNotifyMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -567,7 +557,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.ADVANCE_REPAY_SUCCESS, currentInvestRepay.getId()));
 
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()), Lists.newArrayList(loanModel.getName())));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()), Lists.newArrayList(loanModel.getName())));
     }
 
     private boolean isPaybackInvestSuccess(LoanRepayModel currentLoanRepayModel, List<InvestModel> successInvests) {
@@ -600,8 +590,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     private void sendSmsErrNotify(String errMsg) {
         logger.info("sent advance repay fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("提前还款业务错误。详细信息：{0}", errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("提前还款业务错误。详细信息：{0}", errMsg));
     }
 
 }

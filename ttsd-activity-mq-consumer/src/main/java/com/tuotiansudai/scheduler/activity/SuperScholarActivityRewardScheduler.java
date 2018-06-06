@@ -5,15 +5,15 @@ import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +45,7 @@ public class SuperScholarActivityRewardScheduler {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.super.scholar.startTime}\")}")
     private Date activityStartTime;
@@ -111,7 +110,7 @@ public class SuperScholarActivityRewardScheduler {
             logger.error("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:error:{}", investId, loginName, reward, e.getMessage());
         }
         redisWrapperClient.setex(key, lifeSecond, "fail");
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【学霸加薪季活动】用户:{0}, 投资Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward))));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【学霸加薪季活动】用户:{0}, 投资Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward)));
     }
 
 }

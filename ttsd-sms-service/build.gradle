@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+}
+
+dependencies {
+    compile project(":ttsd-sms-repository")
+    compile project(":ttsd-util")
+}
+
+processResources.outputs.upToDateWhen { false }

@@ -7,7 +7,7 @@ import com.tuotiansudai.client.OkHttpLoggingInterceptor;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.smswrapper.repository.mapper.JianZhouSmsHistoryMapper;
 import com.tuotiansudai.smswrapper.repository.model.JianZhouSmsHistoryModel;
 import com.tuotiansudai.util.RedisWrapperClient;

@@ -6,8 +6,8 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.sms.JianZhouSmsTemplate;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.AnxinContractMessage;
@@ -141,6 +141,6 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
     }
 
     private void sendSms(String param){
-        mqWrapperClient.sendMessage(MessageQueue.UserSms, new SmsDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(param)));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(param)));
     }
 }

@@ -5,7 +5,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayNotifyModel;
@@ -65,7 +65,7 @@ public class LoanRepayNotifySchedulerTest {
 
         loanRepayService.loanRepayNotify();
 
-        verify(mqWrapperClient, times(4)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
+        verify(mqWrapperClient, times(4)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
 
     }
 
@@ -83,7 +83,7 @@ public class LoanRepayNotifySchedulerTest {
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(mqWrapperClient, times(3)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
+        verify(mqWrapperClient, times(3)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
 
     }
 
@@ -99,7 +99,7 @@ public class LoanRepayNotifySchedulerTest {
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
+        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
 
     }
 
@@ -117,7 +117,7 @@ public class LoanRepayNotifySchedulerTest {
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
 
-        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.UserSms), any(SmsDto.class));
+        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
 
     }
 
