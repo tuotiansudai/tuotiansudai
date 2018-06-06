@@ -100,6 +100,7 @@ public class SiteMapRedisWrapperClient {
                 logger.warn(MessageFormat.format("fetch jedis failed on {0} times", String.valueOf(timeoutCount + 1)), e);
                 if (++timeoutCount >= 3) {
                     logger.error("Get Redis pool failure more than 3 times.", e);
+                    break;
                 }
             }
         }
@@ -107,7 +108,8 @@ public class SiteMapRedisWrapperClient {
     }
 
     public boolean del(final String... keys) {
-        return execute(jedis -> jedis.del(keys) == keys.length);
+        Boolean isDeleted = execute(jedis -> jedis.del(keys) == keys.length);
+        return isDeleted != null && isDeleted;
     }
 
     protected JedisPool getJedisPool() {
