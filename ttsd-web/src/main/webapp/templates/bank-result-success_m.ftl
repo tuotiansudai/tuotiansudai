@@ -67,7 +67,7 @@
     </#if>
 
 <#--投资成功-->
-    <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
+    <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST' || bankCallbackType == 'LOAN_CREDIT_INVEST'>
         <div class="m-header">投资成功</div>
         <div class="info-container">
             <div class="status-container">

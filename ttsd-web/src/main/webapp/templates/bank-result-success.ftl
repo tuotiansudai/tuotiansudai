@@ -57,7 +57,7 @@
             </div>
         </#if>
     <#--投资成功-->
-        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
+        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST' || bankCallbackType == 'LOAN_CREDIT_INVEST'>
             <div class="handle_btn_container">
                 <div class="go_to_invest investBtn">查看其它项目</div>
             </div>
