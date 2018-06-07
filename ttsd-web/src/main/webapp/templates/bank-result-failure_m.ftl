@@ -54,6 +54,7 @@
     <div class="btn-container">
         <a href="${bankCallbackType.getRetryPath()}" class="btn-confirm">再次尝试</a>
     </div>
+    <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
 </div>
 
 </@global.main>

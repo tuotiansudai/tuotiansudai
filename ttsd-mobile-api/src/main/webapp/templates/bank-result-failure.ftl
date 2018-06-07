@@ -13,15 +13,27 @@
     <div class="info-container">
         <div class="status-container">
             <div class="icon-status icon-failure"></div>
-            <p class="desc">银行卡绑定失败</p>
-            <p class="reason-error">身份证信息和真实姓名不匹配</p>
+        <#if bankCallbackType == 'REGISTER'>
+            <p class="desc">实名认证失败</p>
+        </#if>
+        <#if bankCallbackType == 'CARD_BIND'>
+            <p class="desc">绑卡失败</p>
+        </#if>
+        <#--申请提现失败-->
+        <#if bankCallbackType == 'WITHDRAW'>
+            <p class="desc">申请提现</p>
+        </#if>
+        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
+            <p class="desc">投资失败</p>
+        </#if>
+            <p class="reason-error">${message!('业务处理失败')}</p>
         </div>
 
     </div>
 
 <#--失败时重新尝试-->
     <div class="btn-container">
-        <a href="/" class="btn-confirm">再次尝试</a>
+        <a href="${bankCallbackType.getRetryPath()}" class="btn-confirm">再次尝试</a>
     </div>
     <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
 </div>
