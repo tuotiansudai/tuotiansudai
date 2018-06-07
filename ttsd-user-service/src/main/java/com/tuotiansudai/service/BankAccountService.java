@@ -14,8 +14,10 @@ import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 @Service
 public class BankAccountService {
@@ -40,12 +43,15 @@ public class BankAccountService {
 
     private final UserOpLogService userOpLogService;
 
+    private final UserRoleMapper userRoleMapper;
+
     @Autowired
-    public BankAccountService(UserMapper userMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient, UserOpLogService userOpLogService) {
+    public BankAccountService(UserMapper userMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient, UserOpLogService userOpLogService, UserRoleMapper userRoleMapper) {
         this.userMapper = userMapper;
         this.bankAccountMapper = bankAccountMapper;
         this.mqWrapperClient = mqWrapperClient;
         this.userOpLogService = userOpLogService;
+        this.userRoleMapper = userRoleMapper;
     }
 
     public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String ip, String deviceId) {
@@ -73,14 +79,21 @@ public class BankAccountService {
             logger.info("[MQ] bank register completed bank account, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
+
+        userMapper.updateUserNameAndIdentityNumber(bankRegisterMessage.getLoginName(),
+                bankRegisterMessage.getRealName(),
+                bankRegisterMessage.getIdentityCode());
+
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(bankRegisterMessage.getLoginName());
+        if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
+            userRoleMapper.create(Lists.newArrayList(new UserRoleModel(bankRegisterMessage.getLoginName(), Role.INVESTOR)));
+        }
+
         bankAccountMapper.create(new BankAccountModel(bankRegisterMessage.getLoginName(),
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
                 bankRegisterMessage.getBankOrderDate()));
-        userMapper.updateUserNameAndIdentityNumber(bankRegisterMessage.getLoginName(),
-                bankRegisterMessage.getRealName(),
-                bankRegisterMessage.getIdentityCode());
 
         sendMessage(bankRegisterMessage);
     }

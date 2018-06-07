@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -35,17 +34,17 @@ public class UserBillController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
-    private WithdrawService withdrawService;
+    private BankWithdrawService bankWithdrawService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
         BankAccountModel bankAccount = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
         String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
-        String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
+        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
+        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName()));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill");
         modelAndView.addObject("balance", balance);
