@@ -14,12 +14,14 @@
     <#--实名认证成功-->
         <#if bankCallbackType == 'REGISTER'>
             <div class="handle_btn_container">
-                <div class="see_my_account">查看我的账户</div>
-                <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post"
-                      style="display: inline-block;float:right">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" value="去绑卡">
-                </form>
+                <div class="btn-wrap">
+                    <div class="see_my_account">查看我的账户</div>
+                    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post"
+                          style="display: inline-block;float:right">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="submit" class="to-bank-card" value="去绑卡">
+                    </form>
+                </div>
             </div>
         </#if>
     <#--充值成功-->
