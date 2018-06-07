@@ -2,6 +2,8 @@ package com.tuotiansudai.util;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -25,5 +27,7 @@ public class AmountConverterTest {
         assertThat(AmountConverter.convertCentToString(10), is("0.10"));
         assertThat(AmountConverter.convertCentToString(100), is("1.00"));
         assertThat(AmountConverter.convertCentToString(111), is("1.11"));
+
+        System.out.println(new BigDecimal(272).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(0.01)).longValue());
     }
 }

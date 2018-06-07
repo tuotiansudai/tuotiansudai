@@ -50,7 +50,6 @@
         </div>
 
     </#if>
-
 <#--申请提现成功-->
     <#if bankCallbackType == 'WITHDRAW'>
         <div class="m-header">提现成功</div>

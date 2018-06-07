@@ -145,6 +145,7 @@
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/callback/return-url/*</beans:value>
+                <beans:value>/m/callback/return-url/*</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
