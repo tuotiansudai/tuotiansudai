@@ -2,11 +2,10 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleRechargeService;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.repository.model.RechargeSource;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.BankRechargePaginationView;
+import com.tuotiansudai.repository.model.BankRechargeStatus;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -31,21 +30,21 @@ public class RechargeController {
                                         @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                                        @RequestParam(value = "status", required = false) RechargeStatus status,
-                                        @RequestParam(value = "source", required = false) RechargeSource source,
+                                        @RequestParam(value = "status", required = false) BankRechargeStatus status,
+                                        @RequestParam(value = "source", required = false) Source source,
                                         @RequestParam(value = "channel", required = false) String channel,
                                         @RequestParam(value = "role", defaultValue = "", required = false) String role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
+        BasePaginationDataDto<BankRechargePaginationView> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime, role);
         List<String> channelList = consoleRechargeService.findAllChannel();
         long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
-        modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));
-        modelAndView.addObject("rechargeSourceList", Lists.newArrayList(RechargeSource.values()));
+        modelAndView.addObject("rechargeStatusList", Lists.newArrayList(BankRechargeStatus.values()));
+        modelAndView.addObject("rechargeSourceList", Lists.newArrayList(Source.values()));
         modelAndView.addObject("rechargeChannelList", channelList);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);

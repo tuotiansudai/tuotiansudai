@@ -307,16 +307,16 @@ public class ExportController {
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                               @RequestParam(value = "status", required = false) RechargeStatus status,
-                               @RequestParam(value = "source", required = false) RechargeSource source,
+                               @RequestParam(value = "status", required = false) BankRechargeStatus status,
+                               @RequestParam(value = "source", required = false) Source source,
                                @RequestParam(value = "channel", required = false) String channel,
                                @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
-        List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
+        BasePaginationDataDto<BankRechargePaginationView> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
+        List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }
 

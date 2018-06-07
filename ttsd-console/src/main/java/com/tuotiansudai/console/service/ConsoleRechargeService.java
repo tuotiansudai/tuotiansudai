@@ -1,14 +1,12 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargeSource;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
+import com.tuotiansudai.repository.model.BankRechargePaginationView;
+import com.tuotiansudai.repository.model.BankRechargeStatus;
+import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +17,14 @@ import java.util.List;
 public class ConsoleRechargeService {
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private BankRechargeMapper bankRechargeMapper;
 
     public List<String> findAllChannel() {
-        return rechargeMapper.findAllChannels();
+        return bankRechargeMapper.findAllChannels();
     }
 
-    public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId, String mobile, RechargeSource source,
-                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, String role) {
+    public BasePaginationDataDto<BankRechargePaginationView> findRechargePagination(String rechargeId, String mobile, Source source,
+                                                                                             BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, String role) {
         if (index < 1) {
             index = 1;
         }
@@ -35,31 +33,22 @@ public class ConsoleRechargeService {
         }
 
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = new BaseDto<>();
-        List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = Lists.newArrayList();
 
-        int count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
+        int count = bankRechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
 
-        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime, role);
+        List<BankRechargePaginationView> bankRechargePaginationViews = bankRechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime, role);
 
-        for (RechargeModel model : rechargeModelList) {
-            RechargePaginationItemDataDto rechargeDto = new RechargePaginationItemDataDto(model);
-            rechargePaginationItemDataDtos.add(rechargeDto);
-        }
-
-        BasePaginationDataDto<RechargePaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, rechargePaginationItemDataDtos);
-        basePaginationDataDto.setStatus(true);
-        baseDto.setData(basePaginationDataDto);
-        return baseDto;
+        return new BasePaginationDataDto<>(index, pageSize, count, bankRechargePaginationViews);
     }
 
     public long findSumRechargeAmount(String rechargeId,
                                       String mobile,
-                                      RechargeSource source,
-                                      RechargeStatus status,
+                                      Source source,
+                                      BankRechargeStatus status,
                                       String channel,
                                       Date startTime,
                                       Date endTime,
                                       String role) {
-        return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, role, startTime, endTime);
+        return bankRechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, role, startTime, endTime);
     }
 }

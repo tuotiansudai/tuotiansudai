@@ -12,10 +12,6 @@ import java.util.List;
 @Repository
 public interface RechargeMapper {
 
-    void create(RechargeModel model);
-
-    void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
-
     RechargeModel findById(long id);
 
     List<RechargeModel> findRechargePagination(@Param(value = "rechargeId") String rechargeId,

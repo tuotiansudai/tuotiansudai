@@ -32,5 +32,9 @@ public class BankRechargeService {
         return bankWrapperClient.recharge(bankRechargeModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, payType);
     }
 
+    public long sumSuccessRechargeAmount(String loginName){
+        return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName);
+    }
+
 
 }

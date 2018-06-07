@@ -3,9 +3,11 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankAccountModel;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.BankRechargeService;
+import com.tuotiansudai.service.UserBillService;
+import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -35,7 +37,7 @@ public class UserBillController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
     private WithdrawService withdrawService;
@@ -44,7 +46,7 @@ public class UserBillController {
     public ModelAndView userBill() {
         BankAccountModel bankAccount = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
         String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
+        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
         String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill");
