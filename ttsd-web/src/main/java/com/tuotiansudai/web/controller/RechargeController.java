@@ -46,13 +46,6 @@ public class RechargeController {
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
-
-        if (isBindCard) {
-            BankModel bankModel = bankService.findByBankCode(userBankCardModel.getBankCode());
-            modelAndView.addObject("cardNumber", userBankCardModel.getCardNumber());
-            modelAndView.addObject("bankModel", bankModel);
-        }
-
         return modelAndView;
     }
 

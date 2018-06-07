@@ -5,30 +5,6 @@
 <div class="my-account-content bank-card-manage" id="cashMoneyConatiner">
     <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>充值</div>
     <#if isBindCard>
-        <ul class="bank-list">
-            <li>
-                <i class="icon-bank bank ${bankModel.bankCode}" data-bank-code="${bankModel.bankCode}"></i>
-                <span class="bank-show">
-                <em>${bankModel.name}</em>
-                ${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}
-            </span>
-            </li>
-        </ul>
-    <div class="text-item">
-        <#if bankModel??>
-            <#if bankModel.singleAmount gt 1000000>
-                <#assign singleAmount = bankModel.singleAmount/1000000+"万">
-            <#else>
-                <#assign singleAmount = bankModel.singleAmount/100>
-            </#if>
-            <#if bankModel.singleDayAmount gt 1000000>
-                <#assign singleDayAmount = bankModel.singleDayAmount/1000000+"万">
-            <#else>
-                <#assign singleDayAmount = bankModel.singleDayAmount/100>
-            </#if>
-            该卡充值单笔限额${singleAmount}元，今日可充值金额${singleDayAmount}元</span></div>
-        </#if>
-    </div>
     <form action="/recharge" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">充值金额</label>
