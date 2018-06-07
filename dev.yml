@@ -345,6 +345,20 @@ amount-mq-consumer:
     - "redis-server"
     - "user-rest-service"
 
+sms-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-sms-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-sms-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-sms-mq-consumer/bin/ttsd-sms-mq-consumer"
+  links:
+    - "redis-server"
+    - "user-rest-service"
+
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
   environment:
