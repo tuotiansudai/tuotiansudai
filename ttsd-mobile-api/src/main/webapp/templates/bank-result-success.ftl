@@ -19,7 +19,7 @@
 
     </div>
 <#--实名认证成功后下一步 去绑卡-->
-    <form action="${requestContext.getContextPath()}/bank-card/bind/source/M" method="post" style="display: inline-block;float:right">
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/M" method="post" >
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <div class="btn-container">
