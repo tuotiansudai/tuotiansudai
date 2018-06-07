@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -26,7 +27,6 @@ import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
@@ -54,6 +54,8 @@ public class UserController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
+    private final SignInClient signInClient = SignInClient.getInstance();
+
     @Autowired
     private UserService userService;
 
@@ -65,15 +67,6 @@ public class UserController {
 
     @Autowired
     private BindBankCardService bindBankCardService;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private InvestService investService;
-
-    @Autowired
-    private SignInClient signInClient;
 
     @Autowired
     private AuditLogService auditLogService;

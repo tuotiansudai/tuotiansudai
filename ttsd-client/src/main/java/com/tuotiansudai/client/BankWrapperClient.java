@@ -90,9 +90,9 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BankAsyncMessage register(Source source, String loginName, String mobile, String realName, String identityCode) {
+    public BankAsyncMessage register(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
         return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
-                new BankRegisterDto(loginName, mobile, realName, identityCode));
+                new BankRegisterDto(loginName, mobile, token, realName, identityCode));
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {

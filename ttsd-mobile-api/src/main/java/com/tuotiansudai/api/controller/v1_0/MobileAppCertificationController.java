@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.HuiZuDataDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static com.tuotiansudai.api.dto.v1_0.ReturnMessage.IDENTITY_NUMBER_INVALID;
@@ -29,18 +29,17 @@ import static com.tuotiansudai.api.dto.v1_0.ReturnMessage.IDENTITY_NUMBER_INVALI
 @Api(description = "实名认证")
 public class MobileAppCertificationController extends MobileAppBaseController {
 
-    @Autowired
-    private MobileAppCertificationService mobileAppCertificationService;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
 
     @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    private MobileAppCertificationService mobileAppCertificationService;
 
     @Autowired
     private AccountService accountService;
 
     @RequestMapping(value = "/certificate", method = RequestMethod.POST)
     @ApiOperation("实名认证")
-    public BaseResponseDto<CertificationResponseDataDto> userMobileCertification(@Valid @RequestBody CertificationRequestDto certificationRequestDto, BindingResult bindingResult) {
+    public BaseResponseDto<CertificationResponseDataDto> userMobileCertification(@Valid @RequestBody CertificationRequestDto certificationRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
@@ -63,7 +62,9 @@ public class MobileAppCertificationController extends MobileAppBaseController {
                     baseResponseDto.setMessage(baseDto.getData().getMessage());
                     baseResponseDto.setData(certificationResponseDataDto);
 
-                    myAuthenticationUtil.createAuthentication(getLoginName(), Source.valueOf(certificationRequestDto.getBaseParam().getPlatform().toUpperCase()));
+                    myAuthenticationUtil.createAuthentication(getLoginName(),
+                            Source.valueOf(certificationRequestDto.getBaseParam().getPlatform().toUpperCase()),
+                            httpServletRequest.getHeader("X-Forwarded-For"));
                     return baseResponseDto;
                 }
 

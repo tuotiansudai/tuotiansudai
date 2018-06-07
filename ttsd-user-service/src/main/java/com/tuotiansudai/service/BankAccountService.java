@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 @Service
 public class BankAccountService {
@@ -54,13 +53,13 @@ public class BankAccountService {
         this.userRoleMapper = userRoleMapper;
     }
 
-    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String ip, String deviceId) {
+    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String token, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(registerAccountDto.getLoginName());
         if (bankAccountModel != null) {
             return new BankAsyncMessage(null, null, false, "已实名认证");
         }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
+        return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), token, registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
@@ -75,21 +74,19 @@ public class BankAccountService {
 
     @Transactional(rollbackFor = Exception.class)
     public void createBankAccount(BankRegisterMessage bankRegisterMessage) {
-        if (bankAccountMapper.findByLoginName(bankRegisterMessage.getLoginName()) != null) {
-            logger.info("[MQ] bank register completed bank account, message:{} ", new Gson().toJson(bankRegisterMessage));
+        String loginName = bankRegisterMessage.getLoginName();
+
+        if (bankAccountMapper.findByLoginName(loginName) != null) {
+            logger.error("bank account is existed, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
 
-        userMapper.updateUserNameAndIdentityNumber(bankRegisterMessage.getLoginName(),
-                bankRegisterMessage.getRealName(),
-                bankRegisterMessage.getIdentityCode());
+        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
 
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(bankRegisterMessage.getLoginName());
-        if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
-            userRoleMapper.create(Lists.newArrayList(new UserRoleModel(bankRegisterMessage.getLoginName(), Role.INVESTOR)));
-        }
+        userRoleMapper.deleteByLoginNameAndRole(loginName, Role.INVESTOR);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(loginName, Role.INVESTOR)));
 
-        bankAccountMapper.create(new BankAccountModel(bankRegisterMessage.getLoginName(),
+        bankAccountMapper.create(new BankAccountModel(loginName,
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),

@@ -1,8 +1,8 @@
 package com.tuotiansudai.spring.security;
 
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.spring.MyUser;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
@@ -17,10 +17,9 @@ import java.text.MessageFormat;
 @Component
 public class MySimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-    static Logger logger = Logger.getLogger(MySimpleUrlLogoutSuccessHandler.class);
+    private final static Logger logger = Logger.getLogger(MySimpleUrlLogoutSuccessHandler.class);
 
-    @Autowired
-    private SignInClient signInClient;
+    private final SignInClient signInClient = SignInClient.getInstance();
 
     @Value("${web.server}")
     private String webServer;

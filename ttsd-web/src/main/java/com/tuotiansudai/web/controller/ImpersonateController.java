@@ -16,11 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(path = "/impersonate")
 public class ImpersonateController {
 
-    @Autowired
-    private ImpersonateService impersonateService;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
+
+    private final ImpersonateService impersonateService;
 
     @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    public ImpersonateController(ImpersonateService impersonateService) {
+        this.impersonateService = impersonateService;
+    }
+
 
     @RequestMapping(path = "/security-code/{securityCode}")
     public ModelAndView impersonate(HttpServletRequest request, @PathVariable String securityCode) {
@@ -28,7 +32,7 @@ public class ImpersonateController {
         if (Strings.isNullOrEmpty(loginName)) {
             return new ModelAndView("/error/404");
         }
-        myAuthenticationUtil.createAuthentication(loginName, Source.WEB);
+        myAuthenticationUtil.createAuthentication(loginName, Source.WEB, request.getHeader("X-Forwarded-For"));
         request.getSession().setAttribute("impersonate", "1");
         return new ModelAndView("redirect:/");
     }

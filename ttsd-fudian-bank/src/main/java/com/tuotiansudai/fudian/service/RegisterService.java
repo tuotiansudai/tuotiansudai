@@ -1,10 +1,8 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
-import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankRegisterDto;
-import com.tuotiansudai.fudian.dto.ExtMarkDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
@@ -19,14 +17,22 @@ import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RegisterService implements ReturnCallbackInterface, NotifyCallbackInterface {
 
     private static Logger logger = LoggerFactory.getLogger(RegisterService.class);
 
+    private final static String BANK_REGISTER_MESSAGE_KEY = "BANK_REGISTER_MESSAGE_{0}";
+
     private static final ApiType API_TYPE = ApiType.REGISTER;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
     private final MessageQueueClient messageQueueClient;
 
@@ -39,7 +45,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
     private final SelectMapper selectMapper;
 
     @Autowired
-    public RegisterService(MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper) {
+    public RegisterService(RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, SignatureHelper signatureHelper, SelectMapper selectMapper, InsertMapper insertMapper, UpdateMapper updateMapper) {
+        this.redisTemplate = redisTemplate;
         this.messageQueueClient = messageQueueClient;
         this.signatureHelper = signatureHelper;
         this.insertMapper = insertMapper;
@@ -55,6 +62,20 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             logger.error("[register] failed to sign, data{}", bankRegisterDto);
             return null;
         }
+
+        BankRegisterMessage bankRegisterMessage = new BankRegisterMessage(
+                bankRegisterDto.getLoginName(),
+                bankRegisterDto.getMobile(),
+                bankRegisterDto.getIdentityCode(),
+                bankRegisterDto.getRealName(),
+                bankRegisterDto.getToken(),
+                null, null,
+                dto.getOrderNo(), dto.getOrderDate()
+        );
+
+        String bankRegisterMessageKey = MessageFormat.format(BANK_REGISTER_MESSAGE_KEY, dto.getOrderDate());
+        redisTemplate.<String, String>opsForHash().put(bankRegisterMessageKey, dto.getOrderNo(), gson.toJson(bankRegisterMessage));
+        redisTemplate.expire(bankRegisterMessageKey, 7, TimeUnit.DAYS);
 
         insertMapper.insertRegister(dto);
         return dto;
@@ -80,17 +101,11 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
 
         if (responseDto.isSuccess()) {
             RegisterContentDto registerContentDto = responseDto.getContent();
-            ExtMarkDto extMarkDto = new GsonBuilder().create().fromJson(registerContentDto.getExtMark(), ExtMarkDto.class);
-            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount,
-                    new BankRegisterMessage(
-                            extMarkDto.getLoginName(),
-                            extMarkDto.getMobile(),
-                            registerContentDto.getIdentityCode(),
-                            registerContentDto.getRealName(),
-                            registerContentDto.getAccountNo(),
-                            registerContentDto.getUserName(),
-                            registerContentDto.getOrderDate(),
-                            registerContentDto.getOrderNo()));
+            String bankRegisterMessageKey = MessageFormat.format(BANK_REGISTER_MESSAGE_KEY, registerContentDto.getOrderDate());
+            String message = redisTemplate.<String, String>opsForHash().get(bankRegisterMessageKey, registerContentDto.getOrderNo());
+            BankRegisterMessage bankRegisterMessage = gson.fromJson(message, BankRegisterMessage.class);
+
+            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount, bankRegisterMessage);
         }
 
         responseDto.setReqData(responseData);

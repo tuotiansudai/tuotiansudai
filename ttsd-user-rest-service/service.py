@@ -39,6 +39,10 @@ class SessionManager(object):
         self.connection.delete(old_token_key)
         return new_token_id
 
+    def update(self, data, session_id):
+        token_key = TOKEN_FORMAT.format(session_id)
+        self.connection.setex(token_key, json.dumps(data), self.expire_seconds)
+
     def _generate_token_id(self):
         return uuid.uuid4()
 
@@ -183,6 +187,19 @@ def active(username):
     login_failed_times_key = LOGIN_FAILED_TIMES_FORMAT.format(username)
     conn = redis.Redis(connection_pool=pool)
     conn.delete(login_failed_times_key)
+
+
+def refresh_session_data(session, source):
+    session_manager = SessionManager(source=source)
+    user_info = session_manager.get(session)
+    if user_info is None:
+        return
+
+    logger.info("refresh session data {}".format(user_info))
+    user = User.query.filter((User.login_name == user_info.get("login_name"))).first()
+    user_info = {'login_name': user.login_name, 'mobile': user.mobile, 'roles': [role.role for role in user.roles]}
+    session_manager.update(user_info, session)
+    return user_info
 
 
 class UserService(object):

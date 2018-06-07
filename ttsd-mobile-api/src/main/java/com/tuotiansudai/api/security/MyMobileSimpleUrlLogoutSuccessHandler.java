@@ -3,11 +3,10 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -21,12 +20,12 @@ import java.io.PrintWriter;
 @Component
 public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-    static Logger logger = Logger.getLogger(MyMobileSimpleUrlLogoutSuccessHandler.class);
+    private static Logger logger = Logger.getLogger(MyMobileSimpleUrlLogoutSuccessHandler.class);
+
+    private final SignInClient signInClient = SignInClient.getInstance();
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private SignInClient signInClient;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,14 +36,8 @@ public class MyMobileSimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSucces
         String jsonBody = objectMapper.writeValueAsString(baseResponseDto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
+        try(PrintWriter writer = response.getWriter()) {
             writer.print(jsonBody);
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
 
         super.onLogoutSuccess(request, response, authentication);

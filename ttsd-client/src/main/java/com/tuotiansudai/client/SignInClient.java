@@ -1,47 +1,50 @@
-package com.tuotiansudai.spring.security;
+package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
-@Component
 public class SignInClient {
 
-    static Logger logger = Logger.getLogger(MyAuthenticationProvider.class);
+    private final static Logger logger = Logger.getLogger(SignInClient.class);
+
+    private final static SignInClient self = new SignInClient();
+
+    private final static String SIGN_IN_SERVICE = ETCDConfigReader.getReader().getValue("user.rest.server");
 
     private final static int RETRY_MAX_TIMES = 3;
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
+    private static OkHttpClient okHttpClient;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final static ObjectMapper objectMapper;
 
-    @Value("${user.rest.server}")
-    private String signInService;
-
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-
-    public SignInClient() {
-        this.okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
-        this.okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
-        this.okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+    static {
+        okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+        objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public SignInResult login(String username, String password, String token, Source source, String deviceId) {
+    private SignInClient() {
+    }
+
+    public static SignInClient getInstance() {
+        return self;
+    }
+
+    public SignInResult login(String username, String password, String token, Source source, String deviceId, String xForwardedForHeader) {
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password) || source == null) {
             logger.error("[sign in client] username or password or source is empty");
             return null;
@@ -65,11 +68,15 @@ public class SignInClient {
                 .add("device_id", deviceId);
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("{0}/login/", signInService))
+                .url(MessageFormat.format("{0}/login/", SIGN_IN_SERVICE))
                 .post(formEncodingBuilder.build());
 
+        if (!Strings.isNullOrEmpty(xForwardedForHeader)) {
+            request.addHeader("X-Forwarded-For", xForwardedForHeader);
+        }
+
         try {
-            Response response = this.execute(request);
+            Response response = execute(request);
             return objectMapper.readValue(response.body().string(), SignInResult.class);
         } catch (IllegalArgumentException e) {
             logger.warn(MessageFormat.format("[sign in client] login failed, response is 4xx (user={0} token={1} source={2} deviceId={3})", username, token, source, deviceId));
@@ -84,7 +91,7 @@ public class SignInClient {
         return null;
     }
 
-    public SignInResult loginNoPassword(String username, Source source) {
+    public SignInResult loginNoPassword(String username, Source source, String xForwardedForHeader) {
         if (Strings.isNullOrEmpty(username) || source == null) {
             logger.error("[sign in client] username or source is empty");
             return null;
@@ -98,11 +105,15 @@ public class SignInClient {
         RequestBody requestBody = formEncodingBuilder.build();
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("{0}/login/nopassword/", signInService))
+                .url(MessageFormat.format("{0}/login/nopassword/", SIGN_IN_SERVICE))
                 .post(requestBody);
 
+        if (!Strings.isNullOrEmpty(xForwardedForHeader)) {
+            request.addHeader("X-Forwarded-For", xForwardedForHeader);
+        }
+
         try {
-            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
+            return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] login no password failed (user={0} source={1})", username, source.name()));
         }
@@ -116,18 +127,18 @@ public class SignInClient {
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("{0}/logout/{1}", signInService, token))
+                .url(MessageFormat.format("{0}/logout/{1}", SIGN_IN_SERVICE, token))
                 .post(RequestBody.create(null, new byte[0]));
 
         try {
-            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
+            return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] logout (token={0})", token));
         }
         return null;
     }
 
-    public SignInResult refresh(String token, Source source) {
+    public SignInResult refreshToken(String token, Source source) {
         if (Strings.isNullOrEmpty(token) || source == null) {
             logger.error("[sign in client] token or source is empty");
             return null;
@@ -138,12 +149,34 @@ public class SignInClient {
 
         RequestBody requestBody = formEncodingBuilder.build();
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("{0}/refresh/{1}", signInService, token))
+                .url(MessageFormat.format("{0}/refreshToken/{1}", SIGN_IN_SERVICE, token))
                 .post(requestBody);
         try {
             return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
-            logger.error(MessageFormat.format("[sign in client] refresh failed (token={0} source={1})", token, source.name()));
+            logger.error(MessageFormat.format("[sign in client] refreshToken failed (token={0} source={1})", token, source.name()));
+        }
+
+        return null;
+    }
+
+    public SignInResult refreshData(String token, Source source) {
+        if (Strings.isNullOrEmpty(token) || source == null) {
+            logger.error("[sign in client] token or source is empty");
+            return null;
+        }
+
+        FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder()
+                .add("source", source.name());
+
+        RequestBody requestBody = formEncodingBuilder.build();
+        Request.Builder request = new Request.Builder()
+                .url(MessageFormat.format("{0}/session/{1}", SIGN_IN_SERVICE, token))
+                .put(requestBody);
+        try {
+            return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("[sign in client] refresh data failed (token={0} source={1})", token, source.name()));
         }
 
         return null;
@@ -155,10 +188,10 @@ public class SignInClient {
         }
 
         Request.Builder request = new Request.Builder()
-                .url(MessageFormat.format("{0}/session/{1}?source={2}", signInService, token, source))
+                .url(MessageFormat.format("{0}/session/{1}?source={2}", SIGN_IN_SERVICE, token, source))
                 .get();
         try {
-            return objectMapper.readValue(this.execute(request).body().string(), SignInResult.class);
+            return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.warn("[sign in client] verify token failed", e);
         }
@@ -168,15 +201,15 @@ public class SignInClient {
 
     public void unlockUser(String loginName, String mobile) {
         Request.Builder loginNameRequest = new Request.Builder()
-                .url(MessageFormat.format("{0}/user/{1}/active/", signInService, loginName))
+                .url(MessageFormat.format("{0}/user/{1}/active/", SIGN_IN_SERVICE, loginName))
                 .post(RequestBody.create(null, new byte[0]));
 
         Request.Builder mobileRequest = new Request.Builder()
-                .url(MessageFormat.format("{0}/user/{1}/active/", signInService, mobile))
+                .url(MessageFormat.format("{0}/user/{1}/active/", SIGN_IN_SERVICE, mobile))
                 .post(RequestBody.create(null, new byte[0]));
         try {
-            this.execute(loginNameRequest);
-            this.execute(mobileRequest);
+            execute(loginNameRequest);
+            execute(mobileRequest);
             logger.info(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1})", loginName, mobile));
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] activate user(loginName={0} mobile={1}) failed", loginName, mobile), e);
@@ -185,11 +218,6 @@ public class SignInClient {
 
     private Response execute(Request.Builder requestBuilder) throws IOException {
         int tryTimes = 0;
-
-        String xForwardedForHeader = httpServletRequest.getHeader("X-Forwarded-For");
-        if (!Strings.isNullOrEmpty(xForwardedForHeader)) {
-            requestBuilder.addHeader("X-Forwarded-For", xForwardedForHeader);
-        }
 
         do {
             Request request = requestBuilder.build();
@@ -224,9 +252,8 @@ public class SignInClient {
 
         for (int i = 0; i < value.length(); i++) {
             String temp = value.substring(i, i + 1);
+            valueLength += 1;
             if (temp.matches(chinese)) {
-                valueLength += 2;
-            } else {
                 valueLength += 1;
             }
         }
