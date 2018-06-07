@@ -5,12 +5,9 @@ import org.springframework.context.annotation.*;
 
 @Configuration
 @ComponentScan(basePackages = {
-        "com.tuotiansudai.sms",
         "com.tuotiansudai.client",
-        "com.tuotiansudai.util",
-        "com.tuotiansudai.cache"
+        "com.tuotiansudai.util"
 })
-@EnableAspectJAutoProxy(exposeProxy = true)
 public class AppConfiguration {
 
     @Bean

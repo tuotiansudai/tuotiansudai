@@ -1,7 +1,6 @@
 package com.tuotiansudai;
 
 import com.tuotiansudai.mq.config.MQConsumerConfig;
-import com.tuotiansudai.mq.config.MQProducerConfig;
 import com.tuotiansudai.mq.consumer.MessageConsumerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Import;
                 "com.tuotiansudai.mq.consumer.sms"
         },
         exclude = {FreeMarkerAutoConfiguration.class})
-@Import({MQConsumerConfig.class, MQProducerConfig.class})
+@Import({MQConsumerConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication

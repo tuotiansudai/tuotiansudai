@@ -44,21 +44,21 @@ public class MybatisSmsConfig {
     @Bean
     public MapperScannerConfigurer smsMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.sms.repository.mapper");
+        configurer.setBasePackage("com.tuotiansudai.mq.consumer.sms.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("smsSqlSessionFactory");
         return configurer;
     }
 
     @Bean
-    public DataSourceTransactionManager smsTransactionManager(@Qualifier("hikariCPSmsDataSource") DataSource hikariCPAADataSource) {
-        return new DataSourceTransactionManager(hikariCPAADataSource);
+    public DataSourceTransactionManager smsTransactionManager(@Qualifier("hikariCPSmsDataSource") DataSource hikariCPSmsDataSource) {
+        return new DataSourceTransactionManager(hikariCPSmsDataSource);
     }
 
     @Bean
     public SqlSessionFactory smsSqlSessionFactory(@Qualifier("hikariCPSmsDataSource") DataSource hikariCPSmsDataSource) throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(hikariCPSmsDataSource);
-        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.sms.repository.model");
+        sessionFactory.setTypeAliasesPackage("com.tuotiansudai.mq.consumer.sms.repository.model");
         return sessionFactory.getObject();
     }
 

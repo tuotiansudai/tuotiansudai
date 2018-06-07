@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.sms.client.JianZhouSmsClient;
+import com.tuotiansudai.mq.consumer.sms.client.JianZhouSmsClient;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

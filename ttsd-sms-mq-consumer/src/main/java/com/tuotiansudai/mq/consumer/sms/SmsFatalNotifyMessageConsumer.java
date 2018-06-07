@@ -7,7 +7,7 @@ import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.sms.client.JianZhouSmsClient;
+import com.tuotiansudai.mq.consumer.sms.client.JianZhouSmsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +43,11 @@ public class SmsFatalNotifyMessageConsumer implements MessageConsumer{
         }
 
         try {
-            List<String> mobiles = Lists.newArrayList(Arrays.asList(fatalNotifyQAMobiles.split("|")));
+            List<String> mobiles = Lists.newArrayList(Arrays.asList(fatalNotifyQAMobiles.split("\\|")));
             if (Environment.PRODUCTION == environment) {
-                mobiles.addAll(Arrays.asList(fatalNotifyDevMobiles.split("|")));
+                mobiles.addAll(Arrays.asList(fatalNotifyDevMobiles.split("\\|")));
             }
-            jianZhouSmsClient.sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(message), null);
+            jianZhouSmsClient.sendSms(mobiles, JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, Lists.newArrayList(environment.name(), message), null);
 
         }catch (Exception e){
             logger.error("[MQ] 程序内部异常: {}: {}.{}", this.queue(), message, e.getMessage());

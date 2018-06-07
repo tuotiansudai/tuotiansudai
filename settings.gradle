@@ -28,5 +28,5 @@ include 'ttsd-job'
 include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
-include 'ttsd-sms-mq-consumer', 'ttsd-sms-repository', 'ttsd-sms-service'
+include 'ttsd-sms-mq-consumer'
 

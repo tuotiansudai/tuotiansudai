@@ -1,4 +1,4 @@
-package com.tuotiansudai.sms.client;
+package com.tuotiansudai.mq.consumer.sms.client;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -6,13 +6,12 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.etcd.ETCDConfigReader;
-import com.tuotiansudai.sms.repository.mapper.JianZhouSmsHistoryMapper;
-import com.tuotiansudai.sms.repository.model.JianZhouSmsHistoryModel;
+import com.tuotiansudai.mq.consumer.sms.repository.mapper.JianZhouSmsHistoryMapper;
+import com.tuotiansudai.mq.consumer.sms.repository.model.JianZhouSmsHistoryModel;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -52,7 +51,7 @@ public class JianZhouSmsClient {
 
     private int second = Integer.parseInt(ETCDConfigReader.getReader().getValue("sms.interval.seconds"));
 
-    private List<String> antiCoolDownIpList = Arrays.asList(ETCDConfigReader.getReader().getValue("sms.antiCooldown.ipList").split("|"));
+    private List<String> antiCoolDownIpList = Arrays.asList(ETCDConfigReader.getReader().getValue("sms.antiCooldown.ipList").split("\\|"));
 
     private final static int QA_DAILY_LIMIT = 100;
 
@@ -164,9 +163,5 @@ public class JianZhouSmsClient {
             model.setResponse(response);
             jianZhouSmsHistoryMapper.update(model);
         });
-    }
-
-    public static void main(String[] args) {
-        new JianZhouSmsClient().sendSms(Lists.newArrayList("18895730992", "13671079909"), JianZhouSmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE, false, null, null);
     }
 }

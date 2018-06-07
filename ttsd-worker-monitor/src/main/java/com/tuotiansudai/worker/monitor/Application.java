@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 
 
 @SpringBootApplication(exclude = {FreeMarkerAutoConfiguration.class, DataSourceAutoConfiguration.class})
-@Import({MQConsumerConfig.class, MQProducerConfig.class})
+@Import({MQProducerConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication

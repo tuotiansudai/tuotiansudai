@@ -1,4 +1,4 @@
-package com.tuotiansudai.sms.repository.model;
+package com.tuotiansudai.mq.consumer.sms.repository.model;
 
 
 import java.util.Date;
@@ -15,7 +15,7 @@ public class JianZhouSmsHistoryModel {
     public JianZhouSmsHistoryModel() {
     }
 
-    public JianZhouSmsHistoryModel(String mobiles, String content, boolean isVoice) {
+    public JianZhouSmsHistoryModel(String mobile, String content, boolean isVoice) {
         this.mobile = mobile;
         this.content = content;
         this.isVoice = isVoice;

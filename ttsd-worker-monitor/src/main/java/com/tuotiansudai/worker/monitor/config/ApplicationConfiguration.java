@@ -11,7 +11,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
 @ComponentScan(basePackages = {
-        "com.tuotiansudai.client"
+        "com.tuotiansudai.client",
+        "com.tuotiansudai.util"
 })
 public class ApplicationConfiguration {
 
