@@ -8,14 +8,14 @@ if($('.loading-page').length){
     }
     var count = 0;
 
-    var timer = setInterval(function () {
-        if(count == 26){
-            count = 0;
-        }
-        count++;
-        $('#gifImg').attr('src',require('../images/gif/gif' +count + '.png'));
-
-    },100)
+    // var timer = setInterval(function () {
+    //     if(count == 26){
+    //         count = 0;
+    //     }
+    //     count++;
+    //     $('#gifImg').attr('src',require('../images/gif/gif' +count + '.png'));
+    //
+    // },100);
 
     let $countTime = $('#secondsCountDown');
 

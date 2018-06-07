@@ -101,6 +101,7 @@
         <result column="expected_interest" property="expectedInterest"/>
         <result column="default_interest" property="defaultInterest"/>
         <result column="expected_fee" property="expectedFee"/>
+        <result column="invest_fee_rate" property="investFeeRate"/>
         <result column="trading_time" property="tradingTime"/>
         <result column="invest_bank_order_no" property="investBankOrderNo"/>
         <result column="invest_bank_order_date" property="investBankOrderDate"/>

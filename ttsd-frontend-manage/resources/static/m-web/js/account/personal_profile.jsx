@@ -5,9 +5,8 @@ $goBackIcon=$('#goBackIcon'),
 $toPerName = $('#toPerName');
 
 $bindCardBtn.on('click', function () {
-
     if($(this).data('has-name') === true){
-        window.location.href='/m/bind-card';
+        $("#bindCardForm").submit();
     }else{
         window.location.href='/m/register/account';
     }
