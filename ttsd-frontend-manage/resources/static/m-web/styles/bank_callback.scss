@@ -58,8 +58,10 @@ p {
   }
 }
 .btn-container {
+  width: 7.5rem;
   text-align: center;
   .btn-confirm {
+    border: none;
     display: inline-block;
     width: 6rem;
     height: 0.9rem;
