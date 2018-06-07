@@ -41,4 +41,8 @@ public class BankWithdrawService {
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
         return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, fee, optional.map(WeChatUserModel::getOpenid).orElse(null));
     }
+
+    public long sumSuccessWithdrawByLoginName(String loginName) {
+        return bankWithdrawMapper.sumSuccessWithdrawByLoginName(loginName);
+    }
 }

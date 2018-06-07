@@ -26,6 +26,12 @@
         select * from bank_withdraw where id = #{id}
     </select>
 
+    <select id="sumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from bank_withdraw
+        where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
     <update id="update" parameterType="BankWithdrawModel">
         update bank_withdraw set
         bank_order_no = #{bankOrderNo},
