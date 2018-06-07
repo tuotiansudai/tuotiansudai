@@ -11,4 +11,6 @@ public interface BankWithdrawMapper {
     BankWithdrawModel findById(long id);
 
     void update(BankWithdrawModel bankWithdrawModel);
+
+    long sumSuccessWithdrawByLoginName(String loginName);
 }
