@@ -308,7 +308,7 @@ function scrollUp(domName, length) {
     }
 
 }
-//活动状态,精确到前八位如2018-01-01 如果活动时间精确到时分秒，则此方法不能用
+//活动状态
 function activityStatus(dom) {
     //日期格式化
     Date.prototype.Format = function (fmt) { //author: meizz
@@ -327,22 +327,25 @@ function activityStatus(dom) {
         return fmt;
     }
 
-    let startTime = Number(dom.data('starttime').substring(0, 10).replace(/-/gi, '')),
-        endTime = Number(dom.data('endtime').substring(0, 10).replace(/-/gi, '')),
-        currentTime = Number(new Date().Format("yyyyMMdd"));
+    let startTime = dom.data('starttime');
+    let overTime = dom.data('overtime');
+    let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+    let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
+    let currentTime = new Date().getTime();
 
-    if (currentTime < startTime) {
+    if (currentTime < activityTime) {
         //活动未开始
         return 'activity-noStarted';
     }
-    else if (currentTime > endTime) {
+    else if (currentTime > activityOverTime) {
         //活动已经结束
        return 'activity-end'
 
-    }  else if(currentTime>=startTime && currentTime<=endTime){
+    }  else if(currentTime>=activityTime && currentTime<=activityOverTime){
         //活动中
         return 'activity-ing';
     }
+
 };
 
 // rem

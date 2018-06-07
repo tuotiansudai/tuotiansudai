@@ -7,12 +7,11 @@
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
         <div class="invite-wrap">
-            <a class="invite-btn circle-btn" href="javascript:;"></a>
+            <a class="open-btn circle-btn" href="javascript:;"></a>
 
-                <p>累计年化投资金额：<br/>
-                    <strong>10000.00元</strong><br/>
-                    当前已获返现金额：<br/>
-                    <strong>0.00元</strong>
+                <p>您的好友邀请您拆红包<br/>
+                    共同瓜分<br/>
+                    最高500.00 的现金
                 </p>
                 <a class="to-join-btn" href="javascript:;"></a>
 
@@ -103,7 +102,10 @@
     <#--});-->
 </script>
     <div class="wechat-tip" style="display: none">
-        <div class="share-tip"></div>
-        <a class="tip-btn" href="javascript:;"></a>
+        <div class="open-ware-tip">
+            <a class="open-now open-ware-btn" href="javascript:;"></a>
+            <a class="no-open open-ware-btn" href="javascript:;"></a>
+        </div>
+
     </div>
 </@global.main>

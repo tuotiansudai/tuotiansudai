@@ -107,7 +107,7 @@ p {
       .to-join-btn {
         display: block;
         margin: 0 auto;
-        margin-top: 0.9rem;
+        margin-top: 1.2rem;
         width: 3.07rem;
         height: 1.18rem;
         background: url("../../images/2018/july-activity/to_join_btn.png") no-repeat;
@@ -195,5 +195,125 @@ p {
         }
       }
     }
+  }
+}
+
+.wechat-tip {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  padding-top: 2rem;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.85);
+  .share-tip {
+    width: 7.5rem;
+    height: 3.84rem;
+    background: url("../../images/2018/july-activity/wechat_invite_tip.png") no-repeat;
+    background-size: contain;
+  }
+  .open-ware-tip {
+    width: 5.37rem;
+    height: 8.83rem;
+    background: url("../../images/2018/july-activity/wechat_open_ware.png") no-repeat;
+    background-size: contain;
+    .open-ware-btn {
+      width: 2.25rem;
+      height: 0.75rem;
+      &.open-now {
+        background: url("../../images/2018/july-activity/open_now_btn.png") no-repeat;
+        background-size: contain;
+      }
+      &.no-open {
+        background: url("../../images/2018/july-activity/no_open_btn.png") no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+  .tip-btn {
+    display: block;
+    width: 3.18rem;
+    height: 1.30rem;
+    margin: 0 auto;
+    margin-top: 1.2rem;
+    background: url("../../images/2018/july-activity/known_btn.png") no-repeat;
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 393px) {
+  html {
+    font-size: 52.4px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
   }
 }
