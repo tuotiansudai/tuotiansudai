@@ -133,10 +133,14 @@
     font-size: 0;
     text-align: center;
     overflow: hidden;
-    .btn-wrap {}
-    display: inline-block;
-    width: 400px;
+    .btn-wrap {
+      display: block;
+      width: 360px;
+      margin: 0 auto;
+    }
+
     .see_my_account, .my_personal-info{
+      padding: 0;
       display: inline-block;
       margin-right: 20px;
       width: 158px;
@@ -149,7 +153,9 @@
       color: #ff752a;
       cursor: pointer;
     }
-    .see_other_project, .go_to_recharge, .go_to_invest, .retry {
+    .see_other_project, .go_to_recharge, .go_to_invest, .retry,.to-bank-card {
+      border: none;
+      padding: 0;
       display: inline-block;
       width: 160px;
       height: 36px;
