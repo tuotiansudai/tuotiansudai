@@ -357,7 +357,6 @@ sms-mq-consumer:
   command: bash -c "/opt/worker/ttsd-sms-mq-consumer/bin/ttsd-sms-mq-consumer"
   links:
     - "redis-server"
-    - "user-rest-service"
 
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"

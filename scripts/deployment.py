@@ -20,7 +20,6 @@ class Deployment(object):
         getattr(self, type)()
 
     def all(self):
-
         self.clean()
         self.config_file()
         self.clean_class()
@@ -97,14 +96,6 @@ class Deployment(object):
         self.mk_war(('ttsd-pay-wrapper',))
         self.migrate()
         self.init_docker(('pay-wrapper',))
-
-    def only_sms(self):
-        self.clean()
-        self.config_file()
-        self.clean_class(('ttsd-sms-wrapper',))
-        self.mk_war(('ttsd-sms-wrapper',))
-        self.migrate()
-        self.init_docker(('sms-wrapper',))
 
     def only_worker(self):
         self.clean()
