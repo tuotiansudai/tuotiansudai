@@ -181,9 +181,9 @@ public class SuperScholarActivityService {
     public long getCouponId() {
         int random = (int) (Math.random() * 100);
         if (random >= 0 && random < 30) {
-            return 495L;
+            return 496L;
         }
-        return 496L;
+        return 495L;
     }
 
     public boolean duringActivities() {

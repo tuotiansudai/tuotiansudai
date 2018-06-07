@@ -561,7 +561,14 @@
         from invest join loan on invest.loan_id = loan.id and loan.product_type != 'EXPERIENCE'
         where invest.login_name = #{loginName}
         and invest.status = 'SUCCESS'
+    </select>
 
+    <select id="countSuccessNewbieInvestByLoginName" parameterType="map" resultType="int">
+        select count(*)
+        from invest join loan on invest.loan_id = loan.id
+        and loan.activity_type = 'NEWBIE' and loan.product_type != 'EXPERIENCE'
+        where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
     </select>
 
     <select id="countSuccessInvest" parameterType="long" resultType="long">

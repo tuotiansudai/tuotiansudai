@@ -13,7 +13,7 @@ public class QuestionRequestDto implements Serializable {
     @Pattern(regexp = "^.{1,200}$")
     private String question;
 
-    @Pattern(regexp = "^.{0,1000}$")
+    @Pattern(regexp = "^.{0,4000}$")
     private String addition;
 
     private List<Tag> tags;
