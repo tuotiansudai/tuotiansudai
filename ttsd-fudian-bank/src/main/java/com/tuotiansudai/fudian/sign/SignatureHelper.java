@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
-import com.tuotiansudai.fudian.util.OrderIdGenerator;
+import com.tuotiansudai.fudian.util.BankOrderNoGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ public class SignatureHelper {
 
     public <T extends BaseRequestDto> void sign(ApiType apiType, T dto) {
         dto.setMerchantNo(this.bankConfig.getMerchant());
-        dto.setOrderNo(OrderIdGenerator.generate(redisTemplate));
+        dto.setOrderNo(BankOrderNoGenerator.generate(redisTemplate));
         Class<?> dtoClass = dto.getClass();
         try {
             Method returnUrlMethod = dtoClass.getMethod("setReturnUrl", String.class);

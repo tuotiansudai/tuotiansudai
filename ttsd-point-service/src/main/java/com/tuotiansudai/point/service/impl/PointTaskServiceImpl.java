@@ -87,9 +87,9 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
+    private final static String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
 
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT = "REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT:{0}:{1}";
+    private final static String REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT = "REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT:{0}:{1}";
 
     private final int seconds = 60 * 24 * 60 * 60;
 

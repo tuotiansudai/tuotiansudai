@@ -5,7 +5,6 @@ import com.tuotiansudai.dto.response.UserInfo;
 import com.tuotiansudai.dto.response.UserRestPagingResponse;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.rest.support.client.annotations.RestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;

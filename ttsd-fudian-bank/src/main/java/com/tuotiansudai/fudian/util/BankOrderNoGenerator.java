@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class OrderIdGenerator {
+public class BankOrderNoGenerator {
 
-    private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
     public static String generate(RedisTemplate<String, String> redisTemplate) {
         Date now = new Date();

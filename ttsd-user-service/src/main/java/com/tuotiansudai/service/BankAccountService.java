@@ -72,7 +72,6 @@ public class BankAccountService {
         return bankWrapperClient.authorization(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public void createBankAccount(BankRegisterMessage bankRegisterMessage) {
         String loginName = bankRegisterMessage.getLoginName();
 
@@ -80,6 +79,8 @@ public class BankAccountService {
             logger.error("bank account is existed, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
+
+        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
 
         userRoleMapper.deleteByLoginNameAndRole(loginName, Role.INVESTOR);
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(loginName, Role.INVESTOR)));
@@ -89,8 +90,6 @@ public class BankAccountService {
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
                 bankRegisterMessage.getBankOrderDate()));
-
-        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
 
         sendMessage(bankRegisterMessage);
     }
