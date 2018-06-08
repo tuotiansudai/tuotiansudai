@@ -104,7 +104,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             String bankRegisterMessageKey = MessageFormat.format(BANK_REGISTER_MESSAGE_KEY, registerContentDto.getOrderDate());
             String message = redisTemplate.<String, String>opsForHash().get(bankRegisterMessageKey, registerContentDto.getOrderNo());
             BankRegisterMessage bankRegisterMessage = gson.fromJson(message, BankRegisterMessage.class);
-
+            bankRegisterMessage.setBankAccountNo(registerContentDto.getAccountNo());
+            bankRegisterMessage.setBankUserName(registerContentDto.getUserName());
             this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount, bankRegisterMessage);
         }
 
