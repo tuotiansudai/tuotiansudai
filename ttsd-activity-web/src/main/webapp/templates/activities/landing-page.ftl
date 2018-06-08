@@ -258,7 +258,7 @@
                                                 <div class="border-section"><input type="text" name="money" id="moneyNum"><span>元</span></div>
                                             </li>
                                             <li><label>项目期限：</label>
-                                                <div class="border-section"><input type="text" name="day" id="dayNum"><span>天</span></div>
+                                                <div class="border-section"><input type="text" name="day" maxlength="6" id="dayNum"><span>天</span></div>
                                             </li>
                                             <li class="rate-li"><label>约定年化利率：</label>
                                                 <div class="border-section"><input type="text" name="rate" id="rateNum"><span>%</span></div>
@@ -266,7 +266,6 @@
                                             <li class="error-li"><label></label>
                                                <div class="error-box"></div>
                                             </li>
-
                                         </ul>
                                         <p class="compute-link"><input type="submit" class="btn-red" value="计算收益" /></p>
                                         <p class="profit">本息合计<strong id="resultNum">0</strong>元</p>

@@ -68,7 +68,8 @@ if($('#loanBoxList').length){
         loop: true,
         autoplay:5000,
         autoplayDisableOnInteraction:false,
-        pagination: '.swiper-pagination'
+        pagination: '.swiper-pagination',
+        paginationClickable:true
 
     });
 }
@@ -103,15 +104,23 @@ $agreementLi.on('click', function (e) {
 
 })
 $('#recommendLabel').on('click', function () {
+    let bannerHeight = $('#bannerBox').height();
+    let referHeight = $('.recomender-iphone').outerHeight(true);
     if($('.icon-arrow-bottom').hasClass('active')){
         $('.icon-arrow-bottom').removeClass('active')
     }else {
         $('.icon-arrow-bottom').addClass('active')
     }
     if($('.recomender-iphone').hasClass('show')){
-        $('.recomender-iphone').removeClass('show')
+        $('.recomender-iphone').removeClass('show');
+        if($(window).width()<=1024){
+            $('#bannerBox').height(bannerHeight-referHeight);
+        }
     }else {
         $('.recomender-iphone').addClass('show');
+        if($(window).width()<=1024) {
+            $('#bannerBox').height(bannerHeight + referHeight);
+        }
     }
 
 })
@@ -396,15 +405,20 @@ if($registerContainer.length){
 
 
 
+let registerContainerTop = $('#registerContainer').offset().top;
 
-
+if($(window).width()>1024){
+    registerContainerTop = 0
+}else {
+    registerContainerTop = registerContainerTop-50;
+}
 //点击立即注册领取
 $btnCoupon.on('click', function (event) {
     event.preventDefault();
     if (urlObj.params.source == 'app') {
         window.location.href = "/register/user";
     } else {
-        $('body,html').animate({scrollTop: 0}, 'fast');
+        $('body,html').animate({scrollTop: registerContainerTop}, 'fast');
     }
 });
 $('.coupon-btn-bottom').on('click', function (event) {
@@ -412,7 +426,7 @@ $('.coupon-btn-bottom').on('click', function (event) {
     if (urlObj.params.source == 'app') {
         window.location.href = "/register/user";
     } else {
-        $('body,html').animate({scrollTop: 0}, 'fast');
+        $('body,html').animate({scrollTop: registerContainerTop}, 'fast');
     }
 });
 
@@ -462,7 +476,12 @@ $voiceBtn.on('click', function(event) {
     countValidator.add(countForm.day, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入投资期限！'
-    }, {
+    },
+        {
+            strategy: 'maxValue:999.99',
+            errorMsg: '请输入有效的投资期限！'
+        },
+        {
         strategy: 'isNumber',
         errorMsg: '请输入有效的数字！'
     }]);
@@ -470,7 +489,12 @@ $voiceBtn.on('click', function(event) {
     countValidator.add(countForm.rate, [{
         strategy: 'isNonEmpty',
         errorMsg: '请输入年化利率！'
-    }, {
+    },
+        {
+            strategy: 'maxValue:100',
+            errorMsg: '约定年化利率不能大于100%'
+        },
+    {
         strategy: 'isNumber',
         errorMsg: '请输入有效的数字！'
     }]);
@@ -529,6 +553,19 @@ $('.close-app').click(function (e) {
 
 $('.open-app').click(function (e) {
     commonFun.toDownloadApp();
+})
+
+function clearNoNum(obj){
+    obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+        obj.value= parseFloat(obj.value);
+    }
+}
+$('#rateNum').on('keyup',function () {
+    clearNoNum(this)
 })
 
 

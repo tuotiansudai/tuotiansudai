@@ -210,6 +210,9 @@ p {
                   margin-left: 10px;
                   text-indent: 0;
                   cursor: pointer;
+                  &:hover {
+                  background: rgba(255,119,28,0.8);
+                }
                   &:disabled {
                       background: #ccc;
                       cursor: default;
@@ -220,6 +223,9 @@ p {
                   background: #ff771c;
                   color: #fff;
                   font-size: 21px;
+                  &:hover {
+                    background: rgba(255,119,28,0.8);
+                  }
                   &:disabled {
                     background: #ccc;
                   }
@@ -690,7 +696,7 @@ p {
             line-height: 30px;
             margin-bottom: 5px;
             color: #faf0c3;
-            font-size: 24px;
+            font-size: 22px;
           }
         }
 
@@ -711,7 +717,7 @@ p {
   background-size: 100%;
   color: #8d080d;
   font-size: 54px;
-  line-height: 134px;
+  line-height: 123px;
   text-align: center;
   &:hover {
     color: #8d080d;
@@ -856,7 +862,7 @@ p {
   .gold-btn {
     width: 5.47rem;
     height: 1.34rem;
-    line-height: 1.34rem;
+    line-height: 1.26rem;
     font-size: 0.48rem;
   }
 body {
@@ -978,7 +984,7 @@ body {
                     height: 0.6rem;
                     margin-bottom: 5px;
                     font-size: 0.3rem;
-                    margin-left: -0.5rem;
+                    margin-left: -0.3rem;
                     a {
                       color: #3a84cf;
                       vertical-align: middle;
@@ -1091,6 +1097,9 @@ body {
                     float: right;
                     text-indent: 0;
                     cursor: pointer;
+                    &:hover {
+                      background: #fce9a0;
+                  }
                     &:disabled {
                       background: #ccc;
                       cursor: default;
@@ -1105,6 +1114,10 @@ body {
                     font-size: 0.45rem;
                     text-indent: 0;
                     border-radius: 0.16rem;
+                    &:hover {
+                      background: url("../images/landingpage/register_btn_bg.png") no-repeat center center;
+                      background-size: 100%;
+                    }
                     &:disabled {
                       background: #ccc;
                       color: #fff;
@@ -1341,7 +1354,7 @@ body {
             p {
               line-height: 0.34rem;
               margin-bottom: 1px;
-              font-size: 0.24rem;
+              font-size: 0.22rem;
             }
           }
 
@@ -1351,7 +1364,11 @@ body {
   }
 
 }
-
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 136.53px;
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
