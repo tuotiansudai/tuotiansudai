@@ -65,7 +65,7 @@ public class LoanCreditInvestSuccessService {
             return;
         }
 
-        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+        InvestModel investModel = investMapper.findById(bankLoanCreditInvestMessage.getInvestId());
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY){
             logger.error(MessageFormat.format("[MQ] loanCreditInvest investModel not found or status is incorrect, message: {0}", new Gson().toJson(bankLoanCreditInvestMessage)));
@@ -74,6 +74,7 @@ public class LoanCreditInvestSuccessService {
 
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationModel.setInvestId(bankLoanCreditInvestMessage.getInvestId());
+        transferApplicationModel.setTransferTime(investModel.getCreatedTime());
         transferApplicationMapper.update(transferApplicationModel);
 
         investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);

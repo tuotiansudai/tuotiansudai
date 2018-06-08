@@ -4,7 +4,15 @@
 
 <div class="my-account-content bank-card-manage" id="cashMoneyConatiner">
     <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>充值</div>
-    <#if isBindCard>
+    <ul class="bank-list">
+        <li>
+            <i class="icon-bank bank ${bankCard.bankCode}"></i>
+            <span class="bank-show">
+                <em>${bankCard.bank}</em>
+            ${bankCard.cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}
+            </span>
+        </li>
+    </ul>
     <form action="/recharge" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">充值金额</label>
@@ -19,12 +27,5 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
     </form>
-    <#else>
-    <div class="manage-note">
-        <a class="btn-app-link" href="https://tuotiansudai.com/app/download" target="_blank">下载APP</a>
-        <p>手机端仅支持快捷支付</p>
-        <p>请前往app开通快捷支付后再进行充值</p>
-    </div>
-    </#if>
 </div>
 </@global.main>
