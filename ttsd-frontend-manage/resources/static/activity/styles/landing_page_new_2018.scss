@@ -1156,18 +1156,21 @@ body {
 
         .wap-con-swiper {
           margin: 0 auto;
-          //width: 5.96rem;
           width: 7.5rem;
           height: 3.9rem;
+          position: relative;
+          z-index: 2;
           .swiper-container {
             width: 7.5rem;
             height: 3.9rem;
             margin: 0 auto;
-            //overflow: visible!important;
             float: none;
+            z-index: 2;
             .swiper-wrapper {
+              z-index: 2;
               .swiper-slide{
                 width: 5.96rem;
+                z-index: 2;
                 .get-btn {
                   position: absolute;
                   bottom: 0.6rem;
