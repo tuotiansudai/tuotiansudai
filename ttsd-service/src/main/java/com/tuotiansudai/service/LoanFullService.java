@@ -55,7 +55,7 @@ public class LoanFullService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankLoanFullMessage full(long loanId, String recheckerLoginName) {
+    public BankLoanFullMessage full(long loanId, String checkerLoginName) {
         LoanModel loanModel = loanMapper.findById(loanId);
         String agentLoginName = loanModel.getAgentLoginName();
         UserModel userModel = userMapper.findByLoginName(agentLoginName);
@@ -69,7 +69,7 @@ public class LoanFullService {
                 loanModel.getBankOrderNo(),
                 loanModel.getBankOrderDate(),
                 new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
-                recheckerLoginName,
+                checkerLoginName,
                 0);
     }
 
@@ -88,14 +88,15 @@ public class LoanFullService {
 
         this.updateLoanStatus(loanModel, bankLoanFullMessage);
 
-        this.sendMessage(loanModel);
-
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
                 new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
                         loanModel.getAgentLoginName(),
                         loanModel.getId(),
                         loanModel.getLoanAmount(),
                         UserBillBusinessType.LOAN_SUCCESS));
+
+        this.sendMessage(loanModel);
+
     }
 
     private void updateLoanStatus(LoanModel loanModel, BankLoanFullMessage bankLoanFullMessage) {
