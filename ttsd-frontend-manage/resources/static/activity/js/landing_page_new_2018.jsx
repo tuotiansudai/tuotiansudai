@@ -46,6 +46,7 @@ if($('#fuliList').length){
         direction: 'horizontal',
         loop: true,
         autoplay:5000,
+        speed:1000,
         autoplayDisableOnInteraction:false,
         slidesPerView: 'auto',
         centeredSlides:true,
