@@ -208,7 +208,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case REGISTER:
                 return "/register/account";
             case BIND_BANK_CARD:
-                return "/bind-card";
+                return "/bank-card/bind/source/WEB";
             case FIRST_RECHARGE:
                 return "/recharge";
             case FIRST_INVEST:
