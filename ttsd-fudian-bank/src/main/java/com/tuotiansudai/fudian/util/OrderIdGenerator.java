@@ -13,10 +13,11 @@ public class OrderIdGenerator {
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
     public static String generate(RedisTemplate<String, String> redisTemplate) {
-        String key = MessageFormat.format("BANK_ORDER_NO_{0}", DATE_FORMAT.format(new Date())) ;
+        Date now = new Date();
+        String key = MessageFormat.format("BANK_ORDER_NO_{0}", DATE_FORMAT.format(now)) ;
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         Long index = operations.increment(key, 1);
         redisTemplate.expire(key, 1, TimeUnit.DAYS);
-        return String.format("%s%012d", key, index);
+        return String.format("%s%012d", DATE_FORMAT.format(now), index);
     }
 }
