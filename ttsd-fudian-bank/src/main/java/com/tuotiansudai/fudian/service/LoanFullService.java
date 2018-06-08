@@ -82,7 +82,7 @@ public class LoanFullService implements NotifyCallbackInterface {
         insertMapper.insertLoanFull(dto);
 
         String bankLoanFullMessageKey = MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, dto.getOrderDate());
-        BankLoanFullMessage bankLoanFullMessage = new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), dto.getOrderNo(), dto.getOrderDate());
+        BankLoanFullMessage bankLoanFullMessage = new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), bankLoanFullDto.getCheckerLoginName(), dto.getOrderNo(), dto.getOrderDate());
         redisTemplate.<String, String>opsForHash().put(bankLoanFullMessageKey, dto.getOrderNo(), gson.toJson(bankLoanFullMessage));
 
         String responseData = bankClient.send(API_TYPE, dto.getRequestData());

@@ -10,7 +10,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.message.AnxinContractMessage;
-import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
@@ -139,7 +138,7 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的无可生成的合同!");
                 return baseDto;
             }
-            mqWrapperClient.sendMessage(MessageQueue.LoanFull_GenerateAnXinContract, new BankLoanFullMessage(businessId, null, null, null));
+            mqWrapperClient.sendMessage(MessageQueue.LoanFull_GenerateAnXinContract, new BankLoanFullMessage(businessId, null, null, null, null));
         }
 
         if (anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {

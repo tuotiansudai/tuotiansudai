@@ -165,22 +165,22 @@ public class BankWrapperClient {
         return new BankLoanCreateMessage(false, null);
     }
 
-    public BankBaseMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, long time) {
-        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, time);
+    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, long time) {
+        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, time);
 
         String json = syncExecute("/loan-full", bankLoanFullDto);
 
         if (Strings.isNullOrEmpty(json)) {
-            return new BankBaseMessage(false, "请求失败");
+            return new BankLoanFullMessage(false, "请求失败");
         }
 
         try {
-            return gson.fromJson(json, BankLoanCreateMessage.class);
+            return gson.fromJson(json, BankLoanFullMessage.class);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[Loan Create] parse response error, response: {0}", json), e);
         }
 
-        return new BankLoanCreateMessage(false, null);
+        return new BankLoanFullMessage(false, null);
     }
 
     public BankAsyncMessage loanRepay(BankLoanRepayDto bankLoanRepayDto) {
