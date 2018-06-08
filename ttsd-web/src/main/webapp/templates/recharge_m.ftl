@@ -13,7 +13,7 @@
             </span>
         </li>
     </ul>
-    <form action="/recharge" method="post" class="form-cash">
+    <form action="/m/recharge" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">充值金额</label>
             <input type="text" class="money-item" id="cashMoney" value="" placeholder="充值金额最少为1元"/>

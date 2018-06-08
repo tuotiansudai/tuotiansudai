@@ -10,6 +10,7 @@ public enum ApiType {
     CANCEL_CARD_BIND(new CancelCardBindResponseParser(), "/user/card/cancelBind", CancelCardBindService.class),
 
     RECHARGE(new RechargeResponseParser(), "/account/recharge", RechargeService.class),
+    RECHARGE_M(new RechargeResponseParser(), "/app/realPayRecharge", RechargeService.class),
     WITHDRAW(new WithdrawResponseParser(), "/account/withdraw", WithdrawService.class),
 
     AUTHORIZATION(new AuthorizationResponseParser(), "/business/authorization", AuthorizationService.class),

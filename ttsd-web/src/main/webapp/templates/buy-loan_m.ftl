@@ -63,7 +63,7 @@
 
 
 
-    <form id="investForm" action="/invest" method="post">
+    <form id="investForm" action="/m/invest" method="post">
         <input type="hidden" name="source" value="M">
         <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
     <div class="input-amount-box">

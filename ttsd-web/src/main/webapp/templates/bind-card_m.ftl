@@ -4,7 +4,7 @@
 <div class="m-header"><em id="iconBindcard" class="icon-left"><i></i></em>银行卡管理 </div>
 <div class="my-account-content bank-card-manage" id="bankCardManage">
     <div class="info-note">请绑定持卡人本人的银行储蓄卡</div>
-    <form method="post" id="bankForm" action="/bind-card">
+    <form method="post" id="bankForm" action="/m/bind-card">
         <ul class="input-list align-flex-start">
             <li>
                 <label for="perName">持卡人</label>
