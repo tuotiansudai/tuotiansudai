@@ -26,7 +26,7 @@
         <div class="recharge-wrapper">
             <div class="recharge-content">
                 <div class="fast-recharge active">
-                    <#if !isBindCard>
+                    <#if !bankCard??>
                         <div class="bind-card-nav">
                             <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -63,7 +63,7 @@
                     </#if>
                 </div>
                 <div class="e-bank-recharge">
-                    <#if !isBindCard>
+                    <#if !bankCard??>
                         <div class="bind-card-nav">
                             <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

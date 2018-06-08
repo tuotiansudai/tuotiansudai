@@ -40,13 +40,13 @@ public class RechargeController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
         UserBankCardModel userBankCardModel = userBindBankCardService.findBankCard(LoginUserInfo.getLoginName());
-        if (userBankCardModel == null) {
-            return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
+        if (userBankCardModel == null && MobileAccessDecision.isMobileAccess()) {
+            return new ModelAndView("redirect:/m/personal-info");
         }
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
-        modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankCard", userBankCardModel);
+        modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
         return modelAndView;
     }
