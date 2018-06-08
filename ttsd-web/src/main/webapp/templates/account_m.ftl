@@ -33,7 +33,7 @@
             <#else>
                 <a href="#" id="noBankCardRecharge">充值</a>
                 <a href="#" id="noBankCardWithdraw">提现</a>
-                <form id="bindCardForm" action="${requestContext.getContextPath()}/bank-card/bind/source/M" method="post" style="display: none">
+                <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </#if>

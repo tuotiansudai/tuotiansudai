@@ -1,5 +1,3 @@
-
-<#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 <div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none"
      data-has-bank-card="${hasBankCard?c}" data-loan-status="${loan.loanStatus}"
      data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
@@ -60,8 +58,6 @@
         </div>
         <div class="bg-square-box"></div>
     </div>
-
-
 
     <form id="investForm" action="/m/invest" method="post">
         <input type="hidden" name="source" value="M">
@@ -173,5 +169,3 @@
         </div>
     </div>
 </div>
-
-<#--</@global.main>-->
