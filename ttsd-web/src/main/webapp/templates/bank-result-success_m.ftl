@@ -13,18 +13,13 @@
             </div>
 
         </div>
-    <#--实名认证成功后下一步 去绑卡-->
-        <form action="${requestContext.getContextPath()}/bank-card/bind/source/M" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-            <div class="btn-container">
-                <input type="submit" class="btn-confirm"  value="下一步"/>
-            </div>
-        </form>
+        <div class="btn-container">
+            <a href="/m/personal-info" class="btn-confirm">确定</a>
+        </div>
     </#if>
 <#--银行卡绑定成功-->
     <#if bankCallbackType == 'CARD_BIND'>
-        <div class="m-header">开通存管账号</div>
+        <div class="m-header">绑卡成功</div>
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
