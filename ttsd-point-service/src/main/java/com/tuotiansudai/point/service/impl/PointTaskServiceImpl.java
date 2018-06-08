@@ -74,12 +74,6 @@ public class PointTaskServiceImpl implements PointTaskService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
-    private BankRechargeMapper bankRechargeMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -91,7 +85,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private final static String REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT = "REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT:{0}:{1}";
 
-    private final int seconds = 60 * 24 * 60 * 60;
+    private final static int seconds = 60 * 24 * 60 * 60;
 
     @Override
     @Transactional
@@ -273,24 +267,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     private boolean isCompletedNewbieTaskConditions(final PointTask pointTask, String loginName) {
         List<UserPointTaskModel> completedTasks = userPointTaskMapper.findByLoginName(loginName);
-        boolean isCompleted = completedTasks.stream().anyMatch(completedTask -> completedTask.getPointTask().getName() == pointTask);
-
-        if (isCompleted) {
-            return false;
-        }
-
-        switch (pointTask) {
-            case REGISTER:
-                return true;
-            case BIND_BANK_CARD:
-                return bankCardMapper.findPassedBankCardByLoginName(loginName) != null;
-            case FIRST_RECHARGE:
-                return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName) > 0;
-            case FIRST_INVEST:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName, true) > 0;
-        }
-
-        return false;
+        return completedTasks.stream().noneMatch(completedTask -> completedTask.getPointTask().getName() == pointTask);
     }
 
     private boolean isCompletedAdvancedTaskConditions(final PointTask pointTask, String loginName) {
