@@ -81,8 +81,6 @@ public class BankAccountService {
             return;
         }
 
-        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
-
         userRoleMapper.deleteByLoginNameAndRole(loginName, Role.INVESTOR);
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(loginName, Role.INVESTOR)));
 
@@ -91,6 +89,8 @@ public class BankAccountService {
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
                 bankRegisterMessage.getBankOrderDate()));
+
+        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
 
         sendMessage(bankRegisterMessage);
     }
