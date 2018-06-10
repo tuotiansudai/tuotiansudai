@@ -4,24 +4,26 @@ package com.tuotiansudai.console.activity.service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.mapper.ActivityInvestAnnualizedMapper;
+import com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryDrawMapper;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
-import com.tuotiansudai.activity.repository.model.ActivityCategory;
-import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.activity.repository.model.UserLotteryPrizeView;
-import com.tuotiansudai.activity.repository.model.UserLotteryTimeView;
+import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,16 @@ public class ActivityConsoleUserLotteryService {
 
     @Autowired
     private ActivityCountDrawLotteryService commonCountTimeService;
+
+    @Autowired
+    private ThirdAnniversaryDrawMapper thirdAnniversaryDrawMapper;
+
+    @Autowired
+    private ActivityInvestAnnualizedMapper activityInvestAnnualizedMapper;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final String THIRD_ANNIVERSARY_EACH_EVERY_DAY_DRAW = "THIRD_ANNIVERSARY_EACH_EVERY_DAY_DRAW:{0}";
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.autumn.startTime}\")}")
     private Date activityAutumnStartTime;
@@ -85,6 +97,10 @@ public class ActivityConsoleUserLotteryService {
             } else if (prizeType.name().startsWith("EXERCISE_WORK_ACTIVITY")) {
                 int referrerLotteryChance = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType);
                 unUserCount = exerciseVSWorkTimes(model.getMobile(), prizeType) + referrerLotteryChance - model.getUseCount();
+            } else if (prizeType == ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY) {
+                int useCount = thirdAnniversaryDrawMapper.countDrawByLoginName(input.getLoginName());
+                model.setUseCount(useCount);
+                unUserCount = this.thirdAnniversaryTimes(input.getLoginName(), useCount);
             } else {
                 unUserCount = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType) - model.getUseCount();
             }
@@ -171,4 +187,18 @@ public class ActivityConsoleUserLotteryService {
         }
         return count + 1;
     }
+
+    private int thirdAnniversaryTimes(String loginName, int useCount) {
+        final long EACH_INVEST_AMOUNT_50000 = 50000l;
+
+        ActivityInvestAnnualizedModel activityInvestAnnualizedModel = activityInvestAnnualizedMapper.findByActivityAndLoginName(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, loginName);
+        int investDrawCount = activityInvestAnnualizedModel == null ? 0 : (int) (activityInvestAnnualizedModel.getSumInvestAmount() / EACH_INVEST_AMOUNT_50000);
+
+        Map<String, String> eachEveryDayDraws = redisWrapperClient.hgetAll(MessageFormat.format(THIRD_ANNIVERSARY_EACH_EVERY_DAY_DRAW, loginName));
+        int usedInvestDrawCount = useCount - eachEveryDayDraws.size();
+
+        int isTodayDraw = eachEveryDayDraws.entrySet().stream().filter(entry -> entry.getKey().equals(DateTime.now().toString("yyyy-MM-dd"))).count() > 0 ? 0 : 1;
+        return investDrawCount - usedInvestDrawCount + isTodayDraw;
+    }
+
 }

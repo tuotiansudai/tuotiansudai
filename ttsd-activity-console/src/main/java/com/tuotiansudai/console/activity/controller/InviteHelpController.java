@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.model.WeChatHelpType;
 import com.tuotiansudai.activity.repository.model.WeChatHelpUserStatus;
 import com.tuotiansudai.console.activity.service.ActivityConsoleInviteHelpService;
 import org.apache.ibatis.annotations.Param;
@@ -23,11 +24,13 @@ public class InviteHelpController {
     public ModelAndView investRewardList(@RequestParam(value = "keyWord", required = false) String keyWord,
                                          @RequestParam(value = "minInvest", required = false) Long minInvest,
                                          @RequestParam(value = "maxInvest", required = false) Long maxInvest,
+                                         @RequestParam(value = "type", defaultValue = "THIRD_ANNIVERSARY_HELP") WeChatHelpType type,
                                          @RequestParam(value = "index", defaultValue = "1") int index,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/help-invest-reward-list");
-        modelAndView.addObject("data", activityConsoleInviteHelpService.investRewardList(index, pageSize, keyWord, minInvest, maxInvest));
+        modelAndView.addObject("data", activityConsoleInviteHelpService.investRewardList(index, pageSize, keyWord, minInvest, maxInvest, type));
         modelAndView.addObject("keyWord", keyWord);
+        modelAndView.addObject("type", type);
         modelAndView.addObject("minInvest", minInvest == null ? null : String.valueOf(minInvest));
         modelAndView.addObject("maxInvest", maxInvest == null ? null : String.valueOf(maxInvest));
         return modelAndView;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
 
@@ -97,14 +98,21 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(value = "/open-red-envelope", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView openRedEnvelope(@RequestParam(value = "originator") String originator){
-        if (Strings.isNullOrEmpty(LoginUserInfo.getLoginName())){
+    public ModelAndView openRedEnvelope(@RequestParam(value = "originator") String originator, HttpServletRequest request){
+        String loginName = LoginUserInfo.getLoginName();
+        if (Strings.isNullOrEmpty(loginName)){
+            request.getSession().setAttribute("channel", "thirdAnniversary");
             return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/third-anniversary/open-red-envelope?originator=%s", originator));
         }
-        if (!thirdAnniversaryActivityService.isAccount(LoginUserInfo.getLoginName())){
+
+        if (!thirdAnniversaryActivityService.isActivityRegister(loginName)){
+            return new ModelAndView("redirect:/activity/third-anniversary");
+        }
+
+        if (!thirdAnniversaryActivityService.isAccount(loginName)){
             return new ModelAndView("redirect:/m/account");
         }
-        thirdAnniversaryActivityService.openRedEnvelope(LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(), originator);
+        thirdAnniversaryActivityService.openRedEnvelope(loginName, LoginUserInfo.getMobile(), originator);
         return new ModelAndView(String.format("redirect:/activity/third-anniversary/share-page?originator=%s", originator));
     }
 

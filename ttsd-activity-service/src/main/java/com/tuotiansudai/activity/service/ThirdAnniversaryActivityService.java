@@ -295,6 +295,10 @@ public class ThirdAnniversaryActivityService {
         return activityStartTime.before(new Date()) && activityDrawEndTime.after(new Date());
     }
 
+    public boolean isActivityRegister(String loginName){
+        return "thirdAnniversary".equals(userMapper.findByLoginName(loginName).getChannel());
+    }
+
     public boolean isAccount(String loginName) {
         return accountMapper.findByLoginName(loginName) != null;
     }
