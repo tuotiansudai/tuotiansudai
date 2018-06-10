@@ -48,6 +48,13 @@ public class WeChatHelpModel implements Serializable {
         this.endTime = endTime;
     }
 
+    public WeChatHelpModel(String loginName, String userName, String mobile, WeChatHelpType type, Date startTime, Date endTime){
+        this(type, startTime, endTime);
+        this.loginName = loginName;
+        this.userName = userName;
+        this.mobile = mobile;
+    }
+
     public long getId() {
         return id;
     }

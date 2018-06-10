@@ -23,10 +23,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
-public class InvestSuccessActivityInvestMessageConsumer implements MessageConsumer{
+public class InvestSuccessActivityInvestMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessActivityInvestMessageConsumer.class);
 
@@ -35,6 +37,12 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.super.scholar.endTime}\")}")
     private Date activitySuperScholarEndTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.startTime}\")}")
+    private Date activityThirdAnniversaryStartTime;
+
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.endTime}\")}")
+    private Date activityThirdAnniversaryEndTime;
 
     @Autowired
     private ActivityInvestMapper activityInvestMapper;
@@ -65,9 +73,12 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
             UserInfo userInfo = investSuccessMessage.getUserInfo();
             InvestInfo investInfo = investSuccessMessage.getInvestInfo();
             LoanDetailInfo loanDetailInfo = investSuccessMessage.getLoanDetailInfo();
-            Date date = DateTime.now().toDate();
-            if (!activitySuperScholarStartTime.after(date) && !date.after(activitySuperScholarEndTime)
-                    && !loanDetailInfo.getActivityType().equals("NEWBIE")
+
+            ActivityCategory activityCategory = this.getActivityCategory();
+            if (activityCategory == null) {
+                return;
+            }
+            if (!loanDetailInfo.getActivityType().equals("NEWBIE")
                     && !investInfo.getTransferStatus().equals("SUCCESS")
                     && investInfo.getStatus().equals("SUCCESS")) {
 
@@ -79,7 +90,7 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
                         userInfo.getMobile(),
                         investInfo.getAmount(),
                         annualizedAmount,
-                        ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name()));
+                        activityCategory.name()));
 
                 referrerSuperScholarActivityInvest(userInfo.getLoginName());
             }
@@ -90,7 +101,7 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
     }
 
 
-    private void referrerSuperScholarActivityInvest(String loginName){
+    private void referrerSuperScholarActivityInvest(String loginName) {
         long sumAmount = activityInvestMapper.sumInvestAmountByActivityLoginNameAndTime(loginName,
                 ActivityCategory.SUPER_SCHOLAR_ACTIVITY.name(),
                 DateTime.now().withTimeAtStartOfDay().toDate(),
@@ -98,9 +109,20 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
 
         String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
         String referrerKey = MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName);
-        if (sumAmount >= 100000L && redisWrapperClient.exists(referrerKey)){
+        if (sumAmount >= 100000L && redisWrapperClient.exists(referrerKey)) {
             String referrer = redisWrapperClient.get(referrerKey);
             redisWrapperClient.setex(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_INVEST, currentDate, referrer), seconds, "SUCCESS");
         }
+    }
+
+    private ActivityCategory getActivityCategory() {
+        Date now = new Date();
+        if (now.after(activitySuperScholarStartTime) && now.before(activitySuperScholarEndTime)) {
+            return ActivityCategory.SUPER_SCHOLAR_ACTIVITY;
+        }
+        if (now.after(activityThirdAnniversaryStartTime) && now.before(activityThirdAnniversaryEndTime)) {
+            return ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY;
+        }
+        return null;
     }
 }

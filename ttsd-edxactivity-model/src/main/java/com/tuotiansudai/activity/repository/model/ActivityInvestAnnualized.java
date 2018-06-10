@@ -13,7 +13,8 @@ import java.util.Optional;
 public enum ActivityInvestAnnualized {
 
     NEW_YEAR_ACTIVITY("新年更有钱活动", null, ETCDConfigReader.getReader().getValue("activity.new.year.startTime"), ETCDConfigReader.getReader().getValue("activity.new.year.endTime")),
-    START_WORK_ACTIVITY("惊喜不重样加息不打烊活动", null, ETCDConfigReader.getReader().getValue("activity.start.work.startTime"), ETCDConfigReader.getReader().getValue("activity.start.work.endTime"))
+    START_WORK_ACTIVITY("惊喜不重样加息不打烊活动", null, ETCDConfigReader.getReader().getValue("activity.start.work.startTime"), ETCDConfigReader.getReader().getValue("activity.start.work.endTime")),
+    THIRD_ANNIVERSARY_ACTIVITY("拓天速贷3周年活动", null, ETCDConfigReader.getReader().getValue("activity.third.anniversary.startTime"), ETCDConfigReader.getReader().getValue("activity.third.anniversary.endTime"))
     ;
 
     ActivityInvestAnnualized() {
