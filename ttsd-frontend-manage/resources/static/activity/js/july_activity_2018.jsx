@@ -70,32 +70,28 @@ let teamName = {
     'yinggelan':'英格兰队'
 
 }
-let activityStatus = commonFun.activityStatus($('.july-container'));
 $('#openBall').on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
-            if(activityStatus!== 'activity-ing') {
-                layer.msg('不在活动时间范围内');
-            }else {
-                commonFun.useAjax({
+            commonFun.useAjax({
                     url: '/activity/third-anniversary/draw',
                     type: 'POST'
                 }, function (res) {
-                    if(res.status == true){
+                    if (res.status == true) {
                         let records = {
-                            list:res.data,
-                            teamName:teamName
+                            list: res.data,
+                            teamName: teamName
                         }
                         $('#getLogos').html(tpl('getLogoTpl', records));
 
                         $('.tip-wrap').show();
                         getMyTeamLogos();
-                    }else {
+                        $('#openBall').addClass("to_invest_btn");
+                    } else {
                         layer.msg(res.message)
                     }
                 }
-                )
-            }
+            )
         })
         .fail(function () {
             layer.open({
@@ -141,15 +137,11 @@ function getMyTeamLogos(){
                     paginationClickable:true
                 });
             }
-
-
         }else {
             layer.msg(res.message)
         }
-
     }
     )
-
 }
 function toLogin(){
     if (sourceKind.params.source == 'app') {
@@ -189,39 +181,9 @@ $supportBtn.on('click',function (e) {
                     type: 'POST'
                 }, function (res) {
                     if(res.status == true){
-                        $redAmount.text(res.data.redAmount);
-                        $blueAmount.text(res.data.blueAmount);
-                        $redCount.text(res.data.redCount);
-                        $blueCount.text(res.data.blueCount);
-                        $myAmount.text(res.data.myAmount);
-                        $currentRate.text(res.data.currentRate);
-                        $currentAward.text(res.data.currentAward);
-                        let percent;
-                        if(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)==0){
-                            percent = 0;
-                        }else {
-                            percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
-                            if(percent>=96){
-                                percent = 96;
-                            }
-                        }
-                        $('.percent-con').css('width',percent+'%');
-                        if(res.data.selectResult == 'RED'){
-                            _self.addClass('already_support');
-                            layer.msg('支持成功！');
-                            $blueSquare.addClass('disabled');
-
-                        }
-                        if(res.data.selectResult == 'BLUE'){
-                            _self.addClass('already_support');
-                            layer.msg('支持成功！');
-                            $redSquare.addClass('disabled');
-
-                        }
-
-
+                        supportSquare();
                     }else {
-                        layer.msg('支持失败')
+                        layer.msg(res.message)
                     }
 
                 }
@@ -246,6 +208,20 @@ function supportSquare(){
         type: 'GET'
     },function (res) {
         if(res.status == true){
+            $redAmount.text(res.data.redAmount);
+            $blueAmount.text(res.data.blueAmount);
+            $redCount.text(res.data.redCount);
+            $blueCount.text(res.data.blueCount);
+            let percent;
+            if(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)==0){
+                percent = 50;
+            }else {
+                percent = (parseFloat(res.data.redAmount)/(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)))*100;
+                if(percent>=96){
+                    percent = 96;
+                }
+            }
+            $('.percent-con').css('width',percent+'%');
             $.when(commonFun.isUserLogin())
                 .done(function () {
                     if(res.data.selectResult == 'RED'){
@@ -255,28 +231,11 @@ function supportSquare(){
                         $blueSquare.addClass('already_support');
                         $redSquare.addClass('disabled');
                     }
-                    $redAmount.text(res.data.redAmount);
-                    $blueAmount.text(res.data.blueAmount);
-                    $redCount.text(res.data.redCount);
-                    $blueCount.text(res.data.blueCount);
                     $myAmount.text(res.data.myAmount);
                     $currentRate.text(res.data.currentRate);
                     $currentAward.text(res.data.currentAward);
-                    let percent;
-                    if(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)==0){
-                        percent = 0;
-                    }else {
-                        percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
-                        if(percent>=96){
-                            percent = 96;
-                        }
-                    }
-                    $('.percent-con').css('width',percent+'%');
                 })
-
         }
-
-
     })
 }
 

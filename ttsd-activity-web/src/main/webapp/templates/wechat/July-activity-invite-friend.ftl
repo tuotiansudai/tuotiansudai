@@ -26,7 +26,7 @@
 
     </div>
 
-    <div class="part part-two marginTop100" style="display: none">
+    <div class="part part-two marginTop100" style="display: none" id="getWare">
         <span class="circle left-circle"></span>
         <span class="circle right-circle"></span>
         <div class="part-title"></div>
@@ -34,7 +34,7 @@
             <ul>
                 <#if helpFriend!?if_exists?size !=0 >
                     <#list helpFriend as friend>
-                        <li class="clearfix"><div class="fl"><#if friend.mobile>${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</#if></div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
+                        <li class="clearfix"><div class="fl">${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
                     </#list>
                 </#if>
             </ul>

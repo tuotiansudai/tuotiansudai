@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='拓天速贷3周年庆_集世界杯队标_平分现金奖池' keywords="拓天速贷,8888元现金奖池,888世界杯奖池,阴历阳历生日之争,生日红包" description='拓天速贷3周年庆,集世界杯队标,平分现金奖池,阴历阳历生日之争可获得其活动期间累计投资额(年化)的0.5%-0.8%返现奖励,分享专享现金红包给好友,还可获得其活动期间累计投资额(年化)的0.1%-0.5%返现奖励.'>
 <div class="july-banner">
 </div>
-<div class="july-container" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
+<div class="july-container">
    <div class="part team-logo-wrap activity-page">
        <div class="part-top team-logo-title"></div>
        <div class="main-content borderYellow">
@@ -44,8 +44,6 @@
                </div>
            </div>
        </div>
-
-
 
    </div>
 <#--3岁生日怎么过-->

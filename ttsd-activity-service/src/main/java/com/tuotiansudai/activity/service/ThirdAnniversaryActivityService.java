@@ -191,7 +191,7 @@ public class ThirdAnniversaryActivityService {
         }
 
         if (!duringDrawActivities()) {
-            return new BaseResponse("不再活动范围内");
+            return new BaseResponse("不在活动时间范围内");
         }
 
         if (accountMapper.findByLoginName(loginName) == null) {
@@ -235,8 +235,11 @@ public class ThirdAnniversaryActivityService {
     }
 
     public BaseResponse selectRedOrBlue(String loginName, boolean isRed) {
+        if (!duringActivities()){
+            return new BaseResponse("不在活动时间范围内");
+        }
         if (Strings.isNullOrEmpty(loginName) || redisWrapperClient.hexists(THIRD_ANNIVERSARY_SELECT_RED_OR_BLUE, loginName)) {
-            return new BaseResponse(false);
+            return new BaseResponse("支持失败");
         }
         redisWrapperClient.hset(THIRD_ANNIVERSARY_SELECT_RED_OR_BLUE, loginName, isRed ? "RED" : "BLUE");
         return new BaseResponse<Map<String, Object>>(this.selectResult(loginName));
@@ -267,7 +270,7 @@ public class ThirdAnniversaryActivityService {
 
     public void shareInvite(String loginName) {
         List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
-        if (models.size() == 0) {
+        if (models.size() > 0) {
             return;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
@@ -310,6 +313,10 @@ public class ThirdAnniversaryActivityService {
 
     private boolean duringDrawActivities() {
         return activityStartTime.before(new Date()) && activityDrawEndTime.after(new Date());
+    }
+
+    private boolean duringActivities() {
+        return activityStartTime.before(new Date()) && activityEndTime.after(new Date());
     }
 
     public boolean isActivityRegister(String loginName){

@@ -102,6 +102,7 @@ public class ThirdAnniversaryActivityController {
         }
         modelAndView.setViewName("/wechat/July-activity-open-ware");
         modelAndView.addAllObjects(map);
+        modelAndView.addObject("originator", originator);
         return modelAndView;
     }
 
