@@ -65,10 +65,10 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(value = "/invite-page", method = RequestMethod.GET)
     public ModelAndView invite(){
-        ModelAndView modelAndView = new ModelAndView();
         if (Strings.isNullOrEmpty(LoginUserInfo.getLoginName())){
             return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/third-anniversary/invite");
         }
+        ModelAndView modelAndView = new ModelAndView("/wechat/July-activity-invite-friend");
         modelAndView.addAllObjects(thirdAnniversaryActivityService.invite(LoginUserInfo.getLoginName()));
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
@@ -91,7 +91,7 @@ public class ThirdAnniversaryActivityController {
             modelAndView.addObject("errorInfo", "无效推荐链接");
             return modelAndView;
         }
-        modelAndView.setViewName("/error/error-info-page");
+        modelAndView.setViewName("/wechat/July-activity-open-ware");
         modelAndView.addAllObjects(map);
         return modelAndView;
     }
