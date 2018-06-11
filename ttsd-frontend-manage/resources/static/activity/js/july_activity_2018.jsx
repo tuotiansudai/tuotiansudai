@@ -5,6 +5,18 @@ var tpl = require('art-template/dist/template');
 require('swiper/dist/css/swiper.css')
 require('publicJs/login_tip');
 
+//支持红方蓝方
+let $supportBtn = $('.support-btn');
+let $redSquare = $('.red-square');
+let $blueSquare = $('.blue-square');
+let $redAmount = $('#redAmount');
+let $blueAmount = $('#blueAmount');
+let $redCount = $('#redCount');
+let $blueCount = $('#blueCount');
+let $myAmount = $('#myAmount');
+let $currentRate = $('#currentRate');
+let $currentAward = $('#currentAward');//返现
+
 let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
 let url;
@@ -21,7 +33,7 @@ if($(document).width() <= 1024){
 }else {
     slideLen = 5;
 }
-let qrcodeUrl = require('../images/2018/july-activity/qrcode_tip.png');
+let qrcodeUrl = require('../images/2018/july-activity/qrcode.png');
 $('#qrcodeImg').attr('src',qrcodeUrl);
 let teamName = {
     'aiji':'埃及队',
@@ -149,12 +161,7 @@ function toLogin(){
 
 }
 
-//支持红方蓝方
-let $supportBtn = $('.support-btn');
-let $redAomunt = $('#redAmount');
-let $blueAomunt = $('#blueAmount');
-let $redCount = $('#redCount');
-let $blueCount = $('#blueCount');
+
 //点击支持按钮
 $supportBtn.on('click',function (e) {
     e.preventDefault();
@@ -162,7 +169,8 @@ $supportBtn.on('click',function (e) {
     let _self = $(this);
     $.when(commonFun.isUserLogin())
         .done(function () {
-            if(_self.hasClass('disabled')){
+            if(_self.hasClass('disabled')||_self.hasClass('already_support')){
+                layer.msg('您已支持！')
                 return;
             }
             let url;
@@ -176,10 +184,15 @@ $supportBtn.on('click',function (e) {
                     type: 'POST'
                 }, function (res) {
                     if(res.status == true){
-                        $redAomunt.text(res.data.redAmount);
+                        $redAmount.text(res.data.redAmount);
                         $blueAmount.text(res.data.blueAmount);
                         $redCount.text(res.data.redCount);
                         $blueCount.text(res.data.blueCount);
+                        $myAmount.text(res.data.myAmount);
+                        $currentRate.text(res.data.currentRate);
+                        $currentAward.text(res.data.currentAward);
+                        let percent = res.data.redAmount/res.data.redAmount+res.data.blueAmount;
+                        $('.percent-con').css('width',percent);
                         if(selectResult == 'RED'||selectResult == 'BLUE'){
                             _self.addClass('disabled');
                             layer.msg('支持成功！')
@@ -213,6 +226,39 @@ $supportBtn.on('click',function (e) {
             });
         })
 })
+supportSquare();
 //判断选择的是哪一方
+function supportSquare(){
+    commonFun.useAjax({
+        url:'/activity/third-anniversary/select-result',
+        type: 'GET'
+    },function (res) {
+        if(res.status == true){
+            $.when(commonFun.isUserLogin())
+                .done(function () {
+                    if(res.data.selectResult == 'RED'){
+                        $redSquare.addClass('already_support');
+                        $blueSquare.addClass('disabled');
+                    }else if(res.data.selectResult == 'BLUE'){
+                        $blueSquare.addClass('already_support');
+                        $redSquare.addClass('disabled');
+                    }
+                    $redAmount.text(res.data.redAmount);
+                    $blueAmount.text(res.data.blueAmount);
+                    $redCount.text(res.data.redCount);
+                    $blueCount.text(res.data.blueCount);
+                    $myAmount.text(res.data.myAmount);
+                    $currentRate.text(res.data.currentRate);
+                    $currentAward.text(res.data.currentAward);
+                    let percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
+                   
+                    $('.percent-con').css('width',percent+'%');
+                })
+
+        }
+
+
+    })
+}
 
 

@@ -315,7 +315,7 @@ body {
           span {
             padding-right: 0px;
           }
-          &:disabled {
+          &.disabled {
             background: url("../images/2018/july-activity/blue_disabled.png") no-repeat;
             background-size: 100%;
           }
@@ -405,13 +405,17 @@ body {
         margin: 0 auto;
         padding-top: 18px;
         box-sizing: border-box;
-        background: url("../images/2018/july-activity/qrcode.png") no-repeat center center;
-        background-size: 100%;
+
       }
       .qrcpde-tip {
         width: 186px;
         height: 28px;
-        margin: 0 auto;
+        margin: 35px auto;
+        background: url("../images/2018/july-activity/qrcode_tip.png") no-repeat center center;
+        background-size: 100%;
+        img {
+          width: 100%;
+        }
       }
     }
   }
@@ -981,7 +985,7 @@ body {
             span {
               padding-right: 0px;
             }
-            &:disabled {
+            &.disabled {
               background: url("../images/2018/july-activity/wap_blue_squre_disabled.png") no-repeat;
               background-size: contain;
             }
@@ -1062,6 +1066,7 @@ body {
         .qrcpde-tip {
           width: 1.49rem;
           height: 0.22rem;
+          margin-top: 0.15rem;
         }
       }
     }
