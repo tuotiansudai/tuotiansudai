@@ -204,7 +204,7 @@ p {
   left: 0;
   top: 0;
   height: 100%;
-  padding-top: 2rem;
+  padding-top: 1.2rem;
   box-sizing: border-box;
   background: rgba(0,0,0,0.85);
   .share-tip {
@@ -214,18 +214,24 @@ p {
     background-size: contain;
   }
   .open-ware-tip {
+    margin: 0 auto;
     width: 5.37rem;
     height: 8.83rem;
     background: url("../../images/2018/july-activity/wechat_open_ware.png") no-repeat;
     background-size: contain;
+    padding-top: 6.33rem;
     .open-ware-btn {
+      display: block;
       width: 2.25rem;
       height: 0.75rem;
+      margin: 0 auto;
+      border: none;
       &.open-now {
         background: url("../../images/2018/july-activity/open_now_btn.png") no-repeat;
         background-size: contain;
       }
       &.no-open {
+        margin-top: 0.3rem;
         background: url("../../images/2018/july-activity/no_open_btn.png") no-repeat;
         background-size: contain;
       }

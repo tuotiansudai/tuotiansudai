@@ -71,11 +71,19 @@ let teamName = {
 
 }
 let activityStatus = commonFun.activityStatus($('.july-container'));
+
+if($('#openBallContent').data('drawCount') == 0){
+    $('#openBall').show();
+    $('#toInvestBtn').hide();
+}else {
+    $('#openBall').hide();
+    $('#toInvestBtn').show();
+}
 $('#openBall').on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
             if(activityStatus!== 'activity-ing') {
-                layer.msg('不在活动时间范围内');
+                layer.msg('不在活动期间内');
             }else {
                 commonFun.useAjax({
                     url: '/activity/third-anniversary/draw',
@@ -90,6 +98,8 @@ $('#openBall').on('click',function () {
 
                         $('.tip-wrap').show();
                         getMyTeamLogos();
+                        $(this).hide();
+                        $('#toInvestBtn').show();
                     }else {
                         layer.msg(res.message)
                     }

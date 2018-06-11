@@ -833,12 +833,13 @@ body {
         left: 0.15rem;
       }
       .my-logo {
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.1rem;
+        margin-top: 0.2rem;
         width: 2.4rem;
         font-size: 0.28rem;
         height: 1rem;
         line-height: 01rem;
-        text-indent: 0.6rem;
+        text-indent: 1rem;
         background: url("../images/2018/july-activity/wap_icon_my_ball.png") no-repeat left center;
         &.collected-all {
           text-indent: 1.2rem;

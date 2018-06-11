@@ -1,17 +1,23 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="520元开工红包">
+<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!">
 
 <div class="invite-friend-container" id="openWareContainer" data-countdown='${endTime!}'>
     <div class="invite-banner"></div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
         <div class="invite-wrap">
-            <a class="open-btn circle-btn" href="javascript:;"></a>
+
             <#if isHelp>
-                <p>您已经参与了拆红包<br/>
+                    <a class="cash-btn circle-btn" href="/m/account"></a>
+            <#else>
+                <a class="open-btn circle-btn" href="javascript:;"></a>
+            </#if>
+            <#if isHelp>
+                <p>您已成功拆红包<br/>
                     目前可瓜分现金${reward}元<br/>
-                    活动结束后发放至拓天速贷个人账户
+                    <#--活动结束后发放至拓天速贷个人账户-->
+                    倒计时结束后可提现
                 </p>
             <#else>
                 <p>您的好友邀请您拆红包<br/>
@@ -42,7 +48,7 @@
                 <ul>
                     <#if helpFriend!?if_exists?size !=0 >
                         <#list helpFriend as friend>
-                            <li class="clearfix"><div class="fl"><#if friend.mobile>${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</#if></div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
+                            <li class="clearfix"><div class="fl">${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
                         </#list>
                     </#if>
                 </ul>
@@ -86,8 +92,13 @@
     <#include "../module/login-tip.ftl" />
     <div class="wechat-tip" style="display: none">
         <div class="open-ware-tip">
-            <a class="open-now open-ware-btn" href="javascript:;"></a>
+            <form action="/activity/third-anniversary/open-red-envelope" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" name="originator" value="${originator}">
+            <input type="submit" class="open-now open-ware-btn" href="javascript:;" value=""></input>
+
             <a class="no-open open-ware-btn" href="javascript:;"></a>
+            </form>
         </div>
 
     </div>
