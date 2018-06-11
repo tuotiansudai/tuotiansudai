@@ -87,7 +87,8 @@ public class ThirdAnniversaryActivityScheduler {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.endTime}\")}")
     private Date activityEndTime;
 
-    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 */10 * * * ?", zone = "Asia/Shanghai")
     public void sendCash() {
         sendHelpCash();
         sendTopFourCash();
