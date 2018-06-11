@@ -70,7 +70,7 @@ public class AchievementCouponServiceImpl implements AchievementCouponService {
                 && DateTime.now().toDate().before(couponModel.getEndTime())
                 && DateTime.now().toDate().after(couponModel.getStartTime()))
                 .collect(Collectors.toList())
-                .forEach(couponModel -> mqWrapperClient.sendMessage(MessageQueue.CouponAssigning,
+                .forEach(couponModel -> mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning,
                         investMapper.findById(investId).getLoginName() + ":" + loanId + ":" + couponModel.getId()));
         return true;
     }
