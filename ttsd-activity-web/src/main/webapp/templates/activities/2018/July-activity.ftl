@@ -1,8 +1,8 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='答题赢加"薪"_学霸升值季_拓天速贷' keywords="拓天速贷,答题赢加薪,邀请好友,返现奖励" description='拓天速贷答题赢加"薪"活动,用户每日答题,投资可获得年化0.2%-0.6%返现奖励,完成答题赠送最高0.5%加息券,分享答题、邀请好友注册、投资还可增加年化返现,返现+加息高至2%.'>
+<@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='拓天速贷3周年庆_集世界杯队标_平分现金奖池' keywords="拓天速贷,8888元现金奖池,888世界杯奖池,阴历阳历生日之争,生日红包" description='拓天速贷3周年庆,集世界杯队标,平分现金奖池,阴历阳历生日之争可获得其活动期间累计投资额(年化)的0.5%-0.8%返现奖励,分享专享现金红包给好友,还可获得其活动期间累计投资额(年化)的0.1%-0.5%返现奖励.'>
 <div class="july-banner">
 </div>
-<div class="july-container">
+<div class="july-container" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
    <div class="part team-logo-wrap activity-page">
        <div class="part-top team-logo-title"></div>
        <div class="main-content borderYellow">
@@ -18,155 +18,25 @@
            </div>
            <div class="content-section open-balls-content content-page marginTop40">
                <div class="big-ball"></div>
-               <a href="javascript:;" class="gold-btn open-ball-btn"></a>
+               <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall"></a>
+                <@global.isNotAnonymous>
                <h2 class="my-logo collected-all">我的对标</h2>
-               <div class="my-team-logos swiper-container" id="teamLogos">
-                   <ul class="swiper-wrapper">
-                       <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount">1</span></div>
-                           <div class="country-btn">德国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount">2</span></div>
-                           <div class="country-btn">俄罗斯队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount">3</span></div>
-                           <div class="country-btn">巴西队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo yinggelan"><span class="amount">4</span></div>
-                           <div class="country-btn">英国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo faguo"><span class="amount">5</span></div>
-                           <div class="country-btn">法国队</div>
-                       </li>
-                       <#--5-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo agenting"><span class="amount"></span></div>
-                           <div class="country-btn">阿根廷队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo aiji"><span class="amount"></span></div>
-                           <div class="country-btn">埃及队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo aodaliya"><span class="amount"></span></div>
-                           <div class="country-btn">澳大利亚队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo banama"><span class="amount"></span></div>
-                           <div class="country-btn">巴拿马队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount"></span></div>
-                           <div class="country-btn">巴西队</div>
-                       </li>
-                       <#--10-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo bilishi"><span class="amount"></span></div>
-                           <div class="country-btn">比利时队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo bingdao"><span class="amount"></span></div>
-                           <div class="country-btn">冰岛队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo bolan"><span class="amount"></span></div>
-                           <div class="country-btn">波兰队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo danmai"><span class="amount"></span></div>
-                           <div class="country-btn">丹麦队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo gelunbiya"><span class="amount"></span></div>
-                           <div class="country-btn">哥伦比亚队</div>
-                       </li>
-                       <#--15-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount"></span></div>
-                           <div class="country-btn">德国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount"></span></div>
-                           <div class="country-btn">俄罗斯队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount"></span></div>
-                           <div class="country-btn">巴西队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo yinggelan"><span class="amount"></span></div>
-                           <div class="country-btn">英国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo faguo"><span class="amount"></span></div>
-                           <div class="country-btn">法国队</div>
-                       </li>
-                       <#--20-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount"></span></div>
-                           <div class="country-btn">德国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount"></span></div>
-                           <div class="country-btn">俄罗斯队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount"></span></div>
-                           <div class="country-btn">巴西队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo yinggelan"><span class="amount"></span></div>
-                           <div class="country-btn">英国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo faguo"><span class="amount"></span></div>
-                           <div class="country-btn">法国队</div>
-                       </li>
-                       <#--25-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount"></span></div>
-                           <div class="country-btn">德国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount"></span></div>
-                           <div class="country-btn">俄罗斯队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo baxi"><span class="amount"></span></div>
-                           <div class="country-btn">巴西队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo yinggelan"><span class="amount"></span></div>
-                           <div class="country-btn">英国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo faguo"><span class="amount"></span></div>
-                           <div class="country-btn">法国队</div>
-                       </li>
-                       <#--30-->
-
-                       <li class="swiper-slide">
-                           <div class="team-logo deguo"><span class="amount"></span></div>
-                           <div class="country-btn">德国队</div>
-                       </li>
-                       <li class="swiper-slide">
-                           <div class="team-logo eluosi"><span class="amount"></span></div>
-                           <div class="country-btn">俄罗斯队</div>
-                       </li>
-
-
+               <div class="my-team-logos logos-con swiper-container" id="teamLogos">
+                   <ul class="swiper-wrapper" id="myTeamLogos">
+                       <script id="myTeamLogoTpl" type="text/template">
+                           {{if list}}
+                           {{each list as value index}}
+                           <li class="swiper-slide">
+                           <div class="team-logo {{value.teamName}}"><span class="amount">{{value.teamCount}}</span></div><br/>
+                           <div class="country-btn">{{teamName[value.teamName]}}</div>
+                           </li>
+                           {{/each}}
+                           {{/if}}
+                       </script>
                    </ul>
                    <div class="swiper-pagination"></div>
                </div>
+               </@global.isNotAnonymous>
                <div class="prize">
                    <#if topFour??>
                        <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
@@ -185,11 +55,13 @@
             <div class="content-section three-birthday content-page">
                 <div class="content-title time2">活动时间：7月1日-7月31日</div>
                 <div class="invest-records">
+    <@global.isNotAnonymous>
                     <ul class="clearfix">
                         <li class="first">当前累计年化<span class="wap-style">投资额 <strong>1000元</strong></span></li>
                         <li class="second">当前返现<span class="wap-style">比例 <strong>0.5%</strong> </span></li>
                         <li class="thrid">当前返现<span class="wap-style">金额  <strong>6元</strong></span></li>
                     </ul>
+        </@global.isNotAnonymous>
                     <div class="progress-wrap">
                         <div class="progress">
                             <div class="percent"><span class="percent-left"></span><span class="percent-con" style="width: 80%"><em class="ball"></em></span></div>
@@ -278,5 +150,73 @@
 
     </div>
 </div>
+<div class="tip-wrap" style="display: none">
+    <div class="get-ball-tip" >
+        <div class="top"></div>
+        <div class="bot"></div>
+        <a class="known-btn" href="javascript:;"></a>
+        <div class="con logos-con">
+            <ul class="clearfix" id="getLogos">
+                <script id="getLogoTpl" type="text/template">
+                    {{if list}}
+                    {{each list as value index}}
+                    <li>
+                        <div class="team-logo {{value.teamName}}"><span class="amount">{{value.teamCount}}</span></div><br/>
+                        <div class="country-btn">{{teamName[value.teamName]}}</div>
+                    </li>
+                    {{/each}}
+                    {{/if}}
+                </script>
 
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+                <#--<li>-->
+                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
+                    <#--<div class="country-btn">德还款国队</div>-->
+                <#--</li>-->
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+    <#include "../../module/login-tip.ftl" />
 </@global.main>
