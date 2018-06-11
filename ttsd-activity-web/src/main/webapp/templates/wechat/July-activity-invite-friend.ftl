@@ -1,8 +1,8 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!">
+<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!" >
 
-<div class="invite-friend-container" id="inviteContainer" data-starttime=${activityStartTime!} data-overtime=${activityEndTime!} data-countdown=${endTime!}>
+<div class="invite-friend-container" id="inviteContainer" data-countdown='${endTime!}'>
     <div class="invite-banner"></div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
@@ -13,10 +13,9 @@
                     当前已获返现金额：<br/>
                     <strong>${reward}元</strong>
                 </p>
-                <a class="to-join-btn" href="javascript:;"></a>
         </div>
     </div>
-    <div class="part part-one marginTop100">
+    <div class="part part-one">
         <a class="circle left-circle" href="javascript:;"></a>
         <a class="circle right-circle" href="javascript:;"></a>
         <div class="part-title"></div>
@@ -27,7 +26,7 @@
 
     </div>
 
-    <div class="part part-two marginTop100">
+    <div class="part part-two marginTop100" style="display: none">
         <span class="circle left-circle"></span>
         <span class="circle right-circle"></span>
         <div class="part-title"></div>
@@ -75,36 +74,14 @@
 
 </div>
     <#include "../module/login-tip.ftl" />
-<script>
-    var originator = ${originator}
-
-    <#--wx.ready(function () {-->
-        <#--wx.onMenuShareAppMessage({-->
-            <#--title: '拓天HR给你一个开工红包', // 分享标题-->
-            <#--desc: '无红包，不开工！', // 分享描述-->
-            <#--link: '${webServer}/activity/third-anniversary/invite-page?originator=originator&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
-            <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
-            <#--success: function () {-->
-            <#--},-->
-            <#--cancel: function () {-->
-            <#--}-->
-        <#--});-->
-
-        <#--wx.onMenuShareTimeline({-->
-            <#--title: '拓天HR给你一个开工红包', // 分享标题-->
-            <#--link: '${webServer}/activity/third-anniversary/invite-page?originator=originator&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
-            <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
-            <#--success: function () {-->
-                <#--// 用户确认分享后执行的回调函数-->
-            <#--},-->
-            <#--cancel: function () {-->
-                <#--// 用户取消分享后执行的回调函数-->
-            <#--}-->
-        <#--});-->
-    <#--});-->
-</script>
     <div class="wechat-tip" style="display: none">
         <div class="share-tip"></div>
         <a class="tip-btn" href="javascript:;"></a>
     </div>
+<script>
+    var originator = '${originator}';
+    webServer = '${webServer}';
+    commonStaticServer = '${commonStaticServer}';
+</script>
+
 </@global.main>

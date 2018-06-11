@@ -411,7 +411,7 @@ function countTimePop(dom,time) {
     let end = new Date(time).getTime();
     let now = new Date().getTime();
     let leftTime = (end-now)/1000;
-    console.log(time);
+    alert(leftTime)
     timerCount();
     timer = setInterval(() => {
         timerCount();
@@ -423,7 +423,7 @@ function countTimePop(dom,time) {
                 clearInterval(timer);
                 return;
             }
-            h = Math.floor(leftTime/60/60%24);
+            h = Math.floor(leftTime/60/60);
             m = Math.floor(leftTime/60%60);
             s = Math.floor(leftTime%60);
             h = h < '10' ? '0' + h : h + '';

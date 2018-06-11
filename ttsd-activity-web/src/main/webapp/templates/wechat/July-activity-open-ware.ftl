@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="520元开工红包">
 
-<div class="invite-friend-container" id="inviteContainer" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03" data-countdown=${endTime!}>
+<div class="invite-friend-container" id="openWareContainer" data-countdown='${endTime!}'>
     <div class="invite-banner"></div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
@@ -33,7 +33,7 @@
 
     </div>
 
-    <div class="part part-two marginTop100">
+    <div class="part part-two marginTop100" id="getWare">
         <span class="circle left-circle"></span>
         <span class="circle right-circle"></span>
         <div class="part-title"></div>
@@ -84,32 +84,6 @@
 
 </div>
     <#include "../module/login-tip.ftl" />
-<script>
-    <#--wx.ready(function () {-->
-        <#--wx.onMenuShareAppMessage({-->
-            <#--title: '拓天HR给你一个开工红包', // 分享标题-->
-            <#--desc: '无红包，不开工！', // 分享描述-->
-            <#--link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
-            <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
-            <#--success: function () {-->
-            <#--},-->
-            <#--cancel: function () {-->
-            <#--}-->
-        <#--});-->
-
-        <#--wx.onMenuShareTimeline({-->
-            <#--title: '拓天HR给你一个开工红包', // 分享标题-->
-            <#--link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
-            <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
-            <#--success: function () {-->
-                <#--// 用户确认分享后执行的回调函数-->
-            <#--},-->
-            <#--cancel: function () {-->
-                <#--// 用户取消分享后执行的回调函数-->
-            <#--}-->
-        <#--});-->
-    <#--});-->
-</script>
     <div class="wechat-tip" style="display: none">
         <div class="open-ware-tip">
             <a class="open-now open-ware-btn" href="javascript:;"></a>
@@ -117,4 +91,9 @@
         </div>
 
     </div>
+    <script>
+        var originator = '${originator}';
+        webServer = '${webServer}';
+        commonStaticServer = '${commonStaticServer}';
+    </script>
 </@global.main>

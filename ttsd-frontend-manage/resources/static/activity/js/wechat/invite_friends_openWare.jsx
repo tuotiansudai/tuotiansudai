@@ -4,17 +4,17 @@ let commonFun= require('publicJs/commonFun');
 commonFun.calculationRem(document, window);
 
 
-
-let activityStatus = commonFun.activityStatus($('#inviteContainer'));
 let $inviteBtn = $('.invite-btn');
 let $wechatTip = $('.wechat-tip');
 let $openBtn = $('.open-btn');
-let countTime = $('#countdown').val();
+let countTime = $('#inviteContainer').data('countdown');
 
 if(countTime){
-    commonFun.countTimePop($('.time'),countTime);
+     commonFun.countTimePop($('.time'),countTime);
+    $('#getWare').show();
 }else{
-    alert("未邀请情况----");
+    $('.time').text('72:00:00');
+    $('#getWare').hide();
 }
 
 // 点击“邀请好友拆红包”，未登录时跳转到登录页面；
@@ -23,11 +23,8 @@ if(countTime){
 $inviteBtn.on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
-            if(activityStatus!== 'activity-ing') {
-                    layer.msg('不在活动时间范围内');
-            }else {
+
                 $wechatTip.show();
-            }
         })
         .fail(function () {
             location.href = '/m/login'
@@ -53,3 +50,38 @@ $openBtn.on('click',function () {
             location.href = '/m/login'
         })
 })
+
+//分享
+wx.ready(function () {
+    wx.onMenuShareAppMessage({
+        title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
+        desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
+        link: webServer+'/activity/third-anniversary/share-page?originator='+originator+'&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
+        success: function () {
+            commonFun.useAjax({
+                    url: '/activity/third-anniversary/share-invite',
+                    type: 'POST'
+                }
+            )
+        },
+
+    });
+
+    wx.onMenuShareTimeline({
+        title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
+        desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
+        link: webServer+'/activity/third-anniversary/share-page?originator='+originator+'&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
+        success: function () {
+            // 用户确认分享后执行的回调函数
+            commonFun.useAjax({
+                    url: '/activity/third-anniversary/share-invite',
+                    type: 'POST'
+                }
+            )
+        }
+    });
+});
+
+
