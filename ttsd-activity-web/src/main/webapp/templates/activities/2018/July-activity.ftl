@@ -20,7 +20,7 @@
                <div class="big-ball"></div>
                <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall"></a>
                 <@global.isNotAnonymous>
-                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>
+                    <#--<h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>-->
                <div class="my-team-logos logos-con swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper" id="myTeamLogos">
                        <script id="myTeamLogoTpl" type="text/template">
@@ -38,9 +38,9 @@
                </div>
                </@global.isNotAnonymous>
                <div class="prize">
-                   <#if topFour??>
-                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
-                   </#if>
+                   <#--<#if topFour??>-->
+                       <#--<p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>-->
+                   <#--</#if>-->
                </div>
            </div>
        </div>
@@ -57,9 +57,9 @@
                 <div class="invest-records">
     <@global.isNotAnonymous>
                     <ul class="clearfix">
-                        <li class="first">当前累计年化<span class="wap-style">投资额 <strong>1000元</strong></span></li>
-                        <li class="second">当前返现<span class="wap-style">比例 <strong>0.5%</strong> </span></li>
-                        <li class="thrid">当前返现<span class="wap-style">金额  <strong>6元</strong></span></li>
+                        <li class="first">当前累计年化<span class="wap-style">投资额 <strong><em id="myAmount"></em>元</strong></span></li>
+                        <li class="second">当前返现<span class="wap-style">比例 <strong id="currentRate"></strong> </span></li>
+                        <li class="thrid">当前返现<span class="wap-style">金额  <strong><em id="currentAward"></em>元</strong></span></li>
                     </ul>
         </@global.isNotAnonymous>
                     <div class="progress-wrap">
@@ -67,12 +67,12 @@
                             <div class="percent"><span class="percent-left"></span><span class="percent-con" style="width: 80%"><em class="ball"></em></span></div>
                         </div>
                         <div class="invest-money clearfix">
-                            <div class="fl">1111.11元</div>
-                            <div class="fr">1111.11元</div>
+                            <div class="fl"><em id="redAmount" >1111.11</em>元</div>
+                            <div class="fr"><em id="blueAmount">1111.11</em>元</div>
                         </div>
                         <div class="support-amout clearfix">
-                            <a class="support-btn red-square disabled fl" href="javascript:;" ><span>（8000人）</span></a>
-                            <a class="support-btn blue-square fr" href="javascript:;"><span>（8000人）</span></a>
+                            <a class="support-btn red-square fl" href="javascript:;" ><span>（<em id="redCount">8000</em>人）</span></a>
+                            <a class="support-btn blue-square fr" href="javascript:;"><span>（<em id="blueCount">8000</em>人）</span></a>
                         </div>
                     </div>
                 </div>
@@ -105,9 +105,8 @@
                    </div>
                    <p>3. 活动期间，帮投资用户拆红包的好友，可平分与投资用户等额的现金奖励；</p>
                    <p>4. 拆红包有效期：用户分享成功后72小时之内。</p>
-                   <div class="qrcode qrcode-pc" id="qrcodePC">
-                       <div class="code" id="qrcodeBox"><span class="logo"></span><img id="rqcodeImg" src="" alt=""></div>
-                       <span class="tips"></span>
+                   <div class="qrcode qrcode-pc">
+                       <img id="qrcodeImg" src="" alt="">
                    </div>
                    <div class="qrcpde-tip"></div>
                </div>

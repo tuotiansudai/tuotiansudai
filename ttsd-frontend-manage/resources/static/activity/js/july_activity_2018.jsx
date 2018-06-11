@@ -5,6 +5,18 @@ var tpl = require('art-template/dist/template');
 require('swiper/dist/css/swiper.css')
 require('publicJs/login_tip');
 
+//支持红方蓝方
+let $supportBtn = $('.support-btn');
+let $redSquare = $('.red-square');
+let $blueSquare = $('.blue-square');
+let $redAmount = $('#redAmount');
+let $blueAmount = $('#blueAmount');
+let $redCount = $('#redCount');
+let $blueCount = $('#blueCount');
+let $myAmount = $('#myAmount');
+let $currentRate = $('#currentRate');
+let $currentAward = $('#currentAward');//返现
+
 let sourceKind = globalFun.parseURL(location.href);
 let equipment = globalFun.equipment();
 let url;
@@ -21,20 +33,8 @@ if($(document).width() <= 1024){
 }else {
     slideLen = 5;
 }
-
-let $qrcodeBox = $('#qrcodeBox');
-let qrcodeWidth = $('#qrcodeBox').width();
-let qrcodeHeight = $('#qrcodeBox').height();
-$qrcodeBox.qrcode({
-    text: url + '/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
-    width: qrcodeWidth,
-    height: qrcodeHeight,
-    colorDark: '#1e272e',
-    colorLight: '#ffffff',
-}).find('canvas').hide();
-var canvas = $qrcodeBox.find('canvas').get(0);
-$('#rqcodeImg').attr('src', canvas.toDataURL('image/jpg'))
-
+let qrcodeUrl = require('../images/2018/july-activity/qrcode.png');
+$('#qrcodeImg').attr('src',qrcodeUrl);
 let teamName = {
     'aiji':'埃及队',
     'deguo':'德国队',
@@ -159,6 +159,106 @@ function toLogin(){
         });
     }
 
+}
+
+
+//点击支持按钮
+$supportBtn.on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let _self = $(this);
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            if(_self.hasClass('disabled')||_self.hasClass('already_support')){
+                layer.msg('您已支持！')
+                return;
+            }
+            let url;
+            if(_self.hasClass('red-square')){
+                url = '/activity/third-anniversary/select?isRed=true';
+            }else if(_self.hasClass('blue-square')){
+                url = '/activity/third-anniversary/select?isRed=false';
+            }
+            commonFun.useAjax({
+                    url: url,
+                    type: 'POST'
+                }, function (res) {
+                    if(res.status == true){
+                        $redAmount.text(res.data.redAmount);
+                        $blueAmount.text(res.data.blueAmount);
+                        $redCount.text(res.data.redCount);
+                        $blueCount.text(res.data.blueCount);
+                        $myAmount.text(res.data.myAmount);
+                        $currentRate.text(res.data.currentRate);
+                        $currentAward.text(res.data.currentAward);
+                        let percent = res.data.redAmount/res.data.redAmount+res.data.blueAmount;
+                        $('.percent-con').css('width',percent);
+                        if(selectResult == 'RED'||selectResult == 'BLUE'){
+                            _self.addClass('disabled');
+                            layer.msg('支持成功！')
+                        }
+
+                        // res.data
+                        // "redAmount":"红方总额",
+                        //     "blueAmount":"蓝方总额",
+                        //     "redCount":"红方支持总人数",
+                        //     "blueCount":"蓝方支持总人数",
+                        //     "isSelect":true/false,  //是否选择
+                        //     "selectResult":"RED"/"BLUE", //选择方
+                        //     "myAmount":2,     //我的总年化投资额
+                        //     "currentRate":"0.5%",
+                            // "currentAward":"23.12"
+                    }else {
+                        layer.msg('支持失败')
+                    }
+
+                }
+            )
+
+        })
+        .fail(function () {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        })
+})
+supportSquare();
+//判断选择的是哪一方
+function supportSquare(){
+    commonFun.useAjax({
+        url:'/activity/third-anniversary/select-result',
+        type: 'GET'
+    },function (res) {
+        if(res.status == true){
+            $.when(commonFun.isUserLogin())
+                .done(function () {
+                    if(res.data.selectResult == 'RED'){
+                        $redSquare.addClass('already_support');
+                        $blueSquare.addClass('disabled');
+                    }else if(res.data.selectResult == 'BLUE'){
+                        $blueSquare.addClass('already_support');
+                        $redSquare.addClass('disabled');
+                    }
+                    $redAmount.text(res.data.redAmount);
+                    $blueAmount.text(res.data.blueAmount);
+                    $redCount.text(res.data.redCount);
+                    $blueCount.text(res.data.blueCount);
+                    $myAmount.text(res.data.myAmount);
+                    $currentRate.text(res.data.currentRate);
+                    $currentAward.text(res.data.currentAward);
+                    let percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
+                   
+                    $('.percent-con').css('width',percent+'%');
+                })
+
+        }
+
+
+    })
 }
 
 
