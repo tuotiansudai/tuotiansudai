@@ -1,6 +1,6 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="520元开工红包">
+<@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!">
 
 <div class="invite-friend-container" id="inviteContainer" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
     <div class="invite-banner"></div>

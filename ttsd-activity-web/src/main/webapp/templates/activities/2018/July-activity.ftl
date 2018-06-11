@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='答题赢加"薪"_学霸升值季_拓天速贷' keywords="拓天速贷,答题赢加薪,邀请好友,返现奖励" description='拓天速贷答题赢加"薪"活动,用户每日答题,投资可获得年化0.2%-0.6%返现奖励,完成答题赠送最高0.5%加息券,分享答题、邀请好友注册、投资还可增加年化返现,返现+加息高至2%.'>
+<@global.main pageCss="${css.july_activity_2018}" pageJavascript="${js.july_activity_2018}" activeNav="" activeLeftNav="" title='拓天速贷3周年庆_集世界杯队标_平分现金奖池' keywords="拓天速贷,8888元现金奖池,888世界杯奖池,阴历阳历生日之争,生日红包" description='拓天速贷3周年庆,集世界杯队标,平分现金奖池,阴历阳历生日之争可获得其活动期间累计投资额(年化)的0.5%-0.8%返现奖励,分享专享现金红包给好友,还可获得其活动期间累计投资额(年化)的0.1%-0.5%返现奖励.'>
 <div class="july-banner">
 </div>
 <div class="july-container" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
