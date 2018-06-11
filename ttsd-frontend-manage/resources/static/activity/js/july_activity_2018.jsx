@@ -77,38 +77,38 @@ $('#openBall').on('click',function () {
             if(activityStatus!== 'activity-ing') {
                 layer.msg('不在活动时间范围内');
             }else {
-                // commonFun.useAjax({
-                //     url: '/activity/third-anniversary/draw',
-                //     type: 'POST'
-                // }, function (res) {
-                //     if(res.status == true){
-                //         $('#rankTable').append(tpl('rankTableTpl', res.data));
-                //     }else {
-                //         layer.msg(res.message)
-                //     }
-                //
-                // }
-                // )
+                commonFun.useAjax({
+                    url: '/activity/third-anniversary/draw',
+                    type: 'POST'
+                }, function (res) {
+                    if(res.status == true){
+                        // let data = [
+                        //     {
+                        //         "loginName":"",
+                        //         "teamName":"aiji",
+                        //         "teamCount":2
+                        //     },
+                        //     {
+                        //         "loginName":"",
+                        //         "teamName":"deguo",
+                        //         "teamCount":1
+                        //     }
+                        // ];
+                        let records = {
+                            list:res.data,
+                            teamName:teamName
+                        }
+                        $('#getLogos').html(tpl('getLogoTpl', records));
 
-                let data = [
-                    {
-                        "loginName":"",
-                        "teamName":"aiji",
-                        "teamCount":2
-                    },
-                    {
-                        "loginName":"",
-                        "teamName":"deguo",
-                        "teamCount":1
+                        $('.tip-wrap').show();
+                    }else {
+                        layer.msg(res.message)
                     }
-                ];
-                let records = {
-                    list:data,
-                    teamName:teamName
-                }
-                $('#getLogos').html(tpl('getLogoTpl', records));
 
-                $('.tip-wrap').show();
+                }
+                )
+
+
             }
         })
         .fail(function () {
@@ -131,97 +131,98 @@ $.when(commonFun.isUserLogin())
     })
 
 function getMyTeamLogos(){
-    // commonFun.useAjax({
-    //     url: '/activity/third-anniversary/prizes',
-    //     type: 'GET'
-    // }, function (res) {
-    //     if(res.status == true){
-    //         $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
-    //     }else {
-    //         layer.msg(res.message)
-    //     }
-    //
-    // }
-    // )
+    commonFun.useAjax({
+        url: '/activity/third-anniversary/prizes',
+        type: 'GET'
+    }, function (res) {
+        if(res.status == true){
 
-    let data = [
-        {
-            "loginName":"",
-            "teamName":"aiji",
-            "teamCount":2
-        },
-        {
-            "loginName":"",
-            "teamName":"deguo",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"wulagui",
-            "teamCount":1
-        },{
-            "loginName":"",
-            "teamName":"aiji",
-            "teamCount":2
-        },
-        {
-            "loginName":"",
-            "teamName":"deguo",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"wulagui",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"aiji",
-            "teamCount":2
-        },
-        {
-            "loginName":"",
-            "teamName":"deguo",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"wulagui",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"aiji",
-            "teamCount":2
-        },
-        {
-            "loginName":"",
-            "teamName":"deguo",
-            "teamCount":1
-        },
-        {
-            "loginName":"",
-            "teamName":"wulagui",
-            "teamCount":1
+            // let data = [
+            //     {
+            //         "loginName":"",
+            //         "teamName":"aiji",
+            //         "teamCount":2
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"deguo",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"wulagui",
+            //         "teamCount":1
+            //     },{
+            //         "loginName":"",
+            //         "teamName":"aiji",
+            //         "teamCount":2
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"deguo",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"wulagui",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"aiji",
+            //         "teamCount":2
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"deguo",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"wulagui",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"aiji",
+            //         "teamCount":2
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"deguo",
+            //         "teamCount":1
+            //     },
+            //     {
+            //         "loginName":"",
+            //         "teamName":"wulagui",
+            //         "teamCount":1
+            //     }
+            // ];
+            let records = {
+                list:res.data,
+                teamName:teamName
+            }
+            $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
+            var mySwiper = new Swiper ('.my-team-logos', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay:0,
+                slidesPerGroup: slideLen,
+                slidesPerView:slideLen,
+                nextButton: '.nextBtn',
+                prevButton: '.prevBtn',
+                freeMode:true,
+                pagination : '.swiper-pagination',
+                paginationClickable:true
+            });
+        }else {
+            layer.msg(res.message)
         }
-    ];
-    let records = {
-        list:data,
-        teamName:teamName
+
     }
-    $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
-    var mySwiper = new Swiper ('.my-team-logos', {
-        direction: 'horizontal',
-        loop: true,
-        autoplay:0,
-        slidesPerGroup: slideLen,
-        slidesPerView:slideLen,
-        nextButton: '.nextBtn',
-        prevButton: '.prevBtn',
-        freeMode:true,
-        pagination : '.swiper-pagination',
-        paginationClickable:true
-    });
+    )
+
+
 
 }
 function toLogin(){

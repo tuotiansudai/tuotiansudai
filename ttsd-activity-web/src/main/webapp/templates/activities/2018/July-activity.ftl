@@ -20,7 +20,7 @@
                <div class="big-ball"></div>
                <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall"></a>
                 <@global.isNotAnonymous>
-               <h2 class="my-logo collected-all">我的对标</h2>
+                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>
                <div class="my-team-logos logos-con swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper" id="myTeamLogos">
                        <script id="myTeamLogoTpl" type="text/template">
