@@ -21,20 +21,8 @@ if($(document).width() <= 1024){
 }else {
     slideLen = 5;
 }
-
-let $qrcodeBox = $('#qrcodeBox');
-let qrcodeWidth = $('#qrcodeBox').width();
-let qrcodeHeight = $('#qrcodeBox').height();
-$qrcodeBox.qrcode({
-    text: url + '/we-chat/active/authorize?redirect=/activity/super-scholar/view/question',
-    width: qrcodeWidth,
-    height: qrcodeHeight,
-    colorDark: '#1e272e',
-    colorLight: '#ffffff',
-}).find('canvas').hide();
-var canvas = $qrcodeBox.find('canvas').get(0);
-$('#rqcodeImg').attr('src', canvas.toDataURL('image/jpg'))
-
+let qrcodeUrl = require('../images/2018/july-activity/qrcode_tip.png');
+$('#qrcodeImg').attr('src',qrcodeUrl);
 let teamName = {
     'aiji':'埃及队',
     'deguo':'德国队',
@@ -168,7 +156,9 @@ let $blueAomunt = $('#blueAmount');
 let $redCount = $('#redCount');
 let $blueCount = $('#blueCount');
 //点击支持按钮
-$supportBtn.on('click',function () {
+$supportBtn.on('click',function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     let _self = $(this);
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -206,7 +196,7 @@ $supportBtn.on('click',function () {
                         //     "currentRate":"0.5%",
                             // "currentAward":"23.12"
                     }else {
-                        layer.msg(res.message)
+                        layer.msg('支持失败')
                     }
 
                 }

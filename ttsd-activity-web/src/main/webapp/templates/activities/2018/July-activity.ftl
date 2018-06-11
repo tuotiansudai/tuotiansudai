@@ -20,7 +20,7 @@
                <div class="big-ball"></div>
                <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall"></a>
                 <@global.isNotAnonymous>
-                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>
+                    <#--<h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>-->
                <div class="my-team-logos logos-con swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper" id="myTeamLogos">
                        <script id="myTeamLogoTpl" type="text/template">
@@ -38,9 +38,9 @@
                </div>
                </@global.isNotAnonymous>
                <div class="prize">
-                   <#if topFour??>
-                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
-                   </#if>
+                   <#--<#if topFour??>-->
+                       <#--<p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>-->
+                   <#--</#if>-->
                </div>
            </div>
        </div>
@@ -105,9 +105,8 @@
                    </div>
                    <p>3. 活动期间，帮投资用户拆红包的好友，可平分与投资用户等额的现金奖励；</p>
                    <p>4. 拆红包有效期：用户分享成功后72小时之内。</p>
-                   <div class="qrcode qrcode-pc" id="qrcodePC">
-                       <div class="code" id="qrcodeBox"><span class="logo"></span><img id="rqcodeImg" src="" alt=""></div>
-                       <span class="tips"></span>
+                   <div class="qrcode qrcode-pc">
+                       <img id="qrcodeImg" src="" alt="">
                    </div>
                    <div class="qrcpde-tip"></div>
                </div>

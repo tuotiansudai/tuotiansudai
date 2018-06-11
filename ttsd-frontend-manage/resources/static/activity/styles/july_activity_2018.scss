@@ -400,36 +400,18 @@ body {
         }
       }
       .qrcode  {
-        width: 326px;
+        width: 324px;
         height: 326px;
         margin: 0 auto;
         padding-top: 18px;
         box-sizing: border-box;
-        .code {
-          position: relative;
-          width: 284px;
-          height: 284px;
-          margin: 0 auto;
-          .logo {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            width: 77px;
-            height: 75px;
-            margin: auto;
-            background: url("../images/2018/july-activity/logo.png") no-repeat center center;
-            background-size: 100%;
-          }
-        }
+        background: url("../images/2018/july-activity/qrcode.png") no-repeat center center;
+        background-size: 100%;
       }
       .qrcpde-tip {
         width: 186px;
         height: 28px;
         margin: 0 auto;
-        background: url("../images/2018/july-activity/qrcode_tip.png") no-repeat center center;
-        background-size: 100%;
       }
     }
   }
@@ -973,7 +955,7 @@ body {
           height: 0.74rem;
           span {
             font-size: 0.18rem;
-            margin-top: 0.18rem;
+            margin-top: 0.02rem;
 
           }
           &.red-square {
@@ -983,7 +965,7 @@ body {
               padding-right: 0.25rem;
             }
             &.disabled {
-              background: url("../images/2018/july-activity/wap_red_squre_disabled.png.png") no-repeat;
+              background: url("../images/2018/july-activity/wap_red_squre_disabled.png") no-repeat;
               background-size: contain;
             }
             &.already_support {
@@ -1076,15 +1058,6 @@ body {
           width: 1.9rem;
           height: 1.9rem;
           padding-top: 0.1rem;
-          .code {
-            position: relative;
-            width: 1.7rem;
-            height: 1.7rem;
-            .logo {
-              width: 0.46rem;
-              height: 0.46rem;
-            }
-          }
         }
         .qrcpde-tip {
           width: 1.49rem;
