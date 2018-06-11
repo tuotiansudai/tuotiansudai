@@ -57,9 +57,9 @@
                 <div class="invest-records">
     <@global.isNotAnonymous>
                     <ul class="clearfix">
-                        <li class="first">当前累计年化<span class="wap-style">投资额 <strong>1000元</strong></span></li>
-                        <li class="second">当前返现<span class="wap-style">比例 <strong>0.5%</strong> </span></li>
-                        <li class="thrid">当前返现<span class="wap-style">金额  <strong>6元</strong></span></li>
+                        <li class="first">当前累计年化<span class="wap-style">投资额 <strong><em id="myAmount"></em>元</strong></span></li>
+                        <li class="second">当前返现<span class="wap-style">比例 <strong id="currentRate"></strong> </span></li>
+                        <li class="thrid">当前返现<span class="wap-style">金额  <strong><em id="currentAward"></em>元</strong></span></li>
                     </ul>
         </@global.isNotAnonymous>
                     <div class="progress-wrap">
@@ -67,12 +67,12 @@
                             <div class="percent"><span class="percent-left"></span><span class="percent-con" style="width: 80%"><em class="ball"></em></span></div>
                         </div>
                         <div class="invest-money clearfix">
-                            <div class="fl">1111.11元</div>
-                            <div class="fr">1111.11元</div>
+                            <div class="fl"><em id="redAmount" >1111.11</em>元</div>
+                            <div class="fr"><em id="blueAmount">1111.11</em>元</div>
                         </div>
                         <div class="support-amout clearfix">
-                            <a class="support-btn red-square disabled fl" href="javascript:;" ><span>（8000人）</span></a>
-                            <a class="support-btn blue-square fr" href="javascript:;"><span>（8000人）</span></a>
+                            <a class="support-btn red-square fl" href="javascript:;" ><span>（<em id="redCount">8000</em>人）</span></a>
+                            <a class="support-btn blue-square fr" href="javascript:;"><span>（<em id="blueCount">8000</em>人）</span></a>
                         </div>
                     </div>
                 </div>

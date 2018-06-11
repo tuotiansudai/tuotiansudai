@@ -82,18 +82,6 @@ $('#openBall').on('click',function () {
                     type: 'POST'
                 }, function (res) {
                     if(res.status == true){
-                        // let data = [
-                        //     {
-                        //         "loginName":"",
-                        //         "teamName":"aiji",
-                        //         "teamCount":2
-                        //     },
-                        //     {
-                        //         "loginName":"",
-                        //         "teamName":"deguo",
-                        //         "teamCount":1
-                        //     }
-                        // ];
                         let records = {
                             list:res.data,
                             teamName:teamName
@@ -239,5 +227,69 @@ function toLogin(){
     }
 
 }
+
+//支持红方蓝方
+let $supportBtn = $('.support-btn');
+let $redAomunt = $('#redAmount');
+let $blueAomunt = $('#blueAmount');
+let $redCount = $('#redCount');
+let $blueCount = $('#blueCount');
+//点击支持按钮
+$supportBtn.on('click',function () {
+    let _self = $(this);
+    $.when(commonFun.isUserLogin())
+        .done(function () {
+            if(_self.hasClass('disabled')){
+                return;
+            }
+            let url;
+            if(_self.hasClass('red-square')){
+                url = '/activity/third-anniversary/select?isRed=true';
+            }else if(_self.hasClass('blue-square')){
+                url = '/activity/third-anniversary/select?isRed=false';
+            }
+            commonFun.useAjax({
+                    url: url,
+                    type: 'POST'
+                }, function (res) {
+                    if(res.status == true){
+                        $redAomunt.text(res.data.redAmount);
+                        $blueAmount.text(res.data.blueAmount);
+                        $redCount.text(res.data.redCount);
+                        $blueCount.text(res.data.blueCount);
+                        if(selectResult == 'RED'||selectResult == 'BLUE'){
+                            _self.addClass('disabled');
+                            layer.msg('支持成功！')
+                        }
+
+                        // res.data
+                        // "redAmount":"红方总额",
+                        //     "blueAmount":"蓝方总额",
+                        //     "redCount":"红方支持总人数",
+                        //     "blueCount":"蓝方支持总人数",
+                        //     "isSelect":true/false,  //是否选择
+                        //     "selectResult":"RED"/"BLUE", //选择方
+                        //     "myAmount":2,     //我的总年化投资额
+                        //     "currentRate":"0.5%",
+                            // "currentAward":"23.12"
+                    }else {
+                        layer.msg(res.message)
+                    }
+
+                }
+            )
+
+        })
+        .fail(function () {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                content: $('#loginTip')
+            });
+        })
+})
+//判断选择的是哪一方
 
 
