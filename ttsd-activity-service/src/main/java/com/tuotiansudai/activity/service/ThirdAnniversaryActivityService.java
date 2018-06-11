@@ -179,10 +179,8 @@ public class ThirdAnniversaryActivityService {
         return map;
     }
 
-    public BaseResponse<Map<String, Object>> getTeamLogos(String loginName) {
-        Map<String, Object> map = this.getTopFourTeam(loginName);
-        map.put("prizes", thirdAnniversaryDrawMapper.findByLoginName(loginName));
-        return new BaseResponse<Map<String, Object>>(map);
+    public BaseResponse<List<ThirdAnniversaryDrawModel>> getTeamLogos(String loginName) {
+        return new BaseResponse<List<ThirdAnniversaryDrawModel>>(thirdAnniversaryDrawMapper.findByLoginName(loginName));
     }
 
     public BaseResponse draw(String loginName) {
