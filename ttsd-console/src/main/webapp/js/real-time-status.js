@@ -1,7 +1,7 @@
 require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], function ($) {
 
-    $('#businessType').selectpicker();
-    $('#merDate').datetimepicker({
+    $('#tradeType').selectpicker();
+    $('#orderDate').datetimepicker({
         format: 'YYYY-MM-DD',
         maxDate: 'now',
         ignoreReadonly: true
@@ -10,25 +10,20 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
     $('.btnSearch').click(function(){
         var type = $('select[name="type"]').val();
 
-        var queryParam = "type=" + type;
-
         if (type === 'user') {
             location.href = "/finance-manage/real-time-status/user?loginNameOrMobile=" + $('input[name="loginNameOrMobile"]').val();
-            return false;
         }
 
         if (type === 'loan') {
             location.href = "/finance-manage/real-time-status/loan?loanId=" + $('input[name="loanId"]').val();
-            return false;
         }
 
-        if (type === 'transfer') {
-            queryParam += '&' + "orderId=" +  $('input[name="order-id"]').val();
-            queryParam += '&' + "merDate=" +  $('input[name="mer-date"]').val();
-            queryParam += '&' + "businessType=" +  $('select[name="business-type"]').val();
+        if (type === 'trade') {
+            location.href = "/finance-manage/real-time-status/trade?orderNo={orderNo}&orderDate={orderDate}&queryTradeType={queryTradeType}"
+                .replace("{orderNo}", $('input[name="orderNo"]').val())
+                .replace("{orderDate}", $('input[name="orderDate"]').val())
+                .replace("{queryTradeType}", $('select[name="queryTradeType"]').val());
         }
-
-        location.href = "?" + queryParam;
         return false;
     });
 
@@ -48,7 +43,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
             $("div.loan").show();
         }
 
-        if (selected === 'transfer') {
+        if (selected === 'trade') {
             $("div.transfer").show();
         }
     });

@@ -70,12 +70,6 @@ public class SmsController {
         return smsService.newUserGetGiveMembership(notifyDto.getMobile(), notifyDto.getLevel());
     }
 
-    @RequestMapping(value = "/platform-balance-low-notify", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> platformBalanceLowNotify(@RequestBody PlatformBalanceLowNotifyDto notifyDto) {
-        return smsService.platformBalanceLowNotify(notifyDto.getMobiles(), notifyDto.getWarningLine());
-    }
-
     @RequestMapping(value = "/generate-contract-error-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> generateContractErrorNotify(@RequestBody GenerateContractErrorNotifyDto notifyDto) {

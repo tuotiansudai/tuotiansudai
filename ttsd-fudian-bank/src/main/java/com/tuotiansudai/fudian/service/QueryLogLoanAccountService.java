@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.request.QueryLogLoanAccountRequestDto;
+import com.tuotiansudai.fudian.dto.response.QueryLogLoanAccountContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
@@ -28,7 +29,8 @@ public class QueryLogLoanAccountService {
         this.bankClient = bankClient;
     }
 
-    public ResponseDto query(String loanTxNo, String loanAccNo) {
+    @SuppressWarnings("unchecked")
+    public ResponseDto<QueryLogLoanAccountContentDto> query(String loanTxNo, String loanAccNo) {
         QueryLogLoanAccountRequestDto dto = new QueryLogLoanAccountRequestDto(loanAccNo, loanTxNo);
 
         signatureHelper.sign(API_TYPE, dto);
@@ -39,10 +41,9 @@ public class QueryLogLoanAccountService {
         String responseData = bankClient.send(API_TYPE, dto.getRequestData());
 
         if (!signatureHelper.verifySign(responseData)) {
-            logger.warn("[query log loan account] failed to verify sign, loanTxNo: {}, loanAccNo: {}, response: {}", loanTxNo, loanAccNo, responseData);
             return null;
         }
 
-        return API_TYPE.getParser().parse(responseData);
+        return (ResponseDto<QueryLogLoanAccountContentDto>) API_TYPE.getParser().parse(responseData);
     }
 }

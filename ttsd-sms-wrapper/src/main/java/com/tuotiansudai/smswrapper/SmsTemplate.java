@@ -35,10 +35,6 @@ public enum SmsTemplate {
             new SmsTemplateCell("SMS_45630075", "异常报告，环境：${param0}，错误码：${param1}。请尽快处理。"),
             null),
 
-    SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE(
-            new SmsTemplateCell("SMS_45340002", "系统账户余额不足 ${param0} 元，请立刻充值！"),
-            null),
-
     SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE(
             new SmsTemplateCell("SMS_118645015", "亲爱的用户，您投资的新手体验项目所得${param0}元投资红包奖励已发放，快来激活奖励吧！"),
             null),
