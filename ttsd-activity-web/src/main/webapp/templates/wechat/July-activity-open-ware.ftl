@@ -2,19 +2,24 @@
 
 <@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="520元开工红包">
 
-<div class="invite-friend-container" id="inviteContainer" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
+<div class="invite-friend-container" id="inviteContainer" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03" data-countdown=${endTime!}>
     <div class="invite-banner"></div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
         <div class="invite-wrap">
             <a class="open-btn circle-btn" href="javascript:;"></a>
-
+            <#if isHelp>
+                <p>您已经参与了拆红包<br/>
+                    目前可瓜分现金${reward}元<br/>
+                    活动结束后发放至拓天速贷个人账户
+                </p>
+            <#else>
                 <p>您的好友邀请您拆红包<br/>
                     共同瓜分<br/>
-                    最高500.00 的现金
+                    最高${reward}的现金
                 </p>
+            </#if>
                 <a class="to-join-btn" href="javascript:;"></a>
-
         </div>
     </div>
     <div class="part part-one marginTop100">
@@ -34,9 +39,13 @@
         <div class="part-title"></div>
         <div class="main-content">
             <ul>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
+                <ul>
+                    <#if helpFriend!?if_exists?size !=0 >
+                        <#list helpFriend as friend>
+                            <li class="clearfix"><div class="fl"><#if friend.mobile>${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</#if></div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
+                        </#list>
+                    </#if>
+                </ul>
             </ul>
         </div>
 

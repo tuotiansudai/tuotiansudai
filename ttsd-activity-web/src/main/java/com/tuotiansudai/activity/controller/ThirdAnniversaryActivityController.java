@@ -7,6 +7,7 @@ import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,7 @@ public class ThirdAnniversaryActivityController {
     public ModelAndView thirdAnniversary() {
         ModelAndView modelAndView = new ModelAndView("/activities/2018/july-activity", "responsive", true);
         modelAndView.addAllObjects(thirdAnniversaryActivityService.getTopFourTeam(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("drawCount", thirdAnniversaryActivityService.unUserDrawCount(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 
@@ -70,6 +72,7 @@ public class ThirdAnniversaryActivityController {
         modelAndView.addAllObjects(thirdAnniversaryActivityService.invite(LoginUserInfo.getLoginName()));
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
+        modelAndView.addObject("originator", LoginUserInfo.getLoginName());
         return modelAndView;
     }
 
@@ -82,9 +85,17 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(value = "/share-page", method = RequestMethod.GET)
     public ModelAndView sharePage(@RequestParam(value = "originator") String originator){
+        String loginName = LoginUserInfo.getLoginName();
+        if(Strings.isNullOrEmpty(loginName)){
+            return new ModelAndView("redirect:/m/login?redirect=/activity/third-anniversary/share-page");
+        }
+        if(loginName.equals(originator)){
+            return new ModelAndView("redirect:/activity/third-anniversary/invite-page");
+        }
+
         ModelAndView modelAndView = new ModelAndView();
-        Map<String, Object> map = thirdAnniversaryActivityService.sharePage(LoginUserInfo.getLoginName(), originator);
-        if(map.isEmpty()){
+        Map<String, Object> map = thirdAnniversaryActivityService.sharePage(loginName, originator);
+        if(CollectionUtils.isEmpty(map)){
             modelAndView.setViewName("/error/error-info-page");
             modelAndView.addObject("errorInfo", "无效推荐链接");
             return modelAndView;
@@ -100,7 +111,7 @@ public class ThirdAnniversaryActivityController {
         String loginName = LoginUserInfo.getLoginName();
         if (Strings.isNullOrEmpty(loginName)){
             request.getSession().setAttribute("channel", "thirdAnniversary");
-            return new ModelAndView(String.format("redirect:/we-chat/entry-point?redirect=/activity/third-anniversary/open-red-envelope?originator=%s", originator));
+            return new ModelAndView(String.format("redirect:/m/login?redirect=/activity/third-anniversary/open-red-envelope?originator=%s", originator));
         }
 
         if (!thirdAnniversaryActivityService.isActivityRegister(loginName)){

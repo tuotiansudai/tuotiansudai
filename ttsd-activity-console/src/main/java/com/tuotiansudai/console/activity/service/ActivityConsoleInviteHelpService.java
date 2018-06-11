@@ -68,7 +68,7 @@ public class ActivityConsoleInviteHelpService {
         if (weChatHelpType == WeChatHelpType.THIRD_ANNIVERSARY_HELP){
             weChatHelpViews = weChatHelpMapper.findByKeyWord(KeyWord, minInvest, maxInvest, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
             weChatHelpViews.forEach(view->{
-                List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(view.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name(), activityStartTime, view.getEndTime());
+                List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(view.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, view.getEndTime());
                 long annualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long investAmount = investModels.stream().mapToLong(ActivityInvestModel::getInvestAmount).sum();
                 view.setInvestAmount(investAmount);
