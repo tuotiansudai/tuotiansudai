@@ -136,6 +136,10 @@ public enum AsyncUmPayService {
      */
     NORMAL_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "normal_repay_notify", ""),
 
+    /**
+     * 慧租奢侈品分期无密还款
+     */
+    LUXURY_STAGE_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "{0}/luxury/{1}/period/{2}/stage-purchase-success-nopwd", "luxury_stage_repay_notify", ""),
 
     /**
      * 个人账户充值
