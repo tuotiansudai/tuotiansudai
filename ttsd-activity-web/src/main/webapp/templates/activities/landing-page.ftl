@@ -255,10 +255,10 @@
                                     <form id="countForm" action="" class="clearfix">
                                         <ul>
                                             <li><label>投资金额：</label>
-                                                <div class="border-section"><input type="text" name="money" id="moneyNum"><span>元</span></div>
+                                                <div class="border-section"><input type="text" maxlength="9" name="money" id="moneyNum"><span>元</span></div>
                                             </li>
                                             <li><label>项目期限：</label>
-                                                <div class="border-section"><input type="text" name="day" maxlength="6" id="dayNum"><span>天</span></div>
+                                                <div class="border-section"><input type="text" name="day" maxlength="3" id="dayNum"><span>天</span></div>
                                             </li>
                                             <li class="rate-li"><label>约定年化利率：</label>
                                                 <div class="border-section"><input type="text" name="rate" id="rateNum"><span>%</span></div>

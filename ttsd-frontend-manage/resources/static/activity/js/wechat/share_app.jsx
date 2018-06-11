@@ -31,7 +31,7 @@ $('#fuliList').find('.swiper-slide').each(function (index,item) {
 var mySwiper = new Swiper ('#fuliList', {
     direction: 'horizontal',
     loop: true,
-    autoplay:5000,
+    autoplay:3000,
     autoplayDisableOnInteraction:false,
     slidesPerView: 'auto',
     centeredSlides:true,

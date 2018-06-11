@@ -45,8 +45,8 @@ if($('#fuliList').length){
     var mySwiper = new Swiper ('#fuliList', {
         direction: 'horizontal',
         loop: true,
-        autoplay:5000,
-        speed:10000,
+        autoplay:3000,
+        // speed:10000,
         autoplayDisableOnInteraction:false,
         slidesPerView: 'auto',
         centeredSlides:true,
