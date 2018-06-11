@@ -30,8 +30,8 @@ public class WeChatServiceImpl implements WeChatService {
 
     private final WeChatClient weChatClient = WeChatClient.getClient();
 
-//    @Value(value = "${wechat.authorize.callback}")
-    private String authorizeCallback = "http://192.168.80.88:6099/we-chat/authorize-callback";
+    @Value(value = "${wechat.authorize.callback}")
+    private String authorizeCallback;
 
     private final WeChatUserMapper weChatUserMapper;
 

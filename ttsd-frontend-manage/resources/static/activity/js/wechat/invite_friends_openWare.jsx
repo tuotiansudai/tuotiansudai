@@ -7,16 +7,28 @@ commonFun.calculationRem(document, window);
 let $inviteBtn = $('.invite-btn');
 let $wechatTip = $('.wechat-tip');
 let $openBtn = $('.open-btn');
-let countTime = $('#inviteContainer').data('countdown');
 
-if(countTime){
-     commonFun.countTimePop($('.time'),countTime);
-    $('#getWare').show();
-}else{
-    $('.time').text('72:00:00');
-    $('#getWare').hide();
+if($('#inviteContainer').length){
+    let countTime = $('#inviteContainer').data('countdown');
+    if(countTime){
+        commonFun.countTimePop($('.time'),countTime);
+        $('#getWare').show();
+    }else{
+        $('.time').text('72:00:00');
+        $('#getWare').hide();
+    }
 }
 
+if($('#openWareContainer').length){
+    let countTimeWare = $('#openWareContainer').data('countdown');
+    if(countTimeWare){
+        commonFun.countTimePop($('.time'),countTimeWare);
+        $('#getWare').show();
+    }else{
+        $('.time').text('72:00:00');
+        $('#getWare').hide();
+    }
+}
 // 点击“邀请好友拆红包”，未登录时跳转到登录页面；
 //
 // 已登录时点击“邀请好友拆红包”button，页面弹窗提示“活动期间内只有一次机会，是否确认邀请？”点击取消弹窗消失停留在当前页，点击确认，页面弹窗提示右上角分享，点击“我知道了”弹窗消失；
@@ -40,17 +52,16 @@ $('.to-join-btn').on('click',function () {
 $openBtn.on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
-            if(activityStatus!== 'activity-ing') {
-                layer.msg('不在活动时间范围内');
-            }else {
                 $wechatTip.show();
-            }
         })
         .fail(function () {
             location.href = '/m/login'
         })
 })
-
+//先不拆了
+$('.no-open').on('click',function () {
+    $wechatTip.hide();
+})
 //分享
 wx.ready(function () {
     wx.onMenuShareAppMessage({
@@ -59,11 +70,14 @@ wx.ready(function () {
         link: webServer+'/activity/third-anniversary/share-page?originator='+originator+'&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
         success: function () {
-            commonFun.useAjax({
-                    url: '/activity/third-anniversary/share-invite',
-                    type: 'POST'
-                }
-            )
+            if($('#inviteContainer').length){
+                commonFun.useAjax({
+                        url: '/activity/third-anniversary/share-invite',
+                        type: 'POST'
+                    }
+                )
+            }
+
         },
 
     });
@@ -75,11 +89,13 @@ wx.ready(function () {
         imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
         success: function () {
             // 用户确认分享后执行的回调函数
-            commonFun.useAjax({
-                    url: '/activity/third-anniversary/share-invite',
-                    type: 'POST'
-                }
-            )
+            if($('#inviteContainer').length){
+                commonFun.useAjax({
+                        url: '/activity/third-anniversary/share-invite',
+                        type: 'POST'
+                    }
+                )
+            }
         }
     });
 });

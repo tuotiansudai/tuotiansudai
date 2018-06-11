@@ -287,12 +287,13 @@ public class ThirdAnniversaryActivityService {
 
         long sumAnnualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(originator, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, models.get(0).getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
         List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
+        boolean isHelp = helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName));
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("originator", models.get(0).getUserName())
                 .put("endTime", new DateTime(models.get(0).getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
-                .put("isHelp", helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName)))
+                .put("isHelp", isHelp)
                 .put("helpFriend", helpInfoModels)
-                .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * rates.get(helpInfoModels.size()))))
+                .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * (isHelp ? rates.get(helpInfoModels.size()) : 0.005D))))
                 .build());
     }
 

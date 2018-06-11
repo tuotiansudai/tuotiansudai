@@ -70,28 +70,36 @@ let teamName = {
     'yinggelan':'英格兰队'
 
 }
+
+if($('#openBallContent').data('drawCount') == 0){
+    $('#openBall').hide();
+    $('#toInvestBtn').show();
+}else {
+    $('#openBall').show();
+    $('#toInvestBtn').hide();
+}
 $('#openBall').on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
             commonFun.useAjax({
-                    url: '/activity/third-anniversary/draw',
-                    type: 'POST'
-                }, function (res) {
-                    if (res.status == true) {
-                        let records = {
-                            list: res.data,
-                            teamName: teamName
-                        }
-                        $('#getLogos').html(tpl('getLogoTpl', records));
-
-                        $('.tip-wrap').show();
-                        getMyTeamLogos();
-                        $('#openBall').addClass("to_invest_btn");
-                    } else {
-                        layer.msg(res.message)
+                url: '/activity/third-anniversary/draw',
+                type: 'POST'
+            }, function (res) {
+                if (res.status == true) {
+                    let records = {
+                        list: res.data,
+                        teamName: teamName
                     }
+                    $('#getLogos').html(tpl('getLogoTpl', records));
+
+                    $('.tip-wrap').show();
+                    getMyTeamLogos();
+                    $('#toInvestBtn').show();
+                    $('#openBall').hide();
+                } else {
+                    layer.msg(res.message)
                 }
-            )
+            })
         })
         .fail(function () {
             layer.open({
