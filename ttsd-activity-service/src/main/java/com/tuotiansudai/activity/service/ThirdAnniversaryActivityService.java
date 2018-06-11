@@ -166,19 +166,23 @@ public class ThirdAnniversaryActivityService {
                 .build());
     }
 
-    public Map<String, Object> getTopFourTeam() {
+    public Map<String, Object> getTopFourTeam(String loginName) {
         Map<String, Object> map = new HashMap<>();
         if (!redisWrapperClient.exists(THIRD_ANNIVERSARY_TOP_FOUR_TEAM)) {
+            map.put("isSuccess", false);
             return map;
         }
         List<String> teams = Arrays.asList(redisWrapperClient.get(THIRD_ANNIVERSARY_TOP_FOUR_TEAM).split(","));
         map.put("topFour", redisWrapperClient.get(THIRD_ANNIVERSARY_TOP_FOUR_TEAM_CHINESE));
         map.put("collectSuccess", thirdAnniversaryDrawMapper.findLoginNameByCollectTopFour(teams).size());
+        map.put("isSuccess", Strings.isNullOrEmpty(loginName) ? false : teams.stream().filter(name->name.equals(loginName)).findAny());
         return map;
     }
 
-    public BaseResponse<List<ThirdAnniversaryDrawModel>> getTeamLogos(String loginName) {
-        return new BaseResponse<List<ThirdAnniversaryDrawModel>>(thirdAnniversaryDrawMapper.findByLoginName(loginName));
+    public BaseResponse<Map<String, Object>> getTeamLogos(String loginName) {
+        Map<String, Object> map = this.getTopFourTeam(loginName);
+        map.put("prizes", thirdAnniversaryDrawMapper.findByLoginName(loginName));
+        return new BaseResponse<Map<String, Object>>(map);
     }
 
     public BaseResponse draw(String loginName) {

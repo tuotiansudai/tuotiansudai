@@ -11,7 +11,7 @@
                <div class="fonts">
                    <p>活动期间，<strong>每日登录</strong>拓天速贷，可获得一次<strong>“开球”</strong>机会，足球内含世界杯<strong>32个队标</strong>；</p>
 
-                   <p> 活动期间，累计投资<strong>每满100元</strong>，可再获得一次<strong>“开球”</strong>机会，如投资1000元，可获10次抽奖机会，上不封顶；</p>
+                   <p> 活动期间，累计投资<strong>每满500元</strong>，可再获得一次<strong>“开球”</strong>机会，如投资5000元，可获10次抽奖机会，上不封顶；</p>
 
                    <p class="last">活动结束后，所有<strong>集齐</strong>世界杯<strong>四强</strong>队标的用户，可平分<strong>8888元</strong>现金奖池。</p>
                </div>
@@ -24,7 +24,7 @@
                    <ul class="swiper-wrapper">
                        <li class="swiper-slide">
                            <div class="team-logo deguo"><span class="amount">1</span></div>
-                           <div class="country-btn">德还款国队</div>
+                           <div class="country-btn">德国队</div>
                        </li>
                        <li class="swiper-slide">
                            <div class="team-logo eluosi"><span class="amount">2</span></div>
@@ -168,7 +168,9 @@
                    <div class="swiper-pagination"></div>
                </div>
                <div class="prize">
-                   <p>世界杯四强是<strong>塞尔维亚队</strong>、<strong>美国队</strong>、<strong>英国队</strong>、<strong>法国队</strong>，当前共有120000人集齐队标</p>
+                   <#if topFour??>
+                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
+                   </#if>
                </div>
            </div>
        </div>
