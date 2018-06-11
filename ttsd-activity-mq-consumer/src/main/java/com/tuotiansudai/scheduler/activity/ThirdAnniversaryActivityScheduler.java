@@ -3,10 +3,7 @@ package com.tuotiansudai.scheduler.activity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.InviteHelpActivityPayCashDto;
-import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
-import com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryDrawMapper;
-import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
-import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
+import com.tuotiansudai.activity.repository.mapper.*;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -34,6 +31,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class ThirdAnniversaryActivityScheduler {
@@ -45,9 +43,11 @@ public class ThirdAnniversaryActivityScheduler {
 
     private final String THIRD_ANNIVERSARY_TOP_FOUR_TEAM = "THIRD_ANNIVERSARY_TOP_FOUR_TEAM";
 
-    private final String THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS = "THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS:{0}";
+    private final String THIRD_ANNIVERSARY_SEND_CASH_SUCCESS = "THIRD_ANNIVERSARY_SEND_{0}_CASH_SUCCESS:{1}";
 
-    private final String THIRD_ANNIVERSARY_SEND_TEAM_CASH_SUCCESS = "THIRD_ANNIVERSARY_SEND_TEAM_CASH_SUCCESS:{0}";
+    private final String THIRD_ANNIVERSARY_SELECT_RED_OR_BLUE = "THIRD_ANNIVERSARY_SELECT_RED_OR_BLUE";
+
+    private final String THIRD_ANNIVERSARY_SEND_SUPPORT_CASH_OVER = "THIRD_ANNIVERSARY_SEND_SUPPORT_CASH_OVER";
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -63,6 +63,9 @@ public class ThirdAnniversaryActivityScheduler {
 
     @Autowired
     private ActivityInvestMapper activityInvestMapper;
+
+    @Autowired
+    private ActivityInvestAnnualizedMapper activityInvestAnnualizedMapper;
 
     @Autowired
     private ThirdAnniversaryDrawMapper thirdAnniversaryDrawMapper;
@@ -81,10 +84,14 @@ public class ThirdAnniversaryActivityScheduler {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.startTime}\")}")
     private Date activityStartTime;
 
-    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Shanghai")
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.endTime}\")}")
+    private Date activityEndTime;
+
+    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
     public void sendCash() {
         sendHelpCash();
         sendTopFourCash();
+        sendSupportCash();
     }
 
     private void sendHelpCash() {
@@ -98,9 +105,9 @@ public class ThirdAnniversaryActivityScheduler {
                 List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpId);
                 long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(weChatHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name(), activityStartTime, weChatHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long cash = (long) (annualizedAmount * rates.get(helpInfoModels.size()));
-                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS, weChatHelpModel.getLoginName()))) {
+                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", weChatHelpModel.getLoginName()))) {
                     try {
-                        sendCash(weChatHelpModel.getLoginName(), cash, true);
+                        sendCash(weChatHelpModel.getLoginName(), cash, "HELP");
                         weChatHelpModel.setCashBack(true);
                         weChatHelpMapper.update(weChatHelpModel);
                     } catch (Exception e) {
@@ -112,11 +119,11 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    private void sendHelpCashToFriend(List<WeChatHelpInfoModel> helpInfoModels, long cash){
-        for (WeChatHelpInfoModel model : helpInfoModels){
-            if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS, model.getLoginName()))) {
+    private void sendHelpCashToFriend(List<WeChatHelpInfoModel> helpInfoModels, long cash) {
+        for (WeChatHelpInfoModel model : helpInfoModels) {
+            if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, model.getLoginName()))) {
                 try {
-                    sendCash(model.getLoginName(), cash, true);
+                    sendCash(model.getLoginName(), cash, "HELP");
                     model.setStatus(WeChatHelpUserStatus.SUCCESS);
                     model.setCashBackTime(new Date());
                     weChatHelpInfoMapper.update(model);
@@ -128,7 +135,7 @@ public class ThirdAnniversaryActivityScheduler {
     }
 
     private void sendTopFourCash() {
-        if (!redisWrapperClient.exists(THIRD_ANNIVERSARY_TOP_FOUR_TEAM)){
+        if (!redisWrapperClient.exists(THIRD_ANNIVERSARY_TOP_FOUR_TEAM)) {
             return;
         }
         List<String> topFourTeams = Arrays.asList(redisWrapperClient.get(THIRD_ANNIVERSARY_TOP_FOUR_TEAM).split(","));
@@ -137,17 +144,64 @@ public class ThirdAnniversaryActivityScheduler {
 
         long avgCash = topFourCash / collectSuccessLoginNames.size();
 
-        for (String loginName : collectSuccessLoginNames){
+        for (String loginName : collectSuccessLoginNames) {
             try {
-                sendCash(loginName, avgCash, false);
+                if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "TEAM", loginName))) {
+                    sendCash(loginName, avgCash, "TEAM");
+                }
             } catch (Exception e) {
                 logger.error("[third_anniversary_activity] send top four cash, user:{} fail, message:{}", loginName, e.getMessage());
             }
         }
     }
 
-    private void sendCash(String loginName, long cash, boolean isHelp) {
-        String key = isHelp ? MessageFormat.format(THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS, loginName) : MessageFormat.format(THIRD_ANNIVERSARY_SEND_TEAM_CASH_SUCCESS, loginName);
+    private void sendSupportCash() {
+        if (new Date().before(activityEndTime) || DateTime.now().minusDays(1).toDate().after(activityEndTime)){
+            return;
+        }
+
+        if (redisWrapperClient.exists(THIRD_ANNIVERSARY_SEND_SUPPORT_CASH_OVER)){
+            return;
+        }
+        logger.info("[third_anniversary_activity] send support cash start");
+        redisWrapperClient.set(THIRD_ANNIVERSARY_SEND_SUPPORT_CASH_OVER, "SUCCESS");
+        List<ActivityInvestAnnualizedView> annualizedViews = activityInvestAnnualizedMapper.findByActivityAndMobile(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, null);
+        Map<String, String> supportMaps = redisWrapperClient.hgetAll(THIRD_ANNIVERSARY_SELECT_RED_OR_BLUE);
+        List<String> redSupportLoginName = supportMaps.entrySet().stream().filter(entry -> entry.getValue().equals("RED")).map(Map.Entry::getKey).collect(Collectors.toList());
+        List<String> blueSupportLoginName = supportMaps.entrySet().stream().filter(entry -> entry.getValue().equals("BLUE")).map(Map.Entry::getKey).collect(Collectors.toList());
+
+        long redSupportAmount = annualizedViews.stream().filter(view -> redSupportLoginName.contains(view.getLoginName())).mapToLong(ActivityInvestAnnualizedView::getSumAnnualizedAmount).sum();
+        long blueSupportAmount = annualizedViews.stream().filter(view -> blueSupportLoginName.contains(view.getLoginName())).mapToLong(ActivityInvestAnnualizedView::getSumAnnualizedAmount).sum();
+
+        double redRate = redSupportAmount > blueSupportAmount ? 0.008D : 0.005D;
+        double blueRate = blueSupportAmount > redSupportAmount ? 0.008D : 0.005D;
+
+        for (String loginName : redSupportLoginName) {
+            ActivityInvestAnnualizedModel model = activityInvestAnnualizedMapper.findByActivityAndLoginName(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, loginName);
+            long cash = (long) (model.getSumAnnualizedAmount() * redRate);
+            if (cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "SUPPORT", loginName))) {
+                try {
+                    sendCash(loginName, cash, "SUPPORT");
+                } catch (Exception e) {
+                    logger.error("[third_anniversary_activity] send support red cash, user:{} fail, message:{}", loginName, e.getMessage());
+                }
+            }
+        }
+        for (String loginName : blueSupportLoginName) {
+            ActivityInvestAnnualizedModel model = activityInvestAnnualizedMapper.findByActivityAndLoginName(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, loginName);
+            long cash = (long) (model.getSumAnnualizedAmount() * blueRate);
+            if (cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "SUPPORT", loginName))) {
+                try {
+                    sendCash(loginName, cash, "SUPPORT");
+                } catch (Exception e) {
+                    logger.error("[third_anniversary_activity] send support blue cash, user:{} fail, message:{}", loginName, e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void sendCash(String loginName, long cash, String type) {
+        String key = MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, type, loginName);
         TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(IdGenerator.generate()), String.valueOf(cash),
                 UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.THIRD_ANNIVERSARY_SEND_CASH_REWARD_DETAIL_TEMPLATE);
         try {
@@ -157,7 +211,7 @@ public class ThirdAnniversaryActivityScheduler {
                 return;
             }
         } catch (Exception e) {
-            logger.error("[third_anniversary_activity] send cash user:{} fail, isHelp:{}, message:{}", loginName, isHelp, e.getMessage());
+            logger.error("[third_anniversary_activity] send cash user:{} fail, type:{}, message:{}", loginName, type, e.getMessage());
         }
         redisWrapperClient.setex(key, lifeSecond, "fail");
         smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【3周年活动】用户:{0},发送现金失败, 业务处理异常", loginName)));

@@ -89,14 +89,12 @@ $('#openBall').on('click',function () {
                         $('#getLogos').html(tpl('getLogoTpl', records));
 
                         $('.tip-wrap').show();
+                        getMyTeamLogos();
                     }else {
                         layer.msg(res.message)
                     }
-
                 }
                 )
-
-
             }
         })
         .fail(function () {
@@ -107,7 +105,6 @@ $('#openBall').on('click',function () {
                 area: ['auto', 'auto'],
                 content: $('#loginTip')
             });
-
         })
 })
 $('.known-btn').on('click',function () {
@@ -124,68 +121,6 @@ function getMyTeamLogos(){
         type: 'GET'
     }, function (res) {
         if(res.status == true){
-
-            // let data = [
-            //     {
-            //         "loginName":"",
-            //         "teamName":"aiji",
-            //         "teamCount":2
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"deguo",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"wulagui",
-            //         "teamCount":1
-            //     },{
-            //         "loginName":"",
-            //         "teamName":"aiji",
-            //         "teamCount":2
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"deguo",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"wulagui",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"aiji",
-            //         "teamCount":2
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"deguo",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"wulagui",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"aiji",
-            //         "teamCount":2
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"deguo",
-            //         "teamCount":1
-            //     },
-            //     {
-            //         "loginName":"",
-            //         "teamName":"wulagui",
-            //         "teamCount":1
-            //     }
-            // ];
             let records = {
                 list:res.data,
                 teamName:teamName
@@ -209,8 +144,6 @@ function getMyTeamLogos(){
 
     }
     )
-
-
 
 }
 function toLogin(){

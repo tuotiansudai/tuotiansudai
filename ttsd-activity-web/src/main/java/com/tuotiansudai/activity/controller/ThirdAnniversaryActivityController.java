@@ -6,7 +6,6 @@ import com.tuotiansudai.activity.service.ThirdAnniversaryActivityService;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -36,7 +34,7 @@ public class ThirdAnniversaryActivityController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/draw", method = RequestMethod.GET)
+    @RequestMapping(value = "/draw", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse draw() {
         return thirdAnniversaryActivityService.draw(LoginUserInfo.getLoginName());
@@ -65,10 +63,10 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(value = "/invite-page", method = RequestMethod.GET)
     public ModelAndView invite(){
-        ModelAndView modelAndView = new ModelAndView();
         if (Strings.isNullOrEmpty(LoginUserInfo.getLoginName())){
-            return new ModelAndView("redirect:/we-chat/entry-point?redirect=/activity/third-anniversary/invite");
+            return new ModelAndView("redirect:/m/login?redirect=/activity/third-anniversary/invite-page");
         }
+        ModelAndView modelAndView = new ModelAndView("/wechat/July-activity-invite-friend");
         modelAndView.addAllObjects(thirdAnniversaryActivityService.invite(LoginUserInfo.getLoginName()));
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
@@ -91,7 +89,7 @@ public class ThirdAnniversaryActivityController {
             modelAndView.addObject("errorInfo", "无效推荐链接");
             return modelAndView;
         }
-        modelAndView.setViewName("/error/error-info-page");
+        modelAndView.setViewName("/wechat/July-activity-open-ware");
         modelAndView.addAllObjects(map);
         return modelAndView;
     }
