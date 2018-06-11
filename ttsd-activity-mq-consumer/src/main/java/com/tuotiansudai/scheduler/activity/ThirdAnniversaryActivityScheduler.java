@@ -91,8 +91,8 @@ public class ThirdAnniversaryActivityScheduler {
         Map<String, String> investHelps = redisWrapperClient.hgetAll(THIRD_ANNIVERSARY_WAIT_SEND_REWARD);
         for (Map.Entry<String, String> entry : investHelps.entrySet()) {
             long weChatHelpId = Long.parseLong(entry.getKey());
-            Date sendTime = DateTime.parse(entry.getValue(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            if (new Date().after(sendTime)) {
+            Date endTime = DateTime.parse(entry.getValue(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+            if (new Date().after(endTime)) {
                 redisWrapperClient.hdel(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(weChatHelpId));
                 WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(weChatHelpId);
                 List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpId);

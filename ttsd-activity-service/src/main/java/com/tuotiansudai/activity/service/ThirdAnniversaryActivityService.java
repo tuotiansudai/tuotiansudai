@@ -282,6 +282,9 @@ public class ThirdAnniversaryActivityService {
     public void openRedEnvelope(String loginName, String mobile, String originator) {
         List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(originator, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
         List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
+        if (new Date().after(models.get(0).getEndTime())){
+            return;
+        }
         if (helpInfoModels.size() >= 3) {
             return;
         }
