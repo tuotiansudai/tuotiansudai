@@ -2,20 +2,18 @@
 
 <@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!">
 
-<div class="invite-friend-container" id="inviteContainer" data-starttime="2018-06-01 12:08:08" data-overtime="2018-07-05 14:09:03">
+<div class="invite-friend-container" id="inviteContainer" data-starttime=${activityStartTime!} data-overtime=${activityEndTime!} data-countdown=${endTime!}>
     <div class="invite-banner"></div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
         <div class="invite-wrap">
             <a class="invite-btn circle-btn" href="javascript:;"></a>
-
                 <p>累计年化投资金额：<br/>
-                    <strong>10000.00元</strong><br/>
+                    <strong>${annualizedAmount}元</strong><br/>
                     当前已获返现金额：<br/>
-                    <strong>0.00元</strong>
+                    <strong>${reward}元</strong>
                 </p>
                 <a class="to-join-btn" href="javascript:;"></a>
-
         </div>
     </div>
     <div class="part part-one marginTop100">
@@ -35,12 +33,13 @@
         <div class="part-title"></div>
         <div class="main-content">
             <ul>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
-                <li class="clearfix"><div class="fl">185****7654</div><div class="date-time fr">12:00:00</div></li>
+                <#if helpFriend!?if_exists?size !=0 >
+                    <#list helpFriend as friend>
+                        <li class="clearfix"><div class="fl"><#if friend.mobile>${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</#if></div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
+                    </#list>
+                </#if>
             </ul>
         </div>
-
     </div>
 
     <div class="part part-three marginTop100">
@@ -77,11 +76,13 @@
 </div>
     <#include "../module/login-tip.ftl" />
 <script>
+    var originator = ${originator}
+
     <#--wx.ready(function () {-->
         <#--wx.onMenuShareAppMessage({-->
             <#--title: '拓天HR给你一个开工红包', // 分享标题-->
             <#--desc: '无红包，不开工！', // 分享描述-->
-            <#--link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
+            <#--link: '${webServer}/activity/third-anniversary/invite-page?originator=originator&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
             <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
             <#--success: function () {-->
             <#--},-->
@@ -91,7 +92,7 @@
 
         <#--wx.onMenuShareTimeline({-->
             <#--title: '拓天HR给你一个开工红包', // 分享标题-->
-            <#--link: '${webServer}/activity/start-work/wechat?come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
+            <#--link: '${webServer}/activity/third-anniversary/invite-page?originator=originator&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致-->
             <#--imgUrl: '${commonStaticServer}/images/icons/share_redPocket.png', // 分享图标-->
             <#--success: function () {-->
                 <#--// 用户确认分享后执行的回调函数-->

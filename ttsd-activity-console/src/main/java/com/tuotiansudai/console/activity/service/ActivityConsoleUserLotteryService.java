@@ -97,7 +97,7 @@ public class ActivityConsoleUserLotteryService {
             } else if (prizeType.name().startsWith("EXERCISE_WORK_ACTIVITY")) {
                 int referrerLotteryChance = commonCountTimeService.countDrawLotteryTime(model.getMobile(), prizeType);
                 unUserCount = exerciseVSWorkTimes(model.getMobile(), prizeType) + referrerLotteryChance - model.getUseCount();
-            } else if (prizeType == ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY) {
+            } else if (prizeType == ActivityCategory.THIRD_ANNIVERSARY) {
                 int useCount = thirdAnniversaryDrawMapper.countDrawByLoginName(input.getLoginName());
                 model.setUseCount(useCount);
                 unUserCount = this.thirdAnniversaryTimes(input.getLoginName(), useCount);

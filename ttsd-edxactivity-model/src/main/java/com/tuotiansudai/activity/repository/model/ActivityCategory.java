@@ -45,7 +45,7 @@ public enum ActivityCategory {
     YEAR_END_AWARDS_ACTIVITY("年终奖活动",ConsumeCategory.TASK_COUNT),
     START_WORK_ACTIVITY("惊喜不重样加息不打烊活动",ConsumeCategory.TASK_COUNT),
     SUPER_SCHOLAR_ACTIVITY("答题加薪活动",ConsumeCategory.TASK_COUNT),
-    THIRD_ANNIVERSARY_ACTIVITY("3周年活动",ConsumeCategory.TASK_COUNT),
+    THIRD_ANNIVERSARY("3周年活动",ConsumeCategory.TASK_COUNT),
     ;
 
     ActivityCategory(String description, ConsumeCategory consumeCategory) {

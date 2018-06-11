@@ -3,13 +3,19 @@ let commonFun= require('publicJs/commonFun');
 
 commonFun.calculationRem(document, window);
 
-commonFun.countTimePop($('.time'),'2018-06-06 18:38:50');
 
 
 let activityStatus = commonFun.activityStatus($('#inviteContainer'));
 let $inviteBtn = $('.invite-btn');
 let $wechatTip = $('.wechat-tip');
 let $openBtn = $('.open-btn');
+let countTime = $('#countdown').val();
+
+if(countTime){
+    commonFun.countTimePop($('.time'),countTime);
+}else{
+    alert("未邀请情况----");
+}
 
 // 点击“邀请好友拆红包”，未登录时跳转到登录页面；
 //
@@ -31,7 +37,7 @@ $('.tip-btn').on('click',function () {
     $wechatTip.hide();
 })
 $('.to-join-btn').on('click',function () {
-    location.href = '/activity/july-activity'
+    location.href = '/activity/third-anniversary'
 })
 
 $openBtn.on('click',function () {

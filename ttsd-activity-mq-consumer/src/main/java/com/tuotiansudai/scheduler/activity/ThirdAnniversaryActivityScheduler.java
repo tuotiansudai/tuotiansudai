@@ -94,7 +94,7 @@ public class ThirdAnniversaryActivityScheduler {
         sendSupportCash();
     }
 
-    private void sendHelpCash() {
+    public void sendHelpCash() {
         Map<String, String> investHelps = redisWrapperClient.hgetAll(THIRD_ANNIVERSARY_WAIT_SEND_REWARD);
         for (Map.Entry<String, String> entry : investHelps.entrySet()) {
             long weChatHelpId = Long.parseLong(entry.getKey());
@@ -103,7 +103,7 @@ public class ThirdAnniversaryActivityScheduler {
                 redisWrapperClient.hdel(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(weChatHelpId));
                 WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(weChatHelpId);
                 List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpId);
-                long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(weChatHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name(), activityStartTime, weChatHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
+                long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(weChatHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, weChatHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long cash = (long) (annualizedAmount * rates.get(helpInfoModels.size()));
                 if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", weChatHelpModel.getLoginName()))) {
                     try {
@@ -119,7 +119,7 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    private void sendHelpCashToFriend(List<WeChatHelpInfoModel> helpInfoModels, long cash) {
+    public void sendHelpCashToFriend(List<WeChatHelpInfoModel> helpInfoModels, long cash) {
         for (WeChatHelpInfoModel model : helpInfoModels) {
             if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, model.getLoginName()))) {
                 try {
@@ -134,7 +134,7 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    private void sendTopFourCash() {
+    public void sendTopFourCash() {
         if (!redisWrapperClient.exists(THIRD_ANNIVERSARY_TOP_FOUR_TEAM)) {
             return;
         }
@@ -198,6 +198,7 @@ public class ThirdAnniversaryActivityScheduler {
                 }
             }
         }
+        logger.info("[third_anniversary_activity] send support cash end");
     }
 
     private void sendCash(String loginName, long cash, String type) {

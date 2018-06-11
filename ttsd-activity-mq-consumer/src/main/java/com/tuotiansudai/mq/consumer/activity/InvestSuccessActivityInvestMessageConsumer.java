@@ -121,7 +121,7 @@ public class InvestSuccessActivityInvestMessageConsumer implements MessageConsum
             return ActivityCategory.SUPER_SCHOLAR_ACTIVITY;
         }
         if (now.after(activityThirdAnniversaryStartTime) && now.before(activityThirdAnniversaryEndTime)) {
-            return ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY;
+            return ActivityCategory.THIRD_ANNIVERSARY;
         }
         return null;
     }

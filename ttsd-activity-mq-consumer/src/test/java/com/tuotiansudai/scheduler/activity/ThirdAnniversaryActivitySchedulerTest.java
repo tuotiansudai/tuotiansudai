@@ -91,12 +91,12 @@ public class ThirdAnniversaryActivitySchedulerTest {
                 new WeChatHelpInfoModel("friend2", "friendMobile2", 1, WeChatHelpUserStatus.WAITING),
                 new WeChatHelpInfoModel("friend3", "friendMobile3", 1, WeChatHelpUserStatus.WAITING)));
 
-        List<ActivityInvestModel> activityInvestModelList = Lists.newArrayList(new ActivityInvestModel(1l,1l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name()),
-                new ActivityInvestModel(1l,2l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name()),
-                new ActivityInvestModel(1l,3l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name()));
+        List<ActivityInvestModel> activityInvestModelList = Lists.newArrayList(new ActivityInvestModel(1l,1l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),
+                new ActivityInvestModel(1l,2l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),
+                new ActivityInvestModel(1l,3l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()));
         when(activityInvestMapper.findAllByActivityLoginNameAndTime(eq("loginName1"), any(), any(), any())).thenReturn(activityInvestModelList);
 
-        thirdAnniversaryActivityScheduler.sendCash();
+        thirdAnniversaryActivityScheduler.sendHelpCash();
 
         verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
         verify(this.payWrapperClient, times(4)).transferCash(transferCashDtoCaptor.capture());
@@ -130,7 +130,7 @@ public class ThirdAnniversaryActivitySchedulerTest {
         when(redisWrapperClient.get("THIRD_ANNIVERSARY_TOP_FOUR_TEAM")).thenReturn(topFourTeams);
         when(thirdAnniversaryDrawMapper.findLoginNameByCollectTopFour(any())).thenReturn(Lists.newArrayList("loginName1", "loginName2", "loginName3"));
 
-        thirdAnniversaryActivityScheduler.sendCash();
+        thirdAnniversaryActivityScheduler.sendTopFourCash();
 
         verify(this.payWrapperClient, times(3)).transferCash(transferCashDtoCaptor.capture());
         verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), anyInt(), redisSetValueCaptor.capture());

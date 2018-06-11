@@ -198,23 +198,14 @@ public class ThirdAnniversaryActivityService {
             return new BaseResponse("您还未实名认证，请实名认证后再来抽奖吧！");
         }
 
-        int usedDrawCount = thirdAnniversaryDrawMapper.countDrawByLoginName(loginName);
+        int count = this.unUserDrawCount(loginName);
 
-        ActivityInvestAnnualizedModel activityInvestAnnualizedModel = activityInvestAnnualizedMapper.findByActivityAndLoginName(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, loginName);
-        int investDrawCount = activityInvestAnnualizedModel == null ? 0 : (int) (activityInvestAnnualizedModel.getSumInvestAmount() / EACH_INVEST_AMOUNT_50000);
-
-        Map<String, String> eachEveryDayDraws = redisWrapperClient.hgetAll(MessageFormat.format(THIRD_ANNIVERSARY_EACH_EVERY_DAY_DRAW, loginName));
-        int usedInvestDrawCount = usedDrawCount - eachEveryDayDraws.size();
-
-        int isTodayDraw = eachEveryDayDraws.entrySet().stream().filter(entry -> entry.getKey().equals(DateTime.now().toString("yyyy-MM-dd"))).count() > 0 ? 0 : 1;
-        int unUseDrawCount = investDrawCount - usedInvestDrawCount + isTodayDraw;
-
-        if (unUseDrawCount <= 0) {
+        if (count <= 0) {
             return new BaseResponse("您暂无抽奖机会，赢取机会后再来抽奖吧!");
         }
 
         List<ThirdAnniversaryDrawModel> models = new ArrayList<>();
-        for (int i = 0; i < unUseDrawCount; i++) {
+        for (int i = 0; i < count; i++) {
             int random = (int) (Math.random() * 32 + 1);
             models.add(new ThirdAnniversaryDrawModel(loginName, FOOTBALL_TEAMS.get(random)));
         }
@@ -225,6 +216,22 @@ public class ThirdAnniversaryActivityService {
         return new BaseResponse<List<ThirdAnniversaryDrawModel>>(models.stream().collect(Collectors.groupingBy(ThirdAnniversaryDrawModel::getTeamName, Collectors.summingInt(ThirdAnniversaryDrawModel::getTeamCount)))
                 .entrySet().stream().map(entry -> new ThirdAnniversaryDrawModel(loginName, entry.getKey(), entry.getValue())).collect(Collectors.toList()));
 
+    }
+
+    public int unUserDrawCount(String loginName){
+        if (Strings.isNullOrEmpty(loginName)){
+            return 0;
+        }
+        int usedDrawCount = thirdAnniversaryDrawMapper.countDrawByLoginName(loginName);
+
+        ActivityInvestAnnualizedModel activityInvestAnnualizedModel = activityInvestAnnualizedMapper.findByActivityAndLoginName(ActivityInvestAnnualized.THIRD_ANNIVERSARY_ACTIVITY, loginName);
+        int investDrawCount = activityInvestAnnualizedModel == null ? 0 : (int) (activityInvestAnnualizedModel.getSumInvestAmount() / EACH_INVEST_AMOUNT_50000);
+
+        Map<String, String> eachEveryDayDraws = redisWrapperClient.hgetAll(MessageFormat.format(THIRD_ANNIVERSARY_EACH_EVERY_DAY_DRAW, loginName));
+        int usedInvestDrawCount = usedDrawCount - eachEveryDayDraws.size();
+
+        int isTodayDraw = eachEveryDayDraws.entrySet().stream().filter(entry -> entry.getKey().equals(DateTime.now().toString("yyyy-MM-dd"))).count() > 0 ? 0 : 1;
+        return investDrawCount - usedInvestDrawCount + isTodayDraw;
     }
 
     public BaseResponse selectRedOrBlue(String loginName, boolean isRed) {
@@ -238,21 +245,22 @@ public class ThirdAnniversaryActivityService {
     public Map<String, Object> invite(String loginName) {
         List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
         if (models.size() == 0) {
-            List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name(), activityStartTime, new Date());
+            List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, new Date());
             long sumAnnualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
             return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                     .put("annualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
-                    .put("rewardRate", "0")
+                    .put("reward", "0.00")
+                    .put("endTime", "")
                     .build());
         }
         WeChatHelpModel weChatHelpModel = models.get(0);
-        List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY_ACTIVITY.name(), activityStartTime, weChatHelpModel.getEndTime());
+        List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, weChatHelpModel.getEndTime());
         long sumAnnualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
         List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpModel.getId());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("annualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
-                .put("rewardRate", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * rates.get(helpInfoModels.size()))))
-                .put("endTime", weChatHelpModel.getEndTime())
+                .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * rates.get(helpInfoModels.size()))))
+                .put("endTime", new DateTime(weChatHelpModel.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
                 .put("helpFriend", helpInfoModels)
                 .build());
     }
@@ -273,12 +281,15 @@ public class ThirdAnniversaryActivityService {
         if (models.size() == 0) {
             return null;
         }
+
+        long sumAnnualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(originator, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, models.get(0).getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
         List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("originator", models.get(0).getUserName())
-                .put("endTime", models.get(0).getEndTime())
-                .put("isHelp", helpInfoModels.stream().map(model -> model.getLoginName().equals(loginName)).findAny().isPresent())
+                .put("endTime", new DateTime(models.get(0).getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
+                .put("isHelp", helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName)))
                 .put("helpFriend", helpInfoModels)
+                .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * rates.get(helpInfoModels.size()))))
                 .build());
     }
 

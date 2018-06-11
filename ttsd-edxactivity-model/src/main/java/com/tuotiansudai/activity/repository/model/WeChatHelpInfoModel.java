@@ -26,7 +26,7 @@ public class WeChatHelpInfoModel implements Serializable {
     }
 
     public WeChatHelpInfoModel(String loginName, String mobile, long weChatHelpId, WeChatHelpUserStatus status) {
-        this.openId = "";
+        this.openId = loginName;
         this.loginName = loginName;
         this.mobile = mobile;
         this.weChatHelpId = weChatHelpId;
