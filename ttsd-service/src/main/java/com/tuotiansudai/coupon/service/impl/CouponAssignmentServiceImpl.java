@@ -221,7 +221,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     private CouponModel sendCouponAssignMessage(CouponModel couponModel, String loginName) {
-        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponModel.getId());
+        mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, loginName + ":" + couponModel.getId());
         return couponModel;
     }
 

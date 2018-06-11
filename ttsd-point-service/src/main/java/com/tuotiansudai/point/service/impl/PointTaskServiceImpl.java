@@ -364,7 +364,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
         if(couponId != null){
             logger.info(MessageFormat.format("[推荐奖励] pointTask:{0} login_name:{1}, referrer:{2}, couponId:{3}",pointTask, loginName, referrer, String.valueOf(couponId)));
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
+            mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, referrer + ":" + couponId);
         }
     }
 

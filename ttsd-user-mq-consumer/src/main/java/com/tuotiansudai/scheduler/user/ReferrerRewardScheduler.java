@@ -78,7 +78,7 @@ public class ReferrerRewardScheduler {
 
     private void couponAssign(String loginName, long couponId) {
         logger.info(MessageFormat.format("[ReferrerRewardScheduler] assign coupon. loginName:{0}, couponId:{1}", loginName, String.valueOf(couponId)));
-        mqClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+        mqClient.sendMessage(MessageQueue.Coupon_Assigning, loginName + ":" + couponId);
     }
 
     private DateTime getCurrentMonth() {
