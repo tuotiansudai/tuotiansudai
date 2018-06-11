@@ -18,17 +18,17 @@
            </div>
            <div class="content-section open-balls-content content-page marginTop40">
                <div class="big-ball"></div>
-               <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall"></a>
+               <a href="javascript:;" class="gold-btn open-ball-btn <#if drawCount==0>to_invest_btn</#if>" id="openBall"></a>
                 <@global.isNotAnonymous>
-                    <#--<h2 class="my-logo  <#if isSuccess>collected-all</#if>">我的对标</h2>-->
+                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>" style="display: none">我的对标</h2>
                <div class="my-team-logos logos-con swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper" id="myTeamLogos">
                        <script id="myTeamLogoTpl" type="text/template">
                            {{if list}}
                            {{each list as value index}}
                            <li class="swiper-slide">
-                           <div class="team-logo {{value.teamName}}"><span class="amount">{{value.teamCount}}</span></div><br/>
-                           <div class="country-btn">{{teamName[value.teamName]}}</div>
+                               <div class="team-logo {{value.teamName}}"><span class="amount">{{value.teamCount}}</span></div><br/>
+                               <div class="country-btn">{{teamName[value.teamName]}}</div>
                            </li>
                            {{/each}}
                            {{/if}}
@@ -38,9 +38,9 @@
                </div>
                </@global.isNotAnonymous>
                <div class="prize">
-                   <#--<#if topFour??>-->
-                       <#--<p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>-->
-                   <#--</#if>-->
+                   <#if topFour??>
+                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
+                   </#if>
                </div>
            </div>
        </div>
@@ -67,12 +67,12 @@
                             <div class="percent"><span class="percent-left"></span><span class="percent-con" style="width: 80%"><em class="ball"></em></span></div>
                         </div>
                         <div class="invest-money clearfix">
-                            <div class="fl"><em id="redAmount" >1111.11</em>元</div>
-                            <div class="fr"><em id="blueAmount">1111.11</em>元</div>
+                            <div class="fl"><em id="redAmount" ></em>元</div>
+                            <div class="fr"><em id="blueAmount"></em>元</div>
                         </div>
                         <div class="support-amout clearfix">
-                            <a class="support-btn red-square fl" href="javascript:;" ><span>（<em id="redCount">8000</em>人）</span></a>
-                            <a class="support-btn blue-square fr" href="javascript:;"><span>（<em id="blueCount">8000</em>人）</span></a>
+                            <a class="support-btn red-square fl" href="javascript:;" ><span>（<em id="redCount"></em>人）</span></a>
+                            <a class="support-btn blue-square fr" href="javascript:;"><span>（<em id="blueCount"></em>人）</span></a>
                         </div>
                     </div>
                 </div>
@@ -83,6 +83,7 @@
 
                     <p> 赢方所有参与成员可获得其活动期间累计投资额（年化）的0.8%返现奖励，输方所有成员可获得其活动期间累计投资额（年化）的0.5%返现奖励。</p>
                 </div>
+                <div class="gold-btn to_invest_btn"></div>
 
             </div>
         </div>
@@ -166,52 +167,6 @@
                     {{/each}}
                     {{/if}}
                 </script>
-
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-                <#--<li>-->
-                    <#--<div class="team-logo deguo"><span class="amount">1</span></div><br/>-->
-                    <#--<div class="country-btn">德还款国队</div>-->
-                <#--</li>-->
-
             </ul>
         </div>
 

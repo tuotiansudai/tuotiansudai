@@ -405,6 +405,9 @@ body {
         margin: 0 auto;
         padding-top: 18px;
         box-sizing: border-box;
+        img {
+          width: 100%;
+        }
 
       }
       .qrcpde-tip {
@@ -743,8 +746,8 @@ body {
       margin-top: 0.15rem;
     }
     &.to_invest_btn {
-      //background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
-      //background-size: 100%;
+      background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
+      background-size: contain;
     }
   }
   .july-banner {

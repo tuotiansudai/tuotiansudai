@@ -110,9 +110,11 @@ $('#openBall').on('click',function () {
 $('.known-btn').on('click',function () {
     $('.tip-wrap').hide();
 })
+var mySwiper;
 $.when(commonFun.isUserLogin())
     .done(function () {
         getMyTeamLogos();
+
     })
 
 function getMyTeamLogos(){
@@ -121,23 +123,26 @@ function getMyTeamLogos(){
         type: 'GET'
     }, function (res) {
         if(res.status == true){
-            let records = {
-                list:res.data,
-                teamName:teamName
+            if(!res.data.length){
+                $('.my-logo').hide();
+                return;
+            }else {
+                $('.my-logo').show();
+                let records = {
+                    list:res.data,
+                    teamName:teamName
+                }
+                $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
+                mySwiper = new Swiper ('#teamLogos', {
+                    autoplay:0,
+                    slidesPerGroup: slideLen,
+                    slidesPerView:slideLen,
+                    pagination : '.swiper-pagination',
+                    paginationClickable:true
+                });
             }
-            $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
-            var mySwiper = new Swiper ('.my-team-logos', {
-                direction: 'horizontal',
-                loop: true,
-                autoplay:0,
-                slidesPerGroup: slideLen,
-                slidesPerView:slideLen,
-                nextButton: '.nextBtn',
-                prevButton: '.prevBtn',
-                freeMode:true,
-                pagination : '.swiper-pagination',
-                paginationClickable:true
-            });
+
+
         }else {
             layer.msg(res.message)
         }
@@ -191,23 +196,30 @@ $supportBtn.on('click',function (e) {
                         $myAmount.text(res.data.myAmount);
                         $currentRate.text(res.data.currentRate);
                         $currentAward.text(res.data.currentAward);
-                        let percent = res.data.redAmount/res.data.redAmount+res.data.blueAmount;
-                        $('.percent-con').css('width',percent);
-                        if(selectResult == 'RED'||selectResult == 'BLUE'){
-                            _self.addClass('disabled');
-                            layer.msg('支持成功！')
+                        let percent;
+                        if(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)==0){
+                            percent = 0;
+                        }else {
+                            percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
+                            if(percent>=96){
+                                percent = 96;
+                            }
+                        }
+                        $('.percent-con').css('width',percent+'%');
+                        if(res.data.selectResult == 'RED'){
+                            _self.addClass('already_support');
+                            layer.msg('支持成功！');
+                            $blueSquare.addClass('disabled');
+
+                        }
+                        if(res.data.selectResult == 'BLUE'){
+                            _self.addClass('already_support');
+                            layer.msg('支持成功！');
+                            $redSquare.addClass('disabled');
+
                         }
 
-                        // res.data
-                        // "redAmount":"红方总额",
-                        //     "blueAmount":"蓝方总额",
-                        //     "redCount":"红方支持总人数",
-                        //     "blueCount":"蓝方支持总人数",
-                        //     "isSelect":true/false,  //是否选择
-                        //     "selectResult":"RED"/"BLUE", //选择方
-                        //     "myAmount":2,     //我的总年化投资额
-                        //     "currentRate":"0.5%",
-                            // "currentAward":"23.12"
+
                     }else {
                         layer.msg('支持失败')
                     }
@@ -250,8 +262,15 @@ function supportSquare(){
                     $myAmount.text(res.data.myAmount);
                     $currentRate.text(res.data.currentRate);
                     $currentAward.text(res.data.currentAward);
-                    let percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
-                   
+                    let percent;
+                    if(parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount)==0){
+                        percent = 0;
+                    }else {
+                        percent = (parseFloat(res.data.redAmount)/parseFloat(res.data.redAmount)+parseFloat(res.data.blueAmount))*100;
+                        if(percent>=96){
+                            percent = 96;
+                        }
+                    }
                     $('.percent-con').css('width',percent+'%');
                 })
 
