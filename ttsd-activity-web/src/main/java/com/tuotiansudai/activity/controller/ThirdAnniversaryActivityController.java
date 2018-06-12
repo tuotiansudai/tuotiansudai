@@ -30,7 +30,7 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView thirdAnniversary() {
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/july-activity", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/July-activity", "responsive", true);
         modelAndView.addAllObjects(thirdAnniversaryActivityService.getTopFourTeam(LoginUserInfo.getLoginName()));
         modelAndView.addObject("drawCount", thirdAnniversaryActivityService.unUserDrawCount(LoginUserInfo.getLoginName()));
         return modelAndView;
