@@ -84,7 +84,7 @@
                     <p> 赢方所有参与成员可获得其活动期间累计投资额（年化）的0.8%返现奖励，输方所有成员可获得其活动期间累计投资额（年化）的0.5%返现奖励。</p>
                 </div>
                 <div class="invest-wrap">
-                    <div class="gold-btn to_invest_btn"></div>
+                    <a class="gold-btn to_invest_btn" href="/loan-list"></a>
                 </div>
 
 

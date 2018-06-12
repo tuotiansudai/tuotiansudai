@@ -118,7 +118,6 @@ var mySwiper;
 $.when(commonFun.isUserLogin())
     .done(function () {
         getMyTeamLogos();
-
     })
 
 function getMyTeamLogos(){
@@ -129,6 +128,7 @@ function getMyTeamLogos(){
         if(res.status == true){
             if(!res.data.length){
                 $('.my-logo').hide();
+                $('.my-team-logos').hide();
                 return;
             }else {
                 $('.my-logo').show();
