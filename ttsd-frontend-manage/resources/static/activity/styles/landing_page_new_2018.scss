@@ -112,6 +112,12 @@ p {
               li {
                 height: 42px;
                 margin-bottom: 25px;
+                &.submit-li {
+                  margin-top: 0.4rem;
+                  input {
+                    width: 100%;
+                  }
+                }
                 &.captcha-li {
                   position: relative;
                   margin-bottom: 25px;
@@ -1026,6 +1032,7 @@ body {
                     }
                     #agreementLable {
                       display: inline-block;
+                      margin-left: 0.3rem;
                     }
                     .agreement-check {
                       visibility: hidden;
@@ -1050,6 +1057,9 @@ body {
                   }
                   &.recomender-iphone {
                     display: none;
+                    input {
+                      text-indent: 0.2rem;
+                    }
                     &.show {
                       display: block;
                     }
@@ -1111,7 +1121,7 @@ body {
                     width: 2.1rem;
                     vertical-align: middle;
                     display: inline-block;
-                    background: #fce9a0;
+                    background: url("../images/landingpage/get_captcha_sms_bg.png") repeat-x;
                     color: #820401;
                     text-align: center;
                     line-height: 0.8rem;
@@ -1120,7 +1130,7 @@ body {
                     text-indent: 0;
                     cursor: pointer;
                     &:hover {
-                      background: #fce9a0;
+                      background: url("../images/landingpage/get_captcha_sms_bg.png") repeat-x;
                   }
                     &:disabled {
                       background: #ccc;

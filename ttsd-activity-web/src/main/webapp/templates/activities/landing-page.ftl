@@ -32,7 +32,7 @@
                                     <input id="smsCaptcha" class="height100 borderRadiusRight"
                                                               placeholder="手机验证码"
                                                               name="captcha" type="text" maxlength="6" validate>
-                                    <input id="getCaptchaBtn" type="button" class="get-captcha borderRadiusRight height100"
+                                    <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
                                            value="获取验证码" /><br/>
                                     <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a
                                             href="javascript:;" id="voice_btn">语音验证</a> </span>

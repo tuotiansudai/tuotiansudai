@@ -9,13 +9,13 @@
         <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
             <div class="login-con">
                 <ul>
-                    <li><input id="mobile" class="width100 height100 borderRadius mobileIcon" placeholder="输入手机号码"
+                    <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
                                name="mobile"
                                maxlength="11" type="text" autocomplete="off" validate></li>
-                    <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
+                    <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
                                type="password" name="password" autocomplete="off" validate></li>
-                    <li>
-                        <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
+                    <li><span class="captchaIcon icons borderRadiusLeft"></span>
+                        <input class="borderRadiusRight height100" id="input_img_captcha" placeholder="图形验证码"
                                name="appCaptcha"
                                type="text" maxlength="5" validate>
                         <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
@@ -23,7 +23,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="activityReferrer" id="activityReferrer"
                            value="<#if activityReferrerMobile??>${activityReferrerMobile!}</#if>">
-                    <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius smsIcon"
+                    <li class="captcha-li"><span class="smsIcon icons borderRadiusLeft"></span><input id="smsCaptcha" class="height100 borderRadiusRight"
                                                   placeholder="手机验证码"
                                                   name="captcha" type="text" maxlength="6" validate>
                         <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
@@ -37,7 +37,7 @@
                     <li class="recommend" id="recommendLabelExist" style="display: none"><span>推荐人：<em
                             id="referMobile"></em></span>
                     </li>
-                    <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
+                    <li class="recomender-iphone"><input class="borderRadiusRight width100 height100" type="text"
                                                          name="referrer"
                                                          maxlength="11" placeholder="推荐人手机号" validate></li>
                     <li class="agreement-li">
