@@ -1400,6 +1400,9 @@ body {
   }
 
 }
+li {
+  -webkit-tap-highlight-color:rgba(0,0,0,0)
+}
 @media screen and (max-width: 1024px) {
   html {
     font-size: 136.53px;

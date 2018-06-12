@@ -7,6 +7,9 @@ body {
 input[type="checkbox"]{
 	margin-right: 0;
 }
+li {
+	-webkit-tap-highlight-color:rgba(0,0,0,0)
+}
 .borderRadiusLeft {
 	border-radius: 3px 0px 0 3px;
 }
