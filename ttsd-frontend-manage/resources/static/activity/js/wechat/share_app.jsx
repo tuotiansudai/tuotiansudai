@@ -19,7 +19,6 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 let referrerValidBool=true;
-
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
     let imgUrl = require('../../images/landingpage/fuli'+(index+1)+'.png');

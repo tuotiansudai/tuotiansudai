@@ -29,10 +29,12 @@ if ($(document).width() <= 1024) {
         $('.app-container-landing').show();
     }
 }
+let appSpeed = 500;
 if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
     $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
+    appSpeed = 2000;
 }
 if($('#fuliList').length){
     $('#fuliList').find('.swiper-slide').each(function (index,item) {
@@ -46,7 +48,7 @@ if($('#fuliList').length){
         direction: 'horizontal',
         loop: true,
         autoplay:3000,
-        // speed:10000,
+        speed:appSpeed,
         autoplayDisableOnInteraction:false,
         slidesPerView: 'auto',
         centeredSlides:true,
