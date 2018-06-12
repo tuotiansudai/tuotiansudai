@@ -3,6 +3,7 @@ html {
 }
 body {
   font-size: 12px;
+  height: auto;
 }
 .main-frame {
   width: 100%;
@@ -855,7 +856,9 @@ p {
 }
 
 @media screen and (max-width: 1024px){
-
+  .my-page-width {
+    width: 7.5rem;
+  }
   .wapStyleNone {
     display: none;
   }
@@ -883,6 +886,7 @@ p {
     }
   }
 body {
+  width: 7.5rem;
   background: #d32c31 url("../images/landingpage/body_bg_wap.png") no-repeat center top;
   background-size: contain;
 }
@@ -1170,6 +1174,7 @@ body {
         background: none;
 
         .newbie-register-wrap {
+          width: 7.5rem;
           padding-top: 0.1rem;
           .newbie-register-title {
             margin-bottom: 0.2rem;

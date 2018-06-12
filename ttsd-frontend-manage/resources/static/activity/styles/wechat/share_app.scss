@@ -64,6 +64,9 @@ p {
 }
 
 @media screen and (max-width: 1024px){
+	.my-page-width {
+		width: 7.5rem;
+	}
 	.gold-btn {
 		display: inline-block;
 		background: url("../../images/landingpage/button_bg.png") no-repeat center center;
