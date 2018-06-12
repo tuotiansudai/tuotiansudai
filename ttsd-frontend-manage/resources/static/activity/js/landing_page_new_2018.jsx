@@ -406,9 +406,9 @@ if($registerContainer.length){
     showReferrerInfoIfNeeded();
 }
 
-
+let registerContainerTop;
 if($('#registerContainer').length){
-    let registerContainerTop = $('#registerContainer').offset().top;
+    registerContainerTop = $('#registerContainer').offset().top;
     if($(window).width()>1024){
         registerContainerTop = 0
     }else {
@@ -572,6 +572,14 @@ function clearNoNum(obj){
 }
 $('#rateNum').on('keyup',function () {
     clearNoNum(this)
+})
+
+//在手机中 把底部下载 部分顶上去的解决办法
+$('input').on('focus',function () {
+    $('.app-container-landing').css('position','relative');
+})
+$('input').on('blur',function () {
+    $('.app-container-landing').css('position','fixed');
 })
 
 
