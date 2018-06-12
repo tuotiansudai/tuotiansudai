@@ -312,8 +312,8 @@ public class ActivityConsoleExportService {
         return activityConsoleStartWorkService.list(mobile, userName, startTime, endTime, 1, Integer.MAX_VALUE).getRecords().stream().map(ExportCsvUtil::dtoToStringList).collect(Collectors.toList());
     }
 
-    public List<List<String>> buildInviteHelpInvestRewardActivityCsvList(String keyWord, Long minInvest, Long maxInvest, WeChatHelpType type){
-        BasePaginationDataDto<WeChatHelpView> dataDto = activityConsoleInviteHelpService.investRewardList(1, Integer.MAX_VALUE, keyWord, minInvest, maxInvest, type);
+    public List<List<String>> buildInviteHelpInvestRewardActivityCsvList(String keyWord, Long minInvest, Long maxInvest){
+        BasePaginationDataDto<WeChatHelpView> dataDto = activityConsoleInviteHelpService.investRewardList(1, Integer.MAX_VALUE, keyWord, minInvest, maxInvest);
         List<List<String>> rows = Lists.newArrayList();
         dataDto.getRecords().forEach(record -> rows.add(Lists.newArrayList(
                 new DateTime(record.getStartTime()).toString("yyyy-MM-dd HH:mm:ss"),

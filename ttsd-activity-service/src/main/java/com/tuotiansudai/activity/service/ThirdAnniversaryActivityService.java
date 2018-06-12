@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.dto.BaseResponse;
-import com.tuotiansudai.activity.repository.dto.DrawLotteryResultDto;
 import com.tuotiansudai.activity.repository.mapper.*;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -101,10 +100,10 @@ public class ThirdAnniversaryActivityService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private WeChatHelpMapper weChatHelpMapper;
+    private ThirdAnniversaryHelpMapper thirdAnniversaryHelpMapper;
 
     @Autowired
-    private WeChatHelpInfoMapper weChatHelpInfoMapper;
+    private ThirdAnniversaryHelpInfoMapper thirdAnniversaryHelpInfoMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -246,8 +245,8 @@ public class ThirdAnniversaryActivityService {
     }
 
     public Map<String, Object> invite(String loginName) {
-        List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
-        if (models.size() == 0) {
+        ThirdAnniversaryHelpModel model = thirdAnniversaryHelpMapper.findByLoginName(loginName);
+        if (model == null) {
             List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, new Date());
             long sumAnnualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
             return Maps.newHashMap(ImmutableMap.<String, Object>builder()
@@ -256,41 +255,39 @@ public class ThirdAnniversaryActivityService {
                     .put("endTime", "")
                     .build());
         }
-        WeChatHelpModel weChatHelpModel = models.get(0);
-        List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, weChatHelpModel.getEndTime());
+        List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(loginName, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, model.getEndTime());
         long sumAnnualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
-        List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpModel.getId());
+        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(model.getId());
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("annualizedAmount", AmountConverter.convertCentToString(sumAnnualizedAmount))
                 .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * rates.get(helpInfoModels.size()))))
-                .put("endTime", new DateTime(weChatHelpModel.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
+                .put("endTime", new DateTime(model.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
                 .put("helpFriend", helpInfoModels)
                 .build());
     }
 
     public void shareInvite(String loginName) {
-        List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(loginName, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
-        if (models.size() > 0) {
+        ThirdAnniversaryHelpModel model = thirdAnniversaryHelpMapper.findByLoginName(loginName);
+        if (model != null) {
             return;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
-        WeChatHelpModel weChatHelpModel = new WeChatHelpModel(loginName, userModel.getUserName(), userModel.getMobile(), WeChatHelpType.THIRD_ANNIVERSARY_HELP, new Date(), DateTime.now().plusDays(3).toDate());
-        weChatHelpMapper.create(weChatHelpModel);
-        redisWrapperClient.hset(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(weChatHelpModel.getId()), DateTime.now().plusDays(3).toString("yyyy-MM-dd HH:mm:ss"));
+        ThirdAnniversaryHelpModel thirdAnniversaryHelpModel = new ThirdAnniversaryHelpModel(loginName, userModel.getMobile(), userModel.getUserName(), new Date(), DateTime.now().plusDays(3).toDate());
+        thirdAnniversaryHelpMapper.create(thirdAnniversaryHelpModel);
+        redisWrapperClient.hset(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(thirdAnniversaryHelpModel.getId()), DateTime.now().plusDays(3).toString("yyyy-MM-dd HH:mm:ss"));
     }
 
     public Map<String, Object> sharePage(String loginName, String originator) {
-        List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(originator, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
-        if (models.size() == 0) {
+        ThirdAnniversaryHelpModel helpModel = thirdAnniversaryHelpMapper.findByLoginName(originator);
+        if (helpModel == null) {
             return null;
         }
 
-        long sumAnnualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(originator, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, models.get(0).getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
-        List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
+        long sumAnnualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(originator, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, helpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
+        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
         boolean isHelp = !Strings.isNullOrEmpty(loginName) && helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName));
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("originator", models.get(0).getUserName())
-                .put("endTime", new DateTime(models.get(0).getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
+                .put("endTime", new DateTime(helpModel.getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
                 .put("isHelp", isHelp)
                 .put("helpFriend", helpInfoModels)
                 .put("reward", AmountConverter.convertCentToString((long) (sumAnnualizedAmount * (isHelp ? rates.get(helpInfoModels.size()) : 0.005D))))
@@ -298,9 +295,9 @@ public class ThirdAnniversaryActivityService {
     }
 
     public void openRedEnvelope(String loginName, String mobile, String originator) {
-        List<WeChatHelpModel> models = weChatHelpMapper.findByUserAndHelpType(originator, null, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
-        List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
-        if (new Date().after(models.get(0).getEndTime())){
+        ThirdAnniversaryHelpModel helpModel = thirdAnniversaryHelpMapper.findByLoginName(originator);
+        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
+        if (new Date().after(helpModel.getEndTime())){
             return;
         }
         if (helpInfoModels.size() >= 3) {
@@ -309,7 +306,7 @@ public class ThirdAnniversaryActivityService {
         if (helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName))) {
             return;
         }
-        weChatHelpInfoMapper.create(new WeChatHelpInfoModel(loginName, mobile, userMapper.findByLoginName(loginName).getUserName(), models.get(0).getId(), WeChatHelpUserStatus.WAITING));
+        thirdAnniversaryHelpInfoMapper.create(new ThirdAnniversaryHelpInfoModel(helpModel.getId(), loginName, mobile, userMapper.findByLoginName(loginName).getUserName()));
     }
 
     private boolean duringDrawActivities() {

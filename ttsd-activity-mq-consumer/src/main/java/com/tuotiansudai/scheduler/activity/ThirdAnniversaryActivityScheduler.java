@@ -56,10 +56,10 @@ public class ThirdAnniversaryActivityScheduler {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    private WeChatHelpMapper weChatHelpMapper;
+    private ThirdAnniversaryHelpMapper thirdAnniversaryHelpMapper;
 
     @Autowired
-    private WeChatHelpInfoMapper weChatHelpInfoMapper;
+    private ThirdAnniversaryHelpInfoMapper thirdAnniversaryHelpInfoMapper;
 
     @Autowired
     private ActivityInvestMapper activityInvestMapper;
@@ -102,17 +102,15 @@ public class ThirdAnniversaryActivityScheduler {
             Date endTime = DateTime.parse(entry.getValue(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
             if (new Date().after(endTime)) {
                 redisWrapperClient.hdel(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(weChatHelpId));
-                WeChatHelpModel weChatHelpModel = weChatHelpMapper.findById(weChatHelpId);
-                List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(weChatHelpId);
-                long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(weChatHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, weChatHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
+                ThirdAnniversaryHelpModel thirdAnniversaryHelpModel = thirdAnniversaryHelpMapper.findById(weChatHelpId);
+                List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(weChatHelpId);
+                long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(thirdAnniversaryHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, thirdAnniversaryHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long cash = (long) (annualizedAmount * rates.get(helpInfoModels.size()));
-                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", weChatHelpModel.getLoginName()))) {
+                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", thirdAnniversaryHelpModel.getLoginName()))) {
                     try {
-                        sendCash(weChatHelpModel.getLoginName(), cash, "HELP");
-                        weChatHelpModel.setCashBack(true);
-                        weChatHelpMapper.update(weChatHelpModel);
+                        sendCash(thirdAnniversaryHelpModel.getLoginName(), cash, "HELP");
                     } catch (Exception e) {
-                        logger.error("[third_anniversary_activity] send help cash to creator, user:{} fail, message:{}", weChatHelpModel.getLoginName(), e.getMessage());
+                        logger.error("[third_anniversary_activity] send help cash to creator, user:{} fail, message:{}", thirdAnniversaryHelpModel.getLoginName(), e.getMessage());
                     }
                     sendHelpCashToFriend(helpInfoModels, cash / helpInfoModels.size());
                 }
@@ -120,14 +118,11 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    public void sendHelpCashToFriend(List<WeChatHelpInfoModel> helpInfoModels, long cash) {
-        for (WeChatHelpInfoModel model : helpInfoModels) {
+    public void sendHelpCashToFriend(List<ThirdAnniversaryHelpInfoModel> helpInfoModels, long cash) {
+        for (ThirdAnniversaryHelpInfoModel model : helpInfoModels) {
             if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, model.getLoginName()))) {
                 try {
                     sendCash(model.getLoginName(), cash, "HELP");
-                    model.setStatus(WeChatHelpUserStatus.SUCCESS);
-                    model.setCashBackTime(new Date());
-                    weChatHelpInfoMapper.update(model);
                 } catch (Exception e) {
                     logger.error("[third_anniversary_activity] send help cash to friend, user:{} fail, message:{}", model.getLoginName(), e.getMessage());
                 }

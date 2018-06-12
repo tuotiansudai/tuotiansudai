@@ -264,7 +264,6 @@ public class ExportController {
     @RequestMapping(value = "/invite-help/invest-reward", method = RequestMethod.GET)
     public void investAnnualizedExport(HttpServletResponse response,
                                        @RequestParam(value = "keyWord", required = false) String keyWord,
-                                       @RequestParam(value = "type", defaultValue = "THIRD_ANNIVERSARY_HELP") WeChatHelpType type,
                                        @RequestParam(value = "minInvest", required = false) Long minInvest,
                                        @RequestParam(value = "maxInvest", required = false) Long maxInvest) throws IOException {
         response.setCharacterEncoding("UTF-8");
@@ -274,7 +273,7 @@ public class ExportController {
             logger.error(e.getLocalizedMessage(), e);
         }
         response.setContentType("application/csv");
-        List<List<String>> csvData = activityConsoleExportService.buildInviteHelpInvestRewardActivityCsvList(keyWord, minInvest, maxInvest, type);
+        List<List<String>> csvData = activityConsoleExportService.buildInviteHelpInvestRewardActivityCsvList(keyWord, minInvest, maxInvest);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InviteHelpInvestActivityHeader, csvData, response.getOutputStream());
     }
 

@@ -24,16 +24,6 @@
             <input type="text" class="form-control jq-balance-min" name="minInvest" value="${minInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
             <input type="text" class="form-control jq-balance-max" name="maxInvest" value="${maxInvest!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
-
-
-        <div class="form-group">
-            <label>活动类型</label>
-            <select name="type">
-                <option value="THIRD_ANNIVERSARY_HELP" <#if type=="THIRD_ANNIVERSARY_HELP">selected</#if>>速贷3周年</option>
-                <option value="INVEST_HELP" <#if type=="INVEST_HELP">selected</#if>>返利加油站投资助力</option>
-            </select>
-        </div>
-
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
     </form>
     <div class="table-responsive">
@@ -74,7 +64,7 @@
         </table>
     </div>
 
-    <a href="/activity-console/activity-manage/invite-help/invest-reward?keyWord=${keyWord!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&type=${type}" class="form-control" style="width: 170px">请点击此处导出EXCEl</a><br/>
+    <a href="/activity-console/activity-manage/invite-help/invest-reward?keyWord=${keyWord!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}" class="form-control" style="width: 170px">请点击此处导出EXCEl</a><br/>
 
     <!-- pagination  -->
     <nav class="pagination-control">

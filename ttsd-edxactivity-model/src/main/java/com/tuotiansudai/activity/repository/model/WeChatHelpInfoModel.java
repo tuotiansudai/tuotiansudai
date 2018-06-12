@@ -7,9 +7,6 @@ public class WeChatHelpInfoModel implements Serializable {
 
     private long id;
     private String openId;
-    private String loginName;
-    private String mobile;
-    private String userName;
     private long weChatHelpId;
     private WeChatHelpUserStatus status;
     private String remark;
@@ -21,16 +18,6 @@ public class WeChatHelpInfoModel implements Serializable {
 
     public WeChatHelpInfoModel(String openId, long weChatHelpId, WeChatHelpUserStatus status) {
         this.openId = openId;
-        this.weChatHelpId = weChatHelpId;
-        this.status = status;
-        this.createdTime = new Date();
-    }
-
-    public WeChatHelpInfoModel(String loginName, String mobile, String userName, long weChatHelpId, WeChatHelpUserStatus status) {
-        this.openId = loginName;
-        this.loginName = loginName;
-        this.mobile = mobile;
-        this.userName = userName;
         this.weChatHelpId = weChatHelpId;
         this.status = status;
         this.createdTime = new Date();
@@ -90,29 +77,5 @@ public class WeChatHelpInfoModel implements Serializable {
 
     public void setCashBackTime(Date cashBackTime) {
         this.cashBackTime = cashBackTime;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryHelpInfoMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="thirdAnniversaryHelpInfoModel" type="com.tuotiansudai.activity.repository.model.ThirdAnniversaryHelpInfoModel">
+        <result column="id" property="id"/>
+        <result column="help_id" property="helpId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="thirdAnniversaryHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT IGNORE INTO third_anniversary_help_info(help_id, login_name, user_name, mobile, created_time)
+        VALUES (#{helpId}, #{loginName}, #{userName}, #{mobile}, now())
+    </insert>
+
+    <select id="findByHelpId" parameterType="map" resultMap="thirdAnniversaryHelpInfoModel">
+        SELECT * FROM third_anniversary_help_info where help_id = #{helpId}
+    </select>
+
+</mapper>

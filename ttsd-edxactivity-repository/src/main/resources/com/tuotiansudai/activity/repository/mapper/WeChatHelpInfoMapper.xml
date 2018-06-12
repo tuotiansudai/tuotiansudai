@@ -9,9 +9,6 @@
     <resultMap id="weChatHelpInfoModel" type="com.tuotiansudai.activity.repository.model.WeChatHelpInfoModel">
         <result column="id" property="id"/>
         <result column="openId" property="openId"/>
-        <result column="login_name" property="loginName"/>
-        <result column="mobile" property="mobile"/>
-        <result column="user_name" property="userName"/>
         <result column="we_chat_help_id" property="weChatHelpId"/>
         <result column="status" property="status"/>
         <result column="remark" property="remark"/>
@@ -21,16 +18,14 @@
 
     <resultMap id="weChatHelpInfoView" type="com.tuotiansudai.activity.repository.model.WeChatHelpInfoView">
         <result column="openId" property="openId"/>
-        <result column="mobile" property="mobile"/>
-        <result column="user_name" property="userName"/>
         <result column="nick_name" property="nickName"/>
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="weChatHelpInfoModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT IGNORE INTO we_chat_help_info(openId, login_name, mobile, user_name, we_chat_help_id, status, created_time)
-        VALUES (#{openId}, #{loginName}, #{mobile}, #{userName}, #{weChatHelpId}, #{status}, #{createdTime})
+        INSERT IGNORE INTO we_chat_help_info(openId, we_chat_help_id, status, created_time)
+        VALUES (#{openId}, #{weChatHelpId}, #{status}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="weChatHelpInfoModel">
@@ -56,7 +51,7 @@
     </select>
 
     <select id="findByNickName" parameterType="map" resultMap="weChatHelpInfoView">
-        SELECT h.openId, h.mobile, h.user_name, u.nick_name, h.status, h.created_time from we_chat_help_info h LEFT join we_chat_user_info u on h.openId = u.openId
+        SELECT h.openId, u.nick_name, h.status, h.created_time from we_chat_help_info h LEFT join we_chat_user_info u on h.openId = u.openId
         where h.we_chat_help_id = #{helpId}
         <if test="nickName !=null and nickName !=''">
             <![CDATA[and u.nick_name like '%${nickName}%']]>
