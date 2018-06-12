@@ -84,10 +84,11 @@ public class ThirdAnniversaryActivityController {
     }
 
     @RequestMapping(value = "/share-page", method = RequestMethod.GET)
-    public ModelAndView sharePage(@RequestParam(value = "originator") String originator){
+    public ModelAndView sharePage(@RequestParam(value = "originator") String originator, HttpServletRequest request){
         String loginName = LoginUserInfo.getLoginName();
         if(Strings.isNullOrEmpty(loginName)){
-            return new ModelAndView("redirect:/m/login?redirect=/activity/third-anniversary/share-page");
+            request.getSession().setAttribute("channel", "thirdAnniversary");
+            return new ModelAndView(String.format("redirect:/m/login?redirect=/activity/third-anniversary/share-page?originator=%s", originator));
         }
         if(loginName.equals(originator)){
             return new ModelAndView("redirect:/activity/third-anniversary/invite-page");
