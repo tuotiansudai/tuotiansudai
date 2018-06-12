@@ -287,7 +287,7 @@ public class ThirdAnniversaryActivityService {
 
         long sumAnnualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(originator, ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, models.get(0).getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
         List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(models.get(0).getId());
-        boolean isHelp = helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName));
+        boolean isHelp = !Strings.isNullOrEmpty(loginName) && helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName));
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("originator", models.get(0).getUserName())
                 .put("endTime", new DateTime(models.get(0).getEndTime()).toString("yyyy-MM-dd HH:mm:ss"))
@@ -306,7 +306,7 @@ public class ThirdAnniversaryActivityService {
         if (helpInfoModels.size() >= 3) {
             return;
         }
-        if (helpInfoModels.stream().map(model -> model.getLoginName().equals(loginName)).findAny().isPresent()) {
+        if (helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName))) {
             return;
         }
         weChatHelpInfoMapper.create(new WeChatHelpInfoModel(loginName, mobile, models.get(0).getId(), WeChatHelpUserStatus.WAITING));

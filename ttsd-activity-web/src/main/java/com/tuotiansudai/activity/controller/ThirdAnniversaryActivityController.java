@@ -85,17 +85,12 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(value = "/share-page", method = RequestMethod.GET)
     public ModelAndView sharePage(@RequestParam(value = "originator") String originator, HttpServletRequest request){
-        String loginName = LoginUserInfo.getLoginName();
-        if(Strings.isNullOrEmpty(loginName)){
-            request.getSession().setAttribute("channel", "thirdAnniversary");
-            return new ModelAndView(String.format("redirect:/m/login?redirect=/activity/third-anniversary/share-page?originator=%s", originator));
-        }
         if(loginName.equals(originator)){
             return new ModelAndView("redirect:/activity/third-anniversary/invite-page");
         }
 
         ModelAndView modelAndView = new ModelAndView();
-        Map<String, Object> map = thirdAnniversaryActivityService.sharePage(loginName, originator);
+        Map<String, Object> map = thirdAnniversaryActivityService.sharePage(LoginUserInfo.getLoginName(), originator);
         if(CollectionUtils.isEmpty(map)){
             modelAndView.setViewName("/error/error-info-page");
             modelAndView.addObject("errorInfo", "无效推荐链接");
