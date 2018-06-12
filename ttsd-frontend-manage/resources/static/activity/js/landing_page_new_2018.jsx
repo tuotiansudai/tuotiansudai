@@ -405,14 +405,17 @@ if($registerContainer.length){
 }
 
 
-
-let registerContainerTop = $('#registerContainer').offset().top;
-
-if($(window).width()>1024){
-    registerContainerTop = 0
-}else {
-    registerContainerTop = registerContainerTop-50;
+if($('#registerContainer').length){
+    let registerContainerTop = $('#registerContainer').offset().top;
+    if($(window).width()>1024){
+        registerContainerTop = 0
+    }else {
+        registerContainerTop = registerContainerTop-50;
+    }
 }
+
+
+
 //点击立即注册领取
 $btnCoupon.on('click', function (event) {
     event.preventDefault();
