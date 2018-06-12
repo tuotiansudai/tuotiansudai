@@ -1,4 +1,4 @@
-require("activityStyle/july_activity_2018.scss");
+require("activityStyle/third_anniversary_2018.scss");
 require('publicJs/plugins/jquery.qrcode.min');
 let commonFun= require('publicJs/commonFun');
 var tpl = require('art-template/dist/template');

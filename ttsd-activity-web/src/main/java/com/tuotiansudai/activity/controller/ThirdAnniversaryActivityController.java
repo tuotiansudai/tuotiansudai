@@ -30,7 +30,7 @@ public class ThirdAnniversaryActivityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView thirdAnniversary() {
-        ModelAndView modelAndView = new ModelAndView("/activities/2018/July-activity", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/third-anniversary", "responsive", true);
         modelAndView.addAllObjects(thirdAnniversaryActivityService.getTopFourTeam(LoginUserInfo.getLoginName()));
         modelAndView.addObject("drawCount", thirdAnniversaryActivityService.unUserDrawCount(LoginUserInfo.getLoginName()));
         return modelAndView;
@@ -68,7 +68,7 @@ public class ThirdAnniversaryActivityController {
         if (Strings.isNullOrEmpty(LoginUserInfo.getLoginName())){
             return new ModelAndView("redirect:/m/login?redirect=/activity/third-anniversary/invite-page");
         }
-        ModelAndView modelAndView = new ModelAndView("/wechat/July-activity-invite-friend");
+        ModelAndView modelAndView = new ModelAndView("/wechat/third-anniversary-invite-friend");
         modelAndView.addAllObjects(thirdAnniversaryActivityService.invite(LoginUserInfo.getLoginName()));
         modelAndView.addObject("activityStartTime", startTime);
         modelAndView.addObject("activityEndTime", endTime);
@@ -100,7 +100,7 @@ public class ThirdAnniversaryActivityController {
             modelAndView.addObject("errorInfo", "无效推荐链接");
             return modelAndView;
         }
-        modelAndView.setViewName("/wechat/July-activity-open-ware");
+        modelAndView.setViewName("/wechat/third-anniversary-open-ware");
         modelAndView.addAllObjects(map);
         modelAndView.addObject("originator", originator);
         return modelAndView;
