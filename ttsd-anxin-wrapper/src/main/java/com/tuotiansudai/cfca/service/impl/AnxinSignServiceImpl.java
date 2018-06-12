@@ -66,9 +66,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private ContractService contractService;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
@@ -150,7 +147,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      */
     @Transactional
     @Override
-    public BaseDto createAccount3001(String loginName) {
+    public BaseDto<AnxinDataDto> createAccount3001(String loginName) {
 
         userMapper.lockByLoginName(loginName);
 
@@ -176,7 +173,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setCreatedTime(now);
                 anxinProp.setAnxinUserId(tx3001ResVO.getPerson().getUserId());
                 anxinSignPropertyMapper.create(anxinProp);
-                return new BaseDto(true);
+                return new BaseDto<>(true);
             } else {
                 if (tx3001ResVO == null) {
                     logger.error("create anxin sign account failed. result is null.");
@@ -198,14 +195,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      */
     @Transactional
     @Override
-    public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
+    public BaseDto<AnxinDataDto> sendCaptcha3101(String loginName, boolean isVoice) {
 
         userMapper.lockByLoginName(loginName);
 
         try {
             // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
             if (!hasAnxinAccount(loginName)) {
-                BaseDto createAccountRet = this.createAccount3001(loginName);
+                BaseDto<AnxinDataDto> createAccountRet = this.createAccount3001(loginName);
                 if (!createAccountRet.isSuccess()) {
                     return createAccountRet;
                 }
@@ -219,7 +216,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (isSuccess(tx3101ResVO)) {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
-                return new BaseDto(true);
+                return new BaseDto<>(true);
             } else {
                 if (tx3101ResVO == null) {
                     logger.error("send anxin captcha code failed. result is null.");
@@ -240,7 +237,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 确认验证码 （授权）
      */
     @Override
-    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto<AnxinDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -269,7 +266,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                return new BaseDto<>(true, new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
+                return new BaseDto<>(true, new AnxinDataDto(true, skipAuth ? "skipAuth" : ""));
             } else {
                 if (tx3102ResVO == null) {
                     logger.error("verify anxin captcha code failed. result is null.");
@@ -282,7 +279,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return new BaseDto(false);
+            return new BaseDto<>(false);
         }
     }
 
@@ -290,7 +287,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 打开/关闭 免验开关
      */
     @Override
-    public BaseDto switchSkipAuth(String loginName, boolean open) {
+    public BaseDto<AnxinDataDto> switchSkipAuth(String loginName, boolean open) {
         try {
             logger.info(loginName + " is switching anxin-sign skip-auth " + (open ? "on." : "off."));
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -300,7 +297,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             logger.error("switch anxin-sign skip-auth " + (open ? "on " : "off ") + "failed.", e);
             return failBaseDto(SWITCH_SIGN_FAIL);
         }
-        return new BaseDto(true);
+        return new BaseDto<>(true);
     }
 
     private BaseDto<AnxinDataDto> failBaseDto(String errorMessage) {

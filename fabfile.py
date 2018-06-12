@@ -47,7 +47,6 @@ def mk_war(targets=None):
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootJar')
 
 
@@ -148,7 +147,6 @@ def deploy_worker():
     put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-amount-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
-    put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
     sudo('supervisorctl stop all')
@@ -165,7 +163,6 @@ def deploy_worker():
         sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-email-mq-consumer/')
         sudo('rm -rf ttsd-amount-mq-consumer/')
-        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
         sudo('supervisorctl start all')
@@ -353,8 +350,7 @@ def worker(skip_package):
                               'ttsd-user-mq-consumer',
                               'ttsd-auditLog-mq-consumer',
                               'ttsd-email-mq-consumer',
-                              'ttsd-amount-mq-consumer',
-                              'ttsd-diagnosis'))
+                              'ttsd-amount-mq-consumer'))
     mk_worker_zip()
     mk_mq_consumer()
     execute(deploy_worker)

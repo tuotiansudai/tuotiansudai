@@ -1,6 +1,6 @@
 package com.tuotiansudai.cfca.test;
 
-import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,9 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class TestDownloadFile {
-    public static void main(String[] args) throws Exception {
-        AnxinClientTest anxinClient = new AnxinClientTest();
-        anxinClient.initSSL();
+    public static void main(String[] args) {
+        AnxinClient anxinClient = AnxinClient.getClient();
 
         String contractNo = "MM20160721000000041";
         byte[] fileBtye = anxinClient.getContractFile(contractNo);

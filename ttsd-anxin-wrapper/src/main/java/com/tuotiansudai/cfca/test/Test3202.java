@@ -4,7 +4,7 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
-import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 
@@ -15,8 +15,7 @@ import java.util.Map;
 
 public class Test3202 {
     public static void main(String[] args) throws Exception {
-        AnxinClientTest anxinClient = new AnxinClientTest();
-        anxinClient.initSSL();
+        AnxinClient anxinClient = AnxinClient.getClient();
 
         Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
         HeadVO head = new HeadVO();

@@ -47,7 +47,6 @@ public class RequestResponseServiceImpl implements RequestResponseService {
 
     @Override
     public void insertCreateAccountRequest(Tx3001ReqVO tx3001ReqVO) {
-
         AnxinCreateAccountRequestModel requestModel = new AnxinCreateAccountRequestModel();
         requestModel.setTxTime(tx3001ReqVO.getHead().getTxTime());
         requestModel.setPersonName(tx3001ReqVO.getPerson().getPersonName());

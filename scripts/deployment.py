@@ -28,7 +28,6 @@ class Deployment(object):
         self.build_and_unzip_worker()
         self.build_mq_consumer()
         self.build_rest_service()
-        self.build_diagnosis()
         self.build_worker_monitor()
         self.mk_static_package()
         self.init_docker()
@@ -115,8 +114,7 @@ class Deployment(object):
                           'ttsd-user-mq-consumer',
                           'ttsd-auditLog-mq-consumer',
                           'ttsd-email-mq-consumer',
-                          'ttsd-amount-mq-consumer',
-                          'ttsd-diagnosis'))
+                          'ttsd-amount-mq-consumer'))
         self.mk_worker_zip()
         self.init_docker(('worker-all', 'auditLog-mq-consumer',
                           'loan-mq-consumer',
@@ -207,11 +205,6 @@ class Deployment(object):
         print "Making rest services build..."
         sh('cd ./ttsd-ask-rest && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-ask-rest/build/distributions && unzip \*.zip')
-
-    def build_diagnosis(self):
-        print "Making diagnosis build..."
-        sh('cd ./ttsd-diagnosis && {0} distZip'.format(self._gradle))
-        sh('cd ./ttsd-diagnosis/build/distributions && unzip \*.zip')
 
     def build_worker_monitor(self):
         print "Making diagnosis build..."
