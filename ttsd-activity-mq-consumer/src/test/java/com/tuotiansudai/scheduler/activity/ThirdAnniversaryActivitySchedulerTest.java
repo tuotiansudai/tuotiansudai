@@ -87,9 +87,9 @@ public class ThirdAnniversaryActivitySchedulerTest {
                         .build()));
 
         when(weChatHelpMapper.findById(1)).thenReturn(new WeChatHelpModel("loginName1", "userName1", "mobile1", WeChatHelpType.THIRD_ANNIVERSARY_HELP, DateTime.now().minusDays(4).toDate(), DateTime.now().minusDays(1).toDate()));
-        when(weChatHelpInfoMapper.findByHelpId(1)).thenReturn(Lists.newArrayList(new WeChatHelpInfoModel("friend1", "friendMobile1", 1, WeChatHelpUserStatus.WAITING),
-                new WeChatHelpInfoModel("friend2", "friendMobile2", 1, WeChatHelpUserStatus.WAITING),
-                new WeChatHelpInfoModel("friend3", "friendMobile3", 1, WeChatHelpUserStatus.WAITING)));
+        when(weChatHelpInfoMapper.findByHelpId(1)).thenReturn(Lists.newArrayList(new WeChatHelpInfoModel("friend1", "friendMobile1", "userName1", 1, WeChatHelpUserStatus.WAITING),
+                new WeChatHelpInfoModel("friend2", "friendMobile2", "userName2", 1, WeChatHelpUserStatus.WAITING),
+                new WeChatHelpInfoModel("friend3", "friendMobile3", "userName3", 1, WeChatHelpUserStatus.WAITING)));
 
         List<ActivityInvestModel> activityInvestModelList = Lists.newArrayList(new ActivityInvestModel(1l,1l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),
                 new ActivityInvestModel(1l,2l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),

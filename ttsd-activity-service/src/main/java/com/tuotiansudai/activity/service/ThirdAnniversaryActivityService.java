@@ -187,7 +187,7 @@ public class ThirdAnniversaryActivityService {
     public BaseResponse draw(String loginName) {
 
         if (StringUtils.isEmpty(loginName)) {
-            return new BaseResponse("您还未登陆，请登陆后再来抽奖吧！");
+            return new BaseResponse("请登陆后再来开球吧！");
         }
 
         if (!duringDrawActivities()) {
@@ -195,13 +195,13 @@ public class ThirdAnniversaryActivityService {
         }
 
         if (accountMapper.findByLoginName(loginName) == null) {
-            return new BaseResponse("您还未实名认证，请实名认证后再来抽奖吧！");
+            return new BaseResponse("请实名认证后再来开球吧！");
         }
 
         int count = this.unUserDrawCount(loginName);
 
         if (count <= 0) {
-            return new BaseResponse("您暂无抽奖机会，赢取机会后再来抽奖吧!");
+            return new BaseResponse("您暂无开球机会，赢取机会后再来开球吧!");
         }
 
         List<ThirdAnniversaryDrawModel> models = new ArrayList<>();
@@ -309,7 +309,7 @@ public class ThirdAnniversaryActivityService {
         if (helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName))) {
             return;
         }
-        weChatHelpInfoMapper.create(new WeChatHelpInfoModel(loginName, mobile, models.get(0).getId(), WeChatHelpUserStatus.WAITING));
+        weChatHelpInfoMapper.create(new WeChatHelpInfoModel(loginName, mobile, userMapper.findByLoginName(loginName).getUserName(), models.get(0).getId(), WeChatHelpUserStatus.WAITING));
     }
 
     private boolean duringDrawActivities() {

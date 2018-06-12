@@ -11,3 +11,4 @@ CREATE TABLE `third_anniversary_draw` (
 
 ALTER TABLE `edxactivity`.`we_chat_help_info` ADD COLUMN `login_name` VARCHAR(25) AFTER `openId`;
 ALTER TABLE `edxactivity`.`we_chat_help_info` ADD COLUMN `mobile`  VARCHAR(11) AFTER `login_name`;
+ALTER TABLE `edxactivity`.`we_chat_help_info` ADD COLUMN `user_name`  VARCHAR(25) AFTER `mobile`;

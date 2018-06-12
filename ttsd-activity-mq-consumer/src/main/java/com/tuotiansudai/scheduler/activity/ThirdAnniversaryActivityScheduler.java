@@ -88,7 +88,7 @@ public class ThirdAnniversaryActivityScheduler {
     private Date activityEndTime;
 
 //    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 */10 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 */30 * * * ?", zone = "Asia/Shanghai")
     public void sendCash() {
         sendHelpCash();
         sendTopFourCash();
@@ -114,7 +114,7 @@ public class ThirdAnniversaryActivityScheduler {
                     } catch (Exception e) {
                         logger.error("[third_anniversary_activity] send help cash to creator, user:{} fail, message:{}", weChatHelpModel.getLoginName(), e.getMessage());
                     }
-                    sendHelpCashToFriend(helpInfoModels, cash / 3);
+                    sendHelpCashToFriend(helpInfoModels, cash / helpInfoModels.size());
                 }
             }
         }
@@ -157,9 +157,9 @@ public class ThirdAnniversaryActivityScheduler {
     }
 
     private void sendSupportCash() {
-        if (new Date().before(activityEndTime) || DateTime.now().minusDays(1).toDate().after(activityEndTime)){
-            return;
-        }
+//        if (new Date().before(activityEndTime) || DateTime.now().minusDays(1).toDate().after(activityEndTime)){
+//            return;
+//        }
 
         if (redisWrapperClient.exists(THIRD_ANNIVERSARY_SEND_SUPPORT_CASH_OVER)){
             return;

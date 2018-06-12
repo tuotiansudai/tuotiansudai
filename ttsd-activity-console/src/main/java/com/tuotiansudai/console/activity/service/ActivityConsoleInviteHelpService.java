@@ -69,12 +69,15 @@ public class ActivityConsoleInviteHelpService {
             weChatHelpViews = weChatHelpMapper.findByKeyWord(KeyWord, minInvest, maxInvest, WeChatHelpType.THIRD_ANNIVERSARY_HELP);
             weChatHelpViews.forEach(view->{
                 List<ActivityInvestModel> investModels = activityInvestMapper.findAllByActivityLoginNameAndTime(view.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, view.getEndTime());
+                List<WeChatHelpInfoModel> helpInfoModels = weChatHelpInfoMapper.findByHelpId(view.getId());
                 long annualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long investAmount = investModels.stream().mapToLong(ActivityInvestModel::getInvestAmount).sum();
                 view.setInvestAmount(investAmount);
                 view.setAnnualizedAmount(annualizedAmount);
-                view.setReward((long) (annualizedAmount * thirdAnniversaryRated.get(view.getHelpUserCount())));
-                view.setRate(String.format("0.2%f", thirdAnniversaryRated.get(view.getHelpUserCount()) * 100));
+                int helpUserCount = helpInfoModels.size();
+                view.setHelpUserCount(helpUserCount);
+                view.setReward((long) (annualizedAmount * thirdAnniversaryRated.get(helpUserCount)));
+                view.setRate(helpUserCount == 0 ? "0" : String.format("%.1f", thirdAnniversaryRated.get(helpUserCount) * 100));
             });
         }
         int count = weChatHelpViews.size();
@@ -112,13 +115,16 @@ public class ActivityConsoleInviteHelpService {
     public BasePaginationDataDto investRewardDetail(int index, int pageSize, long id, String nickName, WeChatHelpUserStatus status) {
         weChatUserInfoMapper.initCharset();
         List<WeChatHelpInfoView> weChatHelpInfoViews = weChatHelpInfoMapper.findByNickName(id, nickName, status);
-        for (WeChatHelpInfoView weChatHelpInfoView: weChatHelpInfoViews) {
-            if (Strings.isNullOrEmpty(weChatHelpInfoView.getMobile())){
-                WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(weChatHelpInfoView.getOpenId());
-                if (weChatUserModel != null && weChatUserModel.isBound()) {
-                    UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
-                    weChatHelpInfoView.setUserName(userModel.getUserName());
-                    weChatHelpInfoView.setMobile(userModel.getMobile());
+        boolean isThirdAnniversary = weChatHelpMapper.findById(id).getType() == WeChatHelpType.THIRD_ANNIVERSARY_HELP;
+        if (!isThirdAnniversary){
+            for (WeChatHelpInfoView weChatHelpInfoView: weChatHelpInfoViews) {
+                if (Strings.isNullOrEmpty(weChatHelpInfoView.getMobile())){
+                    WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(weChatHelpInfoView.getOpenId());
+                    if (weChatUserModel != null && weChatUserModel.isBound()) {
+                        UserModel userModel = userMapper.findByLoginName(weChatUserModel.getLoginName());
+                        weChatHelpInfoView.setUserName(userModel.getUserName());
+                        weChatHelpInfoView.setMobile(userModel.getMobile());
+                    }
                 }
             }
         }
