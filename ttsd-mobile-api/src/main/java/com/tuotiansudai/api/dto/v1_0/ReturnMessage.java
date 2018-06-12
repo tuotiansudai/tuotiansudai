@@ -216,7 +216,6 @@ public enum ReturnMessage {
     }
 
     public static String getErrorMsgByCode(String code) {
-
         for (ReturnMessage errorMsg : ReturnMessage.values()) {
             if (errorMsg.code.equals(code)) {
                 return errorMsg.msg;
@@ -224,6 +223,4 @@ public enum ReturnMessage {
         }
         return null;
     }
-
-
 }

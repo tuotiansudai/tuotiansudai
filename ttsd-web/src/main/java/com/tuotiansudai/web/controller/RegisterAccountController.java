@@ -47,7 +47,7 @@ public class RegisterAccountController {
             dataDto.setMessage("身份证不合法");
             return baseDto;
         }
-        if (userService.isIdentityNumberExist(identityNumber)){
+        if (userService.isIdentityNumberExist(identityNumber)) {
             dataDto.setMessage("身份证已存在");
             return baseDto;
         }
@@ -60,7 +60,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

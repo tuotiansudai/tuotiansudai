@@ -87,6 +87,5 @@ public class BankWithdrawMessageConsumer implements MessageConsumer {
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
-
     }
 }

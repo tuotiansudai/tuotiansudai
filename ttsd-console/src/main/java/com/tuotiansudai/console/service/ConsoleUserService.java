@@ -114,17 +114,6 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
-        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
-            RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
-                    mobile,
-                    userModel.getUserName(),
-                    userModel.getIdentityNumber());
-            BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
-            if (!baseDto.getData().getStatus()) {
-                throw new EditUserException(baseDto.getData().getMessage());
-            }
-        }
-
         // update referrer relationship
         mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
     }
