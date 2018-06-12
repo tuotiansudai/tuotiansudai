@@ -39,8 +39,6 @@
         </table>
     </div>
 
-    <#--<a href="/activity-console/activity-manage/invite-help/invest-reward?keyWord=${keyWord!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&type=${type}" class="form-control" style="width: 170px">请点击此处导出EXCEl</a><br/>-->
-
     <!-- pagination  -->
     <nav class="pagination-control">
         <#if data.count &gt; 0>

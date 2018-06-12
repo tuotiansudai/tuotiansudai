@@ -4,8 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryHelpMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
-
     <resultMap id="thirdAnniversaryHelpModel" type="com.tuotiansudai.activity.repository.model.ThirdAnniversaryHelpModel">
         <result column="id" property="id"/>
         <result column="login_name" property="loginName"/>

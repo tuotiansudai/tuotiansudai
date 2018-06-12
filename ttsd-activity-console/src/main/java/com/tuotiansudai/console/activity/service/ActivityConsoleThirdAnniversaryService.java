@@ -51,7 +51,7 @@ public class ActivityConsoleThirdAnniversaryService {
             long annualizedAmount = investModels.stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
             List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(model.getId());
             int count = helpInfoModels.size();
-            String friends = helpInfoModels.stream().map(infoModel->infoModel.getMobile()).collect(Collectors.joining(","));
+            String friends = helpInfoModels.stream().map(ThirdAnniversaryHelpInfoModel::getMobile).collect(Collectors.joining(","));
             return new ThirdAnniversaryHelpView(model, AmountConverter.convertCentToString(investAmount), AmountConverter.convertCentToString(annualizedAmount), count, count == 0 ? "0": String.format("%.1f", rates.get(count) * 100), AmountConverter.convertCentToString((long) (annualizedAmount * rates.get(count))), friends);
         }).collect(Collectors.toList());
 

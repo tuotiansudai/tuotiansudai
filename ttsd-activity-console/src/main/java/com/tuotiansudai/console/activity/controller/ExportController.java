@@ -5,7 +5,6 @@ import com.tuotiansudai.activity.repository.dto.AutumnExportDto;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityInvestAnnualized;
 import com.tuotiansudai.activity.repository.model.LotteryPrize;
-import com.tuotiansudai.activity.repository.model.WeChatHelpType;
 import com.tuotiansudai.console.activity.service.ActivityConsoleExportService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;

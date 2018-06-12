@@ -16,7 +16,7 @@
                    <p class="last">活动结束后，所有<strong>集齐</strong>世界杯<strong>四强</strong>队标的用户，可平分<strong>8888元</strong>现金奖池。</p>
                </div>
            </div>
-           <div id="openBallContent" class="content-section open-balls-content content-page marginTop40" data-drawCount="${drawCount?c}">
+           <div id="openBallContent" class="content-section open-balls-content content-page marginTop40" data-drawcount="${drawCount?c}">
                <div class="big-ball"></div>
                     <a id="toInvestBtn" href="/loan-list" class="gold-btn to_invest_btn" style="display: none"></a>
                    <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall" style="display: none"></a>
