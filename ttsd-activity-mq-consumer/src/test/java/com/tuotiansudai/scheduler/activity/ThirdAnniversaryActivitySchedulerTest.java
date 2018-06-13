@@ -117,6 +117,9 @@ public class ThirdAnniversaryActivitySchedulerTest {
 
     @Test
     public void shouldSendTopFourCash(){
+        if (DateTime.now().getYear() != 2018){
+            return;
+        }
 
         ArgumentCaptor<String> redisSetKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> redisSetValueCaptor = ArgumentCaptor.forClass(String.class);
