@@ -695,9 +695,12 @@ body {
       background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
       background-size: contain;
       .money {
-        width: 500px;
+        position: absolute;
+        bottom: 60px;
+        left: 75px;
+        width: 650px;
         height: 200px;
-        margin: 0 auto;
+        z-index: -300;
         background: url("../images/2018/july-activity/money.png") no-repeat center center;
         background-size: contain;
       }
@@ -988,7 +991,7 @@ body {
           height: 0.74rem;
           span {
             font-size: 12px;
-            margin-top: 0.02rem;
+            margin-top: 0;
 
           }
           &.red-square {
@@ -1018,20 +1021,20 @@ body {
             background: url("../images/2018/july-activity/wap_blue_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-right: 0.9rem;
+              padding-right: 0.96rem;
             }
             &.disabled {
               background: url("../images/2018/july-activity/wap_blue_squre_disabled.png") no-repeat;
               background-size: contain;
               span {
-                padding-left: 0.9rem;
+                padding-right: 0.96rem;
               }
             }
             &.already_support {
               background: url("../images/2018/july-activity/wap_blue_squre_already.png") no-repeat;
               background-size: contain;
               span {
-                padding-left: 0.7rem;
+                padding-right: 0.7rem;
               }
             }
           }
@@ -1184,9 +1187,15 @@ body {
         left: 50%;
         margin-left: -3.75rem;
         bottom: -1.2rem;
-        background: url("../images/2018/july-activity/tip_bot.png") no-repeat center center;
-        background-size: contain;
-
+        background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
+        background-size: 106%;
+        .money {
+          bottom: 0.6rem;
+          left: 0.75rem;
+          width: 6.5rem;
+          height: 2rem;
+          z-index: -400;
+        }
       }
       .known-btn {
         position: absolute;
