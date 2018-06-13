@@ -41,8 +41,8 @@ body {
 }
 .borderYellow {
   border-bottom: 3.5px solid $orangeBorder;
-  border-left: 3.5px solid $orangeBorder;
   border-right: 3.5px solid $orangeBorder;
+  border-left: 3.5px solid $orangeBorder;
 }
 .gold-btn {
   width: 307px;
@@ -56,6 +56,7 @@ body {
     margin-top: 20px;
   }
   &.to_invest_btn {
+    margin-top: 20px;
     background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
     background-size: 100%;
   }
@@ -72,16 +73,26 @@ body {
   padding-bottom: 547px;
   background: url("../images/2018/july-activity/bot_bg.png") no-repeat center bottom;
 }
+.part-wrap-line {
+  margin: 0 auto;
+  width: 1374px;
+ background: none;
+}
 .part {
   position: relative;
   .part-top {
     position: absolute;
     height: 111px;
     margin: 0 auto;
-    background: url("../images/2018/july-activity/pc_part_title.png") no-repeat center center;
+    background: url("../images/2018/july-activity/part_one_title.png") no-repeat center center;
     background-size: 100%;
+    z-index: -100;
+    top: -111px;
   }
   .main-content {
+    width: 1176px;
+    padding-top: 0;
+    margin: 0 auto;
     padding-bottom: 60px;
   }
 }
@@ -90,7 +101,7 @@ body {
   padding-left: 36px;
   padding-right: 36px;
   height: 34px;
-  line-height: 34px;
+  line-height: 31px;
   border: 2px solid $greenBtn;
   border-radius: 17px;
   color: $gray333;
@@ -127,14 +138,14 @@ body {
 
 .team-logo-wrap {
   .part-top {
-    width: 1354px;
+    width: 1374px;
     height: 213px;
-    left: -68px;
     background: url("../images/2018/july-activity/part_one_title.png") no-repeat center center;
     background-size: 100%;
   }
   .main-content {
-    padding-top: 213px;
+    margin-top: 70px;
+    padding-top: 80px;
   }
   .team-logo-rules {
     padding-top: 60px;
@@ -206,10 +217,10 @@ body {
     padding-bottom: 50px;
   }
   .part-top {
-    width: 1354px;
+    width: 1374px;
     height: 222px;
     left: -68px;
-    background: url("../images/2018/july-activity/three_birthday_title.png") no-repeat center center;
+    background: url("../images/2018/july-activity/part_two_title.png") no-repeat center center;
     background-size: 100%;
   }
   .main-content {
@@ -375,7 +386,7 @@ body {
     width: 1417px;
     height: 249px;
     left: -100px;
-    background: url("../images/2018/july-activity/part_title_invite.png") no-repeat center center;
+    background: url("../images/2018/july-activity/part_three_title.png") no-repeat center center;
     background-size: 100%;
   }
   .main-content {
@@ -454,7 +465,7 @@ body {
     width: 1375px;
     height: 162px;
     left: -81px;
-    background: url("../images/2018/july-activity/kindly_title.png") no-repeat center center;
+    background: url("../images/2018/july-activity/part_title_four.png") no-repeat center center;
     background-size: 100%;
   }
   .main-content {
@@ -666,7 +677,7 @@ body {
   padding-top: 160px;
   .get-ball-tip {
     margin: 0 auto;
-    width: 600px;
+    width: 650px;
     background: #fff;
     padding-left: 20px;
     padding-right: 20px;
@@ -753,7 +764,11 @@ body {
   opacity: 0.75!important;
 }
 @media screen and(max-width: 1024px){
-
+  .part-wrap-line {
+    width: 7.5rem;
+    background: url("../images/2018/july-activity/wap_line.png") repeat-y;
+    background-size: contain;
+  }
   .activity-page {
     width: 6.58rem;
   }
@@ -761,9 +776,7 @@ body {
     width: 5.8rem;
   }
   .borderYellow {
-    border-bottom: 0.04rem solid $orangeBorder;
-    border-left: 0.04rem solid $orangeBorder;
-    border-right: 0.04rem solid $orangeBorder;
+    border-bottom: 0.06rem solid $orangeBorder;
   }
   .gold-btn {
     width: 1.96rem;
@@ -774,6 +787,7 @@ body {
       margin-top: 0.15rem;
     }
     &.to_invest_btn {
+      margin-top: 0.15rem;
       background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
       background-size: contain;
     }
@@ -865,13 +879,15 @@ body {
         margin-top: 0.2rem;
         width: 2.4rem;
         font-size: 0.28rem;
-        height: 1rem;
-        line-height: 01rem;
-        text-indent: 1rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        text-indent: 0.8rem;
         background: url("../images/2018/july-activity/wap_icon_my_ball.png") no-repeat left center;
+        background-size: 28%;
         &.collected-all {
-          text-indent: 1.2rem;
+          text-indent: 0.9rem;
           background: url("../images/2018/july-activity/wap_collected_all.png") no-repeat left center;
+          background-size: 35%;
         }
       }
       .my-team-logos {
