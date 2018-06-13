@@ -57,7 +57,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?index=${data.index - 1}"
+                        <a href="?index=${data.index + 1}"
                            aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>

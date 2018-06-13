@@ -123,14 +123,18 @@ function getMyTeamLogos(){
         type: 'GET'
     }, function (res) {
         if(res.status == true){
-            if(!res.data.length){
+            if(!res.data.prizes.length){
                 $('.my-logo').hide();
                 $('.my-team-logos').hide();
                 return;
             }else {
                 $('.my-logo').show();
+                if (res.data.isSuccess){
+                    $('.my-logo').addClass("collected-all");
+                }
+
                 let records = {
-                    list:res.data,
+                    list:res.data.prizes,
                     teamName:teamName
                 }
                 $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
