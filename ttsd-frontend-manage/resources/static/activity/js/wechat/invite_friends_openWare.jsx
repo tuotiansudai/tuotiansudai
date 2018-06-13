@@ -69,7 +69,7 @@ wx.ready(function () {
                         url: '/activity/third-anniversary/share-invite',
                         type: 'POST'
                     },function () {
-                        location.reload();
+                        location.href="/activity/third-anniversary/invite-page";
                     }
                 )
             }
@@ -90,7 +90,7 @@ wx.ready(function () {
                         url: '/activity/third-anniversary/share-invite',
                         type: 'POST'
                     },function () {
-                        location.reload();
+                        location.href="/activity/third-anniversary/invite-page";
                     }
                 )
             }
