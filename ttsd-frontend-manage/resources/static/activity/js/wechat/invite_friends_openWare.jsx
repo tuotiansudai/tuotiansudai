@@ -93,6 +93,8 @@ wx.ready(function () {
                 commonFun.useAjax({
                         url: '/activity/third-anniversary/share-invite',
                         type: 'POST'
+                    },function () {
+                        location.reload();
                     }
                 )
             }
