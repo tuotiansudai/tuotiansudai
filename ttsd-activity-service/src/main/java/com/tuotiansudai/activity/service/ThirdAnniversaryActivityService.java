@@ -299,14 +299,15 @@ public class ThirdAnniversaryActivityService {
 
     public void openRedEnvelope(String loginName, String mobile, String originator) {
         ThirdAnniversaryHelpModel helpModel = thirdAnniversaryHelpMapper.findByLoginName(originator);
-        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
         if (new Date().after(helpModel.getEndTime())){
             return;
         }
+        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
         if (helpInfoModels.size() >= 3) {
             return;
         }
-        if (helpInfoModels.stream().anyMatch(model -> model.getLoginName().equals(loginName))) {
+        List<String> loginNames = thirdAnniversaryHelpInfoMapper.findAllLoginName();
+        if (loginNames.contains(loginName)) {
             return;
         }
         thirdAnniversaryHelpInfoMapper.create(new ThirdAnniversaryHelpInfoModel(helpModel.getId(), loginName, mobile, userMapper.findByLoginName(loginName).getUserName()));

@@ -15,4 +15,6 @@ public interface ThirdAnniversaryHelpInfoMapper {
 
     List<ThirdAnniversaryHelpInfoModel> findByHelpId(@Param(value = "helpId") long helpId);
 
+    List<String> findAllLoginName();
+
 }
