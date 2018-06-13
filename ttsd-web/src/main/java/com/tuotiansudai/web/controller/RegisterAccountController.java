@@ -21,11 +21,15 @@ import javax.validation.Valid;
 @RequestMapping(path = "/register/account")
 public class RegisterAccountController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final BankAccountService bankAccountService;
 
     @Autowired
-    private BankAccountService bankAccountService;
+    public RegisterAccountController(UserService userService, BankAccountService bankAccountService) {
+        this.userService = userService;
+        this.bankAccountService = bankAccountService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
@@ -37,20 +41,17 @@ public class RegisterAccountController {
     @RequestMapping(value = "/verify/identity-number/{identityNumber:^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$}", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> isIdentityNumberExist(@PathVariable String identityNumber) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto(true);
-        baseDto.setData(dataDto);
-        boolean isLegal = IdentityNumberValidator.validateIdentity(identityNumber);
-        if (!isLegal) {
+        BaseDataDto dataDto = new BaseDataDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>(dataDto);
+        if (!IdentityNumberValidator.validateIdentity(identityNumber)) {
             dataDto.setMessage("身份证不合法");
             return baseDto;
         }
-        boolean isExist = userService.isIdentityNumberExist(identityNumber);
-        if (isExist){
+        if (userService.isIdentityNumberExist(identityNumber)){
             dataDto.setMessage("身份证已存在");
             return baseDto;
         }
-        dataDto.setStatus(false);
+        dataDto.setStatus(true);
         return baseDto;
     }
 
@@ -59,7 +60,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

@@ -1,18 +1,17 @@
 package com.tuotiansudai.api.service;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.BaseParamTest;
-import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.WithdrawOperateRequestDto;
+import com.tuotiansudai.api.dto.v1_0.WithdrawOperateResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppWithdrawServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankCardStatus;
 import com.tuotiansudai.repository.model.Source;
@@ -22,14 +21,13 @@ import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppWithdrawServiceTest extends ServiceTestBase {
@@ -42,9 +40,10 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     @Mock
     private BlacklistService blacklistService;
     @Mock
-    private WithdrawMapper withdrawMapper;
-    @Mock
     private PageValidUtils pageValidUtils;
+
+    public MobileAppWithdrawServiceTest() {
+    }
 
     @Test
     public void shouldGenerateWithdrawRequestIsOk() {
@@ -78,43 +77,4 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         assertEquals("url", baseResponseDto.getData().getUrl());
 
     }
-
-    @Test
-    public void shouldQueryUserWithdrawLogsIsOk() {
-        WithdrawModel withdrawModel1 = fakeWithDrawModel();
-        WithdrawModel withdrawModel2 = fakeWithDrawModel();
-        withdrawModel2.setStatus(WithdrawStatus.FAIL);
-        List<WithdrawModel> withdrawModels = Lists.newArrayList();
-        withdrawModels.add(withdrawModel1);
-        withdrawModels.add(withdrawModel2);
-        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class), anyString())).thenReturn(2);
-        when(withdrawMapper.findWithdrawPagination(anyString(), anyString(),
-                any(WithdrawStatus.class), any(Source.class), anyInt(), anyInt(), any(Date.class), any(Date.class), anyString())).thenReturn(withdrawModels);
-        when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("loginName");
-        WithdrawListRequestDto withdrawListRequestDto = new WithdrawListRequestDto();
-        withdrawListRequestDto.setBaseParam(baseParam);
-        BaseResponseDto<WithdrawListResponseDataDto> baseDto = mobileAppWithdrawService.queryUserWithdrawLogs(withdrawListRequestDto);
-        assertTrue(baseDto.isSuccess());
-        assertEquals("recheck", baseDto.getData().getWithdrawList().get(0).getStatus());
-        assertEquals("recheck_fail",baseDto.getData().getWithdrawList().get(1).getStatus());
-
-    }
-
-    private WithdrawModel fakeWithDrawModel() {
-        WithdrawModel withdrawModel = new WithdrawModel();
-        withdrawModel.setId(IdGenerator.generate());
-        withdrawModel.setLoginName("loginName");
-        withdrawModel.setAmount(40000L);
-        withdrawModel.setApplyNotifyMessage("verify_message");
-        withdrawModel.setApplyNotifyTime(new Date());
-        withdrawModel.setNotifyMessage("recheck_message");
-        withdrawModel.setNotifyTime(new Date());
-        withdrawModel.setCreatedTime(new Date());
-        withdrawModel.setSource(Source.IOS);
-        withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
-        return withdrawModel;
-    }
-
 }

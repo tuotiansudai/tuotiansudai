@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 
 public class BankRegisterDto extends BankBaseDto {
 
+    private String token;
+
     private String realName;
 
     private String identityCode;
@@ -12,10 +14,15 @@ public class BankRegisterDto extends BankBaseDto {
     public BankRegisterDto() {
     }
 
-    public BankRegisterDto(String loginName, String mobile, String realName, String identityCode) {
+    public BankRegisterDto(String loginName, String mobile, String token, String realName, String identityCode) {
         super(loginName, mobile, null, null);
+        this.token = token;
         this.realName = realName;
         this.identityCode = identityCode;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public String getRealName() {
@@ -30,6 +37,7 @@ public class BankRegisterDto extends BankBaseDto {
     public boolean isValid() {
         return !Strings.isNullOrEmpty(getLoginName())
                 && !Strings.isNullOrEmpty(getMobile())
+                && !Strings.isNullOrEmpty(token)
                 && !Strings.isNullOrEmpty(realName)
                 && !Strings.isNullOrEmpty(identityCode);
     }

@@ -49,9 +49,6 @@ public class RegisterUserControllerTest extends BaseControllerTest {
     @Mock
     private PrepareUserService prepareService;
 
-    @Mock
-    private MyAuthenticationUtil myAuthenticationUtil;
-
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -136,17 +133,6 @@ public class RegisterUserControllerTest extends BaseControllerTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
-    }
-
-    @Test
-    public void shouldRegisterUser() throws Exception {
-        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
-        when(myAuthenticationUtil.createAuthentication(anyString(), any(Source.class))).thenReturn("newToken");
-
-        this.mockMvc.perform(post("/register/user")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))
-                .andExpect(redirectedUrl("/"));
     }
 
     @Test

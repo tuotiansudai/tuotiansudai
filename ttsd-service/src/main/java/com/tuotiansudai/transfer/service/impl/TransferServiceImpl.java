@@ -72,8 +72,6 @@ public class TransferServiceImpl implements TransferService {
 
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         InvestModel investModel = generateInvestModel(investDto, transferApplicationModel, transferrerModel);
-        transferApplicationModel.setInvestId(investModel.getId());
-        transferApplicationMapper.update(transferApplicationModel);
 
         return bankWrapperClient.loanCreditInvest(
                 transferApplicationModel.getId(),

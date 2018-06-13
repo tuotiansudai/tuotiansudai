@@ -58,8 +58,10 @@ p {
   }
 }
 .btn-container {
+  width: 7.5rem;
   text-align: center;
   .btn-confirm {
+    border: none;
     display: inline-block;
     width: 6rem;
     height: 0.9rem;
@@ -87,9 +89,8 @@ p {
   height: 3.1rem;
   margin: 0 auto;
   margin-top: 4rem;
-  img {
-    width: 100%;
-  }
+  background: url("../images/share/loading.gif")no-repeat;
+  background-size: contain;
 }
 //读秒页面
 .progress-container {

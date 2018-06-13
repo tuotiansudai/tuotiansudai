@@ -111,13 +111,13 @@ public class OssWrapperClient {
             String filePath = sitePath + fileName;
             if ("DEV".equalsIgnoreCase(environment)) {
                 String savefile = mkdir(rootPath + sitePath) + fileName;
-                logger.info(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
+                logger.info(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] filePath:", filePath));
                 FileOutputStream out = new FileOutputStream(new File(savefile));
                 BufferedOutputStream output = new BufferedOutputStream(out);
                 Streams.copy(in, output, true);
                 return address + filePath;
             } else {
-                logger.info(MessageFormat.format("{0}|{1}","[OSS UPLOAD] filePath:",filePath));
+                logger.info(MessageFormat.format("{0}|{1}", "[OSS UPLOAD] filePath:", filePath));
                 OSSClient client = getOSSClient();
                 client.putObject(bucketName, fileName, in, objectMeta);
                 return filePath;
@@ -128,16 +128,15 @@ public class OssWrapperClient {
             try {
                 in.close();
             } catch (IOException e) {
-                logger.error(MessageFormat.format("{0}|{1}","[OSS UPLOAD]",e.getLocalizedMessage()), e);
+                logger.error(MessageFormat.format("{0}|{1}", "[OSS UPLOAD]", e.getLocalizedMessage()), e);
             }
         }
         return null;
     }
 
     private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream, boolean water) {
-        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-        ImageOutputStream ios = null;
-        try {
+        try (ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+             ImageOutputStream ios = ImageIO.createImageOutputStream(swapStream)) {
             //目标文件
             Image srcTarget = ImageIO.read(inStream);
             int width = srcTarget.getWidth(null);
@@ -153,7 +152,6 @@ public class OssWrapperClient {
                 //水印文件结束
                 graphics.dispose();
                 ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
-                ios = ImageIO.createImageOutputStream(swapStream);
                 imageWriter.setOutput(ios);
                 JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
                 jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
@@ -169,7 +167,6 @@ public class OssWrapperClient {
                 imageWriter.dispose();
             } else {
                 ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
-                ios = ImageIO.createImageOutputStream(swapStream);
                 imageWriter.setOutput(ios);
                 JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
                 jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
@@ -177,20 +174,13 @@ public class OssWrapperClient {
                 imageWriter.write(null, new IIOImage(image, null, null), jpegParams);
                 imageWriter.dispose();
             }
+
+            return swapStream;
         } catch (Exception e) {
             logger.error("upload oss fail");
             logger.error(e.getLocalizedMessage(), e);
-        } finally {
-            try {
-                swapStream.close();
-                if (ios != null) {
-                    ios.close();
-                }
-            } catch (IOException e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
         }
-        return swapStream;
-    }
 
+        return null;
+    }
 }

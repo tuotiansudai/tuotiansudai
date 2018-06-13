@@ -1,28 +1,32 @@
 package com.tuotiansudai.fudian.controller;
 
-import com.tuotiansudai.fudian.dto.request.QueryTradeType;
-import com.tuotiansudai.fudian.dto.response.QueryLoanContentDto;
-import com.tuotiansudai.fudian.dto.response.QueryUserContentDto;
-import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.message.BankQueryLoanMessage;
-import com.tuotiansudai.fudian.message.BankQueryUserMessage;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.fudian.dto.QueryTradeType;
+import com.tuotiansudai.fudian.dto.response.*;
+import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.service.*;
 import com.tuotiansudai.fudian.util.AmountUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path = "/query")
 public class QueryController {
 
-    private static Logger logger = LoggerFactory.getLogger(QueryController.class);
+    private final static Logger logger = LoggerFactory.getLogger(QueryController.class);
 
     private final QueryUserService queryUserService;
 
@@ -80,35 +84,64 @@ public class QueryController {
                 responseDto.getContent().getStatus()));
     }
 
-    @RequestMapping(path = "/trade", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> queryTrade(@RequestParam(name = "orderNo") String orderNo,
-                                                  @RequestParam(name = "orderDate") String orderDate,
-                                                  @RequestParam(name = "queryType") QueryTradeType queryType) {
-        logger.info("[Fudian] query trade orderNo: {}, orderDate: {}, queryType: {}", orderNo, orderDate, queryType);
+    @RequestMapping(path = "/trade/order-no/{orderNo}/order-date/{orderDate}/query-type/{queryType}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryTradeMessage> queryTrade(@PathVariable(name = "orderNo") String orderNo,
+                                                            @PathVariable(name = "orderDate") String orderDate,
+                                                            @PathVariable(name = "queryType") QueryTradeType queryTradeType) {
 
-        ResponseDto responseDto = queryTradeService.query(orderNo, orderDate, queryType);
+        ResponseDto<QueryTradeContentDto> responseDto = queryTradeService.query(orderNo, orderDate, queryTradeType);
 
-        return ResponseEntity.ok(responseDto);
+        if (responseDto == null || !responseDto.isSuccess()) {
+            return ResponseEntity.ok(new BankQueryTradeMessage(false, responseDto != null ? responseDto.getRetMsg() : "查询失败"));
+        }
+
+        return ResponseEntity.ok(new BankQueryTradeMessage(orderNo, orderDate, queryTradeType, responseDto.getContent().getQueryState()));
     }
 
-    @RequestMapping(path = "/log-account", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> queryLogAccount(@RequestParam(name = "userName") String userName,
-                                                       @RequestParam(name = "accountNo") String accountNo,
-                                                       @RequestParam(name = "queryOrderDate") String queryOrderDate) {
-        logger.info("[Fudian] query log account userName: {}, accountNo: {}, queryOrderDate: {}", userName, accountNo, queryOrderDate);
+    @RequestMapping(path = "/log-account/user-name/{userName}/account-no/{accountNo}/query-order-date-start/{queryOrderDateStart}/query-order-date-end/{queryOrderDateEnd}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryLogAccountMessage> queryLogAccount(@PathVariable(name = "userName") String userName,
+                                                                      @PathVariable(name = "accountNo") String accountNo,
+                                                                      @PathVariable(name = "queryOrderDateStart") @DateTimeFormat(pattern = "yyyyMMdd") Date queryOrderDateStart,
+                                                                      @PathVariable(name = "queryOrderDateEnd") @DateTimeFormat(pattern = "yyyyMMdd") Date queryOrderDateEnd) {
+        if (queryOrderDateStart.after(queryOrderDateEnd)) {
+            return ResponseEntity.ok(new BankQueryLogAccountMessage(false, "查询时间不正确"));
+        }
 
-        ResponseDto responseDto = queryLogAccountService.query(userName, accountNo, queryOrderDate, null, null);
+        List<ResponseDto<QueryLogAccountContentDto>> responseList = queryLogAccountService.query(userName, accountNo, queryOrderDateStart, queryOrderDateEnd);
 
-        return ResponseEntity.ok(responseDto);
+        if (responseList == null) {
+            return ResponseEntity.ok(new BankQueryLogAccountMessage(false, "查询失败"));
+        }
+
+        List<BankQueryLogAccountItemMessage> items = Lists.newArrayList();
+        for (ResponseDto<QueryLogAccountContentDto> responseDto : responseList) {
+            List<BankQueryLogAccountItemMessage> subItems = responseDto.getContent().getAccountLogList().stream().map(log -> new BankQueryLogAccountItemMessage(
+                    log.getAmount(), log.getBalance(), log.getFreezeBalance(), log.getCreateTime(), log.getOrderNo(), log.getOrderDate(), log.getRemark(), log.getToUserName()
+            )).collect(Collectors.toList());
+            Collections.reverse(subItems);
+            items.addAll(subItems);
+        }
+        return ResponseEntity.ok(new BankQueryLogAccountMessage(userName, accountNo, new DateTime(queryOrderDateStart).toString("yyyyMMdd"), new DateTime(queryOrderDateEnd).toString("yyyyMMdd"), items));
     }
 
-    @RequestMapping(path = "/log-loan-account", method = RequestMethod.GET)
-    public ResponseEntity<ResponseDto> queryLogLoanAccount(@RequestParam(name = "loanAccNo") String loanAccNo,
-                                                           @RequestParam(name = "loanTxNo") String loanTxNo) {
-        logger.info("[Fudian] query log loan account loanAccNo: {}, loanTxNo: {}", loanAccNo, loanTxNo);
+    @RequestMapping(path = "/log-loan-account/loan-tx-no/{loanTxNo}/loan-acc-no/{loanAccNo}", method = RequestMethod.GET)
+    public ResponseEntity<BankQueryLogLoanAccountMessage> queryLogLoanAccount(@PathVariable(name = "loanTxNo") String loanTxNo,
+                                                                              @PathVariable(name = "loanAccNo") String loanAccNo) {
+        ResponseDto<QueryLogLoanAccountContentDto> responseDto = queryLogLoanAccountService.query(loanTxNo, loanAccNo);
 
-        ResponseDto responseDto = queryLogLoanAccountService.query(null, null);
+        if (responseDto == null) {
+            return ResponseEntity.ok(new BankQueryLogLoanAccountMessage(false, "查询失败"));
+        }
 
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(new BankQueryLogLoanAccountMessage(loanTxNo,
+                loanAccNo,
+                responseDto.getContent().getLoanAccountLogList().stream().map(item -> new BankQueryLogLoanAccountItemMessage(item.getAmount(),
+                        item.getBalance(),
+                        item.getFreezeBalance(),
+                        item.getCreateTime(),
+                        item.getOrderNo(),
+                        item.getOrderDate(),
+                        item.getRemark(),
+                        item.getToUserName())).collect(Collectors.toList())));
     }
 }

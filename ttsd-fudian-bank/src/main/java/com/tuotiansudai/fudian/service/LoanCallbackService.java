@@ -18,7 +18,7 @@ import com.tuotiansudai.fudian.message.BankLoanCallbackMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.BankClient;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
-import com.tuotiansudai.fudian.util.OrderIdGenerator;
+import com.tuotiansudai.fudian.util.BankOrderNoGenerator;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -100,7 +100,7 @@ public class LoanCallbackService {
         List<LoanCallbackInvestItemRequestDto> loanCallbackInvestItemRequests = bankLoanRepayInvests
                 .stream()
                 .map(bankLoanRepayInvest -> {
-                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(OrderIdGenerator.generate(redisTemplate), bankLoanRepayInvest);
+                    LoanCallbackInvestItemRequestDto loanCallbackInvestItemRequest = new LoanCallbackInvestItemRequestDto(BankOrderNoGenerator.generate(redisTemplate), bankLoanRepayInvest);
                     message_map.put(loanCallbackInvestItemRequest.getOrderNo(),
                             new BankLoanCallbackMessage(bankLoanRepayInvest.getInvestId(),
                                     bankLoanRepayInvest.getInvestRepayId(),

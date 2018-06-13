@@ -3,10 +3,13 @@ package com.tuotiansudai.mq.config.setting;
 import org.springframework.beans.factory.annotation.Value;
 
 public class MessageConsumerSetting {
+
     @Value("${mq.message.pop.period.seconds}")
     private int messagePopPeriodSeconds;
+
     @Value("${mq.error.count.threshold}")
     private int errorCountThreshold;
+
     @Value("${mq.error.sleep.seconds}")
     private int errorSleepSeconds;
 

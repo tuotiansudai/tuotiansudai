@@ -86,6 +86,7 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
                         loanModel.getBankOrderNo(),
                         loanModel.getBankOrderDate(),
                         new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
+                        null,
                         new DateTime().plusMinutes(1).getMillis());
 
                 if (!loanFullMessage.isStatus()) {

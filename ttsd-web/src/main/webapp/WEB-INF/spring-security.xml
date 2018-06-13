@@ -74,8 +74,7 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/register/account/success" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/register/account/" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <!--menus-->
         <!--PC rules start-->
@@ -146,6 +145,7 @@
         <beans:property name="excludedUrls">
             <beans:list>
                 <beans:value>/callback/return-url/*</beans:value>
+                <beans:value>/m/callback/return-url/*</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>

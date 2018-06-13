@@ -20,8 +20,12 @@ public class BankAccountRegisteredCompletePointTaskConsumer implements MessageCo
 
     private static Logger logger = LoggerFactory.getLogger(BankAccountRegisteredCompletePointTaskConsumer.class);
 
+    public final PointTaskService pointTaskService;
+
     @Autowired
-    public PointTaskService pointTaskService;
+    public BankAccountRegisteredCompletePointTaskConsumer(PointTaskService pointTaskService) {
+        this.pointTaskService = pointTaskService;
+    }
 
     @Override
     public MessageQueue queue() {

@@ -17,6 +17,22 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
+    <resultMap id="bankWithdrawViewResultMap" type="WithdrawPaginationView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="is_staff" property="isStaff"/>
+        <result column="amount" property="amount"/>
+        <result column="fee" property="fee"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="source" property="source"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
     <insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
         insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time)
         value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now())
@@ -24,6 +40,121 @@
 
     <select id="findById" parameterType="long" resultMap="bankWithdrawResultMap">
         select * from bank_withdraw where id = #{id}
+    </select>
+
+    <select id="sumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from bank_withdraw
+        where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
+    <select id="sumWithdrawAmount" parameterType="map" resultType="long">
+        select IFNULL(SUM(bank_withdraw.amount), 0) as amount
+        from bank_withdraw
+        join user on bank_withdraw.login_name = user.login_name
+        <where>
+            <if test="mobile != null and mobile != ''">
+                and user.mobile = #{mobile}
+            </if>
+            <if test="withdrawId != null and withdrawId != ''">
+                and bank_withdraw.id = #{withdrawId}
+            </if>
+            <if test="startTime !=null" >
+                and bank_withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and bank_withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and bank_withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and bank_withdraw.source = #{source}
+            </if>
+        </where>
+    </select>
+
+    <select id="sumWithdrawFee" parameterType="map" resultType="long">
+        select IFNULL(SUM(bank_withdraw.fee), 0) as amount
+        from bank_withdraw
+        join user on bank_withdraw.login_name = user.login_name
+        <where>
+            <if test="mobile != null and mobile != ''">
+                and user.mobile = #{mobile}
+            </if>
+            <if test="withdrawId != null and withdrawId != ''">
+                and bank_withdraw.id = #{withdrawId}
+            </if>
+            <if test="startTime !=null" >
+                and bank_withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and bank_withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and bank_withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and bank_withdraw.source = #{source}
+            </if>
+        </where>
+    </select>
+
+    <select id="findWithdrawCount" parameterType="map" resultType="int">
+        select count(1) from bank_withdraw
+        join user on bank_withdraw.login_name = user.login_name
+        <where>
+            <if test="mobile != null and mobile != '' ">
+                and user.mobile = #{mobile}
+            </if>
+            <if test="withdrawId != null and withdrawId != '' ">
+                and bank_withdraw.id = #{withdrawId}
+            </if>
+            <if test="startTime !=null" >
+                and bank_withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and bank_withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and bank_withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and bank_withdraw.source = #{source}
+            </if>
+        </where>
+    </select>
+
+    <select id="findWithdrawPagination" parameterType="map" resultMap="bankWithdrawViewResultMap">
+        select
+        `user`.user_name as user_name,
+        `user`.mobile as mobile,
+        ifnull((select 1 from user_role where user_role.login_name = bank_withdraw.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), 0) as is_staff,
+        bank_withdraw.*
+        from bank_withdraw
+        join `user` on bank_withdraw.login_name = `user`.login_name
+        <where>
+            <if test="mobile != null and mobile != ''">
+                and `user`.mobile = #{mobile}
+            </if>
+            <if test="withdrawId != null and withdrawId != ''">
+                and bank_withdraw.id = #{withdrawId}
+            </if>
+            <if test="startTime !=null" >
+                and bank_withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and bank_withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and bank_withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and bank_withdraw.source = #{source}
+            </if>
+        </where>
+        order by bank_withdraw.created_time desc, bank_withdraw.id asc
+        limit #{index}, #{pageSize}
     </select>
 
     <update id="update" parameterType="BankWithdrawModel">

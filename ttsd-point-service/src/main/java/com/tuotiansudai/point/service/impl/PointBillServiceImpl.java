@@ -14,7 +14,10 @@ import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
@@ -55,11 +58,6 @@ public class PointBillServiceImpl implements PointBillService {
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Transactional
-    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
-        createPointBill(loginName, pointTaskId, PointBusinessType.TASK, point, note);
-    }
 
     @Override
     @Transactional
@@ -162,7 +160,7 @@ public class PointBillServiceImpl implements PointBillService {
         long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
         List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
-                .map(dto -> new PointBillPaginationItemDataDto(dto)).collect(Collectors.toList());
+                .map(PointBillPaginationItemDataDto::new).collect(Collectors.toList());
 
         BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, dataDtos);
         dto.setStatus(true);

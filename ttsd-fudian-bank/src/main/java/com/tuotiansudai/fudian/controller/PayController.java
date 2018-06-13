@@ -60,7 +60,7 @@ public class PayController extends AsyncRequestController {
 
         RechargeRequestDto requestDto = rechargeService.recharge(source, params);
 
-        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, ApiType.RECHARGE);
+        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, source == Source.WEB ? ApiType.RECHARGE : ApiType.RECHARGE_M );
 
         if (!bankAsyncMessage.isStatus()) {
             logger.error("[Fudian] call recharge, request data generation failure, data: {}", params);

@@ -1,13 +1,7 @@
 package com.tuotiansudai.activity.controller;
 
 import com.tuotiansudai.activity.service.DragonBoatFestivalService;
-import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +22,6 @@ public class DragonBoatFestivalController {
 
     @Autowired
     private DragonBoatFestivalService dragonBoatFestivalService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
 
     // 微信公众号回复打卡页面
     @RequestMapping(value = "/wechat/punchCard", method = RequestMethod.GET)
@@ -95,35 +79,6 @@ public class DragonBoatFestivalController {
         mav.addObject("sharer", sharer);
         mav.addObject("unique", unique);
         return mav;
-    }
-
-    // 新用户注册
-    @RequestMapping(value = "/wechat/register", method = RequestMethod.POST)
-    public ModelAndView userRegister(@RequestParam(value = "referrer", required = false) String referrer,
-                                     @RequestParam(value = "captcha", required = false) String captcha,
-                                     @RequestParam(value = "password", required = false) String password,
-                                     @RequestParam(value = "mobile", required = false) String mobile,
-                                     @RequestParam(value = "unique", required = false) String unique) {
-
-        boolean isRegisterSuccess;
-        RegisterUserDto registerUserDto = new RegisterUserDto();
-        registerUserDto.setMobile(mobile);
-        registerUserDto.setChannel("wechat");
-        registerUserDto.setReferrer(referrer);
-        registerUserDto.setCaptcha(captcha);
-        registerUserDto.setPassword(password);
-        logger.info("[Dragon Boat Register User {}] controller starting...", registerUserDto.getMobile());
-        isRegisterSuccess = this.userService.registerUser(registerUserDto);
-        logger.info("[Dragon Boat Register User {}] controller invoked service ({})", registerUserDto.getMobile(), String.valueOf(isRegisterSuccess));
-
-        if (isRegisterSuccess) {
-            logger.info("[Dragon Boat Register User {}] authenticate starting...", registerUserDto.getMobile());
-            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
-
-            dragonBoatFestivalService.afterNewUserRegister(registerUserDto.getMobile(), referrer);
-        }
-
-        return new ModelAndView("redirect:/activity/dragon/wechat/fetchCouponAfterRegister?unique=" + unique);
     }
 
     // 注册后，领取红包

@@ -39,8 +39,6 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String FATAL_NOTIFY_URL = "/sms/fatal-notify";
 
-    private final static String PLATFORM_BALANCE_LOW_NOTIFY = "/sms/platform-balance-low-notify";
-
     private final static String GENERATE_CONTRACT_ERROR_NOTIFY = "/sms/generate-contract-error-notify";
 
     private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
@@ -79,10 +77,6 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
         return send(notify, FATAL_NOTIFY_URL);
-    }
-
-    public BaseDto<SmsDataDto> sendPlatformBalanceLowNotify(PlatformBalanceLowNotifyDto notify) {
-        return send(notify, PLATFORM_BALANCE_LOW_NOTIFY);
     }
 
     public BaseDto<SmsDataDto> sendGenerateContractErrorNotify(GenerateContractErrorNotifyDto notify) {

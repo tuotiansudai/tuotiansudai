@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 public enum MessageTopic {
     InvestSuccess("InvestSuccess",
             MessageQueue.Invest_Success,
-            MessageQueue.Invest_CompletePointTask,
             MessageQueue.Invest_MembershipUpdate,
             MessageQueue.Invest_CheckLoanFull),
 

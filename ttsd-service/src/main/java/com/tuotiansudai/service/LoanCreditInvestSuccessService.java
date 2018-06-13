@@ -65,7 +65,7 @@ public class LoanCreditInvestSuccessService {
             return;
         }
 
-        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+        InvestModel investModel = investMapper.findById(bankLoanCreditInvestMessage.getInvestId());
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY){
             logger.error(MessageFormat.format("[MQ] loanCreditInvest investModel not found or status is incorrect, message: {0}", new Gson().toJson(bankLoanCreditInvestMessage)));
@@ -74,10 +74,10 @@ public class LoanCreditInvestSuccessService {
 
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationModel.setInvestId(bankLoanCreditInvestMessage.getInvestId());
+        transferApplicationModel.setTransferTime(investModel.getCreatedTime());
         transferApplicationMapper.update(transferApplicationModel);
 
-        transferInvestModel.setTransferStatus(TransferStatus.SUCCESS);
-        investMapper.update(transferInvestModel);
+        investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
 
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setBankOrderNo(bankLoanCreditInvestMessage.getBankOrderNo());
@@ -120,6 +120,16 @@ public class LoanCreditInvestSuccessService {
         }));
 
         List<InvestRepayModel> transfereeInvestRepayModels = transferrerTransferredInvestRepayModels.stream().map(transferrerTransferredInvestRepayModel -> {
+            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+            InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(),
+                    investId,
+                    transferrerTransferredInvestRepayModel.getPeriod(),
+                    transferrerTransferredInvestRepayModel.getCorpus(),
+                    transferrerTransferredInvestRepayModel.getExpectedInterest(),
+                    expectedFee,
+                    transferrerTransferredInvestRepayModel.getRepayDate(),
+                    transferrerTransferredInvestRepayModel.getStatus());
+
             transferrerTransferredInvestRepayModel.setExpectedInterest(0);
             transferrerTransferredInvestRepayModel.setExpectedFee(0);
             transferrerTransferredInvestRepayModel.setCorpus(0);
@@ -128,16 +138,8 @@ public class LoanCreditInvestSuccessService {
 
             investRepayMapper.update(transferrerTransferredInvestRepayModel);
 
-            long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+            return investRepayModel;
 
-            return new InvestRepayModel(IdGenerator.generate(),
-                    investId,
-                    transferrerTransferredInvestRepayModel.getPeriod(),
-                    transferrerTransferredInvestRepayModel.getCorpus(),
-                    transferrerTransferredInvestRepayModel.getExpectedInterest(),
-                    expectedFee,
-                    transferrerTransferredInvestRepayModel.getRepayDate(),
-                    transferrerTransferredInvestRepayModel.getStatus());
         }).collect(Collectors.toList());
 
         investRepayMapper.create(transfereeInvestRepayModels);

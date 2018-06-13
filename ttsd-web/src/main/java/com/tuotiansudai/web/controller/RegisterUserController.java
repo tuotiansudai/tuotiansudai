@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.CaptchaHelper;
@@ -16,12 +15,10 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,20 +33,21 @@ public class RegisterUserController {
 
     private final static Logger logger = Logger.getLogger(RegisterUserController.class);
 
-    @Autowired
-    private UserService userService;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
+
+    private final UserService userService;
+
+    private final SmsCaptchaService smsCaptchaService;
+
+    private final CaptchaHelper captchaHelper;
 
     @Autowired
-    private SmsCaptchaService smsCaptchaService;
+    public RegisterUserController(UserService userService, SmsCaptchaService smsCaptchaService, CaptchaHelper captchaHelper) {
+        this.userService = userService;
+        this.smsCaptchaService = smsCaptchaService;
+        this.captchaHelper = captchaHelper;
+    }
 
-    @Autowired
-    private CaptchaHelper captchaHelper;
-
-    @Autowired
-    private PrepareUserService prepareService;
-
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerRedirect() {
@@ -64,55 +62,10 @@ public class RegisterUserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/user/shared-prepare", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto;
-        if (bindingResult.hasErrors()) {
-            String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.info("[APP SHARE IOS] :" + message);
-            baseDataDto = new BaseDataDto(false, message);
-            baseDto.setData(baseDataDto);
-            return baseDto;
-        }
-        baseDataDto = prepareService.prepareRegister(requestDto);
-        if (baseDataDto.getStatus()) {
-            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
-            cookie.setPath("/activity/app-share");
-            response.addCookie(cookie);
-        }
-        baseDto.setData(baseDataDto);
-        return baseDto;
-    }
-
-    @RequestMapping(value = "/user/shared", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto baseDataDto;
-        if (bindingResult.hasErrors()) {
-            String message = bindingResult.getFieldError().getDefaultMessage();
-            logger.info("[APP SHARE ANDROID] :" + message);
-            baseDataDto = new BaseDataDto(false, message);
-            baseDto.setData(baseDataDto);
-            return baseDto;
-        }
-        requestDto.setChannel((String) request.getSession().getAttribute("channel"));
-        baseDataDto = prepareService.register(requestDto);
-        if (baseDataDto.getStatus()) {
-            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
-            cookie.setPath("/activity/app-share");
-            response.addCookie(cookie);
-        }
-        baseDto.setData(baseDataDto);
-        return baseDto;
-    }
-
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
@@ -128,19 +81,18 @@ public class RegisterUserController {
     @RequestMapping(path = "/user/m", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
         Map<String, Object> result = new HashMap<>();
         result.put("success", isRegisterSuccess);
         return result;
     }
 
     @RequestMapping(path = "/success", method = RequestMethod.GET)
-    public ModelAndView registerUserSuccess(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("/register-success");
-        return modelAndView;
+    public ModelAndView registerUserSuccess() {
+        return new ModelAndView("/register-success");
     }
 
-    private boolean registerUser(RegisterUserDto registerUserDto, Object channel) {
+    private boolean registerUser(RegisterUserDto registerUserDto, Object channel, String xForwardedForHeader) {
         boolean isRegisterSuccess;
         if (channel != null) {
             registerUserDto.setChannel(String.valueOf(channel));
@@ -151,7 +103,7 @@ public class RegisterUserController {
 
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
+            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB, xForwardedForHeader);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
         return isRegisterSuccess;
@@ -162,10 +114,7 @@ public class RegisterUserController {
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(userService.mobileIsExist(mobile));
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        baseDto.setData(dataDto);
-
-        return baseDto;
+        return new BaseDto<>(dataDto);
 
     }
 

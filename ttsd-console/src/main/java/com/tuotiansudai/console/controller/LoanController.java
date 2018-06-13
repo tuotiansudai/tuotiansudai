@@ -4,8 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLoanCreateService;
 import com.tuotiansudai.console.service.ExtraLoanRateService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.LoanFullService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
@@ -30,6 +32,9 @@ public class LoanController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private LoanFullService loanFullService;
 
     @Autowired
     private ConsoleLoanCreateService consoleLoanCreateService;
@@ -112,7 +117,10 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setRecheckLoginName(LoginUserInfo.getLoginName());
-        return consoleLoanCreateService.loanOut(loanCreateRequestDto);
+
+        BankLoanFullMessage bankLoanFullMessage = loanFullService.full(loanCreateRequestDto.getLoan().getId(), LoginUserInfo.getLoginName());
+
+        return new BaseDto<>(true, new PayDataDto(bankLoanFullMessage.isStatus(), bankLoanFullMessage.getMessage()));
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

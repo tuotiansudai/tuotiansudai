@@ -221,7 +221,7 @@ var strategies = {
             async: false,
             url: '/register/account/verify/identity-number/'+this.value.replace(/\s+/g, "")
         },function(response) {
-            if(response.data.status) {
+            if(!response.data.status) {
                 //身份证号已存在
                 getResult=errorMsg;
                 isHaveError.yes.apply(that,_arguments);

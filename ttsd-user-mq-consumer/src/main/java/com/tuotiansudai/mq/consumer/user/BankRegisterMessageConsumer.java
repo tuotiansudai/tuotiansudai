@@ -3,9 +3,12 @@ package com.tuotiansudai.mq.consumer.user;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BankAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,8 @@ import java.text.MessageFormat;
 public class BankRegisterMessageConsumer implements MessageConsumer {
 
     private static Logger logger = LoggerFactory.getLogger(BankRegisterMessageConsumer.class);
+
+    private final SignInClient signInClient = SignInClient.getInstance();
 
     private final BankAccountService bankAccountService;
 
@@ -41,10 +46,9 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
         try {
             BankRegisterMessage bankRegisterMessage = new Gson().fromJson(message, BankRegisterMessage.class);
             bankAccountService.createBankAccount(bankRegisterMessage);
-
-        } catch (Exception e) {
+            signInClient.refreshData(bankRegisterMessage.getToken(), Source.WEB);
+        } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
-
     }
 }

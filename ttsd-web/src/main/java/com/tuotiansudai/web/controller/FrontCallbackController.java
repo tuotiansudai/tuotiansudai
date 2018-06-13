@@ -36,7 +36,7 @@ public class FrontCallbackController {
 
         logger.info(MessageFormat.format("front callback url: {0}, data: {1}", request.getRequestURI(), reqData));
 
-        BankReturnCallbackMessage bankReturnCallbackMessage = this.bankWrapperClient.checkBankReturnUrl(request.getRequestURI(), reqData);
+        BankReturnCallbackMessage bankReturnCallbackMessage = this.bankWrapperClient.checkBankReturnUrl(MessageFormat.format("/callback/return-url/{0}", bankCallbackType.name().toLowerCase()), reqData);
 
         if (bankReturnCallbackMessage == null) {
             return new ModelAndView("/error/404");
