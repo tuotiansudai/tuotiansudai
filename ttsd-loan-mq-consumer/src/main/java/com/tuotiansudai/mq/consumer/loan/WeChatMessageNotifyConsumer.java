@@ -43,7 +43,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
-    private WithdrawMapper withdrawMapper;
+    private BankWithdrawMapper bankWithdrawMapper;
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
@@ -206,30 +206,15 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
     };
 
-    WeChatMessageNotifyAction<String, WeChatMessageNotify> withdrawApply = (openId, weChatMessageNotify) -> {
-
-        WithdrawModel withdrawModel = withdrawMapper.findById(weChatMessageNotify.getBusinessId());
-
-        weChatClient.sendTemplateMessage(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("openid", openId)
-                .put("first", "您的提现申请成功，请等待银行处理")
-                .put("keyword1", String.format("%s元", AmountConverter.convertCentToString(withdrawModel.getAmount())))
-                .put("keyword2", BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode()))
-                .put("keyword3", withdrawModel.getApplyNotifyTime() != null ? new DateTime(withdrawModel.getApplyNotifyTime()).toString("yyyy-MM-dd") : "")
-                .put("remark", "请您耐心等待，留意银行卡资金变化。如有疑问，可随时致电客服400-169-1188（客服时间：工作日9:00-20:00）。")
-                .build()));
-
-    };
-
     WeChatMessageNotifyAction<String, WeChatMessageNotify> withdrawNotify = (openId, weChatMessageNotify) -> {
-        WithdrawModel withdrawModel = withdrawMapper.findById(weChatMessageNotify.getBusinessId());
+        BankWithdrawModel bankWithdrawModel = bankWithdrawMapper.findById(weChatMessageNotify.getBusinessId());
 
         weChatClient.sendTemplateMessage(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
                 .put("first", "您的账户发起的提现申请现已到账")
-                .put("keyword1", withdrawModel.getApplyNotifyTime() != null ? new DateTime(withdrawModel.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm") : "")
-                .put("keyword2", String.format("%s元", AmountConverter.convertCentToString(withdrawModel.getAmount())))
-                .put("keyword3", withdrawModel.getNotifyTime() != null ? new DateTime(withdrawModel.getNotifyTime()).toString("yyyy-MM-dd HH:mm") : "")
+                .put("keyword1", bankWithdrawModel.getUpdatedTime() != null ? new DateTime(bankWithdrawModel.getUpdatedTime()).toString("yyyy-MM-dd HH:mm") : "")
+                .put("keyword2", String.format("%s元", AmountConverter.convertCentToString(bankWithdrawModel.getAmount())))
+                .put("keyword3", bankWithdrawModel.getUpdatedTime() != null ? new DateTime(bankWithdrawModel.getUpdatedTime()).toString("yyyy-MM-dd HH:mm") : "")
                 .put("remark", commonRemark)
                 .build()));
 
@@ -254,7 +239,6 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
             .put(WeChatMessageType.INVEST_SUCCESS, invest)
             .put(WeChatMessageType.NORMAL_REPAY_SUCCESS, normalRepay)
             .put(WeChatMessageType.ADVANCE_REPAY_SUCCESS, advanceRepay)
-            .put(WeChatMessageType.WITHDRAW_APPLY_SUCCESS, withdrawApply)
             .put(WeChatMessageType.WITHDRAW_NOTIFY_SUCCESS, withdrawNotify)
             .put(WeChatMessageType.TRANSFER_SUCCESS, transfer)
             .build());

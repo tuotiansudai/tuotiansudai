@@ -35,6 +35,7 @@ dependencies {
     compile('com.squareup.okhttp3:okhttp:3.10.0')
     compile('mysql:mysql-connector-java:8.0.11')
     compile('org.redisson:redisson:3.6.5')
+    compile('joda-time:joda-time:2.10')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 

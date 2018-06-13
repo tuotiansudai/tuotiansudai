@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
-import com.tuotiansudai.repository.model.BankRechargeStatus;
 import com.tuotiansudai.repository.model.Source;
 import feign.Param;
 import org.springframework.stereotype.Repository;

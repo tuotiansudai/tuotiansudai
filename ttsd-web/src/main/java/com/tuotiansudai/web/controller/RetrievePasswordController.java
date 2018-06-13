@@ -51,9 +51,7 @@ public class RetrievePasswordController {
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(userService.mobileIsExist(mobile));
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        baseDto.setData(dataDto);
-        return baseDto;
+        return new BaseDto<>(dataDto);
     }
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)

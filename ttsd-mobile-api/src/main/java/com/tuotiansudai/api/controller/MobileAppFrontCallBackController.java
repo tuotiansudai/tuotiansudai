@@ -7,10 +7,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
@@ -39,19 +36,16 @@ public class MobileAppFrontCallBackController {
     private BindBankCardService bindBankCardService;
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
-    private WithdrawService withdrawService;
+    private BankWithdrawService bankWithdrawService;
 
     @Autowired
     private InvestService investService;
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private PayWrapperClient payWrapperClient;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -122,22 +116,19 @@ public class MobileAppFrontCallBackController {
 
 
         Function<Long, Map<String, String>> rechargeValuesGenerator = (Long rechargeOrderId) -> {
-            RechargeModel rechargeModel = rechargeOrderId != null ? rechargeService.findRechargeById(rechargeOrderId) : null;
+            BankRechargeModel bankRechargeModel = rechargeOrderId != null ? bankRechargeService.findRechargeById(rechargeOrderId) : null;
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("bankName", rechargeModel != null ? BankCardUtil.getBankName(rechargeModel.getBankCode()) : "")
-                    .put("cardNumber", rechargeModel != null ? bindBankCardService.getPassedBankCard(rechargeModel.getLoginName()).getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
-                    .put("rechargeAmount", rechargeModel != null ? AmountConverter.convertCentToString(rechargeModel.getAmount()) : "")
+                    .put("cardNumber", bankRechargeModel != null ? bindBankCardService.getPassedBankCard(bankRechargeModel.getLoginName()).getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
+                    .put("rechargeAmount", bankRechargeModel != null ? AmountConverter.convertCentToString(bankRechargeModel.getAmount()) : "")
                     .put("orderId", String.valueOf(rechargeOrderId))
                     .put("message", "充值成功")
                     .build());
         };
 
         Function<Long, Map<String, String>> withdrawValuesGenerator = (Long withdrawOrderId) -> {
-            WithdrawModel withdrawModel = withdrawOrderId != null ? withdrawService.findById(withdrawOrderId) : null;
+            BankWithdrawModel bankWithdrawModel = withdrawOrderId != null ? bankWithdrawService.findById(withdrawOrderId) : null;
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("bankName", withdrawModel != null ? BankCardUtil.getBankName(withdrawModel.getBankCard().getBankCode()) : "")
-                    .put("cardNumber", withdrawModel != null ? bindBankCardService.getPassedBankCard(withdrawModel.getLoginName()).getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
-                    .put("withdrawAmount", (withdrawModel != null ? AmountConverter.convertCentToString(withdrawModel.getAmount()) : ""))
+                    .put("withdrawAmount", (bankWithdrawModel != null ? AmountConverter.convertCentToString(bankWithdrawModel.getAmount()) : ""))
                     .put("orderId", String.valueOf(withdrawOrderId))
                     .put("message", "提现申请成功")
                     .build());

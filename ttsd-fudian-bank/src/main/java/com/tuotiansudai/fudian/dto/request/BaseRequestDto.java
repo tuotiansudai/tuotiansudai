@@ -1,5 +1,6 @@
 package com.tuotiansudai.fudian.dto.request;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.tuotiansudai.fudian.dto.ExtMarkDto;
 
@@ -32,7 +33,7 @@ public class BaseRequestDto {
     }
 
     public BaseRequestDto(Source source, String loginName, String mobile, String userName, String accountNo) {
-        this.extMark = new Gson().toJson(new ExtMarkDto(loginName, mobile));
+        this.extMark = Strings.isNullOrEmpty(loginName) && Strings.isNullOrEmpty(mobile) ? null : new Gson().toJson(new ExtMarkDto(loginName, mobile));
         this.source = source;
         this.userName = userName;
         this.accountNo = accountNo;

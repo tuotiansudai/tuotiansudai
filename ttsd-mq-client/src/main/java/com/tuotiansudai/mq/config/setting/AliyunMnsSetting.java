@@ -3,10 +3,13 @@ package com.tuotiansudai.mq.config.setting;
 import org.springframework.beans.factory.annotation.Value;
 
 public class AliyunMnsSetting {
+
     @Value("${aliyun.mns.accessKeyId}")
     private String accessKeyId;
+
     @Value("${aliyun.mns.accessKeySecret}")
     private String accessKeySecret;
+
     @Value("${aliyun.mns.endpoint}")
     private String endpoint;
 

@@ -59,6 +59,15 @@ def get_session(session_id):
     return fail()
 
 
+@sign_in.route("/session/<session_id>", methods=['PUT'])
+def refresh_session_data(session_id):
+    source = request.args.get('source', 'WEB')
+    user_info = service.refresh_session_data(session_id, source)
+    if user_info:
+        return success({'user_info': user_info, 'token': session_id})
+    return fail()
+
+
 @sign_in.route("/refresh/<session_id>", methods=['POST'])
 def refresh_session(session_id):
     form = RefreshTokenForm(request.form)

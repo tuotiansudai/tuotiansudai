@@ -11,26 +11,29 @@ public class BankRegisterMessage {
 
     private String realName;
 
-    private String bankAccountNo;
+    private String token;
 
     private String bankUserName;
 
-    private String bankOrderDate;
+    private String bankAccountNo;
 
     private String bankOrderNo;
+
+    private String bankOrderDate;
 
     public BankRegisterMessage() {
     }
 
-    public BankRegisterMessage(String loginName, String mobile, String identityCode, String realName, String bankAccountNo, String bankUserName, String bankOrderDate, String bankOrderNo) {
+    public BankRegisterMessage(String loginName, String mobile, String identityCode, String realName, String token, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.identityCode = identityCode;
         this.realName = realName;
-        this.bankAccountNo = bankAccountNo;
+        this.token = token;
         this.bankUserName = bankUserName;
-        this.bankOrderDate = bankOrderDate;
+        this.bankAccountNo = bankAccountNo;
         this.bankOrderNo = bankOrderNo;
+        this.bankOrderDate = bankOrderDate;
     }
 
     public String getLoginName() {
@@ -49,12 +52,24 @@ public class BankRegisterMessage {
         return realName;
     }
 
-    public String getBankAccountNo() {
-        return bankAccountNo;
+    public String getToken() {
+        return token;
     }
 
     public String getBankUserName() {
         return bankUserName;
+    }
+
+    public void setBankUserName(String bankUserName) {
+        this.bankUserName = bankUserName;
+    }
+
+    public String getBankAccountNo() {
+        return bankAccountNo;
+    }
+
+    public void setBankAccountNo(String bankAccountNo) {
+        this.bankAccountNo = bankAccountNo;
     }
 
     public String getBankOrderDate() {

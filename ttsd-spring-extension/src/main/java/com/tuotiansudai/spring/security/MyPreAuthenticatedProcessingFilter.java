@@ -1,9 +1,9 @@
 package com.tuotiansudai.spring.security;
 
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.LoginUserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -17,11 +17,9 @@ import java.io.IOException;
 @Component
 public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean {
 
-    @Autowired
-    private SignInClient signInClient;
+    private final SignInClient signInClient = SignInClient.getInstance();
 
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (logger.isDebugEnabled()) {
@@ -30,7 +28,9 @@ public class MyPreAuthenticatedProcessingFilter extends GenericFilterBean {
 
         SignInResult signInResult = signInClient.verifyToken(LoginUserInfo.getToken(), Source.WEB);
         if (signInResult == null || !signInResult.isResult()) {
-            this.myAuthenticationUtil.removeAuthentication();
+            myAuthenticationUtil.removeAuthentication();
+        } else {
+            myAuthenticationUtil.refreshGrantedAuthority(signInResult);
         }
 
         chain.doFilter(request, response);

@@ -41,7 +41,7 @@ public class FeignClientConfig {
 
     @Bean
     public JacksonDecoder jacksonDecoder() {
-        List<Module> moduleList = new ArrayList();
+        List<Module> moduleList = new ArrayList<>();
         SimpleModule sm = new SimpleModule();
         sm.addDeserializer(Date.class, new DateDeserializer());
         moduleList.add(sm);

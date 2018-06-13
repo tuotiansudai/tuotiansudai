@@ -15,10 +15,12 @@ import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class BankWrapperClient {
@@ -90,9 +92,9 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BankAsyncMessage register(Source source, String loginName, String mobile, String realName, String identityCode) {
+    public BankAsyncMessage register(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
         return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
-                new BankRegisterDto(loginName, mobile, realName, identityCode));
+                new BankRegisterDto(loginName, mobile, token, realName, identityCode));
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
@@ -165,22 +167,22 @@ public class BankWrapperClient {
         return new BankLoanCreateMessage(false, null);
     }
 
-    public BankBaseMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, long time) {
-        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, time);
+    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, long time) {
+        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, time);
 
         String json = syncExecute("/loan-full", bankLoanFullDto);
 
         if (Strings.isNullOrEmpty(json)) {
-            return new BankBaseMessage(false, "请求失败");
+            return new BankLoanFullMessage(false, "请求失败");
         }
 
         try {
-            return gson.fromJson(json, BankLoanCreateMessage.class);
+            return gson.fromJson(json, BankLoanFullMessage.class);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[Loan Create] parse response error, response: {0}", json), e);
         }
 
-        return new BankLoanCreateMessage(false, null);
+        return new BankLoanFullMessage(false, null);
     }
 
     public BankAsyncMessage loanRepay(BankLoanRepayDto bankLoanRepayDto) {
@@ -207,14 +209,12 @@ public class BankWrapperClient {
 
     public BankQueryUserMessage queryUser(String bankUserName, String bankAccountNo) {
         try {
-
             Request request = new Request.Builder()
                     .url(this.baseUrl + MessageFormat.format("/query/user/user-name/{0}/account-no/{1}", bankUserName, bankAccountNo))
                     .get()
                     .build();
 
             Response response = this.okHttpClient.newCall(request).execute();
-
             if (response.isSuccessful()) {
                 return gson.fromJson(response.body().string(), BankQueryUserMessage.class);
             }
@@ -222,19 +222,17 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return new BankQueryUserMessage(false, "查询失败");
+        return new BankQueryUserMessage(false, "查询异常");
     }
 
     public BankQueryLoanMessage queryLoan(String loanTxNo, String loanAccNo) {
         try {
-
             Request request = new Request.Builder()
                     .url(this.baseUrl + MessageFormat.format("/query/loan/loan-tx-no/{0}/loan-acc-no/{1}", loanTxNo, loanAccNo))
                     .get()
                     .build();
 
             Response response = this.okHttpClient.newCall(request).execute();
-
             if (response.isSuccessful()) {
                 return gson.fromJson(response.body().string(), BankQueryLoanMessage.class);
             }
@@ -242,7 +240,62 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return new BankQueryLoanMessage(false, "查询失败");
+        return new BankQueryLoanMessage(false, "查询异常");
+    }
+
+    public BankQueryTradeMessage queryTrade(String bankOrderNo, String bankOrderDate, QueryTradeType queryTradeType) {
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + MessageFormat.format("/query/trade/order-no/{0}/order-date/{1}/query-type/{2}", bankOrderNo, bankOrderDate, queryTradeType))
+                    .get()
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return gson.fromJson(response.body().string(), BankQueryTradeMessage.class);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return new BankQueryTradeMessage(false, "查询异常");
+    }
+
+    public BankQueryLogAccountMessage queryAccountBill(String bankUserName, String bankAccountNo, Date queryOrderDateStart, Date queryOrderDateEnd) {
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + MessageFormat.format("/query/log-account/user-name/{0}/account-no/{1}/query-order-date-start/{2}/query-order-date-end/{3}",
+                            bankUserName, bankAccountNo, new DateTime(queryOrderDateStart).toString("yyyyMMdd"), new DateTime(queryOrderDateEnd).toString("yyyyMMdd")))
+                    .get()
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return gson.fromJson(response.body().string(), BankQueryLogAccountMessage.class);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return new BankQueryLogAccountMessage(false, "查询异常");
+    }
+
+    public BankQueryLogLoanAccountMessage queryLoanBill(String loanTxNo, String loanAccNo) {
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + MessageFormat.format("/query/log-loan-account/loan-tx-no/{0}/loan-acc-no/{1}", loanTxNo, loanAccNo))
+                    .get()
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                return gson.fromJson(response.body().string(), BankQueryLogLoanAccountMessage.class);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return new BankQueryLogLoanAccountMessage(false, "查询异常");
     }
 
     private BankAsyncMessage asyncExecute(String path, Object requestData) {

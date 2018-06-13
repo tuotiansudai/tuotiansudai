@@ -14,8 +14,10 @@ import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,21 +42,24 @@ public class BankAccountService {
 
     private final UserOpLogService userOpLogService;
 
+    private final UserRoleMapper userRoleMapper;
+
     @Autowired
-    public BankAccountService(UserMapper userMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient, UserOpLogService userOpLogService) {
+    public BankAccountService(UserMapper userMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient, UserOpLogService userOpLogService, UserRoleMapper userRoleMapper) {
         this.userMapper = userMapper;
         this.bankAccountMapper = bankAccountMapper;
         this.mqWrapperClient = mqWrapperClient;
         this.userOpLogService = userOpLogService;
+        this.userRoleMapper = userRoleMapper;
     }
 
-    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String ip, String deviceId) {
+    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String token, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(registerAccountDto.getLoginName());
         if (bankAccountModel != null) {
             return new BankAsyncMessage(null, null, false, "已实名认证");
         }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
+        return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), token, registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
@@ -67,20 +72,24 @@ public class BankAccountService {
         return bankWrapperClient.authorization(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public void createBankAccount(BankRegisterMessage bankRegisterMessage) {
-        if (bankAccountMapper.findByLoginName(bankRegisterMessage.getLoginName()) != null) {
-            logger.info("[MQ] bank register completed bank account, message:{} ", new Gson().toJson(bankRegisterMessage));
+        String loginName = bankRegisterMessage.getLoginName();
+
+        if (bankAccountMapper.findByLoginName(loginName) != null) {
+            logger.error("bank account is existed, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
-        bankAccountMapper.create(new BankAccountModel(bankRegisterMessage.getLoginName(),
+
+        userMapper.updateUserNameAndIdentityNumber(loginName, bankRegisterMessage.getRealName(), bankRegisterMessage.getIdentityCode());
+
+        userRoleMapper.deleteByLoginNameAndRole(loginName, Role.INVESTOR);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(loginName, Role.INVESTOR)));
+
+        bankAccountMapper.create(new BankAccountModel(loginName,
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
                 bankRegisterMessage.getBankOrderDate()));
-        userMapper.updateUserNameAndIdentityNumber(bankRegisterMessage.getLoginName(),
-                bankRegisterMessage.getRealName(),
-                bankRegisterMessage.getIdentityCode());
 
         sendMessage(bankRegisterMessage);
     }

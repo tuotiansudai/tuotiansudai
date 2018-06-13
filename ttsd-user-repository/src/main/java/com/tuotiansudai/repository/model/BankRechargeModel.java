@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 
+import com.tuotiansudai.enums.BankRechargeStatus;
+
 import java.util.Date;
 
 public class BankRechargeModel {

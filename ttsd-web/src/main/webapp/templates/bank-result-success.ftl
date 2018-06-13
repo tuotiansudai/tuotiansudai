@@ -15,11 +15,6 @@
         <#if bankCallbackType == 'REGISTER'>
             <div class="handle_btn_container">
                 <div class="see_my_account">查看我的账户</div>
-                <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post"
-                      style="display: inline-block;float:right">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="submit" value="去绑卡">
-                </form>
             </div>
         </#if>
     <#--充值成功-->
@@ -39,7 +34,6 @@
         <#if bankCallbackType == 'WITHDRAW'>
             <div class="handle_btn_container">
                 <div class="see_my_account">前往我的账户</div>
-
             </div>
         </#if>
     <#--银行卡绑定成功-->
@@ -51,11 +45,11 @@
     <#--解绑成功-->
         <#if bankCallbackType == 'CANCEL_CARD_BIND'>
             <div class="handle_btn_container">
-                <div class="go_to_invest investBtn">去投资</div>
+                <div class="see_my_account">前往我的账户</div>
             </div>
         </#if>
     <#--投资成功-->
-        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
+        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST' || bankCallbackType == 'LOAN_CREDIT_INVEST'>
             <div class="handle_btn_container">
                 <div class="go_to_invest investBtn">查看其它项目</div>
             </div>

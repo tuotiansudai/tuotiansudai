@@ -19,16 +19,15 @@ import java.util.regex.Pattern;
 @RequestMapping(path = "/we-chat")
 public class WeChatController {
 
-    private final WeChatService weChatService;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
 
-    private final MyAuthenticationUtil myAuthenticationUtil;
+    private final WeChatService weChatService;
 
     private final UserService userService;
 
     @Autowired
-    public WeChatController(WeChatService weChatService, MyAuthenticationUtil myAuthenticationUtil, UserService userService) {
+    public WeChatController(WeChatService weChatService, UserService userService) {
         this.weChatService = weChatService;
-        this.myAuthenticationUtil = myAuthenticationUtil;
         this.userService = userService;
     }
 
@@ -64,7 +63,7 @@ public class WeChatController {
         httpServletRequest.getSession().setAttribute("weChatUserOpenid", weChatUserModel.getOpenid());
 
         if (weChatUserModel.isBound()) {
-            myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT);
+            myAuthenticationUtil.createAuthentication(weChatUserModel.getLoginName(), Source.WE_CHAT, httpServletRequest.getHeader("X-Forwarded-For"));
         } else {
             myAuthenticationUtil.removeAuthentication();
             httpServletRequest.getSession().setAttribute("weChatUserLoginName", weChatUserModel.getLoginName());

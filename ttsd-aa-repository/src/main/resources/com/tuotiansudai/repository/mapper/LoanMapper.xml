@@ -94,7 +94,7 @@
         #{recheckTime}, #{recheckLoginName}, #{status}, now())
     </insert>
 
-    <select id="findById" parameterType="long" resultMap="loanResultMap">
+    <select id="findById" parameterType="long" resultMap="loanResultMap" useCache="false">
         select * from loan where id = #{loanId}
     </select>
 

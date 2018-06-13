@@ -27,15 +27,6 @@ import java.util.List;
 @Service
 public class ExportService {
 
-    public <T> List<List<String>> buildUserPointToCsvData(List<T> originList) {
-        List<List<String>> csvData = new ArrayList<>();
-        for (T item : originList) {
-            List<String> dtoStrings = ExportCsvUtil.dtoToStringList(item);
-            csvData.add(dtoStrings);
-        }
-        return csvData;
-    }
-
     public List<List<String>> buildLoanRepayCsvData(List<LoanRepayDataItemDto> loanRepayDataItemDtos) {
         List<List<String>> rows = Lists.newArrayList();
         for (LoanRepayDataItemDto loanRepayDataItemDto : loanRepayDataItemDtos) {
@@ -390,15 +381,12 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getWithdrawId()).toString());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getIsStaff());
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getAmount());
             row.add(record.getFee());
-            row.add(record.getBankCard());
             row.add(record.getStatus());
             row.add(record.getSource().name());
             rows.add(row);

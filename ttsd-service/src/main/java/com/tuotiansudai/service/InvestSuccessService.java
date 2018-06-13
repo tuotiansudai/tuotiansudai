@@ -45,14 +45,13 @@ public class InvestSuccessService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public void processInvestSuccess(BankLoanInvestMessage message) {
         long investId = message.getInvestId();
 
         InvestModel investModel = investMapper.findById(investId);
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            logger.warn("[MQ] invest not found or status is incorrect, message: {}", new Gson().toJson(message));
+            logger.warn("[Invest Success] invest not found or status is incorrect, message: {}", new Gson().toJson(message));
             return;
         }
 
@@ -64,6 +63,8 @@ public class InvestSuccessService {
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
                 new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS));
+
+        mqWrapperClient.sendMessage(MessageQueue.Invest_CompletePointTask, message);
 
         //投资成功后发送消息
         this.publishInvestSuccessMessage(investModel);
@@ -170,7 +171,7 @@ public class InvestSuccessService {
                     WeChatMessageType.INVEST_SUCCESS,
                     investModel.getId()));
         } catch (Exception e) {
-            logger.error("invest success wechat message notify send fail", e);
+            logger.warn("[Invest Success] failed to send event message", e);
         }
     }
 }

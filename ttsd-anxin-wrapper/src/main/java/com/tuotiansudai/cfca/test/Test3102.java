@@ -3,15 +3,14 @@ package com.tuotiansudai.cfca.test;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.ProxySignVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3102ReqVO;
-import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 import org.joda.time.DateTime;
 
 public class Test3102 {
     public static void main(String[] args) throws Exception {
-        AnxinClientTest anxinClient = new AnxinClientTest();
-        anxinClient.initSSL();
+        AnxinClient anxinClient = AnxinClient.getClient();
 
         Tx3102ReqVO tx3102ReqVO = new Tx3102ReqVO();
         HeadVO head = new HeadVO();

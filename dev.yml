@@ -350,19 +350,6 @@ ask-rest-service:
     - "sms-wrapper"
     - "user-rest-service"
 
-diagnosis:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - ./ttsd-diagnosis/build/distributions:/opt/worker
-    - /var/log/tuotian/diagnosis:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
-  links:
-    - "pay-wrapper"
-
 worker-monitor:
   image: "anapsix/alpine-java:8_jdk"
   environment:

@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawPaginationView;
-import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,53 +11,33 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     private String loginName;
 
-    private String amount;
-
-    private Source source;
-
-    private String fee;
-
-    private String applyNotifyMessage;
-
-    private Date applyNotifyTime;
-
-    private String notifyMessage;
-
-    private Date notifyTime;
-
-    private Date createdTime;
-
-    private String status;
-
-    private String bankCard;
+    private String mobile;
 
     private String userName;
 
-    private String mobile;
+    private String amount;
+
+    private String fee;
+
+    private Source source;
+
+    private String status;
+
+    private Date createdTime;
 
     private String isStaff;
 
-
-    public WithdrawPaginationItemDataDto(WithdrawModel withdrawModel) {
-        this.withdrawId = withdrawModel.getId();
-        this.fee = AmountConverter.convertCentToString(withdrawModel.getFee());
-        this.applyNotifyMessage = withdrawModel.getApplyNotifyMessage();
-        this.applyNotifyTime = withdrawModel.getApplyNotifyTime();
-        this.notifyMessage = withdrawModel.getNotifyMessage();
-        this.notifyTime = withdrawModel.getNotifyTime();
-        this.createdTime = withdrawModel.getCreatedTime();
-        this.status = withdrawModel.getStatus().getDescription();
-        this.loginName = withdrawModel.getLoginName();
-        this.amount = AmountConverter.convertCentToString(withdrawModel.getAmount());
-        this.source = withdrawModel.getSource();
-        this.bankCard = withdrawModel.getBankCard().getCardNumber();
-
-        if (withdrawModel instanceof WithdrawPaginationView) {
-            WithdrawPaginationView withdrawView = (WithdrawPaginationView) withdrawModel;
-            this.userName = withdrawView.getUserName();
-            this.mobile = withdrawView.getMobile();
-            this.isStaff = withdrawView.getIsStaff();
-        }
+    public WithdrawPaginationItemDataDto(long withdrawId, String loginName, String mobile, String userName, String amount, String fee, Source source, String status, Date createdTime, String isStaff) {
+        this.withdrawId = withdrawId;
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.userName = userName;
+        this.amount = amount;
+        this.fee = fee;
+        this.source = source;
+        this.status = status;
+        this.createdTime = createdTime;
+        this.isStaff = isStaff;
     }
 
     public long getWithdrawId() {
@@ -71,55 +48,35 @@ public class WithdrawPaginationItemDataDto implements Serializable {
         return loginName;
     }
 
-    public String getAmount() {
-        return amount;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public String getFee() {
-        return fee;
-    }
-
-    public String getApplyNotifyMessage() {
-        return applyNotifyMessage;
-    }
-
-    public Date getApplyNotifyTime() {
-        return applyNotifyTime;
-    }
-
-    public String getNotifyMessage() {
-        return notifyMessage;
-    }
-
-    public Date getNotifyTime() {
-        return notifyTime;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getBankCard() {
-        return bankCard;
+    public String getMobile() {
+        return mobile;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getAmount() {
+        return amount;
     }
 
-    public boolean isStaff() {
-        return "1".equals(isStaff);
+    public String getFee() {
+        return fee;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public String getIsStaff() {
+        return isStaff;
     }
 }

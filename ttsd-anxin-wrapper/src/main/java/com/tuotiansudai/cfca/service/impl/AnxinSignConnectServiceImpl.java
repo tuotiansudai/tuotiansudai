@@ -23,7 +23,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +30,14 @@ import java.util.List;
 @Service
 public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
 
-    static Logger logger = Logger.getLogger(AnxinSignConnectService.class);
+    private final static Logger logger = Logger.getLogger(AnxinSignConnectService.class);
 
     @Autowired
     private RequestResponseService requestResponseService;
 
-    @Autowired
-    private AnxinClient anxinClient;
+    private AnxinClient anxinClient = AnxinClient.getClient();
+
+    private JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
 
     @Override
     public Tx3001ResVO createAccount3001(UserModel userModel) throws PKIException {
@@ -47,7 +47,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3001ReqVO.setHead(getHeadVO());
         tx3001ReqVO.setPerson(person);
 
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3001ReqVO);
         logger.info("[安心签] create account request:" + req);
 
@@ -81,7 +80,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3101ReqVO.setHead(getHeadVO());
         tx3101ReqVO.setProxySign(proxySignVO);
 
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3101ReqVO);
         logger.info("[安心签] send captcha request:" + req);
 
@@ -115,7 +113,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3102ReqVO.setHead(getHeadVO());
         tx3102ReqVO.setProxySign(proxySignVO);
 
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3102ReqVO);
 
         logger.info(MessageFormat.format("[安心签] verifyCaptcha. userId:{0}, projectCode:{1}, checkCode:{2}, request date:{3}", userId, projectCode, checkCode, req));
@@ -145,7 +142,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3202ReqVO.setBatchNo(batchNo);
         tx3202ReqVO.setCreateContracts(createContractList.toArray(new CreateContractVO[createContractList.size()]));
 
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
 
         logger.info(MessageFormat.format("[安心签] create contract batch request, businessId:{0}, batchNo:{1}, data:{2}", String.valueOf(businessId), batchNo, req));
@@ -174,7 +170,6 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         tx3211ReqVO.setHead(getHeadVO());
         tx3211ReqVO.setBatchNo(batchNo);
 
-        JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);
 
         logger.info(MessageFormat.format("[安心签] Query contract batch request, businessId:{0}, batchNo:{1}, data:{2}", String.valueOf(businessId), batchNo, req));
@@ -232,7 +227,7 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     }
 
     @Override
-    public byte[] downLoanContractByBatchNo(String contractNo) throws PKIException, FileNotFoundException {
+    public byte[] downLoanContractByBatchNo(String contractNo) {
         logger.info("[安心签] download contract, contractNo: " + contractNo);
         return anxinClient.getContractFile(contractNo);
     }
@@ -241,11 +236,9 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
         try {
             if (res.indexOf("\"" + AnxinRetCode.SUCCESS + "\"") > 0) {
                 // 成功：
-                JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
                 return jsonObjectMapper.readValue(res, cla);
             } else {
                 // 失败：
-                JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
                 ErrorResVO errorResVO = jsonObjectMapper.readValue(res, ErrorResVO.class);
 
                 HeadVO headVO = new HeadVO();
@@ -281,5 +274,4 @@ public class AnxinSignConnectServiceImpl implements AnxinSignConnectService {
     private boolean isSuccess(Tx3ResVO tx3ResVO) {
         return tx3ResVO != null && tx3ResVO.getHead() != null && AnxinRetCode.SUCCESS.equals(tx3ResVO.getHead().getRetCode());
     }
-
 }

@@ -31,9 +31,6 @@ public class TransferApplicationController {
     private TransferService transferService;
 
     @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
-
-    @Autowired
     private LoanService loanService;
 
     @Autowired

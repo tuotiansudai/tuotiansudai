@@ -51,9 +51,6 @@ public class GenerateRepayService {
 
         logger.info("[Loan Full] generate loan repay and invest repay, loanId: {}", loanModel.getId());
 
-        // 放款当天到借款截止时间之间的天数以30天为一期
-        int totalPeriods = LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType());
-
         List<Integer> daysOfPerPeriod = LoanPeriodCalculator.calculateDaysOfPerPeriod(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType());
 
         // 上期回款时间，初始值为放款前一天23:59:59
@@ -62,7 +59,7 @@ public class GenerateRepayService {
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(); // 借款人回款计划
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(); // 出借人回款计划
 
-        for (int index = 0; index < totalPeriods; index++) {
+        for (int index = 0; index < loanModel.getPeriods(); index++) {
             logger.info("[Loan Full] loanRepay generate loanId:{} period:{} starting...", loanModel.getId(), index + 1);
 
             int period = index + 1; //当前计算的期数
@@ -86,7 +83,7 @@ public class GenerateRepayService {
                 InvestRepayModel investRepayModel = new InvestRepayModel(IdGenerator.generate(),
                         successInvestModel.getId(),
                         period,
-                        period == totalPeriods ? successInvestModel.getAmount() : 0,
+                        period == loanModel.getPeriods() ? successInvestModel.getAmount() : 0,
                         expectedInvestInterest,
                         expectedFee,
                         currentRepayDate.toDate(),

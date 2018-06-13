@@ -1,12 +1,11 @@
 package com.tuotiansudai.activity.interceptors;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
-import com.tuotiansudai.spring.security.SignInClient;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AppTokenInterceptor extends HandlerInterceptorAdapter {
 
-    static Logger logger = Logger.getLogger(AppTokenInterceptor.class);
+    private final static Logger logger = Logger.getLogger(AppTokenInterceptor.class);
 
     private final static String APP_SOURCE_FLAG = "app";
 
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
 
-    @Autowired
-    private SignInClient signInClient;
+    private final SignInClient signInClient = SignInClient.getInstance();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -42,7 +39,9 @@ public class AppTokenInterceptor extends HandlerInterceptorAdapter {
             token = Strings.isNullOrEmpty(token) ? request.getParameter("token") : token;
             SignInResult signInResult = signInClient.verifyToken(token, userAgentSource);
             if (signInResult != null && signInResult.isResult()) {
-                myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(), Source.WEB);
+                myAuthenticationUtil.createAuthentication(signInResult.getUserInfo().getLoginName(),
+                        Source.WEB,
+                        request.getHeader("X-Forwarded-For"));
             } else {
                 myAuthenticationUtil.removeAuthentication();
             }

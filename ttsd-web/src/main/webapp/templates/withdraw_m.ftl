@@ -13,7 +13,7 @@
             </span>
         </li>
     </ul>
-    <form action="/withdraw" id="cashForm" method="post" class="form-cash">
+    <form action="/m/withdraw" id="cashForm" method="post" class="form-cash">
         <div class="int-item">
             <label for="name">提现金额</label>
             <input type="text" name="amount" class="money-item" id="amount" value="" autocomplete="off"/>

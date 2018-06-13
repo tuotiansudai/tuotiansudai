@@ -321,18 +321,15 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) String withdrawId,
+    public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) WithdrawStatus status,
                                @RequestParam(value = "source", required = false) Source source,
-                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
-        int index = 1;
-        int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime, role);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, 1, startTime, endTime);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }

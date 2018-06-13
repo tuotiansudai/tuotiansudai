@@ -37,6 +37,16 @@ if($('.anonymous-page').length){
     $('body').css('backgroundColor','#fff8aa')
 }
 
+$('#noBankCardRecharge').click(function() {
+   $('#bindCardForm').submit();
+   return false;
+});
+
+$('#noBankCardWithdraw').click(function() {
+    $('#bindCardForm').submit();
+    return false;
+});
+
 
 
 

@@ -2,23 +2,15 @@ package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.MyUser;
-import com.tuotiansudai.spring.security.SignInClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -29,19 +21,17 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
 
-    private String refreshTokenUrl = "/refresh-token";
+    private final static String refreshTokenUrl = "/refreshToken-token";
+
+    private final SignInClient signInClient = SignInClient.getInstance();
+
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private SignInClient signInClient;
 
     public MobileAppAuthenticationTokenProcessingFilter() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -61,17 +51,10 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         SignInResult verifyTokenResult = signInClient.verifyToken(token, source);
 
         if (verifyTokenResult != null && verifyTokenResult.isResult()) {
-            List<GrantedAuthority> grantedAuthorities = Lists.transform(verifyTokenResult.getUserInfo().getRoles(), (Function<String, GrantedAuthority>) SimpleGrantedAuthority::new);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    new MyUser(verifyTokenResult.getToken(), verifyTokenResult.getUserInfo().getLoginName(), "", true, true, true, true, grantedAuthorities, verifyTokenResult.getUserInfo().getMobile()),
-                    "",
-                    grantedAuthorities);
-            authenticationToken.setDetails(authenticationToken.getDetails());
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            myAuthenticationUtil.refreshGrantedAuthority(verifyTokenResult);
 
             if (bufferedRequestWrapper.getRequestURI().equalsIgnoreCase(refreshTokenUrl)) {
-                SignInResult refreshResult = signInClient.refresh(token, source);
+                SignInResult refreshResult = signInClient.refreshToken(token, source);
                 String newToken = refreshResult != null && refreshResult.isResult() ? refreshResult.getToken() : null;
 
                 BaseResponseDto<LoginResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);

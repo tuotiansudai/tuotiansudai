@@ -116,10 +116,6 @@ public class SmsService {
         return smsClient.sendSMS(Lists.newArrayList(creditLoanAgent), SmsTemplate.SMS_CREDIT_LOAN_BALANCE_ALERT_TEMPLATE, false, Lists.newArrayList());
     }
 
-    public BaseDto<SmsDataDto> platformBalanceLowNotify(List<String> mobiles, String warningLine) {
-        return smsClient.sendSMS(mobiles, SmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, false, Lists.newArrayList(warningLine));
-    }
-
     public BaseDto<SmsDataDto> generateContractNotify(List<String> mobiles, long businessId) {
         return smsClient.sendSMS(mobiles, SmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, false, Lists.newArrayList(String.valueOf(businessId)));
     }

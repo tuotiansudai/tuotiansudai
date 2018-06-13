@@ -489,7 +489,7 @@
         us.province AS `group`
         FROM
         `user` us
-        JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+        JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
         <if test="role != '' and role != 'UN_LOANER' ">
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
@@ -513,7 +513,7 @@
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_w_1.amount / 100), 2) AS `temp_amount_1`
             FROM `user` AS temp_user_1
-            JOIN `withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
@@ -551,7 +551,7 @@
             '其他' AS `group`
             FROM
             `user` us
-            JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
@@ -570,7 +570,7 @@
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_w_2.amount / 100), 2) AS `temp_amount_2`
             FROM `user` AS temp_user_2
-            JOIN `withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>
@@ -1476,13 +1476,13 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(created_time, '%Y-%m') AS `name`,
         </if>
-        count(distinct(`withdraw`.login_name)) AS `value`,
+        count(distinct(`bank_withdraw`.login_name)) AS `value`,
         '提现人数' AS `group`
 
-        from withdraw
+        from bank_withdraw
 
         <if test="role != '' and role != 'UN_LOANER' ">
-            join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = `withdraw`.login_name
+            join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = `bank_withdraw`.login_name
         </if>
         <if test="role != '' and role == 'UN_LOANER' ">
             JOIN (SELECT
@@ -1490,7 +1490,7 @@
             FROM
             user_role
             GROUP BY login_name) ur
-            ON ur.login_name = withdraw.login_name
+            ON ur.login_name = bank_withdraw.login_name
             AND ur.role NOT LIKE '%LOANER%'
         </if>
 

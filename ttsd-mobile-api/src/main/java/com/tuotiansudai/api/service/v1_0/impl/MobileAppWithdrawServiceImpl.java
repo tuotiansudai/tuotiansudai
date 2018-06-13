@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -11,9 +9,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
@@ -32,7 +31,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     @Autowired
     private PayWrapperClient payWrapperClient;
     @Autowired
-    private WithdrawMapper withdrawMapper;
+    private BankWithdrawMapper bankWithdrawMapper;
     @Autowired
     private BlacklistService blacklistService;
     @Value("${pay.withdraw.fee}")
@@ -50,15 +49,11 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
             index = 1;
         }
 
-        long count = withdrawMapper.findWithdrawCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, "");
-        List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, (index - 1) * pageSize, pageSize, null, null, "");
+        long count = bankWithdrawMapper.findWithdrawCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null);
+        List<WithdrawPaginationView> views = bankWithdrawMapper.findWithdrawPagination(null,
+                requestDto.getBaseParam().getPhoneNum(), null, null, (index - 1) * pageSize, 10, null, null);
 
-        List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = Lists.transform(withdrawModels, new Function<WithdrawModel, WithdrawDetailResponseDataDto>() {
-            @Override
-            public WithdrawDetailResponseDataDto apply(WithdrawModel input) {
-                return new WithdrawDetailResponseDataDto(input);
-            }
-        });
+        List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = views.stream().map(view -> new WithdrawDetailResponseDataDto(view.getId(), view.getAmount(), view.getStatus(), view.getCreatedTime(), view.getUpdatedTime())).collect(Collectors.toList());
 
         WithdrawListResponseDataDto listDataDto = new WithdrawListResponseDataDto();
         listDataDto.setIndex(index);
