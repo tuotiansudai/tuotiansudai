@@ -3,10 +3,7 @@ package com.tuotiansudai.scheduler.activity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.activity.repository.mapper.ActivityInvestMapper;
-import com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryDrawMapper;
-import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
-import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
+import com.tuotiansudai.activity.repository.mapper.*;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -51,10 +48,10 @@ public class ThirdAnniversaryActivitySchedulerTest {
     private RedisWrapperClient redisWrapperClient;
 
     @Mock
-    private WeChatHelpMapper weChatHelpMapper;
+    private ThirdAnniversaryHelpMapper thirdAnniversaryHelpMapper;
 
     @Mock
-    private WeChatHelpInfoMapper weChatHelpInfoMapper;
+    private ThirdAnniversaryHelpInfoMapper thirdAnniversaryHelpInfoMapper;
 
     @Mock
     private ActivityInvestMapper activityInvestMapper;
@@ -86,10 +83,10 @@ public class ThirdAnniversaryActivitySchedulerTest {
                         .put("1", DateTime.now().minusDays(1).toString("yyyy-MM-dd HH:mm:ss"))
                         .build()));
 
-        when(weChatHelpMapper.findById(1)).thenReturn(new WeChatHelpModel("loginName1", "userName1", "mobile1", WeChatHelpType.THIRD_ANNIVERSARY_HELP, DateTime.now().minusDays(4).toDate(), DateTime.now().minusDays(1).toDate()));
-        when(weChatHelpInfoMapper.findByHelpId(1)).thenReturn(Lists.newArrayList(new WeChatHelpInfoModel("friend1", "friendMobile1", 1, WeChatHelpUserStatus.WAITING),
-                new WeChatHelpInfoModel("friend2", "friendMobile2", 1, WeChatHelpUserStatus.WAITING),
-                new WeChatHelpInfoModel("friend3", "friendMobile3", 1, WeChatHelpUserStatus.WAITING)));
+        when(thirdAnniversaryHelpMapper.findById(1)).thenReturn(new ThirdAnniversaryHelpModel("loginName1", "userName1", "mobile1", DateTime.now().minusDays(4).toDate(), DateTime.now().minusDays(1).toDate()));
+        when(thirdAnniversaryHelpInfoMapper.findByHelpId(1)).thenReturn(Lists.newArrayList(new ThirdAnniversaryHelpInfoModel(1, "friend1", "friendMobile1", "userName1"),
+                new ThirdAnniversaryHelpInfoModel(1, "friend2", "friendMobile2", "userName2"),
+                new ThirdAnniversaryHelpInfoModel(1, "friend3", "friendMobile3", "userName3")));
 
         List<ActivityInvestModel> activityInvestModelList = Lists.newArrayList(new ActivityInvestModel(1l,1l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),
                 new ActivityInvestModel(1l,2l, "loginName1", "userName1", "mobile1", 100000l, 100000l, ActivityCategory.THIRD_ANNIVERSARY.name()),
@@ -120,6 +117,9 @@ public class ThirdAnniversaryActivitySchedulerTest {
 
     @Test
     public void shouldSendTopFourCash(){
+        if (DateTime.now().getYear() != 2018){
+            return;
+        }
 
         ArgumentCaptor<String> redisSetKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> redisSetValueCaptor = ArgumentCaptor.forClass(String.class);

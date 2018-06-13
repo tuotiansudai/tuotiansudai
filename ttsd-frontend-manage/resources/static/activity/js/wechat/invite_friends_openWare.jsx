@@ -50,13 +50,7 @@ $('.to-join-btn').on('click',function () {
 })
 
 $openBtn.on('click',function () {
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-                $wechatTip.show();
-        })
-        .fail(function () {
-            location.href = '/m/login'
-        })
+    $wechatTip.show();
 })
 //先不拆了
 $('.no-open').on('click',function () {

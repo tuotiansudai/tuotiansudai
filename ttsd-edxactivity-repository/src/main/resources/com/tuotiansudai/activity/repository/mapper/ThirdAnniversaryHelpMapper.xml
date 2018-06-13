@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryHelpMapper">
+
+    <resultMap id="thirdAnniversaryHelpModel" type="com.tuotiansudai.activity.repository.model.ThirdAnniversaryHelpModel">
+        <result column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="is_cashback" property="isCashBack"/>
+    </resultMap>
+
+    <insert id="create" parameterType="weChatHelpModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO third_anniversary_help(login_name, user_name, mobile, start_time, end_time)
+        VALUES (#{loginName}, #{userName}, #{mobile}, #{startTime}, #{endTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="map" resultMap="thirdAnniversaryHelpModel">
+        SELECT * FROM third_anniversary_help where login_name = #{loginName}
+    </select>
+
+    <select id="findById" parameterType="map" resultMap="thirdAnniversaryHelpModel">
+        SELECT * FROM third_anniversary_help where id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="thirdAnniversaryHelpModel">
+        SELECT * from third_anniversary_help
+    </select>
+
+</mapper>

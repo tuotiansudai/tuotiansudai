@@ -71,7 +71,7 @@ let teamName = {
 
 }
 
-if($('#openBallContent').data('drawCount') == 0){
+if($('#openBallContent').data('drawcount') === '0'){
     $('#openBall').hide();
     $('#toInvestBtn').show();
 }else {
