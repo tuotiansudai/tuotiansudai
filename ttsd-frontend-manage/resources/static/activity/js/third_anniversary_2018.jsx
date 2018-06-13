@@ -232,16 +232,18 @@ function supportSquare(){
             $('.percent-con').css('width',percent+'%');
             $.when(commonFun.isUserLogin())
                 .done(function () {
-                    if(res.data.selectResult == 'RED'){
+                    if(res.data.selectResult === 'RED'){
                         $redSquare.addClass('already_support');
                         $blueSquare.addClass('disabled');
-                    }else if(res.data.selectResult == 'BLUE'){
+                    }else if(res.data.selectResult === 'BLUE'){
                         $blueSquare.addClass('already_support');
                         $redSquare.addClass('disabled');
                     }
-                    $myAmount.text(res.data.myAmount);
-                    $currentRate.text(res.data.currentRate);
-                    $currentAward.text(res.data.currentAward);
+                    if(res.data.isSelect){
+                        $myAmount.text(res.data.myAmount);
+                        $currentRate.text(res.data.currentRate);
+                        $currentAward.text(res.data.currentAward);
+                    }
                 })
         }
     })
