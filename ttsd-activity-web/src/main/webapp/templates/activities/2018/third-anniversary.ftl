@@ -22,7 +22,7 @@
                    <a href="javascript:;" class="gold-btn open-ball-btn" id="openBall" style="display: none"></a>
 
                 <@global.isNotAnonymous>
-                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>" style="display: none">我的对标</h2>
+                    <h2 class="my-logo  <#if isSuccess>collected-all</#if>" style="display: none">我的队标</h2>
                <div class="my-team-logos logos-con swiper-container" id="teamLogos">
                    <ul class="swiper-wrapper" id="myTeamLogos">
                        <script id="myTeamLogoTpl" type="text/template">
@@ -41,7 +41,7 @@
                </@global.isNotAnonymous>
                <div class="prize">
                    <#if topFour??>
-                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有${collectSuccess}人集齐队标</p>
+                       <p>世界杯四强是<strong>${topFour}</strong>，当前共有<strong>${collectSuccess}人集齐队标</strong></p>
                    </#if>
                </div>
            </div>
@@ -131,7 +131,8 @@
                 <p>4、邀好友拆红包活动，拆开红包的好友需未注册过拓天速贷账户，并在活动页面完成注册+实名认证，实名认证后方可拆开红包；</p>
                 <p>5、邀好友拆红包活动，拆红包流程：点击活动页面的“拆红包”按钮-注册拓天速贷账户-完成实名认证-拆红包成功；</p>
                 <p>6、邀好友拆红包活动，投资用户及其好友的现金红包金额，将于分享成功后72小时内发放至双方用户账户，您可以直接提现；</p>
-                <p>7、截止发放时间为止，如果拆开红包的好友未登录拓天速贷并进行实名认证，双方将无法收到现金；8、本活动仅限直投项目，债权转让、体验项目及新手专享项目不参与累计；</p>
+                <p>7、截止发放时间为止，如果拆开红包的好友未登录拓天速贷并进行实名认证，双方将无法收到现金；</p>
+                <p>8、本活动仅限直投项目，债权转让、体验项目及新手专享项目不参与累计；</p>
                 <p>9、年化投资额计算公式</p>
                 <div class="calculation-formula">
                     <table>
