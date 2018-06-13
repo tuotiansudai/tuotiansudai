@@ -71,10 +71,10 @@ let teamName = {
 
 }
 
-if($('#openBallContent').data('drawcount') === '0'){
+if($('#openBallContent').data('drawcount') == '0'){
     $('#openBall').hide();
     $('#toInvestBtn').show();
-}else {
+}else {alert(9)
     $('#openBall').show();
     $('#toInvestBtn').hide();
 }
