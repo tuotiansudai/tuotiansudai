@@ -48,7 +48,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                        <a href="?mobile=${mobile!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&index=${data.index-1}"
+                        <a href="?index=${data.index - 1}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
@@ -57,7 +57,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage >
-                        <a href="?keyWord=${keyWord!}&minInvest=${minInvest!}&maxInvest=${maxInvest!}&index=${data.index+1}"
+                        <a href="?index=${data.index - 1}"
                            aria-label="Previous">
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>

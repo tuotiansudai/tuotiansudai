@@ -9,12 +9,12 @@ CREATE TABLE `third_anniversary_draw` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE `third_anniversary_help` (
-  `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `login_name`  VARCHAR(25)     NOT NULL,
-  `user_name`   VARCHAR(25)     NOT NULL,
-  `mobile`      VARCHAR(11)     NOT NULL,
-  `start_time`  DATETIME        NOT NULL,
-  `end_time`    DATETIME        NOT NULL,
+  `id`         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login_name` VARCHAR(25)     NOT NULL,
+  `user_name`  VARCHAR(25),
+  `mobile`     VARCHAR(11)     NOT NULL,
+  `start_time` DATETIME        NOT NULL,
+  `end_time`   DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
