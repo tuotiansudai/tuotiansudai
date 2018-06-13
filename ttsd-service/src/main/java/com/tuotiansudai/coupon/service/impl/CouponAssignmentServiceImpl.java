@@ -273,11 +273,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponModel.setExchangeCode(exchangeCode);
         userCouponMapper.create(userCouponModel);
 
-        if (Lists.newArrayList(UserGroup.IMPORT_USER, UserGroup.WINNER_NOTIFY).contains(couponModel.getUserGroup())) {
-            String mobile = userMapper.findByLoginName(loginName).getMobile();
-            String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
-            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
-        }
+        String mobile = userMapper.findByLoginName(loginName).getMobile();
+        String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
 
         return userCouponModel;
     }
