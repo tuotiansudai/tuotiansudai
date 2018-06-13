@@ -157,7 +157,7 @@
 <div class="tip-wrap" style="display: none">
     <div class="get-ball-tip" >
         <div class="top"></div>
-        <div class="bot"></div>
+        <div class="bot"><span class="money"></span></div>
         <a class="known-btn" href="javascript:;"></a>
         <div class="con logos-con">
             <ul class="clearfix" id="getLogos">
