@@ -53,9 +53,7 @@ body {
     background: url("../images/2018/july-activity/open_ball_btn.png") no-repeat center center;
     background-size: 100%;
     margin-bottom: 56px;
-    position: relative;
-    top:-18px;
-    z-index: 1;
+    margin-top: 20px;
   }
   &.to_invest_btn {
     background: url("../images/2018/july-activity/to_invest_btn.png") no-repeat center center;
@@ -224,18 +222,18 @@ body {
       margin-left: -60px;
       li {
         color: $redInvest;
-        font-size: 24px;
+        font-size: 16px;
         font-weight: bold;
         float: left;
         margin-left: 40px;
         &.first {
-          width: 420px;
+          width: 460px;
         }
         &.thrid {
           float: right;
         }
         strong {
-          font-size: 30px;
+          font-size: 18px;
         }
       }
     }
@@ -296,7 +294,6 @@ body {
           display: inline-block;
           color: #fff;
           font-size: 18px;
-          float: right;
           margin-top: 26px;
 
         }
@@ -304,13 +301,19 @@ body {
           background: url("../images/2018/july-activity/red_squre.png") no-repeat;
           background-size: 100%;
           span {
-            padding-right: 35px;
+            padding-left:148px;
           }
           &.disabled {
+            span {
+              padding-left:148px;
+            }
             background: url("../images/2018/july-activity/red_disabled.png") no-repeat;
             background-size: 100%;
           }
           &.already_support {
+            span {
+              padding-left: 117px;
+            }
             background: url("../images/2018/july-activity/already_support_red.png") no-repeat;
             background-size: 100%;
           }
@@ -320,9 +323,16 @@ body {
           background: url("../images/2018/july-activity/blue_squre.png") no-repeat;
           background-size: 100%;
           span {
-            padding-right: 0px;
+            padding-right:136px;
+          }
+          span {
+            float: right;
+            padding-right:103px;
           }
           &.disabled {
+             span {
+               padding-right:136px;
+             }
             background: url("../images/2018/july-activity/blue_disabled.png") no-repeat;
             background-size: 100%;
           }
@@ -390,6 +400,7 @@ body {
       .open-red-ware-tab {
         border: 1px solid $grayd1;
         border-bottom: none;
+        border-right:none;
         margin-top: 46px;
         margin-bottom: 40px;
         table {
@@ -460,6 +471,7 @@ body {
       .calculation-formula {
         border: 1px solid $grayd1;
         border-bottom: none;
+        border-right:none;
         table {
           tr {
             td {
@@ -980,7 +992,7 @@ body {
             background: url("../images/2018/july-activity/wap_red_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-right: 0.25rem;
+              padding-left: 0.25rem;
             }
             &.disabled {
               background: url("../images/2018/july-activity/wap_red_squre_disabled.png") no-repeat;
