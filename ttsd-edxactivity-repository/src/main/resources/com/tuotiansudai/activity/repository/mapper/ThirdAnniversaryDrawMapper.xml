@@ -34,7 +34,7 @@
         <foreach collection="list" item="item" open="(" separator=","  close=")">
             #{item}
         </foreach>
-        group by login_name
+        group by login_name HAVING count(*)=4
     </select>
 
 </mapper>
