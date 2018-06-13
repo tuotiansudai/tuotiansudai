@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -179,8 +180,10 @@ public class ThirdAnniversaryActivityService {
         return map;
     }
 
-    public BaseResponse<List<ThirdAnniversaryDrawModel>> getTeamLogos(String loginName) {
-        return new BaseResponse<List<ThirdAnniversaryDrawModel>>(thirdAnniversaryDrawMapper.findByLoginName(loginName));
+    public BaseResponse<Map<String, Object>> getTeamLogos(String loginName) {
+        Map<String, Object> map = getTopFourTeam(loginName);
+        map.put("prizes", thirdAnniversaryDrawMapper.findByLoginName(loginName));
+        return new BaseResponse<Map<String, Object>>(map);
     }
 
     public BaseResponse draw(String loginName) {
@@ -297,17 +300,18 @@ public class ThirdAnniversaryActivityService {
                 .build());
     }
 
+    @Transactional(transactionManager = "activityTransactionManager")
     public void openRedEnvelope(String loginName, String mobile, String originator) {
-        ThirdAnniversaryHelpModel helpModel = thirdAnniversaryHelpMapper.findByLoginName(originator);
+        ThirdAnniversaryHelpModel helpModel = thirdAnniversaryHelpMapper.lockByLoginName(originator);
         if (new Date().after(helpModel.getEndTime())){
-            return;
-        }
-        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
-        if (helpInfoModels.size() >= 3) {
             return;
         }
         List<String> loginNames = thirdAnniversaryHelpInfoMapper.findAllLoginName();
         if (loginNames.contains(loginName)) {
+            return;
+        }
+        List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
+        if (helpInfoModels.size() >= 3) {
             return;
         }
         thirdAnniversaryHelpInfoMapper.create(new ThirdAnniversaryHelpInfoModel(helpModel.getId(), loginName, mobile, userMapper.findByLoginName(loginName).getUserName()));

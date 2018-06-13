@@ -16,6 +16,8 @@ public interface ThirdAnniversaryHelpMapper {
 
     ThirdAnniversaryHelpModel findByLoginName(@Param(value = "loginName") String loginName);
 
+    ThirdAnniversaryHelpModel lockByLoginName(@Param(value = "loginName") String loginName);
+
     List<ThirdAnniversaryHelpModel> findAll();
 
 }

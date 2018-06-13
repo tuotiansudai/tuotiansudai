@@ -23,6 +23,10 @@
         SELECT * FROM third_anniversary_help where login_name = #{loginName}
     </select>
 
+    <select id="lockByLoginName" parameterType="map" resultMap="thirdAnniversaryHelpModel">
+        SELECT * FROM third_anniversary_help where login_name = #{loginName} for UPDATE
+    </select>
+
     <select id="findById" parameterType="map" resultMap="thirdAnniversaryHelpModel">
         SELECT * FROM third_anniversary_help where id = #{id}
     </select>
