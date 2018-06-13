@@ -71,8 +71,18 @@ p {
   }
 }
 .invite-friend-container {
-  background: $orangeBg;
   padding-bottom: 1.1rem;
+  position: relative;
+  background: $orangeBg url("../../images/2018/july-activity/bolang.png") no-repeat center bottom;
+  background-size: contain;
+  .bolang {
+    position: absolute;
+    top: 16rem;
+    width: 100%;
+    height: 1.76rem;
+    background: url("../../images/2018/july-activity/bolang.png") no-repeat;
+    background-size: contain;
+  }
   .invite-banner {
     height: 4.8rem;
     background: url("../../images/2018/july-activity/wechat_banner.png") no-repeat;
@@ -101,7 +111,7 @@ p {
         text-align: center;
         line-height: 0.34rem;
         strong {
-          font-size: 0.28rem;
+          font-size: 0.34rem;
         }
       }
       .to-join-btn {
@@ -131,6 +141,17 @@ p {
       }
     }
   }
+  .bolang-wrap {
+    position: relative;
+    .bolang2 {
+      position: absolute;
+      bottom: -1.2rem;
+      width: 100%;
+      height: 1.76rem;
+      background: url("../../images/2018/july-activity/bolang.png") no-repeat;
+      background-size: contain;
+    }
+  }
   .part-two {
     .part-title {
       background: $orangeBg url("../../images/2018/july-activity/has_got_btn.png") no-repeat;
@@ -155,7 +176,7 @@ p {
       background-size: contain;
     }
     .main-content {
-      padding-top: 0.46rem;
+      padding-top: 0.6rem;
       padding-bottom: 0.45rem;
       p {
         font-size: 0.21rem;

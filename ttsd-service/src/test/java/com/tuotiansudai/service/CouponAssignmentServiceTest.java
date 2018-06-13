@@ -131,7 +131,7 @@ public class CouponAssignmentServiceTest {
         couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.MEMBERSHIP_V5));
 
         verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
-        assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
+        assertEquals(MessageQueue.Coupon_Assigning, messageQueueCaptor.getValue());
         String queueMessage = fakeUser.getLoginName() + ":" + fakeCoupon.getId();
         assertEquals(queueMessage, stringCaptor.getValue());
     }

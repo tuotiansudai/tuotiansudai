@@ -15,14 +15,14 @@
             </#if>
             <#if isHelp>
                 <p>您已成功拆红包<br/>
-                    目前可瓜分现金${reward}元<br/>
+                    目前可瓜分现金<strong>${reward}元</strong><br/>
                     <#--活动结束后发放至拓天速贷个人账户-->
                     倒计时结束后可提现
                 </p>
             <#else>
                 <p>您的好友邀请您拆红包<br/>
                     共同瓜分<br/>
-                    最高${reward}的现金
+                    最高<strong>${reward}元</strong>的现金
                 </p>
             </#if>
                 <a class="to-join-btn" href="javascript:;"></a>
@@ -38,7 +38,7 @@
         </div>
 
     </div>
-
+    <div class="bolang-wrap">
     <div class="part part-two marginTop100" id="getWare">
         <span class="circle left-circle"></span>
         <span class="circle right-circle"></span>
@@ -55,6 +55,8 @@
             </ul>
         </div>
 
+    </div>
+        <div class="bolang2"></div>
     </div>
 
     <div class="part part-three marginTop100">
@@ -102,6 +104,9 @@
         </div>
 
     </div>
+    <div class="bolang"></div>
+    <div class="bolang bolang2" style="display: none"></div>
+</div>
     <script>
         var originator = '${originator}';
         webServer = '${webServer}';

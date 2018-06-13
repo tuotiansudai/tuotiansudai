@@ -12,10 +12,8 @@ if($('#inviteContainer').length){
     let countTime = $('#inviteContainer').data('countdown');
     if(countTime){
         commonFun.countTimePop($('.time'),countTime);
-        $('#getWare').show();
     }else{
         $('.time').text('72:00:00');
-        $('#getWare').hide();
     }
 }
 
@@ -23,12 +21,19 @@ if($('#openWareContainer').length){
     let countTimeWare = $('#openWareContainer').data('countdown');
     if(countTimeWare){
         commonFun.countTimePop($('.time'),countTimeWare);
-        $('#getWare').show();
     }else{
         $('.time').text('72:00:00');
-        $('#getWare').hide();
     }
 }
+
+if($('#getWare').find('li').length>0){
+    $('#getWare').show();
+    $('.bolang2').show();
+}else {
+    $('#getWare').hide();
+    $('.bolang2').hide();
+}
+
 // 点击“邀请好友拆红包”，未登录时跳转到登录页面；
 //
 // 已登录时点击“邀请好友拆红包”button，页面弹窗提示“活动期间内只有一次机会，是否确认邀请？”点击取消弹窗消失停留在当前页，点击确认，页面弹窗提示右上角分享，点击“我知道了”弹窗消失；

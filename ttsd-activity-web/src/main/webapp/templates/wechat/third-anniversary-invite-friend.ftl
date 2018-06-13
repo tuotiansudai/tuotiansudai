@@ -25,7 +25,7 @@
         </div>
 
     </div>
-
+<div class="bolang-wrap">
     <div class="part part-two marginTop100" style="display: none" id="getWare">
         <span class="circle left-circle"></span>
         <span class="circle right-circle"></span>
@@ -40,6 +40,8 @@
             </ul>
         </div>
     </div>
+    <div class="bolang2"></div>
+</div>
 
     <div class="part part-three marginTop100">
         <span class="circle left-circle"></span>
@@ -71,6 +73,9 @@
             <p>9.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</p>
 
     </div>
+
+</div>
+    <div class="bolang"></div>
 
 </div>
     <#include "../module/login-tip.ftl" />
