@@ -63,7 +63,7 @@ public class LoanOutSuccessSmsInvestorMessageConsumer implements MessageConsumer
         List<String> mobiles = investMapper.findInvestorMobileByLoanId(loanModel.getId());
         if (CollectionUtils.isNotEmpty(mobiles)){
             String rate = String.valueOf((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%";
-            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE, mobiles, Lists.newArrayList(rate)));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE, mobiles, Lists.newArrayList(loanModel.getName(), rate)));
         }
     }
 }
