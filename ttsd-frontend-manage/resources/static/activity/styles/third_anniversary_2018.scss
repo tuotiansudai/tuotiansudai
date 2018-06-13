@@ -679,8 +679,6 @@ body {
       position: absolute;
       left: 50%;
       margin-left: -533px;
-      //width: 1778px;1000px
-      //height: 507px;
       width: 1000px;
       height: 285px;
       top: -136px;
@@ -689,15 +687,20 @@ body {
     }
     .bot{
       position: absolute;
-      //width: 1482px;
-      //height: 558px;
       width: 833px;
       height: 313px;
       left: 50%;
       margin-left: -400px;
       bottom: -123px;
-      background: url("../images/2018/july-activity/tip_bot.png") no-repeat center center;
+      background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
       background-size: contain;
+      .money {
+        width: 500px;
+        height: 200px;
+        margin: 0 auto;
+        background: url("../images/2018/july-activity/money.png") no-repeat center center;
+        background-size: contain;
+      }
     }
     .known-btn {
       position: absolute;
@@ -984,7 +987,7 @@ body {
           width: 2.41rem;
           height: 0.74rem;
           span {
-            font-size: 0.12rem;
+            font-size: 12px;
             margin-top: 0.02rem;
 
           }
@@ -992,13 +995,19 @@ body {
             background: url("../images/2018/july-activity/wap_red_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-left: 0.25rem;
+              padding-left: 0.9rem;
             }
             &.disabled {
+              span {
+                padding-left: 0.9rem;
+              }
               background: url("../images/2018/july-activity/wap_red_squre_disabled.png") no-repeat;
               background-size: contain;
             }
             &.already_support {
+              span {
+                padding-left: 0.7rem;
+              }
               background: url("../images/2018/july-activity/wap_red_squre_already.png") no-repeat;
               background-size: contain;
             }
@@ -1009,15 +1018,21 @@ body {
             background: url("../images/2018/july-activity/wap_blue_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-right: 0px;
+              padding-right: 0.9rem;
             }
             &.disabled {
               background: url("../images/2018/july-activity/wap_blue_squre_disabled.png") no-repeat;
               background-size: contain;
+              span {
+                padding-left: 0.9rem;
+              }
             }
             &.already_support {
               background: url("../images/2018/july-activity/wap_blue_squre_already.png") no-repeat;
               background-size: contain;
+              span {
+                padding-left: 0.7rem;
+              }
             }
           }
 
@@ -1171,6 +1186,7 @@ body {
         bottom: -1.2rem;
         background: url("../images/2018/july-activity/tip_bot.png") no-repeat center center;
         background-size: contain;
+
       }
       .known-btn {
         position: absolute;

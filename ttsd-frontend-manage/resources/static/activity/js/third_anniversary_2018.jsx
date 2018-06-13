@@ -102,13 +102,7 @@ $('#openBall').on('click',function () {
             })
         })
         .fail(function () {
-            layer.open({
-                type: 1,
-                title: false,
-                closeBtn: 0,
-                area: ['auto', 'auto'],
-                content: $('#loginTip')
-            });
+            toLogin();
         })
 })
 $('.known-btn').on('click',function () {
@@ -152,6 +146,7 @@ function getMyTeamLogos(){
     )
 }
 function toLogin(){
+
     if (sourceKind.params.source == 'app') {
         location.href = "app/tuotian/login";
     }else{
