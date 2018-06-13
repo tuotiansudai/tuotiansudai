@@ -9,10 +9,7 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.*;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.enums.SystemBillBusinessType;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
@@ -315,7 +312,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BasePaginationDataDto<BankRechargePaginationView> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
+        BasePaginationDataDto<RechargePaginationItemDataDto> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }

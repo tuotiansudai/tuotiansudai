@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.enums.BankRechargeStatus;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargePaginationView;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,11 +25,25 @@ public class RechargePaginationItemDataDto implements Serializable {
 
     private boolean isFastPay;
 
+    private Source source;
+
+    private String channel;
+
     public RechargePaginationItemDataDto() {
     }
 
-    public RechargePaginationItemDataDto(long rechargeId, BankRechargeStatus status, String loginName, String userName, String mobile,) {
-
+    public RechargePaginationItemDataDto(long rechargeId, String status, Date createdTime, String loginName, String userName, String mobile, String isStaff, String amount, String payType, Source source, String channel) {
+        this.rechargeId = rechargeId;
+        this.status = status;
+        this.createdTime = createdTime;
+        this.loginName = loginName;
+        this.userName = userName;
+        this.mobile = mobile;
+        this.isStaff = isStaff;
+        this.amount = amount;
+        this.isFastPay = "FAST_PAY".equals(payType);
+        this.source = source;
+        this.channel = channel;
     }
 
     public long getRechargeId() {
@@ -105,5 +116,21 @@ public class RechargePaginationItemDataDto implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         isFastPay = fastPay;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

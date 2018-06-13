@@ -355,19 +355,19 @@ public class ExportService {
         return rows;
     }
 
-    public List<List<String>> buildRecharge(List<BankRechargePaginationView> records) {
+    public List<List<String>> buildRecharge(List<RechargePaginationItemDataDto> records) {
         List<List<String>> rows = Lists.newArrayList();
-        for (BankRechargePaginationView record : records) {
+        for (RechargePaginationItemDataDto record : records) {
             List<String> row = Lists.newArrayList();
-            row.add(new BigDecimal(record.getId()).toString());
+            row.add(new BigDecimal(record.getRechargeId()).toString());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
+            row.add("1".equals(record.getIsStaff()) ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
-            row.add(AmountConverter.convertCentToString(record.getAmount()));
-            row.add("FAST_PAY".equals(record.getPayType()) ? "是" : "否");
-            row.add(record.getStatus().getDescription());
+            row.add(record.getAmount());
+            row.add(record.isFastPay() ? "是" : "否");
+            row.add(record.getStatus());
             row.add(record.getSource().name());
             row.add(record.getChannel());
             rows.add(row);

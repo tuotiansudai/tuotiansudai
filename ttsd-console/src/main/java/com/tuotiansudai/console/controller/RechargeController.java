@@ -3,8 +3,9 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleRechargeService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.RechargePaginationItemDataDto;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
-import com.tuotiansudai.repository.model.BankRechargeStatus;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,7 +38,7 @@ public class RechargeController {
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BasePaginationDataDto<BankRechargePaginationView> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
+        BasePaginationDataDto<RechargePaginationItemDataDto> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime, role);
         List<String> channelList = consoleRechargeService.findAllChannel();
         long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime, role);

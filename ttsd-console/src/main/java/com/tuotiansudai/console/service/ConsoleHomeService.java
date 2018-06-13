@@ -1,13 +1,13 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.RechargeStatus;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class ConsoleHomeService {
     UserMapperConsole userMapperConsole;
 
     @Autowired
-    RechargeMapper rechargeMapper;
+    BankRechargeMapper bankRechargeMapper;
 
     @Autowired
     BankWithdrawMapper bankWithdrawMapper;
@@ -46,17 +46,17 @@ public class ConsoleHomeService {
 
     public long rechargeToday_Loaner() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
     }
 
     public long recharge7Days_Loaner() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
     }
 
     public long recharge30Days_Loaner() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
     }
 
     public long rechargeToday_NotLoaner() {
@@ -75,8 +75,8 @@ public class ConsoleHomeService {
     }
 
     private long getRechargeNotLoaner(Date startTime) {
-        long sumRecharge = rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, null, startTime, null);
-        long sumRechargeLoaner = rechargeMapper.findSumRechargeAmount(null, null, null, RechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        long sumRecharge = bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, null, startTime, null);
+        long sumRechargeLoaner = bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
         return sumRecharge - sumRechargeLoaner;
     }
 
