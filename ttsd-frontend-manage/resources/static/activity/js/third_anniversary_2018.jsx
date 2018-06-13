@@ -246,11 +246,9 @@ function supportSquare(){
                         $blueSquare.addClass('already_support');
                         $redSquare.addClass('disabled');
                     }
-                    if(res.data.isSelect){
-                        $myAmount.text(res.data.myAmount);
-                        $currentRate.text(res.data.currentRate);
-                        $currentAward.text(res.data.currentAward);
-                    }
+                    $myAmount.text(res.data.myAmount);
+                    $currentRate.text(res.data.currentRate);
+                    $currentAward.text(res.data.currentAward);
                 })
         }
     })
