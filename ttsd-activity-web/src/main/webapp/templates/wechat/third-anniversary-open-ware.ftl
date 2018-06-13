@@ -9,14 +9,18 @@
         <div class="invite-wrap">
 
             <#if isHelp>
-                    <a class="cash-btn circle-btn" href="/m/account"></a>
+                <a class="cash-btn circle-btn" href="/m/account"></a>
             <#else>
-                <a class="open-btn circle-btn" href="javascript:;"></a>
+                    <form action="/activity/third-anniversary/open-red-envelope" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="originator" value="${originator}">
+                        <input type="submit" class="open-btn circle-btn" href="javascript:;"></input>
+                    </form>
             </#if>
             <#if isHelp>
                 <p>您已成功拆红包<br/>
                     目前可瓜分现金<strong>${reward}元</strong><br/>
-                    <#--活动结束后发放至拓天速贷个人账户-->
+                <#--活动结束后发放至拓天速贷个人账户-->
                     倒计时结束后可提现
                 </p>
             <#else>
@@ -25,7 +29,7 @@
                     最高<strong>${reward}元</strong>的现金
                 </p>
             </#if>
-                <a class="to-join-btn" href="javascript:;"></a>
+            <a class="to-join-btn" href="javascript:;"></a>
         </div>
     </div>
     <div class="part part-one marginTop100">
@@ -39,23 +43,27 @@
 
     </div>
     <div class="bolang-wrap">
-    <div class="part part-two marginTop100" id="getWare">
-        <span class="circle left-circle"></span>
-        <span class="circle right-circle"></span>
-        <div class="part-title"></div>
-        <div class="main-content">
-            <ul>
+        <div class="part part-two marginTop100" id="getWare">
+            <span class="circle left-circle"></span>
+            <span class="circle right-circle"></span>
+            <div class="part-title"></div>
+            <div class="main-content">
                 <ul>
-                    <#if helpFriend!?if_exists?size !=0 >
-                        <#list helpFriend as friend>
-                            <li class="clearfix"><div class="fl">${friend.mobile?substring(0, 3)}****${friend.mobile?substring(7)}</div><div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div></li>
-                        </#list>
-                    </#if>
+                    <ul>
+                        <#if helpFriend!?if_exists?size !=0 >
+                            <#list helpFriend as friend>
+                                <li class="clearfix">
+                                    <div class="fl">${friend.mobile?substring(0, 3)}
+                                        ****${friend.mobile?substring(7)}</div>
+                                    <div class="date-time fr">${friend.createdTime?string('yyyy-MM-dd HH:mm:ss')}</div>
+                                </li>
+                            </#list>
+                        </#if>
+                    </ul>
                 </ul>
-            </ul>
-        </div>
+            </div>
 
-    </div>
+        </div>
         <div class="bolang2"></div>
     </div>
 
@@ -74,13 +82,16 @@
             <div class="calculation-formula">
                 <table>
                     <tr>
-                        <td>60天-90天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额*90/360</span></td>
+                        <td>60天-90天项目</td>
+                        <td class="last-td"><span>年化投资额=</span><span>实际投资额*90/360</span></td>
                     </tr>
                     <tr>
-                        <td>120天-180天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额*180/360</span></td>
+                        <td>120天-180天项目</td>
+                        <td class="last-td"><span>年化投资额=</span><span>实际投资额*180/360</span></td>
                     </tr>
                     <tr>
-                        <td>330天-360天项目</td> <td class="last-td"><span>年化投资额=</span><span>实际投资额</span></td>
+                        <td>330天-360天项目</td>
+                        <td class="last-td"><span>年化投资额=</span><span>实际投资额</span></td>
                     </tr>
                 </table>
 
@@ -88,18 +99,18 @@
             <p>8.活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
             <p>9.活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</p>
 
-    </div>
+        </div>
 
-</div>
+    </div>
     <#include "../module/login-tip.ftl" />
     <div class="wechat-tip" style="display: none">
         <div class="open-ware-tip">
             <form action="/activity/third-anniversary/open-red-envelope" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="originator" value="${originator}">
-            <input type="submit" class="open-now open-ware-btn" href="javascript:;" value=""></input>
+                <input type="submit" class="open-now open-ware-btn" href="javascript:;" value=""></input>
 
-            <a class="no-open open-ware-btn" href="javascript:;"></a>
+                <a class="no-open open-ware-btn" href="javascript:;"></a>
             </form>
         </div>
 
@@ -107,9 +118,9 @@
     <div class="bolang"></div>
     <div class="bolang bolang2" style="display: none"></div>
 </div>
-    <script>
-        var originator = '${originator}';
-        webServer = '${webServer}';
-        commonStaticServer = '${commonStaticServer}';
-    </script>
+<script>
+    var originator = '${originator}';
+    webServer = '${webServer}';
+    commonStaticServer = '${commonStaticServer}';
+</script>
 </@global.main>

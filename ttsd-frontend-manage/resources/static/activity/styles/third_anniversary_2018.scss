@@ -87,10 +87,11 @@ body {
     background: url("../images/2018/july-activity/part_one_title.png") no-repeat center center;
     background-size: 100%;
     z-index: -100;
-    top: -111px;
+    top: -127px;
+    left: 2px;
   }
   .main-content {
-    width: 1176px;
+    width: 1166px;
     padding-top: 0;
     margin: 0 auto;
     padding-bottom: 60px;
@@ -144,7 +145,7 @@ body {
     background-size: 100%;
   }
   .main-content {
-    margin-top: 70px;
+    margin-top: 80px;
     padding-top: 80px;
   }
   .team-logo-rules {
@@ -212,25 +213,26 @@ body {
   }
 }
 .part-two {
-  margin-top: 80px;
+  margin-top: 180px;
   .content-section {
     padding-bottom: 50px;
   }
   .part-top {
     width: 1374px;
     height: 222px;
-    left: -68px;
+    left: 2px;
     background: url("../images/2018/july-activity/part_two_title.png") no-repeat center center;
     background-size: 100%;
   }
   .main-content {
-    padding-top: 222px;
+    width: 1170px;
+    padding-top: 90px;
     box-sizing: border-box;
   }
   .invest-records {
     padding-top: 54px;
     ul {
-      margin-left: -60px;
+      margin-left: -47px;
       li {
         color: $redInvest;
         font-size: 16px;
@@ -258,6 +260,7 @@ body {
       background: url("../images/2018/july-activity/progress_bg.png") no-repeat;
       background-size: 100%;
       border-radius: 20px;
+      margin-left: -17px;
       .percent {
         height: 41px;
 
@@ -312,18 +315,18 @@ body {
           background: url("../images/2018/july-activity/red_squre.png") no-repeat;
           background-size: 100%;
           span {
-            padding-left:148px;
+            padding-left:152px;
           }
           &.disabled {
             span {
-              padding-left:148px;
+              padding-left:152px;
             }
             background: url("../images/2018/july-activity/red_disabled.png") no-repeat;
             background-size: 100%;
           }
           &.already_support {
             span {
-              padding-left: 117px;
+              padding-left: 121px;
             }
             background: url("../images/2018/july-activity/already_support_red.png") no-repeat;
             background-size: 100%;
@@ -334,15 +337,12 @@ body {
           background: url("../images/2018/july-activity/blue_squre.png") no-repeat;
           background-size: 100%;
           span {
-            padding-right:136px;
-          }
-          span {
             float: right;
-            padding-right:103px;
+            padding-right:140px;
           }
           &.disabled {
              span {
-               padding-right:136px;
+               padding-right:140px;
              }
             background: url("../images/2018/july-activity/blue_disabled.png") no-repeat;
             background-size: 100%;
@@ -357,7 +357,7 @@ body {
     }
   }
   .which-to-chose {
-    width: 680px;
+    width: 710px;
     margin: 0 auto;
     margin-top: 60px;
     color: $redStrong;
@@ -381,16 +381,17 @@ body {
   }
 }
 .part-three {
-  margin-top: 80px;
+  margin-top: 180px;
   .part-top {
-    width: 1417px;
+    width: 1374px;
     height: 249px;
-    left: -100px;
+    left: 2px;
     background: url("../images/2018/july-activity/part_three_title.png") no-repeat center center;
     background-size: 100%;
+    top: -138px;
   }
   .main-content {
-    padding-top: 249px;
+    padding-top: 90px;
     .content-section {
       padding-top: 50px;
       padding-bottom: 30px;
@@ -460,16 +461,17 @@ body {
 
 }
 .part-four {
-  margin-top: 85px;
+  margin-top: 185px;
   .part-top {
-    width: 1375px;
-    height: 162px;
-    left: -81px;
+    width: 1316px;
+    height: 177px;
+    left: 28px;
     background: url("../images/2018/july-activity/part_title_four.png") no-repeat center center;
     background-size: 100%;
+    top: -107px;
   }
   .main-content {
-    padding-top: 162px;
+    padding-top: 64px;
     box-sizing: border-box;
     .content-section {
       padding-top: 50px;
@@ -776,7 +778,7 @@ body {
     width: 5.8rem;
   }
   .borderYellow {
-    border-bottom: 0.06rem solid $orangeBorder;
+   border: none;
   }
   .gold-btn {
     width: 1.96rem;
@@ -805,13 +807,19 @@ body {
   }
   .part {
     position: relative;
+    margin-top: 1rem;
     .part-top {
       position: absolute;
       width: 6.82rem;
       height: 1.23rem;
+      top: -1rem;
+      left: 0;
     }
     .main-content {
+      width: 6.5rem;
       padding-bottom: 0.3rem;
+      border-bottom: 0.04rem solid $orangeBorder;
+      margin-top: 0.1rem;
     }
   }
   .country-btn {
@@ -844,12 +852,11 @@ body {
     .part-top {
       width: 7.5rem;
       height: 1.11rem;
-      left: -0.46rem;
       background: url("../images/2018/july-activity/wap_part_one_title.png") no-repeat center center;
       background-size: 100%;
     }
     .main-content {
-      padding-top: 1.11rem;
+      padding-top: 0.11rem;
     }
     .team-logo-rules {
       padding-top: 0.3rem;
@@ -928,32 +935,31 @@ body {
     }
   }
   .part-two {
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     .content-section {
       padding-bottom: 0.3rem;
     }
     .part-top {
       width: 7.5rem;
       height: 1.38rem;
-      left: -0.46rem;
       background: url("../images/2018/july-activity/wap_part_two_title.png") no-repeat center center;
       background-size: 100%;
     }
     .main-content {
-      padding-top: 1.3rem;
+      padding-top: 0.3rem;
     }
     .invest-records {
       padding-top: 0.5rem;
       ul {
         margin-left: 0;
         li {
-          font-size: 0.24rem;
+          font-size: 12px;
           margin-left: 0;
           &.first {
             width: 2.4rem;
           }
           &.second {
-            width: 1.86rem;
+            width: 1.5rem;
           }
           .wap-style {
             display: block;
@@ -972,6 +978,7 @@ body {
         background: url("../images/2018/july-activity/wap_progress_bg.png") no-repeat;
         background-size: 100%;
         border-radius: 0.12rem;
+        margin-left: -0.07rem;
         .percent {
           height: 0.24rem;
           border-radius: 0.12rem;
@@ -1014,18 +1021,18 @@ body {
             background: url("../images/2018/july-activity/wap_red_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-left: 0.9rem;
+              padding-left: 0.95rem;
             }
             &.disabled {
               span {
-                padding-left: 0.9rem;
+                padding-left: 0.95rem;
               }
               background: url("../images/2018/july-activity/wap_red_squre_disabled.png") no-repeat;
               background-size: contain;
             }
             &.already_support {
               span {
-                padding-left: 0.7rem;
+                padding-left: 0.75rem;
               }
               background: url("../images/2018/july-activity/wap_red_squre_already.png") no-repeat;
               background-size: contain;
@@ -1037,20 +1044,20 @@ body {
             background: url("../images/2018/july-activity/wap_blue_squre.png") no-repeat;
             background-size: contain;
             span {
-              padding-right: 0.96rem;
+              padding-right: 1rem;
             }
             &.disabled {
               background: url("../images/2018/july-activity/wap_blue_squre_disabled.png") no-repeat;
               background-size: contain;
               span {
-                padding-right: 0.96rem;
+                padding-right: 1rem;
               }
             }
             &.already_support {
               background: url("../images/2018/july-activity/wap_blue_squre_already.png") no-repeat;
               background-size: contain;
               span {
-                padding-right: 0.7rem;
+                padding-right: 0.75rem;
               }
             }
           }
@@ -1080,16 +1087,15 @@ body {
     }
   }
   .part-three {
-    margin-top: 0.54rem;
+    margin-top: 1.5rem;
     .part-top {
       width: 7.5rem;
       height: 1.34rem;
-      left: -0.46rem;
       background: url("../images/2018/july-activity/wap_part_three_title.png") no-repeat center center;
       background-size: 100%;
     }
     .main-content {
-      padding-top: 1.34rem;
+      padding-top: 0.34rem;
       .content-section {
         padding-top: 0.45rem;
         padding-bottom: 0.35rem;
@@ -1139,16 +1145,15 @@ body {
 
   }
   .part-four {
-    margin-top: 0.7rem;
+    margin-top: 1.7rem;
     .part-top {
       width: 7.5rem;
       height: 1.03rem;
-      left: -0.46rem;
       background: url("../images/2018/july-activity/wap_part_four_title.png") no-repeat center center;
       background-size: 100%;
     }
     .main-content {
-      padding-top: 1.03rem;
+      padding-top: 0.03rem;
       .content-section {
         padding-top: 0.3rem;
         padding-bottom: 0.6rem;

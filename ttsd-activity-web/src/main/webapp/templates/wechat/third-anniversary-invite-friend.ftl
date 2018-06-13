@@ -79,10 +79,19 @@
 
 </div>
     <#include "../module/login-tip.ftl" />
-    <div class="wechat-tip" style="display: none">
+    <div class="wechat-tip" id="wechatTipWin" style="display: none">
         <div class="share-tip"></div>
         <a class="tip-btn" href="javascript:;"></a>
     </div>
+<div class="wechat-tip" id="inviteTipWin" style="display: none">
+    <div class="open-ware-tip">
+
+            <a class="open-now open-ware-btn" href="javascript:;" value=""></a>
+
+            <a class="no-open open-ware-btn" href="javascript:;"></a>
+    </div>
+
+</div>
 <script>
     var originator = '${originator}';
     webServer = '${webServer}';

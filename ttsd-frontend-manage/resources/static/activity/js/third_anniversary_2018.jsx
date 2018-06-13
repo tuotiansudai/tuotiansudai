@@ -71,13 +71,7 @@ let teamName = {
 
 }
 
-if($('#openBallContent').data('drawcount') == '0'){
-    $('#openBall').hide();
-    $('#toInvestBtn').show();
-}else {alert(9)
-    $('#openBall').show();
-    $('#toInvestBtn').hide();
-}
+
 $('#openBall').on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
@@ -115,6 +109,16 @@ var mySwiper;
 $.when(commonFun.isUserLogin())
     .done(function () {
         getMyTeamLogos();
+        if($('#openBallContent').data('drawcount') == '0'){
+            $('#openBall').hide();
+            $('#toInvestBtn').show();
+        }else {
+            $('#openBall').show();
+            $('#toInvestBtn').hide();
+        }
+    })
+    .fail(function () {
+        $('#openBall').show();
     })
 
 function getMyTeamLogos(){
@@ -123,7 +127,7 @@ function getMyTeamLogos(){
         type: 'GET'
     }, function (res) {
         if(res.status == true){
-            if(!res.data.prizes.length){
+            if(!res.data.length){
                 $('.my-logo').hide();
                 $('.my-team-logos').hide();
                 return;
@@ -134,7 +138,7 @@ function getMyTeamLogos(){
                 }
 
                 let records = {
-                    list:res.data.prizes,
+                    list:res.data,
                     teamName:teamName
                 }
                 $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
@@ -191,6 +195,7 @@ $supportBtn.on('click',function (e) {
                     type: 'POST'
                 }, function (res) {
                     if(res.status == true){
+                        layer.msg('支持成功！');
                         supportSquare();
                     }else {
                         layer.msg(res.message)

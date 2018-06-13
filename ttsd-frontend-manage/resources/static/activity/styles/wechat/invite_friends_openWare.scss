@@ -238,7 +238,7 @@ p {
     margin: 0 auto;
     width: 5.37rem;
     height: 8.83rem;
-    background: url("../../images/2018/july-activity/wechat_open_ware.png") no-repeat;
+    background: url("../../images/2018/july-activity/wechat_open_ware_invite.png") no-repeat;
     background-size: contain;
     padding-top: 6.33rem;
     .open-ware-btn {
@@ -248,12 +248,12 @@ p {
       margin: 0 auto;
       border: none;
       &.open-now {
-        background: url("../../images/2018/july-activity/open_now_btn.png") no-repeat;
+        background: url("../../images/2018/july-activity/comfirm_btn.png") no-repeat;
         background-size: contain;
       }
       &.no-open {
         margin-top: 0.3rem;
-        background: url("../../images/2018/july-activity/no_open_btn.png") no-repeat;
+        background: url("../../images/2018/july-activity/cancal_btn.png") no-repeat;
         background-size: contain;
       }
     }
