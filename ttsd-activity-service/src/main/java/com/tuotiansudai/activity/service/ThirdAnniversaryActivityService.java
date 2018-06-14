@@ -270,6 +270,9 @@ public class ThirdAnniversaryActivityService {
     }
 
     public void shareInvite(String loginName) {
+        if (!duringActivities()){
+            return;
+        }
         ThirdAnniversaryHelpModel model = thirdAnniversaryHelpMapper.findByLoginName(loginName);
         if (model != null) {
             return;
@@ -306,8 +309,7 @@ public class ThirdAnniversaryActivityService {
         if (new Date().after(helpModel.getEndTime())){
             return;
         }
-        List<String> loginNames = thirdAnniversaryHelpInfoMapper.findAllLoginName();
-        if (loginNames.contains(loginName)) {
+        if (thirdAnniversaryHelpInfoMapper.loginNameExist(loginName)) {
             return;
         }
         List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(helpModel.getId());
@@ -326,7 +328,8 @@ public class ThirdAnniversaryActivityService {
     }
 
     public boolean isActivityRegister(String loginName){
-        return "thirdAnniversary".equals(userMapper.findByLoginName(loginName).getChannel());
+        String channel = userMapper.findByLoginName(loginName).getChannel();
+        return !Strings.isNullOrEmpty(channel) && "thirdAnniversary".equals(channel);
     }
 
     public boolean isAccount(String loginName) {

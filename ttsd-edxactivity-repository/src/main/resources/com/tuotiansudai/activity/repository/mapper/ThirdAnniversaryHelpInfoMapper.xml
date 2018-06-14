@@ -22,8 +22,10 @@
         SELECT * FROM third_anniversary_help_info where help_id = #{helpId}
     </select>
 
-    <select id="findAllLoginName" resultType="string">
-        SELECT DISTINCT login_name from third_anniversary_help_info
+    <select id="loginNameExist" parameterType="map" resultType="boolean">
+        SELECT exists(SELECT 1
+                      FROM third_anniversary_help_info
+                      WHERE login_name = #{loginName})
     </select>
 
 </mapper>
