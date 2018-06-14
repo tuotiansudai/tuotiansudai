@@ -3,11 +3,9 @@ package com.tuotiansudai.paywrapper.loanout.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.SystemBillMessage;
@@ -83,9 +81,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -427,9 +422,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        logger.info("sent coupon repay fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("还款时优惠券发放业务错误。详细信息：{0}", errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("还款时优惠券发放业务错误。详细信息：{0}", errMsg));
     }
 
 }

@@ -2,11 +2,9 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -48,9 +46,6 @@ public class LoanOutSuccessSendCashRewardMessageConsumerTest {
 
     @Mock
     private PayWrapperClient payWrapperClient;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Mock
     private LoanDetailsMapper loanDetailsMapper;
@@ -130,7 +125,6 @@ public class LoanOutSuccessSendCashRewardMessageConsumerTest {
         verify(this.redisWrapperClient, times(2))
                 .hset(redisKeyCaptor.capture(), redisHKeyCaptor.capture(), valueCaptor.capture(), anyInt());
         verify(this.payWrapperClient, times(2)).transferCash(requestModelCaptor.capture());
-        verify(this.smsWrapperClient, times(2)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         assertThat(redisKeyCaptor.getAllValues().get(0), is("LOAN_OUT_SUCCESS_SEND_REWARD_KEY"));
         assertThat(redisHKeyCaptor.getAllValues().get(0), is("123:test1"));

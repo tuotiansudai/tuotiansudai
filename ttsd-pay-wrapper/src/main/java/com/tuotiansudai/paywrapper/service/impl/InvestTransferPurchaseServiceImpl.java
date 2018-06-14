@@ -6,9 +6,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
@@ -32,6 +30,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -82,9 +81,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
     private InvestTransferNotifyRequestMapper investTransferNotifyRequestMapper;
 
     @Value("${common.environment}")
@@ -95,6 +91,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -564,8 +563,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 
     private InvestModel generateInvestModel(InvestDto investDto, String loginName, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel, double rate) {
@@ -603,5 +601,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 AppUrl.MESSAGE_CENTER_LIST));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(transferApplicationModel.getLoginName(), WeChatMessageType.TRANSFER_SUCCESS, transferApplicationModel.getId()));
+
+        String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
     }
 }

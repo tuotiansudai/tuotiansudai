@@ -3,9 +3,7 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
@@ -32,9 +30,6 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessCreateAnXinContractMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
     private AnxinWrapperClient anxinWrapperClient;
 
     @Autowired
@@ -59,7 +54,6 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, MQ消息为空"));
             return;
         }
 
@@ -68,12 +62,10 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
                 logger.error("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract loanId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
             logger.error("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败, 解析消息失败"));
             return;
         }
 
@@ -97,7 +89,7 @@ public class LoanOutSuccessCreateAnXinContractMessageConsumer implements Message
         BaseDto baseDto = anxinWrapperClient.createLoanContract(loanId);
         if (!baseDto.isSuccess()) {
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateAnXinContract is fail. loanId:{0}", String.valueOf(loanId)));
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "生成安心签失败");
             return;
         }
         DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager, loanId, AnxinContractType.LOAN_CONTRACT.name());

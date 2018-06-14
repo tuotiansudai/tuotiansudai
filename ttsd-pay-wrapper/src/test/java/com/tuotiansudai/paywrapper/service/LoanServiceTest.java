@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -101,9 +100,6 @@ public class LoanServiceTest {
 
     @Mock
     private UserMapper userMapper;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Mock
     private PayAsyncClient payAsyncClient;

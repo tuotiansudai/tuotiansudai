@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
@@ -143,5 +144,6 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
                 Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()), title, content, membershipPrivilegePurchaseModel.getId()));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(membershipPrivilegePurchaseModel.getLoginName()),
                 PushSource.ALL, PushType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_MEMBERSHIP_PRIVILEGE_BUY_SUCCESS_TEMPLATE, Lists.newArrayList(membershipPrivilegePurchaseModel.getMobile())));
     }
 }

@@ -1,11 +1,10 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.TransferReferrerRewardCallbackMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -27,7 +26,7 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -40,7 +39,6 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
         logger.info("[推荐人奖励MQ] {} receive message: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[推荐人奖励MQ] message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("推荐人奖励MQ错误: 消息为空"));
             return;
         }
 
@@ -54,12 +52,10 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
                     || Strings.isNullOrEmpty(transferReferrerRewardCallbackMessage.getReferrer())) {
 
                 logger.error("[推荐人奖励MQ] message is invalid, message: {}", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 无效消息, message: {0}", message)));
                 return;
             }
         } catch (IOException e) {
             logger.error("[推荐人奖励MQ] message can not convert to transferReferrerRewardCallbackMessage, message: {}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 消息序反列化失败, message: {0}", message)));
             return;
         }
 
@@ -68,11 +64,11 @@ public class TransferReferrerRewardCallbackMessageConsumer implements MessageCon
 
             if (!result.isSuccess()) {
                 logger.error("[推荐人奖励MQ] callback consume is failed. message: {}", message);
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("推荐人奖励MQ错误: 消息处理失败, message: {0}", message)));
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("推荐人奖励MQ错误: 消息处理失败, message: {0}", message));
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("[推荐人奖励MQ] callback consume is exception. message: {0}", message), e);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("发放推荐人奖励回调错误, message: {0}", message)));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("发放推荐人奖励回调错误, message: {0}", message));
             return;
         }
 

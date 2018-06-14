@@ -145,14 +145,6 @@ def only_pay(options):
 
 
 @task
-def only_sms(options):
-    """
-    Deploy sms component to PROD from CI
-    """
-    fab_command("sms", parse_options(options))
-
-
-@task
 def only_activity(options):
     """
     Deploy activity component to PROD from CI

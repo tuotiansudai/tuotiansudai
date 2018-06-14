@@ -40,8 +40,10 @@
         select * from membership_privilege where login_name = #{loginName} and privilege='SERVICE_FEE' and #{currentDate} between start_time and end_time;
     </select>
 
-    <select id="findMembershipPrivilegeExpiredUsers" resultType="string">
-        select login_name from membership_privilege where datediff(now(), end_time) = 1 and privilege='SERVICE_FEE';
+    <select id="findMembershipPrivilegeExpiredUsers" resultType="MembershipPrivilegeExpiredUsersView">
+        select membership_privilege.login_name, user.mobile
+        from membership_privilege join user on membership_privilege.login_name = user.login_name
+        where datediff(now(), end_time) = 1 and privilege='SERVICE_FEE';
     </select>
 
 </mapper>

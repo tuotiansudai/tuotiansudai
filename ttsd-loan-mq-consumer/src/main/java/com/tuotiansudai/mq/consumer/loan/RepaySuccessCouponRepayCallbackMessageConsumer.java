@@ -2,10 +2,8 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -21,9 +19,6 @@ public class RepaySuccessCouponRepayCallbackMessageConsumer implements MessageCo
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
     @Override
     public MessageQueue queue() {
         return MessageQueue.RepaySuccessCouponRepayCallback;
@@ -35,7 +30,6 @@ public class RepaySuccessCouponRepayCallbackMessageConsumer implements MessageCo
         logger.info("[还款优惠券收益回调MQ] receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[还款优惠券收益回调MQ] ready to consume message: coupon repay message is null.");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款优惠券收益回调MQ消息为空!"));
             return;
         }
         logger.info("[还款优惠券收益回调MQ] ready to consume message: coupon repay callback.");
