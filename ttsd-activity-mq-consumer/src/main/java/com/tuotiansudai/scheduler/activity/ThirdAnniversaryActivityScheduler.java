@@ -96,9 +96,9 @@ public class ThirdAnniversaryActivityScheduler {
                 List<ThirdAnniversaryHelpInfoModel> helpInfoModels = thirdAnniversaryHelpInfoMapper.findByHelpId(weChatHelpId);
                 long annualizedAmount = activityInvestMapper.findAllByActivityLoginNameAndTime(thirdAnniversaryHelpModel.getLoginName(), ActivityCategory.THIRD_ANNIVERSARY.name(), activityStartTime, thirdAnniversaryHelpModel.getEndTime()).stream().mapToLong(ActivityInvestModel::getAnnualizedAmount).sum();
                 long cash = (long) (annualizedAmount * rates.get(helpInfoModels.size()));
-                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", thirdAnniversaryHelpModel.getLoginName()))) {
+                if (helpInfoModels.size() > 0 && cash > 0 && !redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "INVITE", thirdAnniversaryHelpModel.getLoginName()))) {
                     try {
-                        sendCash(thirdAnniversaryHelpModel.getLoginName(), cash, "HELP");
+                        sendCash(thirdAnniversaryHelpModel.getLoginName(), cash, "INVITE");
                     } catch (Exception e) {
                         logger.error("[third_anniversary_activity] send help cash to creator, user:{} fail, message:{}", thirdAnniversaryHelpModel.getLoginName(), e.getMessage());
                     }
@@ -110,7 +110,7 @@ public class ThirdAnniversaryActivityScheduler {
 
     private void sendHelpCashToFriend(List<ThirdAnniversaryHelpInfoModel> helpInfoModels, long cash) {
         for (ThirdAnniversaryHelpInfoModel model : helpInfoModels) {
-            if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, model.getLoginName()))) {
+            if (!redisWrapperClient.exists(MessageFormat.format(THIRD_ANNIVERSARY_SEND_CASH_SUCCESS, "HELP", model.getLoginName()))) {
                 try {
                     sendCash(model.getLoginName(), cash, "HELP");
                 } catch (Exception e) {
