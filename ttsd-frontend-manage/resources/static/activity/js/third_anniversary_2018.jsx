@@ -91,6 +91,11 @@ $('#openBall').on('click',function () {
                         overflow:'hidden',
                         height:'100%'
                     })
+                    $('html').css({
+                        width:'100%',
+                        height:'100%',
+                        position:'fixed'
+                    })
 
                     getMyTeamLogos();
                     $('#toInvestBtn').show();
@@ -109,6 +114,10 @@ $('.known-btn').on('click',function () {
     $('body').css({
         overflow:'auto',
         height:'auto'
+    })
+    $('html').css({
+        height:'auto',
+        position:'static'
     })
 })
 var mySwiper;

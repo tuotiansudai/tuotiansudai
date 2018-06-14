@@ -15,6 +15,12 @@ html {
 body {
   font-size: 12px;
 }
+
+html,
+body {
+      height: 100%;
+      overflow: hidden;
+}
 p {
   margin-bottom: 5px;
 }
@@ -1305,10 +1311,10 @@ body {
         .known-btn {
           position: absolute;
           width: 3.38rem;
-          height: 0.38rem;
+          height: 0.5rem;
           left: 50%;
           margin-left: -1.69rem;
-          bottom: -8px;
+          bottom: -0.08rem;
           background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
           background-size: contain;
         }
