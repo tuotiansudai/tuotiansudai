@@ -84,7 +84,11 @@ public class ThirdAnniversaryActivityController {
     }
 
     @RequestMapping(value = "/share-page", method = RequestMethod.GET)
-    public ModelAndView sharePage(@RequestParam(value = "originator") String originator){
+    public ModelAndView sharePage(@RequestParam(value = "originator", required = false) String originator){
+        if (Strings.isNullOrEmpty(originator)){
+            return new ModelAndView("/error/404");
+        }
+
         String loginName = LoginUserInfo.getLoginName();
         if(!Strings.isNullOrEmpty(loginName) && loginName.equals(originator)){
             return new ModelAndView("redirect:/activity/third-anniversary/invite-page");
