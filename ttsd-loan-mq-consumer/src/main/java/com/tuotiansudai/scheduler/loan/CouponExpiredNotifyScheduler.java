@@ -31,7 +31,7 @@ public class CouponExpiredNotifyScheduler {
 
             List<UserCouponExpiredView> expireAfterTwoDays = userCouponMapper.findExpireAfterTwoDays();
             expireAfterTwoDays.forEach(expiredView -> {
-                mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, Lists.newArrayList(expiredView.getMobile()), Lists.newArrayList()));
+                mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_EXPIRED_NOTIFY_TEMPLATE, Lists.newArrayList(expiredView.getMobile()), Lists.newArrayList(String.valueOf(expiredView.getExpiredCount()))));
             });
 
         } catch (Exception e) {

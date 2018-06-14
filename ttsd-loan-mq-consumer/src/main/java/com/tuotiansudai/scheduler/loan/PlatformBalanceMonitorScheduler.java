@@ -45,11 +45,9 @@ public class PlatformBalanceMonitorScheduler {
 
             logger.info("platform balance is: " + balance);
 
-            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(warningLine)));
-//
-//            if (Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
-//                mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(warningLine)));
-//            }
+            if (Double.parseDouble(balance) <= Double.parseDouble(warningLine)) {
+                mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_PLATFORM_BALANCE_LOW_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(warningLine)));
+            }
             logger.info("[Platform Balance Monitor] job is done");
         } catch (Exception e) {
             logger.error("[Platform Balance Monitor] job execution is failed.", e);
