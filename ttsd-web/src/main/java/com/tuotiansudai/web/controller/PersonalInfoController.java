@@ -27,9 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PersonalInfoController {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -44,7 +41,7 @@ public class PersonalInfoController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
-        UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
 
         BankAccountModel bankAccountModel = bankAccountService.findBankAccount(userModel.getLoginName());
 
