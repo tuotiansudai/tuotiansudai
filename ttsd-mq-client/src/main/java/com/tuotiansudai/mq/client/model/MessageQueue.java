@@ -10,7 +10,7 @@ public enum MessageQueue {
     2. 必须以英文字母或者数字开头，剩余名称可以是英文，数字，横划线；（注意，不能使用下划线）
     3. 长度不超过256个字符。
     */
-    CouponAssigning("CouponAssigning"),
+    Coupon_Assigning("Coupon-Assigning"),
     UserCouponReset("UserCouponReset"),
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),

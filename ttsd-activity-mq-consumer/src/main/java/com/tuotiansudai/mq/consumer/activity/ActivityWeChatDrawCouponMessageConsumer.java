@@ -80,7 +80,7 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
                 coupons.stream().forEach(couponId -> {
                     try {
                         logger.info(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message begin", weChatDrawCoupon.name(), loginName, couponId));
-                        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+                        mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, loginName + ":" + couponId);
                         logger.info(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message end", weChatDrawCoupon.name(), loginName, couponId));
                     }catch (Exception e){
                         logger.error(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message fail", weChatDrawCoupon.name(), loginName, couponId));
