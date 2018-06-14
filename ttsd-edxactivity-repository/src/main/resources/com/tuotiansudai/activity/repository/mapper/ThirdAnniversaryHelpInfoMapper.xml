@@ -19,7 +19,7 @@
     </insert>
 
     <select id="findByHelpId" parameterType="map" resultMap="thirdAnniversaryHelpInfoModel">
-        SELECT * FROM third_anniversary_help_info where help_id = #{helpId}
+        SELECT * FROM third_anniversary_help_info where help_id = #{helpId} order by created_time desc
     </select>
 
     <select id="loginNameExist" parameterType="map" resultType="boolean">
