@@ -87,6 +87,9 @@ $('#openBall').on('click',function () {
                     $('#getLogos').html(tpl('getLogoTpl', records));
 
                     $('.tip-wrap').show();
+                    $('body').css({
+                        overflow:'hidden'
+                    })
 
                     getMyTeamLogos();
                     $('#toInvestBtn').show();
@@ -102,6 +105,9 @@ $('#openBall').on('click',function () {
 })
 $('.known-btn').on('click',function () {
     $('.tip-wrap').hide();
+    $('body').css({
+        overflow:'auto'
+    })
 })
 var mySwiper;
 $.when(commonFun.isUserLogin())
@@ -147,7 +153,9 @@ function getMyTeamLogos(){
                     slidesPerGroup: slideLen,
                     slidesPerView:slideLen,
                     pagination : '.swiper-pagination',
-                    paginationClickable:true
+                    paginationClickable:true,
+                    observer:true,
+                    observeParents:true
                 });
                 if(res.data.prizes.length<=slideLen){
                     $('.swiper-pagination').hide();

@@ -261,6 +261,12 @@ body {
         strong {
           font-size: 18px;
         }
+        .wap-left {
+          display: inline-block;
+        }
+        .wap-right {
+          display: inline-block;
+        }
       }
     }
   }
@@ -695,7 +701,7 @@ body {
   padding-top: 160px;
   .get-ball-tip {
     margin: 0 auto;
-    width: 650px;
+    width: 610px;
     background: #fff;
     padding-left: 20px;
     padding-right: 20px;
@@ -716,21 +722,30 @@ body {
     .bot{
       position: absolute;
       width: 833px;
-      height: 313px;
+      height: 200px;
       left: 50%;
       margin-left: -400px;
       bottom: -123px;
-      background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
-      background-size: contain;
+      //background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
+      //background-size: contain;
+      .ren {
+        position: absolute;
+        left: 41px;
+        bottom: 60px;
+        width: 95px;
+        height: 168px;
+        background: url("../images/2018/july-activity/ren.png") no-repeat center center;
+        background-size: contain;
+      }
       .money {
         position: absolute;
-        bottom: 60px;
-        left: 75px;
-        width: 650px;
-        height: 200px;
+        bottom: 54px;
+        left: 39px;
+        width: 747px;
+        height: 232px;
         z-index: -300;
         background: url("../images/2018/july-activity/money.png") no-repeat center center;
-        background-size: contain;
+        background-size: 100%;
       }
     }
     .known-btn {
@@ -741,6 +756,24 @@ body {
       margin-left: -169px;
       bottom: -8px;
       background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
+      background-size: contain;
+    }
+    .left-shan {
+      position: absolute;
+      bottom: -8px;
+      left: 94px;
+      width: 169px;
+      height: 41px;
+      background: url("../images/2018/july-activity/left_shan.png") no-repeat center center;
+      background-size: contain;
+    }
+    .right-shan {
+      position: absolute;
+      bottom: -8px;
+      right: 104px;
+      width: 147px;
+      height: 41px;
+      background: url("../images/2018/july-activity/right_shan.png") no-repeat center center;
       background-size: contain;
     }
     .con {
@@ -840,11 +873,12 @@ body {
     }
   }
   .country-btn {
-    padding-left: 0.12rem;
-    padding-right: 0.12rem;
-    height: 0.34rem;
-    line-height: 0.34rem;
     border-radius: 0.17rem;
+    padding-left: 0.1rem;
+    padding-right:  0.1rem;
+    height: 0.4rem;
+    line-height: 0.36rem;
+    font-size: 11px;
   }
 
   .content-section {
@@ -1205,6 +1239,106 @@ body {
       }
     }
   }
+  //.tip-wrap {
+  //  width: 100%;
+  //  position: fixed;
+  //  z-index: 99999;
+  //  top: 0;
+  //  min-height: 100%;
+  //  background: rgba(0,0,0,0.75);
+  //  padding-top: 2.6rem;
+  //  .get-ball-tip {
+  //    margin: 0 auto;
+  //    width: 6.52rem;
+  //    background: #fff;
+  //    padding-left: 0.4rem;
+  //    padding-right: 0.4rem;
+  //    box-sizing: border-box;
+  //    padding-top: 1.2rem;
+  //    position: relative;
+  //    padding-bottom: 0.6rem;
+  //    .top {
+  //      position: absolute;
+  //      left: 50%;
+  //      margin-left: -4.1rem;
+  //      width: 7.5rem;
+  //      height: 2.8rem;
+  //      top: -1.4rem;
+  //      background: url("../images/2018/july-activity/tip_top.png") no-repeat center center;
+  //      background-size: contain;
+  //    }
+  //    .bot{
+  //      position: absolute;
+  //      width: 7.5rem;
+  //      height: 3rem;
+  //      left: 50%;
+  //      margin-left: -3.75rem;
+  //      bottom: -1.2rem;
+  //      .money {
+  //        bottom: 0.6rem;
+  //        left: 0.75rem;
+  //        width: 6.5rem;
+  //        height: 2rem;
+  //        z-index: -400;
+  //      }
+  //    }
+  //    .known-btn {
+  //      position: absolute;
+  //      width: 3.38rem;
+  //      height: 0.38rem;
+  //      left: 50%;
+  //      margin-left: -1.69rem;
+  //      bottom: -8px;
+  //      background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
+  //      background-size: contain;
+  //    }
+  //    .con {
+  //      max-height: 10rem;
+  //      overflow-y: auto;
+  //    }
+  //
+  //    ul {
+  //      padding-bottom: 0.3rem;
+  //      li {
+  //        margin-bottom: 0.1rem;
+  //        margin-left: 0.1rem;
+  //        width: 1.72rem;
+  //        .team-logo {
+  //          width: 0.88rem;
+  //          height: 0.88rem;
+  //          background-size: contain;
+  //          .amount {
+  //            right: -0.1rem;
+  //            top: 0rem;
+  //            width: 0.4rem;
+  //            height: 0.4rem;
+  //            line-height: 0.4rem;
+  //            font-size: 0.24rem;
+  //            border-radius: 0.2rem;
+  //          }
+  //        }
+  //        .country-btn {
+  //          padding-left: 0.1rem;
+  //          padding-right:  0.1rem;
+  //          height: 0.4rem;
+  //          line-height: 0.36rem;
+  //          font-size: 11px;
+  //        }
+  //
+  //      }
+  //
+  //      .amount {
+  //        right: -0.1rem;
+  //        top: 0rem;
+  //        width: 0.4rem;
+  //        height: 0.4rem;
+  //        line-height: 0.4rem;
+  //        font-size: 0.24rem;
+  //        border-radius: 0.2rem;
+  //      }
+  //    }
+  //  }
+  //}
   .tip-wrap {
     width: 100%;
     position: fixed;
@@ -1212,17 +1346,17 @@ body {
     top: 0;
     min-height: 100%;
     background: rgba(0,0,0,0.75);
-    padding-top: 2.6rem;
+    padding-top: 2.2rem;
     .get-ball-tip {
-      margin: 0 auto;
-      width: 6.52rem;
-      background: #fff;
-      padding-left: 0.4rem;
-      padding-right: 0.4rem;
-      box-sizing: border-box;
-      padding-top: 1.2rem;
-      position: relative;
-      padding-bottom: 0.6rem;
+        margin: 0 auto;
+        width: 6.52rem;
+        background: #fff;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        box-sizing: border-box;
+        padding-top: 1.2rem;
+        position: relative;
+        padding-bottom: 0.6rem;
       .top {
         position: absolute;
         left: 50%;
@@ -1240,8 +1374,6 @@ body {
         left: 50%;
         margin-left: -3.75rem;
         bottom: -1.2rem;
-        background: url("../images/2018/july-activity/bot_front.png") no-repeat center center;
-        background-size: 106%;
         .money {
           bottom: 0.6rem;
           left: 0.75rem;
@@ -1249,22 +1381,40 @@ body {
           height: 2rem;
           z-index: -400;
         }
+        .ren {
+          position: absolute;
+          left: -0.05rem;
+          bottom: 0.6rem;
+          width: 0.95rem;
+          height: 1.68rem;
+          background: url("../images/2018/july-activity/ren.png") no-repeat center center;
+          background-size: contain;
+        }
+        .money {
+          position: absolute;
+          bottom: 0.54rem;
+          left: 0.1rem;
+          width: 7.47rem;
+          height: 2.32rem;
+          z-index: -300;
+          background: url("../images/2018/july-activity/money.png") no-repeat center center;
+          background-size: 100%;
+        }
       }
-      .known-btn {
-        position: absolute;
-        width: 3.38rem;
-        height: 0.38rem;
-        left: 50%;
-        margin-left: -1.69rem;
-        bottom: -8px;
-        background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
-        background-size: contain;
-      }
-      .con {
-        max-height: 10rem;
-        overflow-y: auto;
-      }
-
+        .known-btn {
+          position: absolute;
+          width: 3.38rem;
+          height: 0.38rem;
+          left: 50%;
+          margin-left: -1.69rem;
+          bottom: -8px;
+          background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
+          background-size: contain;
+        }
+        .con {
+          max-height: 10rem;
+          overflow-y: auto;
+        }
       ul {
         padding-bottom: 0.3rem;
         li {
@@ -1295,16 +1445,26 @@ body {
 
         }
 
-        .amount {
-          right: -0.1rem;
-          top: 0rem;
-          width: 0.4rem;
-          height: 0.4rem;
-          line-height: 0.4rem;
-          font-size: 0.24rem;
-          border-radius: 0.2rem;
-        }
       }
+      .left-shan {
+        position: absolute;
+        bottom: -0.08rem;
+        left: 0.94rem;
+        width: 1.69rem;
+        height: 0.41rem;
+        background: url("../images/2018/july-activity/left_shan.png") no-repeat center center;
+        background-size: contain;
+      }
+      .right-shan {
+        position: absolute;
+        bottom: -0.08rem;
+        right: 1.04rem;
+        width: 1.47rem;
+        height: 0.41rem;
+        background: url("../images/2018/july-activity/right_shan.png") no-repeat center center;
+        background-size: contain;
+      }
+
     }
   }
 }

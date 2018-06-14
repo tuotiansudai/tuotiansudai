@@ -189,7 +189,11 @@
     <div class="tip-wrap" style="display: none">
         <div class="get-ball-tip">
             <div class="top"></div>
-            <div class="bot"><span class="money"></span></div>
+            <div class="bot">
+                <div class="ren"></div>
+                <span class="money"></span></div>
+            <div class="left-shan"></div>
+            <div class="right-shan"></div>
             <a class="known-btn" href="javascript:;"></a>
             <div class="con logos-con">
                 <ul class="clearfix" id="getLogos">
