@@ -1,6 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
@@ -9,10 +8,8 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +26,16 @@ public class LoanRepaySuccessService {
 
     private final LoanRepayMapper loanRepayMapper;
 
+    private final TransferApplicationMapper transferApplicationMapper;
+
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public LoanRepaySuccessService(LoanMapper loanMapper, MQWrapperClient mqWrapperClient, LoanRepayMapper loanRepayMapper) {
+    public LoanRepaySuccessService(LoanMapper loanMapper, TransferApplicationMapper transferApplicationMapper, LoanRepayMapper loanRepayMapper, MQWrapperClient mqWrapperClient) {
         this.loanMapper = loanMapper;
-        this.mqWrapperClient = mqWrapperClient;
         this.loanRepayMapper = loanRepayMapper;
+        this.transferApplicationMapper = transferApplicationMapper;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -94,6 +94,12 @@ public class LoanRepaySuccessService {
 
         loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
         logger.info("[Advanced Loan Repay Success] update loan status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
+
+        List<TransferApplicationModel> transferringApplications = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanModel.getId());
+        transferringApplications.forEach(transferringApplication -> {
+            transferringApplication.setStatus(TransferStatus.CANCEL);
+            transferApplicationMapper.update(transferringApplication);
+        });
 
         // update agent user bill
         AmountTransferMessage amountTransferMessage = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,

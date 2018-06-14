@@ -30,7 +30,8 @@ $('.investBtn').on('click',() => {
 });
 
 $('.retry').on('click',() => {
-    location.href = $('.retry').data("redirect-to");
+    $('#retry-form').submit();
+    return false;
 });
 
 if($('#registerSuccess').length){

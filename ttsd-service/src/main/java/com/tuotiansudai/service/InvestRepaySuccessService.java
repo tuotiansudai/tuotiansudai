@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanCallbackMessage;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.WeChatMessageNotify;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -81,8 +78,15 @@ public class InvestRepaySuccessService {
                 investRepayModel.getActualFee(),
                 UserBillBusinessType.INVEST_FEE);
         inAtm.setNext(outAtm);
+
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                investRepayModel.getId(),
+                investRepayModel.getActualFee(),
+                SystemBillBusinessType.INVEST_FEE,
+                MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId())));
         try {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
         } catch (Exception ex) {
             logger.error(MessageFormat.format("[Normal Invest Callback Success] amount transfer exception, invest: {0}, invest repay: {1}", bankLoanCallbackMessage.getInvestId(), bankLoanCallbackMessage.getInvestRepayId()), ex);
         }
@@ -145,8 +149,15 @@ public class InvestRepaySuccessService {
                 bankLoanCallbackMessage.getInterestFee(),
                 UserBillBusinessType.INVEST_FEE);
         inAtm.setNext(outAtm);
+
+        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                investRepayModel.getId(),
+                investRepayModel.getActualFee(),
+                SystemBillBusinessType.INVEST_FEE,
+                MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId())));
         try {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
         } catch (Exception ex) {
             logger.error(MessageFormat.format("[Advance Invest Callback Success] amount transfer exception, invest: {0}, invest repay: {1}", bankLoanCallbackMessage.getInvestId(), bankLoanCallbackMessage.getInvestRepayId()), ex);
         }

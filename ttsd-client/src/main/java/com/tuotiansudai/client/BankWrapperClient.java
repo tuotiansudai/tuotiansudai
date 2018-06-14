@@ -102,6 +102,11 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
+    public BankAsyncMessage resetPassword(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/password-reset/source/{0}", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
     public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
         return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
@@ -149,8 +154,8 @@ public class BankWrapperClient {
         return new BankReturnCallbackMessage();
     }
 
-    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, long loanId, long loanAmount) {
-        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, String.valueOf(loanId), loanAmount);
+    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount) {
+        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount);
 
         String json = syncExecute("/loan-create", bankLoanCreateDto);
 
@@ -161,7 +166,7 @@ public class BankWrapperClient {
         try {
             return gson.fromJson(json, BankLoanCreateMessage.class);
         } catch (JsonSyntaxException e) {
-            logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", String.valueOf(loanId)), e);
+            logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", loanName), e);
         }
 
         return new BankLoanCreateMessage(false, null);
@@ -350,6 +355,4 @@ public class BankWrapperClient {
 
         return null;
     }
-
-
 }

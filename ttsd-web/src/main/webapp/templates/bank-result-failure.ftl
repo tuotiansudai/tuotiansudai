@@ -7,7 +7,10 @@
         <div class="success_tip_icon failure"></div>
         <p class="my_pay_tip">${message!('业务处理失败')}</p>
         <div class="handle_btn_container">
-            <div class="retry" data-redirect-to="${bankCallbackType.getRetryPath()}">再次尝试</div>
+            <div class="retry">再次尝试</div>
+            <form id="retry-form" action="${bankCallbackType.getRetryPath()}" method="${bankCallbackType.getMethod}" style="display: inline-block;float:right">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
         </div>
     </div>
 </div>

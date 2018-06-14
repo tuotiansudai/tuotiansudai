@@ -68,9 +68,13 @@
         <#if identityNumber??>
             <li><span class="info-title"> 支付密码</span>
                 <em class="info">********</em>
-                <span class="binding-set">
-               <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
-            </span>
+                <form action="${requestContext.getContextPath()}/personal-info/reset-bank-password/source/WEB" method="post" style="display: inline-block;float:right">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                    <span class="binding-set">
+                        <i class="fa fa-check-circle ok"></i>已设置<input type="submit" class="setlink resetBankPassword" value="重置" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
+                    </span>
+                </form>
             </li>
         </#if>
         <li><span class="info-title"> 免密投资</span>
@@ -106,29 +110,6 @@
             </#if>
         </li>
     </ul>
-</div>
-
-<div id="resetUmpayPassDOM" class="pad-m popLayer" style="display: none;">
-    <form name="resetUmpayPasswordForm" id="resetUmpayPasswordForm">
-        <dl class="identityCodeTitle" align="center">
-            通过身份证号重置支付密码
-        </dl>
-        <dl>
-            <dt class="requireOpt">请输入您的身份证号</dt>
-            <dd><input type="text" id="identityNumber" name="identityNumber" class="input-control">
-            </dd>
-        </dl>
-        <div class="error-box tc"></div>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button type="submit" class="btn btn-normal">确认重置</button>
-    </form>
-</div>
-
-<div id="successUmpayPass" class="pad-m popLayer" style="display: none;">
-    <dl>
-        <dt>您的支付密码已被重置，请注意查收相关短信，查看新密码！</dt>
-    </dl>
-    <button type="button" class="btn btn-normal" id="readUmpayPass">我已查看</button>
 </div>
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">

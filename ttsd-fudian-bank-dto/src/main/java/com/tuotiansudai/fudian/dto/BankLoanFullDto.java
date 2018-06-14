@@ -65,7 +65,7 @@ public class BankLoanFullDto extends BankBaseDto {
     public boolean isValid() {
         return super.isValid()
                 && loanId > 0
-                && triggerTime > 0
+                && triggerTime >= 0
                 && !Strings.isNullOrEmpty(loanTxNo)
                 && !Strings.isNullOrEmpty(loanOrderNo)
                 && !Strings.isNullOrEmpty(loanOrderDate)
