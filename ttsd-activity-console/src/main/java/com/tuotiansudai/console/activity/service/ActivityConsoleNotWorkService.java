@@ -5,8 +5,8 @@ import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
@@ -26,7 +26,7 @@ public class ActivityConsoleNotWorkService {
     UserMapper userMapper;
 
     @Autowired
-    AccountMapper accountMapper;
+    BankAccountMapper bankAccountMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.notWork.startTime}\")}")
     private Date activityStartTime;
@@ -66,8 +66,8 @@ public class ActivityConsoleNotWorkService {
 
             int recommendIdentifyAmount = 0;
             for (UserRegisterInfo userModel : users) {
-                AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-                if (null != accountModel && accountModel.getRegisterTime().after(activityStartTime) && accountModel.getRegisterTime().before(activityEndTime)) {
+                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                if (null != bankAccountModel && bankAccountModel.getCreatedTime().after(activityStartTime) && bankAccountModel.getCreatedTime().before(activityEndTime)) {
                     ++recommendIdentifyAmount;
                 }
             }

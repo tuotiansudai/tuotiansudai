@@ -36,7 +36,7 @@ public class FinanceReportServiceTest {
     FakeUserHelper userMapper;
 
     @Autowired
-    AccountMapper accountMapper;
+    BankAccountMapper bankAccountMapper;
 
     @Autowired
     LoanMapper loanMapper;
@@ -65,14 +65,14 @@ public class FinanceReportServiceTest {
         return userModel;
     }
 
-    private AccountModel createAccountModel(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(RandomStringUtils.randomNumeric(32)),
-                String.valueOf(RandomStringUtils.randomNumeric(14)), new Date());
-        accountMapper.create(accountModel);
+    private BankAccountModel createAccountModel(UserModel userModel) {
+        BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), String.valueOf(RandomStringUtils.randomNumeric(32)),
+                String.valueOf(RandomStringUtils.randomNumeric(14)), "111", "111");
+        bankAccountMapper.create(accountModel);
         return accountModel;
     }
 
-    private LoanModel createLoanModel(long loanId, String loanName, UserModel agent, AccountModel loaner, LoanType type, LoanStatus loanStatus) {
+    private LoanModel createLoanModel(long loanId, String loanName, UserModel agent, BankAccountModel loaner, LoanType type, LoanStatus loanStatus) {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(loanId);
         loanModel.setName(loanName);
@@ -100,7 +100,7 @@ public class FinanceReportServiceTest {
         return loanModel;
     }
 
-    private InvestModel createInvestModel(long investId, long loanId, AccountModel investor, Date investTime) {
+    private InvestModel createInvestModel(long investId, long loanId, BankAccountModel investor, Date investTime) {
         InvestModel investModel = new InvestModel(investId, loanId, null, investor.getLoginName(), 1000L, 0.01, false, investTime, Source.WEB, "channel");
         investMapper.create(investModel);
         return investModel;
@@ -158,19 +158,19 @@ public class FinanceReportServiceTest {
 
     private List<FinanceReportItemView> prepareData() {
         UserModel referrerUserModel = createUserModel("referrer", null);
-        AccountModel referrerAccountModel = createAccountModel(referrerUserModel);
+        BankAccountModel referrerAccountModel = createAccountModel(referrerUserModel);
 
         UserModel loanerUserModel = createUserModel("loaner", null);
-        AccountModel loanerAccountModel = createAccountModel(loanerUserModel);
+        BankAccountModel loanerAccountModel = createAccountModel(loanerUserModel);
 
         UserModel agentUserModel = createUserModel("agent", null);
-        AccountModel agentAccountModel = createAccountModel(agentUserModel);
+        BankAccountModel agentAccountModel = createAccountModel(agentUserModel);
 
         UserModel investorWithReferrerUserModel = createUserModel("investorWithReferrer", "referrer");
-        AccountModel investorWithReferrerAccountModel = createAccountModel(investorWithReferrerUserModel);
+        BankAccountModel investorWithReferrerAccountModel = createAccountModel(investorWithReferrerUserModel);
 
         UserModel investorWithoutReferrerUserModel = createUserModel("investorWithoutReferrer", null);
-        AccountModel investorWithoutReferrerAccountModel = createAccountModel(investorWithoutReferrerUserModel);
+        BankAccountModel investorWithoutReferrerAccountModel = createAccountModel(investorWithoutReferrerUserModel);
 
         List<FinanceReportItemView> financeReportItemViews = new ArrayList<>();
 

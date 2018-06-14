@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
@@ -11,8 +10,8 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -37,7 +36,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private PointBillMapper pointBillMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -48,8 +47,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     @Transactional
     public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(loginName);
+        if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
 
@@ -72,8 +71,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     public BaseResponseDto<LastSignInTimeResponseDataDto> getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
@@ -99,8 +98,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     public BaseResponseDto<PointBillResponseDataDto> queryPointBillList(PointBillRequestDto pointBillRequestDto) {
 
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
         BaseResponseDto dto = new BaseResponseDto();

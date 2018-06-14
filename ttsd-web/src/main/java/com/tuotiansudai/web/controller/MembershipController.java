@@ -10,8 +10,8 @@ import com.tuotiansudai.membership.service.MembershipExperienceBillService;
 import com.tuotiansudai.membership.service.MembershipGiveService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.membership.service.UserMembershipService;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +35,7 @@ public class MembershipController {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private MembershipExperienceBillService membershipExperienceBillService;
@@ -58,8 +57,8 @@ public class MembershipController {
         if (loginName != null) {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
-            AccountModel accountModel = accountService.findByLoginName(loginName);
-            long membershipPoint = accountModel == null ? 0 : accountModel.getMembershipPoint();
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
+            long membershipPoint = bankAccountModel == null ? 0 : bankAccountModel.getMembershipPoint();
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
             MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
             modelAndView.addObject("mobile", LoginUserInfo.getMobile());
@@ -83,7 +82,7 @@ public class MembershipController {
 
         String loginName = LoginUserInfo.getLoginName();
         if (loginName != null) {
-            AccountModel accountModel = accountService.findByLoginName(loginName);
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 
@@ -95,7 +94,7 @@ public class MembershipController {
                 modelAndView.addObject("membershipLevel", membershipModel != null ? membershipModel.getLevel() : "");
             }
 
-            modelAndView.addObject("membershipPoint", accountModel != null ? accountModel.getMembershipPoint() : "");
+            modelAndView.addObject("membershipPoint", bankAccountModel != null ? bankAccountModel.getMembershipPoint() : "");
         }
         modelAndView.addObject("loginName", loginName);
 

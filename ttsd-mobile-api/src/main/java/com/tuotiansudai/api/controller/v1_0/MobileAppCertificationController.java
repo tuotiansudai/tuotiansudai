@@ -6,9 +6,9 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.HuiZuDataDto;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.spring.security.MyAuthenticationUtil;
 import com.tuotiansudai.util.IdentityNumberValidator;
 import io.swagger.annotations.Api;
@@ -35,7 +35,7 @@ public class MobileAppCertificationController extends MobileAppBaseController {
     private MobileAppCertificationService mobileAppCertificationService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @RequestMapping(value = "/certificate", method = RequestMethod.POST)
     @ApiOperation("实名认证")
@@ -52,7 +52,7 @@ public class MobileAppCertificationController extends MobileAppBaseController {
                         certificationRequestDto.getBaseParam().getPhoneNum(),
                         certificationRequestDto.getUserRealName(),
                         certificationRequestDto.getUserIdCardNumber());
-                BaseDto<HuiZuDataDto> baseDto = accountService.registerAccountFromHuiZu(registerAccountDto);
+                BaseDto<HuiZuDataDto> baseDto = new BaseDto<>();
                 if (baseDto.getData().getStatus()) {
                     CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
                     certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());
@@ -94,8 +94,7 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             }
 
             return new BaseDto<>(true, huiZuDataDto);
-        }
-    }
+        }    }
 
 
 }

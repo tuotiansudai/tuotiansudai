@@ -8,9 +8,9 @@ import com.tuotiansudai.diagnosis.support.Diagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.DiagnosisResult;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ class UserBillDiagnosis implements Diagnosis {
     private final UserBillExtMapper userBillExtMapper;
     private final long[] sortedKnownBadBills;
     private final Map<UserBillBusinessType, UserBillBusinessDiagnosis> diagnosisMap;
-    private final AccountMapper accountMapper;
+    private final BankAccountMapper bankAccountMapper;
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -41,7 +41,7 @@ class UserBillDiagnosis implements Diagnosis {
     public UserBillDiagnosis(UserBillMapper userBillMapper,
                              Set<UserBillBusinessDiagnosis> diagnoses,
                              UserBillExtMapper userBillExtMapper,
-                             DiagnosisConfig diagnosisConfig, AccountMapper accountMapper) {
+                             DiagnosisConfig diagnosisConfig, BankAccountMapper bankAccountMapper) {
         this.userBillMapper = userBillMapper;
         this.userBillExtMapper = userBillExtMapper;
         this.sortedKnownBadBills = buildSortedKnownBadBills(diagnosisConfig);
@@ -50,7 +50,7 @@ class UserBillDiagnosis implements Diagnosis {
                 .collect(Collectors.toMap(
                         UserBillBusinessDiagnosis::getSupportedBusinessType,
                         d -> d));
-        this.accountMapper = accountMapper;
+        this.bankAccountMapper = bankAccountMapper;
     }
 
     private long[] buildSortedKnownBadBills(DiagnosisConfig diagnosisConfig) {
@@ -113,7 +113,7 @@ class UserBillDiagnosis implements Diagnosis {
     }
 
     private boolean checkUserBalance(String loginName, DiagnosisContext diagnosisContext) {
-        AccountModel account = accountMapper.findByLoginName(loginName);
+        BankAccountModel account = bankAccountMapper.findByLoginName(loginName);
         Map<String, String> balanceMap = payWrapperClient.getUserBalance(loginName);
         if (balanceMap == null) {
             diagnosisContext.addProblem(String.format("%s 用户对账服务连接不上。", loginName));

@@ -11,10 +11,10 @@ import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserFundView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     private UserFundMapper userFundMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
@@ -49,16 +49,16 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
 
         MembershipModel evaluate = userMembershipEvaluator.evaluate(loginName);
 
         UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 
         int membershipLevel = evaluate != null ? evaluate.getLevel() : 0;
-        long balance = accountModel != null ? accountModel.getBalance() : 0;
+        long balance = bankAccountModel != null ? bankAccountModel.getBalance() : 0;
         long point = pointService.getAvailablePoint(loginName);
-        long membershipPoint = accountModel != null ? accountModel.getMembershipPoint() : 0;
+        long membershipPoint = bankAccountModel != null ? bankAccountModel.getMembershipPoint() : 0;
         long experienceBalance = experienceAccountMapper.getExperienceBalance(loginName);
         int usableUserCouponCount = userCouponService.getUnusedUserCoupons(loginName).size();
         Date membershipExpiredDate = userMembershipModel != null && (userMembershipModel.getType().name().equals("GIVEN") || userMembershipModel.getType().name().equals("PURCHASED")) ? userMembershipModel.getExpiredTime() : null;

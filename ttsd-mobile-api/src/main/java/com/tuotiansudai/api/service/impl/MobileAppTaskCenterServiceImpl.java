@@ -9,7 +9,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTaskCenterService;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.service.PointTaskService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private PointTaskService pointTaskService;
@@ -36,7 +36,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (accountMapper.findByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginName(loginName) != null) {
             data.setAdvancedTasks(pointTaskService.getAdvancedPointTasks(loginName));
         }
 
@@ -63,7 +63,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (accountMapper.findByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginName(loginName) != null) {
             data.setAdvancedTasks(pointTaskService.getCompletedAdvancedPointTasks(loginName));
         }
 

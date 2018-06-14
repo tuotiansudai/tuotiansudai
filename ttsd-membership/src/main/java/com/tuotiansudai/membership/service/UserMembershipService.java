@@ -11,7 +11,7 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 public class UserMembershipService {
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private MembershipMapper membershipMapper;
@@ -49,7 +49,7 @@ public class UserMembershipService {
         if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN)){
             return 100;
         }
-        long membershipPoint = accountMapper.findByLoginName(loginName) != null ? accountMapper.findByLoginName(loginName).getMembershipPoint() : 0;
+        long membershipPoint = bankAccountMapper.findByLoginName(loginName) != null ? bankAccountMapper.findByLoginName(loginName).getMembershipPoint() : 0;
         int currentLevel = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
         MembershipModel membershipModel = membershipMapper.findByLevel(currentLevel);
         MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(currentLevel >= 5 ? currentLevel : (currentLevel + 1));
