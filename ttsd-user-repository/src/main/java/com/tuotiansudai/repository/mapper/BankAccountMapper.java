@@ -14,6 +14,8 @@ public interface BankAccountMapper {
 
     BankAccountModel findByLoginName(String loginName);
 
+    BankAccountModel lockByLoginName(String loginName);
+
     void updateMembershipPoint(@Param("loginName") String loginName,
                                @Param("point") long point);
 

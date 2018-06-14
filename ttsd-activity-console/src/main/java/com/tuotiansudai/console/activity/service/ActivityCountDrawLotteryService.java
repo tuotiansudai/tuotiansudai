@@ -5,12 +5,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -34,7 +32,7 @@ public class ActivityCountDrawLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private BankCardMapper bankCardMapper;
@@ -43,7 +41,7 @@ public class ActivityCountDrawLotteryService {
     private InvestMapper investMapper;
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private BankRechargeMapper bankRechargeMapper;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -248,8 +246,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case CERTIFICATION:
-                    AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-                    if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
@@ -260,7 +258,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
+                    if (bankRechargeMapper.findRechargeCount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
                         time++;
                     }
                     break;

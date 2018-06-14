@@ -96,8 +96,8 @@ import static org.mockito.Mockito.*;
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, investor1LoginName, 10, membershipModel.getFee(), false, new Date(), Source.WEB, null);
-        InvestModel invest2 = new InvestModel(2, loanId, null, investor2LoginName, 20, membershipModel.getFee(), false, new Date(), Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
 
@@ -183,9 +183,9 @@ import static org.mockito.Mockito.*;
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, investor1LoginName, 10, membershipModel.getFee(), false, new Date(), Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest1.setId(1);
-        InvestModel invest2 = new InvestModel(2, loanId, null, investor2LoginName, 20, membershipModel.getFee(), false, new Date(), Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest2.setId(2);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
@@ -246,9 +246,9 @@ import static org.mockito.Mockito.*;
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, investor1LoginName, 10, membershipModel.getFee(), false, new Date(), Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest1.setId(1);
-        InvestModel invest2 = new InvestModel(2, loanId, null, investor2LoginName, 20, membershipModel.getFee(), false, new Date(), Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null, membershipModel.getFee());
         invest2.setId(2);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);

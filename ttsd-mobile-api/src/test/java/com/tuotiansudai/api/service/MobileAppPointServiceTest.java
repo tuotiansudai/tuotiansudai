@@ -7,19 +7,17 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppPointServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
-import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
-import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +37,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     private PointBillMapper pointBillMapper;
 
     @Mock
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Mock
     private SignInService signInService;
@@ -60,7 +58,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
         List<PointBillModel> pointBillModelList = Lists.newArrayList();
         pointBillModelList.add(pointBillModel);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(new AccountModel());
+        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(new BankAccountModel());
         when(pointBillMapper.findPointBillPagination(anyString(), anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
         when(pointBillMapper.findCountPointBillPagination(anyString(), anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
@@ -81,9 +79,9 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGetLastSignInTimeIsOk() {
-        AccountModel accountModel = new AccountModel();
+        BankAccountModel bankAccountModel = new BankAccountModel();
         SignInPointDto signInPointDto = new SignInPointDto(1, DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1), 0, 10, false);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
         when(signInService.getLastSignIn(anyString())).thenReturn(signInPointDto);
         when(signInService.signInIsSuccess(anyString())).thenReturn(true);
         when(signInService.getNextSignInPoint(anyString())).thenReturn(10);

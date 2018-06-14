@@ -10,7 +10,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayrollQueryDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.PayrollDetailMapper;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.model.*;
@@ -21,6 +21,7 @@ import com.tuotiansudai.util.UUIDGenerator;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,6 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
 
 @Service
 public class ConsolePayrollService {
@@ -49,7 +48,7 @@ public class ConsolePayrollService {
     private PayrollMapper payrollMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -187,8 +186,8 @@ public class ConsolePayrollService {
                     listUserNotExists.add(arrayData[1].trim());
                     continue;
                 }
-                AccountModel accountModel = accountMapper.findByMobile(arrayData[1].trim());
-                if (accountModel == null) {
+                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                if (bankAccountModel == null) {
                     listUserNotAccount.add(arrayData[1].trim());
                     continue;
                 } else {

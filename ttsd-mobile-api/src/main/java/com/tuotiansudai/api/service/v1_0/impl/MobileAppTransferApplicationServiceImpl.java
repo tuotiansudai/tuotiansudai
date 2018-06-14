@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -12,7 +11,6 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.dto.TransferApplicationDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -58,7 +56,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     private TransferRuleMapper transferRuleMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
     @Autowired
     private InvestRepayMapper investRepayMapper;
     @Autowired
@@ -229,7 +227,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
-        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
+        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((bankAccountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());

@@ -3,7 +3,6 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -103,9 +102,6 @@ public class LoanServiceTest {
     private UserMapper userMapper;
 
     @Mock
-    private SmsWrapperClient smsWrapperClient;
-
-    @Mock
     private PayAsyncClient payAsyncClient;
 
     @Mock
@@ -174,7 +170,7 @@ public class LoanServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long investId, String loginName) {
-        InvestModel model = new InvestModel(1, loanId, null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
+        InvestModel model = new InvestModel(1, loanId, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

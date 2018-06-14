@@ -362,11 +362,10 @@ public class ExportService {
             row.add(new BigDecimal(record.getRechargeId()).toString());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
+            row.add("1".equals(record.getIsStaff()) ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getAmount());
-            row.add(record.getBankCode());
             row.add(record.isFastPay() ? "是" : "否");
             row.add(record.getStatus());
             row.add(record.getSource().name());

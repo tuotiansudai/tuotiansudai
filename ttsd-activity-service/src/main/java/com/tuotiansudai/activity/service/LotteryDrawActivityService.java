@@ -12,6 +12,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -25,14 +26,13 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.MobileEncryptor;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -55,7 +55,7 @@ public class LotteryDrawActivityService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -76,7 +76,7 @@ public class LotteryDrawActivityService {
     private InvestMapper investMapper;
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private BankRechargeMapper rechargeMapper;
 
     @Autowired
     private UserPointMapper userPointMapper;
@@ -149,9 +149,9 @@ public class LotteryDrawActivityService {
             grantExperience(userModel.getLoginName(), lotteryPrize);
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
         try {
-            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), accountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
+            userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
             logger.error(MessageFormat.format("draw is fail, mobile:{0},activity:{1}", mobile, activityCategory.getDescription()));
         }
@@ -181,9 +181,9 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
-        AccountModel accountModel = accountMapper.lockByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(userModel.getLoginName());
 
-        if (accountModel == null) {
+        if (bankAccountModel == null) {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
         }
 
@@ -326,8 +326,8 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case CERTIFICATION:
-                    AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-                    if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
@@ -338,7 +338,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
+                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
                         time++;
                     }
                     break;
@@ -433,7 +433,7 @@ public class LotteryDrawActivityService {
             return steps;
         }
         steps.set(0, 2);
-        if (accountMapper.findByLoginName(loginName) == null) {
+        if (bankAccountMapper.findByLoginName(loginName) == null) {
             steps.set(1, 1);
             return steps;
         }

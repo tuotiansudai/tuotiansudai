@@ -511,7 +511,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, loginName, amount, 0.1, false, investTime, Source.WEB, null);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), loanId, transferInvestId, amount, loginName, investTime, Source.WEB, null, 0.1);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);

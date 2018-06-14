@@ -2,15 +2,15 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
-public class RechargePaginationView extends RechargeModel implements Serializable {
+public class BankRechargePaginationView extends BankRechargeModel implements Serializable {
 
-    String userName;
+    private String userName;
 
-    String mobile;
+    private String mobile;
 
-    String isStaff;
+    private String isStaff;
 
-    public RechargePaginationView() {
+    public BankRechargePaginationView() {
 
     }
 
@@ -36,5 +36,9 @@ public class RechargePaginationView extends RechargeModel implements Serializabl
 
     public void setIsStaff(String isStaff) {
         this.isStaff = isStaff;
+    }
+
+    public boolean isStaff(){
+        return "1".equals(isStaff);
     }
 }

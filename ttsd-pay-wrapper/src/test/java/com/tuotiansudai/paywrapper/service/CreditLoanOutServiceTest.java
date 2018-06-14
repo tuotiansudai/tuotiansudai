@@ -2,11 +2,9 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -68,9 +66,6 @@ import static org.mockito.Mockito.*;
 
     @Mock
     private PayAsyncClient payAsyncClient;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
@@ -175,7 +170,6 @@ import static org.mockito.Mockito.*;
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(new BaseDto<>(new SmsDataDto()));
         when(this.paySyncClient.send(eq(CreditLoanOutProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenReturn(new ProjectTransferResponseModel());
         when(this.redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1L);
 
@@ -188,9 +182,6 @@ import static org.mockito.Mockito.*;
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
-
-        verify(this.smsWrapperClient, times(1))
-                .sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         assertThat(redisKeyCaptor.getValue(), is("credit:loan:out"));
         assertThat(orderIdCaptor.getValue(), is(String.valueOf(1)));
@@ -223,7 +214,6 @@ import static org.mockito.Mockito.*;
 
         AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
         when(this.accountMapper.findByMobile(mobile)).thenReturn(accountModel);
-        when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(new BaseDto<>(new SmsDataDto()));
         when(this.paySyncClient.send(eq(CreditLoanOutProjectTransferMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class))).thenThrow(new PayException("error"));
         when(this.redisWrapperClient.hset(anyString(), anyString(), anyString())).thenReturn(1L);
 
@@ -232,8 +222,6 @@ import static org.mockito.Mockito.*;
                 .hset(redisKeyCaptor.capture(), orderIdCaptor.capture(), statusCaptor.capture());
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanOutProjectTransferMapper.class), requestModelCaptor.capture(), eq(ProjectTransferResponseModel.class));
-        verify(this.smsWrapperClient, times(1))
-                .sendFatalNotify(any(SmsFatalNotifyDto.class));
         verify(this.redisWrapperClient, times(1))
                 .set(loanInfoKeyCaptor.capture(), loanInfoValueCaptor.capture());
 

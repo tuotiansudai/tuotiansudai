@@ -35,4 +35,8 @@ public class BankRechargeService {
     public long sumSuccessRechargeAmount(String loginName) {
         return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName);
     }
+
+    public BankRechargeModel findRechargeById(long id){
+        return bankRechargeMapper.findById(id);
+    }
 }

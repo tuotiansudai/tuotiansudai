@@ -1,13 +1,11 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargePaginationView;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.repository.model.Source;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class RechargePaginationItemDataDto extends RechargeDto implements Serializable {
+public class RechargePaginationItemDataDto implements Serializable {
 
     private long rechargeId;
 
@@ -15,37 +13,37 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     private Date createdTime;
 
+    private String loginName;
+
     private String userName;
 
     private String mobile;
 
     private String isStaff;
 
-    public RechargePaginationItemDataDto(RechargeModel rechargeModel) {
-        this.rechargeId = rechargeModel.getId();
-        this.status = rechargeModel.getStatus().getDescription();
-        this.createdTime = rechargeModel.getCreatedTime();
-        super.setLoginName(rechargeModel.getLoginName());
-        super.setBankCode(rechargeModel.getBankCode());
-        super.setAmount(AmountConverter.convertCentToString(rechargeModel.getAmount()));
-        super.setSource(rechargeModel.getSource());
-        super.setFastPay(rechargeModel.isFastPay());
-        super.setChannel(rechargeModel.getChannel());
+    private String amount;
 
-        if (rechargeModel instanceof RechargePaginationView) {
-            RechargePaginationView rechargeView = (RechargePaginationView) rechargeModel;
-            this.userName = rechargeView.getUserName();
-            this.mobile = rechargeView.getMobile();
-            this.isStaff = rechargeView.getIsStaff();
-        }
+    private boolean isFastPay;
+
+    private Source source;
+
+    private String channel;
+
+    public RechargePaginationItemDataDto() {
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
+    public RechargePaginationItemDataDto(long rechargeId, String status, Date createdTime, String loginName, String userName, String mobile, String isStaff, String amount, String payType, Source source, String channel) {
+        this.rechargeId = rechargeId;
+        this.status = status;
         this.createdTime = createdTime;
+        this.loginName = loginName;
+        this.userName = userName;
+        this.mobile = mobile;
+        this.isStaff = isStaff;
+        this.amount = amount;
+        this.isFastPay = "FAST_PAY".equals(payType);
+        this.source = source;
+        this.channel = channel;
     }
 
     public long getRechargeId() {
@@ -64,6 +62,22 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
         this.status = status;
     }
 
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -80,11 +94,43 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
         this.mobile = mobile;
     }
 
-    public boolean isStaff() {
-        return "1".equals(isStaff);
+    public String getIsStaff() {
+        return isStaff;
     }
 
     public void setIsStaff(String isStaff) {
         this.isStaff = isStaff;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public boolean isFastPay() {
+        return isFastPay;
+    }
+
+    public void setFastPay(boolean fastPay) {
+        isFastPay = fastPay;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

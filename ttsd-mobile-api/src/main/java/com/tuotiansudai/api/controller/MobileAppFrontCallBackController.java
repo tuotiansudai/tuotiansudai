@@ -36,7 +36,7 @@ public class MobileAppFrontCallBackController {
     private BindBankCardService bindBankCardService;
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
     private BankWithdrawService bankWithdrawService;
@@ -46,9 +46,6 @@ public class MobileAppFrontCallBackController {
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private PayWrapperClient payWrapperClient;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -119,11 +116,10 @@ public class MobileAppFrontCallBackController {
 
 
         Function<Long, Map<String, String>> rechargeValuesGenerator = (Long rechargeOrderId) -> {
-            RechargeModel rechargeModel = rechargeOrderId != null ? rechargeService.findRechargeById(rechargeOrderId) : null;
+            BankRechargeModel bankRechargeModel = rechargeOrderId != null ? bankRechargeService.findRechargeById(rechargeOrderId) : null;
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("bankName", rechargeModel != null ? BankCardUtil.getBankName(rechargeModel.getBankCode()) : "")
-                    .put("cardNumber", rechargeModel != null ? bindBankCardService.getPassedBankCard(rechargeModel.getLoginName()).getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
-                    .put("rechargeAmount", rechargeModel != null ? AmountConverter.convertCentToString(rechargeModel.getAmount()) : "")
+                    .put("cardNumber", bankRechargeModel != null ? bindBankCardService.getPassedBankCard(bankRechargeModel.getLoginName()).getCardNumber().replaceAll("^(\\d{4}).*(\\d{4})$", "$1****$2") : "")
+                    .put("rechargeAmount", bankRechargeModel != null ? AmountConverter.convertCentToString(bankRechargeModel.getAmount()) : "")
                     .put("orderId", String.valueOf(rechargeOrderId))
                     .put("message", "充值成功")
                     .build());

@@ -14,8 +14,8 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePriceType;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegePurchaseModel;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -39,7 +39,7 @@ public class MembershipPrivilegePurchaseService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -64,9 +64,9 @@ public class MembershipPrivilegePurchaseService {
             throw new MembershipPrivilegeIsPurchasedException();
         }
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
 
-        if (accountModel == null || accountModel.getBalance() < membershipPrivilegePriceType.getPrice()) {
+        if (bankAccountModel == null || bankAccountModel.getBalance() < membershipPrivilegePriceType.getPrice()) {
             throw new NotEnoughAmountException();
         }
 

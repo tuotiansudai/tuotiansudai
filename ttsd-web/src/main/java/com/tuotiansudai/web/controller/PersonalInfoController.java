@@ -2,9 +2,14 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.RiskEstimateService;
+import com.tuotiansudai.service.UserBindBankCardService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +31,6 @@ public class PersonalInfoController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -97,7 +99,7 @@ public class PersonalInfoController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
+//        dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
         return baseDto;
     }
 

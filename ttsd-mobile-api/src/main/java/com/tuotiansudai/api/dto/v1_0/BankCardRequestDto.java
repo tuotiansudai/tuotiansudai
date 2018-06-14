@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BindBankCardDto;
-import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.dto.request.BankRechargeRequestDto;
 import com.tuotiansudai.repository.model.Source;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -114,14 +114,13 @@ public class BankCardRequestDto extends BaseParamDto {
         this.ip = ip;
     }
 
-    public RechargeDto convertToRechargeDto() {
-        RechargeDto rechargeDto = new RechargeDto();
-        rechargeDto.setAmount(this.rechargeAmount);
-        rechargeDto.setLoginName(this.userId);
-        rechargeDto.setFastPay(this.isOpenFastPayment);
-        rechargeDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
-        rechargeDto.setHuizuActive("huizu_active".equals(this.operationType));
-        return rechargeDto;
+    public BankRechargeRequestDto convertToRechargeDto() {
+        BankRechargeRequestDto dto = new BankRechargeRequestDto();
+        dto.setAmount(this.rechargeAmount);
+        dto.setLoginName(this.userId);
+        dto.setPayType(this.isOpenFastPayment ? "FAST_PAY" : "GATE_PAY");
+        dto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        return dto;
     }
 
     public BindBankCardDto convertToBindBankCardDto() {
