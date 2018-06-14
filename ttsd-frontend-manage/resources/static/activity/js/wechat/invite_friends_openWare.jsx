@@ -69,10 +69,10 @@ $('.no-open').on('click',function () {
 //分享
 wx.ready(function () {
     wx.onMenuShareAppMessage({
-        // title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
-        // desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
-        title: '哈哈哈哈', // 分享标题
-        desc: '拓天速贷3岁生日！', // 分享描述
+        title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
+        desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
+        // title: '哈哈哈哈', // 分享标题
+        // desc: '拓天速贷3岁生日！', // 分享描述
         link: webServer+'/activity/third-anniversary/share-page?originator='+originator+'&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
         success: function () {
@@ -91,10 +91,10 @@ wx.ready(function () {
     });
 
     wx.onMenuShareTimeline({
-        // title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
-        // desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
-        title: '哈哈哈哈', // 分享标题
-        desc: '三岁生日！', // 分享描述
+        title: '我得到了一个神秘生日红包，邀你和我一起拆开', // 分享标题
+        desc: '拓天速贷3岁生日豪撒现金红包，老友新朋一起拆拆拆！', // 分享描述
+        // title: '哈哈哈哈', // 分享标题
+        // desc: '三岁生日！', // 分享描述
         link: webServer+'/activity/third-anniversary/share-page?originator='+originator+'&come=wechat', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: commonStaticServer+'/images/icons/openWare.png', // 分享图标
         success: function () {
