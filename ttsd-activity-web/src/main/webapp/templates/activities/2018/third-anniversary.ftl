@@ -57,7 +57,7 @@
     </div>
 <#--3岁生日怎么过-->
     <div class="part-wrap-line">
-        <div class="part part-two activity-page">
+        <div class="part part-two">
             <div class="part-top"></div>
             <div class="main-content borderYellow">
                 <div class="content-section three-birthday content-page">
@@ -108,7 +108,7 @@
     </div>
 <#--邀好友拆红包，双方有惊喜-->
     <div class="part-wrap-line">
-        <div class="part part-three activity-page">
+        <div class="part part-three">
             <div class="part-top"></div>
             <div class="main-content borderYellow">
                 <div class="content-section content-page">
@@ -148,7 +148,7 @@
     </div>
     <#--温馨提示-->
     <div class="part-wrap-line">
-        <div class="part part-four activity-page">
+        <div class="part part-four">
             <div class="part-top">
             </div>
             <div class="main-content borderYellow">

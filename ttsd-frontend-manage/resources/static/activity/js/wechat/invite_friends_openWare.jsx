@@ -5,7 +5,8 @@ commonFun.calculationRem(document, window);
 
 
 let $inviteBtn = $('.invite-btn');
-let $wechatTip = $('.wechat-tip');
+let $wechatTipWin = $('#wechatTipWin');
+let $inviteTipWin = $('#wechatTipWin');
 let $openBtn = $('.open-btn');
 
 if($('#inviteContainer').length){
@@ -41,25 +42,29 @@ $inviteBtn.on('click',function () {
     $.when(commonFun.isUserLogin())
         .done(function () {
 
-                $wechatTip.show();
+            $inviteTipWin.show();
         })
         .fail(function () {
             location.href = '/m/login'
         })
 })
+$('.open-now').on('click',function () {
+    $inviteTipWin.hide();
+    $wechatTipWin.show();
+})
 $('.tip-btn').on('click',function () {
-    $wechatTip.hide();
+    $wechatTipWin.hide();
 })
 $('.to-join-btn').on('click',function () {
     location.href = '/activity/third-anniversary'
 })
 
 $openBtn.on('click',function () {
-    $wechatTip.show();
+
 })
 //先不拆了
 $('.no-open').on('click',function () {
-    $wechatTip.hide();
+    $inviteTipWin.hide();
 })
 //分享
 wx.ready(function () {
