@@ -211,13 +211,7 @@ $supportBtn.on('click',function (e) {
 
         })
         .fail(function () {
-            layer.open({
-                type: 1,
-                title: false,
-                closeBtn: 0,
-                area: ['auto', 'auto'],
-                content: $('#loginTip')
-            });
+           toLogin();
         })
 })
 supportSquare();

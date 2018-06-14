@@ -48,7 +48,7 @@
                     </@global.isNotAnonymous>
                     <div class="prize">
                         <#if topFour??>
-                            <p>世界杯四强是<strong>${topFour}</strong>，当前共有<strong>${collectSuccess}人集齐队标</strong></p>
+                            <p>世界杯四强是<strong>${topFour}</strong>，当前共有<strong>${collectSuccess}</strong>人集齐队标</p>
                         </#if>
                     </div>
                 </div>

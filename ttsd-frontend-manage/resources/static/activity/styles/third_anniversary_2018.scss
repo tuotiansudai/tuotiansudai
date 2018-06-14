@@ -697,17 +697,16 @@ body {
     padding-left: 20px;
     padding-right: 20px;
     box-sizing: border-box;
-    padding-top: 90px;
     position: relative;
     padding-bottom: 60px;
-    //overflow-y: auto;
+    padding-top: 60px;
     .top {
       position: absolute;
       left: 50%;
       margin-left: -533px;
       width: 1000px;
-      height: 285px;
-      top: -136px;
+      height: 214px;
+      top: -166px;
       background: url("../images/2018/july-activity/tip_top.png") no-repeat center center;
       background-size: contain;
     }
@@ -1203,7 +1202,7 @@ body {
       padding-left: 0.4rem;
       padding-right: 0.4rem;
       box-sizing: border-box;
-      padding-top: 0.9rem;
+      padding-top: 1.2rem;
       position: relative;
       padding-bottom: 0.6rem;
       .top {
@@ -1253,6 +1252,7 @@ body {
         li {
           margin-bottom: 0.1rem;
           margin-left: 0.1rem;
+          width: 1.72rem;
           .team-logo {
             width: 0.88rem;
             height: 0.88rem;
@@ -1267,13 +1267,13 @@ body {
               border-radius: 0.2rem;
             }
           }
-          //.country-btn {
-          //  padding-left: 10px;
-          //  padding-right: 10px;
-          //  height: 30px;
-          //  line-height: 30px;
-          //  font-size: 14px;
-          //}
+          .country-btn {
+            padding-left: 0.1rem;
+            padding-right:  0.1rem;
+            height: 0.4rem;
+            line-height: 0.36rem;
+            font-size: 11px;
+          }
 
         }
 
