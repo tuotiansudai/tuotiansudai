@@ -47,8 +47,7 @@ public class DelayMessageDeliveryJobCreator {
 
     public static void createCancelTransferApplicationDelayJob(JobManager jobManager, long transferApplicationId, Date deadline) {
         String messageBody = String.valueOf(transferApplicationId);
-//        create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
-        create(jobManager, new Date(), MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
+        create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
     }
 
     public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {
