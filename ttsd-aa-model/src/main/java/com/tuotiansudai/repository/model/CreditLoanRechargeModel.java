@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.CreditLoanRechargeDto;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -20,7 +21,7 @@ public class CreditLoanRechargeModel implements Serializable {
 
     private Date updatedTime;
 
-    private RechargeStatus status;
+    private BankRechargeStatus status;
 
     public CreditLoanRechargeModel(CreditLoanRechargeDto dto, String accountName){
         this.operatorName = dto.getOperatorLoginName();
@@ -28,7 +29,7 @@ public class CreditLoanRechargeModel implements Serializable {
         this.createdTime = new Date();
         this.updatedTime = new Date();
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
-        this.status = RechargeStatus.WAIT_PAY;
+        this.status = BankRechargeStatus.WAIT_PAY;
     }
     public CreditLoanRechargeModel(){
 
@@ -82,11 +83,11 @@ public class CreditLoanRechargeModel implements Serializable {
         this.updatedTime = updatedTime;
     }
 
-    public RechargeStatus getStatus() {
+    public BankRechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(RechargeStatus status) {
+    public void setStatus(BankRechargeStatus status) {
         this.status = status;
     }
 }

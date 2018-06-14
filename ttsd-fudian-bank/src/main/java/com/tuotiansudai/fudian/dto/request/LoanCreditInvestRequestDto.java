@@ -37,7 +37,7 @@ public class LoanCreditInvestRequestDto extends NotifyRequestDto {
         this.investOrderDate = dto.getInvestOrderDate();
         this.oriOrderDate = dto.getInvestOrderDate();
         this.creditNo = String.valueOf(dto.getTransferApplicationId());
-        this.creditAmount = AmountUtils.toYuan(dto.getTransferAmount());
+        this.creditAmount = AmountUtils.toYuan(dto.getInvestAmount());
         this.creditNoAmount = AmountUtils.toYuan(dto.getInvestAmount());
         this.amount = AmountUtils.toYuan(dto.getTransferAmount());
         this.creditFee = AmountUtils.toYuan(dto.getTransferFee());

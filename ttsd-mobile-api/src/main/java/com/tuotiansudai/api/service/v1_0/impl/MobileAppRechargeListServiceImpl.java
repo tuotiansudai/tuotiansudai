@@ -5,8 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeListService;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
+import com.tuotiansudai.repository.model.BankRechargeModel;
+import com.tuotiansudai.repository.model.BankRechargePaginationView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListService {
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private BankRechargeMapper rechargeMapper;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -31,12 +32,12 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
         }
         Integer offset = (index - 1) * pageSize;
 
-        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, "");
+        List<BankRechargePaginationView> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, "");
         int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null, "");
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if (rechargeModels != null) {
-            for (RechargeModel recharge : rechargeModels) {
+            for (BankRechargeModel recharge : rechargeModels) {
                 rechargeResponseList.add(new RechargeDetailResponseDataDto(recharge));
             }
         }
