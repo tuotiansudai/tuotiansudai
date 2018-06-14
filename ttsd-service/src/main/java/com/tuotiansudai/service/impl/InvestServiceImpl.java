@@ -421,10 +421,6 @@ public class InvestServiceImpl implements InvestService {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
         bankAccountModel.setAutoInvest(isTurnOn);
         bankAccountMapper.updateAutoInvest(loginName, isTurnOn);
-        if (isTurnOn) {
-            mqWrapperClient.sendMessage(MessageQueue.TurnOnNoPasswordInvest_CompletePointTask, loginName);
-        }
-
         // 发送用户行为日志MQ
         userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), "", UserOpType.INVEST_NO_PASSWORD,
                 isTurnOn ? "Turn On" : "Turn Off");

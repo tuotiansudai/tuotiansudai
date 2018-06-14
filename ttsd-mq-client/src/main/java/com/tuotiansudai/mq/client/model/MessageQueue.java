@@ -10,44 +10,29 @@ public enum MessageQueue {
     2. 必须以英文字母或者数字开头，剩余名称可以是英文，数字，横划线；（注意，不能使用下划线）
     3. 长度不超过256个字符。
     */
+    UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
     CouponAssigning("CouponAssigning"),
+    CouponSmsAssignNotify("CouponSmsAssignNotify"),
+    CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     ExperienceAssigning("ExperienceAssigning"),
-
-    UserCouponReset("UserCouponReset"),
     GenerateReferrerRelation("GenerateReferrerRelation"),
-    InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
-    TurnOnNoPasswordInvest_CompletePointTask("TurnOnNoPasswordInvest-CompletePointTask"),
-
-    ExperienceRepayCallback("ExperienceRepayCallback"),
-
     EventMessage("EventMessage"),
     ManualMessage("ManualMessage"),
     PushMessage("PushMessage"),
     EMailMessage("EMailMessage"),
-
     AuditLog("AuditLog"),
     UserOperateLog("UserOperateLog"),
-    TransferReferrerRewardCallback("TransferReferrerRewardCallback"),
-    TransferRedEnvelopCallback("TransferRedEnvelopCallback"),
     LoginLog("LoginLog"),
-
     TransferAnxinContract("TransferAnxinContract"),
     QueryAnxinContract("QueryAnxinContract"),
-
     LoanStartRaising("LoanStartRaising"),
     LoanStopRaising("LoanStopRaising"),
-
     CancelTransferApplication("CancelTransferApplication"),
-    CouponSmsAssignNotify("CouponSmsAssignNotify"),
-    CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
-
     WeChatBoundNotify("WeChatBoundNotify"),
     WeChatMessageNotify("WeChatMessageNotify"),
-
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
     Payroll("Payroll"),
-    CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
 
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
@@ -79,10 +64,6 @@ public enum MessageQueue {
 
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
-
-    RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
-    RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
-    RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
     ;
 
     private final String queueName;
