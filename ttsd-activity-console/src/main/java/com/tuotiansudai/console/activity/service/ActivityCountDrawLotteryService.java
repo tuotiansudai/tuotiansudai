@@ -32,7 +32,7 @@ public class ActivityCountDrawLotteryService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private BankCardMapper bankCardMapper;
@@ -246,8 +246,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case CERTIFICATION:
-                    AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-                    if (accountModel != null && accountModel.getRegisterTime().before(endTime) && accountModel.getRegisterTime().after(startTime)) {
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;

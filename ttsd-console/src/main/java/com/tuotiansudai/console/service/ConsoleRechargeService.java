@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.service;
 
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
 import com.tuotiansudai.enums.BankRechargeStatus;
@@ -24,14 +25,14 @@ public class ConsoleRechargeService {
         return bankRechargeMapper.findAllChannels();
     }
 
-    public BasePaginationDataDto<RechargePaginationItemDataDto> findRechargePagination(String rechargeId, String mobile, Source source,
-                                                                                    BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, String role) {
+    public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(String rechargeId, String mobile, Source source,
+                                                                                                BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime, String role) {
         index = index < 1 ? 1 : index;
         int count = bankRechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime, role);
 
         List<BankRechargePaginationView> views = bankRechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime, role);
 
-        return new BasePaginationDataDto<RechargePaginationItemDataDto>(
+        return new BaseDto<>(true, new BasePaginationDataDto<RechargePaginationItemDataDto>(
                 index,
                 10,
                 count,
@@ -45,7 +46,7 @@ public class ConsoleRechargeService {
                         AmountConverter.convertCentToString(view.getAmount()),
                         view.getPayType(),
                         view.getSource(),
-                        view.getChannel())).collect(Collectors.toList()));
+                        view.getChannel())).collect(Collectors.toList())));
 
     }
 

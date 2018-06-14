@@ -12,8 +12,8 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -39,9 +39,9 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
-        AccountModel accountModel = accountMapper.findByLoginName(agreementDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(agreementDto.getLoginName());
 
-        if (accountModel != null && accountModel.isAutoInvest()) {
+        if (bankAccountModel != null && bankAccountModel.isAuthorization()) {
             baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
             baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
             baseResponseDto.setData(responseDataDto);

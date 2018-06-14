@@ -4,7 +4,7 @@ import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
 import com.tuotiansudai.repository.model.Source;
-import feign.Param;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

@@ -3,7 +3,6 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -19,9 +18,6 @@ import java.util.List;
 public class ConsoleLoanApplicationService {
 
     private static Logger logger = Logger.getLogger(ConsoleLoanApplicationService.class);
-
-    @Autowired
-    AccountMapper accountMapper;
 
     @Autowired
     LoanApplicationMapper loanApplicationMapper;

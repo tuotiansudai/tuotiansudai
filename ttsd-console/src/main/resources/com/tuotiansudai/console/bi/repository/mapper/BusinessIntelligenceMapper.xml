@@ -370,7 +370,7 @@
         us.province AS `group`
         FROM
         `user` us
-        JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
+        JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
         <if test="role != '' and role != 'UN_LOANER' ">
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
@@ -394,7 +394,7 @@
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_re_1.amount / 100), 2) AS `temp_amount_1`
             FROM `user` AS temp_user_1
-            JOIN `recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
@@ -432,7 +432,7 @@
             '其他' AS `group`
             FROM
             `user` us
-            JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
@@ -451,7 +451,7 @@
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_re_2.amount / 100), 2) AS `temp_amount_2`
             FROM `user` AS temp_user_2
-            JOIN `recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
+            JOIN `bank_recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
             <if test="role != '' and role != 'UN_LOANER' ">
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>

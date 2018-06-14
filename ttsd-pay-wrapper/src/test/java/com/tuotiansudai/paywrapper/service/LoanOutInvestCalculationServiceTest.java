@@ -76,14 +76,14 @@ import static org.junit.Assert.assertThat;
         extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001", "13333333333");
-        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, test1Model.getLoginName(), 25000,
-                0.1, false, new Date(), Source.WEB, "tuotiansudai");
+        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002", "18999999999");
-        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, test2Model.getLoginName(), 31000,
-                0.1, false, new Date(), Source.WEB, "tuotiansudai");
+        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);
 
@@ -119,15 +119,15 @@ import static org.junit.Assert.assertThat;
         extraLoanRateMapper.create(extraLoanRateModels);
 
         UserModel test1Model = createFakeUser("test0001", "13333333333");
-        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, test1Model.getLoginName(), 25000,
-                0.1, false, new Date(), Source.WEB, "tuotiansudai");
+        InvestModel test1InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 25000, test1Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test1InvestModel.setTradingTime(new Date());
         test1InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test1InvestModel);
 
         UserModel test2Model = createFakeUser("test0002", "18999999999");
-        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, test2Model.getLoginName(), 31000,
-                0.1, false, new Date(), Source.WEB, "tuotiansudai");
+        InvestModel test2InvestModel = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 31000, test2Model.getLoginName(),
+                new Date(), Source.WEB, "tuotiansudai", 0.1);
         test2InvestModel.setTradingTime(new Date());
         test2InvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(test2InvestModel);

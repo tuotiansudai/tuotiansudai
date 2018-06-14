@@ -14,8 +14,8 @@ import com.tuotiansudai.membership.repository.mapper.MembershipGiveMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.*;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
@@ -57,7 +57,7 @@ public class MembershipGiveService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -303,9 +303,9 @@ public class MembershipGiveService {
         for (String loginName : loginNames) {
             for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
                 long totalExperience = 0;
-                AccountModel accountModel = accountMapper.findByLoginName(loginName);
-                if (null != accountModel) {
-                    totalExperience = accountModel.getMembershipPoint();
+                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+                if (null != bankAccountModel) {
+                    totalExperience = bankAccountModel.getMembershipPoint();
                 }
                 membershipExperienceBillModels.add(new MembershipExperienceBillModel(loginName, null, 0L, totalExperience,
                         MessageFormat.format("获赠期限为{0}天的V{1}会员", membershipGiveModel.getDeadline(), map.get(membershipGiveModel.getMembershipId()))));
@@ -351,7 +351,7 @@ public class MembershipGiveService {
             return GivenMembership.NO_LOGIN;
         }
 
-        if (accountMapper.findByLoginName(loginName) == null) {
+        if (bankAccountMapper.findByLoginName(loginName) == null) {
             return GivenMembership.NO_REGISTER;
         }
 
@@ -360,7 +360,7 @@ public class MembershipGiveService {
         }
 
         long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(null, loginName);
-        Date registerTime = accountMapper.findByLoginName(loginName).getRegisterTime();
+        Date registerTime = bankAccountMapper.findByLoginName(loginName).getCreatedTime();
         if (registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000) {
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }

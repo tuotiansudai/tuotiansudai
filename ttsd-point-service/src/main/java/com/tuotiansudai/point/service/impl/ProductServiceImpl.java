@@ -19,7 +19,7 @@ import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private ProductOrderMapper productOrderMapper;
@@ -320,7 +320,7 @@ public class ProductServiceImpl implements ProductService {
         return productShowItemDto;
     }
 
-    private ProductOrderModel generateOrder(AccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount, String comment) {
+    private ProductOrderModel generateOrder(BankAccountModel accountModel, ProductShowItemDto productShowItemDto, int amount, UserAddressModel userAddressModel, double discount, String comment) {
         long actualPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         long totalPoints = Math.round(new BigDecimal(productShowItemDto.getPoints()).multiply(new BigDecimal(discount)).multiply(new BigDecimal(amount)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         if (productShowItemDto.getGoodsType().equals(GoodsType.PHYSICAL)) {
@@ -375,7 +375,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId, String comment) {
         ProductModel productModel = productMapper.lockById(id);
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        BankAccountModel accountModel = bankAccountMapper.lockByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());

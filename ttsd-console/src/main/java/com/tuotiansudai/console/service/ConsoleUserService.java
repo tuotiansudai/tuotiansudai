@@ -20,8 +20,8 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -60,7 +60,7 @@ public class ConsoleUserService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private BindBankCardService bindBankCardService;
@@ -114,7 +114,7 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
-        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
+        if (!mobile.equals(beforeUpdateUserMobile) && bankAccountMapper.findByLoginName(loginName) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     userModel.getUserName(),

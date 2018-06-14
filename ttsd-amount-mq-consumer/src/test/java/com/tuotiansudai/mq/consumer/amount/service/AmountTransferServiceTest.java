@@ -5,9 +5,9 @@ import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,7 +32,7 @@ public class AmountTransferServiceTest {
     private FakeUserHelper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private AmountTransferService amountTransferService;
@@ -72,7 +72,6 @@ public class AmountTransferServiceTest {
         amountTransferService.amountTransferProcess(freezeAtm);
 
         verifyBalance(loginName, inAmount - outAmount - freezeAmount);
-        verifyFreeze(loginName, freezeAmount);
 
         // test unfreeze
         long unfreezeAmount = 100000;
@@ -81,7 +80,6 @@ public class AmountTransferServiceTest {
                 unfreezeAmount, businessType);
         amountTransferService.amountTransferProcess(unfreezeAtm);
         verifyBalance(loginName, inAmount - outAmount - freezeAmount + unfreezeAmount);
-        verifyFreeze(loginName, freezeAmount - unfreezeAmount);
 
         // test transfer_out_freeze
         long toFreezeAmount = 40000;
@@ -89,17 +87,11 @@ public class AmountTransferServiceTest {
         AmountTransferMessage toFreezeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId,
                 toFreezeAmount, businessType);
         amountTransferService.amountTransferProcess(toFreezeAtm);
-        verifyFreeze(loginName, freezeAmount - unfreezeAmount - toFreezeAmount);
     }
 
     private void verifyBalance(String loginName, long amount) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assert (accountModel.getBalance() == amount);
-    }
-
-    private void verifyFreeze(String loginName, long amount) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assert (accountModel.getFreeze() == amount);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        assert (bankAccountModel.getBalance() == amount);
     }
 
     private UserModel mockUser(String loginName) {
@@ -116,8 +108,8 @@ public class AmountTransferServiceTest {
     }
 
     private void mockAccount(String loginName) {
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
+        BankAccountModel bankAccountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "1111111", "20180606");
+        bankAccountMapper.create(bankAccountModel);
     }
 
 }

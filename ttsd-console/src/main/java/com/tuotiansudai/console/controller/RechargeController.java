@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleRechargeService;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
 import com.tuotiansudai.enums.BankRechargeStatus;
@@ -38,7 +39,7 @@ public class RechargeController {
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BasePaginationDataDto<RechargePaginationItemDataDto> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime, role);
         List<String> channelList = consoleRechargeService.findAllChannel();
         long sumAmount = consoleRechargeService.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime, role);

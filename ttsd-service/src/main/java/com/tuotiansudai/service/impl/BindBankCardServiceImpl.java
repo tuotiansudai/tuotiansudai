@@ -6,10 +6,10 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.service.BindBankCardService;
@@ -30,7 +30,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserOpLogService userOpLogService;
@@ -43,8 +43,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>(payFormDataDto);
-        AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(dto.getLoginName());
+        if (bankAccountModel == null) {
             payFormDataDto.setMessage("您尚未进行实名认证");
             payFormDataDto.setStatus(false);
             return baseDto;
@@ -90,9 +90,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Override
     public boolean isManual(String loginName) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
-        return accountModel.getFreeze() > 0 || accountModel.getBalance() > 0 || userFundView.getExpectedTotalCorpus() > 0 || userFundView.getExpectedTotalInterest() > 0;
+        return bankAccountModel.getBalance() > 0 || userFundView.getExpectedTotalCorpus() > 0 || userFundView.getExpectedTotalInterest() > 0;
 
     }
 

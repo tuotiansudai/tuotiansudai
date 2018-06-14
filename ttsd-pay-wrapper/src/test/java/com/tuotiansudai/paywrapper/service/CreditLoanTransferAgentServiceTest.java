@@ -2,8 +2,6 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -20,7 +18,6 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CreditLoanBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.CreditLoanBillBusinessType;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +40,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyMapOf;
 import static org.mockito.Mockito.*;
 
@@ -71,9 +67,6 @@ import static org.mockito.Mockito.*;
 
     @Mock
     private MQWrapperClient mqWrapperClient;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -156,8 +149,6 @@ import static org.mockito.Mockito.*;
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
 
-        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
-
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
         verify(this.redisWrapperClient, times(2))
@@ -201,9 +192,6 @@ import static org.mockito.Mockito.*;
         when(this.redisWrapperClient.set(redisKeyCaptor2.capture(), amountCaptor.capture())).thenReturn("100");
 
         this.creditLoanTransferAgentService.creditLoanTransferAgent();
-        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
-
-        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         verify(this.paySyncClient, times(1))
                 .send(eq(CreditLoanTransferAgentMapper.class), any(ProjectTransferRequestModel.class), eq(ProjectTransferResponseModel.class));
