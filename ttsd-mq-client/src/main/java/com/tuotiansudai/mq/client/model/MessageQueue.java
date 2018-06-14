@@ -36,6 +36,7 @@ public enum MessageQueue {
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
+    LoanOutSuccess_SmsInvestor("LoanOutSuccess-SmsInvestor"),
     LoanOutSuccess_SuperScholarActivity("LoanOutSuccess-SuperScholarActivity"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
@@ -74,6 +75,8 @@ public enum MessageQueue {
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
+    SmsNotify("SmsNotify"),
+    SmsFatalNotify("SmsFatalNotify"),
     ;
 
     private final String queueName;

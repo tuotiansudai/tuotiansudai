@@ -8,11 +8,9 @@ import com.tuotiansudai.activity.repository.mapper.SuperScholarRewardMapper;
 import com.tuotiansudai.activity.repository.model.ActivityInvestModel;
 import com.tuotiansudai.activity.repository.model.SuperScholarRewardModel;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -57,9 +55,6 @@ public class SuperScholarActivityRewardSchedulerTest {
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
-
-    @Mock
-    private SmsWrapperClient smsWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -126,7 +121,6 @@ public class SuperScholarActivityRewardSchedulerTest {
         verify(this.redisWrapperClient, times(1)).hdel(redisDelKeyCaptor.capture(), redisDelHKeyCaptor.capture());
         verify(this.payWrapperClient, times(3)).transferCash(transferCashDtoCaptor.capture());
         verify(this.redisWrapperClient, times(3)).setex(redisSetKeyCaptor.capture(), anyInt(), redisSetValueCaptor.capture());
-        verify(this.smsWrapperClient, times(3)).sendFatalNotify(any(SmsFatalNotifyDto.class));
 
         assertThat(redisDelKeyCaptor.getValue(), is("SUPER_SCHOLAR_SEND_CASH_LOAN"));
         assertThat(redisDelHKeyCaptor.getValue(), is("201805"));

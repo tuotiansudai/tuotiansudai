@@ -1,10 +1,9 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.credit.CreditLoanActivateAccountService;
@@ -60,7 +59,7 @@ import static org.mockito.Mockito.*;
     private RedisWrapperClient redisWrapperClient;
 
     @Mock
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() throws Exception {
@@ -233,7 +232,6 @@ import static org.mockito.Mockito.*;
 
         BaseDto<PayDataDto> dataDtoBaseDto = this.creditLoanActivateAccountService.noPasswordActivateAccount(mobile);
 
-        verify(this.smsWrapperClient, times(1)).sendFatalNotify(any(SmsFatalNotifyDto.class));
         assertTrue(requestModelCaptor.getValue().getOrderId().startsWith(mobile + "X"));
         assertThat(requestModelCaptor.getValue().getUserId(), is(accountModel.getPayUserId()));
         assertThat(requestModelCaptor.getValue().getAmount(), is(String.valueOf(amount)));

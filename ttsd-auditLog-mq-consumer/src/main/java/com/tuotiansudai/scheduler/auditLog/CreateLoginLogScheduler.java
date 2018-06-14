@@ -1,8 +1,8 @@
 package com.tuotiansudai.scheduler.auditLog;
 
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.log.repository.mapper.LoginLogMapper;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +17,9 @@ public class CreateLoginLogScheduler {
     static Logger logger = LoggerFactory.getLogger(CreateLoginLogScheduler.class);
     @Autowired
     private LoginLogMapper loginLogMapper;
+
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Scheduled(cron = "0 0 0 20 * ?", zone = "Asia/Shanghai")
     public void createLoginLog() {
@@ -44,8 +45,7 @@ public class CreateLoginLogScheduler {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(errMsg);
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, errMsg);
     }
 
 }

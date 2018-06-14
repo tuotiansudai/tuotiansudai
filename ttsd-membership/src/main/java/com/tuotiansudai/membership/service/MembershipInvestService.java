@@ -2,10 +2,8 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
@@ -17,6 +15,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +48,8 @@ public class MembershipInvestService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private UserMapper userMapper;
 
     @Transactional
     public void afterInvestSuccess(String loginName, long investAmount, long investId, String loanName) {
@@ -102,5 +103,7 @@ public class MembershipInvestService {
                 null
         ));
         mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title, AppUrl.MESSAGE_CENTER_LIST));
+
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_MEMBERSHIP_UPGRADE_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(loginName).getMobile()), Lists.newArrayList(String.valueOf(level), String.valueOf(level))));
     }
 }

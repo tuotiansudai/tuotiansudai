@@ -1,11 +1,10 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ public class RepaySuccessExtraRateRepayCallbackMessageConsumer implements Messag
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -35,7 +34,6 @@ public class RepaySuccessExtraRateRepayCallbackMessageConsumer implements Messag
         logger.info("[还款发放阶梯加息收益回调MQ] receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[还款发放阶梯加息收益回调MQ] ready to consume message: extra rate message is null.");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益回调MQ消息为空!"));
             return;
         }
 
@@ -44,7 +42,7 @@ public class RepaySuccessExtraRateRepayCallbackMessageConsumer implements Messag
         BaseDto<PayDataDto> result = payWrapperClient.extraRateRepayCallbackAfterRepaySuccess(Long.parseLong(message));
         if (!result.isSuccess()) {
             logger.error("[还款发放阶梯加息收益回调MQ] extra rate callback consume fail. message: " + message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放阶梯加息收益回调MQ异常"));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "还款发放阶梯加息收益回调MQ异常");
             return;
         }
 

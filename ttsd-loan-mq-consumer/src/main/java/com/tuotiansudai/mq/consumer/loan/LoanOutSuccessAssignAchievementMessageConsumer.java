@@ -1,9 +1,8 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -21,10 +20,10 @@ public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageCo
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessAssignAchievementMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -36,7 +35,6 @@ public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageCo
         logger.info("[标的放款MQ] LoanOutSuccess_AssignAchievement receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, MQ消息为空"));
             return;
         }
 
@@ -45,12 +43,10 @@ public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageCo
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
                 logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement loanId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignAchievement json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("发送标王奖励失败, 解析消息失败"));
             return;
         }
 
@@ -59,7 +55,7 @@ public class LoanOutSuccessAssignAchievementMessageConsumer implements MessageCo
         logger.info(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is executing , (loanId : {0}) ", String.valueOf(loanId)));
 
         if (!payWrapperClient.assignInvestAchievementUserCoupon(loanId).isSuccess()) {
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("标的ID:{0}, 发送标王奖励失败, 优惠券发放失败", String.valueOf(loanId))));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("标的ID:{0}, 发送标王奖励失败, 优惠券发放失败", String.valueOf(loanId)));
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
             throw new RuntimeException(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignAchievement assignInvestAchievementUserCoupon is fail. loanId:{0}", String.valueOf(loanId)));
         }

@@ -3,11 +3,9 @@ package com.tuotiansudai.paywrapper.luxury;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -67,16 +65,13 @@ public class LuxuryStageRepayService {
 
     private final MQWrapperClient mqWrapperClient;
 
-    private final SmsWrapperClient smsWrapperClient;
-
     @Autowired
-    public LuxuryStageRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, PaySyncClient paySyncClient, MQWrapperClient mqWrapperClient, SmsWrapperClient smsWrapperClient) {
+    public LuxuryStageRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, PaySyncClient paySyncClient, MQWrapperClient mqWrapperClient) {
         this.userMapper = userMapper;
         this.accountMapper = accountMapper;
         this.payAsyncClient = payAsyncClient;
         this.paySyncClient = paySyncClient;
         this.mqWrapperClient = mqWrapperClient;
-        this.smsWrapperClient = smsWrapperClient;
     }
 
     @Transactional
@@ -291,7 +286,6 @@ public class LuxuryStageRepayService {
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 }

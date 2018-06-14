@@ -3,11 +3,10 @@ package com.tuotiansudai.mq.consumer.loan;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -28,10 +27,10 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
     private static Logger logger = LoggerFactory.getLogger(LoanOutSuccessGenerateRepayMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -44,7 +43,6 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateRepay receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[标的放款MQ] LoanOutSuccess_GenerateRepay receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成回款计划失败, MQ消息为空"));
             return;
         }
 
@@ -53,12 +51,10 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
             loanOutInfo = JsonConverter.readValue(message, LoanOutSuccessMessage.class);
             if (loanOutInfo.getLoanId() == null) {
                 logger.error("[标的放款MQ] LoanOutSuccess_GenerateRepay loanId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成回款计划失败, 消息中loanId为空"));
                 return;
             }
         } catch (IOException e) {
             logger.error("[标的放款MQ] LoanOutSuccess_GenerateRepay json convert LoanOutSuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成回款计划失败, 解析消息失败"));
             return;
         }
 
@@ -86,7 +82,7 @@ public class LoanOutSuccessGenerateRepayMessageConsumer implements MessageConsum
 
         if (CollectionUtils.isNotEmpty(fatalSmsList)) {
             fatalSmsList.add(MessageFormat.format("标的ID:{0}", loanId));
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(Joiner.on(",").join(fatalSmsList)));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, Joiner.on(",").join(fatalSmsList));
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_GenerateRepay is fail, sms sending. loanId:{0}, queue:{1}", String.valueOf(loanId), MessageQueue.LoanOutSuccess_GenerateRepay));
             throw new RuntimeException("[标的放款MQ] LoanOutSuccess_GenerateRepay is fail. loanOutInfo: " + message);
         }

@@ -4,15 +4,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.*;
 import com.tuotiansudai.activity.repository.model.*;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.joda.time.DateTime;
@@ -49,7 +49,7 @@ public class ThirdAnniversaryActivityScheduler {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private ThirdAnniversaryHelpMapper thirdAnniversaryHelpMapper;
@@ -204,6 +204,6 @@ public class ThirdAnniversaryActivityScheduler {
             logger.error("[third_anniversary_activity] send cash user:{} fail, type:{}, message:{}", loginName, type, e.getMessage());
         }
         redisWrapperClient.setex(key, lifeSecond, "fail");
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【3周年活动】用户:{0},发送现金失败, 业务处理异常", loginName)));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【3周年活动】用户:{0},发送现金失败, 业务处理异常", loginName));
     }
 }

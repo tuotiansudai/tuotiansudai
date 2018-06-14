@@ -2,7 +2,6 @@ include "ttsd-service",
         "ttsd-web",
         "ttsd-console",
         "ttsd-pay-wrapper",
-        "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
         'ttsd-membership',
@@ -29,4 +28,5 @@ include 'ttsd-job'
 include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
+include 'ttsd-sms-mq-consumer'
 

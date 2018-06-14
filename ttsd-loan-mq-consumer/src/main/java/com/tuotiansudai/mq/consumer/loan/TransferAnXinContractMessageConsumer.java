@@ -2,9 +2,8 @@ package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.AnxinContractMessage;
@@ -28,7 +27,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(TransferAnXinContractMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -50,7 +49,6 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
         logger.info("[债权转让] TransferAnxinContract receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[债权转让] TransferAnxinContract receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, MQ消息为空"));
             return;
         }
 
@@ -59,12 +57,10 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
             messageBody = JsonConverter.readValue(message, AnxinContractMessage.class);
             if (messageBody.getBusinessId() == 0) {
                 logger.error("[债权转让] TransferAnxinContract transferId is empty");
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签合同失败, 消息中transferId为空"));
                 return;
             }
         } catch (IOException e) {
             logger.error("[债权转让] TransferAnxinContract json convert transfer is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败, 解析消息失败"));
             return;
         }
 
@@ -75,7 +71,7 @@ public class TransferAnXinContractMessageConsumer implements MessageConsumer {
         BaseDto baseDto = anxinWrapperClient.createTransferContract(transferId);
         if (!baseDto.isSuccess()) {
             logger.error(MessageFormat.format("[债权转让] LoanOutSuccess_GenerateAnXinContract is fail. transferId:{0}", String.valueOf(transferId)));
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("生成安心签失败"));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("[债权转让] LoanOutSuccess_GenerateAnXinContract is fail. transferId:{0}", String.valueOf(transferId)));
             return;
         }
         DelayMessageDeliveryJobCreator.createAnxinContractQueryDelayJob(jobManager, transferId, AnxinContractType.TRANSFER_CONTRACT.name());

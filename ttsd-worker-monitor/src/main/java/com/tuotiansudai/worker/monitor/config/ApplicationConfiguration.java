@@ -1,14 +1,19 @@
 package com.tuotiansudai.worker.monitor.config;
 
-import com.tuotiansudai.client.SmsWrapperClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
+@ComponentScan(basePackages = {
+        "com.tuotiansudai.client",
+        "com.tuotiansudai.util"
+})
 public class ApplicationConfiguration {
 
     @Value("${common.redis.host}")
@@ -36,11 +41,6 @@ public class ApplicationConfiguration {
     @Bean
     public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         return new StringRedisTemplate(redisConnectionFactory);
-    }
-
-    @Bean
-    public SmsWrapperClient smsWrapperClient() {
-        return new SmsWrapperClient();
     }
 
 }

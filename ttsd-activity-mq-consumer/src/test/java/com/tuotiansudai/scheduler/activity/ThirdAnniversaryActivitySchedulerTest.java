@@ -109,7 +109,7 @@ public class ThirdAnniversaryActivitySchedulerTest {
         assertThat(transferCashDtoCaptor.getAllValues().get(2).getAmount(), is("500"));
         assertThat(transferCashDtoCaptor.getAllValues().get(3).getLoginName(), is("friend3"));
         assertThat(transferCashDtoCaptor.getAllValues().get(3).getAmount(), is("500"));
-        assertThat(redisSetKeyCaptor.getAllValues().get(0), is("THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS:loginName1"));
+        assertThat(redisSetKeyCaptor.getAllValues().get(0), is("THIRD_ANNIVERSARY_SEND_INVITE_CASH_SUCCESS:loginName1"));
         assertThat(redisSetKeyCaptor.getAllValues().get(1), is("THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS:friend1"));
         assertThat(redisSetKeyCaptor.getAllValues().get(2), is("THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS:friend2"));
         assertThat(redisSetKeyCaptor.getAllValues().get(3), is("THIRD_ANNIVERSARY_SEND_HELP_CASH_SUCCESS:friend3"));
