@@ -221,7 +221,7 @@ public class ThirdAnniversaryActivityService {
     }
 
     public int unUserDrawCount(String loginName){
-        if (Strings.isNullOrEmpty(loginName)){
+        if (Strings.isNullOrEmpty(loginName) || !duringDrawActivities()){
             return 0;
         }
         int usedDrawCount = thirdAnniversaryDrawMapper.countDrawByLoginName(loginName);
