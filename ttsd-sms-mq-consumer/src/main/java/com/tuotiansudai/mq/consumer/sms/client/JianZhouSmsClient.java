@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,13 @@ public class JianZhouSmsClient {
             return;
         }
 
-        String msgText = template.generateContent(isVoice, paramList) + SMS_SIGN;
+        String msgText = null;
+        try {
+            msgText = URLEncoder.encode(template.generateContent(isVoice, paramList) + SMS_SIGN, "UTF-8");
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("{0} send sms fail", template.generateContent(isVoice, paramList)));
+            return;
+        }
         String mobiles = String.join(";", mobileList);
         String content = MessageFormat.format("account={0}&password={1}&sendDateTime={2}&destmobile={3}&msgText={4}", ACCOUNT, PASSWORD, "", mobiles, msgText);
 
