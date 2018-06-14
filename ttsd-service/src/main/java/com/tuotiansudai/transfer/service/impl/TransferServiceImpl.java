@@ -114,13 +114,15 @@ public class TransferServiceImpl implements TransferService {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
-        if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
-            throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
-        }
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             throw new InvestException(InvestExceptionType.LOAN_NOT_FOUND);
         }
+
+        if (transferApplicationModel.getLoginName().equals(investDto.getLoginName()) || loan.getAgentLoginName().equals(investDto.getLoginName())) {
+            throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
+        }
+
         long investAmount = Long.parseLong(investDto.getAmount());
 
         if (bankAccountModel.getBalance() < investAmount) {

@@ -69,17 +69,7 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        if (bankAccountModel == null) {
-            logger.info(String.format("createPointBill: %s no account", loginName));
-            return;
-        }
-
         UserModel userModel = userMapper.findByLoginName(loginName);
-
-        if (!userPointMapper.exists(loginName)) {
-            userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
-        }
         UserPointModel userPointModel = userPointMapper.lockByLoginName(loginName);
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
