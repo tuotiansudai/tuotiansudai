@@ -873,11 +873,12 @@ body {
     }
   }
   .country-btn {
-    padding-left: 0.12rem;
-    padding-right: 0.12rem;
-    height: 0.34rem;
-    line-height: 0.34rem;
     border-radius: 0.17rem;
+    padding-left: 0.1rem;
+    padding-right:  0.1rem;
+    height: 0.4rem;
+    line-height: 0.36rem;
+    font-size: 11px;
   }
 
   .content-section {
@@ -1238,106 +1239,106 @@ body {
       }
     }
   }
-  .tip-wrap {
-    width: 100%;
-    position: fixed;
-    z-index: 99999;
-    top: 0;
-    min-height: 100%;
-    background: rgba(0,0,0,0.75);
-    padding-top: 2.6rem;
-    .get-ball-tip {
-      margin: 0 auto;
-      width: 6.52rem;
-      background: #fff;
-      padding-left: 0.4rem;
-      padding-right: 0.4rem;
-      box-sizing: border-box;
-      padding-top: 1.2rem;
-      position: relative;
-      padding-bottom: 0.6rem;
-      .top {
-        position: absolute;
-        left: 50%;
-        margin-left: -4.1rem;
-        width: 7.5rem;
-        height: 2.8rem;
-        top: -1.4rem;
-        background: url("../images/2018/july-activity/tip_top.png") no-repeat center center;
-        background-size: contain;
-      }
-      .bot{
-        position: absolute;
-        width: 7.5rem;
-        height: 3rem;
-        left: 50%;
-        margin-left: -3.75rem;
-        bottom: -1.2rem;
-        .money {
-          bottom: 0.6rem;
-          left: 0.75rem;
-          width: 6.5rem;
-          height: 2rem;
-          z-index: -400;
-        }
-      }
-      .known-btn {
-        position: absolute;
-        width: 3.38rem;
-        height: 0.38rem;
-        left: 50%;
-        margin-left: -1.69rem;
-        bottom: -8px;
-        background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
-        background-size: contain;
-      }
-      .con {
-        max-height: 10rem;
-        overflow-y: auto;
-      }
-
-      ul {
-        padding-bottom: 0.3rem;
-        li {
-          margin-bottom: 0.1rem;
-          margin-left: 0.1rem;
-          width: 1.72rem;
-          .team-logo {
-            width: 0.88rem;
-            height: 0.88rem;
-            background-size: contain;
-            .amount {
-              right: -0.1rem;
-              top: 0rem;
-              width: 0.4rem;
-              height: 0.4rem;
-              line-height: 0.4rem;
-              font-size: 0.24rem;
-              border-radius: 0.2rem;
-            }
-          }
-          .country-btn {
-            padding-left: 0.1rem;
-            padding-right:  0.1rem;
-            height: 0.4rem;
-            line-height: 0.36rem;
-            font-size: 11px;
-          }
-
-        }
-
-        .amount {
-          right: -0.1rem;
-          top: 0rem;
-          width: 0.4rem;
-          height: 0.4rem;
-          line-height: 0.4rem;
-          font-size: 0.24rem;
-          border-radius: 0.2rem;
-        }
-      }
-    }
-  }
+  //.tip-wrap {
+  //  width: 100%;
+  //  position: fixed;
+  //  z-index: 99999;
+  //  top: 0;
+  //  min-height: 100%;
+  //  background: rgba(0,0,0,0.75);
+  //  padding-top: 2.6rem;
+  //  .get-ball-tip {
+  //    margin: 0 auto;
+  //    width: 6.52rem;
+  //    background: #fff;
+  //    padding-left: 0.4rem;
+  //    padding-right: 0.4rem;
+  //    box-sizing: border-box;
+  //    padding-top: 1.2rem;
+  //    position: relative;
+  //    padding-bottom: 0.6rem;
+  //    .top {
+  //      position: absolute;
+  //      left: 50%;
+  //      margin-left: -4.1rem;
+  //      width: 7.5rem;
+  //      height: 2.8rem;
+  //      top: -1.4rem;
+  //      background: url("../images/2018/july-activity/tip_top.png") no-repeat center center;
+  //      background-size: contain;
+  //    }
+  //    .bot{
+  //      position: absolute;
+  //      width: 7.5rem;
+  //      height: 3rem;
+  //      left: 50%;
+  //      margin-left: -3.75rem;
+  //      bottom: -1.2rem;
+  //      .money {
+  //        bottom: 0.6rem;
+  //        left: 0.75rem;
+  //        width: 6.5rem;
+  //        height: 2rem;
+  //        z-index: -400;
+  //      }
+  //    }
+  //    .known-btn {
+  //      position: absolute;
+  //      width: 3.38rem;
+  //      height: 0.38rem;
+  //      left: 50%;
+  //      margin-left: -1.69rem;
+  //      bottom: -8px;
+  //      background: url("../images/2018/july-activity/i_known.png") no-repeat center center;
+  //      background-size: contain;
+  //    }
+  //    .con {
+  //      max-height: 10rem;
+  //      overflow-y: auto;
+  //    }
+  //
+  //    ul {
+  //      padding-bottom: 0.3rem;
+  //      li {
+  //        margin-bottom: 0.1rem;
+  //        margin-left: 0.1rem;
+  //        width: 1.72rem;
+  //        .team-logo {
+  //          width: 0.88rem;
+  //          height: 0.88rem;
+  //          background-size: contain;
+  //          .amount {
+  //            right: -0.1rem;
+  //            top: 0rem;
+  //            width: 0.4rem;
+  //            height: 0.4rem;
+  //            line-height: 0.4rem;
+  //            font-size: 0.24rem;
+  //            border-radius: 0.2rem;
+  //          }
+  //        }
+  //        .country-btn {
+  //          padding-left: 0.1rem;
+  //          padding-right:  0.1rem;
+  //          height: 0.4rem;
+  //          line-height: 0.36rem;
+  //          font-size: 11px;
+  //        }
+  //
+  //      }
+  //
+  //      .amount {
+  //        right: -0.1rem;
+  //        top: 0rem;
+  //        width: 0.4rem;
+  //        height: 0.4rem;
+  //        line-height: 0.4rem;
+  //        font-size: 0.24rem;
+  //        border-radius: 0.2rem;
+  //      }
+  //    }
+  //  }
+  //}
   .tip-wrap {
     width: 100%;
     position: fixed;
@@ -1382,8 +1383,8 @@ body {
         }
         .ren {
           position: absolute;
-          left: 0.4rem;
-          bottom: 60px;
+          left: -0.05rem;
+          bottom: 0.6rem;
           width: 0.95rem;
           height: 1.68rem;
           background: url("../images/2018/july-activity/ren.png") no-repeat center center;
@@ -1392,7 +1393,7 @@ body {
         .money {
           position: absolute;
           bottom: 0.54rem;
-          left: 0.39rem;
+          left: 0.1rem;
           width: 7.47rem;
           height: 2.32rem;
           z-index: -300;
@@ -1414,54 +1415,56 @@ body {
           max-height: 10rem;
           overflow-y: auto;
         }
+      ul {
+        padding-bottom: 0.3rem;
+        li {
+          margin-bottom: 0.1rem;
+          margin-left: 0.1rem;
+          width: 1.72rem;
+          .team-logo {
+            width: 0.88rem;
+            height: 0.88rem;
+            background-size: contain;
+            .amount {
+              right: -0.1rem;
+              top: 0rem;
+              width: 0.4rem;
+              height: 0.4rem;
+              line-height: 0.4rem;
+              font-size: 0.24rem;
+              border-radius: 0.2rem;
+            }
+          }
+          .country-btn {
+            padding-left: 0.1rem;
+            padding-right:  0.1rem;
+            height: 0.4rem;
+            line-height: 0.36rem;
+            font-size: 11px;
+          }
+
+        }
+
+      }
       .left-shan {
         position: absolute;
-        bottom: -8px;
-        left: 94px;
-        width: 169px;
-        height: 41px;
+        bottom: -0.08rem;
+        left: 0.94rem;
+        width: 1.69rem;
+        height: 0.41rem;
         background: url("../images/2018/july-activity/left_shan.png") no-repeat center center;
         background-size: contain;
       }
       .right-shan {
         position: absolute;
-        bottom: -8px;
-        right: 104px;
-        width: 147px;
-        height: 41px;
+        bottom: -0.08rem;
+        right: 1.04rem;
+        width: 1.47rem;
+        height: 0.41rem;
         background: url("../images/2018/july-activity/right_shan.png") no-repeat center center;
         background-size: contain;
       }
-      .con {
-        height: 300px;
-        overflow-y: auto;
-      }
 
-      ul {
-        padding-bottom: 30px;
-        li {
-          margin-bottom: 10px;
-          .team-logo {
-            width: 100px;
-            height: 100px;
-            background-size: contain;
-            .amount {
-              width: 30px;
-              height: 30px;
-              line-height: 30px;
-              font-size: 14px;
-            }
-          }
-          .country-btn {
-            padding-left: 10px;
-            padding-right: 10px;
-            height: 30px;
-            line-height: 27px;
-            font-size: 11px;
-          }
-          margin-left: 10px;
-        }
-      }
     }
   }
 }

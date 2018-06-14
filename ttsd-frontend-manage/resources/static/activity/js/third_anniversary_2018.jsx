@@ -87,6 +87,9 @@ $('#openBall').on('click',function () {
                     $('#getLogos').html(tpl('getLogoTpl', records));
 
                     $('.tip-wrap').show();
+                    $('body').css({
+                        overflow:'hidden'
+                    })
 
                     getMyTeamLogos();
                     $('#toInvestBtn').show();
