@@ -43,6 +43,8 @@ public enum SystemBillDetailTemplate {
     INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在邀请助力活动中,获取现金奖励{1}分"),
 
     SUPER_SCHOLAR_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在学霸加薪季活动中,获取现金奖励{1}分"),
+
+    THIRD_ANNIVERSARY_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在速贷3周年活动中,获取现金奖励{1}分"),
     ;
 
     private final String template;

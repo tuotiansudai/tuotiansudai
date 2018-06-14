@@ -2,6 +2,7 @@ package com.tuotiansudai.console.activity.controller;
 
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.activity.repository.model.WeChatHelpType;
 import com.tuotiansudai.activity.repository.model.WeChatHelpUserStatus;
 import com.tuotiansudai.console.activity.service.ActivityConsoleInviteHelpService;
 import org.apache.ibatis.annotations.Param;
