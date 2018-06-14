@@ -239,11 +239,15 @@ function supportSquare(){
             $.when(commonFun.isUserLogin())
                 .done(function () {
                     if(res.data.selectResult === 'RED'){
+                        $('#investTop').show();
                         $redSquare.addClass('already_support');
                         $blueSquare.addClass('disabled');
                     }else if(res.data.selectResult === 'BLUE'){
+                        $('#investTop').show();
                         $blueSquare.addClass('already_support');
                         $redSquare.addClass('disabled');
+                    }else {
+                        $('#investTop').hide();
                     }
                     $myAmount.text(res.data.myAmount);
                     $currentRate.text(res.data.currentRate);

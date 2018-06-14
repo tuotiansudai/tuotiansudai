@@ -972,15 +972,30 @@ body {
         li {
           font-size: 12px;
           margin-left: 0;
+          float: none;
+          width: 100%;
+          text-align: center;
           &.first {
-            width: 2.4rem;
+            width: 100%;
           }
-          &.second {
-            width: 1.5rem;
+          .wap-left {
+            display: inline-block;
+            width: 50%;
+            text-align: right;
           }
-          .wap-style {
-            display: block;
+          .wap-right {
+            box-sizing: border-box;
+            padding-left: 0.1rem;
+            display: inline-block;
+            width: 50%;
+            text-align: left;
           }
+          //&.second {
+          //  width: 1.5rem;
+          //}
+          //.wap-style {
+          //  display: block;
+          //}
           strong {
             font-size: 0.24rem;
           }
