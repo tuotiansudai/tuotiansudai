@@ -35,7 +35,7 @@ public class BankRechargeService {
     private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     @Autowired
-    private BankRechargeService(BankRechargeMapper bankRechargeMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient) {
+    public BankRechargeService(BankRechargeMapper bankRechargeMapper, BankAccountMapper bankAccountMapper, MQWrapperClient mqWrapperClient) {
         this.bankRechargeMapper = bankRechargeMapper;
         this.bankAccountMapper = bankAccountMapper;
         this.mqWrapperClient = mqWrapperClient;
