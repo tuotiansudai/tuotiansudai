@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -50,6 +51,9 @@ public class InvestServicePaybackExceptionTest {
 
     @Mock
     private LoanMapper loanMapper;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void setUp() throws Exception {

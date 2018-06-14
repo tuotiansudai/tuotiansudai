@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -56,6 +57,9 @@ import static org.mockito.Mockito.*;
 
     @Mock
     private RedisWrapperClient redisWrapperClient;
+
+    @Mock
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void init() throws Exception {
