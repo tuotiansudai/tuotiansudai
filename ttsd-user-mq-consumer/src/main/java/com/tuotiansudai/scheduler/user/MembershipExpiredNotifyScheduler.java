@@ -29,8 +29,7 @@ public class MembershipExpiredNotifyScheduler {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-//    @Scheduled(cron = "0 0 10 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 */40 21 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 10 * * ?", zone = "Asia/Shanghai")
     public void membershipExpiredMessage() {
         List<MembershipPrivilegeExpiredUsersView> membershipPrivilegeExpiredUsers = membershipPrivilegeMapper.findMembershipPrivilegeExpiredUsers();
         if (CollectionUtils.isEmpty(membershipPrivilegeExpiredUsers)) {
