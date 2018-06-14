@@ -6,7 +6,7 @@ commonFun.calculationRem(document, window);
 
 let $inviteBtn = $('.invite-btn');
 let $wechatTipWin = $('#wechatTipWin');
-let $inviteTipWin = $('#wechatTipWin');
+let $inviteTipWin = $('#inviteTipWin');
 let $openBtn = $('.open-btn');
 
 if($('#inviteContainer').length){
