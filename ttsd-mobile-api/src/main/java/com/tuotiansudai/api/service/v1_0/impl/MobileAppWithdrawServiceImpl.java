@@ -8,9 +8,9 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
-import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.mapper.UserBankCardMapper;
+import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.AmountConverter;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     static Logger logger = Logger.getLogger(MobileAppWithdrawServiceImpl.class);
     @Autowired
-    private BankCardMapper bankCardMapper;
+    private UserBankCardMapper userBankCardMapper;
     @Autowired
     private PayWrapperClient payWrapperClient;
     @Autowired
@@ -81,8 +81,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         if (withdrawAmount <= withdrawFee) {
             return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
         }
-        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
-        if (bankCardModel == null) {
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+        if (userBankCardModel == null) {
             return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
         }
         BaseDto<PayFormDataDto> formDto = payWrapperClient.withdraw(withdrawDto);

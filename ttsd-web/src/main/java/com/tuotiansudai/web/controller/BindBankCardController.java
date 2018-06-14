@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.UserBindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +19,24 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(path = "/bank-card")
 public class BindBankCardController {
 
-    private final UserBindBankCardService userBindBankCardService;
+    private final BankBindCardService bankBindCardService;
 
     @Autowired
-    public BindBankCardController(UserBindBankCardService userBindBankCardService) {
-        this.userBindBankCardService = userBindBankCardService;
+    public BindBankCardController(BankBindCardService bankBindCardService) {
+        this.bankBindCardService = bankBindCardService;
     }
 
     @RequestMapping(path = "/bind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = userBindBankCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankBindCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 
     @RequestMapping(path = "/unbind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView unbindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = userBindBankCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankBindCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 

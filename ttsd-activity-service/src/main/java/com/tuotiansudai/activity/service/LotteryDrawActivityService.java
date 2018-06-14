@@ -28,7 +28,6 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -70,7 +69,7 @@ public class LotteryDrawActivityService {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
+    private UserBankCardMapper userBankCardMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -332,8 +331,8 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case BANK_CARD:
-                    BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-                    if (bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)) {
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(userModel.getLoginName());
+                    if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
@@ -441,15 +440,10 @@ public class LotteryDrawActivityService {
         steps.set(2, 1);
         steps.set(3, 1);
         steps.set(4, 1);
-        if (bankCardMapper.findPassedBankCardByLoginName(loginName) != null) {
+        if (userBankCardMapper.findByLoginName(loginName) != null) {
             steps.set(2, 2);
         }
         return steps;
-    }
-
-    public String getActivityEndTime(ActivityCategory activityCategory) {
-        List<String> activityTime = getActivityTime(activityCategory);
-        return activityTime.get(1).replaceAll("-", "/");
     }
 
     public int toDayIsDrawByMobile(String mobile, ActivityCategory activityCategory) {

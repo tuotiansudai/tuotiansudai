@@ -35,7 +35,7 @@ public class ActivityCountDrawLotteryService {
     private BankAccountMapper bankAccountMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
+    private UserBankCardMapper userBankCardMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -252,8 +252,8 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case BANK_CARD:
-                    BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName());
-                    if (bankCardModel != null && bankCardModel.getCreatedTime().before(endTime) && bankCardModel.getCreatedTime().after(startTime)) {
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(userModel.getLoginName());
+                    if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;

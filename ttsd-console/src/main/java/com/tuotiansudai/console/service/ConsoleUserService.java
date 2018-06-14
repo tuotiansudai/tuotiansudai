@@ -27,7 +27,7 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
@@ -63,7 +63,7 @@ public class ConsoleUserService {
     private BankAccountMapper bankAccountMapper;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
@@ -140,9 +140,9 @@ public class ConsoleUserService {
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
 
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-        if (bankCard != null) {
-            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName);
+        if (userBankCardModel != null) {
+            editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
         }
 
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {

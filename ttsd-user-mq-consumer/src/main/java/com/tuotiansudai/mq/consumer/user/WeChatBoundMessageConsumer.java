@@ -41,7 +41,6 @@ public class WeChatBoundMessageConsumer implements MessageConsumer {
         this.weChatUserMapper = weChatUserMapper;
     }
 
-
     @Override
     public MessageQueue queue() {
         return MessageQueue.WeChatBoundNotify;

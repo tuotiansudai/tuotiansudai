@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.RiskEstimateService;
-import com.tuotiansudai.service.UserBindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
@@ -34,7 +34,7 @@ public class PersonalInfoController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private UserBindBankCardService userBindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private RiskEstimateService riskEstimateService;
@@ -59,7 +59,7 @@ public class PersonalInfoController {
 
         }
 
-        UserBankCardModel bankCard = userBindBankCardService.findBankCard(userModel.getLoginName());
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(userModel.getLoginName());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());
