@@ -17,6 +17,7 @@ p {
   height: 2.79rem;
   margin: 0 auto;
   display: block;
+  border: none;
   &.invite-btn {
     background: url("../../images/2018/july-activity/invite_btn.png") no-repeat;
     background-size: contain;
@@ -131,8 +132,8 @@ p {
       background-size: contain;
     }
     .main-content {
-      padding-top: 0.52rem;
-      padding-bottom: 0.4rem;
+      padding-top: 0.1rem;
+      padding-bottom: 0;
       .time {
         font-size: 0.9rem;
         font-weight: bold;
@@ -158,7 +159,7 @@ p {
       background-size: contain;
     }
     .main-content {
-      padding-top: 0.8rem;
+      padding-top: 0.4rem;
       padding-bottom: 0.2rem;
       ul {
         li {

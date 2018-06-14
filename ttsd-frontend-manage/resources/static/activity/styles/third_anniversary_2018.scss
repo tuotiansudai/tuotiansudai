@@ -348,6 +348,9 @@ body {
             background-size: 100%;
           }
           &.already_support {
+            span {
+              padding-right:104px;
+            }
             background: url("../images/2018/july-activity/already_support_blue.png") no-repeat;
             background-size: 100%;
           }

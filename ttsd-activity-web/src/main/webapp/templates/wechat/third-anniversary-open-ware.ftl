@@ -14,7 +14,7 @@
                     <form action="/activity/third-anniversary/open-red-envelope" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="originator" value="${originator}">
-                        <input type="submit" class="open-btn circle-btn" href="javascript:;"></input>
+                        <input type="submit" class="open-btn circle-btn" value=""></input>
                     </form>
             </#if>
             <#if isHelp>
