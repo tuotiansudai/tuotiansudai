@@ -88,7 +88,8 @@ $('#openBall').on('click',function () {
 
                     $('.tip-wrap').show();
                     $('body').css({
-                        overflow:'hidden'
+                        overflow:'hidden',
+                        height:'100%'
                     })
 
                     getMyTeamLogos();
@@ -106,10 +107,21 @@ $('#openBall').on('click',function () {
 $('.known-btn').on('click',function () {
     $('.tip-wrap').hide();
     $('body').css({
-        overflow:'auto'
+        overflow:'auto',
+        height:'auto'
     })
 })
 var mySwiper;
+mySwiper = new Swiper ('#teamLogos', {
+    autoplay:0,
+    slidesPerGroup: slideLen,
+    slidesPerView:slideLen,
+    pagination : '.swiper-pagination',
+    paginationClickable:true,
+    observer:true,
+    observeParents:true,
+    initialSlide :0
+});
 $.when(commonFun.isUserLogin())
     .done(function () {
         getMyTeamLogos();
@@ -148,15 +160,8 @@ function getMyTeamLogos(){
                     teamName:teamName
                 }
                 $('#myTeamLogos').html(tpl('myTeamLogoTpl', records));
-                mySwiper = new Swiper ('#teamLogos', {
-                    autoplay:0,
-                    slidesPerGroup: slideLen,
-                    slidesPerView:slideLen,
-                    pagination : '.swiper-pagination',
-                    paginationClickable:true,
-                    observer:true,
-                    observeParents:true
-                });
+                mySwiper.updateContainerSize();
+
                 if(res.data.prizes.length<=slideLen){
                     $('.swiper-pagination').hide();
                 }else {
