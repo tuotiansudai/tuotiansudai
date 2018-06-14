@@ -65,13 +65,13 @@
                     <div class="content-title time2">活动时间：7月1日-7月31日</div>
                     <div class="invest-records">
                         <@global.isNotAnonymous>
-                            <ul class="clearfix">
-                                <li class="first">当前累计年化<span class="wap-style">投资额 <strong><em
+                            <ul class="clearfix" id="investTop" style="display: none">
+                                <li class="first"><div class="wap-left">当前累计年化<span class="wap-style">投资额 <strong></div><div class="wap-right"><em
                                         id="myAmount"></em>元</strong></span></li>
-                                <li class="second">当前返现<span class="wap-style">比例 <strong
-                                        id="currentRate"></strong> </span></li>
-                                <li class="thrid">当前返现<span class="wap-style">金额  <strong><em
-                                        id="currentAward"></em>元</strong></span></li>
+                                <li class="second"><div class="wap-left">当前返现<span class="wap-style">比例 </div><div class="wap-right"><strong
+                                        id="currentRate"></strong> </span></div></li>
+                                <li class="thrid"><div class="wap-left">当前返现<span class="wap-style">金额  <strong></div><div class="wap-right"><em
+                                        id="currentAward"></em>元</strong></span></div></li>
                             </ul>
                         </@global.isNotAnonymous>
                         <div class="progress-wrap">
