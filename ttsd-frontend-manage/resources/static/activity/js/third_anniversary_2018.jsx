@@ -149,6 +149,11 @@ function getMyTeamLogos(){
                     pagination : '.swiper-pagination',
                     paginationClickable:true
                 });
+                if(res.data.prizes.length<=slideLen){
+                    $('.swiper-pagination').hide();
+                }else {
+                    $('.swiper-pagination').show();
+                }
             }
         }else {
             layer.msg(res.message)

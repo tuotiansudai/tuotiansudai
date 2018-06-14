@@ -88,6 +88,14 @@ p {
     height: 4.8rem;
     background: url("../../images/2018/july-activity/wechat_banner.png") no-repeat;
     background-size: contain;
+    padding-top: 4.2rem;
+    box-sizing: border-box;
+    .risk-tip {
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      margin: 0 auto;
+      text-align: center;
+    }
   }
   .invite-friend-fonts {
     margin: 0 auto;

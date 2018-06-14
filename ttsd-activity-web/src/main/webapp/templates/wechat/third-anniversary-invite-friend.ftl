@@ -3,7 +3,9 @@
 <@global.main pageCss="${css.invite_friends_openWare}" pageJavascript="${js.invite_friends_openWare}"  title="拓天速贷3周年庆,红包!返现!分奖池!" >
 
 <div class="invite-friend-container" id="inviteContainer" data-countdown='${endTime!}'>
-    <div class="invite-banner"></div>
+    <div class="invite-banner">
+        <div class="risk-tip">市场有风险，投资需谨慎！</div>
+    </div>
     <div class="invite-friend-fonts"></div>
     <div class="red-ware">
         <div class="invite-wrap">

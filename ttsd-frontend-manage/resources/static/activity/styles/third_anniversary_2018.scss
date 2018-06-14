@@ -67,6 +67,15 @@ body {
 .july-banner {
   height: 800px;
   background: url("../images/2018/july-activity/pc_banner.png") no-repeat center center;
+  position: relative;
+  padding-top: 760px;
+  box-sizing: border-box;
+  .risk-tip {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    margin: 0 auto;
+    text-align: center;
+  }
 }
 
 .july-container {
@@ -107,6 +116,7 @@ body {
   border-radius: 17px;
   color: $gray333;
   display: inline-block;
+  font-size: 11px;
 
 }
 .swiper-pagination-bullet-active {
@@ -519,7 +529,7 @@ body {
           width: 42px;
           height: 42px;
           line-height: 42px;
-          font-size: 24px;
+          font-size: 16px;
           text-align: center;
           border-radius: 21px;
           background: $greenAmout;
@@ -755,8 +765,8 @@ body {
           padding-left: 10px;
           padding-right: 10px;
           height: 30px;
-          line-height: 30px;
-          font-size: 14px;
+          line-height: 27px;
+          font-size: 11px;
         }
         margin-left: 10px;
       }
@@ -799,8 +809,10 @@ body {
   }
   .july-banner {
     height: 4rem;
+    padding-top: 3.6rem;
     background: url("../images/2018/july-activity/wap_banner.png") no-repeat center center;
     background-size: 100%;
+
   }
 
   .july-container {
@@ -915,7 +927,7 @@ body {
                 width: 0.4rem;
                 height: 0.4rem;
                 line-height: 0.4rem;
-                font-size: 0.24rem;
+                font-size: 11px;
                 border-radius: 0.2rem;
               }
 

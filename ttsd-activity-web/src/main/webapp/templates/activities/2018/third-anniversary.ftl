@@ -1,6 +1,7 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.third_anniversary_2018}" pageJavascript="${js.third_anniversary_2018}" activeNav="" activeLeftNav="" title='拓天速贷3周年庆_集世界杯队标_平分现金奖池' keywords="拓天速贷,8888元现金奖池,888世界杯奖池,阴历阳历生日之争,生日红包" description='拓天速贷3周年庆,集世界杯队标,平分现金奖池,阴历阳历生日之争可获得其活动期间累计投资额(年化)的0.5%-0.8%返现奖励,分享专享现金红包给好友,还可获得其活动期间累计投资额(年化)的0.1%-0.5%返现奖励.'>
 <div class="july-banner">
+    <div class="risk-tip">市场有风险，投资需谨慎！</div>
 </div>
 <div class="july-container">
     <div class="part-wrap-line">
