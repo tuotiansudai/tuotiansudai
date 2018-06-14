@@ -783,7 +783,7 @@ body {
       background-size: contain;
     }
     .con {
-      height: 300px;
+      max-height: 300px;
       overflow-y: auto;
     }
 
