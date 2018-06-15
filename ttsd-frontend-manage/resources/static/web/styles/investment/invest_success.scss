@@ -146,13 +146,13 @@
       height: 34px;
       line-height: 34px;
       text-align: center;
-      border: 1px solid #ff752a;
       border-radius: 3px;
       font-size: 16px;
-      color: #ff752a;
+      color: #fff;
       cursor: pointer;
+      background: #ff752a;
     }
-    .see_other_project, .go_to_recharge, .go_to_invest, .retry,.to-bank-card {
+    .see_other_project, .go_to_recharge, .go_to_invest, .retry,.to-bank-card,.toRecharge {
       border: none;
       padding: 0;
       display: inline-block;

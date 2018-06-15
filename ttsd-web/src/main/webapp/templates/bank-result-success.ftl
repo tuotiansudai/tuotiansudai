@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="">
+<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="成功">
 <div class="head-banner"></div>
 <div>
     <div class="callBack_container">
@@ -39,7 +39,7 @@
     <#--银行卡绑定成功-->
         <#if bankCallbackType == 'CARD_BIND'>
             <div class="handle_btn_container">
-                <div class="see_my_account">查看我的账户</div>
+                <div class="toRecharge">去充值</div>
             </div>
         </#if>
     <#--解绑成功-->
