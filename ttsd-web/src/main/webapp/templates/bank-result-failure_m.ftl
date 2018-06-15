@@ -67,7 +67,7 @@
     </#if>
 <#--失败时重新尝试-->
     <div class="btn-container">
-        <form id="retry-form" action="${bankCallbackType.getRetryPath()}" method="${bankCallbackType.getMethod()}">
+        <form id="retry-form" action="${bankCallbackType.getMRetryPath()}" method="${bankCallbackType.getMethod()}">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="submit" class="btn-confirm" style="border: none" value="再次尝试"/>
         </form>
