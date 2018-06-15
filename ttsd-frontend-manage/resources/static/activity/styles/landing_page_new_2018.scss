@@ -114,7 +114,10 @@ p {
                 height: 42px;
                 margin-bottom: 25px;
                 &.submit-li {
-                  margin-top: 0.4rem;
+                  margin-top: 0;
+                  @media screen and(max-width: 1024px) {
+                    margin-top: 0.4rem;
+                  }
                   input {
                     width: 100%;
                   }
@@ -165,6 +168,9 @@ p {
                 }
                 &.recomender-iphone {
                   display: none;
+                  input {
+                    width: 100%;
+                  }
                   &.show {
                     display: block;
                   }

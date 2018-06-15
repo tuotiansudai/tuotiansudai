@@ -34,7 +34,7 @@ if(urlObj.params.source == 'app'){
     $('#bannerBox').hide();
     $('#bannerBoxLogin').hide();
    $('#bannerBoxApp').show();
-    appSpeed = 2000;
+    appSpeed = 1000;
 }
 if($('#fuliList').length){
     $('#fuliList').find('.swiper-slide').each(function (index,item) {
