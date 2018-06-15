@@ -255,16 +255,6 @@ require.ensure([],function() {
 //点击联动优势按钮
     $btnTurnOnElement.on('click',function(){
         layer.closeAll();
-        layer.open({
-            type: 1,
-            closeBtn:0,
-            move: false,
-            offset: "200px",
-            title: '免密投资',
-            area: ['490px', '220px'],
-            shadeClose: true,
-            content: $noPasswordInvestDOM
-        });
     });
 
 //关闭免密支付按钮
