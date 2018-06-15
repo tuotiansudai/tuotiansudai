@@ -46,7 +46,7 @@
 
                                 <input type="hidden" name="amount" value=""/>
                                 <input type="hidden" name="source" value="WEB"/>
-                                <input type="hidden" name="PayType" value="FAST_PAY"/>
+                                <input type="hidden" name="payType" value="FAST_PAY"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <#if bankModel??>
@@ -83,7 +83,7 @@
                                                   data-v-min="0.00" placeholder="0.00"> 元
                                     <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
                                     <input type="hidden" name="amount" value=""/>
-                                    <input type="hidden" name="PayType" value="GATE_PAY"/>
+                                    <input type="hidden" name="payType" value="GATE_PAY"/>
                                     <input type="hidden" name="source" value="WEB"/>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <div class="tc clear-blank-m">
