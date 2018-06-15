@@ -188,8 +188,12 @@ public enum ReturnMessage {
 
     BANK_CARD_RECHARGE_DAILY_LIMIT("0205", "超银行卡单日充值限额"),
 
-    IDENTITY_NUMBER_INVALID("0300", "身份证不符合规范!");
+    IDENTITY_NUMBER_INVALID("0300", "身份证不符合规范!"),
 
+
+    BANK_ACCOUNT_NOT_EXIST("9001", "未开通银行存管账户"),
+
+    ;
 
     private String code;
     private String msg;

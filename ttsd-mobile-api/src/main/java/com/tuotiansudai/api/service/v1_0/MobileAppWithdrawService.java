@@ -5,5 +5,5 @@ import com.tuotiansudai.api.dto.v1_0.*;
 public interface MobileAppWithdrawService {
     BaseResponseDto<WithdrawListResponseDataDto> queryUserWithdrawLogs(WithdrawListRequestDto requestDto);
 
-    BaseResponseDto<WithdrawOperateResponseDataDto> generateWithdrawRequest(WithdrawOperateRequestDto requestDto);
+    BaseResponseDto<BankAsynResponseDto> generateWithdrawRequest(WithdrawOperateRequestDto requestDto);
 }

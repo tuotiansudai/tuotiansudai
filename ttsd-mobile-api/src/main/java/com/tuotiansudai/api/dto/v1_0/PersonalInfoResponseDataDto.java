@@ -18,10 +18,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean certificationFlag;
 
     @ApiModelProperty(value = "真实姓名", example = "王拓天")
-    private String realName;
+    private String realName = "";
 
     @ApiModelProperty(value = "身份证", example = "37XXXXXXXXXXXXXXXX")
-    private String idCard;
+    private String idCard = "";
 
     @ApiModelProperty(value = "绑卡状态", example = "true")
     private boolean isBoundBankCard;
@@ -30,10 +30,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean isFastPayment;
 
     @ApiModelProperty(value = "银行卡号", example = "6222****1134")
-    private String bankCardNo;
+    private String bankCardNo = "";
 
     @ApiModelProperty(value = "银行", example = "ICBC")
-    private String bankId;
+    private String bankId = "";
 
     @ApiModelProperty(value = "支持快捷支付状态", example = "true")
     private boolean fastPaymentEnable;
@@ -48,7 +48,7 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean autoInvest;
 
     @ApiModelProperty(value = "银行名称", example = "中国工商银行")
-    private String bankName;
+    private String bankName = "";
 
     @ApiModelProperty(value = "安心签状态", example = "true")
     private boolean anxinUser;
