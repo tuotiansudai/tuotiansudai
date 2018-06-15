@@ -83,8 +83,7 @@ public class ThirdAnniversaryActivityScheduler {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${activity.third.anniversary.endTime}\")}")
     private Date activityEndTime;
 
-    //    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 */30 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 10 0 * * ?", zone = "Asia/Shanghai")
     public void sendHelpCash() {
         Map<String, String> investHelps = redisWrapperClient.hgetAll(THIRD_ANNIVERSARY_WAIT_SEND_REWARD);
         for (Map.Entry<String, String> entry : investHelps.entrySet()) {
@@ -120,8 +119,7 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    //    @Scheduled(cron = "0 0 8 17 7 ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 */30 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 8 17 7 ?", zone = "Asia/Shanghai")
     public void sendTopFourCash() {
 
         if (DateTime.now().getYear() != 2018 || !redisWrapperClient.exists(THIRD_ANNIVERSARY_TOP_FOUR_TEAM)) {
@@ -147,8 +145,7 @@ public class ThirdAnniversaryActivityScheduler {
         }
     }
 
-    //    @Scheduled(cron = "0 0 8 1 8 ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 */30 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 8 1 8 ?", zone = "Asia/Shanghai")
     private void sendSupportCash() {
         if (DateTime.now().getYear() != 2018) {
             return;

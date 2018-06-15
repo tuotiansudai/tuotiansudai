@@ -278,12 +278,9 @@ public class ThirdAnniversaryActivityService {
             return;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
-//        ThirdAnniversaryHelpModel thirdAnniversaryHelpModel = new ThirdAnniversaryHelpModel(loginName, userModel.getMobile(), userModel.getUserName(), new Date(), DateTime.now().plusDays(3).toDate());
-//        thirdAnniversaryHelpMapper.create(thirdAnniversaryHelpModel);
-//        redisWrapperClient.hset(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(thirdAnniversaryHelpModel.getId()), DateTime.now().plusDays(3).toString("yyyy-MM-dd HH:mm:ss"));
-        ThirdAnniversaryHelpModel thirdAnniversaryHelpModel = new ThirdAnniversaryHelpModel(loginName, userModel.getMobile(), userModel.getUserName(), new Date(), DateTime.now().plusMinutes(30).toDate());
+        ThirdAnniversaryHelpModel thirdAnniversaryHelpModel = new ThirdAnniversaryHelpModel(loginName, userModel.getMobile(), userModel.getUserName(), new Date(), DateTime.now().plusDays(3).toDate());
         thirdAnniversaryHelpMapper.create(thirdAnniversaryHelpModel);
-        redisWrapperClient.hset(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(thirdAnniversaryHelpModel.getId()), DateTime.now().plusMinutes(30).toString("yyyy-MM-dd HH:mm:ss"));
+        redisWrapperClient.hset(THIRD_ANNIVERSARY_WAIT_SEND_REWARD, String.valueOf(thirdAnniversaryHelpModel.getId()), DateTime.now().plusDays(3).toString("yyyy-MM-dd HH:mm:ss"));
     }
 
     public Map<String, Object> sharePage(String loginName, String originator) {
