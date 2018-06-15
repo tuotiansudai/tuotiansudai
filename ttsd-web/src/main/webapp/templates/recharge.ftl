@@ -67,8 +67,8 @@
                         <div class="bind-card-nav">
                             <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <span>您尚未绑定银行卡，请先绑定银行卡！</span><br/>
-                                <input type="submit" class="btn btn-normal" value="立即绑卡"
+                                <span>您尚未绑定银行卡，请先绑定银行卡！</span>
+                                <input style="display: block;margin:0 auto" type="submit" class="btn btn-normal" value="立即绑卡"
                                        data-url="${requestContext.getContextPath()}/bind-card"/>
                             </form>
                         </div>

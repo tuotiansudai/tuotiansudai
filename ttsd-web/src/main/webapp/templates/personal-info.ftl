@@ -39,7 +39,7 @@
                       style="display: inline-block;float:right">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <span class="binding-set">
-                        <i class="fa fa-check-circle ok"></i>已绑定<input type="submit" class="setlink setBankCard" value="解绑" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px"/>
+                        <i class="fa fa-check-circle ok"></i>已绑定<input type="submit" class="setlink setBankCard" value="解绑" style="border: none;color: #ffac2a;cursor: pointer;font-size: 13px;position: relative;top: -2px;left: 3px;"/>
                     </span>
                 </form>
             <#else>
