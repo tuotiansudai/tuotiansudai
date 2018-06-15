@@ -3,6 +3,7 @@ html {
 }
 body {
   font-size: 12px;
+  height: auto;
 }
 .main-frame {
   width: 100%;
@@ -22,6 +23,12 @@ input {
 }
 .borderRadius {
   border-radius: 3px;
+}
+.borderRadiusLeft {
+  border-radius: 3px 0px 0 3px;
+}
+.borderRadiusRight {
+  border-radius: 0 3px 3px 0;
 }
 
 p {
@@ -69,7 +76,7 @@ p {
           width: 354px;
           position: absolute;
           right: 0;
-          top: 30px;
+          top: 10px;
           .title {
             height: 55px;
             line-height: 55px;
@@ -106,6 +113,15 @@ p {
               li {
                 height: 42px;
                 margin-bottom: 25px;
+                &.submit-li {
+                  margin-top: 0;
+                  @media screen and(max-width: 1024px) {
+                    margin-top: 0.4rem;
+                  }
+                  input {
+                    width: 100%;
+                  }
+                }
                 &.captcha-li {
                   position: relative;
                   margin-bottom: 25px;
@@ -152,6 +168,9 @@ p {
                 }
                 &.recomender-iphone {
                   display: none;
+                  input {
+                    width: 100%;
+                  }
                   &.show {
                     display: block;
                   }
@@ -210,6 +229,9 @@ p {
                   margin-left: 10px;
                   text-indent: 0;
                   cursor: pointer;
+                  &:hover {
+                  background: rgba(255,119,28,0.8);
+                }
                   &:disabled {
                       background: #ccc;
                       cursor: default;
@@ -220,6 +242,10 @@ p {
                   background: #ff771c;
                   color: #fff;
                   font-size: 21px;
+                  text-indent:0;
+                  &:hover {
+                    background: rgba(255,119,28,0.8);
+                  }
                   &:disabled {
                     background: #ccc;
                   }
@@ -690,7 +716,7 @@ p {
             line-height: 30px;
             margin-bottom: 5px;
             color: #faf0c3;
-            font-size: 24px;
+            font-size: 22px;
           }
         }
 
@@ -711,10 +737,11 @@ p {
   background-size: 100%;
   color: #8d080d;
   font-size: 54px;
-  line-height: 134px;
+  line-height: 123px;
   text-align: center;
   &:hover {
     color: #8d080d;
+    opacity: 0.6;
   }
 }
 
@@ -835,7 +862,9 @@ p {
 }
 
 @media screen and (max-width: 1024px){
-
+  .my-page-width {
+    width: 7.5rem;
+  }
   .wapStyleNone {
     display: none;
   }
@@ -856,10 +885,14 @@ p {
   .gold-btn {
     width: 5.47rem;
     height: 1.34rem;
-    line-height: 1.34rem;
+    line-height: 1.26rem;
     font-size: 0.48rem;
+    &:hover {
+      opacity: 1;
+    }
   }
 body {
+  width: 7.5rem;
   background: #d32c31 url("../images/landingpage/body_bg_wap.png") no-repeat center top;
   background-size: contain;
 }
@@ -961,6 +994,29 @@ body {
                   height: 0.96rem;
                   margin-bottom: 0.4rem;
                   clear: both;
+                  .icons {
+                    display: block;
+                    float: left;
+                    width: 1.1rem;
+                    height: 100%;
+                    &.mobileIcon {
+                      background:#fff url("../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+                      background-size: 50%;
+                    }
+                    &.passwordIcon {
+                      background:#fff url("../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+                      background-size: 50%;
+                    }
+                    &.captchaIcon {
+                      background:#fff url("../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+                      background-size: 50%;
+                    }
+                    &.smsIcon {
+                      background:#fff url("../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+                      background-size: 50%;
+                    }
+                  }
+
                   &.captcha-li {
                     position: relative;
                     margin-bottom: 0.4rem;
@@ -978,7 +1034,7 @@ body {
                     height: 0.6rem;
                     margin-bottom: 5px;
                     font-size: 0.3rem;
-                    margin-left: -0.5rem;
+                    margin-left: -0.3rem;
                     a {
                       color: #3a84cf;
                       vertical-align: middle;
@@ -986,6 +1042,7 @@ body {
                     }
                     #agreementLable {
                       display: inline-block;
+                      margin-left: 0.3rem;
                     }
                     .agreement-check {
                       visibility: hidden;
@@ -1010,6 +1067,9 @@ body {
                   }
                   &.recomender-iphone {
                     display: none;
+                    input {
+                      text-indent: 0.2rem;
+                    }
                     &.show {
                       display: block;
                     }
@@ -1040,28 +1100,17 @@ body {
                   input{
                     border: 0;
                     color: #959794;
-                    text-indent: 1.04rem;
+                    text-indent: 0;
                     font-size: 0.28rem;
-                    &.mobileIcon {
-                      background:#fff url("../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
-                      background-size: 8%;
-                    }
-                    &.passwordIcon {
-                      background:#fff url("../images/landingpage/password_icon.png") no-repeat 0.3rem center;
-                      background-size: 8%;
-                    }
-                    &.captchaIcon {
-                      background:#fff url("../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
-                      background-size: 13%;
-                    }
-                    &.smsIcon {
-                      width: 4.6rem;
-                      background:#fff url("../images/landingpage/email_icon.png") no-repeat 0.3rem center;
-                      background-size: 13%;
-                    }
+                    width: 5.8rem;
+                    float: left;
+                    margin-left: -1px;
                   }
                   #input_img_captcha {
-                    width: 4.6rem;
+                    width: 3.2rem;
+                  }
+                  #smsCaptcha {
+                    width: 3.2rem;
                   }
                   .image-captcha {
                     display: inline-block;
@@ -1083,7 +1132,7 @@ body {
                     width: 2.1rem;
                     vertical-align: middle;
                     display: inline-block;
-                    background: #fce9a0;
+                    background: url("../images/landingpage/get_captcha_sms_bg.png") repeat-x;
                     color: #820401;
                     text-align: center;
                     line-height: 0.8rem;
@@ -1091,6 +1140,9 @@ body {
                     float: right;
                     text-indent: 0;
                     cursor: pointer;
+                    &:hover {
+                      background: url("../images/landingpage/get_captcha_sms_bg.png") repeat-x;
+                  }
                     &:disabled {
                       background: #ccc;
                       cursor: default;
@@ -1105,6 +1157,10 @@ body {
                     font-size: 0.45rem;
                     text-indent: 0;
                     border-radius: 0.16rem;
+                    &:hover {
+                      background: url("../images/landingpage/register_btn_bg.png") no-repeat center center;
+                      background-size: 100%;
+                    }
                     &:disabled {
                       background: #ccc;
                       color: #fff;
@@ -1124,6 +1180,7 @@ body {
         background: none;
 
         .newbie-register-wrap {
+          width: 7.5rem;
           padding-top: 0.1rem;
           .newbie-register-title {
             margin-bottom: 0.2rem;
@@ -1143,18 +1200,21 @@ body {
 
         .wap-con-swiper {
           margin: 0 auto;
-          //width: 5.96rem;
           width: 7.5rem;
           height: 3.9rem;
+          position: relative;
+          z-index: 2;
           .swiper-container {
             width: 7.5rem;
             height: 3.9rem;
             margin: 0 auto;
-            //overflow: visible!important;
             float: none;
+            z-index: 2;
             .swiper-wrapper {
+              z-index: 2;
               .swiper-slide{
                 width: 5.96rem;
+                z-index: 2;
                 .get-btn {
                   position: absolute;
                   bottom: 0.6rem;
@@ -1341,7 +1401,7 @@ body {
             p {
               line-height: 0.34rem;
               margin-bottom: 1px;
-              font-size: 0.24rem;
+              font-size: 0.22rem;
             }
           }
 
@@ -1351,7 +1411,14 @@ body {
   }
 
 }
-
+li {
+  -webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 136.53px;
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
