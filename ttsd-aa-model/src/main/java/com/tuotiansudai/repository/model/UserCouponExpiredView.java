@@ -1,7 +1,9 @@
 package com.tuotiansudai.repository.model;
 
 
-public class UserCouponExpiredView {
+import java.io.Serializable;
+
+public class UserCouponExpiredView implements Serializable{
 
     private String mobile;
 
