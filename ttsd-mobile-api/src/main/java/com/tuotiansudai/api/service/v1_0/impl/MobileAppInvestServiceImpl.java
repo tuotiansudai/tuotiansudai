@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.InvestRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppInvestService;
-import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
@@ -25,7 +24,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService{
     @Override
     public BaseResponseDto<BankAsynResponseDto> invest(InvestRequestDto investRequestDto) {
         try {
-            BankAsyncMessage bankAsyncMessage = investService.invest(new InvestDto());
+            BankAsyncMessage bankAsyncMessage = investService.invest(investRequestDto.convertToInvestDto());
             if (bankAsyncMessage.isStatus()){
                 BaseResponseDto<BankAsynResponseDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
                 responseDto.setData(new BankAsynResponseDto(bankAsyncMessage.getUrl(), bankAsyncMessage.getData()));
@@ -40,7 +39,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService{
     @Override
     public BaseResponseDto<BankAsynResponseDto> noPasswordInvest(InvestRequestDto investRequestDto) {
         try {
-            BankReturnCallbackMessage bankAsyncMessage = investService.noPasswordInvest(new InvestDto());
+            BankReturnCallbackMessage bankAsyncMessage = investService.noPasswordInvest(investRequestDto.convertToInvestDto());
             if (bankAsyncMessage.isStatus()){
                 return new BaseResponseDto<>(ReturnMessage.SUCCESS);
             }

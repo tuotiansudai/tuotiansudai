@@ -23,7 +23,6 @@ public class MobileAppInvestController extends MobileAppBaseController {
     @RequestMapping(value = "/create/invest", method = RequestMethod.POST)
     @ApiOperation("验密直投")
     public BaseResponseDto<BankAsynResponseDto> invest(@RequestBody InvestRequestDto investRequestDto) {
-
         investRequestDto.setUserId(getLoginName());
         investRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestService.invest(investRequestDto);

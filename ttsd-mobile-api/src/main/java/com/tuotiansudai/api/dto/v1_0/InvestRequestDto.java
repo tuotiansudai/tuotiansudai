@@ -76,8 +76,5 @@ public class InvestRequestDto extends BaseParamDto {
         investDto.setLoanId(this.getLoanId());
         investDto.setUserCouponIds(this.userCouponIds);
         return investDto;
-
     }
-
-
 }
