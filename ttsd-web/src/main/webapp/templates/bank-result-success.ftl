@@ -60,6 +60,13 @@
 
             </div>
         </#if>
+    <#--重置密码成功-->
+        <#if bankCallbackType == 'PASSWORD_RESET'>
+            <div class="handle_btn_container">
+                <div class="see_my_account">查看我的账户</div>
+
+            </div>
+        </#if>
         <p class="phone-tip">客服电话：400-169-1188 （工作日 9:00-22:00）</p>
     </div>
 </div>

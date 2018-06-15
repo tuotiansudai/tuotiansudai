@@ -71,6 +71,20 @@
 
         </div>
         <div class="btn-container">
+            <a href="/m/loan-list" class="btn-confirm">确定</a>
+        </div>
+    </#if>
+<#--修改密码成功-->
+    <#if bankCallbackType == 'PASSWORD_RESET'>
+        <div class="m-header">重置密码成功</div>
+        <div class="info-container">
+            <div class="status-container">
+                <div class="icon-status icon-success"></div>
+                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+            </div>
+
+        </div>
+        <div class="btn-container">
             <a href="/m/account" class="btn-confirm">确定</a>
         </div>
     </#if>
