@@ -106,7 +106,7 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
-        left join account a on u.login_name = a.login_name
+        left join bank_account a on u.login_name = a.login_name
         <where>
             <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
@@ -279,22 +279,22 @@
         user.register_time as register_time,
         user.status as status,
         user.user_name as user_name,
-        account.balance as balance,
+        bank_account.balance as balance,
         (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
         FROM `user`
-        JOIN `account`
-        ON `user`.`login_name` = `account`.`login_name`
+        JOIN `bank_account`
+        ON `user`.`login_name` = `bank_account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `account`.`balance` >= #{balanceMin}
+            AND `bank_account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `account`.`balance` &lt;= #{balanceMax}
+            AND `bank_account`.`balance` &lt;= #{balanceMax}
         </if>
-        ORDER BY `account`.`balance` DESC
+        ORDER BY `bank_account`.`balance` DESC
         <if test="startLimit != null and endLimit != null">
             limit #{startLimit}, #{endLimit}
         </if>
@@ -302,36 +302,36 @@
     </select>
 
     <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
-        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        SELECT IFNULL(SUM(`bank_account`.`balance`), 0)
         FROM `user`
-        JOIN `account`
-        ON `user`.`login_name` = `account`.`login_name`
+        JOIN `bank_account`
+        ON `user`.`login_name` = `bank_account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `account`.`balance` >= #{balanceMin}
+            AND `bank_account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `account`.`balance` &lt;= #{balanceMax}
+            AND `bank_account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
     <select id="findUsersAccountBalanceCount" parameterType="map" resultType="long">
         SELECT IFNULL(count(1), 0)
         FROM `user`
-        JOIN `account`
-        ON `user`.`login_name` = `account`.`login_name`
+        JOIN `bank_account`
+        ON `user`.`login_name` = `bank_account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `account`.`balance` >= #{balanceMin}
+            AND `bank_account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `account`.`balance` &lt;= #{balanceMax}
+            AND `bank_account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
@@ -362,7 +362,7 @@
         select login_name
         from user
         where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
-        and exists (select 1 from account where account.login_name = user.login_name)
+        and exists (select 1 from bank_account where bank_account.login_name = user.login_name)
     </select>
 
     <select id="findUserMicroModelCount" parameterType="map" resultType="int">
@@ -407,10 +407,10 @@
                 AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
             </if>
             <if test="userBalanceStart != null and userBalanceStart != '' ">
-                AND (select balance from account a where a.login_name=u.login_name) >= #{userBalanceStart}
+                AND (select balance from bank_account a where a.login_name=u.login_name) >= #{userBalanceStart}
             </if>
             <if test="userBalanceEnd != null and userBalanceEnd != '' ">
-                AND (select balance from account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
+                AND (select balance from bank_account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
             </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
                 AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}
@@ -500,7 +500,7 @@
             EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1) as invested,
             (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as total_invest_amount,
             (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') as total_withdraw_amount,
-            (select balance from account a where a.login_name=u.login_name) as user_balance,
+            (select balance from bank_account a where a.login_name=u.login_name) as user_balance,
             (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as invest_count,
             (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) as loan_count,
             DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
@@ -556,10 +556,10 @@
                 AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
             </if>
             <if test="userBalanceStart != null and userBalanceStart != '' ">
-                AND (select balance from account a where a.login_name=u.login_name) >= #{userBalanceStart}
+                AND (select balance from bank_account a where a.login_name=u.login_name) >= #{userBalanceStart}
             </if>
             <if test="userBalanceEnd != null and userBalanceEnd != '' ">
-                AND (select balance from account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
+                AND (select balance from bank_account a where a.login_name=u.login_name) &lt;= #{userBalanceEnd}
             </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
                 AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}

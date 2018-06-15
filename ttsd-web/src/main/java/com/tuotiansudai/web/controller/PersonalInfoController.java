@@ -2,9 +2,15 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.RiskEstimateService;
+import com.tuotiansudai.service.BankBindCardService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 public class PersonalInfoController {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private BankAccountService bankAccountService;
 
     @Autowired
-    private UserBindBankCardService userBindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private RiskEstimateService riskEstimateService;
@@ -42,7 +42,7 @@ public class PersonalInfoController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
-        UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
 
         BankAccountModel bankAccountModel = bankAccountService.findBankAccount(userModel.getLoginName());
 
@@ -59,7 +59,7 @@ public class PersonalInfoController {
 
         }
 
-        UserBankCardModel bankCard = userBindBankCardService.findBankCard(userModel.getLoginName());
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(userModel.getLoginName());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());
@@ -91,19 +91,10 @@ public class PersonalInfoController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset-bank-password/source/{source}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> resetUmpayPassword(String identityNumber) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        baseDto.setData(dataDto);
-        dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
-        return baseDto;
-    }
-
-    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView resetUmpayPasswordPage() {
-        return new ModelAndView("reset-password");
+    public ModelAndView resetBankPassword(@PathVariable(value = "source") Source source) {
+        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName());
+        return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

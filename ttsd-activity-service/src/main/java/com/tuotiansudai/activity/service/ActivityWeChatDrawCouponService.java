@@ -50,9 +50,6 @@ public class ActivityWeChatDrawCouponService {
     }
 
     public void sendDrawCouponMessage(String loginName, WeChatDrawCoupon weChatDrawCoupon) {
-        if (duringActivities(weChatDrawCoupon)) {
-            mqWrapperClient.sendMessage(MessageQueue.ActivityWeChatCoupon, new WeChatDrawCouponMessage(loginName, weChatDrawCoupon));
-        }
     }
 
     public List<Date> getActivityTime(WeChatDrawCoupon weChatDrawCoupon){

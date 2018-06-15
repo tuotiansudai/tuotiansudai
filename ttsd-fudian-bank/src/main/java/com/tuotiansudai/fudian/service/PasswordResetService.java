@@ -2,6 +2,7 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 import com.tuotiansudai.fudian.dto.request.PasswordResetRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.PasswordResetContentDto;
@@ -39,13 +40,13 @@ public class PasswordResetService implements ReturnCallbackInterface, NotifyCall
         this.updateMapper = updateMapper;
     }
 
-    public PasswordResetRequestDto reset(Source source, String loginName, String mobile, String userName, String accountNo) {
-        PasswordResetRequestDto dto = new PasswordResetRequestDto(source, loginName, mobile, userName, accountNo, null);
+    public PasswordResetRequestDto reset(Source source, BankBaseDto params) {
+        PasswordResetRequestDto dto = new PasswordResetRequestDto(source, params.getLoginName(), params.getMobile(), params.getBankUserName(), params.getBankAccountNo());
 
         signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            logger.error("[Password Reset] sign error, userName: {}, accountNo: {}", userName, accountNo);
+            logger.error("[Password Reset] sign error, data: {}", params);
             return null;
         }
 

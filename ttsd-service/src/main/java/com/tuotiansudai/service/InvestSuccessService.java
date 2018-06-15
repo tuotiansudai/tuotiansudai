@@ -45,26 +45,32 @@ public class InvestSuccessService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public void processInvestSuccess(BankLoanInvestMessage message) {
-        long investId = message.getInvestId();
+    public void processInvestSuccess(BankLoanInvestMessage bankLoanInvestMessage) {
+        long investId = bankLoanInvestMessage.getInvestId();
 
         InvestModel investModel = investMapper.findById(investId);
 
         if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            logger.warn("[Invest Success] invest not found or status is incorrect, message: {}", new Gson().toJson(message));
+            logger.warn("[Invest Success] invest not found or status is incorrect, message: {}", new Gson().toJson(bankLoanInvestMessage));
             return;
         }
 
-        investModel.setBankOrderNo(message.getBankOrderNo());
-        investModel.setBankOrderDate(message.getBankOrderDate());
+        investModel.setBankOrderNo(bankLoanInvestMessage.getBankOrderNo());
+        investModel.setBankOrderDate(bankLoanInvestMessage.getBankOrderDate());
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTradingTime(new Date());
         investMapper.update(investModel);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS));
+                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                        investModel.getLoginName(),
+                        investModel.getId(),
+                        bankLoanInvestMessage.getBankOrderNo(),
+                        bankLoanInvestMessage.getBankOrderDate(),
+                        investModel.getAmount(),
+                        UserBillBusinessType.INVEST_SUCCESS)));
 
-        mqWrapperClient.sendMessage(MessageQueue.Invest_CompletePointTask, message);
+        mqWrapperClient.sendMessage(MessageQueue.Invest_CompletePointTask, bankLoanInvestMessage);
 
         //投资成功后发送消息
         this.publishInvestSuccessMessage(investModel);

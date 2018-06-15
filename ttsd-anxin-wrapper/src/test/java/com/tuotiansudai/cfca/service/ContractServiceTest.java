@@ -44,7 +44,7 @@ public class ContractServiceTest {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
     @Autowired
     private ContractService contractService;
     @Autowired
@@ -68,8 +68,8 @@ public class ContractServiceTest {
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(userModel.getLoginName(), loanModel.getId(), investModel.getId(), investModel.getId());
         transferApplicationModel.setLoginName(userModel.getLoginName());
         transferApplicationMapper.create(transferApplicationModel);
-        AccountModel accountModel = getAccountModel(userModel.getLoginName());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = getAccountModel(userModel.getLoginName());
+        bankAccountMapper.create(accountModel);
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
         InvestRepayModel endInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), investModel.getId(), 3, 233L, 2000L, 2L,
@@ -103,8 +103,8 @@ public class ContractServiceTest {
         TransferApplicationModel transferApplicationModel = getTransferApplicationModel(transferUserModel.getLoginName(), loanModel.getId(), transferInvestModel.getId(), investModel.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
-        AccountModel accountModel = getAccountModel(userModel.getLoginName());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = getAccountModel(userModel.getLoginName());
+        bankAccountMapper.create(accountModel);
 
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
@@ -161,8 +161,8 @@ public class ContractServiceTest {
         transferApplicationModel.setPeriod(1);
         transferApplicationMapper.create(transferApplicationModel);
 
-        AccountModel accountModel = getAccountModel(userModel.getLoginName());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = getAccountModel(userModel.getLoginName());
+        bankAccountMapper.create(accountModel);
 
         InvestRepayModel startInvestRepayModel = new InvestRepayModel(IdGenerator.generate(), transferInvestModel.getId(), 1, 233L, 2000L, 2L,
                 DateTime.parse("2011-1-1").toDate(), RepayStatus.REPAYING);
@@ -282,8 +282,8 @@ public class ContractServiceTest {
         return al;
     }
 
-    public AccountModel getAccountModel(String loginName) {
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
+    public BankAccountModel getAccountModel(String loginName) {
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
         return accountModel;
     }
 

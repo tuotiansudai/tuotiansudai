@@ -71,7 +71,7 @@ public class PointTaskServiceImpl implements PointTaskService {
     private PointBillService pointBillService;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -292,7 +292,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 }
                 break;
             case FIRST_REFERRER_INVEST:
-                return accountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
+                return bankAccountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
             case FIRST_INVEST_180:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._180;

@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.BankRechargeService;
 import com.tuotiansudai.service.BankService;
-import com.tuotiansudai.service.UserBindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
@@ -32,14 +32,14 @@ public class RechargeController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private UserBindBankCardService userBindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private BankService bankService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        UserBankCardModel userBankCardModel = userBindBankCardService.findBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
         if (userBankCardModel == null && MobileAccessDecision.isMobileAccess()) {
             return new ModelAndView("redirect:/m/personal-info");
         }

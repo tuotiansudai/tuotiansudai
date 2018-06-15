@@ -34,10 +34,10 @@ public class AnxinClient {
 
     private static final AnxinClient anxinClient = new AnxinClient();
 
-    private static String JKS_PWD = ETCDConfigReader.getReader().getValue("anxin.jks.pwd");
-    private static String ALIAS = ETCDConfigReader.getReader().getValue("anxin.alias");
-    private static String URL = ETCDConfigReader.getReader().getValue("anxin.url");
-    private static String PLAT_ID = ETCDConfigReader.getReader().getValue("anxin.plat.id");
+    private static String JKS_PWD;
+    private static String ALIAS;
+    private static String URL;
+    private static String PLAT_ID;
 
     private static KeyStore anxinSignKey;
 
@@ -47,6 +47,11 @@ public class AnxinClient {
 
     private AnxinClient() {
         try {
+            JKS_PWD = ETCDConfigReader.getReader().getValue("anxin.jks.pwd");
+            ALIAS = ETCDConfigReader.getReader().getValue("anxin.alias");
+            URL = ETCDConfigReader.getReader().getValue("anxin.url");
+            PLAT_ID = ETCDConfigReader.getReader().getValue("anxin.plat.id");
+
             String JKS_CLASS_PATH = "anxinsign.jks";
             String DEFAULT_SSL_PROTOCOL = "TLSv1.1";
             String DEFAULT_KEY_ALGORITHM = KeyManagerFactory.getDefaultAlgorithm();

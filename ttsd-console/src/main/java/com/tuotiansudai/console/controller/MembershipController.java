@@ -14,8 +14,8 @@ import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.MembershipUserGroup;
 import com.tuotiansudai.membership.repository.model.UserMembershipType;
 import com.tuotiansudai.membership.service.*;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class MembershipController {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private UserMembershipService userMembershipService;
@@ -104,7 +104,7 @@ public class MembershipController {
         long membershipExperienceCount = membershipExperienceBillService.findMembershipExperienceBillCount(loginName, null, null);
         List<MembershipExperienceBillModel> membershipExperienceList = membershipExperienceBillService.findMembershipExperienceBillList(loginName, null, null, index, pageSize);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
         modelAndView.addObject("membershipExperienceCount", membershipExperienceCount);
         modelAndView.addObject("membershipExperienceList", membershipExperienceList);
         modelAndView.addObject("V0Experience", userMembershipService.getMembershipByLevel(0).getExperience());
@@ -115,7 +115,7 @@ public class MembershipController {
         modelAndView.addObject("V5Experience", userMembershipService.getMembershipByLevel(5).getExperience());
 
         modelAndView.addObject("membershipLevel", membershipModel == null ? "0" : membershipModel.getLevel());
-        modelAndView.addObject("membershipPoint", accountModel == null ? 0 : accountModel.getMembershipPoint());
+        modelAndView.addObject("membershipPoint", bankAccountModel == null ? 0 : bankAccountModel.getMembershipPoint());
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(membershipExperienceCount, pageSize);

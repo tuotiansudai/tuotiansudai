@@ -14,10 +14,10 @@ import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
@@ -41,7 +41,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -118,9 +118,9 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         logger.info(loginName + " drew a prize: " + prize);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        String userName = accountModel == null ? "" : userModel.getUserName();
-        String identityNumber = accountModel == null ? "" : userModel.getIdentityNumber();
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
+        String userName = bankAccountModel == null ? "" : userModel.getUserName();
+        String identityNumber = bankAccountModel == null ? "" : userModel.getIdentityNumber();
 
         String dateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
         String winnerPrize = prize + "+" + dateTime;

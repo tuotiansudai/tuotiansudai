@@ -11,7 +11,7 @@ import com.tuotiansudai.api.util.DistrictUtil;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.util.BankCardUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,10 +25,10 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
     private UserMapper userMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
+    private UserBankCardMapper userBankCardMapper;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
     private InvestMapper investMapper;
@@ -53,10 +53,10 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             dto.setCode(ReturnMessage.USER_ID_IS_NULL.getCode());
             dto.setMessage(ReturnMessage.USER_ID_IS_NULL.getMsg());
         } else {
-            BankCardModel bankCard = bankCardMapper.findPassedBankCardByLoginName(loginName);
-            AccountModel account = accountService.findByLoginName(loginName);
+            UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+            BankAccountModel account = bankAccountService.findBankAccount(loginName);
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, bankCard, account, anxinProp);
+            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, userBankCardModel, account, anxinProp);
 
             dto.setData(personalInfoDataDto);
             dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -65,7 +65,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         return dto;
     }
 
-    private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, BankCardModel bankCard, AccountModel account, AnxinSignPropertyModel anxinProp) {
+    private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, UserBankCardModel bankCard, BankAccountModel account, AnxinSignPropertyModel anxinProp) {
         PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
         personalInfoDataDto.setUserId(user.getLoginName());
         personalInfoDataDto.setUserName(user.getMobile());
@@ -89,7 +89,6 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setIsBoundBankCard(true);
             personalInfoDataDto.setBankCardNo(CommonUtils.encryptBankCardNo(bankCard.getCardNumber()));
             personalInfoDataDto.setBankId(bankCard.getBankCode());
-            personalInfoDataDto.setIsFastPayment(bankCard.isFastPayOn());
             personalInfoDataDto.setFastPaymentEnable(BankCardUtil.canEnableFastPay(bankCard.getBankCode()));
             personalInfoDataDto.setBankName(BankCardUtil.getBankName(bankCard.getBankCode()));
         } else {

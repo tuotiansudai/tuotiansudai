@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
@@ -133,4 +134,9 @@ public class BankAccountService {
         return bankAccountMapper.findByLoginName(loginName);
     }
 
+    public BankAsyncMessage resetPassword(Source source, String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+    }
 }

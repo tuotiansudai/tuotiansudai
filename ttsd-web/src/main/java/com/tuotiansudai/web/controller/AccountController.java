@@ -56,7 +56,7 @@ public class AccountController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private UserBindBankCardService userBindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
@@ -68,7 +68,7 @@ public class AccountController {
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName);
-        UserBankCardModel bankCard = userBindBankCardService.findBankCard(loginName);
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(loginName);
 
 
         modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );

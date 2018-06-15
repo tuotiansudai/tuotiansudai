@@ -16,7 +16,6 @@ import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.ProductService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.ExchangeCouponView;
@@ -53,9 +52,6 @@ public class MobileAppPointShopServiceImpl implements MobileAppPointShopService 
 
     @Autowired
     private ProductMapper productMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private CouponService couponService;

@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller.v1_0;
 
+import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -32,9 +32,9 @@ public class MobileAppCertificationController extends MobileAppBaseController {
 
     @RequestMapping(value = "/certificate", method = RequestMethod.POST)
     @ApiOperation("实名认证")
-    public BaseResponseDto<CertificationResponseDataDto> certification(@Valid @RequestBody CertificationRequestDto certificationRequestDto,
-                                                                       BindingResult bindingResult,
-                                                                       HttpServletRequest httpServletRequest) {
+    public BaseResponseDto<BankAsynResponseDto> certification(@Valid @RequestBody CertificationRequestDto certificationRequestDto,
+                                                              BindingResult bindingResult,
+                                                              HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG);
         }

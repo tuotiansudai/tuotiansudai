@@ -8,13 +8,13 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.dto.request.BankRechargeRequestDto;
+import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.repository.mapper.BankMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
+import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -35,7 +35,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
+    private UserBankCardMapper userBankCardMapper;
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
@@ -44,20 +44,19 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     private BankMapper bankMapper;
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private BankRechargeMapper rechargeMapper;
 
     @Override
     public BaseResponseDto<BankCardResponseDto> recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
-        RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
+        BankRechargeRequestDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
         String loginName = rechargeDto.getLoginName();
-        BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
-        if (bankCardModel == null) {
-            return new BaseResponseDto(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+        if (userBankCardModel == null) {
+            return new BaseResponseDto<>(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
         }
-        rechargeDto.setBankCode(bankCardModel.getBankCode());
         BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
         try {
             BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
@@ -73,7 +72,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
                 bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
             }
         } catch (UnsupportedEncodingException e) {
-            return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+            return new BaseResponseDto<>(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
         }
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -83,7 +82,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     }
 
     private long getLeftRechargeAmount(String mobile, BankModel bankModel) {
-        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null, mobile, null, RechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null, mobile, null, BankRechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
         return bankModel.getSingleDayAmount() - rechargeAmount;
     }
 

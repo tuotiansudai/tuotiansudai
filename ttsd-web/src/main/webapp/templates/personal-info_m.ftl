@@ -32,7 +32,7 @@
 
     </ul>
     <#if bankCard??>
-    <span class="manage-note">换卡操作请前往APP或者PC端进行操作</span>
+    <span class="manage-note">解绑银行卡操作请前往APP或者PC端进行操作</span>
     </#if>
 </div>
 </@global.main>

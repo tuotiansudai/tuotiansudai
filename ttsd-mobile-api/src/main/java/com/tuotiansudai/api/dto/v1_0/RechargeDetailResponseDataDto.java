@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -44,7 +44,7 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
 
     }
 
-    public RechargeDetailResponseDataDto(RechargeModel recharge) {
+    public RechargeDetailResponseDataDto(BankRechargeModel recharge) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.rechargeId = "" + recharge.getId();
         this.userId = recharge.getLoginName();

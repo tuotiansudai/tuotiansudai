@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.*;
@@ -32,7 +32,7 @@ public class ConsoleLoanApplicationServiceTest {
     FakeUserHelper userMapper;
 
     @Autowired
-    AccountMapper accountMapper;
+    BankAccountMapper bankAccountMapper;
 
     @Autowired
     LoanApplicationMapper loanApplicationMapper;
@@ -55,9 +55,9 @@ public class ConsoleLoanApplicationServiceTest {
         return userModel;
     }
 
-    private AccountModel createAccountModel(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
-        accountMapper.create(accountModel);
+    private BankAccountModel createAccountModel(UserModel userModel) {
+        BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), "111", "111");
+        bankAccountMapper.create(accountModel);
         return accountModel;
     }
 

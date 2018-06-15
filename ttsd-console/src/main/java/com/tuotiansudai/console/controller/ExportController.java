@@ -9,10 +9,7 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.*;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.enums.SystemBillBusinessType;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.ProductOrderDto;
@@ -307,8 +304,8 @@ public class ExportController {
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                               @RequestParam(value = "status", required = false) RechargeStatus status,
-                               @RequestParam(value = "source", required = false) RechargeSource source,
+                               @RequestParam(value = "status", required = false) BankRechargeStatus status,
+                               @RequestParam(value = "source", required = false) Source source,
                                @RequestParam(value = "channel", required = false) String channel,
                                @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {

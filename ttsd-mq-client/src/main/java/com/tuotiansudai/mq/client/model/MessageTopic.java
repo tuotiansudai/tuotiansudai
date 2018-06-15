@@ -12,11 +12,6 @@ public enum MessageTopic {
             MessageQueue.LoanFull_Success,
             MessageQueue.LoanFull_GenerateAnXinContract),
 
-    RepaySuccess("RepaySuccess",
-            MessageQueue.RepaySuccess_InvestRepay,
-            MessageQueue.RepaySuccess_CouponRepay,
-            MessageQueue.RepaySuccess_ExtraRateRepay),
-
     RegisterBankAccount("RegisterBankAccount",
             MessageQueue.RegisterBankAccount_Success,
             MessageQueue.RegisterBankAccount_CompletePointTask),

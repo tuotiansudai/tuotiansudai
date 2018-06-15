@@ -421,14 +421,8 @@
                 AND application_time between #{activityBeginTime} and #{tradingTime}
     </select>
 
-    <select id="findAllTransferringApplicationsByLoanId" resultMap="transferApplicationResultMap"
-            parameterType="java.lang.Long">
-        SELECT
-          *
-        FROM
-          `aa`.`transfer_application`
-        WHERE
-          loan_id = #{loanId} AND
-          status = 'TRANSFERRING'
+    <select id="findAllTransferringApplicationsByLoanId" resultMap="transferApplicationResultMap" parameterType="java.lang.Long" useCache="false">
+        SELECT * FROM `aa`.`transfer_application`
+        WHERE loan_id = #{loanId} AND status = 'TRANSFERRING'
     </select>
 </mapper>

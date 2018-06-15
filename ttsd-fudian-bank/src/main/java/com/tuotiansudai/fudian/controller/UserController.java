@@ -124,19 +124,15 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/password-reset/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> passwordReset(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> passwordReset(@PathVariable Source source, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call password reset, params: {}", params);
 
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String bankUserName = params.get("bankUserName");
-        String bankAccountNo = params.get("bankAccountNo");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo))) {
+        if (!params.isValid()) {
+            logger.error("[Fudian] call password reset, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
-        PasswordResetRequestDto requestDto = passwordResetService.reset(source, loginName, mobile, bankUserName, bankAccountNo);
+        PasswordResetRequestDto requestDto = passwordResetService.reset(source, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PASSWORD_RESET);
 

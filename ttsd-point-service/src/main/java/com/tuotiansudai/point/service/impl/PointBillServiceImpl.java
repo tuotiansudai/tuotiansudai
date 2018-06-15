@@ -10,8 +10,14 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.mapper.CouponMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
@@ -63,17 +69,7 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        if (bankAccountModel == null) {
-            logger.info(String.format("createPointBill: %s no account", loginName));
-            return;
-        }
-
         UserModel userModel = userMapper.findByLoginName(loginName);
-
-        if (!userPointMapper.exists(loginName)) {
-            userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
-        }
         UserPointModel userPointModel = userPointMapper.lockByLoginName(loginName);
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);

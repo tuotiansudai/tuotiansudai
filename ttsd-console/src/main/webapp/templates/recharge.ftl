@@ -67,7 +67,7 @@
                     <#list rechargeSourceList as sourceItem>
                         <option value="${sourceItem.name()}"
                                 <#if (source.name())?has_content && source.name() == sourceItem.name()>selected</#if>
-                                >${sourceItem.description}</option>
+                                >${sourceItem.name()}</option>
                     </#list>
                 </select>
             </div>
@@ -114,7 +114,7 @@
                         <td>${rechargeItem.rechargeId?string('0')}</td>
                         <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                         <td>${rechargeItem.loginName}
-                            <#if rechargeItem.isStaff()>
+                            <#if rechargeItem.isStaff == "1">
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                             </#if>
                         </td>

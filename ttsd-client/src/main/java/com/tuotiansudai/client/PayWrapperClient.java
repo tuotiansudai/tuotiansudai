@@ -64,7 +64,8 @@ public class PayWrapperClient extends BaseClient {
 
     private final static String cancelLoanPath = "/loan/{0}/cancel";
 
-    private final static String resetUmpayPassword = "/reset-umpay-password";
+    private final static String resetUmpayPassword = "/" +
+            "reset-umpay-password";
 
     private final static String purchase = "/invest-transfer/purchase";
 

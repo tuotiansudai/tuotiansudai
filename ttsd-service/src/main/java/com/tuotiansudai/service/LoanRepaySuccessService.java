@@ -9,10 +9,8 @@ import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,18 +27,21 @@ public class LoanRepaySuccessService {
 
     private final LoanRepayMapper loanRepayMapper;
 
+    private final TransferApplicationMapper transferApplicationMapper;
+
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public LoanRepaySuccessService(LoanMapper loanMapper, MQWrapperClient mqWrapperClient, LoanRepayMapper loanRepayMapper) {
+    public LoanRepaySuccessService(LoanMapper loanMapper, TransferApplicationMapper transferApplicationMapper, LoanRepayMapper loanRepayMapper, MQWrapperClient mqWrapperClient) {
         this.loanMapper = loanMapper;
-        this.mqWrapperClient = mqWrapperClient;
         this.loanRepayMapper = loanRepayMapper;
+        this.transferApplicationMapper = transferApplicationMapper;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void processNormalLoanRepaySuccess(BankLoanRepayMessage message) {
-        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(message.getLoanRepayId());
+    public void processNormalLoanRepaySuccess(BankLoanRepayMessage bankLoanRepayMessage) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(bankLoanRepayMessage.getLoanRepayId());
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
             logger.error("[Normal Loan Repay Success] loan: {}, loan repay: {},  status is {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getStatus());
@@ -50,8 +51,8 @@ public class LoanRepaySuccessService {
         LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
         // update current loan repay status
         currentLoanRepay.setStatus(RepayStatus.COMPLETE);
-        currentLoanRepay.setBankOrderNo(message.getBankOrderNo());
-        currentLoanRepay.setBankOrderDate(message.getBankOrderDate());
+        currentLoanRepay.setBankOrderNo(bankLoanRepayMessage.getBankOrderNo());
+        currentLoanRepay.setBankOrderDate(bankLoanRepayMessage.getBankOrderDate());
         loanRepayMapper.update(currentLoanRepay);
         logger.info("[Normal Loan Repay Success] update loan repay status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
 
@@ -63,14 +64,20 @@ public class LoanRepaySuccessService {
 
         // update agent user bill
         UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
-        AmountTransferMessage amountTransferMessage = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), message.getLoanRepayId(), currentLoanRepay.getRepayAmount(), businessType);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, amountTransferMessage);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                        loanModel.getAgentLoginName(),
+                        bankLoanRepayMessage.getLoanRepayId(),
+                        bankLoanRepayMessage.getBankOrderNo(),
+                        bankLoanRepayMessage.getBankOrderDate(),
+                        currentLoanRepay.getRepayAmount(),
+                        businessType)));
         logger.info("[Normal Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void processAdvancedLoanRepaySuccess(BankLoanRepayMessage message) {
-        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(message.getLoanRepayId());
+    public void processAdvancedLoanRepaySuccess(BankLoanRepayMessage bankLoanRepayMessage) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(bankLoanRepayMessage.getLoanRepayId());
 
         if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
             logger.error("[Advanced Loan Repay Success] loan: {}, loan repay: {},  status is {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getStatus());
@@ -85,8 +92,8 @@ public class LoanRepaySuccessService {
             if (loanRepayModel.getStatus() != RepayStatus.COMPLETE) {
                 loanRepayModel.setActualRepayDate(currentLoanRepay.getActualRepayDate());
                 loanRepayModel.setStatus(RepayStatus.COMPLETE);
-                loanRepayModel.setBankOrderNo(message.getBankOrderNo());
-                loanRepayModel.setBankOrderDate(message.getBankOrderDate());
+                loanRepayModel.setBankOrderNo(bankLoanRepayMessage.getBankOrderNo());
+                loanRepayModel.setBankOrderDate(bankLoanRepayMessage.getBankOrderDate());
                 loanRepayMapper.update(loanRepayModel);
             }
         }
@@ -95,13 +102,21 @@ public class LoanRepaySuccessService {
         loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
         logger.info("[Advanced Loan Repay Success] update loan status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
 
+        List<TransferApplicationModel> transferringApplications = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanModel.getId());
+        transferringApplications.forEach(transferringApplication -> {
+            transferringApplication.setStatus(TransferStatus.CANCEL);
+            transferApplicationMapper.update(transferringApplication);
+        });
+
         // update agent user bill
-        AmountTransferMessage amountTransferMessage = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                loanModel.getAgentLoginName(),
-                message.getLoanRepayId(),
-                currentLoanRepay.getRepayAmount(),
-                UserBillBusinessType.ADVANCE_REPAY);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, amountTransferMessage);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                        loanModel.getAgentLoginName(),
+                        bankLoanRepayMessage.getLoanRepayId(),
+                        bankLoanRepayMessage.getBankOrderNo(),
+                        bankLoanRepayMessage.getBankOrderDate(),
+                        currentLoanRepay.getRepayAmount(),
+                        UserBillBusinessType.ADVANCE_REPAY)));
         logger.info("[Advanced Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
 }

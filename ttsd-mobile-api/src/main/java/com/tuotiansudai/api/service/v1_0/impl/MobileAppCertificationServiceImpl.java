@@ -2,7 +2,6 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.dto.RegisterAccountDto;

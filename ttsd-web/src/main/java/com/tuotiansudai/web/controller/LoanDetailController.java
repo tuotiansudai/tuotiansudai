@@ -11,9 +11,9 @@ import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.service.RiskEstimateService;
@@ -51,7 +51,7 @@ public class LoanDetailController {
     private InvestService investService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private RiskEstimateService riskEstimateService;
@@ -80,8 +80,8 @@ public class LoanDetailController {
         modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId,
                 membershipModel == null ? defaultFee : membershipModel.getFee(),
                 LoginUserInfo.getLoginName(), 1000000, new Date()));
-        BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-        modelAndView.addObject("hasBankCard", passedBankCard != null);
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
+        modelAndView.addObject("hasBankCard", userBankCardModel != null);
         double investFeeRate = ProductType.EXPERIENCE == loanDetail.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName());
         int membershipLevel = 0;
         if (null != membershipModel) {
