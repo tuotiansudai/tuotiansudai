@@ -44,9 +44,11 @@ public class RechargeController {
             return new ModelAndView("redirect:/m/personal-info");
         }
         ModelAndView modelAndView = new ModelAndView("/recharge");
+        if (userBankCardModel != null){
+            modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
+        }
         BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
         modelAndView.addObject("bankCard", userBankCardModel);
-        modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
         return modelAndView;
