@@ -152,7 +152,6 @@
       span {
         font-size: 15px;
         display: inline-block;
-        padding-bottom: 10px;
       }
     }
   }
@@ -217,6 +216,9 @@
     }
     .fast-recharge {
       .bind-card-nav {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
         span {
           margin: 20px auto;
           display: block;
@@ -230,6 +232,12 @@
       }
     }
     .e-bank-recharge {
+      span {
+        margin: 20px auto;
+        display: block;
+        text-align: center;
+        font-size: 15px;
+      }
       ol {
         z-index: 1;
         float: left;

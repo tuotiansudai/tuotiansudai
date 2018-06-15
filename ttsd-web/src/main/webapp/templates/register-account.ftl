@@ -8,17 +8,6 @@
         <span class="info-note">
         为了保障您的账户及资金安全，根据相关法律法规，我们会对您进行实名认证。
         </span>
-        <div class="progress-wrap clearfix">
-            <dl class="progress-account fl">
-                <dt><span class="account"></span></dt>
-                <dd class="active">实名认证</dd>
-            </dl>
-            <dl class="arrow"></dl>
-            <dl class="progress-bind-card fr">
-                <dt><span class="bind-card"></span></dt>
-                <dd>绑定银行卡</dd>
-            </dl>
-        </div>
 
     </div>
 
