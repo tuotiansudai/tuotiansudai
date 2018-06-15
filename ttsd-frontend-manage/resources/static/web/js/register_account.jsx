@@ -10,7 +10,16 @@ let validator = new ValidatorObj.ValidatorForm();
 validator.add(registerAccountForm.userName, [{
     strategy: 'isNonEmpty',
     errorMsg: '请输入姓名',
-}], true);
+},
+    {
+        strategy: 'minLength:2',
+        errorMsg: '至少输入两位汉字',
+    },
+    {
+        strategy: 'maxLength:16',
+        errorMsg: '最多输入16位汉字',
+    }
+], true);
 
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',

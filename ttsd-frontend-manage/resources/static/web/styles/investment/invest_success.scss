@@ -87,12 +87,12 @@
   width: 100%;
   overflow: hidden;
   background: #fff;
-  padding-bottom: 90px;
+  padding-bottom: 30px;
   &.change_card_calBack {
     height: 685px;
   }
   .success_tip_icon {
-    margin: 30px auto 27px auto;
+    margin: 80px auto 27px auto;
     width: 60px;
     height: 60px;
     background: url("../../images/icons/success-tip.png") no-repeat center center;
@@ -142,7 +142,6 @@
     .see_my_account, .my_personal-info{
       padding: 0;
       display: inline-block;
-      margin-right: 20px;
       width: 158px;
       height: 34px;
       line-height: 34px;
@@ -283,5 +282,10 @@
     font-size: 16px;
     color: #999;
   }
+}
+.phone-tip {
+  margin-top: 80px;
+  text-align: center;
+  color: #797979;
 }
 

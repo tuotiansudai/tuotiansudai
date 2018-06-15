@@ -20,7 +20,7 @@
     <#--充值成功-->
         <#if bankCallbackType == 'RECHARGE'>
             <div class="handle_btn_container">
-                <div class="see_my_account">查看我的账户</div>
+                <div class="see_my_account" style="margin-right: 20px;">查看我的账户</div>
                 <div class="go_to_invest investBtn">去投资</div>
             </div>
         </#if>
@@ -61,6 +61,7 @@
 
             </div>
         </#if>
+        <p class="phone-tip">客服电话：400-169-1188 （工作日 9:00-22:00）</p>
     </div>
 </div>
 </@global.main>
