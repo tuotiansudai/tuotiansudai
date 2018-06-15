@@ -16,6 +16,10 @@ validator.add(registerAccountForm.userName, [{
         errorMsg: '至少输入两位汉字',
     },
     {
+        strategy: 'isChinese',
+        errorMsg: '请输入汉字',
+    },
+    {
         strategy: 'maxLength:16',
         errorMsg: '最多输入16位汉字',
     }
