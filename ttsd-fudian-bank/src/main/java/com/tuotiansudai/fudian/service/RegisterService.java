@@ -13,7 +13,7 @@ import com.tuotiansudai.fudian.mapper.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
-import com.tuotiansudai.mq.client.model.MessageTopic;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +106,7 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             BankRegisterMessage bankRegisterMessage = gson.fromJson(message, BankRegisterMessage.class);
             bankRegisterMessage.setBankAccountNo(registerContentDto.getAccountNo());
             bankRegisterMessage.setBankUserName(registerContentDto.getUserName());
-            this.messageQueueClient.publishMessage(MessageTopic.RegisterBankAccount, bankRegisterMessage);
+            this.messageQueueClient.sendMessage(MessageQueue.RegisterBankAccount_Success, bankRegisterMessage);
         }
 
         responseDto.setReqData(responseData);

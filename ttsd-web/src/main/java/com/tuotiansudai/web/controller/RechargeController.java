@@ -46,6 +46,7 @@ public class RechargeController {
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
         modelAndView.addObject("bankCard", userBankCardModel);
+        modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
         return modelAndView;

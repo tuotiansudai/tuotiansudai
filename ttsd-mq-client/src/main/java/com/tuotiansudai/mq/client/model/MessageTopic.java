@@ -12,10 +12,6 @@ public enum MessageTopic {
             MessageQueue.LoanFull_Success,
             MessageQueue.LoanFull_GenerateAnXinContract),
 
-    RegisterBankAccount("RegisterBankAccount",
-            MessageQueue.RegisterBankAccount_Success,
-            MessageQueue.RegisterBankAccount_CompletePointTask),
-
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,
             MessageQueue.BindBankCard_CompletePointTask),
