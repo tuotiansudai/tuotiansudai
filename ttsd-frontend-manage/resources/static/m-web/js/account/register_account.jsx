@@ -14,7 +14,12 @@ validator.add(registerAccountForm.userName, [{
     {
         strategy: 'isChinese',
         errorMsg: '请输入汉字',
-    }]);
+    },
+    {
+        strategy: 'minLength:2',
+        errorMsg: '最少输入2位汉字',
+    }
+]);
 
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',

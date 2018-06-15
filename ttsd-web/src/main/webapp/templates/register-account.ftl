@@ -17,7 +17,7 @@
             <li>
                 <label class="title">真实姓名</label>
                 <input type="text" name="userName" placeholder="请输入您的真实姓名"
-                       maxlength="17"
+                       maxlength="16"
                        class="user-name" value="${(originalFormData.userName)!}"/>
             </li>
             <li><label class="title">身份证号</label>
