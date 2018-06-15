@@ -20,7 +20,6 @@
     <#--充值成功-->
         <#if bankCallbackType == 'RECHARGE'>
             <div class="handle_btn_container">
-                <div class="see_my_account" style="margin-right: 20px;">查看我的账户</div>
                 <div class="go_to_invest investBtn">去投资</div>
             </div>
         </#if>
@@ -56,6 +55,13 @@
         </#if>
     <#--还款成功-->
         <#if bankCallbackType == 'LOAN_REPAY'>
+            <div class="handle_btn_container">
+                <div class="see_my_account">查看我的账户</div>
+
+            </div>
+        </#if>
+    <#--重置密码成功-->
+        <#if bankCallbackType == 'PASSWORD_RESET'>
             <div class="handle_btn_container">
                 <div class="see_my_account">查看我的账户</div>
 

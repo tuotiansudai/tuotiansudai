@@ -13,6 +13,7 @@
             </div>
 
         </div>
+
     </#if>
 <#--银行卡绑定失败-->
     <#if bankCallbackType == 'CARD_BIND'>
@@ -25,6 +26,7 @@
             </div>
 
         </div>
+
     </#if>
 <#--申请提现失败-->
     <#if bankCallbackType == 'WITHDRAW'>
@@ -37,6 +39,7 @@
             </div>
 
         </div>
+
     </#if>
     <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
         <div class="m-header">投资失败</div>
@@ -48,12 +51,28 @@
             </div>
 
         </div>
-    </#if>
 
+    </#if>
+    <#if bankCallbackType == 'PASSWORD_RESET'>
+        <div class="m-header">重置密码失败</div>
+        <div class="info-container">
+            <div class="status-container">
+                <div class="icon-status icon-failure"></div>
+                <p class="desc">重置密码失败</p>
+                <p class="reason-error">${message!('业务处理失败')}</p>
+            </div>
+
+        </div>
+
+    </#if>
 <#--失败时重新尝试-->
     <div class="btn-container">
-        <a href="${bankCallbackType.getRetryPath()}" class="btn-confirm">再次尝试</a>
+        <form id="retry-form" action="${bankCallbackType.getRetryPath()}" method="${bankCallbackType.getMethod()}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="submit" class="btn-confirm" style="border: none" value="再次尝试"/>
+        </form>
     </div>
+
     <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
 </div>
 
