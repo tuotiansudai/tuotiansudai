@@ -8,7 +8,7 @@
     };
 </script>
 
-<div class="content-container account-overview" id="accountOverview">
+<div class="content-container account-overview" id="accountOverview" data-bankcard="${hasBankCard?c}" data-account="${hasAccount?c}">
 
     <div class="column-box profile-box bg-w clearfix">
         <span class="fl account-profile"></span>
@@ -33,7 +33,7 @@
         <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
             <ul class="proList fr">
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
-                <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
+                <li class="fr"><a id="cashMoneyBtn" class="btn-primary" href="javascript:;">提现</a></li>
             </ul>
         </h3>
     </div>
@@ -266,5 +266,27 @@
             </div>
         </div>
     </div>
+</div>
+<#-- -->
+<div id="accountDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">您还没实名认证，请先进行实行认证</div>
+    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="accountBtn" class="btn btn-success" type="button">确定</button>
+    </div>
+</div>
+<div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+
+    <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+        </div>
+    </form>
+
 </div>
 </@global.main>

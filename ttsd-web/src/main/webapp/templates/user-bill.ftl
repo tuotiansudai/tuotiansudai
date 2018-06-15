@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.user_bill}" pageJavascript="${js.user_bill}" activeNav="我的账户" activeLeftNav="资金管理" title="资金管理">
-<div class="content-container user-bill-list-content">
+<div class="content-container user-bill-list-content" id="moneyMessagerContainer" data-bankcard="${hasBankCard?c}" data-account="${hasAccount?c}">
     <h4 class="column-title"><em>资金管理</em></h4>
     <div class="money-box clearfix">
         <div class="fl">
@@ -16,7 +16,7 @@
         <div class="btns">
             <a class="btn-recharge btn-list" href="/recharge">充值</a>
             <a class="btn-invest btn-list" href="/loan-list">投资</a>
-            <a class="btn-withdraw btn-list" href="/withdraw">提现</a>
+            <a id="cashMoneyBtn" class="btn-withdraw btn-list" href="javascript:;">提现</a>
         </div>
     </div>
 <div class="clear-blank-m"></div>
@@ -46,7 +46,28 @@
     <table class="user-bill-list table-striped"></table>
     <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
 </div>
+<#-- -->
+<div id="accountDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">您还没实名认证，请先进行实行认证</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="accountBtn" class="btn btn-success" type="button">确定</button>
+    </div>
+</div>
+<div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
 
+    <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+        </div>
+    </form>
+
+</div>
 <script type="text/template" id="userBillTableTemplate">
     <table class="user-bill-list">
         <thead>
