@@ -1,17 +1,15 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.JsonConverter;
 import org.joda.time.DateTime;
@@ -40,7 +38,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     public MessageQueue queue() {
@@ -74,7 +72,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
             }
             if (!baseDto.getData().getStatus()) {
                 logger.error("[新手体验项目收益发放MQ] 新手体验项目收益发放失败. 投资ID:{}", String.valueOf(investId));
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("[新手体验项目收益发放MQ]新手体验项目收益发放失败,投资ID:{0}", String.valueOf(investId))));
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("[新手体验项目收益发放MQ]新手体验项目收益发放失败,投资ID:{0}", String.valueOf(investId)));
                 return;
             }
         } catch (Exception e) {

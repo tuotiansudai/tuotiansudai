@@ -1,8 +1,6 @@
 package com.tuotiansudai.console.activity.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpInfoMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatHelpMapper;
 import com.tuotiansudai.activity.repository.mapper.WeChatUserInfoMapper;
@@ -12,12 +10,10 @@ import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.WeChatUserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.WeChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

@@ -373,11 +373,14 @@
         select count(*) from user_coupon where exchange_code = #{exchangeCode}
     </select>
 
-    <select id="findExpireAfterFiveDays" resultMap="userCouponResultMap">
-        select *
-        from user_coupon
+    <select id="findExpireAfterTwoDays" resultType="userCouponExpiredView">
+        select
+        user.mobile as mobile,
+        count(1) as expiredCount
+        from user_coupon join user on user_coupon.login_name = user.login_name
         where (user_coupon.status != 'SUCCESS' or user_coupon.status is null)
-        and datediff(user_coupon.end_time, now()) = 5
+        and datediff(user_coupon.end_time, now()) = 2
+        GROUP BY user_coupon.login_name
     </select>
 
 

@@ -1,11 +1,10 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.message.RepaySuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -24,7 +23,7 @@ public class RepaySuccessInvestRepayMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(RepaySuccessInvestRepayMessageConsumer.class);
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -41,7 +40,6 @@ public class RepaySuccessInvestRepayMessageConsumer implements MessageConsumer {
 
         if (Strings.isNullOrEmpty(message)) {
             logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay receive message is empty");
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放投资人收益失败, MQ消息为空"));
             return;
         }
 
@@ -51,14 +49,12 @@ public class RepaySuccessInvestRepayMessageConsumer implements MessageConsumer {
             repaySuccessMessage = JsonConverter.readValue(message, RepaySuccessMessage.class);
         } catch (IOException e) {
             logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay json convert RepaySuccessMessage is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放投资人收益失败, MQ消息解析失败!"));
             return;
         }
 
         Long loanRepayId = repaySuccessMessage.getLoanRepayId();
         if (loanRepayId == null) {
             logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay loanRepayId is null, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放投资人收益失败, 还款ID为空!"));
             return;
         }
 
@@ -71,12 +67,12 @@ public class RepaySuccessInvestRepayMessageConsumer implements MessageConsumer {
             }
             if (!baseDto.getData().getStatus()) {
                 logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay is fail. loanId:{}", String.valueOf(loanRepayId));
-                smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("还款发放投资人收益失败,还款ID:{0}", String.valueOf(loanRepayId))));
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("还款发放投资人收益失败,还款ID:{0}", String.valueOf(loanRepayId)));
                 return;
             }
         } catch (Exception e) {
             logger.error("[还款发放投资人收益MQ] RepaySuccess_InvestRepay  is fail, message:{}", message);
-            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto("还款发放投资人收益失败, 业务处理异常"));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "还款发放投资人收益失败, 业务处理异常");
             return;
         }
 

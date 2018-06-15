@@ -19,7 +19,7 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.CouponAssigning;
+        return MessageQueue.Coupon_Assigning;
     }
 
     @Transactional

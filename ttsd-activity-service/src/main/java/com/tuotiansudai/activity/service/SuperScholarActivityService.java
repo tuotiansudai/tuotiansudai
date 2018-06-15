@@ -126,7 +126,7 @@ public class SuperScholarActivityService {
         int result = superScholarRewardMapper.updateUserAnswer(superScholarRewardModel.getId(), answer, userRight, couponId);
 
         if (result > 0){
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+            mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, loginName + ":" + couponId);
         }
 
         return true;

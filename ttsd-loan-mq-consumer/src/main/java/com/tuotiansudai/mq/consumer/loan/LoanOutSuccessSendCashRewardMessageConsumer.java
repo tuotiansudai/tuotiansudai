@@ -1,12 +1,11 @@
 package com.tuotiansudai.mq.consumer.loan;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
@@ -52,7 +51,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
     private PayWrapperClient payWrapperClient;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     private static final String LOAN_OUT_SUCCESS_SEND_REWARD_KEY = "LOAN_OUT_SUCCESS_SEND_REWARD_KEY";
 
@@ -125,7 +124,7 @@ public class LoanOutSuccessSendCashRewardMessageConsumer implements MessageConsu
             logger.error("loan out send cash reward fail, loginName:{}, loanId:{}, sendCash{}", loginName, loanId, cashAmount);
         }
         redisWrapperClient.hset(LOAN_OUT_SUCCESS_SEND_REWARD_KEY, hkey, "fail", lifeSecond);
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【标的放款发放返现奖励】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(cashAmount))));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【标的放款发放返现奖励】用户:{0}, 标的:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(loanId), String.valueOf(cashAmount)));
         logger.info("loan out send cash reward end, loginName:{}, loanId:{}, sendCash:{}", loginName, loanId, cashAmount);
     }
 }

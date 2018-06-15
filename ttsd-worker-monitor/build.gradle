@@ -29,12 +29,9 @@ springBoot {
 }
 
 configurations {
-    all*.exclude module: "ttsd-dependency"
-    all*.exclude module: "ttsd-mq-client"
     all*.exclude group: "log4j", module: "log4j"
     all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
     all*.exclude group: "mysql", module: "mysql-connector-java"
-    all*.exclude group: "com.aliyun.oss", module: "aliyun-sdk-oss"
 }
 
 dependencies {

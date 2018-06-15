@@ -5,8 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.WeChatDrawCoupon;
 import com.tuotiansudai.message.WeChatDrawCouponMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -41,9 +39,6 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -85,11 +80,11 @@ public class ActivityWeChatDrawCouponMessageConsumer implements MessageConsumer 
                 coupons.stream().forEach(couponId -> {
                     try {
                         logger.info(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message begin", weChatDrawCoupon.name(), loginName, couponId));
-                        mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, loginName + ":" + couponId);
+                        mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, loginName + ":" + couponId);
                         logger.info(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message end", weChatDrawCoupon.name(), loginName, couponId));
                     }catch (Exception e){
                         logger.error(MessageFormat.format("[{0}] loginName:{1},couponId:{2} send message fail", weChatDrawCoupon.name(), loginName, couponId));
-                        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("【{0}】用户:{1}, 优惠券:{2}, 发送优惠券失败, 业务处理异常", weChatDrawCoupon.name(), loginName, couponId)));
+                        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【{0}】用户:{1}, 优惠券:{2}, 发送优惠券失败, 业务处理异常", weChatDrawCoupon.name(), loginName, couponId));
                     }
                 });
                 redisWrapperClient.setex(key, lifeSecond,"SUCCESS");

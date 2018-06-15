@@ -1222,4 +1222,12 @@
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
     </select>
 
+    <select id="findInvestorMobileByLoanId" parameterType="map" resultType="string">
+        SELECT distinct user.mobile from invest join user on invest.login_name = user.login_name
+        join loan on invest.loan_id = loan.id
+        where loan.id = #{loanId}
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
+    </select>
+
 </mapper>

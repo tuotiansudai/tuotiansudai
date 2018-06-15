@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -18,8 +16,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.UserBillService;
-import com.tuotiansudai.util.IdGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,8 +53,7 @@ public class InvestServicePaybackExceptionTest {
     private LoanMapper loanMapper;
 
     @Mock
-    private SmsWrapperClient smsWrapperClient;
-
+    private MQWrapperClient mqWrapperClient;
 
     @Before
     public void setUp() throws Exception {
@@ -104,7 +99,6 @@ public class InvestServicePaybackExceptionTest {
 
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
-        when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(null);
         investService.asyncInvestCallback(investId);
 
         ArgumentCaptor<InvestModel> investModelArgumentCaptor = ArgumentCaptor.forClass(InvestModel.class);

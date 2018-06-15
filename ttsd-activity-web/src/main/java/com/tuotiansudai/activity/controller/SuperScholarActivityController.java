@@ -62,7 +62,7 @@ public class SuperScholarActivityController {
     }
 
     @RequestMapping(value = "/view/result", method = RequestMethod.GET)
-    public ModelAndView sharePage(@RequestParam(value = "shareType", defaultValue = "activityHome") String shareType) {
+    public ModelAndView sharePage(@RequestParam(value = "shareType", required = false) String shareType) {
         if (!superScholarActivityService.duringActivities()) {
             return new ModelAndView("redirect:/activity/super-scholar");
         }

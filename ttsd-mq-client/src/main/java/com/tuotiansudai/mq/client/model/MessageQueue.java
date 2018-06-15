@@ -10,7 +10,7 @@ public enum MessageQueue {
     2. 必须以英文字母或者数字开头，剩余名称可以是英文，数字，横划线；（注意，不能使用下划线）
     3. 长度不超过256个字符。
     */
-    CouponAssigning("CouponAssigning"),
+    Coupon_Assigning("Coupon-Assigning"),
     UserCouponReset("UserCouponReset"),
     InvestCallback("InvestCallback"),
     TransferInvestCallback("TransferInvestCallback"),
@@ -23,7 +23,6 @@ public enum MessageQueue {
     InvestSuccess_ExperienceRepay("InvestSuccess-ExperienceRepay"),
     InvestSuccess_ActivityAnnualized("InvestSuccess-ActivityAnnualized"),
     InvestSuccess_Ranking("InvestSuccess-Ranking"),
-    InvestSuccess_WeChatHelp("InvestSuccess-WeChatHelp"),
     InvestSuccess_ActivityInvest("InvestSuccess-ActivityInvest"),
     ActivityWeChatCoupon("ActivityWeChatCoupon"),
     RechargeSuccess_CompletePointTask("RechargeSuccess-CompletePointTask"),
@@ -36,8 +35,8 @@ public enum MessageQueue {
     LoanOutSuccess_AssignCoupon("LoanOutSuccess-AssignCoupon"),
     LoanOutSuccess_AssignAchievement("LoanOutSuccess-AssignAchievement"),
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
-    LoanOutSuccess_InviteHelpActivity("LoanOutSuccess-InviteHelpActivity"),
     LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
+    LoanOutSuccess_SmsInvestor("LoanOutSuccess-SmsInvestor"),
     LoanOutSuccess_SuperScholarActivity("LoanOutSuccess-SuperScholarActivity"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
@@ -76,6 +75,8 @@ public enum MessageQueue {
     Payroll("Payroll"),
     CreditLoanBalanceAlert("CreditLoanBalanceAlert"), // 信用贷账户余额不足，短信提醒（延时job）
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
+    SmsNotify("SmsNotify"),
+    SmsFatalNotify("SmsFatalNotify"),
     ;
 
     private final String queueName;
