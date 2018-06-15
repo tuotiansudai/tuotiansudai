@@ -85,7 +85,10 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
             return new BaseResponseDto<>(ReturnMessage.NOT_BIND_CARD);
         }
 
-        BankAsyncMessage bankAsyncMessage = bankWithdrawService.withdraw(Source.MOBILE, requestDto.getBaseParam().getUserId(), requestDto.getBaseParam().getPhoneNum(), withdrawAmount, withdrawFee);
+        BankAsyncMessage bankAsyncMessage = bankWithdrawService.withdraw(Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase()),
+                requestDto.getBaseParam().getUserId(),
+                requestDto.getBaseParam().getPhoneNum(),
+                withdrawAmount);
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 }

@@ -192,6 +192,7 @@ public enum ReturnMessage {
 
 
     BANK_ACCOUNT_NOT_EXIST("9001", "未开通银行存管账户"),
+    BANK_CARD_NOT_BOUND("9002", "未绑定银行卡"),
 
     ;
 

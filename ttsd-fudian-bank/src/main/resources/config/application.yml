@@ -31,7 +31,7 @@ bank:
   bank-url: http://116.62.202.105:56502
   web-callback-return-url: ${web.server}/callback/return-url
   m-callback-return-url: ${web.server}/m/callback/return-url
-  mobile-callback-return-url: ${mobile.service}/callback/return-url
+  mobile-callback-return-url: ${mobile.server}/callback/return-url
   callback-notify-url: ${pay.service}/callback/notify-url
 
 mybatis:

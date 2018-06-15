@@ -19,7 +19,6 @@
     <form id="isPaySuccess"
           action="${requestContext.getContextPath()}/callback/${bankCallbackType.name()}/order-no/${orderNo}/is-success"
           method="post" style="display: none">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>
 
