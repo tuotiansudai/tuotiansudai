@@ -38,16 +38,34 @@ if($('.anonymous-page').length){
 }
 
 $('#noBankCardRecharge').click(function() {
-   $('#bindCardForm').submit();
+    commonFun.CommonLayerTip({
+        btn: ['去绑卡','取消'],
+        area:['280px', '160px'],
+        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+    },function() {
+        $('#bindCardForm').submit();
+    })
    return false;
 });
 
 $('#noBankCardWithdraw').click(function() {
-    $('#bindCardForm').submit();
+    commonFun.CommonLayerTip({
+        btn: ['去绑卡','取消'],
+        area:['280px', '160px'],
+        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+     },function() {
+        $('#bindCardForm').submit();
+    })
+
     return false;
 });
 
 
-
+$('#accountBtn').on('click',function () {
+    location.href = '/register/account'
+})
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})
 
 
