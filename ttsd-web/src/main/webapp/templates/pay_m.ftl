@@ -11,7 +11,7 @@
             <div class="m-header">交易失败</div>
             <div class="gif-container">
             </div>
-            <p>${pay.message!('交易失败，请联系客服！')}</p>
+            <p style="text-align: center">${pay.message!('交易失败，请联系客服！')}</p>
         </#if>
 
 
