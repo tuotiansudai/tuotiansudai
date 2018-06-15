@@ -6,7 +6,7 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.BankWithdrawService;
-import com.tuotiansudai.service.UserBindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
@@ -27,20 +27,20 @@ public class WithdrawController {
 
     private final BankAccountService bankAccountService;
 
-    private final UserBindBankCardService userBindBankCardService;
+    private final BankBindCardService bankBindCardService;
 
     private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.withdraw.fee"));
 
     @Autowired
-    public WithdrawController(BankWithdrawService bankWithdrawService, BankAccountService bankAccountService, UserBindBankCardService userBindBankCardService) {
+    public WithdrawController(BankWithdrawService bankWithdrawService, BankAccountService bankAccountService, BankBindCardService bankBindCardService) {
         this.bankWithdrawService = bankWithdrawService;
         this.bankAccountService = bankAccountService;
-        this.userBindBankCardService = userBindBankCardService;
+        this.bankBindCardService = bankBindCardService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        UserBankCardModel bankCard = userBindBankCardService.findBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
         if (bankCard == null) {
             return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }

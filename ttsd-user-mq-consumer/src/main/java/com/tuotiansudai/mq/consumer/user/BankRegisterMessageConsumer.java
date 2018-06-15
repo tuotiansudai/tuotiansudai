@@ -1,6 +1,5 @@
 package com.tuotiansudai.mq.consumer.user;
 
-
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

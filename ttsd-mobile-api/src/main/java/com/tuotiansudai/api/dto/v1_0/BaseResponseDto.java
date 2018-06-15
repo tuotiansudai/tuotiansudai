@@ -3,7 +3,7 @@ package com.tuotiansudai.api.dto.v1_0;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class BaseResponseDto<T extends BaseResponseDataDto> {
-    public static final String SUCCESS_CODE = "0000";
+    private static final String SUCCESS_CODE = "0000";
 
     private String code;
 

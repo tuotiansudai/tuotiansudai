@@ -59,7 +59,7 @@ public class GenerateRepayService {
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList(); // 借款人回款计划
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(); // 出借人回款计划
 
-        for (int index = 0; index < loanModel.getPeriods(); index++) {
+        for (int index = 0; index < daysOfPerPeriod.size(); index++) {
             logger.info("[Loan Full] loanRepay generate loanId:{} period:{} starting...", loanModel.getId(), index + 1);
 
             int period = index + 1; //当前计算的期数

@@ -13,6 +13,10 @@ public class UserBillModel implements Serializable {
 
     private Long orderId;
 
+    private String bankOrderNo;
+
+    private String bankOrderDate;
+
     private long amount;
 
     private long balance;
@@ -28,9 +32,11 @@ public class UserBillModel implements Serializable {
     public UserBillModel() {
     }
 
-    public UserBillModel(String loginName, long orderId, long amount, long balance, UserBillBusinessType businessType, UserBillOperationType operationType) {
+    public UserBillModel(String loginName, long orderId, String bankOrderNo, String bankOrderDate, long amount, long balance, UserBillBusinessType businessType, UserBillOperationType operationType) {
         this.loginName = loginName;
         this.orderId = orderId;
+        this.bankOrderNo = bankOrderNo;
+        this.bankOrderDate = bankOrderDate;
         this.amount = amount;
         this.balance = balance;
         this.freeze = 0;
@@ -60,6 +66,22 @@ public class UserBillModel implements Serializable {
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
     }
 
     public long getAmount() {

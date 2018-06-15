@@ -21,10 +21,8 @@ import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.service.ImpersonateService;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
@@ -66,7 +64,7 @@ public class UserController {
     private ImpersonateService impersonateService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private AuditLogService auditLogService;
@@ -111,9 +109,9 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-            if (bankCard != null) {
-                editUserDto.setBankCardNumber(bankCard.getCardNumber());
+            UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName);
+            if (userBankCardModel != null) {
+                editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
             }
 
             editUserDto.setAutoInvestStatus("0");

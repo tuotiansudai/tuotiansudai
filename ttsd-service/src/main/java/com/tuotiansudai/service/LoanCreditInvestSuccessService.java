@@ -1,7 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -40,7 +38,7 @@ public class LoanCreditInvestSuccessService {
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper){
+    public LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper) {
         this.investMapper = investMapper;
         this.transferApplicationMapper = transferApplicationMapper;
         this.mqWrapperClient = mqWrapperClient;
@@ -48,7 +46,7 @@ public class LoanCreditInvestSuccessService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void processLoanCreditInvestSuccess(BankLoanCreditInvestMessage bankLoanCreditInvestMessage){
+    public void processLoanCreditInvestSuccess(BankLoanCreditInvestMessage bankLoanCreditInvestMessage) {
 
         long transferApplicationId = bankLoanCreditInvestMessage.getTransferApplicationId();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
@@ -60,14 +58,14 @@ public class LoanCreditInvestSuccessService {
 
         InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
 
-        if (transferInvestModel == null || transferInvestModel.getTransferStatus() != TransferStatus.TRANSFERRING ){
+        if (transferInvestModel == null || transferInvestModel.getTransferStatus() != TransferStatus.TRANSFERRING) {
             logger.error(MessageFormat.format("[MQ] loanCreditInvest transferInvestModel not found or status is incorrect, message: {0}", new Gson().toJson(bankLoanCreditInvestMessage)));
             return;
         }
 
         InvestModel investModel = investMapper.findById(bankLoanCreditInvestMessage.getInvestId());
 
-        if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY){
+        if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
             logger.error(MessageFormat.format("[MQ] loanCreditInvest investModel not found or status is incorrect, message: {0}", new Gson().toJson(bankLoanCreditInvestMessage)));
             return;
         }
@@ -89,19 +87,39 @@ public class LoanCreditInvestSuccessService {
         this.updateInvestRepay(transferApplicationModel);
 
         //承接人购买成功 转出
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN));
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                investModel.getLoginName(),
+                transferApplicationId,
+                bankLoanCreditInvestMessage.getBankOrderNo(),
+                bankLoanCreditInvestMessage.getBankOrderDate(),
+                transferApplicationModel.getTransferAmount(),
+                UserBillBusinessType.INVEST_TRANSFER_IN)));
 
         //转让人转让成功 转入
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT);
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferFee(), UserBillBusinessType.TRANSFER_FEE);
-        inAtm.setNext(outAtm);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
+                new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                        transferInvestModel.getLoginName(),
+                        transferApplicationId,
+                        bankLoanCreditInvestMessage.getBankOrderNo(),
+                        bankLoanCreditInvestMessage.getBankOrderDate(),
+                        transferApplicationModel.getTransferAmount(),
+                        UserBillBusinessType.INVEST_TRANSFER_OUT),
+                new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                        transferInvestModel.getLoginName(),
+                        transferApplicationId,
+                        bankLoanCreditInvestMessage.getBankOrderNo(),
+                        bankLoanCreditInvestMessage.getBankOrderDate(),
+                        transferApplicationModel.getTransferFee(),
+                        UserBillBusinessType.TRANSFER_FEE)));
 
         //系统账户收取手续费
-        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                transferApplicationModel.getId(), transferApplicationModel.getTransferFee(), SystemBillBusinessType.TRANSFER_FEE,
-                MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferApplicationModel.getTransferFee())));
-        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+                new SystemBillMessage(
+                        SystemBillMessageType.TRANSFER_IN,
+                        transferApplicationModel.getId(),
+                        transferApplicationModel.getTransferFee(),
+                        SystemBillBusinessType.TRANSFER_FEE,
+                        MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferApplicationModel.getTransferFee()))));
 
         this.sendMessage(transferApplicationModel);
     }
@@ -112,12 +130,7 @@ public class LoanCreditInvestSuccessService {
         InvestModel investModel = investMapper.findById(investId);
         final int transferBeginWithPeriod = transferApplicationModel.getPeriod();
 
-        List<InvestRepayModel> transferrerTransferredInvestRepayModels = Lists.newArrayList(Iterables.filter(investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestId), new Predicate<InvestRepayModel>() {
-            @Override
-            public boolean apply(InvestRepayModel input) {
-                return input.getPeriod() >= transferBeginWithPeriod;
-            }
-        }));
+        List<InvestRepayModel> transferrerTransferredInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestId).stream().filter(investRepayModel -> investRepayModel.getPeriod() >= transferBeginWithPeriod).collect(Collectors.toList());
 
         List<InvestRepayModel> transfereeInvestRepayModels = transferrerTransferredInvestRepayModels.stream().map(transferrerTransferredInvestRepayModel -> {
             long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
@@ -147,7 +160,7 @@ public class LoanCreditInvestSuccessService {
 
     private void sendMessage(TransferApplicationModel transferApplicationModel) {
 
-        try{
+        try {
             //Title:您发起的转让项目转让成功，{0}元已发放至您的账户！
             //Content:尊敬的用户，您发起的转让项目{0}已经转让成功，资金已经到达您的账户，感谢您选择拓天速贷。
 
@@ -170,7 +183,7 @@ public class LoanCreditInvestSuccessService {
             // 安心签
             mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("loanCreditInvest success message notify send fail", e);
         }
 

@@ -65,28 +65,29 @@ public class InvestRepaySuccessService {
         investRepayModel.setBankOrderDate(bankLoanCallbackMessage.getBankOrderDate());
         investRepayMapper.update(investRepayModel);
 
-        // interest user bill
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                investModel.getLoginName(),
-                bankLoanCallbackMessage.getInvestRepayId(),
-                bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest(),
-                investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY);
-        // fee user bill
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                investModel.getLoginName(),
-                bankLoanCallbackMessage.getInvestRepayId(),
-                investRepayModel.getActualFee(),
-                UserBillBusinessType.INVEST_FEE);
-        inAtm.setNext(outAtm);
-
-        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                investRepayModel.getId(),
-                investRepayModel.getActualFee(),
-                SystemBillBusinessType.INVEST_FEE,
-                MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId())));
         try {
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
+                    new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                            investModel.getLoginName(),
+                            bankLoanCallbackMessage.getInvestRepayId(),
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest(),
+                            investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY),
+                    new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                            investModel.getLoginName(),
+                            bankLoanCallbackMessage.getInvestRepayId(),
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            investRepayModel.getActualFee(),
+                            UserBillBusinessType.INVEST_FEE)));
+
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+                    new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            investRepayModel.getId(),
+                            investRepayModel.getActualFee(),
+                            SystemBillBusinessType.INVEST_FEE,
+                            MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId()))));
         } catch (Exception ex) {
             logger.error(MessageFormat.format("[Normal Invest Callback Success] amount transfer exception, invest: {0}, invest repay: {1}", bankLoanCallbackMessage.getInvestId(), bankLoanCallbackMessage.getInvestRepayId()), ex);
         }
@@ -136,28 +137,28 @@ public class InvestRepaySuccessService {
             investRepayMapper.update(item);
         });
 
-        // interest user bill
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                investModel.getLoginName(),
-                bankLoanCallbackMessage.getInvestRepayId(),
-                bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest(),
-                UserBillBusinessType.ADVANCE_REPAY);
-        // fee user bill
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                investModel.getLoginName(),
-                bankLoanCallbackMessage.getInvestRepayId(),
-                bankLoanCallbackMessage.getInterestFee(),
-                UserBillBusinessType.INVEST_FEE);
-        inAtm.setNext(outAtm);
-
-        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                investRepayModel.getId(),
-                investRepayModel.getActualFee(),
-                SystemBillBusinessType.INVEST_FEE,
-                MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId())));
         try {
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
-            mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
+                    new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                            investModel.getLoginName(),
+                            bankLoanCallbackMessage.getInvestRepayId(),
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest(),
+                            UserBillBusinessType.ADVANCE_REPAY),
+                    new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                            investModel.getLoginName(),
+                            bankLoanCallbackMessage.getInvestRepayId(),
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            bankLoanCallbackMessage.getInterestFee(),
+                            UserBillBusinessType.INVEST_FEE)));
+            mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+                    new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            investRepayModel.getId(),
+                            investRepayModel.getActualFee(),
+                            SystemBillBusinessType.INVEST_FEE,
+                            MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId()))));
         } catch (Exception ex) {
             logger.error(MessageFormat.format("[Advance Invest Callback Success] amount transfer exception, invest: {0}, invest repay: {1}", bankLoanCallbackMessage.getInvestId(), bankLoanCallbackMessage.getInvestRepayId()), ex);
         }

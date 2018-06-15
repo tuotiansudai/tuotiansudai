@@ -1,9 +1,8 @@
 package com.tuotiansudai.mq.consumer.amount.service;
 
-import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
+import java.util.List;
 
 @Service
 public class AmountTransferService {
@@ -27,54 +26,41 @@ public class AmountTransferService {
 
     private final UserBillMapper userBillMapper;
 
+    private final Gson gson = new GsonBuilder().create();
+
     @Autowired
     public AmountTransferService(BankAccountMapper bankAccountMapper, UserBillMapper userBillMapper) {
         this.bankAccountMapper = bankAccountMapper;
         this.userBillMapper = userBillMapper;
     }
 
-    @Transactional
-    public void amountTransferProcess(AmountTransferMessage message) throws AmountTransferException {
-        logger.info("start amount transfer linked messages process.");
-        do {
-            amountTransferProcessOne(message);
-            message = message.getNext();
-        } while (message != null);
-        logger.info("end amount transfer linked messages process");
-    }
+    @Transactional(rollbackFor = Exception.class)
+    public void process(List<AmountTransferMessage> messages) {
+        logger.info("start amount transfer messages process.");
 
-    private void amountTransferProcessOne(AmountTransferMessage message) throws AmountTransferException {
-        logger.info("amount transfer process one message. loginName: {}, orderId:{}, amount:{}, businessType:{}",
-                message.getLoginName(), message.getOrderId(), message.getAmount(), message.getBusinessType());
+        for (AmountTransferMessage message : messages) {
+            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(message.getLoginName());
+            if (bankAccountModel == null) {
+                logger.error("user bank account is not found, user: {}", message.getLoginName());
+                continue;
+            }
+            logger.info("start transferInBalance, message: {}", gson.toJson(message));
 
-        TransferType transferType = message.getTransferType();
+            long amount = message.getAmount() * (message.getTransferType() == TransferType.TRANSFER_IN_BALANCE ? 1 : -1);
 
-        logger.info("transfer type:{}", transferType);
+            bankAccountMapper.updateBalance(message.getLoginName(), amount);
 
-        if (!Lists.newArrayList(TransferType.TRANSFER_IN_BALANCE, TransferType.TRANSFER_OUT_BALANCE).contains(message.getTransferType())) {
-            throw new AmountTransferException(MessageFormat.format("transfer type incorrect. transferType:{0}", transferType));
+            userBillMapper.create(new UserBillModel(message.getLoginName(),
+                    message.getOrderId(),
+                    message.getBankOrderNo(),
+                    message.getBankOrderDate(),
+                    message.getAmount(),
+                    bankAccountModel.getBalance() + amount,
+                    message.getBusinessType(),
+                    amount > 0 ? UserBillOperationType.TI_BALANCE : UserBillOperationType.TO_BALANCE));
+
         }
 
-        String loginName = message.getLoginName();
-
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        if (bankAccountModel == null) {
-            throw new TransferInAmountException(MessageFormat.format("{0} account is not exist", loginName));
-        }
-
-        long orderId = message.getOrderId();
-        long amount = message.getAmount() * (transferType == TransferType.TRANSFER_IN_BALANCE ? 1 : -1);
-        UserBillBusinessType businessType = message.getBusinessType();
-
-        logger.info("start transferInBalance, loginName:{}, orderId:{}, amount:{}, businessType:{}", loginName, orderId, amount, businessType.getDescription());
-
-        bankAccountMapper.updateBalance(loginName, amount);
-
-        userBillMapper.create(new UserBillModel(loginName,
-                orderId,
-                message.getAmount(),
-                bankAccountModel.getBalance() + amount,
-                businessType,
-                amount > 0 ? UserBillOperationType.TI_BALANCE : UserBillOperationType.TO_BALANCE));
+        logger.info("end amount transfer messages process");
     }
 }

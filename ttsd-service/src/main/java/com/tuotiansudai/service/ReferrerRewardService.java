@@ -85,9 +85,7 @@ public class ReferrerRewardService {
                     long reward = this.calculateReferrerReward(invest.getAmount(), invest.getTradingTime(), loanDealLine, referrerRelationModel.getLevel(), role);
                     InvestReferrerRewardModel model = new InvestReferrerRewardModel(IdGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                     investReferrerRewardMapper.create(model);
-                    if (this.transferReferrerReward(loanModel, model)) {
-                        this.sendMessage(model);
-                    }
+                    this.transferReferrerReward(loanModel, model);
                 } catch (Exception e) {
                     logger.warn(MessageFormat.format("[Loan Full] referrer reward exception, loanId:{}, referrer: {0}, investId: {1}", loanModel.getId(), referrerLoginName, String.valueOf(invest.getId())), e);
                 }
@@ -125,7 +123,9 @@ public class ReferrerRewardService {
             model.setBankOrderNo(bankMerchantTransferMessage.getBankOrderNo());
             model.setBankOrderDate(bankMerchantTransferMessage.getBankOrderDate());
             investReferrerRewardMapper.update(model);
-            return bankMerchantTransferMessage.isStatus();
+            if (bankMerchantTransferMessage.isStatus()) {
+                this.sendMessage(model);
+            }
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Loan Full] transfer referrer reward exception, loanId: {0}, investId: {1}, referrer: {2}, referrerRole: {3}, amount: {4}",
                     String.valueOf(loanModel.getId()),
@@ -181,15 +181,25 @@ public class ReferrerRewardService {
     }
 
     private void sendMessage(InvestReferrerRewardModel model) {
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, model.getReferrerLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.REFERRER_REWARD);
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                        model.getReferrerLoginName(),
+                        model.getId(),
+                        model.getBankOrderNo(),
+                        model.getBankOrderDate(),
+                        model.getAmount(),
+                        UserBillBusinessType.REFERRER_REWARD)));
+
         InvestModel investModel = investMapper.findById(model.getInvestId());
         String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(),
                 model.getReferrerLoginName(),
                 investModel.getLoginName(),
                 String.valueOf(model.getInvestId()));
-        SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, model.getId(), model.getAmount(), SystemBillBusinessType.REFERRER_REWARD, detail);
-        mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
+        mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+                new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT,
+                        model.getId(),
+                        model.getAmount(),
+                        SystemBillBusinessType.REFERRER_REWARD, detail));
 
         logger.info("[Loan Full] referrer reward update bill, referrer: {}, investId: {}, amount: {}", model.getReferrerLoginName(), model.getInvestId(), model.getAmount());
 

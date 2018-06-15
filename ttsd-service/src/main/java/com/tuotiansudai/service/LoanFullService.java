@@ -89,11 +89,14 @@ public class LoanFullService {
         this.updateLoanStatus(loanModel, bankLoanFullMessage);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
                         loanModel.getAgentLoginName(),
                         loanModel.getId(),
+                        bankLoanFullMessage.getBankOrderNo(),
+                        bankLoanFullMessage.getBankOrderDate(),
                         loanModel.getLoanAmount(),
-                        UserBillBusinessType.LOAN_SUCCESS));
+                        UserBillBusinessType.LOAN_SUCCESS))
+        );
 
         this.sendMessage(loanModel);
 

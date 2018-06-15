@@ -54,18 +54,18 @@ public class BankAccountService {
         this.userRoleMapper = userRoleMapper;
     }
 
-    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, Source source, String token, String ip, String deviceId) {
+    public BankAsyncMessage registerAccount(RegisterAccountDto registerAccountDto, String token, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(registerAccountDto.getLoginName());
         if (bankAccountModel != null) {
             return new BankAsyncMessage(null, null, false, "已实名认证");
         }
-        userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER, null);
-        return bankWrapperClient.register(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), token, registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
+        userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, registerAccountDto.getSource().name(), deviceId, UserOpType.REGISTER, null);
+        return bankWrapperClient.register(registerAccountDto.getSource(), registerAccountDto.getLoginName(), registerAccountDto.getMobile(), token, registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        if (bankAccountModel.isAuthorization()){
+        if (bankAccountModel.isAuthorization()) {
             return new BankAsyncMessage(null, null, false, "已开通免密投资");
         }
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.INVEST_NO_PASSWORD, null);

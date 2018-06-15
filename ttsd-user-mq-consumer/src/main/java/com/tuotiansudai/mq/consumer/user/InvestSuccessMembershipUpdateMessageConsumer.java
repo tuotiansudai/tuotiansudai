@@ -39,10 +39,7 @@ public class InvestSuccessMembershipUpdateMessageConsumer implements MessageCons
 
         try {
             BankLoanInvestMessage bankLoanInvestMessage = new Gson().fromJson(message, BankLoanInvestMessage.class);
-            membershipInvestService.afterInvestSuccess(bankLoanInvestMessage.getLoginName(),
-                    bankLoanInvestMessage.getAmount(),
-                    bankLoanInvestMessage.getInvestId(),
-                    bankLoanInvestMessage.getLoanName());
+            membershipInvestService.afterInvestSuccess(bankLoanInvestMessage);
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] parse message failed: {}: '{}'.", this.queue(), message);
         }
