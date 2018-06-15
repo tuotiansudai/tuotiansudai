@@ -413,16 +413,19 @@ body {
   .part-top {
     width: 1374px;
     height: 249px;
-    left: 2px;
+    left: 0px;
     background: url("../images/2018/july-activity/part_three_title.png") no-repeat center center;
     background-size: 100%;
-    top: -138px;
+    top: -146px;
   }
   .main-content {
     padding-top: 90px;
+    width: 1148px;
     .content-section {
       padding-top: 50px;
       padding-bottom: 30px;
+      padding-left: 50px;
+      padding-right: 50px;
     }
     .inveite-friend-desc {
 
