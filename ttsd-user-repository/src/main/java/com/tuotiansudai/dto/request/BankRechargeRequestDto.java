@@ -19,7 +19,7 @@ public class BankRechargeRequestDto implements Serializable {
     private Source source;
 
     @NotEmpty
-    private String PayType;
+    private String payType;
 
     private String channel;
 
@@ -48,11 +48,11 @@ public class BankRechargeRequestDto implements Serializable {
     }
 
     public String getPayType() {
-        return PayType;
+        return payType;
     }
 
     public void setPayType(String payType) {
-        PayType = payType;
+        this.payType = payType;
     }
 
     public String getChannel() {
