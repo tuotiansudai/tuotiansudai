@@ -33,19 +33,19 @@
     <#--申请提现成功-->
         <#if bankCallbackType == 'WITHDRAW'>
             <div class="handle_btn_container">
-                <div class="see_my_account">前往我的账户</div>
+                <div class="see_my_account">查看我的账户</div>
             </div>
         </#if>
     <#--银行卡绑定成功-->
         <#if bankCallbackType == 'CARD_BIND'>
             <div class="handle_btn_container">
-                <div class="go_to_invest investBtn">去投资</div>
+                <div class="see_my_account">查看我的账户</div>
             </div>
         </#if>
     <#--解绑成功-->
         <#if bankCallbackType == 'CANCEL_CARD_BIND'>
             <div class="handle_btn_container">
-                <div class="see_my_account">前往我的账户</div>
+                <div class="see_my_account">查看我的账户</div>
             </div>
         </#if>
     <#--投资成功-->
@@ -57,7 +57,7 @@
     <#--还款成功-->
         <#if bankCallbackType == 'LOAN_REPAY'>
             <div class="handle_btn_container">
-                <div class="see_my_account">前往我的账户</div>
+                <div class="see_my_account">查看我的账户</div>
 
             </div>
         </#if>
