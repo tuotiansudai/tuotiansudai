@@ -28,14 +28,14 @@ public class MobileAppBankCardController extends MobileAppBaseController {
 
     @RequestMapping(path = "/bankcard/bind", method = RequestMethod.POST)
     @ApiOperation("绑卡")
-    public BaseResponseDto<BankAsynResponseDto> bindBankCard(@Valid @RequestBody BaseParam baseParam, HttpServletRequest httpServletRequest) {
-        return mobileAppBankCardService.bindBankCard(LoginUserInfo.getLoginName(), RequestIPParser.parse(httpServletRequest), baseParam.getDeviceId());
+    public BaseResponseDto<BankAsynResponseDto> bindBankCard(@Valid @RequestBody BaseParamDto baseParamDto, HttpServletRequest httpServletRequest) {
+        return mobileAppBankCardService.bindBankCard(LoginUserInfo.getLoginName(), RequestIPParser.parse(httpServletRequest), baseParamDto.getBaseParam().getDeviceId());
     }
 
 
     @RequestMapping(path = "/bankcard/unbind", method = RequestMethod.POST)
     @ApiOperation("解绑")
-    public BaseResponseDto<BankAsynResponseDto> unbindBankCard(@Valid @RequestBody BaseParam baseParam, HttpServletRequest httpServletRequest) {
-        return mobileAppBankCardService.unBindBankCard(LoginUserInfo.getLoginName(), RequestIPParser.parse(httpServletRequest), baseParam.getDeviceId());
+    public BaseResponseDto<BankAsynResponseDto> unbindBankCard(@Valid @RequestBody BaseParamDto baseParamDto, HttpServletRequest httpServletRequest) {
+        return mobileAppBankCardService.unBindBankCard(LoginUserInfo.getLoginName(), RequestIPParser.parse(httpServletRequest), baseParamDto.getBaseParam().getDeviceId());
     }
 }
