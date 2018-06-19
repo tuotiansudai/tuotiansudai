@@ -16,15 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(description = "投资")
 public class MobileAppInvestController extends MobileAppBaseController {
-    @Autowired
-    private MobileAppInvestService mobileAppInvestService;
 
     @RequestMapping(value = "/create/invest", method = RequestMethod.POST)
     @ApiOperation("验密直投")
     public BaseResponseDto<BankAsynResponseDto> invest(@RequestBody InvestRequestDto investRequestDto) {
         investRequestDto.setUserId(getLoginName());
         investRequestDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppInvestService.invest(investRequestDto);
+        return null;
     }
 
     @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
@@ -32,7 +30,7 @@ public class MobileAppInvestController extends MobileAppBaseController {
     public BaseResponseDto<BankAsynResponseDto> noPasswordInvest(@RequestBody InvestRequestDto investRequestDto) {
         investRequestDto.setUserId(getLoginName());
         investRequestDto.getBaseParam().setUserId(getLoginName());
-        return mobileAppInvestService.noPasswordInvest(investRequestDto);
+        return null;
     }
 
 }
