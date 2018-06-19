@@ -26,16 +26,10 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     public BaseResponseDto<BankAsynResponseDto> invest(InvestRequestDto investRequestDto) {
         try {
             BankAsyncMessage bankAsyncMessage = investService.invest(investRequestDto.convertToInvestDto());
-//            return CommonUtils.mapToFormData(bankAsyncMessage);
-            if (bankAsyncMessage.isStatus()){
-                BaseResponseDto<BankAsynResponseDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-                responseDto.setData(new BankAsynResponseDto(bankAsyncMessage.getUrl(), bankAsyncMessage.getData()));
-                return responseDto;
-            }
+            return CommonUtils.mapToFormData(bankAsyncMessage);
         } catch (InvestException e) {
             return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), e.getType().getDescription());
         }
-        return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED);
     }
 
     @Override
