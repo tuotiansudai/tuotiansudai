@@ -153,7 +153,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         }
 
-        List<Integer> loanerSexList = findScaleByGender(new Date());
+        List<Integer> loanerSexList = findLoanerScaleByGender(new Date());
         if (loanerSexList.size() > 1) {
             operationDataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
             operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
@@ -214,7 +214,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
             operationDataDto.setMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(sexList.get(0), sexList.get(0) + sexList.get(1), 1)));
         }
-        List<Integer> loanerSexList = findScaleByGender(new Date());
+        List<Integer> loanerSexList = findLoanerScaleByGender(new Date());
         if (loanerSexList.size() > 1) {
             operationDataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
             operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
