@@ -12,20 +12,25 @@ import org.springframework.web.bind.annotation.*;
 @Api(description = "债权转让")
 public class MobileAppTransferController extends MobileAppBaseController {
 
-    private MobileAppTransferService mobileAppTransferService;
+    private final MobileAppTransferService mobileAppTransferService;
+
+    @Autowired
+    public MobileAppTransferController(MobileAppTransferService mobileAppTransferService){
+        this.mobileAppTransferService = mobileAppTransferService;
+    }
 
     @RequestMapping(value = "/get/transferee", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("债权转让承接人列表")
     public BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(@RequestBody TransferTransfereeRequestDto transferTransfereeRequestDto) {
-        return null;
+        return mobileAppTransferService.getTransferee(transferTransfereeRequestDto);
     }
 
     @RequestMapping(value = "/transfer-purchase", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("验密债权购买")
-    public BaseResponseDto<InvestResponseDataDto> transferPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        return null;
+    public BaseResponseDto<BankAsynResponseDto> transferPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
+        return mobileAppTransferService.transferPurchase(transferPurchaseRequestDto);
     }
 
 }
