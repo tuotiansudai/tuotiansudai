@@ -52,9 +52,9 @@ public class BankWithdrawService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee) {
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
+        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, 200, source);
         bankWithdrawMapper.create(bankWithdrawModel);
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
