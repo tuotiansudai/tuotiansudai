@@ -33,7 +33,6 @@ public class InvestRequestDto extends BaseParamDto {
         this.userId = userId;
     }
 
-
     public String getLoanId() {
         return loanId;
     }
