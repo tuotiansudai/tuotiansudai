@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(description = "投资")
 public class MobileAppInvestController extends MobileAppBaseController {
+
+    private final MobileAppInvestService mobileAppInvestService;
+
     @Autowired
-    private MobileAppInvestService mobileAppInvestService;
+    public MobileAppInvestController(MobileAppInvestService mobileAppInvestService){
+        this.mobileAppInvestService = mobileAppInvestService;
+    }
 
     @RequestMapping(value = "/create/invest", method = RequestMethod.POST)
     @ApiOperation("验密直投")

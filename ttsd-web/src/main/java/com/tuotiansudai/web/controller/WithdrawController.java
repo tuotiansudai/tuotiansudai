@@ -57,7 +57,7 @@ public class WithdrawController {
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BankAsyncMessage bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
                 LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(),
-                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee);
+                AmountConverter.convertStringToCent(withdrawDto.getAmount()));
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -43,6 +44,8 @@ public class BankWithdrawService {
 
     private final WeChatUserMapper weChatUserMapper;
 
+    private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.withdraw.fee"));
+
     @Autowired
     public BankWithdrawService(BankWithdrawMapper bankWithdrawMapper, BankAccountMapper bankAccountMapper, WeChatUserMapper weChatUserMapper, MQWrapperClient mqWrapperClient) {
         this.bankWrapperClient = new BankWrapperClient();
@@ -54,11 +57,11 @@ public class BankWithdrawService {
 
     public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
-        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, 200, source);
+        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, withdrawFee, source);
         bankWithdrawMapper.create(bankWithdrawModel);
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
-        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, fee, optional.map(WeChatUserModel::getOpenid).orElse(null));
+        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, withdrawFee, optional.map(WeChatUserModel::getOpenid).orElse(null));
     }
 
     @Transactional
