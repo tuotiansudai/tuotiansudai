@@ -36,6 +36,7 @@ dependencies {
     compile('mysql:mysql-connector-java:8.0.11')
     compile('org.redisson:redisson:3.6.5')
     compile('joda-time:joda-time:2.10')
+    compile('com.jcraft:jsch:0.1.54')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
