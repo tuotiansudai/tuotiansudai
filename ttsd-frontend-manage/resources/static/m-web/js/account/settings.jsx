@@ -232,8 +232,23 @@ $('#logout').on('click',() => {
     })
 });
 
+let isBankCard = $('#settingsContainer').data('bankcard');
+let isAccount = $('#settingsContainer').data('account');
+
 $('#reset-password').on('click',() => {
-    $('#resetPasswordForm').submit();
+    if(!isAccount == true){
+        location.href = '/m/register/account';
+    }else if(!isBankCard) {
+        commonFun.CommonLayerTip({
+            btn: ['去绑卡','取消'],
+            area:['280px', '160px'],
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+        },function() {
+            $('#bindCardForm').submit();
+        })
+    }else {
+        $('#resetPasswordForm').submit();
+    }
     return false;
 });
 

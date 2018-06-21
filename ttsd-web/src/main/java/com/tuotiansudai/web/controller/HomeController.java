@@ -10,6 +10,8 @@ import com.tuotiansudai.message.service.AnnounceService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -56,6 +58,12 @@ public class HomeController {
     @Autowired
     private RiskEstimateService riskEstimateService;
 
+    @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
+    private BankBindCardService bankBindCardService;
+
     @RequestMapping(path = {"/", "/m"}, method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index");
@@ -94,7 +102,12 @@ public class HomeController {
 
     @RequestMapping(value = "/settings")
     public ModelAndView settings() {
-        return new ModelAndView("/settings", "estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        ModelAndView modelAndView = new ModelAndView("/settings");
+        String loginName = LoginUserInfo.getLoginName();
+        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("hasAccount", bankAccountService.findBankAccount(loginName) != null);
+        modelAndView.addObject("hasBankCard", bankBindCardService.findBankCard(loginName) != null);
+        return modelAndView;
     }
 
     @RequestMapping(path = "/sitemap.xml", method = RequestMethod.GET)

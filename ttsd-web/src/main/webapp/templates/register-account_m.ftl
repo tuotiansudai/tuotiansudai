@@ -18,7 +18,7 @@
             <li>
                 <label for="perNum">身份证号</label>
                 <input type="text" name="identityNumber" id="perNum" autocomplete="off"
-                       placeholder="请输入您的身份证号" maxlength="18">
+                       placeholder="请输入您的身份证号" maxlength="20">
             </li>
         </ul>
         <div class="error-box"></div>

@@ -47,14 +47,7 @@
     <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
 </div>
 <#-- -->
-<div id="accountDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
-    <div class="tc text-m">您还没实名认证，请先进行实行认证</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-    <div class="tc person-info-btn" style="margin-top:40px;">
-        <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="accountBtn" class="btn btn-success" type="button">确定</button>
-    </div>
-</div>
+
 <div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
 
     <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
@@ -63,7 +56,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+            <input id="accountBtn" class="btn btn-success" value="去绑卡" type="submit"/>
         </div>
     </form>
 
