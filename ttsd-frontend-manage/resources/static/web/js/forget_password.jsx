@@ -25,7 +25,7 @@ function forgetPassword() {
             that=this,
             _arguments=arguments;
        commonFun.useAjax({
-            type:'GET',
+            type:'POST',
             async: false,
             url:'/mobile-retrieve-password/mobile/'+this.value+'/is-exist?random=' + new Date().getTime()
         },function(response) {
