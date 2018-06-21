@@ -9,9 +9,9 @@
             </div>
         <#else>
             <div class="m-header">交易失败</div>
-            <div class="gif-container icon-status icon-failure">
+            <div class="gif-container failure icon-status icon-failure">
             </div>
-            <p style="text-align: center">${pay.message!('交易失败，请联系客服！')}</p>
+            <p class="failure-font" style="text-align: center;">${pay.message!('交易失败，请联系客服！')}</p>
         </#if>
 
 

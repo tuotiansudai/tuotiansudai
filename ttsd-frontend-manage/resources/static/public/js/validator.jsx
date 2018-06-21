@@ -97,6 +97,18 @@ var strategies = {
             isHaveError.no.apply(this,arguments);
         }
     },
+    maxLengthSpace: function(errorMsg,length,showErrorAfter) {
+        let len = this.value.replace(/\s+/g, "").length;
+        console.log(this.value)
+        if (len > Number(length)) {
+             isHaveError.yes.apply(this,arguments);
+             return errorMsg;
+        }
+        else {
+            isHaveError.no.apply(this,arguments);
+        }
+    },
+
     isNumber:function(errorMsg,length,showErrorAfter) {
         if(length) {
             var reg=new RegExp('^\\d{'+length+'}$','g');
