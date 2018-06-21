@@ -174,4 +174,3 @@ $('.apply-btn').click(function () {
     loadLoanData();
     $(".date-filter .select-item").removeClass("current");
 });
-
