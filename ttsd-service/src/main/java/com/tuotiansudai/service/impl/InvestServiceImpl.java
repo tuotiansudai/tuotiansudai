@@ -580,7 +580,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public boolean isUserContractNo(String loginName, String contractNo) {
         List<InvestModel> models = investMapper.findPaginationByLoginName(loginName, 0, Integer.MAX_VALUE);
-        return models.stream().anyMatch(investModel -> investModel.getContractNo().equals(contractNo));
+        return models.stream().filter(model -> model.getContractNo() != null).anyMatch(investModel -> investModel.getContractNo().equals(contractNo));
     }
 
     private List<UserInvestRecordDataDto> convertResponseData(LoanStatus loanStatus, List<InvestModel> investModels) {
