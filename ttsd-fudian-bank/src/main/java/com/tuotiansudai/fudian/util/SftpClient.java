@@ -67,12 +67,14 @@ public class SftpClient {
         ChannelSftp sftp = getChannel();
         InputStream inputStream = sftp.get(path + "/" + name);
 
-        Scanner scanner = new Scanner(inputStream);
         ArrayList<String> list = new ArrayList<String>();
-        while (scanner.hasNext()){
-            list.add(scanner.next());
+        try(Scanner scanner = new Scanner(inputStream)) {
+            while (scanner.hasNext()){
+                list.add(scanner.next());
+            }
+        }catch (Exception e){
+            logger.error(MessageFormat.format("download fail fileName:{0}, error:{1}", name, e.getMessage()));
         }
-        scanner.close();
 
         List<QueryRechargeDownloadDto> recharges= list.stream().map(QueryRechargeDownloadDto::new).collect(Collectors.toList());
 
