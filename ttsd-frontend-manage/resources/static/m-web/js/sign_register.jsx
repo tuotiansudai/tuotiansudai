@@ -382,7 +382,7 @@ validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,
         return '';
     }
     commonFun.useAjax({
-        type:'GET',
+        type:'POST',
         async: false,
         url:'/register/user/referrer/'+this.value+'/is-exist'
     },function(response) {

@@ -98,7 +98,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
     public void shouldMobileIsExist() throws Exception {
         when(userService.mobileIsExist(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/user/mobile/13900000000/is-exist"))
+        this.mockMvc.perform(post("/register/user/mobile/13900000000/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -109,7 +109,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
     public void shouldMobileIsNotExist() throws Exception {
         when(userService.mobileIsExist(anyString())).thenReturn(false);
 
-        this.mockMvc.perform(get("/register/user/mobile/13900000000/is-exist"))
+        this.mockMvc.perform(post("/register/user/mobile/13900000000/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -120,7 +120,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
     public void shouldLoginNameIsExist() throws Exception {
         when(userService.loginNameIsExist(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/user/login-name/loginName/is-exist"))
+        this.mockMvc.perform(post("/register/user/login-name/loginName/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -131,7 +131,7 @@ public class RegisterUserControllerTest extends BaseControllerTest {
     public void shouldLoginNameIsNotExist() throws Exception {
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
 
-        this.mockMvc.perform(get("/register/user/login-name/loginName/is-exist"))
+        this.mockMvc.perform(post("/register/user/login-name/loginName/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
