@@ -42,3 +42,9 @@ redisson:
   timeout: 10000
   connectionPoolSize: 50
   database: 10
+
+oss:
+  accessKeyId: ${common.oss.id}
+  accessKeySecret: ${common.oss.secret}
+  ossEndpoint: ${common.oss.endpoint}
+  bucketName: ${common.oss.bucket}
