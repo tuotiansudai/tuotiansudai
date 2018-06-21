@@ -171,6 +171,10 @@
         limit #{index}, #{pageSize}
     </select>
 
+    <select id="findTransfeeInvestByTransfer" parameterType="map" resultMap="investResultMap">
+        select * from invest where transfer_invest_id in (select id from invest where login_name = #{transfer})
+    </select>
+
     <select id="findCountByLoginName" parameterType="map" resultType="long">
         select count(1)
         from invest
