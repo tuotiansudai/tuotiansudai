@@ -9,7 +9,6 @@
         为了保障您的账户及资金安全，根据相关法律法规，我们会对您进行实名认证。
         </span>
     </div>
-</div>
 
 <div class="register-box ">
     <form class="register-account-form" action="/register/account" id="registerAccountForm" method="post">
@@ -37,6 +36,6 @@
         </div>
     </form>
 </div>
-
+</div>
 </@global.main>
 
