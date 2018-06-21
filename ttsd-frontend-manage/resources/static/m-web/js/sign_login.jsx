@@ -139,7 +139,7 @@ let stepOneEv = () => {
         }
         localStorage.setItem('login_telephone', telephoneNum);
         commonFun.useAjax({
-            type: 'GET',
+            type: 'POST',
             async: false,
             url: '/register/user/mobile/' + telephoneNum + '/is-exist'
         }, function (response) {
