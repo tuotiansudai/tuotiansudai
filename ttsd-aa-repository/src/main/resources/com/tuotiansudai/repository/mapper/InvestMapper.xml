@@ -162,7 +162,7 @@
     </select>
 
     <select id="findPaginationByLoginName" parameterType="map" resultMap="investResultMap">
-        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements
+        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements, invest.contract_no
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
