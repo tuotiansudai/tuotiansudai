@@ -5,9 +5,9 @@
 
     <div class="pad-s">
         <div class="borderBox withdraw">
-            可提现额度：<i class="color-note">${balance}</i>元<br/>
+            <span style="padding-left: 15px;">可提现额度：<i class="color-note">${balance}</i>元</span><br/>
             <span class="pad-l-15">提现金额：</span>
-            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
+            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00" style="margin-left: 10px;"> 元
             <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
@@ -25,9 +25,9 @@
         <div class="clear-blank"></div>
         <div class="borderBox">
             <b>温馨提示:</b><br/>
-            1、每笔提现，手续费${withdrawFee}元。<br/>
-            2、当日16:00点前提现预计当日到款，16:00后提现预计次日到款（如遇双休日或法定节假日顺延）。<br/>
-            3、提现银行卡姓名应与实名认证身份一致，才可提现。<br/>
+            1、5W及以下，任何时间都可以申请提现，实时到账；<br/>
+            2、5W以上：工作日8:30-17:00，实时到账；其他时间不允许提现；<br/>
+            3、当日充值的金额只能下一个工作日12:00之后才能提现。<br/>
         </div>
     </div>
 

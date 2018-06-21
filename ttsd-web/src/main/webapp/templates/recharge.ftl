@@ -40,7 +40,7 @@
                             <form id="form2" action="/recharge" method="post"
                                   <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                                 账户可用余额：<i>${balance}</i> 元 <br/>
-                                输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny"
+                                输入充值金额：<input type="text" class="amount" data-d-group="3" data-l-zero="deny"
                                               data-v-min="0.00" placeholder="0.00"> 元
                                 <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
 
@@ -67,8 +67,8 @@
                         <div class="bind-card-nav">
                             <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <span>您尚未绑定银行卡，请先绑定银行卡！</span><br/>
-                                <input type="submit" class="btn btn-normal" value="立即绑卡"
+                                <span>您尚未绑定银行卡，请先绑定银行卡！</span>
+                                <input style="display: block;margin:0 auto" type="submit" class="btn btn-normal" value="立即绑卡"
                                        data-url="${requestContext.getContextPath()}/bind-card"/>
                             </form>
                         </div>
@@ -79,7 +79,7 @@
                                   <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
                                 <div class="pad-m">
                                     账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
-                                    输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny"
+                                    输入充值金额：<input type="text" class="amount" data-d-group="3" data-l-zero="deny"
                                                   data-v-min="0.00" placeholder="0.00"> 元
                                     <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
                                     <input type="hidden" name="amount" value=""/>

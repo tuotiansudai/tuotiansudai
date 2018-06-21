@@ -19,7 +19,6 @@ let UrlOption = {
     sendCaptcha:'no-password-invest/send-captcha',
     //刷新图形验证码
     imageCaptcha:'no-password-invest/image-captcha',
-
     //去联动优势授权
     agreement:'/agreement'
 };
@@ -233,6 +232,25 @@ $('#logout').on('click',() => {
     })
 });
 
+let isBankCard = $('#settingsContainer').data('bankcard');
+let isAccount = $('#settingsContainer').data('account');
+
+$('#reset-password').on('click',() => {
+    if(!isAccount == true){
+        location.href = '/m/register/account';
+    }else if(!isBankCard) {
+        commonFun.CommonLayerTip({
+            btn: ['去绑卡','取消'],
+            area:['280px', '160px'],
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+        },function() {
+            $('#bindCardForm').submit();
+        })
+    }else {
+        $('#resetPasswordForm').submit();
+    }
+    return false;
+});
 
 $('#anxinSign').on('click',() => {
    location.href = './anxinSign?fromPage=settings';
@@ -244,4 +262,7 @@ $('.go-back').on('click',function () {
 $('#riskEstimate').on('click',() => {
     location.href = '/m/risk-estimate?retry=true';
 });
-$()
+
+$('#riskEstimate').on('click',() => {
+    location.href = '/m/risk-estimate?retry=true';
+});

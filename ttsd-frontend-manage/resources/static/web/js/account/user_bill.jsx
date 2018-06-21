@@ -73,3 +73,29 @@ $('.apply-btn').click(function () {
 });
 
 loadLoanData();
+
+let isBankCard = $('#moneyMessagerContainer').data('bankcard');
+let isAccount = $('#moneyMessagerContainer').data('account');
+
+$('#cashMoneyBtn').on('click',function () {
+    if(!isAccount == true){
+        location.href = '/register/account';
+    }else if(!isBankCard) {
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '绑卡',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn: 0,
+            content: $('#bankCardDOM')
+        });
+    }else {
+        location.href = '/withdraw'
+    }
+})
+
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})
