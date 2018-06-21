@@ -2,6 +2,7 @@ package com.tuotiansudai.fudian.util;
 
 
 import com.jcraft.jsch.*;
+import com.tuotiansudai.fudian.dto.QueryRechargeDownloadDto;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
 public class SftpClient {
@@ -61,10 +66,22 @@ public class SftpClient {
     public void download(String path, String name) throws JSchException, SftpException, IOException {
         ChannelSftp sftp = getChannel();
         InputStream inputStream = sftp.get(path + "/" + name);
+
+        Scanner scanner = new Scanner(inputStream);
+        ArrayList<String> list = new ArrayList<String>();
+        while (scanner.hasNext()){
+            list.add(scanner.next());
+        }
+        scanner.close();
+
+        List<QueryRechargeDownloadDto> recharges= list.stream().map(QueryRechargeDownloadDto::new).collect(Collectors.toList());
+
         try {
             ossClient.upload(name, inputStream);
         }catch (Exception e){
             logger.error(MessageFormat.format("oss upload fail fileName:{0}, error:{1}", name, e.getMessage()));
         }
+
+        closeChannel();
     }
 }

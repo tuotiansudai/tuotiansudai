@@ -37,7 +37,7 @@ dependencies {
     compile('org.redisson:redisson:3.6.5')
     compile('joda-time:joda-time:2.10')
     compile('com.jcraft:jsch:0.1.54')
-    compile('com.aliyun.oss:aliyun-sdk-oss:2.3.0')
+    compile('com.aliyun.oss:aliyun-sdk-oss:3.1.0')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 

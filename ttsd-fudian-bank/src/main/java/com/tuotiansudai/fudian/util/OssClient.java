@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.InputStream;
 
 @Component
@@ -20,12 +19,12 @@ public class OssClient {
     private static OSSClient ossClient;
 
     @Autowired
-    public OssClient(OssConfig ossConfig){
+    public OssClient(OssConfig ossConfig) {
         this.ossConfig = ossConfig;
         ossClient = new OSSClient(this.ossConfig.getOssEndpoint(), this.ossConfig.getAccessKeyId(), this.ossConfig.getAccessKeySecret());
     }
 
-    public void upload(String fileName, InputStream inputStream){
+    public void upload(String fileName, InputStream inputStream) {
         ossClient.putObject(ossConfig.getBucketName(), fileName, inputStream);
     }
 }
