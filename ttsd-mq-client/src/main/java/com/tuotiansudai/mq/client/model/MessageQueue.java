@@ -76,7 +76,7 @@ public enum MessageQueue {
         return queueName;
     }
 
-    public static boolean contains(String queueName) {
-        return Stream.of(MessageQueue.values()).anyMatch(q -> q.getQueueName().equals(queueName));
+    public static boolean contains(String queueNamePrefix, String queueName) {
+        return Stream.of(MessageQueue.values()).anyMatch(q -> (queueNamePrefix + q.getQueueName()).equals(queueName));
     }
 }

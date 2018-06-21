@@ -41,7 +41,7 @@ public enum MessageTopic {
         return queues;
     }
 
-    public static boolean contains(String topicName) {
-        return Stream.of(MessageTopic.values()).anyMatch(t -> t.getTopicName().equals(topicName));
+    public static boolean contains(String topicNamePrefix, String topicName) {
+        return Stream.of(MessageTopic.values()).anyMatch(t -> (topicNamePrefix + t.getTopicName()).equals(topicName));
     }
 }
