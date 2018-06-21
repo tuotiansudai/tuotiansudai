@@ -1,7 +1,9 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.AnxinLookContractDto;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,10 +33,19 @@ public class ContractController {
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId,
                                          HttpServletResponse response) throws ServletException, IOException {
-        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(investService.findById(investId).getLoginName(), loanId, investId, AnxinContractType.LOAN_CONTRACT));
+        String loginName = LoginUserInfo.getLoginName();
+        String investLoginName = investService.findById(investId).getLoginName();
+        if (Strings.isNullOrEmpty(loginName) || !loginName.equalsIgnoreCase(investLoginName)){
+            return;
+        }
+
+        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(investLoginName, loanId, investId, AnxinContractType.LOAN_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
@@ -49,6 +61,12 @@ public class ContractController {
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        String loginName = LoginUserInfo.getLoginName();
+        String transferLoginName = transferApplicationMapper.findById(transferApplicationId).getLoginName();
+        if (Strings.isNullOrEmpty(loginName) || !loginName.equalsIgnoreCase(transferLoginName)){
+            return;
+        }
+
         byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(LoginUserInfo.getLoginName(), transferApplicationId, null, AnxinContractType.TRANSFER_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
@@ -65,6 +83,12 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
+        String loginName = LoginUserInfo.getLoginName();
+
+        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)){
+            return;
+        }
+
         byte[] pdf = anxinWrapperClient.printAnxinContract(contractNo);
         try {
             response.reset();
