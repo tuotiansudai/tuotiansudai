@@ -5,6 +5,8 @@ import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.AnxinLookContractDto;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -40,12 +42,12 @@ public class ContractController {
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId,
                                          HttpServletResponse response) throws ServletException, IOException {
         String loginName = LoginUserInfo.getLoginName();
-        String investLoginName = investService.findById(investId).getLoginName();
-        if (Strings.isNullOrEmpty(loginName) || !loginName.equalsIgnoreCase(investLoginName)){
+        InvestModel investModel = investService.findById(investId);
+        if (Strings.isNullOrEmpty(loginName) || investModel == null || !loginName.equalsIgnoreCase(investModel.getLoginName())) {
             return;
         }
 
-        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(investLoginName, loanId, investId, AnxinContractType.LOAN_CONTRACT));
+        byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(investModel.getLoginName(), loanId, investId, AnxinContractType.LOAN_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
             response.reset();
@@ -62,8 +64,8 @@ public class ContractController {
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         String loginName = LoginUserInfo.getLoginName();
-        String transferLoginName = transferApplicationMapper.findById(transferApplicationId).getLoginName();
-        if (Strings.isNullOrEmpty(loginName) || !loginName.equalsIgnoreCase(transferLoginName)){
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+        if (Strings.isNullOrEmpty(loginName) || transferApplicationModel == null || !loginName.equalsIgnoreCase(transferApplicationModel.getLoginName())) {
             return;
         }
 
@@ -85,7 +87,7 @@ public class ContractController {
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
         String loginName = LoginUserInfo.getLoginName();
 
-        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)){
+        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
             return;
         }
 
