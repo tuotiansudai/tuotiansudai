@@ -175,7 +175,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                         userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
                     }
                 } else {
-                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo()));
+                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/invest/contractNo/{1}", "http://ci3.tuotiansudai.com:9712", investModel.getContractNo()));
                 }
             }
 
