@@ -1,13 +1,10 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.AnxinLookContractDto;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -23,10 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.MessageFormat;
 
 @Controller
-@RequestMapping(path = "/contract")
+@RequestMapping(path = "/v1.0/contract")
 public class MobileAppContractDownloadController extends MobileAppBaseController{
 
     private static Logger logger = Logger.getLogger(MobileAppContractDownloadController.class);
@@ -37,17 +33,10 @@ public class MobileAppContractDownloadController extends MobileAppBaseController
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
-
     @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId,
                                          HttpServletResponse response) throws ServletException, IOException {
-        String loginName = getLoginName();
         InvestModel investModel = investService.findById(investId);
-        if (Strings.isNullOrEmpty(loginName) || investModel == null || !loginName.equalsIgnoreCase(investModel.getLoginName())) {
-            return;
-        }
 
         byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(investModel.getLoginName(), loanId, investId, AnxinContractType.LOAN_CONTRACT));
 
@@ -65,12 +54,6 @@ public class MobileAppContractDownloadController extends MobileAppBaseController
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
-        String loginName = getLoginName();
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (Strings.isNullOrEmpty(loginName) || transferApplicationModel == null || !loginName.equalsIgnoreCase(transferApplicationModel.getLoginName())) {
-            return;
-        }
-
         byte[] pdf = anxinWrapperClient.printContract(new AnxinLookContractDto(LoginUserInfo.getLoginName(), transferApplicationId, null, AnxinContractType.TRANSFER_CONTRACT));
 
         try (OutputStream ous = new BufferedOutputStream(response.getOutputStream())) {
@@ -87,15 +70,6 @@ public class MobileAppContractDownloadController extends MobileAppBaseController
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
-
-        logger.info(MessageFormat.format("contract download loginName : {0}", getLoginName()));
-
-        String loginName = getLoginName();
-
-        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
-            return;
-        }
-
         byte[] pdf = anxinWrapperClient.printAnxinContract(contractNo);
         try {
             response.reset();

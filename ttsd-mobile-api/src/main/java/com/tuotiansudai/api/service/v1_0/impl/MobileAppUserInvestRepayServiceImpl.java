@@ -65,8 +65,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Autowired
     private CouponService couponService;
 
-    @Value("${web.server}")
-    private String webServer;
+    @Value("${mobile.server}")
+    private String mobileServer;
 
     private final static String RED_ENVELOPE_TEMPLATE = "{0}元投资红包";
 
@@ -170,12 +170,12 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 if (investModel.getContractNo().equals("OLD")) {
                     if (investModel.getTransferInvestId() != null) {
                         long transferApplicationId = transferApplicationMapper.findByInvestId(investModel.getId()).getId();
-                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/transfer/transferApplicationId/{1}", this.webServer, String.valueOf(transferApplicationId)));
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/transfer/transferApplicationId/{1}", mobileServer, String.valueOf(transferApplicationId)));
                     } else {
-                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
+                        userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/investor/loanId/{1}/investId/{2}", mobileServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId())));
                     }
                 } else {
-                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/contract/invest/contractNo/{1}",  "http://ci3.tuotiansudai.com:9712", investModel.getContractNo()));
+                    userInvestRepayResponseDataDto.setContractLocation(MessageFormat.format("{0}/v1.0/contract/invest/contractNo/{1}", mobileServer, investModel.getContractNo()));
                 }
             }
 
