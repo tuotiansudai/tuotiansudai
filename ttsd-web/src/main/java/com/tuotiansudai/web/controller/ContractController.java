@@ -86,9 +86,6 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
-
-        logger.info(MessageFormat.format("contract download: loginName:{0}", LoginUserInfo.getLoginName()));
-
         String loginName = LoginUserInfo.getLoginName();
 
         if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {

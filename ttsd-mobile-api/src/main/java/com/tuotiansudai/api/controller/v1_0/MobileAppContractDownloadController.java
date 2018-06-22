@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/contract")
 public class MobileAppContractDownloadController extends MobileAppBaseController{
+
+    private static Logger logger = Logger.getLogger(MobileAppContractDownloadController.class);
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
@@ -83,6 +87,9 @@ public class MobileAppContractDownloadController extends MobileAppBaseController
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
+
+        logger.info(MessageFormat.format("contract download loginName : {0}", getLoginName()));
+
         String loginName = getLoginName();
 
         if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
