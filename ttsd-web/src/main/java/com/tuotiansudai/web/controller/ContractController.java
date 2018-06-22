@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/contract")
@@ -85,11 +86,13 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
-        String loginName = LoginUserInfo.getLoginName();
+//        String loginName = LoginUserInfo.getLoginName();
+//
+//        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
+//            return;
+//        }
+        logger.info(MessageFormat.format("contract download: loginName:{0}", LoginUserInfo.getLoginName()));
 
-        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
-            return;
-        }
 
         byte[] pdf = anxinWrapperClient.printAnxinContract(contractNo);
         try {

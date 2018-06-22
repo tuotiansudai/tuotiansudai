@@ -25,7 +25,7 @@ import java.io.OutputStream;
 
 @Controller
 @RequestMapping(path = "/contract")
-public class MobileAppContractDownloadController {
+public class MobileAppContractDownloadController extends MobileAppBaseController{
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
@@ -39,7 +39,7 @@ public class MobileAppContractDownloadController {
     @RequestMapping(value = "/investor/loanId/{loanId}/investId/{investId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, @PathVariable long investId,
                                          HttpServletResponse response) throws ServletException, IOException {
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = getLoginName();
         InvestModel investModel = investService.findById(investId);
         if (Strings.isNullOrEmpty(loginName) || investModel == null || !loginName.equalsIgnoreCase(investModel.getLoginName())) {
             return;
@@ -61,7 +61,7 @@ public class MobileAppContractDownloadController {
 
     @RequestMapping(value = "/transfer/transferApplicationId/{transferApplicationId}", method = RequestMethod.GET)
     public void generateTransferContract(@PathVariable long transferApplicationId, HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = getLoginName();
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         if (Strings.isNullOrEmpty(loginName) || transferApplicationModel == null || !loginName.equalsIgnoreCase(transferApplicationModel.getLoginName())) {
             return;
@@ -83,7 +83,7 @@ public class MobileAppContractDownloadController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName = getLoginName();
 
         if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
             return;
