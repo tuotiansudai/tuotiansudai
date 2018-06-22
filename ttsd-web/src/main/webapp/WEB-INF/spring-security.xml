@@ -118,7 +118,6 @@
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
-        <!--<intercept-url pattern="/contract/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>-->
         <!--PC rules end-->
 
         <!--M rules start-->
