@@ -4,6 +4,8 @@ package com.tuotiansudai.fudian.download;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
+import java.util.Map;
+
 public class RechargeDownloadDto {
 
     private String merchantNo;
@@ -40,7 +42,7 @@ public class RechargeDownloadDto {
 //        this.createTime = param[12];
 //    }
 
-    public String match(Integer index){
+    public Map<Integer, String> match(){
         return Maps.newHashMap(ImmutableMap.<Integer, String>builder()
                 .put(0, "merchantNo")
                 .put(1, "userName")
@@ -55,8 +57,7 @@ public class RechargeDownloadDto {
                 .put(10, "receivedAmount")
                 .put(11, "remark")
                 .put(12, "createTime")
-                .build())
-                .get(index);
+                .build());
     }
 
     public String getMerchantNo() {
