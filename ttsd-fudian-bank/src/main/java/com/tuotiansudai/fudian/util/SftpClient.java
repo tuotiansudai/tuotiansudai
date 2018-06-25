@@ -8,14 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 @Component
 public class SftpClient {
@@ -35,7 +33,7 @@ public class SftpClient {
     private Channel channel = null;
 
     @Autowired
-    public SftpClient(OssClient ossClient){
+    public SftpClient(OssClient ossClient) {
         this.ossClient = ossClient;
     }
 
@@ -55,7 +53,7 @@ public class SftpClient {
         return (ChannelSftp) channel;
     }
 
-    public void closeChannel(){
+    public void closeChannel() {
         if (channel != null) {
             channel.disconnect();
         }
@@ -64,34 +62,22 @@ public class SftpClient {
         }
     }
 
-    public void download(String path, String name) throws JSchException, SftpException, IOException {
+    public void download(String path, String name) throws JSchException, SftpException {
         ChannelSftp sftp = getChannel();
         InputStream inputStream = sftp.get(path + "/" + name);
 
         ArrayList<String> params = new ArrayList<String>();
-        try(Scanner scanner = new Scanner(inputStream)) {
-            while (scanner.hasNext()){
+        try (Scanner scanner = new Scanner(inputStream)) {
+            while (scanner.hasNext()) {
                 params.add(scanner.next());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(MessageFormat.format("download fail fileName:{0}, error:{1}", name, e.getMessage()));
         }
 
-        params.add("123123|12312|23131|1231231|123231");
-        params.add("123123|12312|23131|1231231|123231");
-        params.add("123123|12312|23131|1231231|123231");
+        List<RechargeDownloadDto> dtos = DownloadFileParser.parse(RechargeDownloadDto.class, params);
 
-        List<RechargeDownloadDto> dtos = new ArrayList<>();
-        DownloadFileParser.parse(dtos, params);
-
-//        List<RechargeDownloadDto> recharges= list.stream().map(RechargeDownloadDto::new).collect(Collectors.toList());
-
-        try {
-            ossClient.upload(name, inputStream);
-        }catch (Exception e){
-            logger.error(MessageFormat.format("oss upload fail fileName:{0}, error:{1}", name, e.getMessage()));
-        }
-
+        ossClient.upload(name, inputStream);
         closeChannel();
     }
 }
