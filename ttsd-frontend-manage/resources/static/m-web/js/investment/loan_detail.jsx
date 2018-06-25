@@ -510,6 +510,16 @@ $('#investSubmit').on('click', function(event) {
     $.when(commonFun.isUserLogin())
         .done(function() {
             if (isInvestor) {
+                if(!hasBankCard){
+                    commonFun.CommonLayerTip({
+                        btn: ['去绑卡','取消'],
+                        area:['280px', '160px'],
+                        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+                    },function() {
+                         $('#bindCardForm').submit();
+                    })
+                    return false;
+                }
                 let accountAmount = parseInt($amountInputElement.data("user-balance")) || 0;
                 if (investAmount > accountAmount) {
                     commonFun.CommonLayerTip({
@@ -517,11 +527,7 @@ $('#investSubmit').on('click', function(event) {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        if(!hasBankCard){
-                            $('#bindCardForm').submit();//去绑卡
-                        }else {
                             location.href = '/m/recharge';//去充值
-                        }
 
                     });
                     return false;
@@ -657,6 +663,16 @@ function submitData() {
         location.href = '/m/register/account';//去实名认证
         return;
     }
+    if(!hasBankCard){
+        commonFun.CommonLayerTip({
+            btn: ['去绑卡','取消'],
+            area:['280px', '160px'],
+            content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">您还没有绑卡，请先进行绑卡</p></div> `
+        },function() {
+            $('#bindCardForm').submit();
+        })
+        return false;
+    }
 
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
@@ -712,13 +728,8 @@ function submitData() {
                         area:['280px', '160px'],
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
-                        if(!hasBankCard){
-                            $('#bindCardForm').submit();//去绑卡
-                        }else {
+
                             location.href = '/m/recharge';//去充值
-                        }
-
-
                     })
                     $('.layui-layer-content').css('height','109px')
                     return false;

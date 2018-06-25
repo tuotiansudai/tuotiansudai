@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
-     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-bankcard="${hasBankCard?c}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
@@ -751,6 +751,19 @@
         <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
+</div>
+<div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+
+    <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+        </div>
+    </form>
+
 </div>
 
 
