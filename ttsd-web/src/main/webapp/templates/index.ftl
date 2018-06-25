@@ -168,7 +168,7 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-cfca sprite-homepage-logo-lian" href="http://www.umpay.com/" target="_blank">
+                <li><a rel="nofollow" class="logo-cfca fudian" href="http://www.fudian-bank.com/" target="_blank">
                 </a>
                 </li>
                 <li>
