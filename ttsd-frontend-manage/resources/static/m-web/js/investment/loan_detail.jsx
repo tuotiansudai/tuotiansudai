@@ -23,14 +23,7 @@ let commonFun = require('publicJs/commonFun');
 let isEstimate = $buyDetail.data('estimate');
 let isEstimateTransfer  = $transferDetail.data('estimate');
 //领优惠券
-$.when(commonFun.isUserLogin())
-    .done(function () {
-        commonFun.useAjax({
-            url: '/assign-coupon',
-            type: 'POST',
-            contentType: 'application/json; charset=UTF-8'
-        });
-    })
+
 
 $iconHelp.on('click',function() {
     $('.invest-refer-box',$loanDetail).toggle();
