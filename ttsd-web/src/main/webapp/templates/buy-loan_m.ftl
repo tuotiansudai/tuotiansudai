@@ -84,13 +84,13 @@
                 <span class="number-text"><strong id="expectedEarnings">0.00</strong><strong class="experience-income"></strong>
                     元</span>
             </li>
-            <li id="select_coupon" class="select-coupon">
-                <label>优惠券</label>
-                <span id="couponText" type="text">${maxBenefitCouponDesc}</span>
-                <input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">
-                <input type="hidden" id="maxBenifit" value="${(maxBenefitUserCoupon.couponId?string.computer)!}">
-                <em><i class="fa fa-angle-right"></i></em>
-            </li>
+            <#--<li id="select_coupon" class="select-coupon">-->
+                <#--<label>优惠券</label>-->
+                <#--<span id="couponText" type="text">${maxBenefitCouponDesc}</span>-->
+                <#--<input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">-->
+                <#--<input type="hidden" id="maxBenifit" value="${(maxBenefitUserCoupon.couponId?string.computer)!}">-->
+                <#--<em><i class="fa fa-angle-right"></i></em>-->
+            <#--</li>-->
 
         </ul>
     </div>

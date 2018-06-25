@@ -254,18 +254,7 @@ $('#look_repay_plan').click(function () {
 })
 
 //优惠券
-if($('#couponText').text() == '无可用优惠券'){
-    $('#couponText').css('color','#64646D')
-}
-let $selectCoupon = $('#select_coupon');
-$selectCoupon.on('click',function () {
-    location.hash='selectCoupon'
-//无优惠券列表是显示缺省
-    if($('.coupon-list-container').find('>li').length == 0){
-        let $noCouponDOM = $('<div class="noCoupon"><div class="noCouponIcon"></div><p>暂无可用的优惠券</p></div>')
-        $('.coupon-list-container').html($noCouponDOM)
-    }
-})
+
 function validateHash() {
     if(location.hash == ''){
         if($('#whichPage').data('page') == 'invest'){
@@ -282,8 +271,6 @@ function validateHash() {
     }else if(location.hash == '#buyDetail'){
         $buyDetail.show().siblings('.show-page').hide();
 
-    }else if(location.hash == '#selectCoupon'){
-        $('#couponList').show().siblings('.show-page').hide();
     }else if(location.hash == '#transferDetail'){
         $transferDetail.show().siblings().hide();
     }
@@ -303,90 +290,11 @@ var calExpectedInterest = function() {
 };
 
 
-//立即使用优惠券
-let $couponInfo = $('#couponInfo');
-let userCouponId,
-    minInvestAmount,
-    couponType,
-    productTypeUsable,
-    couponEndTime,
-    dataCouponDesc;
-//默认选择的优惠券
-let couponId = $('#couponId').val();
-$('.to-use_coupon').each(function (index,item) {
-    if($(item).data('user-coupon-id') == couponId){
-        $(item).addClass('selected');
-        return;
-    }
-})
-$('.to-use_coupon').click(function () {
-    let _self = $(this);
-    let couponId = _self.data('coupon-id');
-
-    $('.to-use_coupon').each(function (index,item) {
-        $(item).removeClass('selected');
-
-    })
-    if(_self.hasClass('disabled')){
-        return false;
-    }else {
-        _self.addClass('selected');
-    }
-
-    $('#couponId').val(_self.data('user-coupon-id'));
-    $('#couponText').text(_self.data('coupon-desc'));
-
-    commonFun.useAjax({
-        url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-        data: 'couponIds='+couponId,
-        type: 'GET'
-    },function(amount) {console.log(amount)
-        $couponExpectedInterest.text("+" + amount);
-    });
-
-    location.hash='buyDetail';
-
-
-})
-//优惠券后退按钮
-$('#iconCoupon').click(function () {
-    location.hash='buyDetail';
-})
-
-let $couponExpectedInterest = $(".experience-income");
-//计算加息券或者投资红包的预期收益
-let calExpectedCouponInterest = function() {
-    if($('#maxBenifit').val() == ''){
-        $couponExpectedInterest.text("");
-    }else {
-        commonFun.useAjax({
-            url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-            data: 'couponIds='+$('#maxBenifit').val(),
-            type: 'GET'
-        },function(amount) {console.log(amount)
-            $couponExpectedInterest.text("+" + amount);
-        });
-    }
-
-};
-//根据选择优惠券计算红包或加息券的预期收益
-let calExpectedSelectCouponInterest = function(dom) {
-    var couponIds = dom.data('coupon-id');
-    commonFun.useAjax({
-        url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
-        data: 'couponIds='+couponIds,
-        type: 'GET'
-    },function(amount) {
-        $couponExpectedInterest.text("+" + amount);
-    });
-
-};
 
 //页面加载判断预期收益
 if($buyDetail.length !==0){
     //页面加载判断
     testAmount();
-    maxBenifitUserCoupon();
     if($('#errorMassage').length!==0&&$('#errorMassage').val()!==''&&$('#errorMassage').val()!==null){
         commonFun.CommonLayerTip({
             btn: ['我知道了'],
@@ -411,65 +319,11 @@ if($transferDetail.length){
 
     }
 }
-function maxBenifitUserCoupon() {
-    commonFun.useAjax({
-        url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
-        type: 'GET',
-    },function(maxBenefitUserCouponId) {
-        $('#couponText').css('color','#FF473C')
-        if (!isNaN(parseInt(maxBenefitUserCouponId))) {
-            $('#couponId').val(maxBenefitUserCouponId);
-            $('.to-use_coupon').each(function (index,item) {
-                $(item).removeClass('selected');
-                if($(item).data('user-coupon-id') == maxBenefitUserCouponId){
-                    $(item).removeClass('disabled');
-                    $(item).addClass('selected');
-                    $('#maxBenifit').val($(item).data('coupon-id'));
-                    $('#couponText').text($(item).data('coupon-desc'));
-                }
 
 
-            })
-            calExpectedCouponInterest();
-        } else {
-            $('#couponText').text('无可用优惠券');
-            $('#couponId').val('');
-            $('#couponText').css('color','#64646D');
-            $couponExpectedInterest.text("");
-            $('.to-use_coupon').each(function (index,item) {
-                $(item).addClass('disabled');
-            })
-        }
-    })
-}
-couponSelect();
-//优惠券显示的判断
-function couponSelect() {
-    let value = getInvestAmount();
-    $('.to-use_coupon').each(function (index,item) {
-        $(item).addClass('disabled').removeClass('selected');
-        let minType = parseInt($(item).data('min-product-type'));
-        if(minType == 30){
-            minType = 0;
-        }else if(minType == 90){
-            minType = 60;
-        }else if(minType == 180){
-            minType = 120;
-        }else if( minType == 360){
-            minType = 200;
-        }
-
-        if($(this).data('min-invest-amount') <= value/100 && minType  <= duration){
-            $(this).removeClass('disabled');
-        }
-
-    })
-}
 function testAmount() {
     let value = getInvestAmount();
     calExpectedInterest();
-    maxBenifitUserCoupon();
-    couponSelect();
 
     if(value/100  == 0){
         $btnWapNormal.prop('disabled',true).text('请输入正确的金额');
@@ -511,7 +365,8 @@ $('#investSubmit').on('click', function(event) {
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
                         if(!hasBankCard){
-                            location.href = '/m/bind-card';//去绑卡
+
+                                $('#bindCardForm').submit();
                         }else {
                             location.href = '/m/recharge';//去充值
                         }
@@ -605,10 +460,6 @@ $('#clearFont').click(function () {
     $amountInputElement.val('');
 });
 
-//优惠券兑换
-$('#exchangeCoupon').on('click',function () {
-    location.href = '/m/my-treasure/coupon-exchange'
-})
 
 //转让购买
 //转让购买页
