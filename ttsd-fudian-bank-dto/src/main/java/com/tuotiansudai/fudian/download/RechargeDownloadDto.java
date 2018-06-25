@@ -1,7 +1,7 @@
 package com.tuotiansudai.fudian.download;
 
 
-public class RechargeDownloadDto{
+public class RechargeDownloadDto {
 
     private String merchantNo;
     private String userName;
@@ -141,7 +141,4 @@ public class RechargeDownloadDto{
         this.createTime = createTime;
     }
 
-    public static RechargeDownloadDto match(String params){
-        return new RechargeDownloadDto(params);
-    }
 }

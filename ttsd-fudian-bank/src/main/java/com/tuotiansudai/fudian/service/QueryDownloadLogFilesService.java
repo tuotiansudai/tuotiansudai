@@ -5,11 +5,13 @@ import com.google.common.base.Strings;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import com.tuotiansudai.fudian.config.ApiType;
+import com.tuotiansudai.fudian.download.RechargeDownloadDto;
 import com.tuotiansudai.fudian.dto.QueryDownloadLogFilesType;
 import com.tuotiansudai.fudian.dto.request.QueryDownloadLogFiles;
 import com.tuotiansudai.fudian.dto.response.QueryDownloadLogFilesContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
+import com.tuotiansudai.fudian.strategy.DownloadFileParser;
 import com.tuotiansudai.fudian.util.BankClient;
 import com.tuotiansudai.fudian.util.SftpClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.tuotiansudai.fudian.service.NotifyCallbackInterface.FIXED_DELAY;
 
@@ -54,9 +58,9 @@ public class QueryDownloadLogFilesService {
         ResponseDto<QueryDownloadLogFilesContentDto> responseDto = (ResponseDto<QueryDownloadLogFilesContentDto>) API_TYPE.getParser().parse(responseData);
 
         if (responseDto.isSuccess()) {
-            sftpClient.download(responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
+            ArrayList<String> params = sftpClient.download(responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
+            List<RechargeDownloadDto> list = DownloadFileParser.parse(RechargeDownloadDto.class, params);
         }
-
     }
 
 }

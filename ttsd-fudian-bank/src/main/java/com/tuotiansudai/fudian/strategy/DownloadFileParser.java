@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.strategy;
 
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,13 +17,12 @@ public class DownloadFileParser {
         }
         List<T> list = new ArrayList<>();
         try {
-            Method method = dto.getMethod("match", String.class);
-            for (String params : paramsList){
-                list.add((T) method.invoke(dto, params));
+            Constructor constructor = dto.getConstructor(String.class);
+            for (String params : paramsList) {
+                list.add((T) constructor.newInstance(params));
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
         }
         return list;
     }
-
 }
