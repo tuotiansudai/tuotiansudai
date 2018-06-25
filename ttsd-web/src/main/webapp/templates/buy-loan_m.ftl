@@ -99,6 +99,9 @@
    立即投资</button>
     </form>
     <input id="errorMassage" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
+    <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
 
 
 <@global.role hasRole="'INVESTOR'">
