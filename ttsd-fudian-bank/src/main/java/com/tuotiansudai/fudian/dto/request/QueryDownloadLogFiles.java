@@ -3,8 +3,6 @@ package com.tuotiansudai.fudian.dto.request;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
 public class QueryDownloadLogFiles extends BaseRequestDto{
 
     private String queryDate;
@@ -13,7 +11,7 @@ public class QueryDownloadLogFiles extends BaseRequestDto{
 
     public QueryDownloadLogFiles(String type) {
         super(Source.WEB, null, null, null, null);
-        this.queryDate = "20180608";
+        this.queryDate = format.format(DateTime.now().minusDays(1).toDate());
         this.type = type;
     }
 

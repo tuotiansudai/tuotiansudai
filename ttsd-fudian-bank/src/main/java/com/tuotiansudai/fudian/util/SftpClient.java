@@ -2,7 +2,8 @@ package com.tuotiansudai.fudian.util;
 
 
 import com.jcraft.jsch.*;
-import com.tuotiansudai.fudian.dto.QueryRechargeDownloadDto;
+import com.tuotiansudai.fudian.download.RechargeDownloadDto;
+import com.tuotiansudai.fudian.strategy.DownloadFileParser;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,16 +68,23 @@ public class SftpClient {
         ChannelSftp sftp = getChannel();
         InputStream inputStream = sftp.get(path + "/" + name);
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> params = new ArrayList<String>();
         try(Scanner scanner = new Scanner(inputStream)) {
             while (scanner.hasNext()){
-                list.add(scanner.next());
+                params.add(scanner.next());
             }
         }catch (Exception e){
             logger.error(MessageFormat.format("download fail fileName:{0}, error:{1}", name, e.getMessage()));
         }
 
-        List<QueryRechargeDownloadDto> recharges= list.stream().map(QueryRechargeDownloadDto::new).collect(Collectors.toList());
+        params.add("123123|12312|23131|1231231|123231");
+        params.add("123123|12312|23131|1231231|123231");
+        params.add("123123|12312|23131|1231231|123231");
+
+        List<RechargeDownloadDto> dtos = new ArrayList<>();
+        DownloadFileParser.parse(dtos, params);
+
+//        List<RechargeDownloadDto> recharges= list.stream().map(RechargeDownloadDto::new).collect(Collectors.toList());
 
         try {
             ossClient.upload(name, inputStream);

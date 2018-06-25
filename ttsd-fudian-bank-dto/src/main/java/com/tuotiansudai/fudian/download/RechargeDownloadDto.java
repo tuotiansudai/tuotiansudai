@@ -1,9 +1,13 @@
-package com.tuotiansudai.fudian.dto;
+package com.tuotiansudai.fudian.download;
 
 
-import java.io.Serializable;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.fudian.dto.BankBaseDto;
 
-public class QueryRechargeDownloadDto implements Serializable{
+import java.util.Map;
+
+public class RechargeDownloadDto{
 
     private String merchantNo;
     private String userName;
@@ -18,26 +22,6 @@ public class QueryRechargeDownloadDto implements Serializable{
     private String receivedAmount;
     private String remark;
     private String createTime;
-
-    public QueryRechargeDownloadDto() {
-    }
-
-    public QueryRechargeDownloadDto(String params) {
-        String[] param = params.split("\\|");
-        this.merchantNo = param[0];
-        this.userName = param[1];
-        this.accountNo = param[2];
-        this.status = param[3];
-        this.orderDate = param[4];
-        this.orderNo = param[5];
-        this.payType = param[6];
-        this.feeOwner = param[7];
-        this.fee = param[8];
-        this.amount = param[9];
-        this.receivedAmount = param[10];
-        this.remark = param[11];
-        this.createTime = param[12];
-    }
 
     public String getMerchantNo() {
         return merchantNo;
