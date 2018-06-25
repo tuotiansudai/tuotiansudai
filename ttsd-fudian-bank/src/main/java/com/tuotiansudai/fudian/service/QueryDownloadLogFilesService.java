@@ -2,12 +2,13 @@ package com.tuotiansudai.fudian.service;
 
 
 import com.google.common.base.Strings;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.download.RechargeDownloadDto;
-import com.tuotiansudai.fudian.dto.QueryDownloadLogFilesType;
-import com.tuotiansudai.fudian.dto.request.QueryDownloadLogFiles;
+import com.tuotiansudai.fudian.download.QueryDownloadLogFilesType;
+import com.tuotiansudai.fudian.dto.request.QueryDownloadLogFilesRequestDto;
 import com.tuotiansudai.fudian.dto.response.QueryDownloadLogFilesContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
@@ -45,8 +46,15 @@ public class QueryDownloadLogFilesService {
     @Scheduled(fixedDelay = FIXED_DELAY, initialDelay = 1000 * 10, zone = "Asia/Shanghai")
     @SuppressWarnings(value = "unchecked")
     public void RechargeSchedule() throws SftpException, JSchException, IOException {
+        ChannelSftp channelSftp = sftpClient.getChannel();
+        rechargeFile(channelSftp);
+        withdrawFile(channelSftp);
+        sftpClient.closeChannel();
 
-        QueryDownloadLogFiles dto = new QueryDownloadLogFiles(QueryDownloadLogFilesType.recharge.name());
+    }
+
+    private void rechargeFile(ChannelSftp channelSftp) throws SftpException {
+        QueryDownloadLogFilesRequestDto dto = new QueryDownloadLogFilesRequestDto(QueryDownloadLogFilesType.recharge.name());
 
         signatureHelper.sign(API_TYPE, dto);
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -58,9 +66,13 @@ public class QueryDownloadLogFilesService {
         ResponseDto<QueryDownloadLogFilesContentDto> responseDto = (ResponseDto<QueryDownloadLogFilesContentDto>) API_TYPE.getParser().parse(responseData);
 
         if (responseDto.isSuccess()) {
-            ArrayList<String> params = sftpClient.download(responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
+            ArrayList<String> params = sftpClient.download(channelSftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
             List<RechargeDownloadDto> list = DownloadFileParser.parse(RechargeDownloadDto.class, params);
         }
+    }
+
+    private void withdrawFile(ChannelSftp channelSftp) throws SftpException {
+
     }
 
 }

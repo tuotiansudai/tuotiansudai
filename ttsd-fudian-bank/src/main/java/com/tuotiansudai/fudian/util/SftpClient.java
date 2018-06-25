@@ -62,8 +62,7 @@ public class SftpClient {
         }
     }
 
-    public ArrayList<String> download(String path, String name) throws JSchException, SftpException {
-        ChannelSftp sftp = getChannel();
+    public ArrayList<String> download(ChannelSftp sftp, String path, String name) throws SftpException {
         InputStream inputStream = sftp.get(path + "/" + name);
         ossClient.upload(name, inputStream);
         ArrayList<String> params = new ArrayList<String>();
@@ -74,7 +73,6 @@ public class SftpClient {
         } catch (Exception e) {
             logger.error(MessageFormat.format("download fail fileName:{0}, error:{1}", name, e.getMessage()));
         }
-        closeChannel();
         return params;
     }
 }

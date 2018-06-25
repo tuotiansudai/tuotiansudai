@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto;
+package com.tuotiansudai.fudian.download;
 
 
 public enum QueryDownloadLogFilesType {
