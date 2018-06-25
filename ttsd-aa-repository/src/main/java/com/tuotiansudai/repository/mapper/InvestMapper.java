@@ -335,4 +335,6 @@ public interface InvestMapper {
                                                   @Param(value="endTime") Date endTime);
 
     List<String> findInvestorMobileByLoanId(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
 }
