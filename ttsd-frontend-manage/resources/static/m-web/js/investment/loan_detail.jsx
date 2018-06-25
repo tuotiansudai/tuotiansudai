@@ -518,7 +518,7 @@ $('#investSubmit').on('click', function(event) {
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
                         if(!hasBankCard){
-                            location.href = '/m/bind-card';//去绑卡
+                            $('#bindCardForm').submit();//去绑卡
                         }else {
                             location.href = '/m/recharge';//去充值
                         }
@@ -713,7 +713,7 @@ function submitData() {
                         content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>您的账户余额不足，请先进行充值</span></div> `,
                     },function() {
                         if(!hasBankCard){
-                            location.href = '/m/bind-card';//去绑卡
+                            $('#bindCardForm').submit();//去绑卡
                         }else {
                             location.href = '/m/recharge';//去充值
                         }
