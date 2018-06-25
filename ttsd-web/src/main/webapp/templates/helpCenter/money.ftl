@@ -11,6 +11,7 @@
             <span>投资</span>
             <span>回款</span>
             <span>提现</span>
+            <span>资金存管</span>
         </div>
         <div class="problem-content-item">
             <ul class="list-group active">
@@ -20,7 +21,8 @@
                     <p class="single-title">1、充值是否有上下限？</p>
 
                     <p class="single-answer">
-                        答：单笔充值金额必须大于或等于1元，网银支付限额由银行或您个人设置，快捷支付时，单笔/单日限额均为5万元（招商银行除外，单笔/单日限额分别为1000元/10000元。）</p>
+                        答：单笔充值金额必须大于或等于1元，网银支付限额由银行或您个人设置。值得注意的是，当日充值的金额需要等到下一工作日中午12点之后才能提现。
+                    </p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -35,7 +37,7 @@
                     <p class="single-title">3、银行卡扣费成功但充值未到账的原因及处理方法？</p>
 
                     <p class="single-answer">
-                        答：银行卡扣费成功但充值未到账可能有银行处理超时、掉单、通讯问题等原因；您可以稍等会儿再刷新账户余额，如果确实没有到账，您可以联系客服将您的手机号、充值时间、充值金额、银行卡以及银行网银流水以截图的方式发送至在线客服，由客服审核。如为银行掉单，即这笔充值记录在联动优势没有查询到相关的充值记录，需要在充值时间的第二个工作日由联动优势和银行对账，差异账会通过3-7个工作日内退款至您的银行卡；若确定银行已扣款，需联动优势补单，拓天速贷会追加您的的账户余额，若联动优势不补单，是银行直接退款到本人的账户，视为充值失败。</p>
+                        答：银行卡扣费成功但充值未到账可能有银行处理超时、掉单、通讯问题等原因；您可以稍等会儿再刷新账户余额，如果确实没有到账，您可以联系客服将您的手机号、充值时间、充值金额、银行卡以及银行网银流水以截图的方式发送至在线客服，由客服审核。如为银行掉单，即这笔充值记录在富滇银行没有查询到相关的充值记录，需要在充值时间的第二个工作日银行进行对账，差异账会通过3-7个工作日内退款至您的银行卡；若确定银行已扣款，需富滇银行补单，拓天速贷会追加您的的账户余额，若富滇银行不补单，银行直接退款到本人的账户，视为充值失败。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -89,31 +91,25 @@
 
                     <p class="single-answer">答：当日回款。</p>
                 </li>
+
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">7、新手体验项目怎么投资？</p>
-
-                    <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过投资行为的账户。登录官方网站—新手体验标的—马上投资—立即体验（无须绑卡和实名认证）。</p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
-
-                    <p class="single-title">8、手头资金短缺，如何把投在平台投资项目里的资金快速取出来？</p>
+                    <p class="single-title">7、手头资金短缺，如何把投在平台投资项目里的资金快速取出来？</p>
 
                     <p class="single-answer">答：可以选择债权转让，如有特殊需要，可折价转让。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">9、如何查看电子合同？</p>
+                    <p class="single-title">8、如何查看电子合同？</p>
 
                     <p class="single-answer">答：登陆官方网站—我的账户—我的投资—直接项目/转让项目—全部（直接项目/转让项目下一行）—合同（即可看到每笔投资的合同）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">10、如何将电子合同变成纸质合同？</p>
+                    <p class="single-title">9、如何将电子合同变成纸质合同？</p>
 
                     <p class="single-answer">答：如您需要纸质合同，在“我的投资”中将电子版合同下载后以电子或文件形式提供到拓天速贷客户服务中心，拓天速贷客服打印并盖章后交于您的手中。</p>
                 </li>
@@ -124,14 +120,14 @@
 
                     <p class="single-title">1、目前有哪几种回款方式？</p>
 
-                    <p class="single-answer">答：1种，先付收益后还投资本金，按天计息，放款后生息。</p>
+                    <p class="single-answer">答：2种，一种为：先付收益后还投资本金，按天计息，放款后生息；另一种为：到期还本付息，按天计息，放款后生息。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
                     <p class="single-title">2、投资回款有邮件、短信通知吗？</p>
 
-                    <p class="single-answer">答：投资回款有邮件短信通知的服务。</p>
+                    <p class="single-answer">答：投资回款有短信通知的服务。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -161,14 +157,15 @@
 
                     <p class="single-title">1、申请提现后，资金到账时间一般是多久？</p>
 
-                    <p class="single-answer">答：原则上支持T+0日到账，当天16：00前提现当天到账，当日16:00后提现次日11:00前到账，节假日则推迟至下一个工作日。</p>
+                    <p class="single-answer">答：5万元以下的提现，实时到账；5万元（包括）以上的提现，工作日8:30-17:00可申请提现（其他时间不允许提现），实时到账。
+                    </p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
                     <p class="single-title">2、提现手续费是多少？</p>
 
-                    <p class="single-answer">答：每笔提现手续费2.00元（联动优势收取）。</p>
+                    <p class="single-answer">答：每笔提现手续费2.00元（富滇银行收取）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -176,7 +173,8 @@
                     <p class="single-title">3、提现受理成功是到账了吗？</p>
 
                     <p class="single-answer">
-                        答：用户在平台发起账户资金提现至银行卡，页面输入支付密码和验证码确认后，资金托管方返回受理成功结果，即提现申请受理成功，工作日16:00前发起提现当日到账，其他次日（工作日）到账，具体到账因银行结算时间存在差异。</p>
+                        答：答：用户在平台发起账户资金提现至银行卡，页面输入支付密码和验证码确认后，资金存管方返回受理成功结果，即提现申请受理成功，具体提现时间以及到账因银行结算时间存在差异。
+                    </p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -199,6 +197,52 @@
 
                     <p class="single-answer">答：提现银行卡即您绑定的银行卡，换卡情况参照问题“如何更换绑定的银行卡”。</p>
                 </li>
+            </ul>
+            <ul class="list-group">
+                <li class="problem-single-item">
+                    <i class="fa fa-angle-down"></i>
+
+                    <p class="single-title">1、为什么开通银行资金存管？</p>
+
+                    <p class="single-answer">答：（1）合规性要求，平台升级存管符合合规性要求，平台账户资金在银行监督下；<br/>
+                        （2）开通存管可以保障用户资金不被平台挪用，有利于保障用户的资金安全；<br/>
+                        （3）开通存管用户可以享受更多功能及福利。
+
+                    </p>
+                </li>
+                <li class="problem-single-item">
+                    <i class="fa fa-angle-down"></i>
+
+                    <p class="single-title">2、银行存管后有什么优势？</p>
+
+                    <p class="single-answer">答：(1)系统分账监管<br/>
+                        拓天速贷接入富滇银行存管系统后，将由富滇银行对您的交易资金及平台自有运营资金进行分账监管，二者完全独立且相互隔离，平台无法触碰您的资金。<br/>
+                        (2)用户资金存管<br/>
+                        您进行的充值、绑卡、提现等每一笔与资金有关的操作，均需通过富滇银行资金存管账户，由富滇银行对您的资金信息进行管理，避免您的资金出现被挪用风险。<br/>
+                        (3)用户授权操作<br/>
+                        您需要开通富滇银行存管账户，并在富滇银行存管页面单独设立交易密码。在进行任何与资金相关操作时，系统会验证密码，在得到您的授权后，由银行根据交易指令进行资金划转。<br/>
+                        (4)交易真实有效<br/>
+                        富滇银行根据合同约定及您发出的交易指令，对交易流程进行管理并对所有资金流水进行存档记录，确保借贷双方的资金流转和债权关系清晰明确。</p>
+                </li>
+                <li class="problem-single-item">
+                    <i class="fa fa-angle-down"></i>
+
+                    <p class="single-title">3、银行存管上线以后对我们的资金有什么影响？</p>
+
+                    <p class="single-answer">
+                        答：存管后，您的交易资金将直接流向富滇银行，由银行进行监管，平台无法触碰您的账户资金；您进行的任何充值、绑卡、提现等与资金相关的操作，均在富滇银行存管页面进行，由银行对您的资金信息进行管理，资金及操作更加安全无忧。
+
+                    </p>
+                </li>
+                <li class="problem-single-item">
+                    <i class="fa fa-angle-down"></i>
+
+                    <p class="single-title">4、富滇银行介绍？</p>
+
+                    <p class="single-answer">答：富滇银行的前身是1911年蔡锷创办的云南全省公钱局，作为有着100多年历史的城市商业银行，富滇银行总资产规模接近1600亿，在全国近500家商业银行中名列前茅，作为网贷平台资金存管行业领先者之一，富滇银行对合作的互金平台筛选尤为严格，不仅要考察平台各项资质、风控能力、运营数据、平台高管履历等多个指标，还需要考察股东背景、实缴注册资本等硬性指标。
+                    </p>
+                </li>
+
             </ul>
         </div>
     </div>

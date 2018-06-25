@@ -41,7 +41,7 @@
                     <p class="single-title">4、注册时，推荐人这一栏该怎么填？</p>
 
                     <p class="single-answer">
-                        答：推荐朋友投资时，朋友投资金额的年化1%现金将作为奖励给予推荐人。推荐人这一栏可作为奖励发放的根据之一。此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</p>
+                        答：此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -101,9 +101,9 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">7、账号如何绑定到联动优势？</p>
+                    <p class="single-title">7、账号如何绑定到富滇银行？</p>
 
-                    <p class="single-answer">答：当您进行实名认证时，平台会将您的帐号绑定到联动优势，资金由联动优势全面托管。</p>
+                    <p class="single-answer">答：当您进行实名认证时，系统会将您的帐号绑定到富滇银行，资金由富滇银行全面存管。</p>
                 </li>
             </ul>
         </div>

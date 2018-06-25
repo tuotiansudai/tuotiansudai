@@ -144,12 +144,13 @@ $('.goToTranDetail').on('click',function (e) {
 })
 //邀请好友判断是否登录
 $('.inviting-friend').click(function () {
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            location.href = '/m/about/refer-reward';
-        }).fail(function () {
-        location.href = '/m/login'
-    })
+    // $.when(commonFun.isUserLogin())
+    //     .done(function () {
+    //         location.href = '/m/about/refer-reward';
+    //     }).fail(function () {
+    //     location.href = '/m/login'
+    // })
+    layer.msg('此功能暂不可用！')
 })
 //
 commonFun.calculationFun(document,window);
