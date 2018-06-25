@@ -47,23 +47,7 @@
     </div>
 
 <#--拓天体验金项目-->
-    <div class="main-column-title" data-url="/m/loan-list">
-        <span>新手专享</span>
-        <a href="/m/loan-list" class="hot-more">更多</a>
-    </div>
 
-    <div class="target-category-box newer-experience" data-url="/m/loan/1">
-        <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i
-                class="icon-sign exper <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(experienceLoan.status)>sold</#if>">体验金投资</i></b>
-        <ul class="loan-info clearfix">
-            <li>
-                <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
-                <em class="note">约定年化利率</em>
-            </li>
-            <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
-            <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
-        </ul>
-    </div>
 <#--新手专享-->
     <#if newbieLoan??>
         <div class="target-category-box you" data-url="/m/loan/${newbieLoan.id?c}">
