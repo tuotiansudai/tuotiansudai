@@ -22,44 +22,6 @@ public class RechargeDownloadDto {
     private String remark;
     private String createTime;
 
-    public RechargeDownloadDto() {
-    }
-//
-//    public RechargeDownloadDto(String params) {
-//        String[] param = params.split("\\|");
-//        this.merchantNo = param[0];
-//        this.userName = param[1];
-//        this.accountNo = param[2];
-//        this.status = param[3];
-//        this.orderDate = param[4];
-//        this.orderNo = param[5];
-//        this.payType = param[6];
-//        this.feeOwner = param[7];
-//        this.fee = param[8];
-//        this.amount = param[9];
-//        this.receivedAmount = param[10];
-//        this.remark = param[11];
-//        this.createTime = param[12];
-//    }
-
-    public Map<Integer, String> match(){
-        return Maps.newHashMap(ImmutableMap.<Integer, String>builder()
-                .put(0, "merchantNo")
-                .put(1, "userName")
-                .put(2, "accountNo")
-                .put(3, "status")
-                .put(4, "orderDate")
-                .put(5, "orderNo")
-                .put(6, "payType")
-                .put(7, "feeOwner")
-                .put(8, "fee")
-                .put(9, "amount")
-                .put(10, "receivedAmount")
-                .put(11, "remark")
-                .put(12, "createTime")
-                .build());
-    }
-
     public String getMerchantNo() {
         return merchantNo;
     }
@@ -162,6 +124,24 @@ public class RechargeDownloadDto {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public static Map<Integer, String> match(){
+        return Maps.newHashMap(ImmutableMap.<Integer, String>builder()
+                .put(0, "merchantNo")
+                .put(1, "userName")
+                .put(2, "accountNo")
+                .put(3, "status")
+                .put(4, "orderDate")
+                .put(5, "orderNo")
+                .put(6, "payType")
+                .put(7, "feeOwner")
+                .put(8, "fee")
+                .put(9, "amount")
+                .put(10, "receivedAmount")
+                .put(11, "remark")
+                .put(12, "createTime")
+                .build());
     }
 
 }

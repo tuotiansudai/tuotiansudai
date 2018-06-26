@@ -48,7 +48,6 @@ public class QueryDownloadLogFilesService {
     public void RechargeSchedule() throws SftpException, JSchException, IOException {
         ChannelSftp channelSftp = sftpClient.getChannel();
         rechargeFile(channelSftp);
-        withdrawFile(channelSftp);
         sftpClient.closeChannel();
 
     }
@@ -70,9 +69,4 @@ public class QueryDownloadLogFilesService {
             List<RechargeDownloadDto> list = DownloadFileParser.parse(RechargeDownloadDto.class, params);
         }
     }
-
-    private void withdrawFile(ChannelSftp channelSftp) throws SftpException {
-
-    }
-
 }
