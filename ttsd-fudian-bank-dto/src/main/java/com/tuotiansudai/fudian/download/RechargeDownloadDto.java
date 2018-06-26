@@ -6,7 +6,23 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-public class RechargeDownloadDto {
+public class RechargeDownloadDto implements DownloadFilesMatch {
+
+    private static final Map<Integer, String> MATCH = Maps.newHashMap(ImmutableMap.<Integer, String>builder()
+            .put(0, "merchantNo")
+            .put(1, "userName")
+            .put(2, "accountNo")
+            .put(3, "status")
+            .put(4, "orderDate")
+            .put(5, "orderNo")
+            .put(6, "payType")
+            .put(7, "feeOwner")
+            .put(8, "fee")
+            .put(9, "amount")
+            .put(10, "receivedAmount")
+            .put(11, "remark")
+            .put(12, "createTime")
+            .build());
 
     private String merchantNo;
     private String userName;
@@ -126,22 +142,8 @@ public class RechargeDownloadDto {
         this.createTime = createTime;
     }
 
-    public static Map<Integer, String> match(){
-        return Maps.newHashMap(ImmutableMap.<Integer, String>builder()
-                .put(0, "merchantNo")
-                .put(1, "userName")
-                .put(2, "accountNo")
-                .put(3, "status")
-                .put(4, "orderDate")
-                .put(5, "orderNo")
-                .put(6, "payType")
-                .put(7, "feeOwner")
-                .put(8, "fee")
-                .put(9, "amount")
-                .put(10, "receivedAmount")
-                .put(11, "remark")
-                .put(12, "createTime")
-                .build());
+    @Override
+    public Map<Integer, String> match() {
+        return MATCH;
     }
-
 }

@@ -1,9 +1,27 @@
 package com.tuotiansudai.fudian.download;
 
 
-import java.io.Serializable;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
-public class LoanFullDownloadDto implements Serializable{
+import java.util.Map;
+
+public class LoanFullDownloadDto implements DownloadFilesMatch {
+
+    private static final Map<Integer, String> MATCH = Maps.newHashMap(ImmutableMap.<Integer, String>builder()
+            .put(0, "merchantNo")
+            .put(1, "merchantName")
+            .put(2, "loanTxNo")
+            .put(3, "loanTxName")
+            .put(4, "amount")
+            .put(5, "loanFee")
+            .put(6, "orderNo")
+            .put(7, "orderDate")
+            .put(8, "username")
+            .put(9, "accountNo")
+            .put(10, "status")
+            .put(11, "createTime")
+            .build());
 
     private String merchantNo;
     private String merchantName;
@@ -112,5 +130,10 @@ public class LoanFullDownloadDto implements Serializable{
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public Map<Integer, String> match() {
+        return MATCH;
     }
 }

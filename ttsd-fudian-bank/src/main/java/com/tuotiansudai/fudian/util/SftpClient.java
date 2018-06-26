@@ -2,8 +2,6 @@ package com.tuotiansudai.fudian.util;
 
 
 import com.jcraft.jsch.*;
-import com.tuotiansudai.fudian.download.RechargeDownloadDto;
-import com.tuotiansudai.fudian.strategy.DownloadFileParser;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,10 +21,10 @@ public class SftpClient {
     private final OssClient ossClient;
 
     private static final int TIME_OUT = 60000;
-    private static final String FTP_HOST = "172.16.88.61";
-    private static final int FTP_PORT = 22;
-    private static final String FTP_USERNAME = "username";
-    private static final String FTP_PASSWORD = "password";
+    private static final String FTP_HOST = "112.112.10.214";
+    private static final int FTP_PORT = 39093;
+    private static final String FTP_USERNAME = "fduser";
+    private static final String FTP_PASSWORD = "password0801!";
 
     private Session session = null;
 
@@ -62,10 +60,10 @@ public class SftpClient {
         }
     }
 
-    public ArrayList<String> download(ChannelSftp sftp, String path, String name) throws SftpException {
+    public List<String> download(ChannelSftp sftp, String path, String name) throws SftpException {
         InputStream inputStream = sftp.get(path + "/" + name);
         ossClient.upload(name, inputStream);
-        ArrayList<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<String>();
         try (Scanner scanner = new Scanner(inputStream)) {
             while (scanner.hasNext()) {
                 params.add(scanner.next());

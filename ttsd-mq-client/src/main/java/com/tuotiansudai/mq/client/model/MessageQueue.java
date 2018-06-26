@@ -64,6 +64,8 @@ public enum MessageQueue {
 
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
+
+    QueryDownloadFiles("QueryDownloadFiles");
     ;
 
     private final String queueName;
