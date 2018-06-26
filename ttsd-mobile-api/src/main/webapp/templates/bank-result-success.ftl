@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="btn-container">
-        <a href="/" class="btn-confirm">确定</a>
+        <a href="${bankCallbackType.getMobileLink()}/success" class="btn-confirm">确定</a>
     </div>
 
     <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
