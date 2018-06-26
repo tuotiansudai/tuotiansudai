@@ -24,7 +24,12 @@ validator.add(registerAccountForm.userName, [{
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',
     errorMsg: '请输入身份证号',
-}, {
+},
+    {
+        strategy: 'maxLengthSpace:18',
+        errorMsg: '您的身份证号码不正确'
+    },
+    {
     strategy: 'identityValid',
     errorMsg: '您的身份证号码不正确'
 },{
@@ -33,7 +38,9 @@ validator.add(registerAccountForm.identityNumber, [{
 },{
     strategy: 'isCardExist',
     errorMsg: '身份证已存在'
-}]);
+}
+
+]);
 
 let reInputs=$(registerAccountForm).find('input:text'),
     $errorBox = $('.error-box',$(registerAccountForm));
@@ -49,6 +56,7 @@ for(let i=0,len=reInputs.length; i<len;i++) {
     })
 }
 $('#perNum').on('keyup',(e) => {
+
     if (e.keyCode != 8) {
         if ($('#perNum').val().length === 6 || $('#perNum').val().length === 15) {
             let text = $('#perNum').val() + ' ';
@@ -65,6 +73,7 @@ $('#perNum').on('keyup',(e) => {
             $('#perNum').val(text);
         }
     }
+
 });
 $('#perNum').on("paste",(e) => {
     var pastedText = undefined;

@@ -74,6 +74,20 @@ function validateInvestAmount() {
 };
 //投资表单请求以及校验
 function investSubmit(){
+    let isBankCard = $loanDetailContent.data('bankcard');
+    if(!isBankCard) {
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '绑卡',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn: 0,
+            content: $('#bankCardDOM')
+        });
+    return false;
+    }
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
@@ -524,7 +538,9 @@ function showAuthorizeAgreementOptions(){
                     }
                     if (isAuthentication) {
                         location.href = '/register/account';
+                        return false;
                     }
+
                 })
                 .fail(function() {
                     //判断是否需要弹框登陆
@@ -956,3 +972,6 @@ $confirmAssessment.on('click', function(event) {
     location.href = '/risk-estimate'
 });
 
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})

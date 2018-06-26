@@ -104,6 +104,24 @@ p {
     color: $fontSeconed;
   }
 }
+
+.icon-status.failure {
+  display: block;
+  width: 0.8rem;
+  height: 0.8rem;
+  &.icon-success {
+    background: url('../images/icon-success.png') center center no-repeat;
+    background-size: 100%;
+  }
+  &.icon-failure {
+    background: url('../images/icon_failure.png') center center no-repeat;
+    background-size: 100%;
+  }
+
+}
+.failure-font {
+  margin-top: 0.3rem;
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;
