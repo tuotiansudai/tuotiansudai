@@ -7,12 +7,11 @@ import com.aliyun.mns.model.PagingListResult;
 import com.aliyun.mns.model.QueueMeta;
 import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,66 +27,57 @@ public class MQMigration {
         if (!"true".equals(enabled)) {
             return;
         }
-        String endPoint = etcdConfigReader.getValue("aliyun.mns.endpoint");
-        String accessKeyId = etcdConfigReader.getValue("aliyun.mns.accessKeyId");
-        String accessKeySecret = etcdConfigReader.getValue("aliyun.mns.accessKeySecret");
-        String env = etcdConfigReader.getValue("common.environment");
 
-        MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
+        MNSClient mnsClient = getMnsClient(etcdConfigReader.getValue("aliyun.mns.endpoint"),
+                etcdConfigReader.getValue("aliyun.mns.accessKeyId"),
+                etcdConfigReader.getValue("aliyun.mns.accessKeySecret"));
 
         if (mnsClient != null) {
-            initMessageQueue(env, mnsClient);
-            initMessageTopic(env, mnsClient);
-            initSubscription(env, mnsClient);
+            initMessageQueue(mnsClient);
+            initMessageTopic(mnsClient);
+            initSubscription(mnsClient);
             mnsClient.close();
         }
     }
 
-    private static void initMessageQueue(String env, MNSClient mnsClient) {
+    private static void initMessageQueue(MNSClient mnsClient) {
         List<String> existingQueueNames = getExistingQueueNameList(mnsClient);
-
-        String queueNamePrefix = "PRODUCTION".equalsIgnoreCase(env) ? "" : MessageFormat.format("{0}-", env);
-
         // create new
         Stream.of(MessageQueue.values())
-                .filter(messageQueue -> !existingQueueNames.contains(queueNamePrefix + messageQueue.getQueueName()))
-                .forEach(messageQueue -> createQueue(mnsClient, queueNamePrefix + messageQueue.getQueueName()));
+                .filter(messageQueue -> !existingQueueNames.contains(messageQueue.getQueueName()))
+                .forEach(messageQueue -> createQueue(mnsClient, messageQueue.getQueueName()));
 
         // remove out
         existingQueueNames.stream()
-                .filter(queueName -> !MessageQueue.contains(queueNamePrefix, queueName))
+                .filter(queueName -> Stream.of(MessageQueue.values()).noneMatch(q -> q.getQueueName().equals(queueName)))
                 .forEach(queueName -> removeQueue(mnsClient, queueName));
     }
 
-    private static void initMessageTopic(String env, MNSClient mnsClient) {
+    private static void initMessageTopic(MNSClient mnsClient) {
         List<String> existingTopicNameList = getExistingTopNameList(mnsClient);
-
-        String topicNamePrefix = "PRODUCTION".equalsIgnoreCase(env) ? "" : MessageFormat.format("{0}-", env);
-
         // create new
         Stream.of(MessageTopic.values())
-                .filter(mt -> !existingTopicNameList.contains(topicNamePrefix + mt.getTopicName()))
-                .forEach(mt -> createTopic(mnsClient, topicNamePrefix + mt.getTopicName()));
+                .filter(mt -> !existingTopicNameList.contains(mt.getTopicName()))
+                .forEach(mt -> createTopic(mnsClient, mt.getTopicName()));
 
         // remove out
         existingTopicNameList.stream()
-                .filter(topicName -> !MessageTopic.contains(topicNamePrefix, topicName))
+                .filter(topicName -> Stream.of(MessageTopic.values()).noneMatch(t -> t.getTopicName().equals(topicName)))
                 .forEach(topicName -> removeTopic(mnsClient, topicName));
     }
 
-    private static void initSubscription(String env, MNSClient mnsClient) {
-        String topicNamePrefix = "PRODUCTION".equalsIgnoreCase(env) ? "" : MessageFormat.format("{0}-", env);
+    private static void initSubscription(MNSClient mnsClient) {
         for (MessageTopic messageTopic : MessageTopic.values()) {
-            initSubscription(mnsClient, topicNamePrefix, messageTopic);
+            initSubscription(mnsClient, messageTopic);
         }
     }
 
-    private static void initSubscription(MNSClient mnsClient, String topicNamePrefix, MessageTopic messageTopic) {
-        CloudTopic cloudTopic = mnsClient.getTopicRef(topicNamePrefix + messageTopic.getTopicName());
+    private static void initSubscription(MNSClient mnsClient, MessageTopic messageTopic) {
+        CloudTopic cloudTopic = mnsClient.getTopicRef(messageTopic.getTopicName());
 
         // queue name [equal with subscription name] which need subscribe
         Set<String> subscriptionNameList = Stream.of(messageTopic.getQueues())
-                .map(messageQueue -> topicNamePrefix + messageQueue.getQueueName())
+                .map(MessageQueue::getQueueName)
                 .collect(Collectors.toSet());
 
         // endpoint which already subscription
@@ -96,7 +86,7 @@ public class MQMigration {
         // create new
         subscriptionNameList.stream()
                 .filter(subscription -> !existingSubscriptionNameList.contains(subscription))
-                .forEach(subscription -> subscribe(cloudTopic, subscription, topicNamePrefix + messageTopic.getTopicName(), subscription));
+                .forEach(subscription -> subscribe(cloudTopic, subscription, messageTopic.getTopicName(), subscription));
 
         // remove out
         existingSubscriptionNameList.stream()
@@ -125,7 +115,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static List<String> getExistingQueueNameList(MNSClient mnsClient) {
@@ -138,7 +128,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static List<String> getExistingSubscriptionNameList(CloudTopic topic) {
@@ -151,7 +141,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static void createTopic(MNSClient mnsClient, String messageTopic) {

@@ -1,6 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
-import java.util.stream.Stream;
+import com.tuotiansudai.etcd.ETCDConfigReader;
+
+import java.text.MessageFormat;
 
 public enum MessageQueue {
     /*
@@ -32,7 +34,6 @@ public enum MessageQueue {
     WeChatMessageNotify("WeChatMessageNotify"),
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
-    Payroll("Payroll"),
 
     //fudian new queues
     BindBankCard_Success("BindBankCard-Success"),
@@ -64,19 +65,18 @@ public enum MessageQueue {
 
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
+
     ;
 
     private final String queueName;
+
+    private final String ENV = ETCDConfigReader.getReader().getValue("common.environment");
 
     MessageQueue(String queueName) {
         this.queueName = queueName;
     }
 
     public String getQueueName() {
-        return queueName;
-    }
-
-    public static boolean contains(String queueNamePrefix, String queueName) {
-        return Stream.of(MessageQueue.values()).anyMatch(q -> (queueNamePrefix + q.getQueueName()).equals(queueName));
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? queueName : MessageFormat.format("{0}-{1}", ENV.toLowerCase(), queueName);
     }
 }
