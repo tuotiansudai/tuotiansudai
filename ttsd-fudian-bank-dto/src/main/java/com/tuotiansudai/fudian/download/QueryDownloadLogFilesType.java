@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.download;
 
 public enum QueryDownloadLogFilesType {
     recharge("充值对账"),
-    withDraw("提现对账"),
+    withdraw("提现对账"),
     invest("投资对账"),
     repayment("还款对账"),
     loanBack("回款对账"),

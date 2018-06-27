@@ -11,8 +11,6 @@ public class BankQueryDownloadFilesMessage<T> extends BankBaseMessage {
 
     private QueryDownloadLogFilesType type;
 
-    private boolean isLast;
-
     private List<T> data;
 
     public BankQueryDownloadFilesMessage(String queryDate, QueryDownloadLogFilesType type, List<T> data) {
@@ -44,13 +42,5 @@ public class BankQueryDownloadFilesMessage<T> extends BankBaseMessage {
 
     public void setData(List<T> data) {
         this.data = data;
-    }
-
-    public boolean isLast() {
-        return isLast;
-    }
-
-    public void setLast(boolean last) {
-        isLast = last;
     }
 }

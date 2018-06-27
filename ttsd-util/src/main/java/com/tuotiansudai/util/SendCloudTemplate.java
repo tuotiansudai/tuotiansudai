@@ -21,8 +21,8 @@ public enum SendCloudTemplate {
     USER_BALANCE_CHECK_RESULT_BODY("用户账户对账结果", "<tr><td>{loginName}</td><td>{ttsdBalance}</td><td>{umpayBalance}</td></tr>"),
     USER_BALANCE_CHECK_RESULT_TAIL("用户账户对账结果", "</tbody></table>"),
 
-    FUDIAN_CHECK_RESULT_HEADER("富滇银行对账结果", "<h3>{title}</h3></br><table border='1'><thead><h2>异常订单</h2></thead><tbody><tr><th>订单号</th><th>异常原因</th></tr>"),
-    FUDIAN_CHECK_RESULT_BODY("富滇银行对账结果", "<tr><td>{orderId}</td><td>{issue}</td></tr>"),
+    FUDIAN_CHECK_RESULT_HEADER("富滇银行对账结果", "<h2>{title}, 共计发生交易{count}笔</h2><table border='1'><thead><h3>查询结果</h3></thead><tbody><tr><th>订单号</th><th>对账结果</th></tr>"),
+    FUDIAN_CHECK_RESULT_BODY("富滇银行对账结果", "<tr><td>{orderId}</td><td>{result}</td></tr>"),
     FUDIAN_CHECK_RESULT_TAIL("富滇银行对账结果", "</tbody></table></br>"),
 
     ;
