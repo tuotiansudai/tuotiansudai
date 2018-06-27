@@ -94,18 +94,18 @@
                 <i class="icon-title"></i>新手专享
             </div>
 
-            <div class="newer-experience clearfix" data-url="/loan/1">
-                <#--<i class="tag-icon"></i>-->
-                <div class="con-inner">
-                    <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
-                    <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>
-                        <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
-                    </ul>
-                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
-                </div>
+            <#--<div class="newer-experience clearfix" data-url="/loan/1">-->
+                <#--&lt;#&ndash;<i class="tag-icon"></i>&ndash;&gt;-->
+                <#--<div class="con-inner">-->
+                    <#--<b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>-->
+                    <#--<ul class="loan-info clearfix">-->
+                        <#--<li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>-->
+                        <#--<li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>-->
+                    <#--</ul>-->
+                    <#--<a href="/loan/1" class="btn-invest btn-normal">立即购买</a>-->
+                <#--</div>-->
 
-            </div>
+            <#--</div>-->
             <#if newbieLoan??>
                 <div class="newer-experience clearfix hack-newbie" data-url="/loan/${newbieLoan.id?c}">
                     <i class="tag-icon sprite-homepage-icon-newuse"></i>
