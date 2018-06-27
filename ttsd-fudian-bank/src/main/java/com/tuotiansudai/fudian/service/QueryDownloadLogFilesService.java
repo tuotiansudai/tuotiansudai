@@ -60,28 +60,30 @@ public class QueryDownloadLogFilesService {
 
     private void rechargeFile(ChannelSftp sftp) throws SftpException {
 
-//        List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
-//        List<String> params = new ArrayList<>();
-//        params.add("1231|1231|12312|1231");
-//        params.add("1231|1231|12312|1231");
-//        params.add("1231|1231|12312|1231");
-//        List<RechargeDownloadDto> list = DownloadFileMatchDtoParser.parse(RechargeDownloadDto.class, params);
+        List<String> params = new ArrayList<>();
+        params.add("1231|1231|12312|1231|qweqd|qdwqfe|adaf|123132|qwe3wre");
+        params.add("1231|1231|12312|1231|qweqd|qdwqfe|adaf|123132|qwe3wre");
+        params.add("1231|1231|12312|1231|qweqd|qdwqfe|adaf|123132|qwe3wre");
+        params.add("1231|1231|12312|1231|qweqd|qdwqfe|adaf|123132|qwe3wre");
+        List<RechargeDownloadDto> list = DownloadFileMatchDtoParser.parse(RechargeDownloadDto.class, params);
+        messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>("20180625", QueryDownloadLogFilesType.recharge, list));
 
-        QueryDownloadLogFilesRequestDto dto = new QueryDownloadLogFilesRequestDto(QueryDownloadLogFilesType.recharge.name());
-
-        signatureHelper.sign(API_TYPE, dto);
-        if (Strings.isNullOrEmpty(dto.getRequestData())) {
-            return;
-        }
-
-        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
-
-        ResponseDto<QueryDownloadLogFilesContentDto> responseDto = (ResponseDto<QueryDownloadLogFilesContentDto>) API_TYPE.getParser().parse(responseData);
-
-        if (responseDto.isSuccess()) {
-            List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
-            List<RechargeDownloadDto> list = DownloadFileMatchDtoParser.parse(RechargeDownloadDto.class, params);
-            messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), QueryDownloadLogFilesType.recharge, list));
-        }
+//
+//        QueryDownloadLogFilesRequestDto dto = new QueryDownloadLogFilesRequestDto(QueryDownloadLogFilesType.recharge.name());
+//
+//        signatureHelper.sign(API_TYPE, dto);
+//        if (Strings.isNullOrEmpty(dto.getRequestData())) {
+//            return;
+//        }
+//
+//        String responseData = bankClient.send(API_TYPE, dto.getRequestData());
+//
+//        ResponseDto<QueryDownloadLogFilesContentDto> responseDto = (ResponseDto<QueryDownloadLogFilesContentDto>) API_TYPE.getParser().parse(responseData);
+//
+//        if (responseDto.isSuccess()) {
+//            List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
+//            List<RechargeDownloadDto> list = DownloadFileMatchDtoParser.parse(RechargeDownloadDto.class, params);
+//            messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), QueryDownloadLogFilesType.recharge, list));
+//        }
     }
 }

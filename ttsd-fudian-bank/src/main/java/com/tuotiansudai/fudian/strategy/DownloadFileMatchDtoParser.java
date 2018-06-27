@@ -15,10 +15,10 @@ public class DownloadFileMatchDtoParser {
 
     @SuppressWarnings(value = "unchecked")
     public static <T extends DownloadFilesMatch> List<T> parse(Class<T> dto, List<String> paramsList) {
-        if (CollectionUtils.isEmpty(paramsList)) {
-            return null;
-        }
         List<T> list = new ArrayList<>();
+        if (CollectionUtils.isEmpty(paramsList)) {
+            return list;
+        }
         try {
             Map<Integer, String> match = dto.newInstance().match();
             for (String params : paramsList) {

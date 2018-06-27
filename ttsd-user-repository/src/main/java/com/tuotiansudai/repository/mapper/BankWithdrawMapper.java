@@ -50,4 +50,6 @@ public interface BankWithdrawMapper {
                                                         @Param(value = "pageSize") int pageSize,
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime);
+
+    List<BankWithdrawModel> findSuccessByDate(@Param(value = "queryDate") String queryDate);
 }
