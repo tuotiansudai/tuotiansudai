@@ -49,6 +49,6 @@ public class QueryDownloadFilesScheduler {
                 .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
                 .put(Environment.QA, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
                 .put(Environment.DEV, Lists.newArrayList("zhukun@tuotiansudai.com"))
-                .build()).get(environment), MessageFormat.format("富滇银行{0}对账信息", DateTime.now().minusDays(1).toString("yyyyMMdd")), contentBody.toString()));
+                .build()).get(environment), MessageFormat.format("{0}富滇银行{1}对账信息", environment.name(), DateTime.now().minusDays(1).toString("yyyyMMdd")), contentBody.toString()));
     }
 }

@@ -51,9 +51,6 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
 
     private static final String EMAIL_CONTENT_MESSAGE = "EMAIL_CONTENT_MESSAGE:{0}";
 
-    @Value("${common.environment}")
-    private Environment environment;
-
     @Override
     public MessageQueue queue() {
         return MessageQueue.QueryDownloadFiles;
