@@ -18,11 +18,13 @@ import com.tuotiansudai.fudian.message.BankQueryDownloadFilesMessage;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.mq.tools.RedisClient;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SendCloudTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,10 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer{
     private final BankWithdrawMapper bankWithdrawMapper;
 
     private final MQWrapperClient mqWrapperClient;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private static final String EMAIL_CONTENT_MESSAGE = "EMAIL_CONTENT_MESSAGE:{0}";
 
     @Value("${common.environment}")
     private Environment environment;
@@ -77,7 +83,22 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer{
                 return;
             }
 
-            String content = recharge(bankQueryDownloadFilesMessage);
+            String content = Maps.newHashMap(ImmutableMap.<QueryDownloadLogFilesType, String>builder()
+                    .put(QueryDownloadLogFilesType.recharge, recharge(bankQueryDownloadFilesMessage))
+                    .put(QueryDownloadLogFilesType.withDraw, withdraw(bankQueryDownloadFilesMessage))
+                    .build()).get(bankQueryDownloadFilesMessage.getType());
+
+            if (Strings.isNullOrEmpty(content)){
+                return;
+            }
+
+            String key = MessageFormat.format(EMAIL_CONTENT_MESSAGE, bankQueryDownloadFilesMessage.getQueryDate());
+            content = content + (redisWrapperClient.exists(key) ? redisWrapperClient.get(key) : "");
+
+            if (!bankQueryDownloadFilesMessage.isLast()){
+                redisWrapperClient.setex(key, 12 * 60 * 60, content);
+                return;
+            }
 
             mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Maps.newHashMap(ImmutableMap.<Environment, List<String>>builder()
                     .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
@@ -110,8 +131,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer{
         if (Strings.isNullOrEmpty(contentBody.toString())){
             return null;
         }
-        String contentHeader = generateContentHeader(QueryDownloadLogFilesType.recharge);
-        return contentHeader + contentBody.toString() + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate();
+        return generateContentHeader(QueryDownloadLogFilesType.recharge) + contentBody.toString() + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate();
     }
 
     private String withdraw(BankQueryDownloadFilesMessage<WithdrawDownloadDto> bankQueryDownloadFilesMessage){
@@ -131,8 +151,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer{
         if (Strings.isNullOrEmpty(contentBody.toString())){
             return null;
         }
-        String contentHeader = generateContentHeader(QueryDownloadLogFilesType.withDraw);
-        return contentHeader + contentBody.toString() + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate();
+        return generateContentHeader(QueryDownloadLogFilesType.withDraw) + contentBody.toString() + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate();
     }
 
     private String generateContentHeader(QueryDownloadLogFilesType type){
