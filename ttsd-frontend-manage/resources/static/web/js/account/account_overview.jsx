@@ -98,3 +98,7 @@ $closeSign.on('click', function (event) {
     event.preventDefault();
     location.href = "/account";
 });
+
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));

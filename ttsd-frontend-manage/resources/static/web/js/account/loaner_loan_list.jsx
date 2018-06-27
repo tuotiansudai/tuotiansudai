@@ -182,9 +182,7 @@ var showBalanceNotEnoughAlert = function (balance, repayAmount) {
         }
     });
 }
-
-// require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension', 'pagination'],
-//     function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _, layer) {
-//
-// });
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
 
