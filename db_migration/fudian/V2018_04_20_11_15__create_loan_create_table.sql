@@ -7,6 +7,7 @@ CREATE TABLE `fudian`.`loan_create` (
   `amount`               VARCHAR(20),
   `loan_name`            VARCHAR(256),
   `loan_type`            VARCHAR(1),
+  `end_time`             VARCHAR(8),
   `order_no`             VARCHAR(20),
   `order_date`           VARCHAR(8),
   `ext_mark`             VARCHAR(256),

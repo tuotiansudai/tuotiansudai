@@ -154,8 +154,8 @@ public class BankWrapperClient {
         return new BankReturnCallbackMessage();
     }
 
-    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount) {
-        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount);
+    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount, String endTime) {
+        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount, endTime);
 
         String json = syncExecute("/loan-create", bankLoanCreateDto);
 

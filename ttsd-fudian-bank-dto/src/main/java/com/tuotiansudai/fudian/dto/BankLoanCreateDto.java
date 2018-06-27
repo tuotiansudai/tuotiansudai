@@ -9,13 +9,16 @@ public class BankLoanCreateDto extends BankBaseDto {
 
     private long amount;
 
+    private String endTime;
+
     public BankLoanCreateDto() {
     }
 
-    public BankLoanCreateDto(String bankUserName, String bankAccountNo, String loanName, long amount) {
+    public BankLoanCreateDto(String bankUserName, String bankAccountNo, String loanName, long amount, String endTime) {
         super(null, null, bankUserName, bankAccountNo);
         this.loanName = loanName;
         this.amount = amount;
+        this.endTime = endTime;
     }
 
     public String getLoanName() {
@@ -31,7 +34,8 @@ public class BankLoanCreateDto extends BankBaseDto {
         return !Strings.isNullOrEmpty(getBankUserName())
                 && !Strings.isNullOrEmpty(getBankAccountNo())
                 && !Strings.isNullOrEmpty(loanName)
-                && amount > 0;
+                && amount > 0
+                && !Strings.isNullOrEmpty(endTime);
     }
 
     @Override

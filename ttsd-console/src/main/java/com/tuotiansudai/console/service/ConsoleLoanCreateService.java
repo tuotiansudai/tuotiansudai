@@ -296,7 +296,7 @@ public class ConsoleLoanCreateService {
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
 
-        BankLoanCreateMessage message = bankWrapperClient.createLoan(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), loanModel.getName(), loanModel.getLoanAmount());
+        BankLoanCreateMessage message = bankWrapperClient.createLoan(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), loanModel.getName(), loanModel.getLoanAmount(), new DateTime(loanModel.getFundraisingEndTime()).toString("yyyyMMdd"));
 
         payDataDto.setStatus(message.isStatus());
         payDataDto.setMessage(message.getMessage());
