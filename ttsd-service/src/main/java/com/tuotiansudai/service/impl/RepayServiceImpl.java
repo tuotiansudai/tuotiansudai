@@ -9,8 +9,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -26,10 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class RepayServiceImpl implements RepayService {
@@ -64,9 +60,6 @@ public class RepayServiceImpl implements RepayService {
     private CouponRepayMapper couponRepayMapper;
 
     @Autowired
-    private MembershipPrivilegeMapper membershipPrivilegeMapper;
-
-    @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
 
     @Autowired
@@ -85,7 +78,6 @@ public class RepayServiceImpl implements RepayService {
             .put(3, "平台收取收益和奖励的10%作为服务费,v3会员享受服务费8折优惠")
             .put(4, "平台收取收益和奖励的10%作为服务费,v4会员享受服务费8折优惠")
             .put(5, "平台收取收益和奖励的10%作为服务费,v5会员享受服务费7折优惠")
-            .put(6, "平台收取收益和奖励的10%作为服务费,购买增值特权享受服务费7折优惠")
             .build());
 
     @Override
@@ -263,12 +255,8 @@ public class RepayServiceImpl implements RepayService {
                     break;
             }
         }
-        if (membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(investModel.getLoginName(), investModel.getCreatedTime()) == null){
-            MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getCreatedTime());
-            dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
-        }else {
-            dataDto.setLevelMessage(membershipMessage.get(6));
-        }
+        MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getCreatedTime());
+        dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
         return baseDto;
     }
 
