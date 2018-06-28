@@ -333,4 +333,6 @@ public interface InvestMapper {
     long sumAmountActivityDoubleElevenByLoginName(@Param(value = "loginName") String loginName,
                                                   @Param(value = "startTime") Date startTime,
                                                   @Param(value="endTime") Date endTime);
+
+    List<InvestModel> findSuccessByDate(@Param(value = "queryDate") String queryDate);
 }

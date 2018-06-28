@@ -1213,4 +1213,8 @@
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
     </select>
 
+    <select id="findSuccessByDate" parameterType="map" resultMap="investResultMap">
+        SELECT * from invest where status = 'SUCCESS' and date_format(trading_time,'%Y%m%d') = #{queryDate}
+    </select>
+
 </mapper>

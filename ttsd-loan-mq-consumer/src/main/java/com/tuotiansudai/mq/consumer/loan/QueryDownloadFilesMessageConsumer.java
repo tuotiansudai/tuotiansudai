@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.fudian.download.InvestDownloadDto;
 import com.tuotiansudai.fudian.download.QueryDownloadLogFilesType;
 import com.tuotiansudai.fudian.download.RechargeDownloadDto;
 import com.tuotiansudai.fudian.download.WithdrawDownloadDto;
@@ -17,8 +18,10 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SendCloudTemplate;
@@ -47,6 +50,9 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
     @Autowired
     private BankWithdrawMapper bankWithdrawMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     private static final String EMAIL_CONTENT_MESSAGE = "EMAIL_CONTENT_MESSAGE:{0}";
@@ -72,6 +78,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
             Map<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction> notify = Maps.newHashMap(ImmutableMap.<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction>builder()
                     .put(QueryDownloadLogFilesType.recharge, recharge)
                     .put(QueryDownloadLogFilesType.withdraw, withdraw)
+                    .put(QueryDownloadLogFilesType.invest, invest)
                     .build());
 
             notify.get(bankQueryDownloadFilesMessage.getType()).messageNotify(bankQueryDownloadFilesMessage);
@@ -101,6 +108,13 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         Map<String, String> modelMap = bankWithdrawMapper.findSuccessByDate(message.getQueryDate()).stream()
                 .collect(Collectors.toMap(BankWithdrawModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getAmount())));
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
+    };
+
+    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> invest = (message) -> {
+        List<InvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<InvestDownloadDto>>() {
+        }.getType());
+//        Map<String, String> queryMap = dtos.stream().filter(dto -> !dto.getStatus().equals("0"))
+//                .collect(Collectors.toMap(InvestDownloadDto::getOrderNo, dto-> ));
     };
 
     private void generateContentBody(QueryDownloadLogFilesType type, String queryDate, Map<String, String> queryMap, Map<String, String> modelMap) {
