@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.fudian.download.InvestDownloadDto;
 import com.tuotiansudai.fudian.download.QueryDownloadLogFilesType;
 import com.tuotiansudai.fudian.download.RechargeDownloadDto;
@@ -28,7 +27,6 @@ import com.tuotiansudai.util.SendCloudTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -113,8 +111,11 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> invest = (message) -> {
         List<InvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<InvestDownloadDto>>() {
         }.getType());
-//        Map<String, String> queryMap = dtos.stream().filter(dto -> !dto.getStatus().equals("0"))
-//                .collect(Collectors.toMap(InvestDownloadDto::getOrderNo, dto-> ));
+        Map<String, String> queryMap = dtos.stream().filter(dto -> !("0").equals(dto.getStatus()))
+                .collect(Collectors.toMap(InvestDownloadDto::getOrderNo, dto -> "5".equals(dto.getStatus()) ? "WITHDRAWAL" : "SUCCESS"));
+        Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream()
+                .collect(Collectors.toMap(InvestModel::getBankOrderNo, model->model.getStatus().name()));
+        generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private void generateContentBody(QueryDownloadLogFilesType type, String queryDate, Map<String, String> queryMap, Map<String, String> modelMap) {
