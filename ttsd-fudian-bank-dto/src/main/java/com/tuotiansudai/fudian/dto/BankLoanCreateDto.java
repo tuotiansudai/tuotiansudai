@@ -29,6 +29,10 @@ public class BankLoanCreateDto extends BankBaseDto {
         return amount;
     }
 
+    public String getEndTime() {
+        return endTime;
+    }
+
     @Override
     public boolean isValid() {
         return !Strings.isNullOrEmpty(getBankUserName())
