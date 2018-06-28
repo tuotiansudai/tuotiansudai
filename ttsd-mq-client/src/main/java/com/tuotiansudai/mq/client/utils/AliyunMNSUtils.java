@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class AliyunMNSUtils {
     private static Logger logger = LoggerFactory.getLogger(AliyunMNSUtils.class);
+
     private static final Map<MessageTopic, CloudTopic> topicMap = new HashMap<>();
     private static final Map<MessageQueue, CloudQueue> queueMap = new HashMap<>();
 

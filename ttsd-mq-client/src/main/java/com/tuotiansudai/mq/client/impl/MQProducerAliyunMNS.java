@@ -5,6 +5,7 @@ import com.aliyun.mns.client.CloudTopic;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.common.ClientException;
 import com.aliyun.mns.common.ServiceException;
+import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.mq.client.MQProducer;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
@@ -14,8 +15,12 @@ import com.tuotiansudai.mq.exception.AliyunServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
+
 public class MQProducerAliyunMNS implements MQProducer {
     private static Logger logger = LoggerFactory.getLogger(MQProducerAliyunMNS.class);
+
+    private static final String ENV = ETCDConfigReader.getReader().getValue("common.environment");
 
     private final MNSClient mnsClient;
 
@@ -57,4 +62,11 @@ public class MQProducerAliyunMNS implements MQProducer {
         }
     }
 
+    private static String getAliyunQueueName(MessageQueue messageQueue) {
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? "" : MessageFormat.format("{0}-", ENV.toLowerCase()) + messageQueue.getQueueName();
+    }
+
+    private static String getAliyunTopicName(MessageTopic messageTopic) {
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? "" : MessageFormat.format("{0}-", ENV.toLowerCase()) + messageTopic.getTopicName();
+    }
 }

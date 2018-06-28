@@ -49,7 +49,7 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
             }
         }
 
-        if (Environment.PRODUCTION == environment) {
+        if (Environment.isProduction(environment)) {
             modelAndView.addObject("isProduction", true);
         }
 

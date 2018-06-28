@@ -4,7 +4,6 @@ import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.dto.request.*;
-import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.service.*;
 import org.slf4j.Logger;
@@ -30,6 +29,8 @@ public class PayController extends AsyncRequestController {
 
     private final LoanCreateService loanCreateService;
 
+    private final LoanCancelService loanCancelService;
+
     private final LoanInvestService loanInvestService;
 
     private final LoanCreditInvestService loanCreditInvestService;
@@ -41,11 +42,12 @@ public class PayController extends AsyncRequestController {
     private final MerchantTransferService merchantTransferService;
 
     @Autowired
-    public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
+    public PayController(BankConfig bankConfig, RechargeService rechargeService, WithdrawService withdrawService, LoanCreateService loanCreateService, LoanCancelService loanCancelService, LoanInvestService loanInvestService, LoanCreditInvestService loanCreditInvestService, LoanFullService loanFullService, LoanRepayService loanRepayService, MerchantTransferService merchantTransferService) {
         super(bankConfig);
         this.rechargeService = rechargeService;
         this.withdrawService = withdrawService;
         this.loanCreateService = loanCreateService;
+        this.loanCancelService = loanCancelService;
         this.loanInvestService = loanInvestService;
         this.loanCreditInvestService = loanCreditInvestService;
         this.loanFullService = loanFullService;
@@ -60,7 +62,7 @@ public class PayController extends AsyncRequestController {
 
         RechargeRequestDto requestDto = rechargeService.recharge(source, params);
 
-        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, source == Source.WEB ? ApiType.RECHARGE : ApiType.RECHARGE_M );
+        BankAsyncMessage bankAsyncMessage = this.generateAsyncRequestData(requestDto, source == Source.WEB ? ApiType.RECHARGE : ApiType.RECHARGE_M);
 
         if (!bankAsyncMessage.isStatus()) {
             logger.error("[Fudian] call recharge, request data generation failure, data: {}", params);
@@ -102,13 +104,27 @@ public class PayController extends AsyncRequestController {
         logger.info("[Fudian] call loan create");
 
         if (!params.isValid()) {
-            logger.error("[Fudian] call loan bad request, data: {}", params);
+            logger.error("[Fudian] call loan create bad request, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
         BankLoanCreateMessage bankLoanCreateMessage = loanCreateService.create(params);
 
         return ResponseEntity.ok(bankLoanCreateMessage);
+    }
+
+    @RequestMapping(path = "/loan-cancel", method = RequestMethod.POST)
+    public ResponseEntity<BankLoanCancelMessage> loanCancel(@RequestBody BankLoanCancelDto params) {
+        logger.info("[Fudian] call loan cancel");
+
+        if (!params.isValid()) {
+            logger.error("[Fudian] call loan cancel bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+
+        BankLoanCancelMessage bankLoanCancelMessage = loanCancelService.cancel(params);
+
+        return ResponseEntity.ok(bankLoanCancelMessage);
     }
 
     @RequestMapping(path = "/loan-full", method = RequestMethod.POST)

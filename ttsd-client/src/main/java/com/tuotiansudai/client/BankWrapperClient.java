@@ -154,8 +154,8 @@ public class BankWrapperClient {
         return new BankReturnCallbackMessage();
     }
 
-    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount) {
-        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount);
+    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount, String endTime) {
+        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount, endTime);
 
         String json = syncExecute("/loan-create", bankLoanCreateDto);
 
@@ -170,6 +170,24 @@ public class BankWrapperClient {
         }
 
         return new BankLoanCreateMessage(false, null);
+    }
+
+    public BankLoanCancelMessage cancelLoan(long loanId, String loanOrderNo, String loanOrderDate, String loanTxNo) {
+        BankLoanCancelDto bankLoanCancelDto = new BankLoanCancelDto(loanId, loanTxNo, loanOrderNo, loanOrderDate);
+
+        String json = syncExecute("/loan-cancel", bankLoanCancelDto);
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankLoanCancelMessage(false, null);
+        }
+
+        try {
+            return gson.fromJson(json, BankLoanCancelMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", String.valueOf(loanId)), e);
+        }
+
+        return new BankLoanCancelMessage(false, null);
     }
 
     public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, long time) {
