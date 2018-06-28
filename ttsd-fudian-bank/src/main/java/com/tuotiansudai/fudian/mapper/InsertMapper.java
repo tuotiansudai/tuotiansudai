@@ -53,8 +53,8 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertPhoneUpdate(PhoneUpdateRequestDto dto);
 
-    @Insert("INSERT INTO loan_create(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `amount`, `loan_name`, `loan_type`, `end_time`, `request_time`) " +
-            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{amount}, #{loanName}, #{loanType}, #{endTime}, now())")
+    @Insert("INSERT INTO loan_create(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `user_name`, `account_no`, `amount`, `loan_name`, `loan_type`, `end_time`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{userName}, #{accountNo}, #{amount}, #{loanName}, #{loanType}, #{endTime}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreate(LoanCreateRequestDto dto);
 

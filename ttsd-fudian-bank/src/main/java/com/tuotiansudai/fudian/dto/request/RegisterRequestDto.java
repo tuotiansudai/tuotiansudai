@@ -4,15 +4,18 @@ public class RegisterRequestDto extends NotifyRequestDto {
 
     private String realName;
 
+    private String roleType; // 1 借款人 3 出借人
+
     private String identityType = "1";
 
     private String identityCode;
 
     private String mobilePhone;
 
-    public RegisterRequestDto(Source source, String loginName, String mobile, String realName, String identityCode) {
+    public RegisterRequestDto(Source source, String loginName, String mobile, String realName, String roleType, String identityCode) {
         super(source, loginName, mobile, null, null);
         this.realName = realName;
+        this.roleType = roleType;
         this.identityCode = identityCode;
         this.mobilePhone = mobile;
     }
@@ -23,6 +26,14 @@ public class RegisterRequestDto extends NotifyRequestDto {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
     public String getIdentityType() {

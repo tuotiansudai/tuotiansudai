@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
+import com.tuotiansudai.fudian.dto.request.RegisterRoleType;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
@@ -54,8 +55,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
         this.selectMapper = selectMapper;
     }
 
-    public RegisterRequestDto register(Source source, BankRegisterDto bankRegisterDto) {
-        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), bankRegisterDto.getIdentityCode());
+    public RegisterRequestDto register(Source source, RegisterRoleType registerRoleType, BankRegisterDto bankRegisterDto) {
+        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), registerRoleType.getCode(), bankRegisterDto.getIdentityCode());
         signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
