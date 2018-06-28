@@ -104,7 +104,9 @@ let isBankCard = $accountOverview.data('bankcard');
 let isAccount = $accountOverview.data('account');
 
 $('#cashMoneyBtn').on('click',function () {
-    if(!isBankCard){
+    if(!isAccount == true){
+        location.href = '/register/account';
+    }else if(!isBankCard) {
         layer.open({
             type: 1,
             move: false,
@@ -112,19 +114,8 @@ $('#cashMoneyBtn').on('click',function () {
             title: '绑卡',
             area: ['490px', '220px'],
             shadeClose: false,
-            closeBtn:0,
+            closeBtn: 0,
             content: $('#bankCardDOM')
-        });
-    }else if(!isAccount == true){
-        layer.open({
-            type: 1,
-            move: false,
-            offset: "200px",
-            title: '实名认证',
-            area: ['490px', '220px'],
-            shadeClose: false,
-            closeBtn:0,
-            content: $('#accountDOM')
         });
     }else {
         location.href = '/withdraw'

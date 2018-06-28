@@ -14,7 +14,7 @@ var $transferDetailCon = $('#transferDetailCon'),
     $detailRecord = $('.detail-record', $transferDetailCon),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 let isEstimate = $transferDetailCon.data('estimate');
-
+let isAuthentication = 'USER' === $transferDetailCon.data('authentication');
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -58,6 +58,24 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');
+    if (isAuthentication) {
+        location.href = '/register/account';
+        return false;
+    }
+    let isBankCard = $transferDetailCon.data('bankcard');
+    if(!isBankCard) {
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '绑卡',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn: 0,
+            content: $('#bankCardDOM')
+        });
+        return false;
+    }
     commonFun.useAjax({
         url: '/transfer/' + transferApplicationId + '/purchase-check',
         type: 'GET'
@@ -232,5 +250,7 @@ $riskTips.on('mouseout', function(event) {
     $('.risk-tip-content').hide();
 });
 
-
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})
 

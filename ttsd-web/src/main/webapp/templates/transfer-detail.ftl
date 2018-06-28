@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
@@ -232,6 +232,19 @@
         <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
+</div>
+<div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+
+    <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+        </div>
+    </form>
+
 </div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />

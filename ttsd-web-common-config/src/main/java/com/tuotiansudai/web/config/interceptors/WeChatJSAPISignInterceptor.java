@@ -41,7 +41,7 @@ public class WeChatJSAPISignInterceptor extends HandlerInterceptorAdapter {
 
         String url = Strings.isNullOrEmpty(queryString) ? requestURL : MessageFormat.format("{0}?{1}", requestURL, queryString);
 
-        if (Environment.PRODUCTION == environment) {
+        if (Environment.isProduction(environment)) {
             url = url.replaceFirst("http", "https");
         }
 

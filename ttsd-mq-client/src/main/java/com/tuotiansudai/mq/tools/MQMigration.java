@@ -7,12 +7,11 @@ import com.aliyun.mns.model.PagingListResult;
 import com.aliyun.mns.model.QueueMeta;
 import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMeta;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.client.model.MessageTopic;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,18 +20,17 @@ import java.util.stream.Stream;
 public class MQMigration {
     private static final long QUEUE_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 60 * 60;//1 hour
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ETCDConfigReader etcdConfigReader = ETCDConfigReader.getReader();
 
         String enabled = etcdConfigReader.getValue("aliyun.mns.enabled");
         if (!"true".equals(enabled)) {
             return;
         }
-        String endPoint = etcdConfigReader.getValue("aliyun.mns.endpoint");
-        String accessKeyId = etcdConfigReader.getValue("aliyun.mns.accessKeyId");
-        String accessKeySecret = etcdConfigReader.getValue("aliyun.mns.accessKeySecret");
 
-        MNSClient mnsClient = getMnsClient(endPoint, accessKeyId, accessKeySecret);
+        MNSClient mnsClient = getMnsClient(etcdConfigReader.getValue("aliyun.mns.endpoint"),
+                etcdConfigReader.getValue("aliyun.mns.accessKeyId"),
+                etcdConfigReader.getValue("aliyun.mns.accessKeySecret"));
 
         if (mnsClient != null) {
             initMessageQueue(mnsClient);
@@ -51,7 +49,7 @@ public class MQMigration {
 
         // remove out
         existingQueueNames.stream()
-                .filter(queueName -> !MessageQueue.contains(queueName))
+                .filter(queueName -> Stream.of(MessageQueue.values()).noneMatch(q -> q.getQueueName().equals(queueName)))
                 .forEach(queueName -> removeQueue(mnsClient, queueName));
     }
 
@@ -64,7 +62,7 @@ public class MQMigration {
 
         // remove out
         existingTopicNameList.stream()
-                .filter(topicName -> !MessageTopic.contains(topicName))
+                .filter(topicName -> Stream.of(MessageTopic.values()).noneMatch(t -> t.getTopicName().equals(topicName)))
                 .forEach(topicName -> removeTopic(mnsClient, topicName));
     }
 
@@ -117,7 +115,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static List<String> getExistingQueueNameList(MNSClient mnsClient) {
@@ -130,7 +128,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static List<String> getExistingSubscriptionNameList(CloudTopic topic) {
@@ -143,7 +141,7 @@ public class MQMigration {
                         .collect(Collectors.toList());
             }
         }
-        return new ArrayList<>();
+        return Lists.newArrayList();
     }
 
     private static void createTopic(MNSClient mnsClient, String messageTopic) {

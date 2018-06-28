@@ -64,7 +64,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
         try {
             String jsonString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
             if (StringUtils.isBlank(jsonString)) {
-                if (environment == Environment.PRODUCTION) {
+                if (Environment.isProduction(environment)) {
                     jsonString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
                 } else {
                     InputStream inputStream = MobileAppCheckVersionController.class.getClassLoader().getResourceAsStream(VERSION_CONFIG_FILE);
@@ -81,7 +81,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
             dto.setForceUpgrade(json.get(jsonKey).getAsJsonObject().get("forceUpgrade").getAsBoolean());
             dto.setMessage(json.get(jsonKey).getAsJsonObject().get("message").getAsString());
             dto.setVersion(json.get(jsonKey).getAsJsonObject().get("version").getAsString());
-            if (platform.equalsIgnoreCase(Source.ANDROID.name())){
+            if (platform.equalsIgnoreCase(Source.ANDROID.name())) {
                 dto.setVersionCode(json.get(jsonKey).getAsJsonObject().get("versionCode").getAsInt());
                 dto.setUrl(json.get(jsonKey).getAsJsonObject().get("url").getAsString());
             }
@@ -94,8 +94,8 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
 
     private String inputStreamToString(InputStream is) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int i=-1;
-        while((i=is.read())!=-1){
+        int i = -1;
+        while ((i = is.read()) != -1) {
             byteArrayOutputStream.write(i);
         }
         return byteArrayOutputStream.toString("utf-8");

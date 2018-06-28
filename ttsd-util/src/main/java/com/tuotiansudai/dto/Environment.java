@@ -3,7 +3,7 @@ package com.tuotiansudai.dto;
 public enum Environment {
     DEV,
     SMOKE,
-    QA,
+    QA1,QA2,QA3,QA4,QA5,
     UT,
     PRODUCTION;
 

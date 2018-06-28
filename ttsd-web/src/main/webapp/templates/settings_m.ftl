@@ -2,7 +2,7 @@
 
 <@global.main pageCss="${m_css.settings}" pageJavascript="${m_js.settings}" title="设置">
 
-<div class="goBack_wrapper">
+<div class="goBack_wrapper" id="settingsContainer" data-bankcard="${hasBankCard?c}" data-account="${hasAccount?c}">
     设置
     <div class="go-back-container" id="goBack_applyTransfer">
         <span class="go-back"></span>
@@ -17,6 +17,9 @@
             </a>
             <form id="resetPasswordForm" action="/personal-info/reset-bank-password/source/M" method="post" style="display: none">
                 <input type="submit" class="update-pwd-btn">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
+            <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </li>
