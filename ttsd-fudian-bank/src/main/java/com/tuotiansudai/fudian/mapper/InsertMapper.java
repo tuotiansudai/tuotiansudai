@@ -58,6 +58,11 @@ public interface InsertMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertLoanCreate(LoanCreateRequestDto dto);
 
+    @Insert("INSERT INTO loan_cancel(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `loan_order_no`, `loan_order_date`, `loan_tx_no`, `request_time`) " +
+            "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{loanOrderNo}, #{loanOrderDate}, #{loanTxNo}, now())")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertLoanCancel(LoanCancelRequestDto dto);
+
     @Insert("INSERT INTO loan_invest(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `amount`, `award`, `loan_tx_no`, `request_time`) " +
             "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, #{amount}, #{award}, #{loanTxNo}, now())")
     @Options(useGeneratedKeys = true, keyColumn = "id")
