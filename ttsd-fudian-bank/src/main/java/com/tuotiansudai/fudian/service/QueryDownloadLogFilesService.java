@@ -96,7 +96,17 @@ public class QueryDownloadLogFilesService {
 
             List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
             List<T> list = DownloadFileMatchDtoParser.parse(dtoClass, params);
-            messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list));
+
+            if (list.size() == 0){
+                messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles,
+                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list));
+            }
+
+            int batchSize = list.size() / 200 + (list.size() % 200 > 0 ? 1 : 0);
+            for (int batch = 0; batch < batchSize; batch ++){
+                messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles,
+                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list.subList(batch * 200, (batch + 1) * 200 > list.size() ? list.size() : (batch + 1) * 200)));
+            }
 
         } catch (Exception e) {
             logger.error(MessageFormat.format("[QueryDownloadFiles] fail type:{0}, message:{1}", type.name(), e.getMessage()));

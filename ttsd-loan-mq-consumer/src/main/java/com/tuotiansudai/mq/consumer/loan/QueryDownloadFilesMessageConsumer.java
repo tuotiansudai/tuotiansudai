@@ -58,6 +58,8 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
 
     private static final String EMAIL_CONTENT_MESSAGE = "EMAIL_CONTENT_MESSAGE:{0}";
 
+    private static final String EMAIL_CONTENT_SIZE = "EMAIL_CONTENT_SIZE:{0}:{1}";
+
     @Override
     public MessageQueue queue() {
         return MessageQueue.QueryDownloadFiles;
@@ -179,14 +181,11 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
                 resultMap.put("result", "交易成功");
             }
             contentBody.append(SendCloudTemplate.FUDIAN_CHECK_RESULT_BODY.generateContent(resultMap));
+            redisWrapperClient.incr(MessageFormat.format(EMAIL_CONTENT_SIZE, queryDate, type.name()));
         }
 
-        String header = SendCloudTemplate.FUDIAN_CHECK_RESULT_HEADER.generateContent(Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("title", type.getDescribe())
-                .put("count", String.valueOf(queryMap.size()))
-                .build()));
-        String content = header + (Strings.isNullOrEmpty(contentBody.toString()) ? "<tr><td colspan='2'>无交易记录</td></tr>" : contentBody.toString()) + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate();
-        redisWrapperClient.hset(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), type.name(), content, 12 * 60 * 60);
+        String content = (redisWrapperClient.hexists(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), type.name()) ? redisWrapperClient.hget(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), type.name()) : "") + contentBody.toString();
+        redisWrapperClient.hset(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), type.name(), Strings.isNullOrEmpty(content) ? "<tr><td colspan='2'>无交易记录</td></tr>" : content, 12 * 60 * 60);
     }
 }
 
