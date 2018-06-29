@@ -109,4 +109,6 @@ public interface LoanMapper {
 
     List<LoanModel> findSuccessLoanOutLoan();
 
+    List<LoanModel> findLoanFullSuccessByDate(@Param(value = "queryDate") String queryDate);
+
 }

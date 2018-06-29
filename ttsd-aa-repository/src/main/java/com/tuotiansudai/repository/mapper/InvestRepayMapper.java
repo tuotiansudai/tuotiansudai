@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -68,4 +69,6 @@ public interface InvestRepayMapper {
 
     List<BankLoanRepayInvestDataView> queryBankInvestRepayData(@Param(value = "loanId") long loanId,
                                                                @Param(value = "period") int period);
+
+    List<InvestRepayModel> findCompleteByDate(@Param(value = "queryDate") String queryDate);
 }

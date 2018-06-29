@@ -4,7 +4,6 @@ package com.tuotiansudai.fudian.download;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
-import java.io.Serializable;
 import java.util.Map;
 
 public class LoanCreditInvestDownloadDto implements DownloadFilesMatch {

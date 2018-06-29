@@ -484,4 +484,8 @@
         order by invest_id
     </select>
 
+    <select id="findCompleteByDate" parameterType="map" resultMap="investRepayResultMap">
+        SELECT * from invest_repay where status = 'COMPLETE' and bank_order_date = #{queryDate}
+    </select>
+
 </mapper>
