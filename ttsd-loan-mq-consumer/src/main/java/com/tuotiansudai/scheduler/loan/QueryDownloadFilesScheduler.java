@@ -47,7 +47,11 @@ public class QueryDownloadFilesScheduler {
 
         mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Maps.newHashMap(ImmutableMap.<Environment, List<String>>builder()
                 .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
-                .put(Environment.QA, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA1, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA2, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA3, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA4, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA5, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
                 .put(Environment.DEV, Lists.newArrayList("zhukun@tuotiansudai.com"))
                 .build()).get(environment), MessageFormat.format("{0}富滇银行{1}对账信息", environment.name(), DateTime.now().minusDays(1).toString("yyyyMMdd")), contentBody.toString()));
     }

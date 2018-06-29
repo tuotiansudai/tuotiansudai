@@ -111,9 +111,9 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> invest = (message) -> {
         List<InvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<InvestDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> !("0").equals(dto.getStatus()))
+        Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getInvestType()) && !("0").equals(dto.getStatus()))
                 .collect(Collectors.toMap(InvestDownloadDto::getOrderNo, dto -> "5".equals(dto.getStatus()) ? "WITHDRAWAL" : "SUCCESS"));
-        Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream()
+        Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream().filter(model -> model.getTransferInvestId() == null)
                 .collect(Collectors.toMap(InvestModel::getBankOrderNo, model->model.getStatus().name()));
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };

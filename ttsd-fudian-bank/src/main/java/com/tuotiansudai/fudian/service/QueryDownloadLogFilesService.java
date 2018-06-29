@@ -58,7 +58,7 @@ public class QueryDownloadLogFilesService {
 
     @Scheduled(cron = "0 2 * * * ?", zone = "Asia/Shanghai")
     @SuppressWarnings(value = "unchecked")
-    public void RechargeSchedule() throws SftpException, JSchException, IOException {
+    public void RechargeSchedule() throws JSchException {
         ChannelSftp sftp = sftpClient.getChannel();
 
         Map<QueryDownloadLogFilesType, Class> classMap = Maps.newHashMap(ImmutableMap.<QueryDownloadLogFilesType, Class>builder()
@@ -89,14 +89,17 @@ public class QueryDownloadLogFilesService {
 
             ResponseDto<QueryDownloadLogFilesContentDto> responseDto = (ResponseDto<QueryDownloadLogFilesContentDto>) API_TYPE.getParser().parse(responseData);
 
-            if (responseDto.isSuccess()) {
-                List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
-                List<T> list = DownloadFileMatchDtoParser.parse(dtoClass, params);
-                messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list));
+            if (!responseDto.isSuccess()){
+                logger.error("[QueryDownloadFiles] callback is failure, type: {}, message {}", type.name(), responseDto.getRetMsg());
+                return;
             }
 
+            List<String> params = sftpClient.download(sftp, responseDto.getContent().getSftpFilePath(), responseDto.getContent().getFilename());
+            List<T> list = DownloadFileMatchDtoParser.parse(dtoClass, params);
+            messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles, new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list));
+
         } catch (Exception e) {
-            logger.error(MessageFormat.format("query download files fail type:{0}, message:{1}", type.name(), e.getMessage()));
+            logger.error(MessageFormat.format("[QueryDownloadFiles] fail type:{0}, message:{1}", type.name(), e.getMessage()));
         }
     }
 }
