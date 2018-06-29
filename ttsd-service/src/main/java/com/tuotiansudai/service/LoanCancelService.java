@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -42,27 +43,35 @@ public class LoanCancelService {
     @Transactional
     public void cancel(BankLoanCancelMessage message) {
         LoanModel loanModel = loanMapper.findById(message.getLoanId());
-        if (loanModel == null || loanModel.getStatus() != LoanStatus.CANCEL) {
-            logger.error("failed to cancel loan, loan {}", message.getLoanId());
+        if (loanModel == null || loanModel.getStatus() == LoanStatus.CANCEL) {
+            logger.error("[Loan Cancel] failed to cancel loan, loan {}", message.getLoanId());
             return;
         }
 
         loanMapper.updateStatus(loanModel.getId(), LoanStatus.CANCEL);
+        logger.error("[Loan Cancel] update loan to cancel, loan {}", message.getLoanId());
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
         for (InvestModel successInvest : successInvests) {
             successInvest.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK);
             investMapper.update(successInvest);
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
-                    new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                            successInvest.getLoginName(),
-                            successInvest.getId(),
-                            message.getBankOrderNo(),
-                            message.getBankOrderDate(),
-                            successInvest.getAmount(),
-                            UserBillBusinessType.CANCEL_INVEST_PAYBACK)
-            ));
+            logger.info("[Loan Cancel] update invest to cancel, investId: {}, amount: {}", successInvest.getId(), successInvest.getAmount());
+        }
+
+        for (InvestModel successInvest : successInvests) {
+            try {
+                mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
+                        new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                                successInvest.getLoginName(),
+                                successInvest.getId(),
+                                message.getBankOrderNo(),
+                                message.getBankOrderDate(),
+                                successInvest.getAmount(),
+                                UserBillBusinessType.CANCEL_INVEST_PAYBACK)));
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Loan Cancel] failed to send message for pay back invest amount, investId: {0}, amount: {1}", String.valueOf(successInvest.getId()), String.valueOf(successInvest.getAmount())), e);
+            }
         }
     }
 }

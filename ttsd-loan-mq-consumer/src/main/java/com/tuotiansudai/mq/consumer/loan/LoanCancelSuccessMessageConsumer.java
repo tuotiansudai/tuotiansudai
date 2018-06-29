@@ -4,12 +4,10 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.tuotiansudai.fudian.message.BankLoanFullMessage;
+import com.tuotiansudai.fudian.message.BankLoanCancelMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.service.GenerateRepayService;
-import com.tuotiansudai.service.LoanFullService;
-import com.tuotiansudai.service.ReferrerRewardService;
+import com.tuotiansudai.service.LoanCancelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +22,11 @@ public class LoanCancelSuccessMessageConsumer implements MessageConsumer {
 
     private static Gson gson = new GsonBuilder().create();
 
-    private final LoanFullService loanFullService;
-
-    private final GenerateRepayService generateRepayService;
-
-    private final ReferrerRewardService referrerRewardService;
+    private final LoanCancelService loanCancelService;
 
     @Autowired
-    public LoanCancelSuccessMessageConsumer(LoanFullService loanFullService, GenerateRepayService generateRepayService, ReferrerRewardService referrerRewardService) {
-        this.loanFullService = loanFullService;
-        this.generateRepayService = generateRepayService;
-        this.referrerRewardService = referrerRewardService;
+    public LoanCancelSuccessMessageConsumer(LoanCancelService loanCancelService) {
+        this.loanCancelService = loanCancelService;
     }
 
     @Override
@@ -52,10 +44,8 @@ public class LoanCancelSuccessMessageConsumer implements MessageConsumer {
         }
 
         try {
-            BankLoanFullMessage bankLoanFullMessage = gson.fromJson(message, BankLoanFullMessage.class);
-            loanFullService.processLoanFull(bankLoanFullMessage);
-            generateRepayService.generateRepay(bankLoanFullMessage);
-            referrerRewardService.rewardReferrer(bankLoanFullMessage);
+            BankLoanCancelMessage bankLoanCancelMessage = gson.fromJson(message, BankLoanCancelMessage.class);
+            loanCancelService.cancel(bankLoanCancelMessage);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] parse message failure, message: {0}", message), e);
         }
