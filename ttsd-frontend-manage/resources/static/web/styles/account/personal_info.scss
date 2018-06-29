@@ -124,3 +124,16 @@
     border-radius:50px;
   }
 }
+.change-role-btn {
+  padding-left: 6px!important;
+}
+.fa-user-circle:before {
+  padding-left: 4px;
+  padding-right: 0;
+  vertical-align: middle;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  content: ' ';
+  background:url('../../images/myaccount/role_icon.png') no-repeat center;
+}
