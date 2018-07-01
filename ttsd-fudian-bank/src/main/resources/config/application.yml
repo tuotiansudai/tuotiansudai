@@ -43,7 +43,11 @@ redisson:
   connectionPoolSize: 50
   database: 10
 
-oss:
+download:
+  sftpHost: ${sftp.host}
+  sftpPort: ${sftp.port}
+  sftpUsername: ${sftp.username}
+  sftpPassword: ${sftp.password}
   accessKeyId: ${common.oss.id}
   accessKeySecret: ${common.oss.secret}
   ossEndpoint: ${common.oss.endpoint}

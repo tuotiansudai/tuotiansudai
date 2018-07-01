@@ -2,18 +2,28 @@ package com.tuotiansudai.fudian.download;
 
 
 public enum QueryDownloadLogFilesType {
-    recharge("充值对账"),
-    withdraw("提现对账"),
-    invest("投资对账"),
-    repayment("还款对账"),
-    loanBack("回款对账"),
-    creditInvest("债权购买对账"),
-    loanFull("满标放款对账");
+    RECHARGE("recharge", "充值对账"),
+    WITHDRAW("withdraw", "提现对账"),
+    LOAN_INVEST("invest", "投资对账"),
+    LOAN_REPAY("repayment", "还款对账"),
+    LOAN_CALLBACK("loanBack", "回款对账"),
+    LOAN_CREDIT_INVEST("creditInvest", "债权购买对账"),
+    LOAN_FULL("loanFull", "满标放款对账");
 
+    private String type;
     private String describe;
 
-    QueryDownloadLogFilesType(String describe) {
+    QueryDownloadLogFilesType(String type, String describe) {
+        this.type = type;
         this.describe = describe;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescribe() {

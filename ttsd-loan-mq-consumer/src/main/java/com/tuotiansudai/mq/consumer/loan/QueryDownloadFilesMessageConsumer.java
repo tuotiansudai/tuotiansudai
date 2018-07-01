@@ -79,13 +79,13 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
             }
 
             Map<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction> notify = Maps.newHashMap(ImmutableMap.<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction>builder()
-                    .put(QueryDownloadLogFilesType.recharge, recharge)
-                    .put(QueryDownloadLogFilesType.withdraw, withdraw)
-                    .put(QueryDownloadLogFilesType.invest, invest)
-                    .put(QueryDownloadLogFilesType.creditInvest, creditInvest)
-                    .put(QueryDownloadLogFilesType.loanFull, loanFull)
-                    .put(QueryDownloadLogFilesType.repayment, repayment)
-                    .put(QueryDownloadLogFilesType.loanBack, loanBack)
+                    .put(QueryDownloadLogFilesType.RECHARGE, recharge)
+                    .put(QueryDownloadLogFilesType.WITHDRAW, withdraw)
+                    .put(QueryDownloadLogFilesType.LOAN_INVEST, loanInvest)
+                    .put(QueryDownloadLogFilesType.LOAN_CREDIT_INVEST, loanCreditInvest)
+                    .put(QueryDownloadLogFilesType.LOAN_FULL, loanFull)
+                    .put(QueryDownloadLogFilesType.LOAN_REPAY, loanRepay)
+                    .put(QueryDownloadLogFilesType.LOAN_CALLBACK, loanCallBack)
                     .build());
 
             notify.get(bankQueryDownloadFilesMessage.getType()).messageNotify(bankQueryDownloadFilesMessage);
@@ -117,17 +117,17 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
-    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> invest = (message) -> {
-        List<InvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<InvestDownloadDto>>() {
+    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanInvest = (message) -> {
+        List<LoanInvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanInvestDownloadDto>>() {
         }.getType());
         Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getInvestType()) && !("0").equals(dto.getStatus()))
-                .collect(Collectors.toMap(InvestDownloadDto::getOrderNo, dto -> "5".equals(dto.getStatus()) ? "WITHDRAWAL" : "SUCCESS"));
+                .collect(Collectors.toMap(LoanInvestDownloadDto::getOrderNo, dto -> "5".equals(dto.getStatus()) ? "WITHDRAWAL" : "SUCCESS"));
         Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream().filter(model -> model.getTransferInvestId() == null)
                 .collect(Collectors.toMap(InvestModel::getBankOrderNo, model -> model.getStatus().name()));
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
-    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> creditInvest = (message) -> {
+    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanCreditInvest = (message) -> {
         List<LoanCreditInvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanCreditInvestDownloadDto>>() {
         }.getType());
         Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getStatus()))
@@ -147,7 +147,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
-    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> repayment = (message) -> {
+    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanRepay = (message) -> {
         List<LoanRepayDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanRepayDownloadDto>>() {
         }.getType());
         Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getStatus()))
@@ -157,11 +157,11 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
-    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanBack = (message) -> {
-        List<LoanRepayInvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanRepayInvestDownloadDto>>() {
+    private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanCallBack = (message) -> {
+        List<LoanCallBackDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanCallBackDownloadDto>>() {
         }.getType());
         Map<String, String> queryMap = dtos.stream()
-                .collect(Collectors.toMap(LoanRepayInvestDownloadDto::getOrderNo, dto -> AmountConverter.convertCentToString(AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest()) + AmountConverter.convertStringToCent(dto.getInterestFee()))));
+                .collect(Collectors.toMap(LoanCallBackDownloadDto::getOrderNo, dto -> AmountConverter.convertCentToString(AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest()) + AmountConverter.convertStringToCent(dto.getInterestFee()))));
         Map<String, String> modelMap = investRepayMapper.findCompleteByDate(message.getQueryDate()).stream()
                 .collect(Collectors.toMap(InvestRepayModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getRepayAmount())));
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);

@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-public class LoanRepayInvestDownloadDto implements DownloadFilesMatch {
+public class LoanCallBackDownloadDto implements DownloadFilesMatch {
 
     private static final Map<Integer, String> MATCH = Maps.newHashMap(ImmutableMap.<Integer, String>builder()
             .put(0, "merchantNo")

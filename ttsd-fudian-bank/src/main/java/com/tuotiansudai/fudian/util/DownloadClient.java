@@ -1,7 +1,10 @@
 package com.tuotiansudai.fudian.util;
 
 
+import com.aliyun.oss.OSSClient;
 import com.jcraft.jsch.*;
+import com.tuotiansudai.fudian.config.DownloadConfig;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,31 +17,30 @@ import java.util.Properties;
 import java.util.Scanner;
 
 @Component
-public class SftpClient {
+public class DownloadClient {
 
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(SftpClient.class);
-
-    private final OssClient ossClient;
+    private static Logger logger = LoggerFactory.getLogger(DownloadClient.class);
 
     private static final int TIME_OUT = 60000;
-    private static final String FTP_HOST = "112.112.10.214";
-    private static final int FTP_PORT = 39093;
-    private static final String FTP_USERNAME = "fduser";
-    private static final String FTP_PASSWORD = "password0801!";
 
     private Session session = null;
 
     private Channel channel = null;
 
+    private final DownloadConfig downloadConfig;
+
+    private static OSSClient ossClient;
+
     @Autowired
-    public SftpClient(OssClient ossClient) {
-        this.ossClient = ossClient;
+    public DownloadClient(DownloadConfig downloadConfig) {
+        this.downloadConfig = downloadConfig;
+        ossClient = new OSSClient(this.downloadConfig.getOssEndpoint(), this.downloadConfig.getAccessKeyId(), this.downloadConfig.getAccessKeySecret());
     }
 
     public ChannelSftp getChannel() throws JSchException {
         JSch jsch = new JSch();
-        session = jsch.getSession(FTP_USERNAME, FTP_HOST, FTP_PORT);
-        session.setPassword(FTP_PASSWORD);
+        session = jsch.getSession(downloadConfig.getSftpUsername(), downloadConfig.getSftpHost(), downloadConfig.getSftpPort());
+        session.setPassword(downloadConfig.getSftpPassword());
 
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
@@ -62,7 +64,7 @@ public class SftpClient {
 
     public List<String> download(ChannelSftp sftp, String path, String name) throws SftpException {
         InputStream inputStream = sftp.get(path + "/" + name);
-        ossClient.upload(name, inputStream);
+        ossClient.putObject(downloadConfig.getBucketName(), name, inputStream);
         List<String> params = new ArrayList<String>();
         try (Scanner scanner = new Scanner(inputStream)) {
             while (scanner.hasNext()) {

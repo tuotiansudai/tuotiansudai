@@ -4,8 +4,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "oss")
-public class OssConfig {
+@ConfigurationProperties(prefix = "download")
+public class DownloadConfig {
+
+    private String sftpHost;
+
+    private int sftpPort;
+
+    private String sftpUsername;
+
+    private String sftpPassword;
 
     private String accessKeyId;
 
@@ -14,6 +22,38 @@ public class OssConfig {
     private String ossEndpoint;
 
     private String bucketName;
+
+    public String getSftpHost() {
+        return sftpHost;
+    }
+
+    public void setSftpHost(String sftpHost) {
+        this.sftpHost = sftpHost;
+    }
+
+    public int getSftpPort() {
+        return sftpPort;
+    }
+
+    public void setSftpPort(int sftpPort) {
+        this.sftpPort = sftpPort;
+    }
+
+    public String getSftpUsername() {
+        return sftpUsername;
+    }
+
+    public void setSftpUsername(String sftpUsername) {
+        this.sftpUsername = sftpUsername;
+    }
+
+    public String getSftpPassword() {
+        return sftpPassword;
+    }
+
+    public void setSftpPassword(String sftpPassword) {
+        this.sftpPassword = sftpPassword;
+    }
 
     public String getAccessKeyId() {
         return accessKeyId;
