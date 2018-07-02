@@ -72,3 +72,7 @@ $('.bank-checked',$bindCardBox).on('click',function() {
     });
 
 });
+
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));

@@ -122,4 +122,6 @@ $('body').on('click', '.cancel-btn' ,function(event) {
 		event.preventDefault();
 		$ruleList.fadeIn('fast');
 	});
-
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
