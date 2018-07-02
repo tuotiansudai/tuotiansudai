@@ -6,11 +6,9 @@ import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.membership.dto.UserMembershipItemDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipItemView;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -34,6 +32,9 @@ public class UserMembershipService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Autowired
+    private MembershipPrivilegeMapper membershipPrivilegeMapper;
 
     public long findCountMembershipByLevel(long level){
         return userMembershipMapper.findCountMembershipByLevel(level);
@@ -60,6 +61,12 @@ public class UserMembershipService {
     public Integer getMembershipExpireDay(String loginName) {
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginNameAndMembershipId(loginName, membershipModel.getId());
+
+        MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
+        if (membershipPrivilegeModel != null){
+            return Days.daysBetween(new DateTime(), new DateTime(membershipPrivilegeModel.getEndTime()).plusDays(1)).getDays();
+        }
+
         UserMembershipModel max = new Ordering<UserMembershipModel>() {
             @Override
             public int compare(UserMembershipModel left, UserMembershipModel right) {
