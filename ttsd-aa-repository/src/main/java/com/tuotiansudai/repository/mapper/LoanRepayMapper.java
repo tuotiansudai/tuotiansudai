@@ -63,7 +63,5 @@ public interface LoanRepayMapper {
 
     long findSumActualInterest(@Param(value = "endDate") Date endDate);
 
-    List<LoanRepayModel> findCompleteByDate(@Param(value = "queryDate") String queryDate);
-
 
 }

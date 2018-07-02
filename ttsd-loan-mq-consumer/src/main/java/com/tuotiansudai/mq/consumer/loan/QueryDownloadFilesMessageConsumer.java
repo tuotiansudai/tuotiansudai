@@ -9,12 +9,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.fudian.download.*;
 import com.tuotiansudai.fudian.message.BankQueryDownloadFilesMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.mapper.ReconciliationMapper;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ReconciliationModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.SendCloudTemplate;
@@ -37,22 +42,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    private BankRechargeMapper bankRechargeMapper;
-
-    @Autowired
-    private BankWithdrawMapper bankWithdrawMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
+    private ReconciliationMapper reconciliationMapper;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -100,82 +90,147 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> recharge = (message) -> {
         List<RechargeDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<RechargeDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> dto.getStatus().equals("1"))
-                .collect(Collectors.toMap(RechargeDownloadDto::getOrderNo, RechargeDownloadDto::getReceivedAmount));
-        Map<String, String> modelMap = bankRechargeMapper.findSuccessByDate(message.getQueryDate()).stream()
-                .collect(Collectors.toMap(BankRechargeModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(RechargeDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getReceivedAmount()));
+            if ("0".equals(dto.getStatus())) {
+                model.setStatus(BankRechargeStatus.WAIT_PAY.name());
+            }
+            if ("1".equals(dto.getStatus())) {
+                model.setStatus(BankRechargeStatus.SUCCESS.name());
+                model.setBillCount(1);
+            }
+            if (Lists.newArrayList("2", "3").contains(dto.getStatus())) {
+                model.setStatus(BankRechargeStatus.FAIL.name());
+            }
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.recharge(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> withdraw = (message) -> {
         List<WithdrawDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<WithdrawDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> dto.getStatus().equals("1"))
-                .collect(Collectors.toMap(WithdrawDownloadDto::getOrderNo, WithdrawDownloadDto::getReceivedAmount));
-        Map<String, String> modelMap = bankWithdrawMapper.findSuccessByDate(message.getQueryDate()).stream()
-                .collect(Collectors.toMap(BankWithdrawModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(WithdrawDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getReceivedAmount()));
+            if ("0".equals(dto.getStatus())) {
+                model.setStatus(WithdrawStatus.WAIT_PAY.name());
+            }
+            if ("1".equals(dto.getStatus())) {
+                model.setStatus(WithdrawStatus.SUCCESS.name());
+                model.setBillCount(1);
+            }
+            if (Lists.newArrayList("2", "3", "4").contains(dto.getStatus())) {
+                model.setStatus(WithdrawStatus.FAIL.name());
+            }
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.withdraw(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanInvest = (message) -> {
         List<LoanInvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanInvestDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getInvestType()) && !("0").equals(dto.getStatus()))
-                .collect(Collectors.toMap(LoanInvestDownloadDto::getOrderNo, dto -> "5".equals(dto.getStatus()) ? "WITHDRAWAL" : "SUCCESS"));
-        Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream().filter(model -> model.getTransferInvestId() == null)
-                .collect(Collectors.toMap(InvestModel::getBankOrderNo, model -> model.getStatus().name()));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getInvestType())).collect(Collectors.toMap(LoanInvestDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getAmount()));
+            if ("0".equals(dto.getStatus())) {
+                model.setStatus(InvestStatus.WAIT_PAY.name());
+            }
+            if (Lists.newArrayList("1", "2", "3", "4").contains(dto.getStatus())) {
+                model.setStatus(InvestStatus.SUCCESS.name());
+                model.setBillCount(1);
+            }
+            if ("5".equals(dto.getStatus())) {
+                model.setStatus(InvestStatus.CANCEL_INVEST_PAYBACK.name());
+                model.setBillCount(2);
+            }
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.invest(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanCreditInvest = (message) -> {
         List<LoanCreditInvestDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanCreditInvestDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getStatus()))
-                .collect(Collectors.toMap(LoanCreditInvestDownloadDto::getOrderNo, LoanCreditInvestDownloadDto::getCreditAmount));
-        Map<String, String> modelMap = investMapper.findSuccessByDate(message.getQueryDate()).stream().filter(model -> model.getTransferInvestId() != null)
-                .collect(Collectors.toMap(InvestModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(LoanCreditInvestDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getAmount()));
+            if ("0".equals(dto.getStatus())) {
+                model.setStatus(InvestStatus.WAIT_PAY.name());
+            }
+            if (("1").equals(dto.getStatus())) {
+                model.setStatus(InvestStatus.SUCCESS.name());
+                model.setBillCount(1);
+            }
+            if ("2".equals(dto.getStatus())) {
+                model.setStatus(InvestStatus.FAIL.name());
+            }
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.transferInvest(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanFull = (message) -> {
         List<LoanFullDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanFullDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> Lists.newArrayList("2", "3").contains(dto.getStatus()))
-                .collect(Collectors.toMap(LoanFullDownloadDto::getOrderNo, LoanFullDownloadDto::getAmount));
-        Map<String, String> modelMap = loanMapper.findLoanFullSuccessByDate(message.getQueryDate()).stream()
-                .collect(Collectors.toMap(LoanModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getLoanAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().filter(dto -> Lists.newArrayList("2", "3").contains(dto.getStatus())).collect(Collectors.toMap(LoanFullDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getAmount()));
+            model.setStatus(LoanStatus.REPAYING.name());
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.loanFull(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanRepay = (message) -> {
         List<LoanRepayDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanRepayDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream().filter(dto -> "1".equals(dto.getStatus()))
-                .collect(Collectors.toMap(LoanRepayDownloadDto::getOrderNo, dto -> AmountConverter.convertCentToString(AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest()))));
-        Map<String, String> modelMap = loanRepayMapper.findCompleteByDate(message.getQueryDate()).stream()
-                .collect(Collectors.toMap(LoanRepayModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getRepayAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(LoanRepayDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), (AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest())));
+            if ("1".equals(dto.getStatus())){
+                model.setStatus(RepayStatus.COMPLETE.name());
+                model.setBillCount(1);
+            }else{
+                model.setStatus(RepayStatus.WAIT_PAY.name());
+            }
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.loanRepay(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
     private QueryDownloadFilesMessageNotifyAction<BankQueryDownloadFilesMessage> loanCallBack = (message) -> {
         List<LoanCallBackDownloadDto> dtos = gson.fromJson(message.getData().toString(), new TypeToken<List<LoanCallBackDownloadDto>>() {
         }.getType());
-        Map<String, String> queryMap = dtos.stream()
-                .collect(Collectors.toMap(LoanCallBackDownloadDto::getOrderNo, dto -> AmountConverter.convertCentToString(AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest()) + AmountConverter.convertStringToCent(dto.getInterestFee()))));
-        Map<String, String> modelMap = investRepayMapper.findCompleteByDate(message.getQueryDate()).stream()
-                .collect(Collectors.toMap(InvestRepayModel::getBankOrderNo, model -> AmountConverter.convertCentToString(model.getRepayAmount())));
+        Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(LoanCallBackDownloadDto::getOrderNo, dto -> {
+            ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), (AmountConverter.convertStringToCent(dto.getCapital()) + AmountConverter.convertStringToCent(dto.getInterest()) + AmountConverter.convertStringToCent(dto.getInterestFee())));
+            model.setStatus(RepayStatus.COMPLETE.name());
+            model.setBillCount(1);
+            return model;
+        }));
+
+        Map<String, ReconciliationModel> modelMap = reconciliationMapper.loanCallBack(message.getQueryDate());
         generateContentBody(message.getType(), message.getQueryDate(), queryMap, modelMap);
     };
 
-    private void generateContentBody(QueryDownloadLogFilesType type, String queryDate, Map<String, String> queryMap, Map<String, String> modelMap) {
+    private void generateContentBody(QueryDownloadLogFilesType type, String queryDate, Map<String, ReconciliationModel> queryMap, Map<String, ReconciliationModel> modelMap) {
         StringBuilder contentBody = new StringBuilder();
-        for (Map.Entry<String, String> entry : queryMap.entrySet()) {
+        for (Map.Entry<String, ReconciliationModel> entry : queryMap.entrySet()) {
             Map<String, String> resultMap = new HashMap<>();
-            resultMap.put("orderId", entry.getKey());
-            String modelValue = modelMap.get(entry.getKey());
-            if (Strings.isNullOrEmpty(modelValue)) {
+            resultMap.put("orderNo", entry.getKey());
+            ReconciliationModel queryValue = entry.getValue();
+            ReconciliationModel modelValue = modelMap.get(entry.getKey());
+            if (modelValue == null) {
                 resultMap.put("result", "订单不存在");
-            } else if (!entry.getValue().equalsIgnoreCase(modelValue)) {
+            } else if (queryValue.getAmount() != modelValue.getAmount() || !queryValue.getStatus().equals(modelValue.getStatus()) || queryValue.getBillCount() != modelValue.getBillCount()) {
                 resultMap.put("result", "订单异常");
             } else {
                 resultMap.put("result", "交易成功");

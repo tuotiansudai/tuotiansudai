@@ -69,6 +69,4 @@ public interface InvestRepayMapper {
 
     List<BankLoanRepayInvestDataView> queryBankInvestRepayData(@Param(value = "loanId") long loanId,
                                                                @Param(value = "period") int period);
-
-    List<InvestRepayModel> findCompleteByDate(@Param(value = "queryDate") String queryDate);
 }

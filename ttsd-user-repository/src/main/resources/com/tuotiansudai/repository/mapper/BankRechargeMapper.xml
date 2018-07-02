@@ -176,8 +176,4 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findSuccessByDate" parameterType="map" resultMap="bankRechargeResultMap">
-        SELECT * from bank_recharge where status = 'SUCCESS' and date_format(bank_order_date,'%Y%m%d') = #{queryDate}
-    </select>
-
 </mapper>

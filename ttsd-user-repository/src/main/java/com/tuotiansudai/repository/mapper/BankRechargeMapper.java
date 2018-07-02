@@ -53,6 +53,4 @@ public interface BankRechargeMapper {
 
     List<String> findAllChannels();
 
-    List<BankRechargeModel> findSuccessByDate(@Param(value = "queryDate") String queryDate);
-
 }

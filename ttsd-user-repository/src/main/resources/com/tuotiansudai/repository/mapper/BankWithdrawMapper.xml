@@ -166,8 +166,4 @@
         where id = #{id}
     </update>
 
-    <select id="findSuccessByDate" parameterType="map" resultMap="bankWithdrawResultMap">
-       SELECT * from bank_withdraw where status = 'SUCCESS' and date_format(created_time,'%Y%m%d') = #{queryDate}
-    </select>
-
 </mapper>

@@ -749,8 +749,4 @@
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
     </select>
 
-    <select id="findLoanFullSuccessByDate" parameterType="map" resultMap="loanResultMap">
-        SELECT * from loan where status = 'REPAYING' where loan_full_bank_order_date = #{queryDate}
-    </select>
-
 </mapper>
