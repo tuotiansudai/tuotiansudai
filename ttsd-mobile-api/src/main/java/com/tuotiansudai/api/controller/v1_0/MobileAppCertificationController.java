@@ -94,7 +94,8 @@ public class MobileAppCertificationController extends MobileAppBaseController {
             }
 
             return new BaseDto<>(true, huiZuDataDto);
-        }    }
+        }
+    }
 
 
 }
