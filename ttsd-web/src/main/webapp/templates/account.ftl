@@ -14,7 +14,8 @@
     <div class="column-box profile-box bg-w clearfix">
         <span class="fl account-profile"></span>
         <div class="welcome-text">
-            <em class="fl tip-hello">您好：${mobile!}</em><em class="fl user-role-font">您当前的身份为<i>借款人</i></em>
+            <em class="fl tip-hello">您好：${mobile!}</em><em class="fl user-role-font">您当前的身份为<i><@global.role hasRole="'INVESTOR'">出借人
+        </@global.role><@global.role hasRole="'LOANER'">借款人</@global.role></i></em>
             <em class="fr">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></em>
         </div>
         <div class="sign-list fl">
