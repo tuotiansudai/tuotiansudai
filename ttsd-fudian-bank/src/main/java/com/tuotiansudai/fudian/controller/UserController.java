@@ -49,11 +49,11 @@ public class UserController extends AsyncRequestController {
         this.phoneUpdateService = phoneUpdateService;
     }
 
-    @RequestMapping(path = "/register/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> register(@PathVariable Source source, @RequestBody BankRegisterDto params) {
+    @RequestMapping(path = "/register/source/{source}/role/{role}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> register(@PathVariable(name = "source") Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankRegisterDto params) {
         logger.info("[Fudian] call register, params: {}", params);
 
-        RegisterRequestDto requestDto = registerService.register(source, params);
+        RegisterRequestDto requestDto = registerService.register(source, registerRoleType, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
 
