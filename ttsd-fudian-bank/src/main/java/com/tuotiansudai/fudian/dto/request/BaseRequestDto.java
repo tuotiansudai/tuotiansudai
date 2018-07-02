@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class BaseRequestDto {
 
-    public final static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+    protected final static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     private transient long id;
 

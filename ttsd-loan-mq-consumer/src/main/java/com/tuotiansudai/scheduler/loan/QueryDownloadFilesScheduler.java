@@ -36,6 +36,9 @@ public class QueryDownloadFilesScheduler {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Value("#{'${check.fudian.bill.notify.email}'.split('\\|')}")
+    private List<String> emailAddress;
+
     @Scheduled(cron = "0 8 * * * ?", zone = "Asia/Shanghai")
     public void sendEmailMessage() {
 
@@ -56,11 +59,11 @@ public class QueryDownloadFilesScheduler {
 
         mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Maps.newHashMap(ImmutableMap.<Environment, List<String>>builder()
                 .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
-                .put(Environment.QA1, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
-                .put(Environment.QA2, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
-                .put(Environment.QA3, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
-                .put(Environment.QA4, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
-                .put(Environment.QA5, Lists.newArrayList("zhujiajun@tuotiansudai.com"))
+                .put(Environment.QA1, emailAddress)
+                .put(Environment.QA2, emailAddress)
+                .put(Environment.QA3, emailAddress)
+                .put(Environment.QA4, emailAddress)
+                .put(Environment.QA5, emailAddress)
                 .put(Environment.DEV, Lists.newArrayList("zhukun@tuotiansudai.com"))
                 .build()).get(environment), MessageFormat.format("{0}富滇银行{1}对账信息", environment.name(), queryDate), contentBody.toString()));
     }
