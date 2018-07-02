@@ -69,8 +69,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
-    @Value("${web.server}")
-    private String webServer;
+    @Value("${mobile.server}")
+    private String mobileServer;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -354,8 +354,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         userInvestRepayResponseDataDto.setServiceFeeDesc(ServiceFeeReduce.getDescriptionByRate(investModel.getInvestFeeRate()));
         if (!Strings.isNullOrEmpty(investModel.getContractNo())) {
             String contractUrl =  investModel.getContractNo().equals("OLD") ?
-                    MessageFormat.format("{0}/contract/investor/loanId/{1}/investId/{2}", this.webServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId()))
-                    : MessageFormat.format("{0}/contract/invest/contractNo/{1}", this.webServer, investModel.getContractNo());
+                    MessageFormat.format("{0}/v1.0/contract/investor/loanId/{1}/investId/{2}", this.mobileServer, String.valueOf(investModel.getLoanId()), String.valueOf(investModel.getId()))
+                    : MessageFormat.format("{0}/v1.0/contract/invest/contractNo/{1}", this.mobileServer, investModel.getContractNo());
             userInvestRepayResponseDataDto.setContractLocation(contractUrl);
         }
         BaseResponseDto<UserInvestRepayResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());

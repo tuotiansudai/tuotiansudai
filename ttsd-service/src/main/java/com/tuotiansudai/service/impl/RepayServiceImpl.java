@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -25,10 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class RepayServiceImpl implements RepayService {
@@ -61,9 +58,6 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private CouponRepayMapper couponRepayMapper;
-
-    @Autowired
-    private MembershipMapper membershipMapper;
 
     @Autowired
     private InvestExtraRateMapper investExtraRateMapper;
@@ -261,7 +255,6 @@ public class RepayServiceImpl implements RepayService {
                     break;
             }
         }
-
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getCreatedTime());
         dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
         return baseDto;
