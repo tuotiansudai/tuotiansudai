@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-account="${hasAccount?c}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR2</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR2</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
