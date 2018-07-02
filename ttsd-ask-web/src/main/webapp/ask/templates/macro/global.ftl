@@ -64,9 +64,7 @@
     <#local membershipMenus=[
         {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""},
-        {"title":"积分商城", "url":"/point-shop","category":""},
-        {"title":"积分任务", "url":"/point-shop/task","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
