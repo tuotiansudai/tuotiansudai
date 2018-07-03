@@ -11,12 +11,15 @@ public class BankQueryDownloadFilesMessage<T> extends BankBaseMessage {
 
     private QueryDownloadLogFilesType type;
 
+    private int total;
+
     private List<T> data;
 
-    public BankQueryDownloadFilesMessage(String queryDate, QueryDownloadLogFilesType type, List<T> data) {
+    public BankQueryDownloadFilesMessage(String queryDate, QueryDownloadLogFilesType type, int total, List<T> data) {
         super(true, null);
         this.queryDate = queryDate;
         this.type = type;
+        this.total = total;
         this.data = data;
     }
 
@@ -34,6 +37,14 @@ public class BankQueryDownloadFilesMessage<T> extends BankBaseMessage {
 
     public void setType(QueryDownloadLogFilesType type) {
         this.type = type;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public List<T> getData() {

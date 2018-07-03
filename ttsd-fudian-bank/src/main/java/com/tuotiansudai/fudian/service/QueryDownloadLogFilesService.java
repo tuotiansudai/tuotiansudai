@@ -95,13 +95,13 @@ public class QueryDownloadLogFilesService {
 
             if (list.size() == 0){
                 messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles,
-                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list));
+                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, 0, list));
             }
 
             int batchSize = list.size() / 200 + (list.size() % 200 > 0 ? 1 : 0);
             for (int batch = 0; batch < batchSize; batch ++){
                 messageQueueClient.sendMessage(MessageQueue.QueryDownloadFiles,
-                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list.subList(batch * 200, (batch + 1) * 200 > list.size() ? list.size() : (batch + 1) * 200)));
+                        new BankQueryDownloadFilesMessage<>(dto.getQueryDate(), type, list.size(), list.subList(batch * 200, (batch + 1) * 200 > list.size() ? list.size() : (batch + 1) * 200)));
             }
 
         } catch (Exception e) {
