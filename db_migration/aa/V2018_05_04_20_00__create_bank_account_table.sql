@@ -11,6 +11,7 @@ CREATE TABLE `aa`.`bank_account` (
   `auto_invest`                   TINYINT(1)               DEFAULT FALSE,
   `bank_authorization_order_no`   VARCHAR(20),
   `bank_authorization_order_date` VARCHAR(8),
+  `role_type`                     VARCHAR(20)     NOT NULL,
   `created_time`                  DATETIME        NOT NULL,
   `updated_time`                  DATETIME        NOT NULL,
 

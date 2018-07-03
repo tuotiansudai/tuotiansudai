@@ -7,6 +7,7 @@ CREATE TABLE `aa`.`user_bank_card` (
   `bank_order_no`   VARCHAR(20)     NOT NULL,
   `bank_order_date` VARCHAR(8)      NOT NULL,
   `status`          VARCHAR(50)     NOT NULL,
+  `role_type`       VARCHAR(20)     NOT NULL,
   `created_time`    DATETIME        NOT NULL,
   `updated_time`    DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
