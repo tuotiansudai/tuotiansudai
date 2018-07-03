@@ -23,10 +23,9 @@ public class LoanInvestDownloadDto implements DownloadFilesMatch {
             .put(11, "type")
             .put(12, "investType")
             .put(13, "status")
-            .put(1, "status")
-            .put(13, "status")
+            .put(14, "rateInterest")
+            .put(15, "createTime")
             .build());
-
 
     private String merchantNo;
     private String userName;

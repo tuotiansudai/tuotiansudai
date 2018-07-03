@@ -19,13 +19,13 @@
     </select>
 
     <select id="invest" resultMap="reconciliationResultMap">
-        SELECT i.bank_order_no as 'orderNo', i.status, i.amount, (select count(1) from user_bill where bank_order_no = i.bank_order_no) as 'billCount' from invest i where i.bank_order_date = #{queryDate} and transfer_invest_id is null
+        SELECT i.bank_order_no as 'orderNo', i.status, i.amount, (select count(1) from user_bill where bank_order_no = i.bank_order_no) as 'billCount' from invest i where i.bank_order_date = #{queryDate} and i.transfer_invest_id is null
     </select>
 
     <select id="transferInvest" resultMap="reconciliationResultMap">
         SELECT i.bank_order_no as 'orderNo', i.status, a.transfer_amount as 'amount', (select count(1) from user_bill where bank_order_no = i.bank_order_no) as 'billCount'
-        from invest i join transfer_application a on i.id = a.invesy_id
-        where i.bank_order_date = #{queryDate} and transfer_invest_id is not null
+        from invest i join transfer_application a on i.id = a.invest_id
+        where i.bank_order_date = #{queryDate} and i.transfer_invest_id is not null
     </select>
 
     <select id="loanFull" resultMap="reconciliationResultMap">

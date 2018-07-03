@@ -83,13 +83,17 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         }
 
         try {
-            BankQueryDownloadFilesMessage bankQueryDownloadFilesMessage = gson.fromJson(message, BankQueryDownloadFilesMessage.class);
-            if (!bankQueryDownloadFilesMessage.isStatus()) {
+            BankQueryDownloadFilesMessage filesMessage = gson.fromJson(message, BankQueryDownloadFilesMessage.class);
+            if (!filesMessage.isStatus()) {
                 return;
             }
 
-            redisWrapperClient.setex(MessageFormat.format(EMAIL_CONTENT_TOTAL, bankQueryDownloadFilesMessage.getQueryDate(), bankQueryDownloadFilesMessage.getType().name()), lifeSecond,
-                    String.valueOf(bankQueryDownloadFilesMessage.getTotal()));
+            String countKey = MessageFormat.format(EMAIL_CONTENT_COUNT, filesMessage.getQueryDate(), filesMessage.getType().name());
+            int count = redisWrapperClient.exists(countKey) ? Integer.parseInt(redisWrapperClient.get(countKey)) : 0;
+            redisWrapperClient.setex(countKey, lifeSecond, String.valueOf(count + filesMessage.getData().size()));
+
+            redisWrapperClient.setex(MessageFormat.format(EMAIL_CONTENT_TOTAL, filesMessage.getQueryDate(), filesMessage.getType().name()), lifeSecond,
+                    String.valueOf(filesMessage.getTotal()));
 
             Map<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction> notify = Maps.newHashMap(ImmutableMap.<QueryDownloadLogFilesType, QueryDownloadFilesMessageNotifyAction>builder()
                     .put(QueryDownloadLogFilesType.RECHARGE, recharge)
@@ -101,7 +105,7 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
                     .put(QueryDownloadLogFilesType.LOAN_CALLBACK, loanCallBack)
                     .build());
 
-            notify.get(bankQueryDownloadFilesMessage.getType()).messageNotify(bankQueryDownloadFilesMessage);
+            notify.get(filesMessage.getType()).messageNotify(filesMessage);
 
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] message is invalid: {}", message);
@@ -259,18 +263,27 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
                 resultMap.put("result", "交易成功");
             }
             contentBody.append(SendCloudTemplate.FUDIAN_CHECK_RESULT_BODY.generateContent(resultMap));
-            redisWrapperClient.incr(MessageFormat.format(EMAIL_CONTENT_COUNT, queryDate, queryType.name()));
         }
         String content = (redisWrapperClient.hexists(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), queryType.name()) ? redisWrapperClient.hget(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), queryType.name()) : "") + contentBody.toString();
         redisWrapperClient.hset(MessageFormat.format(EMAIL_CONTENT_MESSAGE, queryDate), queryType.name(), Strings.isNullOrEmpty(content) ? "<tr><td colspan='2'>无交易记录</td></tr>" : content, lifeSecond);
 
-        Lists.newArrayList(QueryDownloadLogFilesType.values()).forEach(type->{
-               if (redisWrapperClient.incr(MessageFormat.format(EMAIL_CONTENT_COUNT, queryDate, type.name())) - 1 <
-                       Long.parseLong(redisWrapperClient.get(MessageFormat.format(EMAIL_CONTENT_TOTAL, queryDate, type.name())))){
+        if (isQueryComplete(queryDate)){
+            sendEmailMessage();
+            redisWrapperClient.setex(MessageFormat.format(EMAIL_QUERY_IS_SEND, queryDate), lifeSecond, "SUCCESS");
+        }
+    }
 
+    private boolean isQueryComplete(String queryDate){
+        boolean isQueryComplete = true;
+        for (QueryDownloadLogFilesType type : QueryDownloadLogFilesType.values()) {
+            String totalKey = MessageFormat.format(EMAIL_CONTENT_TOTAL, queryDate, type.name());
+            String countKey = MessageFormat.format(EMAIL_CONTENT_COUNT, queryDate, type.name());
+            if (!redisWrapperClient.exists(totalKey) || !redisWrapperClient.exists(countKey) || Long.parseLong(redisWrapperClient.get(countKey)) < Long.parseLong(redisWrapperClient.get(totalKey))){
+                isQueryComplete = false;
+                break;
             }
-        });
-
+        }
+        return isQueryComplete;
     }
 
     public void sendEmailMessage(){
@@ -284,11 +297,11 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
             String countKey = MessageFormat.format(EMAIL_CONTENT_COUNT, queryDate, type.name());
             String header = SendCloudTemplate.FUDIAN_CHECK_RESULT_HEADER.generateContent(Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("title", type.getDescribe())
-                    .put("total", redisWrapperClient.exists(totalKey) ? "0" : redisWrapperClient.get(totalKey))
-                    .put("count", redisWrapperClient.exists(countKey) ? "0" : redisWrapperClient.get(countKey))
+                    .put("total", redisWrapperClient.exists(totalKey) ? redisWrapperClient.get(totalKey) : "0")
+                    .put("count", redisWrapperClient.exists(countKey) ? redisWrapperClient.get(countKey) : "0")
                     .build()));
             String content = map.get(type.name());
-            contentBody.append(header).append(Strings.isNullOrEmpty(content) ? MessageFormat.format("<h2>{0}查询失败<h2></br>", type.getDescribe()) : content).append(SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate());
+            contentBody.append(Strings.isNullOrEmpty(content) ? MessageFormat.format("{0}查询失败</br>", type.getDescribe()) : header + content + SendCloudTemplate.FUDIAN_CHECK_RESULT_TAIL.getTemplate());
         });
 
         mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Maps.newHashMap(ImmutableMap.<Environment, List<String>>builder()

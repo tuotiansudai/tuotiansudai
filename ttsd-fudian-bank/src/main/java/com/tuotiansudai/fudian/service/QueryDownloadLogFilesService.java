@@ -64,7 +64,7 @@ public class QueryDownloadLogFilesService {
 
     @Scheduled(cron = "0 2 * * * ?", zone = "Asia/Shanghai")
     @SuppressWarnings(value = "unchecked")
-    public void RechargeSchedule() throws JSchException {
+    public void schedule() throws JSchException {
         ChannelSftp sftp = downloadClient.getChannel();
 
         List<QueryDownloadLogFilesType> types = Lists.newArrayList(QueryDownloadLogFilesType.values());

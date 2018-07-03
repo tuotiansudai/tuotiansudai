@@ -46,10 +46,6 @@ public class WithdrawDownloadDto implements DownloadFilesMatch {
     private String remark;
     private String createTime;
 
-    public static Map<Integer, String> getMATCH() {
-        return MATCH;
-    }
-
     public String getMerchantNo() {
         return merchantNo;
     }
