@@ -104,7 +104,7 @@ public class MembershipController {
         long membershipExperienceCount = membershipExperienceBillService.findMembershipExperienceBillCount(loginName, null, null);
         List<MembershipExperienceBillModel> membershipExperienceList = membershipExperienceBillService.findMembershipExperienceBillList(loginName, null, null, index, pageSize);
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
+        BankAccountModel bankAccountModel = bankAccountService.findInvestorBankAccount(loginName);
         modelAndView.addObject("membershipExperienceCount", membershipExperienceCount);
         modelAndView.addObject("membershipExperienceList", membershipExperienceList);
         modelAndView.addObject("V0Experience", userMembershipService.getMembershipByLevel(0).getExperience());

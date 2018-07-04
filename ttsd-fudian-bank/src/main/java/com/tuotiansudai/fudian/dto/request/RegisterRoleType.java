@@ -2,7 +2,7 @@ package com.tuotiansudai.fudian.dto.request;
 
 public enum RegisterRoleType {
 
-    INVESTER("3"),
+    INVESTOR("3"),
 
     LOANER("1");
 

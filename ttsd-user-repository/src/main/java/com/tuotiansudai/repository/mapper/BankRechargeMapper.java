@@ -13,13 +13,17 @@ import java.util.List;
 @Repository
 public interface BankRechargeMapper {
 
-    void create(BankRechargeModel userRechargeModel);
+    void createInvestor(BankRechargeModel userRechargeModel);
+
+    void createLoaner(BankRechargeModel userRechargeModel);
 
     void update(BankRechargeModel userRechargeModel);
 
     BankRechargeModel findById(@Param(value = "id") long id);
 
-    int sumRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
+    int sumInvestorRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
+
+    int sumLoanerRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
 
     List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,

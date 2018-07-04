@@ -39,7 +39,7 @@ public class AmountTransferService {
         logger.info("start amount transfer messages process.");
 
         for (AmountTransferMessage message : messages) {
-            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(message.getLoginName());
+            BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(message.getLoginName());
             if (bankAccountModel == null) {
                 logger.error("user bank account is not found, user: {}", message.getLoginName());
                 continue;

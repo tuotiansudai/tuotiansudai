@@ -46,8 +46,8 @@ public class UserBillController {
     public ModelAndView userBill() {
         BankAccountModel bankAccount = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
         String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
-        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName()));
+        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName(), true));
+        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName(), true));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill")
                 .addObject("balance", balance)

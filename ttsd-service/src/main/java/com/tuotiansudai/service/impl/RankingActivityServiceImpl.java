@@ -118,7 +118,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         logger.info(loginName + " drew a prize: " + prize);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName);
+        BankAccountModel bankAccountModel = bankAccountService.findInvestorBankAccount(loginName);
         String userName = bankAccountModel == null ? "" : userModel.getUserName();
         String identityNumber = bankAccountModel == null ? "" : userModel.getIdentityNumber();
 

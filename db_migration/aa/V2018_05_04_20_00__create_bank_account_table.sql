@@ -11,12 +11,12 @@ CREATE TABLE `aa`.`bank_account` (
   `auto_invest`                   TINYINT(1)               DEFAULT FALSE,
   `bank_authorization_order_no`   VARCHAR(20),
   `bank_authorization_order_date` VARCHAR(8),
+  `role_type`                     VARCHAR(20)     NOT NULL,
   `created_time`                  DATETIME        NOT NULL,
   `updated_time`                  DATETIME        NOT NULL,
 
   PRIMARY KEY (`id`),
   CONSTRAINT FK_BANK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
-  UNIQUE KEY UNIQUE_BANK_ACCOUNT_LOGIN_NAME (`login_name`),
   INDEX INDEX_BANK_ACCOUNT_USER_NAME (bank_user_name),
   INDEX INDEX_BANK_ACCOUNT_ACCOUNT_NO (bank_account_no)
 

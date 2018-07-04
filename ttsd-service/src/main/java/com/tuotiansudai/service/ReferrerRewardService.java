@@ -101,7 +101,7 @@ public class ReferrerRewardService {
             return false;
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(model.getReferrerLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(model.getReferrerLoginName());
         if (bankAccountModel == null) {
             model.setStatus(ReferrerRewardStatus.NO_ACCOUNT);
             investReferrerRewardMapper.update(model);

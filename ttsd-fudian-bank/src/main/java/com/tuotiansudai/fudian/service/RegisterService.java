@@ -71,7 +71,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
                 bankRegisterDto.getRealName(),
                 bankRegisterDto.getToken(),
                 null, null,
-                dto.getOrderNo(), dto.getOrderDate()
+                dto.getOrderNo(), dto.getOrderDate(),
+                registerRoleType == RegisterRoleType.INVESTOR
         );
 
         String bankRegisterMessageKey = MessageFormat.format(BANK_REGISTER_MESSAGE_KEY, dto.getOrderDate());
@@ -107,6 +108,9 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             BankRegisterMessage bankRegisterMessage = gson.fromJson(message, BankRegisterMessage.class);
             bankRegisterMessage.setBankAccountNo(registerContentDto.getAccountNo());
             bankRegisterMessage.setBankUserName(registerContentDto.getUserName());
+            bankRegisterMessage.setBank(registerContentDto.getBank());
+            bankRegisterMessage.setBankCardNo(registerContentDto.getBankCardNo());
+            bankRegisterMessage.setBankCode(registerContentDto.getBankCode());
             this.messageQueueClient.sendMessage(MessageQueue.RegisterBankAccount_Success, bankRegisterMessage);
         }
 

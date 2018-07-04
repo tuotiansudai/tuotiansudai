@@ -49,7 +49,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
 
         MembershipModel evaluate = userMembershipEvaluator.evaluate(loginName);
 

@@ -8,9 +8,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserBankCardMapper {
 
-    void create(UserBankCardModel model);
+    void createInvestor(UserBankCardModel model);
+
+    void createLoaner(UserBankCardModel model);
 
     UserBankCardModel findByLoginName(@Param(value = "loginName") String loginName);
+
+    UserBankCardModel findInvestorByLoginName(@Param(value = "loginName") String loginName);
+
+    UserBankCardModel findLoanerByLoginName(@Param(value = "loginName") String loginName);
 
     void updateStatus(@Param(value = "id") long id, @Param(value = "status") UserBankCardStatus status);
 }

@@ -36,7 +36,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (bankAccountMapper.findByLoginName(loginName) != null) {
+        if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
             data.setAdvancedTasks(pointTaskService.getAdvancedPointTasks(loginName));
         }
 
@@ -63,7 +63,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (bankAccountMapper.findByLoginName(loginName) != null) {
+        if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
             data.setAdvancedTasks(pointTaskService.getCompletedAdvancedPointTasks(loginName));
         }
 

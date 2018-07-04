@@ -69,7 +69,7 @@ public class MembershipInvestService {
 
         long investMembershipPoint = amount / 100;
         bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         membershipExperienceBillMapper.create(new MembershipExperienceBillModel(loginName,
                 String.valueOf(investId),
                 investMembershipPoint,

@@ -246,7 +246,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case CERTIFICATION:
-                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
                     if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }

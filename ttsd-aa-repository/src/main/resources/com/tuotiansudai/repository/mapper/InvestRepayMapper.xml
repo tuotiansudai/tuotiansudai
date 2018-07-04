@@ -480,7 +480,7 @@
         join `invest` on `invest_repay`.`invest_id` = `invest`.`id` and `invest_repay`.`is_transferred` = false and `invest`.`loan_id` = #{loanId} and `invest_repay`.`period` = #{period}
         join `loan` on `invest`.`loan_id` = `loan`.`id`
         join `user` on `invest`.`login_name` = `user`.`login_name`
-        join `bank_account` on `bank_account`.`login_name` = `user`.`login_name`
+        join `bank_account` on `bank_account`.`login_name` = `user`.`login_name` where `bank_account`.role_type = 'INVESTOR'
         order by invest_id
     </select>
 

@@ -13,13 +13,17 @@ import java.util.List;
 @Repository
 public interface BankWithdrawMapper {
 
-    void create(BankWithdrawModel bankWithdrawModel);
+    void createInvestor(BankWithdrawModel bankWithdrawModel);
+
+    void createLoaner(BankWithdrawModel bankWithdrawModel);
 
     BankWithdrawModel findById(long id);
 
     void update(BankWithdrawModel bankWithdrawModel);
 
-    long sumSuccessWithdrawByLoginName(String loginName);
+    long sumInvestorSuccessWithdrawByLoginName(String loginName);
+
+    long sumLoanerSuccessWithdrawByLoginName(String loginName);
 
     long sumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,

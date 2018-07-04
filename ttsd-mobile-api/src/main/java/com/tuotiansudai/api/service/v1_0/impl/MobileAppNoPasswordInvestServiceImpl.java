@@ -20,7 +20,7 @@ public class MobileAppNoPasswordInvestServiceImpl implements MobileAppNoPassword
     public BaseResponseDto<NoPasswordInvestResponseDataDto> getNoPasswordInvestData(BaseParamDto baseParamDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         if(bankAccountModel == null){
             return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }

@@ -61,7 +61,7 @@ public class RechargeController {
                 LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(dto.getAmount()),
                 dto.getPayType(),
-                dto.getChannel());
+                dto.getChannel(), true);
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

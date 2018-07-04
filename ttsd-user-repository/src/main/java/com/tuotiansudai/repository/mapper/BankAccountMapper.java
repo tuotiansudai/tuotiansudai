@@ -8,11 +8,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BankAccountMapper {
 
-    void create(BankAccountModel bankAccountModel);
+    void createInvestor(BankAccountModel bankAccountModel);
+
+    void createLoaner(BankAccountModel bankAccountModel);
 
     void update(BankAccountModel bankAccountModel);
 
-    BankAccountModel findByLoginName(String loginName);
+    BankAccountModel findInvestorByLoginName(String loginName);
+
+    BankAccountModel findLoanerByLoginName(String loginName);
 
     BankAccountModel lockByLoginName(String loginName);
 

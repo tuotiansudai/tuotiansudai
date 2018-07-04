@@ -7,6 +7,7 @@ CREATE TABLE `aa`.`bank_withdraw` (
   `bank_order_no`   VARCHAR(20),
   `bank_order_date` VARCHAR(8),
   `status`          VARCHAR(16)     NOT NULL,
+  `role_type`       VARCHAR(20)     NOT NULL,
   `created_time`    DATETIME        NOT NULL,
   `updated_time`    DATETIME        NOT NULL,
   PRIMARY KEY (`id`),

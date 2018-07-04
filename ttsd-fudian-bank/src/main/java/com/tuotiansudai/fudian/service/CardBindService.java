@@ -54,7 +54,7 @@ public class CardBindService implements ReturnCallbackInterface, NotifyCallbackI
         this.selectMapper = selectMapper;
     }
 
-    public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto) {
+    public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto, boolean isInvestor) {
         CardBindRequestDto dto = new CardBindRequestDto(source, bankBaseDto);
         signatureHelper.sign(API_TYPE, dto);
 
@@ -70,7 +70,8 @@ public class CardBindService implements ReturnCallbackInterface, NotifyCallbackI
                 bankBaseDto.getBankUserName(),
                 bankBaseDto.getBankAccountNo(),
                 dto.getOrderNo(),
-                dto.getOrderDate());
+                dto.getOrderDate(),
+                isInvestor);
 
         String bankCardBindMessageKey = MessageFormat.format(BANK_CARD_BIND_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.<String, String>opsForHash().put(bankCardBindMessageKey, dto.getOrderNo(), gson.toJson(bankBindCardMessage));

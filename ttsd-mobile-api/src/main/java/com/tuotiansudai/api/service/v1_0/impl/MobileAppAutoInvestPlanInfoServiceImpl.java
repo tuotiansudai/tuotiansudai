@@ -28,7 +28,7 @@ public class MobileAppAutoInvestPlanInfoServiceImpl implements MobileAppAutoInve
         BaseResponseDto baseDto = new BaseResponseDto();
         AutoInvestPlanInfoResponseDataDto autoInvestPlanInfoResponseDataDto = new AutoInvestPlanInfoResponseDataDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         if (bankAccountModel == null){
             autoInvestPlanInfoResponseDataDto.setAutoInvest(false);
         }else{

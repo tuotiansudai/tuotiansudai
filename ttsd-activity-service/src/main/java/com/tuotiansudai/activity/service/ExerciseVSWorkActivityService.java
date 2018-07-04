@@ -91,7 +91,7 @@ public class ExerciseVSWorkActivityService {
         }
 
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         try {
             if (userExchangePrizeModel == null) {
                 userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", exchangePrize, DateTime.now().toDate(), activityCategory));

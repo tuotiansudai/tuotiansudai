@@ -36,7 +36,7 @@ public class ExperienceLoanDetailController {
         ModelAndView modelAndView = new ModelAndView("/experience-loan", "responsive", true);
         modelAndView.addObject("loan", experienceLoanDto);
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("isAccount", bankAccountService.findBankAccount(LoginUserInfo.getLoginName()) == null ? "false" : "true");
+        modelAndView.addObject("isAccount", bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()) == null ? "false" : "true");
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
         return modelAndView;
     }

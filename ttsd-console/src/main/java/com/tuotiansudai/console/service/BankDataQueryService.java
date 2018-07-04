@@ -38,7 +38,7 @@ public class BankDataQueryService {
         if (userModel == null) {
             return new BankQueryUserMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         if (bankAccountModel == null) {
             return new BankQueryUserMessage(false, "存管账户不存在");
         }
@@ -62,7 +62,7 @@ public class BankDataQueryService {
         if (userModel == null) {
             return new BankQueryLogAccountMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         if (bankAccountModel == null) {
             return new BankQueryLogAccountMessage(false, "存管账户不存在");
         }

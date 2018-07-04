@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
     public void shouldNoPasswordInvestTurnOnIsOk() {
         BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
         bankAccountModel.setAutoInvest(true);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findInvestorByLoginName(anyString())).thenReturn(bankAccountModel);
         NoPasswordInvestTurnOnRequestDto noPasswordInvestTurnOnRequestDto = new NoPasswordInvestTurnOnRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
