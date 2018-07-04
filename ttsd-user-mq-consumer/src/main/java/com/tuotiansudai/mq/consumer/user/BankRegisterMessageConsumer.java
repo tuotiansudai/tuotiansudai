@@ -48,7 +48,7 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
 
         try {
             BankRegisterMessage bankRegisterMessage = new Gson().fromJson(message, BankRegisterMessage.class);
-            bankAccountService.createBankAccount(bankRegisterMessage);
+            bankAccountService.processBankAccount(bankRegisterMessage);
             signInClient.refreshData(bankRegisterMessage.getToken(), Source.WEB);
             mqWrapperClient.sendMessage(MessageQueue.RegisterBankAccount_CompletePointTask, message);
         } catch (JsonSyntaxException e) {

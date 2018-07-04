@@ -227,7 +227,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
 
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
-        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((bankAccountMapper.findByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
+        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((bankAccountMapper.findInvestorByLoginName(requestDto.getBaseParam().getUserId()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());

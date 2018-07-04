@@ -27,7 +27,7 @@ public class LoanApplicationService {
     UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
-        if (null == bankAccountMapper.findByLoginName(loanApplicationDto.getLoginName())) {
+        if (null == bankAccountMapper.findLoanerByLoginName(loanApplicationDto.getLoginName())) {
             return new BaseDto<>(new BaseDataDto(false, "账户没有实名认证"));
         }
         if (loanApplicationDto.getAmount() <= 0) {

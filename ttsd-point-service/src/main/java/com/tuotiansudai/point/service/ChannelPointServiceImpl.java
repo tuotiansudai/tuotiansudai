@@ -178,7 +178,7 @@ public class ChannelPointServiceImpl {
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");
             return false;
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         if (bankAccountModel == null) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("用户没有进行实名认证!");

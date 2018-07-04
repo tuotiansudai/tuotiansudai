@@ -64,7 +64,7 @@ public class MembershipPrivilegePurchaseService {
             throw new MembershipPrivilegeIsPurchasedException();
         }
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
 
         if (bankAccountModel == null || bankAccountModel.getBalance() < membershipPrivilegePriceType.getPrice()) {
             throw new NotEnoughAmountException();

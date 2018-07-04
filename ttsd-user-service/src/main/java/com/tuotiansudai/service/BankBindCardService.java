@@ -54,7 +54,7 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = this.bankAccountMapper.findInvestorByLoginName(loginName);
 
         return bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
@@ -67,7 +67,7 @@ public class BankBindCardService {
         }
 
         UserBankCardModel model = new UserBankCardModel(bankBindCardMessage.getLoginName(), bankBindCardMessage.getBank(), bankBindCardMessage.getBankCode(), bankBindCardMessage.getCardNumber(), bankBindCardMessage.getBankOrderNo(), bankBindCardMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
-        userBankCardMapper.create(model);
+        userBankCardMapper.createInvestor(model);
     }
 
     public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId) {
@@ -82,7 +82,7 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = this.bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = this.bankAccountMapper.findInvestorByLoginName(loginName);
 
         return bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }

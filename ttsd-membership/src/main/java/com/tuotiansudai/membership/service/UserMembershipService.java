@@ -49,7 +49,7 @@ public class UserMembershipService {
         if(userMembershipModel != null && (userMembershipModel.getType() == UserMembershipType.GIVEN)){
             return 100;
         }
-        long membershipPoint = bankAccountMapper.findByLoginName(loginName) != null ? bankAccountMapper.findByLoginName(loginName).getMembershipPoint() : 0;
+        long membershipPoint = bankAccountMapper.findInvestorByLoginName(loginName) != null ? bankAccountMapper.findInvestorByLoginName(loginName).getMembershipPoint() : 0;
         int currentLevel = userMembershipEvaluator.evaluateUpgradeLevel(loginName).getLevel();
         MembershipModel membershipModel = membershipMapper.findByLevel(currentLevel);
         MembershipModel NextLevelMembershipModel = this.getMembershipByLevel(currentLevel >= 5 ? currentLevel : (currentLevel + 1));

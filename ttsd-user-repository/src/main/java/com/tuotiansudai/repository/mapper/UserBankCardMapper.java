@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserBankCardMapper {
 
-    void create(UserBankCardModel model);
+    void createInvestor(UserBankCardModel model);
+
+    void createLoaner(UserBankCardModel model);
 
     UserBankCardModel findByLoginName(@Param(value = "loginName") String loginName);
 

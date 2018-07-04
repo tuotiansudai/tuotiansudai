@@ -56,7 +56,7 @@ public class HeadlinesTodayPrizeService {
             lotteryTime++;
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         if (bankAccountModel != null) {
             lotteryTime++;
         }
@@ -113,7 +113,7 @@ public class HeadlinesTodayPrizeService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
 
         if (userModel == null) {
             logger.info("User is not exist, please register");

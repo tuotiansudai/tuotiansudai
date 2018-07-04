@@ -264,7 +264,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         investRepayModels.add(investRepayModel3);
 
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(bankAccountMapper.findInvestorByLoginName(anyString())).thenReturn(accountModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.4);
 
