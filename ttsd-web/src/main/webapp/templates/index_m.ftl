@@ -49,65 +49,6 @@
 <#--拓天体验金项目-->
 
 <#--新手专享-->
-    <#if newbieLoan??>
-        <div class="target-category-box you" data-url="/m/loan/${newbieLoan.id?c}">
-            <b class="newer-title"> <span class="exper-title">${newbieLoan.name} </span><i
-                    class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>sold</#if>">新手专享</i></b>
-            <ul class="loan-info clearfix">
-                <li>
-                    <span class="percent-number <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>">
-                        <#if newbieLoan.extraRate != 0>
-                            <i>${newbieLoan.baseRate + newbieLoan.activityRate}</i> ~ <i>${newbieLoan.baseRate + newbieLoan.activityRate + newbieLoan.extraRate * 100}</i>%
-                        <#else>
-                            <i><@percentInteger>${newbieLoan.baseRate + newbieLoan.activityRate}</@percentInteger></i>%
-                        </#if>
-                    </span>
-                    <em class="note">约定年化利率</em>
-                </li>
-                <li>最长<em class="duration-day">${newbieLoan.duration}</em> 天 <em class="note">项目期限</em></li>
-                <li>
-                    <#if newbieLoan.status== 'RAISING'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail"
-                           data-url="/m/loan/${newbieLoan.id?c}">立即投资</a>
-                    <#elseif newbieLoan.status == 'PREHEAT'>
-                        <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn"
-                           style="opacity: 0.6" data-url="/m/loan/${newbieLoan.id?c}">预热中</a>
-                    <#else>
-                        <i class="loan-status icon-sellout"></i>
-                    </#if>
-                </li>
-            </ul>
-            <#if newbieLoan.status != 'PREHEAT'>
-                <div class="table-row progress-column">
-                    <div class="progress-bar">
-                        <div class="process-percent ">
-                            <div class="percent <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>colorChange</#if>"
-                                 style="width:${newbieLoan.progress}%">
-                            </div>
-                        </div>
-                    </div>
-                    <span class="p-title">剩余金额：<i><em
-                            class="money"><@amount>${newbieLoan.availableInvestAmountCent?c}</@amount></em>元</i></span>
-                </div>
-            <#else>
-                <div class="table-row progress-column">
-                    <div class="progress-bar">
-                        <#if newbieLoan.preheatSeconds lte 1800>
-                            <span class="preheat" data-time="${newbieLoan.preheatSeconds?string.computer}">
-                <i class="minute_show"></i>分
-                <i class="second_show"></i>秒后开标
-                </span>
-                        <#else>
-                            <span style="color: #FF473C"> ${(newbieLoan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}
-                                开标</span>
-                        </#if>
-                    </div>
-                    <span class="p-title">项目总额：<i><em
-                            class="money"><@amount>${newbieLoan.availableInvestAmountCent?c}</@amount></em>元</i></span>
-                </div>
-            </#if>
-        </div>
-    </#if>
 <#--新手专享 end-->
 <#--优选债权-->
     <div class="main-column-title" data-url="/m/loan-list">
