@@ -44,7 +44,7 @@
                 <div class="no-activity">
                     <div class="no-data-wap">
                         <div class="img"></div>
-                        <p>暂无当前活动</p>
+                        <p>当前暂无活动</p>
                     </div>
                 </div>
             </#if>

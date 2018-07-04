@@ -110,9 +110,7 @@
 
     <#if !errorPage??>
 <#--ad image-->
-<div class="banner-box page-width">
-    <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
-</div>
+
 <#--ad image-->
     </#if>
 <div class="main-frame full-screen clearfix main-frame-ask">
@@ -145,8 +143,6 @@
         <div class="aside-frame fr" >
             <#include "../pageLayout/user.ftl"/>
             <#include "../pageLayout/tags.ftl"/>
-
-            <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
         </#if>
