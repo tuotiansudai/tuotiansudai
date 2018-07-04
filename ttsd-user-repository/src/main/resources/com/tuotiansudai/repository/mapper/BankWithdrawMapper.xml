@@ -33,19 +33,30 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time)
-        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now())
+    <insert id="createInvestor" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'INVESTOR')
+    </insert>
+
+    <insert id="createLoaner" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'LOANER')
     </insert>
 
     <select id="findById" parameterType="long" resultMap="bankWithdrawResultMap">
         select * from bank_withdraw where id = #{id}
     </select>
 
-    <select id="sumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+    <select id="sumInvestorSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
         select IFNULL(sum(amount), 0) as amount
         from bank_withdraw
-        where status = 'SUCCESS' and login_name = #{loginName}
+        where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'INVESTOR'
+    </select>
+
+    <select id="sumLoanerSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from bank_withdraw
+        where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'LOANER'
     </select>
 
     <select id="sumWithdrawAmount" parameterType="map" resultType="long">

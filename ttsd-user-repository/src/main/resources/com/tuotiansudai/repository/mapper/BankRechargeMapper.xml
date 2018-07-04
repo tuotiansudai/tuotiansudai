@@ -24,9 +24,14 @@
         <result column="is_staff" property="isStaff"/>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_recharge(login_name, amount, fee, pay_type, status, source, channel, created_time, updated_time)
-        value(#{loginName}, #{amount}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, now(), now())
+    <insert id="createInvestor" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_recharge(login_name, amount, fee, pay_type, status, source, channel, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, now(), now(), 'INVESTOR')
+    </insert>
+
+    <insert id="createLoaner" parameterType="com.tuotiansudai.repository.model.BankRechargeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_recharge(login_name, amount, fee, pay_type, status, source, channel, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{payType}, #{status}, #{source}, #{channel}, now(), now(), 'LOANER')
     </insert>
 
     <update id="update" parameterType="map">
@@ -42,8 +47,12 @@
         SELECT * FROM bank_recharge WHERE id = #{id}
     </select>
 
-    <select id="sumRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
-        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName}
+    <select id="sumInvestorRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
+        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'INVESTOR'
+    </select>
+
+    <select id="sumLoanerRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
+        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'LOANER'
     </select>
 
     <select id="findRechargeCount" parameterType="map" resultType="int">

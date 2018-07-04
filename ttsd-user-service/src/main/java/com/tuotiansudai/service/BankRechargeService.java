@@ -41,10 +41,14 @@ public class BankRechargeService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, boolean isInvestor) {
+        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
-        bankRechargeMapper.create(bankRechargeModel);
+        if (isInvestor){
+            bankRechargeMapper.createInvestor(bankRechargeModel);
+        }else {
+            bankRechargeMapper.createLoaner(bankRechargeModel);
+        }
         return bankWrapperClient.recharge(bankRechargeModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, payType);
     }
 
@@ -76,7 +80,7 @@ public class BankRechargeService {
     }
 
     public long sumSuccessRechargeAmount(String loginName) {
-        return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName);
+        return bankRechargeMapper.sumInvestorRechargeSuccessAmountByLoginName(loginName);
     }
 
     public BankRechargeModel findRechargeById(long id) {
