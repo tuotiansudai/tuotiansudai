@@ -1,6 +1,7 @@
 CREATE TABLE `aa`.`bank_recharge` (
   `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`      VARCHAR(25)     NOT NULL,
+  `role_type`       VARCHAR(20)     NOT NULL,
   `amount`          BIGINT UNSIGNED NOT NULL,
   `fee`             BIGINT UNSIGNED NOT NULL,
   `pay_type`        VARCHAR(20)     NOT NULL,
@@ -9,7 +10,6 @@ CREATE TABLE `aa`.`bank_recharge` (
   `status`          VARCHAR(16)     NOT NULL,
   `source`          VARCHAR(10)              DEFAULT 'WEB',
   `channel`         VARCHAR(32),
-  `role_type`       VARCHAR(20)     NOT NULL,
   `updated_time`    DATETIME        NOT NULL,
   `created_time`    DATETIME        NOT NULL,
   PRIMARY KEY (`id`),

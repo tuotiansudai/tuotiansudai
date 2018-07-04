@@ -59,7 +59,7 @@ public class LoanFullService {
         LoanModel loanModel = loanMapper.findById(loanId);
         String agentLoginName = loanModel.getAgentLoginName();
         UserModel userModel = userMapper.findByLoginName(agentLoginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(agentLoginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(agentLoginName);
 
         return bankWrapperClient.loanFull(userModel.getLoginName(),
                 userModel.getMobile(),

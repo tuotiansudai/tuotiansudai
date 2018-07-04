@@ -5,7 +5,7 @@ import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
@@ -49,7 +49,7 @@ public class TransferApplicationController {
     private LoanDetailsMapper loanDetailsMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -86,7 +86,7 @@ public class TransferApplicationController {
         modelAndView.addObject("hasBankCard", userBankCardModel != null);
 
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
-        modelAndView.addObject("investFeeRate", membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("investFeeRate", userMembershipService.obtainServiceFee(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 

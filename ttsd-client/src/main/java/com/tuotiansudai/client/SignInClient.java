@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.SignInResult;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
@@ -177,6 +178,24 @@ public class SignInClient {
             return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {
             logger.error(MessageFormat.format("[sign in client] refresh data failed (token={0} source={1})", token, source.name()));
+        }
+
+        return null;
+    }
+
+    public SignInResult switchRole(String token, Role role) {
+        if (Strings.isNullOrEmpty(token)) {
+            logger.error("[sign in client] token is empty");
+            return null;
+        }
+
+        Request.Builder request = new Request.Builder()
+                .url(MessageFormat.format("{0}/switch/role/{1}/session/{2}", SIGN_IN_SERVICE, role.name().toLowerCase(), token))
+                .post(null);
+        try {
+            return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("[sign in client] failed to switch role to {0} (token={1})", role, token));
         }
 
         return null;

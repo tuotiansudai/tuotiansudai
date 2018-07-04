@@ -79,7 +79,7 @@ public class BankAccountService {
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
-        if (bankAccountModel.isAuthorization()){
+        if (bankAccountModel.isAuthorization()) {
             return new BankAsyncMessage(null, null, false, "已开通免密投资");
         }
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.INVEST_NO_PASSWORD, null);

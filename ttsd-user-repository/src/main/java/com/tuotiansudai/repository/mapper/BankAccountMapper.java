@@ -18,7 +18,9 @@ public interface BankAccountMapper {
 
     BankAccountModel findLoanerByLoginName(String loginName);
 
-    BankAccountModel lockByLoginName(String loginName);
+    BankAccountModel lockInvestorByLoginName(String loginName);
+
+    BankAccountModel lockLoanerByLoginName(String loginName);
 
     void updateMembershipPoint(@Param("loginName") String loginName,
                                @Param("point") long point);
@@ -26,6 +28,9 @@ public interface BankAccountMapper {
     void updateAutoInvest(@Param("loginName") String loginName,
                           @Param("autoInvest") boolean autoInvest);
 
-    void updateBalance(@Param("loginName") String loginName,
-                       @Param("balanceDelta") long balanceDelta);
+    void updateInvestorBalance(@Param("loginName") String loginName,
+                               @Param("balanceDelta") long balanceDelta);
+
+    void updateLoanerBalance(@Param("loginName") String loginName,
+                             @Param("balanceDelta") long balanceDelta);
 }
