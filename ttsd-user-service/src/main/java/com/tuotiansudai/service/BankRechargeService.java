@@ -42,7 +42,7 @@ public class BankRechargeService {
     }
 
     public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
         bankRechargeMapper.create(bankRechargeModel);
         return bankWrapperClient.recharge(bankRechargeModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, payType);

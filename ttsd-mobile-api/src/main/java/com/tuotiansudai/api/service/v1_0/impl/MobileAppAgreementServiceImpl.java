@@ -39,7 +39,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(agreementDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(agreementDto.getLoginName());
 
         if (bankAccountModel != null && bankAccountModel.isAuthorization()) {
             baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());

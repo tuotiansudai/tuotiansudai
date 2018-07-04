@@ -55,7 +55,7 @@ import static org.mockito.Mockito.when;
         NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto = new NoPasswordInvestTurnOffRequestDto();
         noPasswordInvestTurnOffRequestDto.setBaseParam(baseParam);
         noPasswordInvestTurnOffRequestDto.setCaptcha("123456");
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findInvestorByLoginName(anyString())).thenReturn(bankAccountModel);
         baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, "127.0.0.1");
 
         assertEquals("0000", baseResponseDto.getCode());

@@ -66,7 +66,7 @@ public class ActivityConsoleNotWorkService {
 
             int recommendIdentifyAmount = 0;
             for (UserRegisterInfo userModel : users) {
-                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
                 if (null != bankAccountModel && bankAccountModel.getCreatedTime().after(activityStartTime) && bankAccountModel.getCreatedTime().before(activityEndTime)) {
                     ++recommendIdentifyAmount;
                 }

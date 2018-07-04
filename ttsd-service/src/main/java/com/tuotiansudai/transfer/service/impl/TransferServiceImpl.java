@@ -65,7 +65,7 @@ public class TransferServiceImpl implements TransferService {
     public BankAsyncMessage transferPurchase(InvestDto investDto) throws InvestException {
 
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
         investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
@@ -105,7 +105,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
 
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
@@ -293,7 +293,7 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
-            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+            BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));
             transferApplicationDetailDto.setBalance(bankAccountModel != null ? AmountConverter.convertCentToString(bankAccountModel.getBalance()) : "0.00");

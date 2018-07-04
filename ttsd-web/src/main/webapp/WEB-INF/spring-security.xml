@@ -74,7 +74,9 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/register/account" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/register/account/investor" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR')"/>
+        <intercept-url pattern="/register/account/loaner" access="hasAuthority('INVESTOR') and not hasAnyAuthority('LOANER')"/>
 
         <!--menus-->
         <!--PC rules start-->
@@ -119,7 +121,9 @@
         <!--M rules start-->
         <intercept-url pattern="/m/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/m/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/m/register/account/" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/m/register/account" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/m/register/account/investor" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR')"/>
+        <intercept-url pattern="/m/register/account/loaner" access="hasAuthority('INVESTOR') and not hasAnyAuthority('LOANER')"/>
         <intercept-url pattern="/m/recharge/**" access="not isAnonymous()" method="GET"/>
         <intercept-url pattern="/m/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/m/withdraw/**" access="not isAnonymous()" method="GET"/>

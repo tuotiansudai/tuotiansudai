@@ -53,7 +53,7 @@ public class BankWithdrawService {
     }
 
     public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
         bankWithdrawMapper.create(bankWithdrawModel);
 

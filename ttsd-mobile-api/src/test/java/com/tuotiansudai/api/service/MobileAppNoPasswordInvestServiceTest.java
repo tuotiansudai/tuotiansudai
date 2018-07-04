@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
         BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
         bankAccountModel.setAutoInvest(true);
         bankAccountModel.setAuthorization(true);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findInvestorByLoginName(anyString())).thenReturn(bankAccountModel);
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");

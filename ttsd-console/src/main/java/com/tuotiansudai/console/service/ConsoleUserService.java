@@ -114,7 +114,7 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
-        if (!mobile.equals(beforeUpdateUserMobile) && bankAccountMapper.findByLoginName(loginName) != null) {
+        if (!mobile.equals(beforeUpdateUserMobile) && bankAccountMapper.findInvestorByLoginName(loginName) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     userModel.getUserName(),

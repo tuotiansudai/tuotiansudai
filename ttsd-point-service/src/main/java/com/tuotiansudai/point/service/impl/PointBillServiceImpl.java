@@ -187,7 +187,7 @@ public class PointBillServiceImpl implements PointBillService {
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         List<UserModel> userModels = bankAccountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
         List<UserPointItemDataDto> records = userModels.stream()
                 .map(u -> new UserPointItemDataDto(

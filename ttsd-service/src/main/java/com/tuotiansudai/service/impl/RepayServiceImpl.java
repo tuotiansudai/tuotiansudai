@@ -98,7 +98,7 @@ public class RepayServiceImpl implements RepayService {
 
         LoanModel loanModel = loanMapper.findById(repayDto.getLoanId());
         UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
 
         List<BankLoanRepayInvestDataView> bankLoanRepayInvestData = investRepayMapper.queryBankInvestRepayData(enabledLoanRepay.getLoanId(), enabledLoanRepay.getPeriod());
         List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayInvestData.stream().map(data -> new BankLoanRepayInvestDto(data.getLoginName(),
@@ -184,7 +184,7 @@ public class RepayServiceImpl implements RepayService {
                 .collect(Collectors.toList());
 
         UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
         BankLoanRepayDto bankLoanRepayDto = new BankLoanRepayDto(userModel.getLoginName(),
                 userModel.getMobile(),
                 bankAccountModel.getBankUserName(),
@@ -230,7 +230,7 @@ public class RepayServiceImpl implements RepayService {
         boolean isRepayingLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING);
 
         dataDto.setLoanId(loanId);
-        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginName(loginName).getBalance()));
+        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findLoanerByLoginName(loginName).getBalance()));
 
         if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
             dataDto.setNormalRepayEnabled(true);

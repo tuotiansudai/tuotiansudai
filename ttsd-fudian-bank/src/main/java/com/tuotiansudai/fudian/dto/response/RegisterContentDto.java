@@ -12,6 +12,12 @@ public class RegisterContentDto extends UserBaseContentDto {
 
     private String regDate;
 
+    private String bank;
+
+    private String bankCardNo;
+
+    private String bankCode;
+
     public String getIdentityCode() {
         return identityCode;
     }
@@ -50,5 +56,29 @@ public class RegisterContentDto extends UserBaseContentDto {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getBankCardNo() {
+        return bankCardNo;
+    }
+
+    public void setBankCardNo(String bankCardNo) {
+        this.bankCardNo = bankCardNo;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 }

@@ -124,7 +124,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BankAsyncMessage invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -143,7 +143,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -179,7 +179,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -418,7 +418,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         bankAccountModel.setAutoInvest(isTurnOn);
         bankAccountMapper.updateAutoInvest(loginName, isTurnOn);
         // 发送用户行为日志MQ

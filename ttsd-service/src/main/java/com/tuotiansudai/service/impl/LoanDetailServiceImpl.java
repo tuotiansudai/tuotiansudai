@@ -173,7 +173,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         boolean isAuthenticationRequired = anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus();
         boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
 
         InvestorDto investorDto = bankAccountModel == null ? new InvestorDto() : new InvestorDto(bankAccountModel.getBalance(),
                 bankAccountModel.isAuthorization(),
@@ -328,7 +328,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     private long calculateMaxAvailableInvestAmount(String loginName, LoanModel loanModel, long investedAmount) {
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName, true);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         long balance = Strings.isNullOrEmpty(loginName) || bankAccountModel == null ? 0 : bankAccountModel.getBalance();
 
         long maxAvailableInvestAmount = NumberUtils.min(balance, loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount);

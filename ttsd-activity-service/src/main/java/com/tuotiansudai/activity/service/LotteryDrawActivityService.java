@@ -148,7 +148,7 @@ public class LotteryDrawActivityService {
             grantExperience(userModel.getLoginName(), lotteryPrize);
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
         try {
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
@@ -325,7 +325,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case CERTIFICATION:
-                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
                     if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
@@ -432,7 +432,7 @@ public class LotteryDrawActivityService {
             return steps;
         }
         steps.set(0, 2);
-        if (bankAccountMapper.findByLoginName(loginName) == null) {
+        if (bankAccountMapper.findInvestorByLoginName(loginName) == null) {
             steps.set(1, 1);
             return steps;
         }
