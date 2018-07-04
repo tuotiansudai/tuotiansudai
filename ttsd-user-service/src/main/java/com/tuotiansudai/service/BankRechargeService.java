@@ -79,8 +79,8 @@ public class BankRechargeService {
         }
     }
 
-    public long sumSuccessRechargeAmount(String loginName) {
-        return bankRechargeMapper.sumInvestorRechargeSuccessAmountByLoginName(loginName);
+    public long sumSuccessRechargeAmount(String loginName, boolean isInvestor) {
+        return isInvestor ? bankRechargeMapper.sumInvestorRechargeSuccessAmountByLoginName(loginName) : bankRechargeMapper.sumLoanerRechargeSuccessAmountByLoginName(loginName);
     }
 
     public BankRechargeModel findRechargeById(long id) {

@@ -42,6 +42,14 @@ public class BankBindCardService {
         return userBankCardMapper.findByLoginName(loginName);
     }
 
+    public UserBankCardModel findInvestorBankCard(String loginName) {
+        return userBankCardMapper.findInvestorByLoginName(loginName);
+    }
+
+    public UserBankCardModel findLoanerBankCard(String loginName) {
+        return userBankCardMapper.findLoanerByLoginName(loginName);
+    }
+
     public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, boolean isInvestor) {
         UserBankCardModel userBankCardModel = isInvestor ? userBankCardMapper.findInvestorByLoginName(loginName) : userBankCardMapper.findLoanerByLoginName(loginName);
 

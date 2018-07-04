@@ -109,7 +109,7 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName);
+            UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(loginName);
             if (userBankCardModel != null) {
                 editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
             }

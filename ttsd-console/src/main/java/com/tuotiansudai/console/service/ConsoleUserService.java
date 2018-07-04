@@ -140,7 +140,7 @@ public class ConsoleUserService {
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
 
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName);
+        UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(loginName);
         if (userBankCardModel != null) {
             editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
         }
