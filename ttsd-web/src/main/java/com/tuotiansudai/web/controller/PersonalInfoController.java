@@ -94,7 +94,7 @@ public class PersonalInfoController {
     @RequestMapping(value = "/reset-bank-password/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView resetBankPassword(@PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName());
+        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), true);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

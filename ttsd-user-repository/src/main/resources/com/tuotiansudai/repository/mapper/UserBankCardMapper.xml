@@ -27,8 +27,12 @@
         value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now(),'LOANER')
     </insert>
 
-    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
-        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND'
+    <select id="findInvestorByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = 'INVESTOR'
+    </select>
+
+    <select id="findLoanerByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = 'LOANER'
     </select>
 
     <update id="updateStatus" parameterType="map">

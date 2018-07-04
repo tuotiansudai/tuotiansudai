@@ -29,14 +29,14 @@ public class BindBankCardController {
     @RequestMapping(path = "/bind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankBindCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankBindCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, true);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 
     @RequestMapping(path = "/unbind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView unbindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankBindCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankBindCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, true);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 

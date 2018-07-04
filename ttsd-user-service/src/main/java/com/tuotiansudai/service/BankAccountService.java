@@ -183,9 +183,9 @@ public class BankAccountService {
         return bankAccountMapper.findInvestorByLoginName(loginName);
     }
 
-    public BankAsyncMessage resetPassword(Source source, String loginName) {
+    public BankAsyncMessage resetPassword(Source source, String loginName, boolean isInvestor) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
         return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 }

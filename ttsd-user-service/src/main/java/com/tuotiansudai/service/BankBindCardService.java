@@ -42,8 +42,8 @@ public class BankBindCardService {
         return userBankCardMapper.findByLoginName(loginName);
     }
 
-    public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+    public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, boolean isInvestor) {
+        UserBankCardModel userBankCardModel = isInvestor ? userBankCardMapper.findInvestorByLoginName(loginName) : userBankCardMapper.findLoanerByLoginName(loginName);
 
         if (userBankCardModel != null) {
             return new BankAsyncMessage();
@@ -54,13 +54,13 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = this.bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
 
-        return bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+        return bankWrapperClient.bindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), isInvestor);
     }
 
     public void processBind(BankBindCardMessage bankBindCardMessage) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(bankBindCardMessage.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardMessage.isInvestor() ? userBankCardMapper.findInvestorByLoginName(bankBindCardMessage.getLoginName()) : userBankCardMapper.findLoanerByLoginName(bankBindCardMessage.getLoginName());
         if (userBankCardModel != null) {
             logger.error("bank card is exist, message: {}", bankBindCardMessage);
             return;
@@ -70,8 +70,8 @@ public class BankBindCardService {
         userBankCardMapper.createInvestor(model);
     }
 
-    public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+    public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, boolean isInvestor) {
+        UserBankCardModel userBankCardModel = isInvestor ? userBankCardMapper.findInvestorByLoginName(loginName) : userBankCardMapper.findLoanerByLoginName(loginName);
 
         if (userBankCardModel == null) {
             return new BankAsyncMessage(null, null, false, "未绑定银行卡");
@@ -82,13 +82,13 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = this.bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
 
-        return bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+        return bankWrapperClient.unbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), isInvestor);
     }
 
     public void processUnbind(BankBindCardMessage bankBindCardMessage) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(bankBindCardMessage.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardMessage.isInvestor() ? userBankCardMapper.findInvestorByLoginName(bankBindCardMessage.getLoginName()) : userBankCardMapper.findLoanerByLoginName(bankBindCardMessage.getLoginName());
         if (userBankCardModel == null || Strings.isNullOrEmpty(userBankCardModel.getCardNumber()) || !userBankCardModel.getCardNumber().equalsIgnoreCase(bankBindCardMessage.getCardNumber())) {
             logger.error("[MQ] bank card is not exist, message: {}", bankBindCardMessage);
             return;

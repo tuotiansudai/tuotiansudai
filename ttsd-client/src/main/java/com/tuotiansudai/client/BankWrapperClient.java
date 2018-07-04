@@ -112,13 +112,13 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, boolean isInvestor) {
+        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/{1}", source.name().toLowerCase(), isInvestor ? "investor" : "loaner"),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, boolean isInvestor) {
+        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/{1}", source.name().toLowerCase(), isInvestor ? "investor" : "loaner"),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 

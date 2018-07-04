@@ -64,8 +64,8 @@ public class UserController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> cardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+    @RequestMapping(path = "/card-bind/source/{source}/role/{role}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> cardBind(@PathVariable Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -73,7 +73,7 @@ public class UserController extends AsyncRequestController {
             return ResponseEntity.badRequest().build();
         }
 
-        CardBindRequestDto requestDto = cardBindService.bind(source, params);
+        CardBindRequestDto requestDto = cardBindService.bind(source, params, registerRoleType == RegisterRoleType.INVESTOR);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
 
@@ -84,8 +84,8 @@ public class UserController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/cancel-card-bind/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> cancelCardBind(@PathVariable Source source, @RequestBody BankBaseDto params) {
+    @RequestMapping(path = "/cancel-card-bind/source/{source}/role/{role}", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> cancelCardBind(@PathVariable Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call cancel bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -93,7 +93,7 @@ public class UserController extends AsyncRequestController {
             return ResponseEntity.badRequest().build();
         }
 
-        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params);
+        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params, registerRoleType == RegisterRoleType.INVESTOR);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
 
