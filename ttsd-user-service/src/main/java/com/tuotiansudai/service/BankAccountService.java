@@ -87,7 +87,15 @@ public class BankAccountService {
         return bankWrapperClient.authorization(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 
-    public void createInvestorBankAccount(BankRegisterMessage bankRegisterMessage) {
+    public void processBankAccount(BankRegisterMessage bankRegisterMessage){
+        if (bankRegisterMessage.isInvestor()){
+            this.createInvestorBankAccount(bankRegisterMessage);
+        }else{
+            this.createLoanerBankAccount(bankRegisterMessage);
+        }
+    }
+
+    private void createInvestorBankAccount(BankRegisterMessage bankRegisterMessage) {
         String loginName = bankRegisterMessage.getLoginName();
 
         if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
@@ -112,7 +120,7 @@ public class BankAccountService {
         sendMessage(bankRegisterMessage);
     }
 
-    public void createLoanerBankAccount(BankRegisterMessage bankRegisterMessage) {
+    private void createLoanerBankAccount(BankRegisterMessage bankRegisterMessage) {
         String loginName = bankRegisterMessage.getLoginName();
 
         if (bankAccountMapper.findLoanerByLoginName(loginName) != null) {
@@ -153,17 +161,18 @@ public class BankAccountService {
 
     private void sendMessage(BankRegisterMessage bankRegisterMessage) {
         try {
-            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REGISTER_ACCOUNT_SUCCESS,
+            MessageEventType type = bankRegisterMessage.isInvestor() ? MessageEventType.REGISTER_INVESTOR_ACCOUNT_SUCCESS : MessageEventType.REGISTER_LOANER_ACCOUNT_SUCCESS;
+            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(type,
                     Lists.newArrayList(bankRegisterMessage.getLoginName()),
-                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
-                    MessageFormat.format(MessageEventType.REGISTER_ACCOUNT_SUCCESS.getContentTemplate(), bankRegisterMessage.getRealName()),
+                    type.getTitleTemplate(),
+                    MessageFormat.format(type.getContentTemplate(), bankRegisterMessage.getRealName()),
                     null
             ));
 
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(bankRegisterMessage.getLoginName()),
                     PushSource.ALL,
                     PushType.REGISTER_ACCOUNT_SUCCESS,
-                    MessageEventType.REGISTER_ACCOUNT_SUCCESS.getTitleTemplate(),
+                    type.getTitleTemplate(),
                     AppUrl.MESSAGE_CENTER_LIST));
         } catch (Exception e) {
             logger.error("bank register success wechat message notify send fail", e);
