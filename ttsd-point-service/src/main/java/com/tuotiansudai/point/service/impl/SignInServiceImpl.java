@@ -77,7 +77,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     @Transactional(transactionManager = "aaTransactionManager")
     public SignInPointDto signIn(String loginName) {
-        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         if (null == bankAccountModel) {
             return null;
         }

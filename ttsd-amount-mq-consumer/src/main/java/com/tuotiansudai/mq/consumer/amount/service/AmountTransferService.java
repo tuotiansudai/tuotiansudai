@@ -48,7 +48,7 @@ public class AmountTransferService {
 
             long amount = message.getAmount() * (message.getTransferType() == TransferType.TRANSFER_IN_BALANCE ? 1 : -1);
 
-            bankAccountMapper.updateBalance(message.getLoginName(), amount);
+            bankAccountMapper.updateInvestorBalance(message.getLoginName(), amount);
 
             userBillMapper.create(new UserBillModel(message.getLoginName(),
                     message.getOrderId(),

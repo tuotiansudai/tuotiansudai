@@ -180,7 +180,7 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.lockInvestorByLoginName(userModel.getLoginName());
 
         if (bankAccountModel == null) {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！

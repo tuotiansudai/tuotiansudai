@@ -31,9 +31,6 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
     @Autowired
     private BankAccountMapper bankAccountMapper;
 
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
-
     @Override
     public BaseResponseDto<AgreementOperateResponseDataDto> generateAgreementRequest(AgreementOperateRequestDto requestDto) {
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();

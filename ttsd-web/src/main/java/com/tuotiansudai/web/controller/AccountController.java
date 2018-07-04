@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -24,6 +25,8 @@ import java.util.Date;
 @Controller
 @RequestMapping(value = "/account")
 public class AccountController {
+
+    private static final SignInClient signInClient = SignInClient.getInstance();
 
     @Autowired
     private UserRoleService userRoleService;
@@ -125,6 +128,19 @@ public class AccountController {
 
         modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/switch", method = RequestMethod.POST)
+    public ModelAndView switchAccount() {
+        if (LoginUserInfo.isRole(Role.INVESTOR) == Boolean.TRUE) {
+            signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
+        }
+
+        if (LoginUserInfo.isRole(Role.LOANER) == Boolean.TRUE) {
+            signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
+        }
+
+        return new ModelAndView("redirect:/account");
     }
 
 }

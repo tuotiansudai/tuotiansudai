@@ -1,12 +1,15 @@
 package com.tuotiansudai.spring;
 
+import com.tuotiansudai.enums.Role;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 public class LoginUserInfo {
 
@@ -52,6 +55,24 @@ public class LoginUserInfo {
                 Class<?> aClass = principal.getClass();
                 Method method = aClass.getMethod("getToken");
                 return  (String) method.invoke(principal);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    public static Boolean isRole(Role role) {
+        Object principal = LoginUserInfo.getPrincipal();
+
+        if (principal instanceof User) {
+            try {
+                Class<?> aClass = principal.getClass();
+                Method method = aClass.getMethod("getAuthorities");
+                Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) method.invoke(principal);
+                return authorities.stream().anyMatch(authority -> authority.getAuthority().equals(role.name()));
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }

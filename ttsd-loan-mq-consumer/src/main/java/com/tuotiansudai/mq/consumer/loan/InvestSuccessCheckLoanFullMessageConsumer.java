@@ -77,6 +77,7 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
                 loanMapper.updateRaisingCompleteTime(loanModel.getId());
                 UserModel agentUser = userMapper.findByLoginName(loanModel.getAgentLoginName());
                 BankAccountModel agentAccount = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
+
                 BankBaseMessage loanFullMessage = bankWrapperClient.loanFull(agentUser.getLoginName(),
                         agentUser.getMobile(),
                         agentAccount.getBankUserName(),
