@@ -11,8 +11,6 @@ CREATE TABLE `fudian`.`loan_create` (
   `order_no`             VARCHAR(20),
   `order_date`           VARCHAR(8),
   `ext_mark`             VARCHAR(256),
-  `return_url`           VARCHAR(256),
-  `notify_url`           VARCHAR(256),
   `notify_response_data` TEXT,
   `ret_code`             VARCHAR(4),
   `ret_msg`              VARCHAR(128),

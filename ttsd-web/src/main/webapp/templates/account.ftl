@@ -22,15 +22,7 @@
             <span class="vip vip${userMembershipLevel!}"></span>
             <a href="/personal-info" class="user-info"></a>
         </div>
-        <ul class="proList fr">
-            <#if signedIn?? && signedIn>
-                <li class="fl sign-top no-click"><span class="btn-sign finish-sign" data-url="/point-shop/sign-in"
-                                                       id="signBtn">已签到</span></li>
-            <#else >
-                <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point-shop/sign-in"
-                                              id="signBtn">签到</span></li>
-            </#if>
-        </ul>
+
     </div>
 
     <div class="column-box bg-w clearfix amount-sum">

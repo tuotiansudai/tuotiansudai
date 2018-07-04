@@ -92,8 +92,13 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BankAsyncMessage register(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
-        return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage registerInvestor(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}/role/investor", source.name().toLowerCase()),
+                new BankRegisterDto(loginName, mobile, token, realName, identityCode));
+    }
+
+    public BankAsyncMessage registerLoaner(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}/role/loaner", source.name().toLowerCase()),
                 new BankRegisterDto(loginName, mobile, token, realName, identityCode));
     }
 

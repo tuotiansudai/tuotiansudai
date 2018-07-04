@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.dto.request;
 import com.tuotiansudai.fudian.dto.BankLoanCreateDto;
 import com.tuotiansudai.fudian.util.AmountUtils;
 
-public class LoanCreateRequestDto extends NotifyRequestDto {
+public class LoanCreateRequestDto extends BaseRequestDto {
 
     private String loanName;
 
