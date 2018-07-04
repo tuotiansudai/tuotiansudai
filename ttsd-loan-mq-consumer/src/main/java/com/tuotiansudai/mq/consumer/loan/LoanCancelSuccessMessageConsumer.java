@@ -31,7 +31,7 @@ public class LoanCancelSuccessMessageConsumer implements MessageConsumer {
 
     @Override
     public MessageQueue queue() {
-        return MessageQueue.LoanFull_Success;
+        return MessageQueue.LoanCancel_Success;
     }
 
     @Override
