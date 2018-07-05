@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,11 +23,16 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     private static final int CAPTCHA_EXPIRED_TIME = 10;
 
+    private static final String DEFAULT_MOBILE_CAPTCHA="999999";
+
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Value("${common.environment}")
+    private String commonEnvironment;
 
     @Override
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, boolean isVoice, String requestIP) {
@@ -53,10 +59,16 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
     }
 
+    /**
+     * 创建手机验证码，如果是 非正式环境 返回默认的9999验证码
+     * @param mobile
+     * @param smsCaptchaType
+     * @return
+     */
     private String createMobileCaptcha(String mobile, SmsCaptchaType smsCaptchaType) {
         DateTime now = new DateTime();
         DateTime expiredTime = now.plusMinutes(CAPTCHA_EXPIRED_TIME);
-        String captcha = createRandomCaptcha(CAPTCHA_LENGTH);
+        String captcha = "PRODUCT".equals(commonEnvironment)?createRandomCaptcha(CAPTCHA_LENGTH):DEFAULT_MOBILE_CAPTCHA;
         SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, smsCaptchaType);
         if (existingCaptcha != null) {
             existingCaptcha.setCaptcha(captcha);
@@ -71,6 +83,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     private String createRandomCaptcha(int captchaLength) {
         int min = 0;
+
         int max = 9;
         Random random = new Random();
         StringBuilder captcha = new StringBuilder();
