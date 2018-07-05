@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
 import com.tuotiansudai.repository.model.Source;
@@ -21,9 +22,8 @@ public interface BankWithdrawMapper {
 
     void update(BankWithdrawModel bankWithdrawModel);
 
-    long sumInvestorSuccessWithdrawByLoginName(String loginName);
-
-    long sumLoanerSuccessWithdrawByLoginName(String loginName);
+    long sumSuccessWithdrawByLoginNameAndRole(@Param(value = "loginName") String loginName,
+                                              @Param(value = "roleType") String roleType);
 
     long sumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,

@@ -1,6 +1,7 @@
 CREATE TABLE `aa`.`bank_account` (
   `id`                            INT(32)         NOT NULL AUTO_INCREMENT,
   `login_name`                    VARCHAR(50)     NOT NULL,
+  `role_type`                     VARCHAR(20)     NOT NULL,
   `bank_user_name`                VARCHAR(32)     NOT NULL,
   `bank_account_no`               VARCHAR(50)     NOT NULL,
   `bank_account_order_no`         VARCHAR(20)     NOT NULL,
@@ -11,7 +12,6 @@ CREATE TABLE `aa`.`bank_account` (
   `auto_invest`                   TINYINT(1)               DEFAULT FALSE,
   `bank_authorization_order_no`   VARCHAR(20),
   `bank_authorization_order_date` VARCHAR(8),
-  `role_type`                     VARCHAR(20)     NOT NULL,
   `created_time`                  DATETIME        NOT NULL,
   `updated_time`                  DATETIME        NOT NULL,
 

@@ -10,7 +10,7 @@ import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -41,7 +41,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private InvestMapper investMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -137,8 +137,8 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             loanResponseDataDto.setExtraRates(convertExtraRateList(loan.getId()));
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-            if (loan != null && ProductType.EXPERIENCE == loan.getProductType()) {
+            double investFeeRate = userMembershipService.obtainServiceFee(loginName);
+            if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));

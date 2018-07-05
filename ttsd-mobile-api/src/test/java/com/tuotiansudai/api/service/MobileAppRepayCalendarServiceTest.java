@@ -386,7 +386,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
 
     private BankAccountModel createAccountByUserId(String userId) {
         BankAccountModel accountModel = new BankAccountModel(userId, "payUserId", "payAccountId", "111", "111");
-        bankAccountMapper.create(accountModel);
+        bankAccountMapper.createInvestor(accountModel);
         accountModel.setBalance(10000);
         accountModel.setAutoInvest(true);
         accountModel.setAuthorization(true);

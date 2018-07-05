@@ -57,7 +57,7 @@ public class ConsoleLoanApplicationServiceTest {
 
     private BankAccountModel createAccountModel(UserModel userModel) {
         BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), "111", "111");
-        bankAccountMapper.create(accountModel);
+        bankAccountMapper.createInvestor(accountModel);
         return accountModel;
     }
 

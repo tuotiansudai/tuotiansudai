@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
@@ -9,16 +7,9 @@ import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -30,10 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,9 +45,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -66,7 +52,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     private PageValidUtils pageValidUtils;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
@@ -174,7 +160,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : null : null);
             }
 
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+            double investFeeRate = userMembershipService.obtainServiceFee(loginName);
             //拓天体验项目不收手续费
             if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = 0;

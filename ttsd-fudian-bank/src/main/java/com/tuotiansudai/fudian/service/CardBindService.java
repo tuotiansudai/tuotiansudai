@@ -3,6 +3,7 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.request.BankUserRole;
 import com.tuotiansudai.fudian.dto.request.CardBindRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.CardBindContentDto;
@@ -54,7 +55,7 @@ public class CardBindService implements ReturnCallbackInterface, NotifyCallbackI
         this.selectMapper = selectMapper;
     }
 
-    public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto, boolean isInvestor) {
+    public CardBindRequestDto bind(Source source, BankBaseDto bankBaseDto, BankUserRole bankUserRole) {
         CardBindRequestDto dto = new CardBindRequestDto(source, bankBaseDto);
         signatureHelper.sign(API_TYPE, dto);
 
@@ -71,7 +72,7 @@ public class CardBindService implements ReturnCallbackInterface, NotifyCallbackI
                 bankBaseDto.getBankAccountNo(),
                 dto.getOrderNo(),
                 dto.getOrderDate(),
-                isInvestor);
+                bankUserRole == BankUserRole.INVESTOR);
 
         String bankCardBindMessageKey = MessageFormat.format(BANK_CARD_BIND_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.<String, String>opsForHash().put(bankCardBindMessageKey, dto.getOrderNo(), gson.toJson(bankBindCardMessage));

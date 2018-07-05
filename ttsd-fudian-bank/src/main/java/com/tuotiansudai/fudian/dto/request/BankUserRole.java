@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.request;
 
-public enum RegisterRoleType {
+public enum BankUserRole {
 
     INVESTOR("3"),
 
@@ -8,7 +8,7 @@ public enum RegisterRoleType {
 
     private final String code;
 
-    RegisterRoleType(String code) {
+    BankUserRole(String code) {
         this.code = code;
     }
 

@@ -105,6 +105,5 @@ public class MembershipInvestService {
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage(), ex);
         }
-
     }
 }

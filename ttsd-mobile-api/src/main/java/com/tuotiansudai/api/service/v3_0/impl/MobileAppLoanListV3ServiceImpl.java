@@ -10,7 +10,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -49,7 +49,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     private InvestMapper investMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -157,7 +157,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             return loanDtoList;
         }
 
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
 
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

@@ -18,13 +18,13 @@ public class LoanApplicationService {
     private static Logger logger = Logger.getLogger(LoanApplicationService.class);
 
     @Autowired
-    BankAccountMapper bankAccountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
-    LoanApplicationMapper loanApplicationMapper;
+    private LoanApplicationMapper loanApplicationMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
         if (null == bankAccountMapper.findLoanerByLoginName(loanApplicationDto.getLoginName())) {

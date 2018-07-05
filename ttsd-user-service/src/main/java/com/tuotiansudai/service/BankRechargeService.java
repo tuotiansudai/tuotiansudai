@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
@@ -41,13 +42,16 @@ public class BankRechargeService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, boolean isInvestor) {
-        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
+    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("充值失败");
+        }
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
-        if (isInvestor){
-            bankRechargeMapper.createInvestor(bankRechargeModel);
-        }else {
+        if (role == Role.LOANER){
             bankRechargeMapper.createLoaner(bankRechargeModel);
+        }else {
+            bankRechargeMapper.createInvestor(bankRechargeModel);
         }
         return bankWrapperClient.recharge(bankRechargeModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, payType);
     }
@@ -79,8 +83,8 @@ public class BankRechargeService {
         }
     }
 
-    public long sumSuccessRechargeAmount(String loginName, boolean isInvestor) {
-        return isInvestor ? bankRechargeMapper.sumInvestorRechargeSuccessAmountByLoginName(loginName) : bankRechargeMapper.sumLoanerRechargeSuccessAmountByLoginName(loginName);
+    public long sumSuccessRechargeAmount(String loginName, Role role) {
+        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, role.name());
     }
 
     public BankRechargeModel findRechargeById(long id) {

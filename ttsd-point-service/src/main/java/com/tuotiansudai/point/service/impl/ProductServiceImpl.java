@@ -375,7 +375,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId, String comment) {
         ProductModel productModel = productMapper.lockById(id);
-        BankAccountModel accountModel = bankAccountMapper.lockByLoginName(loginName);
+        BankAccountModel accountModel = bankAccountMapper.findInvestorByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());

@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BankBindCardService;
@@ -29,14 +30,14 @@ public class BindBankCardController {
     @RequestMapping(path = "/bind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankBindCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, true);
+        BankAsyncMessage bankAsyncData = bankBindCardService.bind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 
     @RequestMapping(path = "/unbind/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView unbindBankCard(HttpServletRequest request, @PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankBindCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, true);
+        BankAsyncMessage bankAsyncData = bankBindCardService.unbind(LoginUserInfo.getLoginName(), source, RequestIPParser.parse(request), null, LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 

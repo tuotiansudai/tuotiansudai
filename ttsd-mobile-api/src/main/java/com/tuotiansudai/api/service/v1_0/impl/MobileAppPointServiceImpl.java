@@ -47,7 +47,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     @Transactional
     public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.lockInvestorByLoginName(loginName);
         if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }

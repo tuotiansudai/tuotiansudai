@@ -52,14 +52,18 @@ public class BankWithdrawService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, boolean isInvestor) {
-        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("提现失败");
+        }
+
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
 
-        if (isInvestor){
-            bankWithdrawMapper.createInvestor(bankWithdrawModel);
-        }else {
+        if (role == Role.LOANER){
             bankWithdrawMapper.createLoaner(bankWithdrawModel);
+        }else {
+            bankWithdrawMapper.createInvestor(bankWithdrawModel);
         }
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
@@ -114,7 +118,7 @@ public class BankWithdrawService {
         return bankWithdrawMapper.findById(id);
     }
 
-    public long sumSuccessWithdrawByLoginName(String loginName, boolean isInvestor) {
-        return isInvestor ? bankWithdrawMapper.sumInvestorSuccessWithdrawByLoginName(loginName) : bankWithdrawMapper.sumLoanerSuccessWithdrawByLoginName(loginName);
+    public long sumSuccessWithdrawByLoginName(String loginName, Role role) {
+        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role.name());
     }
 }

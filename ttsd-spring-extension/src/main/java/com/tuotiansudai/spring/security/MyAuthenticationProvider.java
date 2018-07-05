@@ -1,7 +1,6 @@
 package com.tuotiansudai.spring.security;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
@@ -64,7 +64,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(details.getMobile(), details.getOpenid()));
 
-        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), SimpleGrantedAuthority::new);
+        List<GrantedAuthority> grantedAuthorities = signInResult.getUserInfo().getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), authentication.getCredentials().toString(), true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),

@@ -180,7 +180,7 @@ public class LotteryDrawActivityService {
             return new DrawLotteryResultDto(2);//您还未登陆，请登陆后再来抽奖吧！
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.lockInvestorByLoginName(userModel.getLoginName());
 
         if (bankAccountModel == null) {
             return new DrawLotteryResultDto(4);//您还未实名认证，请实名认证后再来抽奖吧！
@@ -331,7 +331,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case BANK_CARD:
-                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(userModel.getLoginName());
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(userModel.getLoginName());
                     if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
@@ -440,7 +440,7 @@ public class LotteryDrawActivityService {
         steps.set(2, 1);
         steps.set(3, 1);
         steps.set(4, 1);
-        if (userBankCardMapper.findByLoginName(loginName) != null) {
+        if (userBankCardMapper.findInvestorByLoginName(loginName) != null) {
             steps.set(2, 2);
         }
         return steps;

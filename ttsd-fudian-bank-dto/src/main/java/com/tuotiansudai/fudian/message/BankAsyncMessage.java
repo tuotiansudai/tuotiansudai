@@ -15,6 +15,12 @@ public class BankAsyncMessage extends BankBaseMessage {
         this.data = data;
     }
 
+    public BankAsyncMessage(String message) {
+        super(false, message);
+        this.url = null;
+        this.data = null;
+    }
+
     public String getUrl() {
         return url;
     }
