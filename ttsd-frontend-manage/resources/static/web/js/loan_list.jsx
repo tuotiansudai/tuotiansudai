@@ -1,6 +1,5 @@
 require('webStyle/investment/project_loan_list.scss');
 require('webJsModule/coupon_alert');
-require('webJsModule/assign_coupon');
 require('webJsModule/count_down');
 
 //投资计算器和意见反馈

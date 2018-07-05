@@ -36,9 +36,7 @@
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"推荐送现金", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+        {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
     {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
@@ -64,9 +62,7 @@
     <#local membershipMenus=[
         {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""},
-        {"title":"积分商城", "url":"/point-shop","category":""},
-        {"title":"积分任务", "url":"/point-shop/task","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">

@@ -332,11 +332,6 @@ public class PointTaskServiceImpl implements PointTaskService {
                 referrerSuperScholarActivityAccount(loginName, referrer);
                 break;
         }
-
-        if (couponId != null) {
-            logger.info(MessageFormat.format("[推荐奖励] pointTask:{0} login_name:{1}, referrer:{2}, couponId:{3}", pointTask, loginName, referrer, String.valueOf(couponId)));
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
-        }
     }
 
     private void referrerSuperScholarActivityAccount(String loginName, String referrer){

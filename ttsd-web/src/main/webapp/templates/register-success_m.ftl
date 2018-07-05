@@ -5,15 +5,10 @@
 <div class="sign-container register-success" id="weChatRegister">
 <div class="goBack_wrapper">注册成功</div>
  <div class="success-tip">
-     <i class="success-text">注册成功！</i>
-     <span>恭喜您获得以下奖励：</span>
+     <i class="icon-success"></i>
+     <span class="suc-text">注册成功</span>
  </div>
-    <div class="success-img">
-        <span class="experience-gold"></span>
-        <i class="note">您可以在“我的--优惠券”中找到体验金及红包</i>
 
-
-    </div>
     <div class="success-button">
         <div class="btn-wap-normal go_index">返回首页</div>
         <div class="btn-wap-normal only-border authentication">实名认证</div>

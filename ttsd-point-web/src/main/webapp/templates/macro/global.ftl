@@ -35,9 +35,7 @@
         {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"我的积分", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
         {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+        {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"}
     ]},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
     {"title":"信息纰漏", "url":"/about/company","category":"20顶部导航", "leftNavs":[
@@ -58,9 +56,7 @@
     <#local membershipMenus=[
     {"title":"我的会员", "url":"${webServer}/membership","category":""},
     {"title":"成长体系", "url":"${webServer}/membership/structure","category":""},
-    {"title":"会员特权", "url":"${webServer}/membership/privilege","category":""},
-    {"title":"积分商城", "url":"/point-shop","category":""},
-    {"title":"积分任务", "url":"/point-shop/task","category":""}
+    {"title":"会员特权", "url":"${webServer}/membership/privilege","category":""}
     ]/>
 <#--${webServer}-->
 <!DOCTYPE html>

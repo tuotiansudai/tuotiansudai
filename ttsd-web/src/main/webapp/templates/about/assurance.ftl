@@ -20,8 +20,8 @@
         </dl>
         <div class="safe-info-list">
         <dl>
-            <dt class="list01"><em>第三方<br/>资金托管</em></dt>
-            <dd>拓天速贷接入了联动优势的资金托管系统，联动优势为拓天建立专门账户，对所有资金进行监管。拓天只撮合投资项目，不经手资金。</dd>
+            <dt class="list01"><em>银行<br/>资金存管</em></dt>
+            <dd>拓天速贷接入了富滇银行存管系统，富滇银行对您的交易资金及平台自有运营资金进行分账监管，二者完全独立且相互隔离，平台无法触碰您的资金。</dd>
         </dl>
         <dl>
             <dt class="list02"><em>严密风控</em></dt>
@@ -107,17 +107,4 @@
             <div class="axis-center"></div>
     </div>
 </div>
-
-    <div class="bottom-close" style="display: none;"></div>
-    <div class="bottom-open">
-        <div class="page-width">
-            <div class="ren"></div>
-            <a href="/activity/landing-page" class="btn-normal">立即领取</a>
-            <div class="to-shou fr">
-                <i class="fa fa-angle-left"></i><br/>
-                <span>收<br/>起</span>
-            </div>
-        </div>
-        <div class="to-close"></div>
-    </div>
 </@global.main>

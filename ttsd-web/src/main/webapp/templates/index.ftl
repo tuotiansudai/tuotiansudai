@@ -89,68 +89,6 @@
         </div>
     </div>
     <div class="page-width">
-        <div class="newer-exclusive-box clearfix">
-            <div class="main-column-title">
-                <i class="icon-title"></i>新手专享
-            </div>
-
-            <div class="newer-experience clearfix" data-url="/loan/1">
-                <#--<i class="tag-icon"></i>-->
-                <div class="con-inner">
-                    <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
-                    <ul class="loan-info clearfix">
-                        <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>
-                        <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
-                    </ul>
-                    <a href="/loan/1" class="btn-invest btn-normal">立即购买</a>
-                </div>
-
-            </div>
-            <#if newbieLoan??>
-                <div class="newer-experience clearfix hack-newbie" data-url="/loan/${newbieLoan.id?c}">
-                    <i class="tag-icon sprite-homepage-icon-newuse"></i>
-                    <div class="con-inner">
-                        <b class="newer-title">${newbieLoan.name}</b>
-                        <ul class="loan-info clearfix">
-                            <li><span class="percent-number">
-                                    <i><@percentInteger>${newbieLoan.baseRate+newbieLoan.activityRate}</@percentInteger></i>
-                                <@percentFraction>${newbieLoan.baseRate+newbieLoan.activityRate}</@percentFraction>%
-                                <#if (newbieLoan.newbieInterestCouponRate > 0)>
-                                    <s class="sign-plus">+</s>
-                                    <i><@percentInteger>${newbieLoan.newbieInterestCouponRate}</@percentInteger></i>
-                                    <@percentFraction>${newbieLoan.newbieInterestCouponRate}</@percentFraction>%
-                                </#if></span>约定年化利率
-                            </li>
-                            <li>最长<em class="duration-day">${newbieLoan.duration}</em>天<br>项目期限</li>
-                        </ul>
-                        <#if newbieLoan.status== 'RAISING'>
-                        <#--筹款-->
-                            <a href="javascript:void(0)" class="btn-invest btn-normal">立即购买</a>
-                        </#if>
-                        <#if newbieLoan.status== 'PREHEAT'>
-                        <#--预热中-->
-                            <a href="javascript:void(0)" class="btn-invest btn-normal preheat-btn btn-normal-zdy">
-                                <#if newbieLoan.preheatSeconds lte 1800>
-
-                                    <span class="preheat" data-time="${newbieLoan.preheatSeconds?string.computer}">
-                                        <i class="minute_show"></i>分
-                                        <i class="second_show"></i>秒后开标
-                                    </span>
-                                <#else>
-                                ${(newbieLoan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                                </#if>
-                            </a>
-                        </#if>
-                        <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(newbieLoan.status)>
-                        <#--已售罄-->
-                            <button class="btn-normal" disabled="">已售罄</button>
-                        </#if>
-                    </div>
-                </div>
-            </#if>
-            <a href="/activity/landing-page" target="_blank" class="hot-bag"></a>
-        </div>
-
         <#--优选债权-->
         <div class="main-column-title">
             <i class="icon-title"></i>优选债权
@@ -230,7 +168,7 @@
                 合作伙伴
             </h3>
             <ul class="partner-list">
-                <li><a rel="nofollow" class="logo-cfca sprite-homepage-logo-lian" href="http://www.umpay.com/" target="_blank">
+                <li><a rel="nofollow" class="logo-cfca fudian" href="http://www.fudian-bank.com/" target="_blank">
                 </a>
                 </li>
                 <li>
