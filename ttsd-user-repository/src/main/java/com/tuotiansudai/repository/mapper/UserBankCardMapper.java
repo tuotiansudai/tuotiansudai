@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.UserBankCardStatus;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +15,8 @@ public interface UserBankCardMapper {
 
     UserBankCardModel findInvestorByLoginName(@Param(value = "loginName") String loginName);
 
-    UserBankCardModel findLoanerByLoginName(@Param(value = "loginName") String loginName);
+    UserBankCardModel findByLoginNameAndRole(@Param(value = "loginName") String loginName,
+                                             @Param(value = "roleType") String roleType);
 
     void updateStatus(@Param(value = "id") long id, @Param(value = "status") UserBankCardStatus status);
 }

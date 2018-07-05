@@ -45,19 +45,19 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
-        BankAccountModel bankAccount = isLoaner ? bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName());
+        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        String loginName = LoginUserInfo.getLoginName();
+        BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName, isLoaner != null && isLoaner);
         String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName(), isLoaner));
-        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName(), isLoaner));
+        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, isLoaner != null && isLoaner));
+        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, isLoaner != null && isLoaner));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill")
-                .addObject("roleType", isLoaner ? Role.LOANER : Role.INVESTOR)
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)
-                .addObject("hasAccount", bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()) != null)
-                .addObject("hasBankCard", bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName()) != null);
+                .addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null)
+                .addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
         return modelAndView;
     }
 

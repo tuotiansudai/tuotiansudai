@@ -47,16 +47,10 @@
         select * from bank_withdraw where id = #{id}
     </select>
 
-    <select id="sumInvestorSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+    <select id="sumSuccessWithdrawByLoginNameAndRole" parameterType="java.lang.String" resultType="long">
         select IFNULL(sum(amount), 0) as amount
         from bank_withdraw
-        where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'INVESTOR'
-    </select>
-
-    <select id="sumLoanerSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
-        select IFNULL(sum(amount), 0) as amount
-        from bank_withdraw
-        where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'LOANER'
+        where status = 'SUCCESS' and login_name = #{loginName} and role_type = #{roleType}
     </select>
 
     <select id="sumWithdrawAmount" parameterType="map" resultType="long">

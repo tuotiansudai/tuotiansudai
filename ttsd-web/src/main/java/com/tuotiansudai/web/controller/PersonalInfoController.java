@@ -44,10 +44,9 @@ public class PersonalInfoController {
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
-        BankAccountModel bankAccountModel = isLoaner ? bankAccountService.findLoanerBankAccount(userModel.getLoginName()) :  bankAccountService.findInvestorBankAccount(userModel.getLoginName());
+        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), isLoaner !=null && isLoaner);
 
-        mv.addObject("roleType", isLoaner ? Role.LOANER : Role.INVESTOR);
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
@@ -61,7 +60,7 @@ public class PersonalInfoController {
             mv.addObject("identityNumber", userModel.getIdentityNumber());
         }
 
-        UserBankCardModel bankCard = isLoaner ? bankBindCardService.findLoanerBankCard(userModel.getLoginName()) : bankBindCardService.findInvestorBankCard(userModel.getLoginName());
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), isLoaner !=null && isLoaner);
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());

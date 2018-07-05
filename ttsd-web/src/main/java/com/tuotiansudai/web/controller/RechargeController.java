@@ -40,8 +40,8 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
-        UserBankCardModel userBankCardModel = isLoaner ? bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
+        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), isLoaner != null && isLoaner);
         if (userBankCardModel == null && MobileAccessDecision.isMobileAccess()) {
             return new ModelAndView("redirect:/m/personal-info");
         }
@@ -49,7 +49,7 @@ public class RechargeController {
         if (userBankCardModel != null){
             modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
         }
-        BankAccountModel bankAccountModel = isLoaner ? bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), isLoaner != null && isLoaner);
         modelAndView.addObject("bankCard", userBankCardModel);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
@@ -63,7 +63,7 @@ public class RechargeController {
                 LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(dto.getAmount()),
                 dto.getPayType(),
-                dto.getChannel(), LoginUserInfo.isRole(Role.INVESTOR));
+                dto.getChannel(), LoginUserInfo.isRole(Role.LOANER));
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

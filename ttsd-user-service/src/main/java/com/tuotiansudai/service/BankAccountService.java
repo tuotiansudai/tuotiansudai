@@ -179,6 +179,10 @@ public class BankAccountService {
         }
     }
 
+    public BankAccountModel findBankAccount(String loginName, boolean isLoaner) {
+        return bankAccountMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+    }
+
     public BankAccountModel findInvestorBankAccount(String loginName) {
         return bankAccountMapper.findInvestorByLoginName(loginName);
     }
@@ -187,9 +191,9 @@ public class BankAccountService {
         return bankAccountMapper.findLoanerByLoginName(loginName);
     }
 
-    public BankAsyncMessage resetPassword(Source source, String loginName, boolean isInvestor) {
+    public BankAsyncMessage resetPassword(Source source, String loginName, Boolean isLoaner) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        BankAccountModel bankAccountModel = isInvestor ? bankAccountMapper.findInvestorByLoginName(loginName) : bankAccountMapper.findLoanerByLoginName(loginName);
+        BankAccountModel bankAccountModel = this.findBankAccount(loginName, isLoaner);
         return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 }

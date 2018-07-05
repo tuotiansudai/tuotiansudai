@@ -50,10 +50,10 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/register/source/{source}/role/{role}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> register(@PathVariable(name = "source") Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankRegisterDto params) {
+    public ResponseEntity<BankAsyncMessage> register(@PathVariable(name = "source") Source source, @PathVariable(name = "role") BankUserRole bankUserRole, @RequestBody BankRegisterDto params) {
         logger.info("[Fudian] call register, params: {}", params);
 
-        RegisterRequestDto requestDto = registerService.register(source, registerRoleType, params);
+        RegisterRequestDto requestDto = registerService.register(source, bankUserRole, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.REGISTER);
 
@@ -65,7 +65,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/card-bind/source/{source}/role/{role}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> cardBind(@PathVariable Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankBaseDto params) {
+    public ResponseEntity<BankAsyncMessage> cardBind(@PathVariable Source source, @PathVariable(name = "role") BankUserRole bankUserRole, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -73,7 +73,7 @@ public class UserController extends AsyncRequestController {
             return ResponseEntity.badRequest().build();
         }
 
-        CardBindRequestDto requestDto = cardBindService.bind(source, params, registerRoleType == RegisterRoleType.INVESTOR);
+        CardBindRequestDto requestDto = cardBindService.bind(source, params, bankUserRole);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CARD_BIND);
 
@@ -85,7 +85,7 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/cancel-card-bind/source/{source}/role/{role}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> cancelCardBind(@PathVariable Source source, @PathVariable(name = "role") RegisterRoleType registerRoleType, @RequestBody BankBaseDto params) {
+    public ResponseEntity<BankAsyncMessage> cancelCardBind(@PathVariable Source source, @PathVariable(name = "role") BankUserRole bankUserRole, @RequestBody BankBaseDto params) {
         logger.info("[Fudian] call cancel bind card, params: {}", params);
 
         if (!params.isValid()) {
@@ -93,7 +93,7 @@ public class UserController extends AsyncRequestController {
             return ResponseEntity.badRequest().build();
         }
 
-        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params, registerRoleType == RegisterRoleType.INVESTOR);
+        CancelCardBindRequestDto requestDto = cancelCardBindService.cancel(source, params, bankUserRole == BankUserRole.INVESTOR);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.CANCEL_CARD_BIND);
 

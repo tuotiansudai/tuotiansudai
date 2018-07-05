@@ -47,12 +47,8 @@
         SELECT * FROM bank_recharge WHERE id = #{id}
     </select>
 
-    <select id="sumInvestorRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
-        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'INVESTOR'
-    </select>
-
-    <select id="sumLoanerRechargeSuccessAmountByLoginName" parameterType="map" resultType="int">
-        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName} and role_type = 'LOANER'
+    <select id="sumRechargeSuccessAmountByLoginNameAndRole" parameterType="map" resultType="int">
+        SELECT IFNULL(sum(amount),0) FROM bank_recharge where status = 'SUCCESS' and login_name = #{loginName} and role_type = #{roleType}
     </select>
 
     <select id="findRechargeCount" parameterType="map" resultType="int">

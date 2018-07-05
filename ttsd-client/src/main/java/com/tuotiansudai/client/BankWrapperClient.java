@@ -112,13 +112,23 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, boolean isInvestor) {
-        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/{1}", source.name().toLowerCase(), isInvestor ? "investor" : "loaner"),
+    public BankAsyncMessage investorBindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/investor", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, boolean isInvestor) {
-        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/{1}", source.name().toLowerCase(), isInvestor ? "investor" : "loaner"),
+    public BankAsyncMessage loanerBindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/loaner", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
+    public BankAsyncMessage investorUnbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/investor", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
+    public BankAsyncMessage loanerUnbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/loaner", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
