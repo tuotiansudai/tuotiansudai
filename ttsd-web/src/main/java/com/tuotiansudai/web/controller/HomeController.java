@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.repository.mapper.BannerMapper;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.message.service.AnnounceService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
@@ -105,8 +106,8 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("/settings");
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("hasAccount", bankAccountService.findBankAccount(loginName) != null);
-        modelAndView.addObject("hasBankCard", bankBindCardService.findBankCard(loginName) != null);
+        modelAndView.addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null);
+        modelAndView.addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
         return modelAndView;
     }
 

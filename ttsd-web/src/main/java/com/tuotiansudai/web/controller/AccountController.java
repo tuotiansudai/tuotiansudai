@@ -67,11 +67,12 @@ public class AccountController {
 
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
+        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName);
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(loginName);
+        BankAccountModel bankAccount = isInvestor ? bankAccountService.findInvestorBankAccount(loginName) : bankAccountService.findLoanerBankAccount(loginName);
+        UserBankCardModel bankCard = isInvestor ? bankBindCardService.findInvestorBankCard(loginName) : bankBindCardService.findLoanerBankCard(loginName);
 
 
         modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );

@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.Source;
@@ -43,8 +44,8 @@ public class PersonalInfoController {
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(userModel.getLoginName());
+        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
+        BankAccountModel bankAccountModel = isInvestor ? bankAccountService.findInvestorBankAccount(userModel.getLoginName()) : bankAccountService.findLoanerBankAccount(userModel.getLoginName());
 
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
@@ -59,7 +60,7 @@ public class PersonalInfoController {
 
         }
 
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(userModel.getLoginName());
+        UserBankCardModel bankCard = isInvestor ? bankBindCardService.findInvestorBankCard(userModel.getLoginName()) : bankBindCardService.findLoanerBankCard(userModel.getLoginName());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());
@@ -94,7 +95,7 @@ public class PersonalInfoController {
     @RequestMapping(value = "/reset-bank-password/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView resetBankPassword(@PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), true);
+        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), LoginUserInfo.isRole(Role.INVESTOR));
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

@@ -38,10 +38,6 @@ public class BankBindCardService {
         this.userOpLogService = userOpLogService;
     }
 
-    public UserBankCardModel findBankCard(String loginName) {
-        return userBankCardMapper.findByLoginName(loginName);
-    }
-
     public UserBankCardModel findInvestorBankCard(String loginName) {
         return userBankCardMapper.findInvestorByLoginName(loginName);
     }

@@ -19,6 +19,6 @@ public class AccountController {
     @RequestMapping(value = "/{loginName}",method = RequestMethod.GET)
     @ResponseBody
     public String account(@PathVariable String loginName) {
-        return AmountConverter.convertCentToString(bankAccountService.findBankAccount(loginName).getBalance());
+        return AmountConverter.convertCentToString(bankAccountService.findInvestorBankAccount(loginName).getBalance());
     }
 }

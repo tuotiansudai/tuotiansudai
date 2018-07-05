@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.UserBankCardModel;
@@ -40,12 +41,13 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
+        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
+        UserBankCardModel bankCard = isInvestor ? bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName());
         if (bankCard == null) {
             return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }
 
-        long balance = bankAccountService.findBankAccount(LoginUserInfo.getLoginName()).getBalance();
+        long balance = isInvestor ? bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()).getBalance() : bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()).getBalance();
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
@@ -57,7 +59,7 @@ public class WithdrawController {
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BankAsyncMessage bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
                 LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(),
-                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee, true);
+                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee, LoginUserInfo.isRole(Role.INVESTOR));
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

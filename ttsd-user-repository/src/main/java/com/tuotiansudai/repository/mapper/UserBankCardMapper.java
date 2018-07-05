@@ -12,8 +12,6 @@ public interface UserBankCardMapper {
 
     void createLoaner(UserBankCardModel model);
 
-    UserBankCardModel findByLoginName(@Param(value = "loginName") String loginName);
-
     UserBankCardModel findInvestorByLoginName(@Param(value = "loginName") String loginName);
 
     UserBankCardModel findLoanerByLoginName(@Param(value = "loginName") String loginName);

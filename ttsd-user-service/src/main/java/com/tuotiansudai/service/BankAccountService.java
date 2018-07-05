@@ -179,10 +179,6 @@ public class BankAccountService {
         }
     }
 
-    public BankAccountModel findBankAccount(String loginName) {
-        return bankAccountMapper.findInvestorByLoginName(loginName);
-    }
-
     public BankAccountModel findInvestorBankAccount(String loginName) {
         return bankAccountMapper.findInvestorByLoginName(loginName);
     }
