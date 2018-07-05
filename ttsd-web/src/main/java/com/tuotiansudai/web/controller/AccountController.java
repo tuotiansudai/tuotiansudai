@@ -74,7 +74,6 @@ public class AccountController {
         BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName, isLoaner != null && isLoaner);
         UserBankCardModel bankCard = bankBindCardService.findBankCard(loginName, isLoaner != null && isLoaner);
 
-        modelAndView.addObject("roleType", isLoaner ? Role.LOANER : Role.INVESTOR);
         modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
 
