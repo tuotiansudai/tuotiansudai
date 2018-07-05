@@ -24,7 +24,6 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     private static final int CAPTCHA_EXPIRED_TIME = 10;
 
-    private static final String DEFAULT_MOBILE_CAPTCHA="999999";
 
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
@@ -34,6 +33,8 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Value("${common.environment}")
     private Environment environment;
+    @Value("${default.mobile.captcha}")
+    private String defaultMobileCaptha;
 
     @Override
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, boolean isVoice, String requestIP) {
@@ -55,7 +56,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     public boolean verifyMobileCaptcha(String mobile, String captcha, SmsCaptchaType smsCaptchaType) {
-        if(!Environment.isProduction(environment) && DEFAULT_MOBILE_CAPTCHA.equals(captcha)){
+        if(!Environment.isProduction(environment) && defaultMobileCaptha!=null && defaultMobileCaptha.equals(captcha)){
             return true;
         }
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, smsCaptchaType);
