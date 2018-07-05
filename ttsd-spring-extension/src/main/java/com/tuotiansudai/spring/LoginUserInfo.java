@@ -64,7 +64,7 @@ public class LoginUserInfo {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public static Boolean isRole(Role role) {
+    public static Role getBankRole() {
         Object principal = LoginUserInfo.getPrincipal();
 
         if (principal instanceof User) {
@@ -72,7 +72,14 @@ public class LoginUserInfo {
                 Class<?> aClass = principal.getClass();
                 Method method = aClass.getMethod("getAuthorities");
                 Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) method.invoke(principal);
-                return authorities.stream().anyMatch(authority -> authority.getAuthority().equals(role.name()));
+                boolean isInvestor = authorities.stream().anyMatch(authority -> authority.getAuthority().equals(Role.INVESTOR.name()));
+                if (isInvestor) {
+                    return Role.INVESTOR;
+                }
+                boolean isLoaner = authorities.stream().anyMatch(authority -> authority.getAuthority().equals(Role.LOANER.name()));
+                if (isLoaner) {
+                    return Role.LOANER;
+                }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }

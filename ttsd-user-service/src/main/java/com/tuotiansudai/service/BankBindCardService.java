@@ -43,16 +43,16 @@ public class BankBindCardService {
         return userBankCardMapper.findInvestorByLoginName(loginName);
     }
 
-    public UserBankCardModel findBankCard(String loginName, boolean isLoaner) {
-        return userBankCardMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+    public UserBankCardModel findBankCard(String loginName, Role role) {
+        return userBankCardMapper.findByLoginNameAndRole(loginName, role.name());
     }
 
-    public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, Boolean isLoaner) {
-        if (isLoaner == null ){
-            return new BankAsyncMessage(null, null, false, "绑卡失败");
+    public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, Role role) {
+        if (role == null ){
+            return new BankAsyncMessage("绑卡失败");
         }
 
-        UserBankCardModel userBankCardModel = this.findBankCard(loginName, isLoaner);
+        UserBankCardModel userBankCardModel = this.findBankCard(loginName, role);
 
         if (userBankCardModel != null) {
             return new BankAsyncMessage();
@@ -63,9 +63,9 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
 
-        if (isLoaner){
+        if (role == Role.LOANER){
             return bankWrapperClient.loanerBindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }else {
             return bankWrapperClient.investorBindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
@@ -83,16 +83,16 @@ public class BankBindCardService {
         userBankCardMapper.createInvestor(model);
     }
 
-    public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, Boolean isLoaner) {
+    public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, Role role) {
 
-        if (isLoaner == null ){
-            return new BankAsyncMessage(null, null, false, "解绑失败");
+        if (role == null ){
+            return new BankAsyncMessage("解绑失败");
         }
 
-        UserBankCardModel userBankCardModel = this.findBankCard(loginName, isLoaner);
+        UserBankCardModel userBankCardModel = this.findBankCard(loginName, role);
 
         if (userBankCardModel == null) {
-            return new BankAsyncMessage(null, null, false, "未绑定银行卡");
+            return new BankAsyncMessage("未绑定银行卡");
         }
 
         // 发送用户行为日志 MQ消息
@@ -100,9 +100,9 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
 
-        if (isLoaner){
+        if (role == Role.LOANER){
             return bankWrapperClient.loanerUnbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }else{
             return bankWrapperClient.investorUnbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());

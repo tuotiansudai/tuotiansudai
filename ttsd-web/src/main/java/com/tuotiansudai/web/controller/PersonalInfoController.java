@@ -44,26 +44,23 @@ public class PersonalInfoController {
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), isLoaner !=null && isLoaner);
+        Role role = LoginUserInfo.getBankRole();
 
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
-        mv.addObject("authorization", bankAccountModel != null && bankAccountModel.isAuthorization());
-        mv.addObject("autoInvest", bankAccountModel != null && bankAccountModel.isAutoInvest());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
         mv.addObject("hasLoanerAccount", bankAccountService.findLoanerBankAccount(userModel.getLoginName()) != null);
 
-        if (bankAccountModel != null) {
-            mv.addObject("userName", userModel.getUserName());
-            mv.addObject("identityNumber", userModel.getIdentityNumber());
-        }
-
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), isLoaner !=null && isLoaner);
-        if (bankCard != null) {
+        if (role != null) {
+            UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role);
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());
+            mv.addObject("userName", userModel.getUserName());
+            mv.addObject("identityNumber", userModel.getIdentityNumber());
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role);
+            mv.addObject("authorization", bankAccountModel.isAuthorization());
+            mv.addObject("autoInvest", bankAccountModel.isAutoInvest());
         }
         return mv;
     }
@@ -95,7 +92,7 @@ public class PersonalInfoController {
     @RequestMapping(value = "/reset-bank-password/source/{source}", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView resetBankPassword(@PathVariable(value = "source") Source source) {
-        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), LoginUserInfo.isRole(Role.INVESTOR));
+        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

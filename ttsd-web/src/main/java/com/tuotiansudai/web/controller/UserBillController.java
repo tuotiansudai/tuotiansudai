@@ -45,12 +45,11 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        Role role = LoginUserInfo.getBankRole();
         String loginName = LoginUserInfo.getLoginName();
-        BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName, isLoaner != null && isLoaner);
-        String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, isLoaner != null && isLoaner));
-        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, isLoaner != null && isLoaner));
+        String balance = role == null ? "0" : AmountConverter.convertCentToString(bankAccountService.findBankAccount(loginName, role).getBalance());
+        String rechargeAmount = role == null ? "0" : AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, role));
+        String withdrawAmount = role == null ? "0" : AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, role));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill")
                 .addObject("balance", balance)

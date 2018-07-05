@@ -41,13 +41,13 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        Boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), isLoaner != null && isLoaner);
-        if (bankCard == null) {
+        Role role = LoginUserInfo.getBankRole();
+        if (role == null) {
             return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }
 
-        long balance = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), isLoaner != null && isLoaner).getBalance();
+        UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role);
+        long balance = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role).getBalance();
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
@@ -59,7 +59,7 @@ public class WithdrawController {
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BankAsyncMessage bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
                 LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(),
-                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee, LoginUserInfo.isRole(Role.LOANER));
+                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee, LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

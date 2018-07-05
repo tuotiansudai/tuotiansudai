@@ -52,15 +52,15 @@ public class BankWithdrawService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, Boolean isLoaner) {
-        if (isLoaner == null){
-            return new BankAsyncMessage(null, null, false, "提现失败");
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("提现失败");
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
 
-        if (isLoaner){
+        if (role == Role.LOANER){
             bankWithdrawMapper.createLoaner(bankWithdrawModel);
         }else {
             bankWithdrawMapper.createInvestor(bankWithdrawModel);
@@ -118,7 +118,7 @@ public class BankWithdrawService {
         return bankWithdrawMapper.findById(id);
     }
 
-    public long sumSuccessWithdrawByLoginName(String loginName, boolean isLoaner) {
-        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+    public long sumSuccessWithdrawByLoginName(String loginName, Role role) {
+        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role.name());
     }
 }

@@ -42,13 +42,13 @@ public class BankRechargeService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, Boolean isLoaner) {
-        if (isLoaner == null){
-            return new BankAsyncMessage(null, null, false, "充值失败");
+    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("充值失败");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
-        if (isLoaner){
+        if (role == Role.LOANER){
             bankRechargeMapper.createLoaner(bankRechargeModel);
         }else {
             bankRechargeMapper.createInvestor(bankRechargeModel);
@@ -83,8 +83,8 @@ public class BankRechargeService {
         }
     }
 
-    public long sumSuccessRechargeAmount(String loginName, boolean isLoaner) {
-        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, isLoaner ? Role.LOANER.name() : Role.INVESTOR.name());
+    public long sumSuccessRechargeAmount(String loginName, Role role) {
+        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, role.name());
     }
 
     public BankRechargeModel findRechargeById(long id) {
