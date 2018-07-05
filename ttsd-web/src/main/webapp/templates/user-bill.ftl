@@ -35,11 +35,19 @@
         <span class="select-item current" data-status="">全部</span>
         <span class="select-item" data-status="WITHDRAW_SUCCESS,WITHDRAW_FAIL,APPLY_WITHDRAW">提现</span>
         <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
-        <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
-        <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
-        <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
-        <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE,BIRTHDAY_COUPON">宝藏</span>
-        <span class="select-item" data-status="INVEST_CASH_BACK">现金补贴</span>
+        <@global.role hasRole="'INVESTOR'">
+            <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
+            <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
+            <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE,BIRTHDAY_COUPON">宝藏</span>
+            <span class="select-item" data-status="INVEST_CASH_BACK">现金补贴</span>
+        </@global.role>
+        <@global.role hasRole="'LOANER2'">
+            <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">放款</span>
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">还款</span>
+
+        </@global.role>
+
     </div>
 
     <div class="clear-blank"></div>

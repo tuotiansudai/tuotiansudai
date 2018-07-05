@@ -15,6 +15,11 @@ var $transferDetailCon = $('#transferDetailCon'),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 let isEstimate = $transferDetailCon.data('estimate');
 let isAuthentication = 'USER' === $transferDetailCon.data('authentication');
+let isInvestor = 'INVESTOR' === $transferDetailCon.data('user-role');
+let isLoaner = 'LOANER' === $transferDetailCon.data('loaner-role');
+
+let $turnToLoanerBtn = $('.btn-turn-Lender');
+let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -58,8 +63,22 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');
-    if (isAuthentication) {
+
+    if (isAuthentication&&!isInvestor) {
         location.href = '/register/account';
+        return false;
+    }
+    if(isLoaner){
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '温馨提示',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn:0,
+            content: $turnToLenderDOM
+        });
         return false;
     }
     let isBankCard = $transferDetailCon.data('bankcard');
@@ -127,11 +146,11 @@ function submitData() {
                     if ($transferForm.attr('action') === '/transfer/purchase') {
 
                         var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                        if (!isInvestor) {
+                        if (!isInvestor) {alert('不是投资人')
                             location.href = '/login?redirect=' + encodeURIComponent(location.href);
                             return false;
                         }
-
+alert(isInvestor)
                         var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
                         if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
                             location.href = '/recharge';
@@ -165,6 +184,16 @@ function submitData() {
         }
     });
 }
+$turnToLoanerBtn.on('click',function () {
+    commonFun.useAjax({
+        url: '/XXXXXXXXXXXXXXXXXXX',
+        type: 'POST'
+    },function(data) {
+        if(data.data.status){
+            location.reload();
+        }
+    });
+})
 $questionList.find('dl dd').hide();
 $questionList.find('dl dd').eq(0).show();
 $questionList.find('dl dt').eq(0).find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down')
