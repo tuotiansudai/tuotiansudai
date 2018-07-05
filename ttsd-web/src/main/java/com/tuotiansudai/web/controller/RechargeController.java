@@ -40,8 +40,8 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
-        UserBankCardModel userBankCardModel = isInvestor ? bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName());
+        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        UserBankCardModel userBankCardModel = isLoaner ? bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
         if (userBankCardModel == null && MobileAccessDecision.isMobileAccess()) {
             return new ModelAndView("redirect:/m/personal-info");
         }
@@ -49,7 +49,7 @@ public class RechargeController {
         if (userBankCardModel != null){
             modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
         }
-        BankAccountModel bankAccountModel = isInvestor ? bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName());
+        BankAccountModel bankAccountModel = isLoaner ? bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName());
         modelAndView.addObject("bankCard", userBankCardModel);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));

@@ -41,13 +41,13 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
-        UserBankCardModel bankCard = isInvestor ? bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName());
+        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        UserBankCardModel bankCard = isLoaner ? bankBindCardService.findLoanerBankCard(LoginUserInfo.getLoginName()) : bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
         if (bankCard == null) {
             return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }
 
-        long balance = isInvestor ? bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()).getBalance() : bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()).getBalance();
+        long balance = isLoaner ? bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()).getBalance() :  bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()).getBalance();
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
