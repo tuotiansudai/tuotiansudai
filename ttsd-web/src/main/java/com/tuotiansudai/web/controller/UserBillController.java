@@ -45,13 +45,14 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
-        BankAccountModel bankAccount = isInvestor ? bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName());
+        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        BankAccountModel bankAccount = isLoaner ? bankAccountService.findLoanerBankAccount(LoginUserInfo.getLoginName()) : bankAccountService.findInvestorBankAccount(LoginUserInfo.getLoginName());
         String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName(), isInvestor));
-        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName(), isInvestor));
+        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName(), isLoaner));
+        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName(), isLoaner));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill")
+                .addObject("roleType", isLoaner ? Role.LOANER : Role.INVESTOR)
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)

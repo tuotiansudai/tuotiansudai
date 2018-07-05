@@ -114,7 +114,7 @@ public class BankWithdrawService {
         return bankWithdrawMapper.findById(id);
     }
 
-    public long sumSuccessWithdrawByLoginName(String loginName, boolean isInvestor) {
-        return isInvestor ? bankWithdrawMapper.sumInvestorSuccessWithdrawByLoginName(loginName) : bankWithdrawMapper.sumLoanerSuccessWithdrawByLoginName(loginName);
+    public long sumSuccessWithdrawByLoginName(String loginName, boolean isLoaner) {
+        return isLoaner ? bankWithdrawMapper.sumLoanerSuccessWithdrawByLoginName(loginName) : bankWithdrawMapper.sumInvestorSuccessWithdrawByLoginName(loginName);
     }
 }

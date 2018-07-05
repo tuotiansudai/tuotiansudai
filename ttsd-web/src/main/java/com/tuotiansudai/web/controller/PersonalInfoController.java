@@ -44,23 +44,24 @@ public class PersonalInfoController {
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-        boolean isInvestor = LoginUserInfo.isRole(Role.INVESTOR);
-        BankAccountModel bankAccountModel = isInvestor ? bankAccountService.findInvestorBankAccount(userModel.getLoginName()) : bankAccountService.findLoanerBankAccount(userModel.getLoginName());
+        boolean isLoaner = LoginUserInfo.isRole(Role.LOANER);
+        BankAccountModel bankAccountModel = isLoaner ? bankAccountService.findLoanerBankAccount(userModel.getLoginName()) :  bankAccountService.findInvestorBankAccount(userModel.getLoginName());
 
+        mv.addObject("roleType", isLoaner ? Role.LOANER : Role.INVESTOR);
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
         mv.addObject("authorization", bankAccountModel != null && bankAccountModel.isAuthorization());
         mv.addObject("autoInvest", bankAccountModel != null && bankAccountModel.isAutoInvest());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        mv.addObject("hasLoanerAccount", bankAccountService.findLoanerBankAccount(userModel.getLoginName()) != null);
 
         if (bankAccountModel != null) {
             mv.addObject("userName", userModel.getUserName());
             mv.addObject("identityNumber", userModel.getIdentityNumber());
-
         }
 
-        UserBankCardModel bankCard = isInvestor ? bankBindCardService.findInvestorBankCard(userModel.getLoginName()) : bankBindCardService.findLoanerBankCard(userModel.getLoginName());
+        UserBankCardModel bankCard = isLoaner ? bankBindCardService.findLoanerBankCard(userModel.getLoginName()) : bankBindCardService.findInvestorBankCard(userModel.getLoginName());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
             mv.addObject("bankName", bankCard.getBank());
