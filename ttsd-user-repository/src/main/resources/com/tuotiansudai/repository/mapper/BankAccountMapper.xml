@@ -38,16 +38,12 @@
         select * from bank_account where login_name = #{loginName} and role_type = 'LOANER'
     </select>
 
-    <select id="lockByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
-        select * from bank_account where login_name = #{loginName} and role_type = 'INVESTOR' for update
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">
+        select * from bank_account where login_name = #{loginName} and role_type = #{roleType}
     </select>
 
     <select id="lockInvestorByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
         select * from bank_account where login_name = #{loginName} and role_type = 'INVESTOR' for update
-    </select>
-
-    <select id="lockLoanerByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
-        select * from bank_account where login_name = #{loginName} and role_type = 'LOANER' for update
     </select>
 
     <update id="update" parameterType="map">

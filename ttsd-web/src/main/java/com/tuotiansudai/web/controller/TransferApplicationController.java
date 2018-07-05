@@ -82,7 +82,7 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", userBankCardModel != null);
 
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);

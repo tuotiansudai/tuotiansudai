@@ -70,9 +70,6 @@ public class AccountController {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        BankAccountModel bankAccount = bankAccountService.findBankAccount(loginName);
-        UserBankCardModel bankCard = bankBindCardService.findBankCard(loginName);
-
 
         modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
@@ -93,8 +90,9 @@ public class AccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
-        modelAndView.addObject("hasAccount", bankAccount != null);
-        modelAndView.addObject("hasBankCard", bankCard != null);
+        Role role = LoginUserInfo.getBankRole();
+        modelAndView.addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null);
+        modelAndView.addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
@@ -132,11 +130,11 @@ public class AccountController {
 
     @RequestMapping(value = "/switch", method = RequestMethod.POST)
     public ModelAndView switchAccount() {
-        if (LoginUserInfo.isRole(Role.INVESTOR) == Boolean.TRUE) {
+        if (LoginUserInfo.getBankRole() == Role.INVESTOR) {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
         }
 
-        if (LoginUserInfo.isRole(Role.LOANER) == Boolean.TRUE) {
+        if (LoginUserInfo.getBankRole() == Role.LOANER) {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
         }
 

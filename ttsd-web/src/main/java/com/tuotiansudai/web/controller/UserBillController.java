@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.service.*;
@@ -44,17 +45,18 @@ public class UserBillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        BankAccountModel bankAccount = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
-        String balance = AmountConverter.convertCentToString(bankAccount != null ? bankAccount.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
-        String withdrawAmount = AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(LoginUserInfo.getLoginName()));
+        Role role = LoginUserInfo.getBankRole();
+        String loginName = LoginUserInfo.getLoginName();
+        String balance = role == null ? "0" : AmountConverter.convertCentToString(bankAccountService.findBankAccount(loginName, role).getBalance());
+        String rechargeAmount = role == null ? "0" : AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, role));
+        String withdrawAmount = role == null ? "0" : AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, role));
 
         ModelAndView modelAndView = new ModelAndView("/user-bill")
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)
-                .addObject("hasAccount", bankAccountService.findBankAccount(LoginUserInfo.getLoginName()) != null)
-                .addObject("hasBankCard", bankBindCardService.findBankCard(LoginUserInfo.getLoginName()) != null);
+                .addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null)
+                .addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
         return modelAndView;
     }
 

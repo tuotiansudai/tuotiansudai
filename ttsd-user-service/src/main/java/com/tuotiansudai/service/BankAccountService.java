@@ -57,7 +57,7 @@ public class BankAccountService {
     public BankAsyncMessage registerInvestorAccount(RegisterAccountDto registerAccountDto, Source source, String token, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(registerAccountDto.getLoginName());
         if (bankAccountModel != null) {
-            return new BankAsyncMessage(null, null, false, "已实名认证");
+            return new BankAsyncMessage("已实名认证");
         }
         userOpLogService.sendUserOpLogMQ(registerAccountDto.getLoginName(), ip, source.name(), deviceId, UserOpType.REGISTER_INVESTOR, null);
         return bankWrapperClient.registerInvestor(source, registerAccountDto.getLoginName(), registerAccountDto.getMobile(), token, registerAccountDto.getUserName(), registerAccountDto.getIdentityNumber());
@@ -65,12 +65,12 @@ public class BankAccountService {
 
     public BankAsyncMessage registerLoanerAccount(String loginName, String token, String ip, String deviceId) {
         if (bankAccountMapper.findInvestorByLoginName(loginName) == null){
-            return new BankAsyncMessage(null, null, false, "未完成出借人实名认证");
+            return new BankAsyncMessage("未完成出借人实名认证");
         }
 
         BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loginName);
         if (bankAccountModel != null) {
-            return new BankAsyncMessage(null, null, false, "已实名认证");
+            return new BankAsyncMessage("已实名认证");
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
         userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), deviceId, UserOpType.REGISTER_LOANER, null);
@@ -80,7 +80,7 @@ public class BankAccountService {
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
         if (bankAccountModel.isAuthorization()) {
-            return new BankAsyncMessage(null, null, false, "已开通免密投资");
+            return new BankAsyncMessage("已开通免密投资");
         }
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.INVEST_NO_PASSWORD, null);
 
@@ -179,13 +179,24 @@ public class BankAccountService {
         }
     }
 
-    public BankAccountModel findBankAccount(String loginName) {
+    public BankAccountModel findBankAccount(String loginName, Role role) {
+        return bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
+    }
+
+    public BankAccountModel findInvestorBankAccount(String loginName) {
         return bankAccountMapper.findInvestorByLoginName(loginName);
     }
 
-    public BankAsyncMessage resetPassword(Source source, String loginName) {
+    public BankAccountModel findLoanerBankAccount(String loginName) {
+        return bankAccountMapper.findLoanerByLoginName(loginName);
+    }
+
+    public BankAsyncMessage resetPassword(Source source, String loginName, Role role) {
+        if (role == null) {
+            return new BankAsyncMessage("重值密码失败");
+        }
         UserModel userModel = userMapper.findByLoginName(loginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = this.findBankAccount(loginName, role);
         return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 }

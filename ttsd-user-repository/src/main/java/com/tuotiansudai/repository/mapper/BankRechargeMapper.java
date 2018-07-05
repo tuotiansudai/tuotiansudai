@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
 import com.tuotiansudai.repository.model.Source;
@@ -13,13 +14,16 @@ import java.util.List;
 @Repository
 public interface BankRechargeMapper {
 
-    void create(BankRechargeModel userRechargeModel);
+    void createInvestor(BankRechargeModel userRechargeModel);
+
+    void createLoaner(BankRechargeModel userRechargeModel);
 
     void update(BankRechargeModel userRechargeModel);
 
     BankRechargeModel findById(@Param(value = "id") long id);
 
-    int sumRechargeSuccessAmountByLoginName(@Param(value = "loginName") String loginName);
+    int sumRechargeSuccessAmountByLoginNameAndRole(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "roleType") String roleType);
 
     List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,

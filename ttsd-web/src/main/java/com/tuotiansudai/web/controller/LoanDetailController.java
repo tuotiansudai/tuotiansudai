@@ -80,7 +80,7 @@ public class LoanDetailController {
         modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId,
                 membershipModel == null ? defaultFee : membershipModel.getFee(),
                 LoginUserInfo.getLoginName(), 1000000, new Date()));
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", userBankCardModel != null);
         double investFeeRate = ProductType.EXPERIENCE == loanDetail.getProductType() ? this.defaultFee : userMembershipService.obtainServiceFee(LoginUserInfo.getLoginName());
         int membershipLevel = 0;
