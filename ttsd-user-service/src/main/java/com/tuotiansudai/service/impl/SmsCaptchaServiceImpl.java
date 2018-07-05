@@ -55,6 +55,9 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     public boolean verifyMobileCaptcha(String mobile, String captcha, SmsCaptchaType smsCaptchaType) {
+        if(!Environment.isProduction(environment) && DEFAULT_MOBILE_CAPTCHA.equals(captcha)){
+            return true;
+        }
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, smsCaptchaType);
         Date now = new Date();
         return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
@@ -63,7 +66,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private String createMobileCaptcha(String mobile, SmsCaptchaType smsCaptchaType) {
         DateTime now = new DateTime();
         DateTime expiredTime = now.plusMinutes(CAPTCHA_EXPIRED_TIME);
-        String captcha = Environment.isProduction(environment)?createRandomCaptcha(CAPTCHA_LENGTH):DEFAULT_MOBILE_CAPTCHA;
+        String captcha = createRandomCaptcha(CAPTCHA_LENGTH);
         SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, smsCaptchaType);
         if (existingCaptcha != null) {
             existingCaptcha.setCaptcha(captcha);
