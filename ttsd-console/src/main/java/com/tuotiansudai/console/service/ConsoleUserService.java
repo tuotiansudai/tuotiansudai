@@ -114,7 +114,7 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
-        if (!mobile.equals(beforeUpdateUserMobile) && bankAccountMapper.findInvestorByLoginName(loginName) != null) {
+        if (!mobile.equals(beforeUpdateUserMobile) && bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     userModel.getUserName(),
@@ -140,7 +140,7 @@ public class ConsoleUserService {
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
 
-        UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(loginName);
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName, Role.INVESTOR);
         if (userBankCardModel != null) {
             editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
         }

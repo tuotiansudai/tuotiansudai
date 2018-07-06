@@ -3,6 +3,7 @@ package com.tuotiansudai.point.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.ChannelPointDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
@@ -178,7 +179,7 @@ public class ChannelPointServiceImpl {
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");
             return false;
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         if (bankAccountModel == null) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("用户没有进行实名认证!");

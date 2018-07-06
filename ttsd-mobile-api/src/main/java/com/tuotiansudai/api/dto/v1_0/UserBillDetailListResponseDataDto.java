@@ -8,7 +8,7 @@ import java.util.List;
 public class UserBillDetailListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
-    private Integer totalCount;
+    private Long totalCount;
 
     @ApiModelProperty(value = "资金明细记录", example = "list")
     private List<UserBillRecordResponseDataDto> userBillList;
@@ -29,11 +29,11 @@ public class UserBillDetailListResponseDataDto extends BaseResponseDataDto {
         this.pageSize = pageSize;
     }
 
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -51,5 +51,4 @@ public class UserBillDetailListResponseDataDto extends BaseResponseDataDto {
     public UserBillDetailListResponseDataDto(UserBillModel userBillModel){
 
     }
-
 }

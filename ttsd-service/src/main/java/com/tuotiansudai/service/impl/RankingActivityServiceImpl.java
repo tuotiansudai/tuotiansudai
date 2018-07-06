@@ -10,6 +10,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillDetailTemplate;
 import com.tuotiansudai.enums.UserBillBusinessType;
@@ -118,7 +119,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         logger.info(loginName + " drew a prize: " + prize);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        BankAccountModel bankAccountModel = bankAccountService.findInvestorBankAccount(loginName);
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
         String userName = bankAccountModel == null ? "" : userModel.getUserName();
         String identityNumber = bankAccountModel == null ? "" : userModel.getIdentityNumber();
 

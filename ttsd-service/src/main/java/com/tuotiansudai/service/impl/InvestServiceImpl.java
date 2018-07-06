@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.exception.InvestException;
@@ -119,7 +120,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BankAsyncMessage invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -138,7 +139,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -174,7 +175,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -413,7 +414,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         bankAccountModel.setAutoInvest(isTurnOn);
         bankAccountMapper.updateAutoInvest(loginName, isTurnOn);
         // 发送用户行为日志MQ

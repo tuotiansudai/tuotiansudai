@@ -30,14 +30,6 @@
         values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
     </insert>
 
-    <select id="findInvestorByLoginName" parameterType="map" resultMap="bankAccountResultMap">
-        select * from bank_account where login_name = #{loginName} and role_type = 'INVESTOR'
-    </select>
-
-    <select id="findLoanerByLoginName" parameterType="map" resultMap="bankAccountResultMap">
-        select * from bank_account where login_name = #{loginName} and role_type = 'LOANER'
-    </select>
-
     <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">
         select * from bank_account where login_name = #{loginName} and role_type = #{roleType}
     </select>

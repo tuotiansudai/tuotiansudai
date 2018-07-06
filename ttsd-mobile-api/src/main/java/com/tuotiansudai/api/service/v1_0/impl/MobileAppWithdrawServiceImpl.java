@@ -81,7 +81,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         if (withdrawAmount <= withdrawFee) {
             return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
         }
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
         if (userBankCardModel == null) {
             return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
         }

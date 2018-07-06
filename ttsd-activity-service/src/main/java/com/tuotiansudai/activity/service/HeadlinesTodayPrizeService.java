@@ -8,6 +8,7 @@ import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.PrizeType;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -56,7 +57,7 @@ public class HeadlinesTodayPrizeService {
             lotteryTime++;
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         if (bankAccountModel != null) {
             lotteryTime++;
         }
@@ -113,7 +114,7 @@ public class HeadlinesTodayPrizeService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
 
         if (userModel == null) {
             logger.info("User is not exist, please register");

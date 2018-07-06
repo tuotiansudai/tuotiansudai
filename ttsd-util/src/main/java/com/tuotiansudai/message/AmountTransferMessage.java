@@ -1,44 +1,46 @@
 package com.tuotiansudai.message;
 
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 
 public class AmountTransferMessage {
 
-    private TransferType transferType;
+    private long businessId;
 
     private String loginName;
 
-    private long orderId;
+    private Role role;
+
+    private long amount;
 
     private String bankOrderNo;
 
     private String bankOrderDate;
 
-    private long amount;
+    private BankUserBillOperationType operationType;
 
-    private UserBillBusinessType businessType;
+    private BankUserBillBusinessType businessType;
 
     public AmountTransferMessage() {
 
     }
 
-    public AmountTransferMessage(TransferType transferType, String loginName, long orderId, String bankOrderNo, String bankOrderDate, long amount, UserBillBusinessType businessType) {
-        this.transferType = transferType;
+    public AmountTransferMessage(long businessId, String loginName, Role role, long amount, String bankOrderNo, String bankOrderDate, BankUserBillOperationType operationType, BankUserBillBusinessType businessType) {
+        this.businessId = businessId;
         this.loginName = loginName;
-        this.orderId = orderId;
+        this.role = role;
+        this.amount = amount;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
-        this.amount = amount;
+        this.operationType = operationType;
         this.businessType = businessType;
     }
 
-    public TransferType getTransferType() {
-        return transferType;
+    public long getBusinessId() {
+        return businessId;
     }
 
-    public void setTransferType(TransferType transferType) {
-        this.transferType = transferType;
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
 
     public String getLoginName() {
@@ -49,12 +51,20 @@ public class AmountTransferMessage {
         this.loginName = loginName;
     }
 
-    public long getOrderId() {
-        return orderId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
     public String getBankOrderNo() {
@@ -73,19 +83,19 @@ public class AmountTransferMessage {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public long getAmount() {
-        return amount;
+    public BankUserBillOperationType getOperationType() {
+        return operationType;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setOperationType(BankUserBillOperationType operationType) {
+        this.operationType = operationType;
     }
 
-    public UserBillBusinessType getBusinessType() {
+    public BankUserBillBusinessType getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(UserBillBusinessType businessType) {
+    public void setBusinessType(BankUserBillBusinessType businessType) {
         this.businessType = businessType;
     }
 }

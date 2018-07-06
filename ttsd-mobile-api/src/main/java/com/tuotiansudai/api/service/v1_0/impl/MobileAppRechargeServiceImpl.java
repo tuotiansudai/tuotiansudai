@@ -53,7 +53,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
         String loginName = rechargeDto.getLoginName();
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
         if (userBankCardModel == null) {
             return new BaseResponseDto<>(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
         }

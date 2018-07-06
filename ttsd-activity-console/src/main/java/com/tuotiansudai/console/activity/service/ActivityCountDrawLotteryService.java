@@ -252,7 +252,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case BANK_CARD:
-                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(userModel.getLoginName());
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(userModel.getLoginName());
                     if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }

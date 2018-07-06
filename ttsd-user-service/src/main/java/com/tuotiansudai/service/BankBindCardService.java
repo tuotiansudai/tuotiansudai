@@ -39,12 +39,8 @@ public class BankBindCardService {
         this.userOpLogService = userOpLogService;
     }
 
-    public UserBankCardModel findInvestorBankCard(String loginName) {
-        return userBankCardMapper.findInvestorByLoginName(loginName);
-    }
-
     public UserBankCardModel findBankCard(String loginName, Role role) {
-        return userBankCardMapper.findByLoginNameAndRole(loginName, role.name());
+        return userBankCardMapper.findByLoginNameAndRole(loginName, role);
     }
 
     public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, Role role) {
@@ -63,7 +59,7 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
 
         if (role == Role.LOANER){
             return bankWrapperClient.loanerBindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
@@ -73,7 +69,7 @@ public class BankBindCardService {
     }
 
     public void processBind(BankBindCardMessage bankBindCardMessage) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(bankBindCardMessage.getLoginName(), bankBindCardMessage.isInvestor() ? Role.INVESTOR.name() : Role.LOANER.name());
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(bankBindCardMessage.getLoginName(), bankBindCardMessage.isInvestor() ? Role.INVESTOR : Role.LOANER);
         if (userBankCardModel != null) {
             logger.error("bank card is exist, message: {}", bankBindCardMessage);
             return;
@@ -100,7 +96,7 @@ public class BankBindCardService {
 
         UserModel userModel = this.userMapper.findByLoginName(loginName);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
 
         if (role == Role.LOANER){
             return bankWrapperClient.loanerUnbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
@@ -110,7 +106,7 @@ public class BankBindCardService {
     }
 
     public void processUnbind(BankBindCardMessage bankBindCardMessage) {
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(bankBindCardMessage.getLoginName(), bankBindCardMessage.isInvestor() ? Role.INVESTOR.name() : Role.LOANER.name());
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(bankBindCardMessage.getLoginName(), bankBindCardMessage.isInvestor() ? Role.INVESTOR : Role.LOANER);
         if (userBankCardModel == null || Strings.isNullOrEmpty(userBankCardModel.getCardNumber()) || !userBankCardModel.getCardNumber().equalsIgnoreCase(bankBindCardMessage.getCardNumber())) {
             logger.error("[MQ] bank card is not exist, message: {}", bankBindCardMessage);
             return;

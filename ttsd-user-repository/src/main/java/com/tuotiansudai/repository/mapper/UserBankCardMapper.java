@@ -13,10 +13,8 @@ public interface UserBankCardMapper {
 
     void createLoaner(UserBankCardModel model);
 
-    UserBankCardModel findInvestorByLoginName(@Param(value = "loginName") String loginName);
-
     UserBankCardModel findByLoginNameAndRole(@Param(value = "loginName") String loginName,
-                                             @Param(value = "roleType") String roleType);
+                                             @Param(value = "roleType") Role roleType);
 
     void updateStatus(@Param(value = "id") long id, @Param(value = "status") UserBankCardStatus status);
 }

@@ -106,8 +106,8 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("/settings");
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null);
-        modelAndView.addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
+        modelAndView.addObject("hasAccount", bankAccountService.findBankAccount(loginName, Role.INVESTOR) != null);
+        modelAndView.addObject("hasBankCard", bankBindCardService.findBankCard(loginName, Role.INVESTOR) != null);
         return modelAndView;
     }
 

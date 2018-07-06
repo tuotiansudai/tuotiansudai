@@ -2,8 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanCancelMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -62,13 +61,14 @@ public class LoanCancelService {
         for (InvestModel successInvest : successInvests) {
             try {
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
-                        new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                        new AmountTransferMessage(successInvest.getId(),
                                 successInvest.getLoginName(),
-                                successInvest.getId(),
+                                Role.INVESTOR,
+                                successInvest.getAmount(),
                                 message.getBankOrderNo(),
                                 message.getBankOrderDate(),
-                                successInvest.getAmount(),
-                                UserBillBusinessType.CANCEL_INVEST_PAYBACK)));
+                                BankUserBillOperationType.IN,
+                                BankUserBillBusinessType.CANCEL_INVEST_PAYBACK)));
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Loan Cancel] failed to send message for pay back invest amount, investId: {0}, amount: {1}", String.valueOf(successInvest.getId()), String.valueOf(successInvest.getAmount())), e);
             }

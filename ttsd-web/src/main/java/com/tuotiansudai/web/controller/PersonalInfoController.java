@@ -50,7 +50,7 @@ public class PersonalInfoController {
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
-        mv.addObject("hasLoanerAccount", bankAccountService.findLoanerBankAccount(userModel.getLoginName()) != null);
+        mv.addObject("hasLoanerAccount", bankAccountService.findBankAccount(userModel.getLoginName(), Role.LOANER) != null);
 
         if (role != null) {
             mv.addObject("userName", userModel.getUserName());
