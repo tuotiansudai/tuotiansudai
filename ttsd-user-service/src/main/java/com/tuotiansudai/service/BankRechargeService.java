@@ -76,7 +76,7 @@ public class BankRechargeService {
                     Lists.newArrayList(new AmountTransferMessage(
                             bankRechargeModel.getId(),
                             bankRechargeMessage.getLoginName(),
-                            Role.INVESTOR,
+                            bankRechargeModel.getRoleType(),
                             bankRechargeModel.getAmount(),
                             bankRechargeMessage.getBankOrderNo(),
                             bankRechargeMessage.getBankOrderDate(),

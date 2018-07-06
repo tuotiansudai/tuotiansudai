@@ -88,7 +88,7 @@ public class BankWithdrawService {
                     Lists.newArrayList(new AmountTransferMessage(
                             bankWithdrawModel.getId(),
                             bankWithdrawModel.getLoginName(),
-                            Role.INVESTOR,
+                            bankWithdrawModel.getRoleType(),
                             bankWithdrawModel.getAmount(),
                             bankWithdrawMessage.getBankOrderNo(),
                             bankWithdrawMessage.getBankOrderDate(),

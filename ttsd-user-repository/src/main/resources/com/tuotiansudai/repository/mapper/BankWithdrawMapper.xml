@@ -8,6 +8,7 @@
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="amount" property="amount"/>
+        <result column="role_type" property="roleType"/>
         <result column="fee" property="fee"/>
         <result column="bank_order_no" property="bankOrderNo"/>
         <result column="bank_order_date" property="bankOrderDate"/>
