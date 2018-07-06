@@ -535,25 +535,25 @@ require.ensure([],function() {
 
 require.ensure([],function(){
     //出借人和借款人分开
-    let $applyBorrowerDOM = $('#applyBorrowerDOM');//申请成为借款人
-    let $turnToBorrowerDOM = $('#turnToBorrowerDOM');//切换成借款人
-    let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
+    let $applyLoanerDOM = $('#applyLoanerDOM');//申请成为借款人
+    let $turnToLoanerDOM = $('#turnToLoanerDOM');//切换成借款人
+    let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
     let $changeRoleBtn = $('.change-role-btn');//切换按钮
 
     let userRole = $InfoBox.data('user-role');
     let loanerRole = $InfoBox.data('loaner-role');
     let isInvestor = 'INVESTOR'===userRole;
     let isLoaner = 'LOANER'===loanerRole;
-    let hasApplyLoaner = $InfoBox.data('apply-already');
+    let hasLoanerAccount = $InfoBox.data('has-loaner-account');
 
-    let $applyBorrowerBtn = $('.btn-apply-borrower'),
-        $turnToBorrowerBtn = $('.btn-turn-borrower'),
-        $turnToLoanerBtn = $('.btn-turn-Lender');
+    let $applyLoanerBtn = $('.btn-apply-loaner'),
+        $turnToLoanerBtn = $('.btn-turn-loaner'),
+        $turnToInvestorBtn = $('.btn-turn-investor');
 
     $changeRoleBtn.on('click',function () {
 
             if(isInvestor){
-                if(hasApplyLoaner){
+                if(hasLoanerAccount){
                     layer.open({
                         type: 1,
                         move: false,
@@ -562,7 +562,7 @@ require.ensure([],function(){
                         area: ['490px', '220px'],
                         shadeClose: false,
                         closeBtn:0,
-                        content: $turnToBorrowerDOM
+                        content: $turnToLoanerDOM
                     });
                 }else {
                     layer.open({
@@ -573,7 +573,7 @@ require.ensure([],function(){
                         area: ['490px', '220px'],
                         shadeClose: false,
                         closeBtn:0,
-                        content: $applyBorrowerDOM
+                        content: $applyLoanerDOM
                     });
                 }
             }
@@ -586,31 +586,11 @@ require.ensure([],function(){
                     area: ['490px', '220px'],
                     shadeClose: false,
                     closeBtn:0,
-                    content: $turnToLenderDOM
+                    content: $turnToInvestorDOM
                 });
             }
 
 
-    })
-    $turnToBorrowerBtn.on('click',function () {
-        commonFun.useAjax({
-            url: '/XXXXXXXXXXXXXXXXXXX',
-            type: 'POST'
-        },function(data) {
-            if(data.data.status){
-                location.reload();
-            }
-        });
-    })
-    $turnToLoanerBtn.on('click',function () {
-        commonFun.useAjax({
-            url: '/XXXXXXXXXXXXXXXXXXX',
-            type: 'POST'
-        },function(data) {
-            if(data.data.status){
-                location.reload();
-            }
-        });
     })
     $('.btn-close').on('click', function () {
         layer.closeAll();

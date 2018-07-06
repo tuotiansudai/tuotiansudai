@@ -509,8 +509,8 @@ function showAuthorizeAgreementOptions(){
                 //calExpectedCouponInterest();
             })
         });
-        let $turnToLoanerBtn = $('.btn-turn-Lender');
-        let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
+        let $turnToInvestorBtn = $('.btn-turn-investor');
+        let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
@@ -532,7 +532,7 @@ function showAuthorizeAgreementOptions(){
                             area: ['490px', '220px'],
                             shadeClose: false,
                             closeBtn:0,
-                            content: $turnToLenderDOM
+                            content: $turnToInvestorDOM
                         });
                         return false;
                     }
@@ -566,16 +566,6 @@ function showAuthorizeAgreementOptions(){
                     });
                 });
         });
-        $turnToLoanerBtn.on('click',function () {
-            commonFun.useAjax({
-                url: '/XXXXXXXXXXXXXXXXXXX',
-                type: 'POST'
-            },function(data) {
-                if(data.data.status){
-                    location.reload();
-                }
-            });
-        })
 
         // $useExperienceTicket.click(function(event) {
         //     var $this = $(this);

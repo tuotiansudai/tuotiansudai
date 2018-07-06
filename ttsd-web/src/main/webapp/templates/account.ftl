@@ -14,8 +14,9 @@
     <div class="column-box profile-box bg-w clearfix">
         <span class="fl account-profile"></span>
         <div class="welcome-text">
-            <em class="fl tip-hello">您好：${mobile!}</em><em class="fl user-role-font">您当前的身份为<i><@global.role hasRole="'INVESTOR'">出借人
-        </@global.role><@global.role hasRole="'LOANER'">借款人</@global.role></i></em>
+            <em class="fl tip-hello">您好：${mobile!}</em><em class="fl user-role-font">
+            <@global.role hasRole="'INVESTOR'">您当前的身份为<i>借款人</i></@global.role>
+            <@global.role hasRole="'LOANER'">您当前的身份为<i>借款人</i></@global.role></em>
             <em class="fr">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></em>
         </div>
         <div class="sign-list fl">
@@ -38,35 +39,37 @@
         <h3><b>可用余额：</b><span>${((balance/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i></h3>
     </div>
 
-    <div class="column-box bg-w clearfix amount-sum ">
-        <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
-        <ul class="detail-list">
-            <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
-            <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
-            <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-            <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
-            <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
-        </ul>
-    </div>
+    <@global.role hasRole="'INVESTOR'">
+        <div class="column-box bg-w clearfix amount-sum ">
+            <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
+            <ul class="detail-list">
+                <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
+                <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
+                <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
+                <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
+                <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
+            </ul>
+        </div>
 
-    <div class="column-box bg-w clearfix amount-sum ">
-        <h3>
-            <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元
-            <i class="icon-has-con"></i></h3>
-        <ul class="detail-list">
-            <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
-            <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
-        </ul>
-    </div>
+        <div class="column-box bg-w clearfix amount-sum ">
+            <h3>
+                <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元
+                <i class="icon-has-con"></i></h3>
+            <ul class="detail-list">
+                <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
+                <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
+                <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+                <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
+                <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
+            </ul>
+        </div>
+    </@global.role>
 
     <div class="column-box bg-w clearfix amount-sum">
         <h3><b>可用体验金余额：</b><span>${((experienceBalance/100)?string('0.00'))!}</span>元</span>
         </h3>
     </div>
-    <@global.role hasRole="'INVESTOR'">
+    <@global.role hasRole="'LOANER'">
         <#if expectedRepayAmountOfMonth??>
             <div class="last-month  bg-w">
                 <div class="payment-switch">
@@ -113,7 +116,7 @@
             </div>
         </#if>
     </@global.role>
-    <@global.role hasRole="'LOANER2'">
+    <@global.role hasRole="'INVESTOR'">
         <div class="clear-blank bg-w" id="tMonthBox">
             <div class="payment-switch">
                 <em>本月已收回款</em>
