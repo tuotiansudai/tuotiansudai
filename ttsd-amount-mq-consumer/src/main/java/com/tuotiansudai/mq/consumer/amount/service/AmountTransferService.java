@@ -2,13 +2,14 @@ package com.tuotiansudai.mq.consumer.amount.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tuotiansudai.enums.TransferType;
+import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
-import com.tuotiansudai.repository.model.UserBillModel;
-import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.repository.model.BankUserBillModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,19 @@ public class AmountTransferService {
 
     private static final Logger logger = LoggerFactory.getLogger(AmountTransferService.class);
 
+    private final UserMapper userMapper;
+
     private final BankAccountMapper bankAccountMapper;
 
-    private final UserBillMapper userBillMapper;
+    private final BankUserBillMapper bankUserBillMapper;
 
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public AmountTransferService(BankAccountMapper bankAccountMapper, UserBillMapper userBillMapper) {
+    public AmountTransferService(UserMapper userMapper, BankAccountMapper bankAccountMapper, BankUserBillMapper bankUserBillMapper) {
+        this.userMapper = userMapper;
         this.bankAccountMapper = bankAccountMapper;
-        this.userBillMapper = userBillMapper;
+        this.bankUserBillMapper = bankUserBillMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -46,18 +50,23 @@ public class AmountTransferService {
             }
             logger.info("start transferInBalance, message: {}", gson.toJson(message));
 
-            long amount = message.getAmount() * (message.getTransferType() == TransferType.TRANSFER_IN_BALANCE ? 1 : -1);
+            long amount = message.getAmount() * (message.getOperationType() == BankUserBillOperationType.IN ? 1 : -1);
 
             bankAccountMapper.updateInvestorBalance(message.getLoginName(), amount);
 
-            userBillMapper.create(new UserBillModel(message.getLoginName(),
-                    message.getOrderId(),
-                    message.getBankOrderNo(),
-                    message.getBankOrderDate(),
+            UserModel userModel = userMapper.findByLoginName(message.getLoginName());
+
+            bankUserBillMapper.create(new BankUserBillModel(message.getBusinessId(),
+                    message.getLoginName(),
+                    userModel.getMobile(),
+                    userModel.getUserName(),
+                    message.getRole(),
                     message.getAmount(),
                     bankAccountModel.getBalance() + amount,
+                    message.getBankOrderNo(),
+                    message.getBankOrderDate(),
                     message.getBusinessType(),
-                    amount > 0 ? UserBillOperationType.TI_BALANCE : UserBillOperationType.TO_BALANCE));
+                    message.getOperationType()));
 
         }
 

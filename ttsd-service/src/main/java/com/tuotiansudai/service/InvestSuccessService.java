@@ -62,13 +62,14 @@ public class InvestSuccessService {
         investMapper.update(investModel);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                Lists.newArrayList(new AmountTransferMessage(investModel.getId(),
                         investModel.getLoginName(),
-                        investModel.getId(),
+                        Role.INVESTOR,
+                        investModel.getAmount(),
                         bankLoanInvestMessage.getBankOrderNo(),
                         bankLoanInvestMessage.getBankOrderDate(),
-                        investModel.getAmount(),
-                        UserBillBusinessType.INVEST_SUCCESS)));
+                        BankUserBillOperationType.OUT,
+                        BankUserBillBusinessType.INVEST_SUCCESS)));
 
         mqWrapperClient.sendMessage(MessageQueue.Invest_CompletePointTask, bankLoanInvestMessage);
 

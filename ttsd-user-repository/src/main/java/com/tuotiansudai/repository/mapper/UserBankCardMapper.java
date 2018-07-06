@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.UserBankCardStatus;
 import org.apache.ibatis.annotations.Param;

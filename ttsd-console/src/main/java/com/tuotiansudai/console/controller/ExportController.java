@@ -332,15 +332,15 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public void exportUserFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
-                                @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
+    public void exportUserFunds(@RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
+                                @RequestParam(value = "userBillOperationType", required = false) BankUserBillOperationType operationType,
                                 @RequestParam(value = "mobile", required = false) String mobile,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleUserFundsCsvHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserBillPaginationView> userBillModels = consoleUserBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
+        List<BankUserBillModel> userBillModels = consoleUserBillService.findUserFunds(businessType, operationType, mobile, startTime, endTime, index, pageSize);
         List<List<String>> userFundsData = exportService.buildUserFunds(userBillModels);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, userFundsData, response.getOutputStream());
     }

@@ -67,20 +67,22 @@ public class InvestRepaySuccessService {
 
         try {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
-                    new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                    new AmountTransferMessage(investRepayModel.getId(),
                             investModel.getLoginName(),
-                            bankLoanCallbackMessage.getInvestRepayId(),
-                            bankLoanCallbackMessage.getBankOrderNo(),
-                            bankLoanCallbackMessage.getBankOrderDate(),
+                            Role.INVESTOR,
                             bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest(),
-                            investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY),
-                    new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                            investModel.getLoginName(),
-                            bankLoanCallbackMessage.getInvestRepayId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
+                            BankUserBillOperationType.IN,
+                            investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? BankUserBillBusinessType.NORMAL_REPAY : BankUserBillBusinessType.OVERDUE_REPAY),
+                    new AmountTransferMessage(investRepayModel.getId(),
+                            investModel.getLoginName(),
+                            Role.INVESTOR,
                             investRepayModel.getActualFee(),
-                            UserBillBusinessType.INVEST_FEE)));
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            BankUserBillOperationType.OUT,
+                            BankUserBillBusinessType.INVEST_FEE)));
 
             mqWrapperClient.sendMessage(MessageQueue.SystemBill,
                     new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
@@ -139,20 +141,23 @@ public class InvestRepaySuccessService {
 
         try {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
-                    new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                    new AmountTransferMessage(investRepayModel.getId(),
                             investModel.getLoginName(),
-                            bankLoanCallbackMessage.getInvestRepayId(),
-                            bankLoanCallbackMessage.getBankOrderNo(),
-                            bankLoanCallbackMessage.getBankOrderDate(),
+                            Role.INVESTOR,
                             bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest(),
-                            UserBillBusinessType.ADVANCE_REPAY),
-                    new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                            investModel.getLoginName(),
-                            bankLoanCallbackMessage.getInvestRepayId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
+                            BankUserBillOperationType.IN,
+                            BankUserBillBusinessType.ADVANCE_REPAY),
+                    new AmountTransferMessage(investRepayModel.getId(),
+                            investModel.getLoginName(),
+                            Role.INVESTOR,
                             bankLoanCallbackMessage.getInterestFee(),
-                            UserBillBusinessType.INVEST_FEE)));
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
+                            BankUserBillOperationType.OUT,
+                            BankUserBillBusinessType.INVEST_FEE)));
+
             mqWrapperClient.sendMessage(MessageQueue.SystemBill,
                     new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
                             investRepayModel.getId(),

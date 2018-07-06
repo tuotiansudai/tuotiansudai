@@ -2,9 +2,8 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
@@ -51,13 +50,12 @@ public class UserBillController {
         String rechargeAmount = role == null ? "0" : AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, role));
         String withdrawAmount = role == null ? "0" : AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, role));
 
-        ModelAndView modelAndView = new ModelAndView("/user-bill")
+        return new ModelAndView("/user-bill")
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)
                 .addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null)
                 .addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
-        return modelAndView;
     }
 
     @RequestMapping(value = "/user-bill-list-data", method = RequestMethod.GET)
@@ -65,9 +63,8 @@ public class UserBillController {
     public BaseDto<BasePaginationDataDto> getUserBillData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                           @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                           @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                                          @RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes) {
+                                                          @RequestParam("status") List<BankUserBillBusinessType> bankUserBillBusinessTypes) {
 
-        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, userBillBusinessTypes);
+        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, bankUserBillBusinessTypes);
     }
-
 }

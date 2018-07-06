@@ -85,13 +85,15 @@ public class BankWithdrawService {
 
         if (bankWithdrawMessage.isStatus()) {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                    Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                            bankWithdrawModel.getLoginName(),
+                    Lists.newArrayList(new AmountTransferMessage(
                             bankWithdrawModel.getId(),
+                            bankWithdrawModel.getLoginName(),
+                            Role.INVESTOR,
+                            bankWithdrawModel.getAmount(),
                             bankWithdrawMessage.getBankOrderNo(),
                             bankWithdrawMessage.getBankOrderDate(),
-                            bankWithdrawModel.getAmount(),
-                            UserBillBusinessType.WITHDRAW_SUCCESS)));
+                            BankUserBillOperationType.OUT,
+                            BankUserBillBusinessType.WITHDRAW_SUCCESS)));
 
             try {
                 String title = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(bankWithdrawMessage.getAmount()));

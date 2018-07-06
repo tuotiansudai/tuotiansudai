@@ -124,7 +124,7 @@ public class ReferrerRewardService {
             model.setBankOrderDate(bankMerchantTransferMessage.getBankOrderDate());
             investReferrerRewardMapper.update(model);
             if (bankMerchantTransferMessage.isStatus()) {
-                this.sendMessage(model);
+//                this.sendMessage(model);
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Loan Full] transfer referrer reward exception, loanId: {0}, investId: {1}, referrer: {2}, referrerRole: {3}, amount: {4}",
@@ -180,35 +180,35 @@ public class ReferrerRewardService {
         return level > 2 ? 0 : 0.005;
     }
 
-    private void sendMessage(InvestReferrerRewardModel model) {
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                        model.getReferrerLoginName(),
-                        model.getId(),
-                        model.getBankOrderNo(),
-                        model.getBankOrderDate(),
-                        model.getAmount(),
-                        UserBillBusinessType.REFERRER_REWARD)));
-
-        InvestModel investModel = investMapper.findById(model.getInvestId());
-        String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(),
-                model.getReferrerLoginName(),
-                investModel.getLoginName(),
-                String.valueOf(model.getInvestId()));
-        mqWrapperClient.sendMessage(MessageQueue.SystemBill,
-                new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT,
-                        model.getId(),
-                        model.getAmount(),
-                        SystemBillBusinessType.REFERRER_REWARD, detail));
-
-        logger.info("[Loan Full] referrer reward update bill, referrer: {}, investId: {}, amount: {}", model.getReferrerLoginName(), model.getInvestId(), model.getAmount());
-
-        //Title:{0}元推荐奖励已存入您的账户，请查收！
-        //Content:尊敬的用户，您推荐的好友{0}投资成功，您已获得{1}元现金奖励。
-        String title = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(model.getAmount()));
-        String content = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getContentTemplate(), userMapper.findByLoginName(investModel.getLoginName()).getMobile(), AmountConverter.convertCentToString(model.getAmount()));
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_AWARD_SUCCESS,
-                Lists.newArrayList(model.getReferrerLoginName()), title, content, model.getId()));
-        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(model.getReferrerLoginName()), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
-    }
+//    private void sendMessage(InvestReferrerRewardModel model) {
+//        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+//                Lists.newArrayList(new AmountTransferMessage(model.getReferrerLoginName(),
+//                        Role.INVESTOR,
+//                        model.getAmount(),
+//                        model.getBankOrderNo(),
+//                        model.getBankOrderDate(),
+//                        BankUserBillOperationType.IN,
+//                        BankUserBillBusinessType.REFERRER_REWARD)));
+//
+//        InvestModel investModel = investMapper.findById(model.getInvestId());
+//        String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(),
+//                model.getReferrerLoginName(),
+//                investModel.getLoginName(),
+//                String.valueOf(model.getInvestId()));
+//        mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+//                new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT,
+//                        model.getId(),
+//                        model.getAmount(),
+//                        SystemBillBusinessType.REFERRER_REWARD, detail));
+//
+//        logger.info("[Loan Full] referrer reward update bill, referrer: {}, investId: {}, amount: {}", model.getReferrerLoginName(), model.getInvestId(), model.getAmount());
+//
+//        //Title:{0}元推荐奖励已存入您的账户，请查收！
+//        //Content:尊敬的用户，您推荐的好友{0}投资成功，您已获得{1}元现金奖励。
+//        String title = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(model.getAmount()));
+//        String content = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getContentTemplate(), userMapper.findByLoginName(investModel.getLoginName()).getMobile(), AmountConverter.convertCentToString(model.getAmount()));
+//        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_AWARD_SUCCESS,
+//                Lists.newArrayList(model.getReferrerLoginName()), title, content, model.getId()));
+//        mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(model.getReferrerLoginName()), PushSource.ALL, PushType.RECOMMEND_AWARD_SUCCESS, title, AppUrl.MESSAGE_CENTER_LIST));
+//    }
 }

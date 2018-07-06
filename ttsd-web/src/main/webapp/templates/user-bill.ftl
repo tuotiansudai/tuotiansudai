@@ -33,13 +33,10 @@
     <div class="item-block status-filter">
         <span class="sub-hd">交易状态:</span>
         <span class="select-item current" data-status="">全部</span>
-        <span class="select-item" data-status="WITHDRAW_SUCCESS,WITHDRAW_FAIL,APPLY_WITHDRAW">提现</span>
+        <span class="select-item" data-status="WITHDRAW_SUCCESS">提现</span>
         <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
-        <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
         <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
         <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
-        <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE,BIRTHDAY_COUPON">宝藏</span>
-        <span class="select-item" data-status="INVEST_CASH_BACK">现金补贴</span>
     </div>
 
     <div class="clear-blank"></div>
@@ -51,7 +48,6 @@
 <div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
 
     <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
     <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
@@ -69,7 +65,6 @@
             <th>交易类型</th>
             <th class="tr">收入(元)</th>
             <th class="tr">支出(元)</th>
-            <th class="tr">冻结(元)</th>
             <th class="tr">可用余额(元)</th>
             <th>备注</th>
         </tr>
@@ -83,7 +78,6 @@
             <td><%=item.businessType%></td>
             <td class="tr">+<%=item.income%></td>
             <td class="tr">-<%=item.cost%></td>
-            <td class="tr"><%=item.freeze%></td>
             <td class="tr"><%=item.balance%></td>
             <td>编号:<%=item.id%></td>
         </tr>
