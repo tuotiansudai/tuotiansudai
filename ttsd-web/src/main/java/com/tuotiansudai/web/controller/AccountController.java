@@ -67,7 +67,7 @@ public class AccountController {
 
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
-        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName, LoginUserInfo.getBankRole());
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 
