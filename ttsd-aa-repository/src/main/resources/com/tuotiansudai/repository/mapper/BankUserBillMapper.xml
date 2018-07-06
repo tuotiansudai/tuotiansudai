@@ -36,7 +36,7 @@
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">
-                business_type in
+                and business_type in
                 <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
@@ -49,6 +49,9 @@
             </if>
             <if test="endTime != null">
                 and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
             </if>
         </where>
     </select>
@@ -63,7 +66,7 @@
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">
-                business_type in
+                and business_type in
                 <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
@@ -76,6 +79,9 @@
             </if>
             <if test="endTime != null">
                 and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
             </if>
         </where>
         order by created_time desc, id desc

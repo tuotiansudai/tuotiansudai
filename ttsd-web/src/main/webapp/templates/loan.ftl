@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
-     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-bankcard="${hasBankCard?c}">
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"  data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
@@ -764,6 +764,17 @@
         </div>
     </form>
 
+</div>
+<#--切换为出借人 -->
+<div id="turnInvestorDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">是否切换为出借人身份？</div>
+    <form action="/account/switch" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>
+            <button class="btn btn-success" type="submit">确定</button>
+        </div>
+    </form>
 </div>
 
 

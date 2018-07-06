@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
 import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
@@ -98,7 +99,7 @@ public class RepayServiceImpl implements RepayService {
 
         LoanModel loanModel = loanMapper.findById(repayDto.getLoanId());
         UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
 
         List<BankLoanRepayInvestDataView> bankLoanRepayInvestData = investRepayMapper.queryBankInvestRepayData(enabledLoanRepay.getLoanId(), enabledLoanRepay.getPeriod());
         List<BankLoanRepayInvestDto> bankLoanRepayInvests = bankLoanRepayInvestData.stream().map(data -> new BankLoanRepayInvestDto(data.getLoginName(),
@@ -184,7 +185,7 @@ public class RepayServiceImpl implements RepayService {
                 .collect(Collectors.toList());
 
         UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
         BankLoanRepayDto bankLoanRepayDto = new BankLoanRepayDto(userModel.getLoginName(),
                 userModel.getMobile(),
                 bankAccountModel.getBankUserName(),
@@ -230,7 +231,7 @@ public class RepayServiceImpl implements RepayService {
         boolean isRepayingLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING);
 
         dataDto.setLoanId(loanId);
-        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findLoanerByLoginName(loginName).getBalance()));
+        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER).getBalance()));
 
         if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
             dataDto.setNormalRepayEnabled(true);

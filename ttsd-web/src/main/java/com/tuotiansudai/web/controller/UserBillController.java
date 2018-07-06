@@ -54,8 +54,8 @@ public class UserBillController {
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)
-                .addObject("hasAccount", bankAccountService.findInvestorBankAccount(loginName) != null)
-                .addObject("hasBankCard", bankBindCardService.findInvestorBankCard(loginName) != null);
+                .addObject("hasAccount", bankAccountService.findBankAccount(loginName, Role.INVESTOR) != null)
+                .addObject("hasBankCard", bankBindCardService.findBankCard(loginName, Role.INVESTOR) != null);
     }
 
     @RequestMapping(value = "/user-bill-list-data", method = RequestMethod.GET)
@@ -65,6 +65,6 @@ public class UserBillController {
                                                           @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                           @RequestParam("status") List<BankUserBillBusinessType> bankUserBillBusinessTypes) {
 
-        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, bankUserBillBusinessTypes);
+        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, bankUserBillBusinessTypes, LoginUserInfo.getBankRole());
     }
 }

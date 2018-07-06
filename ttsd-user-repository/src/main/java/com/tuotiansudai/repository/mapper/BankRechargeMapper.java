@@ -23,7 +23,7 @@ public interface BankRechargeMapper {
     BankRechargeModel findById(@Param(value = "id") long id);
 
     int sumRechargeSuccessAmountByLoginNameAndRole(@Param(value = "loginName") String loginName,
-                                                   @Param(value = "roleType") String roleType);
+                                                   @Param(value = "roleType") Role roleType);
 
     List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,

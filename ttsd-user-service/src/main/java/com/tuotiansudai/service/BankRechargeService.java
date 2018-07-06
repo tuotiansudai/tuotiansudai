@@ -46,7 +46,7 @@ public class BankRechargeService {
         if (role == null){
             return new BankAsyncMessage("充值失败");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
         if (role == Role.LOANER){
             bankRechargeMapper.createLoaner(bankRechargeModel);
@@ -86,7 +86,7 @@ public class BankRechargeService {
     }
 
     public long sumSuccessRechargeAmount(String loginName, Role role) {
-        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, role.name());
+        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, role);
     }
 
     public BankRechargeModel findRechargeById(long id) {

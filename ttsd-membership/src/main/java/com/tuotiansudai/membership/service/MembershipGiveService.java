@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.sms.SmsUserReceiveMembershipDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.dto.MembershipGiveDto;
 import com.tuotiansudai.membership.dto.MembershipGiveReceiveDto;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
@@ -303,7 +304,7 @@ public class MembershipGiveService {
         for (String loginName : loginNames) {
             for (MembershipGiveModel membershipGiveModel : membershipGiveModels) {
                 long totalExperience = 0;
-                BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
                 if (null != bankAccountModel) {
                     totalExperience = bankAccountModel.getMembershipPoint();
                 }
@@ -351,7 +352,7 @@ public class MembershipGiveService {
             return GivenMembership.NO_LOGIN;
         }
 
-        if (bankAccountMapper.findInvestorByLoginName(loginName) == null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) == null) {
             return GivenMembership.NO_REGISTER;
         }
 
@@ -360,7 +361,7 @@ public class MembershipGiveService {
         }
 
         long investAmount = userMembershipMapper.sumSuccessInvestAmountByLoginName(null, loginName);
-        Date registerTime = bankAccountMapper.findInvestorByLoginName(loginName).getCreatedTime();
+        Date registerTime = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR).getCreatedTime();
         if (registerTime != null && DateTime.parse(heroRankingActivityPeriod.get(0), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate().after(registerTime) && investAmount < 100000) {
             return GivenMembership.ALREADY_REGISTER_NOT_INVEST_1000;
         }

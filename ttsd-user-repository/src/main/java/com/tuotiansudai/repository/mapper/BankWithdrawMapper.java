@@ -23,7 +23,7 @@ public interface BankWithdrawMapper {
     void update(BankWithdrawModel bankWithdrawModel);
 
     long sumSuccessWithdrawByLoginNameAndRole(@Param(value = "loginName") String loginName,
-                                              @Param(value = "roleType") String roleType);
+                                              @Param(value = "roleType") Role roleType);
 
     long sumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,

@@ -4,6 +4,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchaseDto;
 import com.tuotiansudai.membership.dto.MembershipPrivilegePurchasePaginationItemDto;
 import com.tuotiansudai.membership.exception.MembershipPrivilegeIsPurchasedException;
@@ -64,7 +65,7 @@ public class MembershipPrivilegePurchaseService {
             throw new MembershipPrivilegeIsPurchasedException();
         }
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
 
         if (bankAccountModel == null || bankAccountModel.getBalance() < membershipPrivilegePriceType.getPrice()) {
             throw new NotEnoughAmountException();

@@ -50,17 +50,15 @@ public class PersonalInfoController {
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
-        mv.addObject("hasLoanerAccount", bankAccountService.findLoanerBankAccount(userModel.getLoginName()) != null);
+        mv.addObject("hasLoanerAccount", bankAccountService.findBankAccount(userModel.getLoginName(), Role.LOANER) != null);
 
         if (role != null) {
-            UserBankCardModel bankCard = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role);
-            mv.addObject("bankCard", bankCard.getCardNumber());
-            mv.addObject("bankName", bankCard.getBank());
             mv.addObject("userName", userModel.getUserName());
             mv.addObject("identityNumber", userModel.getIdentityNumber());
             BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role);
             mv.addObject("authorization", bankAccountModel.isAuthorization());
             mv.addObject("autoInvest", bankAccountModel.isAutoInvest());
+            mv.addObject("bankCard", bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role));
         }
         return mv;
     }

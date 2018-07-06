@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR2</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
@@ -246,6 +246,16 @@
     </form>
 
 </div>
+<#--切换为出借人 -->
+<div id="turnLenderDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">是否切换为出借人身份？</div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close" type="button">取消</button>
+        <button class="btn btn-success btn-turn-Lender" type="button">确定</button>
+    </div>
+</div>
+
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
 </@global.main>

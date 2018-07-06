@@ -138,7 +138,7 @@ public class AccountController {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
         }
 
-        return new ModelAndView("redirect:/account");
+        return new ModelAndView("redirect:/personal-info");
     }
 
 }

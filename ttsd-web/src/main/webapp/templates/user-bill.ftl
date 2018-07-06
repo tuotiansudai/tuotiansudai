@@ -35,8 +35,14 @@
         <span class="select-item current" data-status="">全部</span>
         <span class="select-item" data-status="WITHDRAW_SUCCESS">提现</span>
         <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
-        <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
-        <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
+        <@global.role hasRole="'INVESTOR'">
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
+            <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
+        </@global.role>
+        <@global.role hasRole="'LOANER'">
+            <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">放款</span>
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">还款</span>
+        </@global.role>
     </div>
 
     <div class="clear-blank"></div>

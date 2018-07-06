@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -54,7 +55,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             dto.setMessage(ReturnMessage.USER_ID_IS_NULL.getMsg());
         } else {
             UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
-            BankAccountModel account = bankAccountService.findInvestorBankAccount(loginName);
+            BankAccountModel account = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
             PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, userBankCardModel, account, anxinProp);
 

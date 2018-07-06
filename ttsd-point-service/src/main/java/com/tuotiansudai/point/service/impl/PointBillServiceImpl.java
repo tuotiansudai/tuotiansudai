@@ -2,6 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -187,7 +188,7 @@ public class PointBillServiceImpl implements PointBillService {
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         List<UserModel> userModels = bankAccountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
         List<UserPointItemDataDto> records = userModels.stream()
                 .map(u -> new UserPointItemDataDto(

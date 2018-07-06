@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
@@ -27,7 +28,7 @@ public class LoanApplicationService {
     private UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
-        if (null == bankAccountMapper.findLoanerByLoginName(loanApplicationDto.getLoginName())) {
+        if (null == bankAccountMapper.findByLoginNameAndRole(loanApplicationDto.getLoginName(), Role.INVESTOR)) {
             return new BaseDto<>(new BaseDataDto(false, "账户没有实名认证"));
         }
         if (loanApplicationDto.getAmount() <= 0) {

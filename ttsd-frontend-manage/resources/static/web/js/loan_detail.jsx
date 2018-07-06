@@ -30,11 +30,13 @@ let $investSubmit=$('#investSubmit');
 let $isAuthenticationRequired=$('#isAuthenticationRequired');
 
 let isInvestor = 'INVESTOR' === $loanDetailContent.data('user-role');
+let isLoaner = 'LOANER' === $loanDetailContent.data('loaner-role');
 let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 
 var viewport = globalFun.browserRedirect();
 let isEstimate = $loanDetailContent.data('estimate');
+let isBankCard = $loanDetailContent.data('bankcard');
 
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
@@ -73,21 +75,6 @@ function validateInvestAmount() {
 };
 //投资表单请求以及校验
 function investSubmit(){
-
-    let isBankCard = $loanDetailContent.data('bankcard');
-    if(!isBankCard) {
-        layer.open({
-            type: 1,
-            move: false,
-            offset: "200px",
-            title: '绑卡',
-            area: ['490px', '220px'],
-            shadeClose: false,
-            closeBtn: 0,
-            content: $('#bankCardDOM')
-        });
-    return false;
-    }
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
@@ -522,7 +509,8 @@ function showAuthorizeAgreementOptions(){
                 //calExpectedCouponInterest();
             })
         });
-
+        let $turnToInvestorBtn = $('.btn-turn-investor');
+        let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
         //click invest submit btn
         $investSubmit.on('click', function(event) {
             event.preventDefault();
@@ -532,12 +520,37 @@ function showAuthorizeAgreementOptions(){
             }
             $.when(commonFun.isUserLogin())
                 .done(function() {
-                    if (isInvestor) {
+                    if (isInvestor&&isBankCard) {
                         noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
                         return;
+                    }else if(isLoaner){
+                        layer.open({
+                            type: 1,
+                            move: false,
+                            offset: "200px",
+                            title: '温馨提示',
+                            area: ['490px', '220px'],
+                            shadeClose: false,
+                            closeBtn:0,
+                            content: $turnToInvestorDOM
+                        });
+                        return false;
                     }
-                    if (isAuthentication) {
+                    if (!isInvestor&&isAuthentication) {
                         location.href = '/register/account';
+                        return false;
+                    }
+                    if(!isBankCard) {
+                        layer.open({
+                            type: 1,
+                            move: false,
+                            offset: "200px",
+                            title: '绑卡',
+                            area: ['490px', '220px'],
+                            shadeClose: false,
+                            closeBtn: 0,
+                            content: $('#bankCardDOM')
+                        });
                         return false;
                     }
 

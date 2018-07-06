@@ -57,7 +57,7 @@ public class BankWithdrawService {
             return new BankAsyncMessage("提现失败");
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
 
         if (role == Role.LOANER){
@@ -121,6 +121,6 @@ public class BankWithdrawService {
     }
 
     public long sumSuccessWithdrawByLoginName(String loginName, Role role) {
-        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role.name());
+        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role);
     }
 }
