@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.request.BankRechargeRequestDto;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankMapper;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
@@ -53,7 +54,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
         String loginName = rechargeDto.getLoginName();
-        UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (userBankCardModel == null) {
             return new BaseResponseDto<>(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
         }

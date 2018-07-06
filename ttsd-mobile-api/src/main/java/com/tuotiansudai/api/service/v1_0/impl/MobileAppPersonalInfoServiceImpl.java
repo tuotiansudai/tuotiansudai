@@ -54,7 +54,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             dto.setCode(ReturnMessage.USER_ID_IS_NULL.getCode());
             dto.setMessage(ReturnMessage.USER_ID_IS_NULL.getMsg());
         } else {
-            UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
+            UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
             BankAccountModel account = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
             PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, userBankCardModel, account, anxinProp);

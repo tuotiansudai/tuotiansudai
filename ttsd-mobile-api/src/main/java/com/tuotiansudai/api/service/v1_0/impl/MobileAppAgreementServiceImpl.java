@@ -12,6 +12,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import org.apache.log4j.Logger;
@@ -36,7 +37,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(agreementDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(agreementDto.getLoginName(), Role.INVESTOR);
 
         if (bankAccountModel != null && bankAccountModel.isAuthorization()) {
             baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());

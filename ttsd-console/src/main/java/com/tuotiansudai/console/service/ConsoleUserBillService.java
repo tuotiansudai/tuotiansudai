@@ -3,6 +3,7 @@ package com.tuotiansudai.console.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.util.CalculateUtil;
@@ -41,7 +42,7 @@ public class ConsoleUserBillService {
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }
-        return bankUserBillMapper.findBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize);
+        return bankUserBillMapper.findUserBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, Role.INVESTOR);
     }
 
     public long findUserFundsCount(BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
@@ -60,6 +61,6 @@ public class ConsoleUserBillService {
             formattedEndTime = new DateTime(endTime).toDate();
         }
 
-        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime);
+        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, Role.INVESTOR);
     }
 }

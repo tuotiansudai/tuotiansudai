@@ -8,6 +8,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.UserBankCardModel;
@@ -81,7 +82,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         if (withdrawAmount <= withdrawFee) {
             return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
         }
-        UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (userBankCardModel == null) {
             return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
         }
