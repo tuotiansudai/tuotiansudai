@@ -74,8 +74,8 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/register/account" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR')" method="GET"/>
-        <intercept-url pattern="/register/account/investor" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR')"/>
+        <intercept-url pattern="/register/account" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR') and not hasAnyAuthority('LOANER')" method="GET"/>
+        <intercept-url pattern="/register/account/investor" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR') and not hasAnyAuthority('LOANER')" method="POST"/>
         <intercept-url pattern="/register/account/loaner" access="hasAuthority('INVESTOR') and not hasAnyAuthority('LOANER')"/>
 
         <!--menus-->

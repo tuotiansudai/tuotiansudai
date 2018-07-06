@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
