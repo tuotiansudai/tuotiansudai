@@ -15,7 +15,7 @@
         <span class="fl account-profile"></span>
         <div class="welcome-text">
             <em class="fl tip-hello">您好：${mobile!}</em><em class="fl user-role-font">
-            <@global.role hasRole="'INVESTOR'">您当前的身份为<i>借款人</i></@global.role>
+            <@global.role hasRole="'INVESTOR'">您当前的身份为<i>出款人</i></@global.role>
             <@global.role hasRole="'LOANER'">您当前的身份为<i>借款人</i></@global.role></em>
             <em class="fr">可用积分:<span id="MyAvailablePoint">${myPoint?string.computer}</span></em>
         </div>
