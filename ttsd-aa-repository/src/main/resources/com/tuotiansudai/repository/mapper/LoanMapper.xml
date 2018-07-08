@@ -60,6 +60,7 @@
         <result column="unpaid_amount" property="unpaidAmount"/>
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
+        <result column="fund_platform" property="fundPlatform"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -748,6 +749,58 @@
         AND ld.activity_desc = '0元购'
         and l.status = 'RAISING'
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+    </select>
+
+    <select id="findLoanListCountByDto"  resultType="int">
+        select count(*) from loan t
+        <where>
+            <if test="fundPlatform != null">
+                t.fund_platform = #{fundPlatform}
+            </if>
+            <if test="status != null">
+                t.status = #{status}
+            </if>
+            <if test="loanId != null">
+                and t.id = #{loanId}
+            </if>
+            <if test="loanName != null and loanName != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="startTime != null">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="findLoanListByDto"  resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="fundPlatform != null">
+                t.fund_platform = #{fundPlatform}
+            </if>
+            <if test="status != null">
+                t.status = #{status}
+            </if>
+            <if test="loanId != null">
+                and t.id = #{loanId}
+            </if>
+            <if test="loanName != null and loanName != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="startTime != null">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by t.created_time desc
+        <if test="startRow >= 0">
+            limit #{startRow}, #{pageSize}
+        </if>
     </select>
 
 </mapper>

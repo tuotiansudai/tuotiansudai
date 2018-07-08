@@ -113,6 +113,8 @@ public class LoanModel implements Serializable {
 
     private long unpaidAmount; // 待还总额
 
+    private FundPlatform fundPlatform;//资金平台
+
     public LoanModel() {
     }
 
@@ -146,6 +148,7 @@ public class LoanModel implements Serializable {
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
+        this.fundPlatform=baseRequestDto.getFundPlatform();
     }
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
@@ -171,6 +174,7 @@ public class LoanModel implements Serializable {
         this.originalDuration = baseRequestDto.getOriginalDuration();
         this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
+        this.fundPlatform=baseRequestDto.getFundPlatform();
         return this;
     }
 
@@ -205,6 +209,7 @@ public class LoanModel implements Serializable {
         this.createdLoginName = loanDto.getCreatedLoginName();
         this.verifyLoginName = loanDto.getVerifyLoginName();
         this.recheckLoginName = loanDto.getRecheckLoginName();
+        this.fundPlatform=loanDto.getFundPlatform();
     }
 
     private String rateStrDivideOneHundred(String rate) {
@@ -602,5 +607,13 @@ public class LoanModel implements Serializable {
 
     public void setUnpaidAmount(long unpaidAmount) {
         this.unpaidAmount = unpaidAmount;
+    }
+
+    public FundPlatform getFundPlatform() {
+        return fundPlatform;
+    }
+
+    public void setFundPlatform(FundPlatform fundPlatform) {
+        this.fundPlatform = fundPlatform;
     }
 }

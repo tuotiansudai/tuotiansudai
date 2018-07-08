@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.dto.query.LoanQueryDto;
 import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -108,5 +109,11 @@ public interface LoanMapper {
                                              @Param(value = "activityEndTime") Date activityEndTime);
 
     List<LoanModel> findSuccessLoanOutLoan();
+
+    int findLoanListCountByDto(LoanQueryDto loanQueryDto);
+
+    List<LoanModel> findLoanListByDto(LoanQueryDto loanQueryDto);
+
+
 
 }

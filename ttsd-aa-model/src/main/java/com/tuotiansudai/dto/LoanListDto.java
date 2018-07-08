@@ -42,6 +42,8 @@ public class LoanListDto {
 
     private boolean disableCoupon;
 
+    private FundPlatform fundPlatform;
+
     public long getId() {
         return id;
     }
@@ -179,5 +181,21 @@ public class LoanListDto {
 
     public void setDisableCoupon(boolean disableCoupon) {
         this.disableCoupon = disableCoupon;
+    }
+
+    public boolean isNonTransferable() {
+        return nonTransferable;
+    }
+
+    public boolean isDisableCoupon() {
+        return disableCoupon;
+    }
+
+    public FundPlatform getFundPlatform() {
+        return fundPlatform;
+    }
+
+    public void setFundPlatform(FundPlatform fundPlatform) {
+        this.fundPlatform = fundPlatform;
     }
 }

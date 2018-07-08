@@ -10,7 +10,7 @@
         <div class="form-group">
             <label for="number">项目编号</label>
             <input type="text" class="form-control loanId" name="loanId" placeholder=""
-                   value="${(loanId?string('0'))!}">
+                   value="${(loanQueryDto.loanId?string('0'))!}">
         </div>
         <div class="form-group">
             <label for="project">项目状态</label>
@@ -18,32 +18,41 @@
                 <option value="">全部</option>
                 <#list loanStatusList as status>
                     <option value="${status.name()}"
-                            <#if (selectedStatus?? && selectedStatus.name() == status.name()) >selected</#if>>${status.description}</option>
+                            <#if (loanQueryDto.status?? && loanQueryDto.status.name() == status.name()) >selected</#if>>${status.description}</option>
                 </#list>
             </select>
         </div>
         <div class="form-group">
             <label for="number">项目名称</label>
-            <input type="text" class="form-control loanName" name="loanName" placeholder="" value="${loanName!}">
+            <input type="text" class="form-control loanName" name="loanName" placeholder="" value="${loanQueryDto.loanName!}">
         </div>
         <div class="form-group">
             <label for="number">发起日期</label>
 
             <div class='input-group date' id='datepickerBegin'>
-                <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="startTime" value="${(loanQueryDto.startTime?string('yyyy-MM-dd'))!}"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
             </div>
             -
             <div class='input-group date' id='datepickerEnd'>
-                <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                <input type='text' class="form-control" name="endTime" value="${(loanQueryDto.endTime?string('yyyy-MM-dd'))!}"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
             </div>
         </div>
-
+        <div class="form-group">
+            <label for="project">资金平台</label>
+            <select class="selectpicker" name="fundPlatform">
+                <option value="">全部</option>
+                <#list fundPlatformList as fundPlatform>
+                    <option value="${fundPlatform.name()}"
+                            <#if (loanQueryDto.fundPlatform?? && loanQueryDto.fundPlatform.name() == fundPlatform.name()) >selected</#if>>${fundPlatform.description}</option>
+                </#list>
+            </select>
+        </div>
         <button type="button" class="btn btn-sm btn-primary search">查询</button>
     </form>
     <div class="table-responsive" style="overflow: visible">
@@ -53,6 +62,7 @@
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>借款期限</th>
+                <th>资金平台</th>
                 <th>借款人</th>
                 <th>代理人</th>
                 <th>借款金额(元)</th>
@@ -77,6 +87,7 @@
                         </span>
                     </td>
                     <td><#if loanListDto.productType??>${loanListDto.productType.getName()}</#if></td>
+                    <td><#if loanListDto.fundPlatform??>${loanListDto.fundPlatform.getDescription()}</#if></td>
                     <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName!}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
@@ -136,14 +147,14 @@
     <!-- pagination  -->
     <nav class="pagination-control">
         <div>
-            <span class="bordern">总共${loanListCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${loanQueryDto.realCount}条,每页显示${loanQueryDto.pageSize}条</span>
         </div>
         <#if loanListDtos?has_content>
             <ul class="pagination">
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${loanQueryDto.status!}&fundPlatform=${loanQueryDto.fundPlatform!}&pageNumber=${loanQueryDto.pageNumber-1}&pageSize=${loanQueryDto.pageSize}&loanId=${loanQueryDto.loanId!}&startTime=${(loanQueryDto.startTime?string('yyyy-MM-dd'))!}&endTime=${(loanQueryDto.endTime?string('yyyy-MM-dd'))!}&loanName=${loanQueryDto.loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -151,10 +162,10 @@
                     <span aria-hidden="true">&laquo; Prev</span>
                 </a>
                 </li>
-                <li><a>${index}</a></li>
+                <li><a>${loanQueryDto.pageNumber}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${loanQueryDto.status!}&fundPlatform=${loanQueryDto.fundPlatform!}&pageNumber=${loanQueryDto.pageNumber+1}&pageSize=${loanQueryDto.pageSize}&loanId=${loanQueryDto.loanId!}&startTime=${(loanQueryDto.startTime?string('yyyy-MM-dd'))!}&endTime=${(loanQueryDto.endTime?string('yyyy-MM-dd'))!}&loanName=${loanQueryDto.loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
