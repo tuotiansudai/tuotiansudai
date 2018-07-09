@@ -92,7 +92,7 @@
         <div class="form-group">
             <label>资金平台</label>
             <select class="selectpicker" name="fundPlatform">
-                <option value="" <#if !(fundPlatform??)>selected</#if>>全部</option>
+                <option value="">全部</option>
                 <#list fundPlatformList as item>
                     <option value="${item}" <#if fundPlatform?? && fundPlatform.name()==item.name()>selected</#if>>
                     ${item.description}
