@@ -132,7 +132,7 @@
                         <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
                         <dl class="account-list">
                             <dd class="clearfix">
-                                <span class="fl">账户余额：</span>
+                                <span class="fl">账户余额(出借人)：</span>
                                 <a class="fr" href="/recharge">去充值>></a>
                                 <em class="fr account-amount" data-user-balance="${loan.investor.balance?string.computer}">${(loan.investor.balance / 100)?string("0.00")} 元</em>
                             </dd>
@@ -767,8 +767,9 @@
 </div>
 <#--切换为出借人 -->
 <div id="turnInvestorDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+
     <div class="tc text-m">是否切换为出借人身份？</div>
-    <form action="/account/switch" method="post">
+    <form action="/account/switch?redirect=/loan/${loan.id?c}" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn  btn-cancel btn-close" type="button">取消</button>

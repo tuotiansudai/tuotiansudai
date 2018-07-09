@@ -285,7 +285,7 @@
 <#--切换为借款人 -->
 <div id="turnToLoanerDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
     <div class="tc text-m">是否切换为借款人身份？</div>
-    <form action="/account/switch" method="post">
+    <form action="/account/switch?redirect=/personal-info" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn btn-cancel btn-close" type="button">取消</button>
