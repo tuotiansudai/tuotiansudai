@@ -52,11 +52,7 @@
         <property name="templateLoaderPath" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
         <property name="freemarkerVariables" ref="freeMarkerVariablesMap"/>
-        <property name="freemarkerSettings">
-            <props>
-                <prop key="template_update_delay">0</prop>
-            </props>
-        </property>
+
     </bean>
 
     <!--
