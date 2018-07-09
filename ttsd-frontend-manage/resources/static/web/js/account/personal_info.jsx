@@ -533,5 +533,71 @@ require.ensure([],function() {
 
 },'changePassword');
 
+require.ensure([],function(){
+    //出借人和借款人分开
+    let $applyLoanerDOM = $('#applyLoanerDOM');//申请成为借款人
+    let $turnToLoanerDOM = $('#turnToLoanerDOM');//切换成借款人
+    let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
+    let $changeRoleBtn = $('.change-role-btn');//切换按钮
+
+    let userRole = $InfoBox.data('user-role');
+    let loanerRole = $InfoBox.data('loaner-role');
+    let isInvestor = 'INVESTOR'===userRole;
+    let isLoaner = 'LOANER'===loanerRole;
+    let hasLoanerAccount = $InfoBox.data('has-loaner-account');
+
+    let $applyLoanerBtn = $('.btn-apply-loaner'),
+        $turnToLoanerBtn = $('.btn-turn-loaner'),
+        $turnToInvestorBtn = $('.btn-turn-investor');
+
+    $changeRoleBtn.on('click',function () {
+
+            if(isInvestor){
+                if(hasLoanerAccount){
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        offset: "200px",
+                        title: '温馨提示',
+                        area: ['490px', '220px'],
+                        shadeClose: false,
+                        closeBtn:0,
+                        content: $turnToLoanerDOM
+                    });
+                }else {
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        offset: "200px",
+                        title: '温馨提示',
+                        area: ['490px', '220px'],
+                        shadeClose: false,
+                        closeBtn:0,
+                        content: $applyLoanerDOM
+                    });
+                }
+            }
+            if(isLoaner){
+                layer.open({
+                    type: 1,
+                    move: false,
+                    offset: "200px",
+                    title: '温馨提示',
+                    area: ['490px', '220px'],
+                    shadeClose: false,
+                    closeBtn:0,
+                    content: $turnToInvestorDOM
+                });
+            }
+
+
+    })
+    $('.btn-close').on('click', function () {
+        layer.closeAll();
+    });
+
+
+},'changeRole')
+
 
 

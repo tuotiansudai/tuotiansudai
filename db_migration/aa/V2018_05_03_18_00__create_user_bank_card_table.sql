@@ -1,6 +1,7 @@
 CREATE TABLE `aa`.`user_bank_card` (
   `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`      VARCHAR(25)     NOT NULL,
+  `role_type`       VARCHAR(20)     NOT NULL,
   `bank`            VARCHAR(256)    NOT NULL,
   `bank_code`       VARCHAR(32)     NOT NULL,
   `card_number`     VARCHAR(32)     NOT NULL,

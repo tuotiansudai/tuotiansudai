@@ -27,7 +27,6 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService 
     @Override
     public BaseResponseDto<BankAsynResponseDto> generateAgreementRequest(String loginName, String mobile, String ip, BaseParamDto baseParamDto) {
         BankAsyncMessage bankAsyncMessage = bankAccountService.authorization(Source.valueOf(baseParamDto.getBaseParam().getPlatform().toUpperCase()), loginName, mobile, ip, baseParamDto.getBaseParam().getDeviceId());
-
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 

@@ -54,7 +54,7 @@ public class CancelCardBindService implements ReturnCallbackInterface, NotifyCal
         this.selectMapper = selectMapper;
     }
 
-    public CancelCardBindRequestDto cancel(Source source, BankBaseDto bankBaseDto) {
+    public CancelCardBindRequestDto cancel(Source source, BankBaseDto bankBaseDto, boolean isInvestor) {
         CancelCardBindRequestDto dto = new CancelCardBindRequestDto(source, bankBaseDto);
 
         signatureHelper.sign(API_TYPE, dto);
@@ -71,7 +71,8 @@ public class CancelCardBindService implements ReturnCallbackInterface, NotifyCal
                 bankBaseDto.getBankUserName(),
                 bankBaseDto.getBankAccountNo(),
                 dto.getOrderNo(),
-                dto.getOrderDate());
+                dto.getOrderDate(),
+                isInvestor);
 
         String bankCancelCardBindMessageKey = MessageFormat.format(BANK_CANCEL_CARD_BIND_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.<String, String>opsForHash().put(bankCancelCardBindMessageKey, dto.getOrderNo(), gson.toJson(bankBindCardMessage));

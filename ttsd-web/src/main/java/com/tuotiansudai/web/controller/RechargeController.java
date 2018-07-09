@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.request.BankRechargeRequestDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserBankCardModel;
@@ -39,15 +40,16 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
-        if (userBankCardModel == null && MobileAccessDecision.isMobileAccess()) {
-            return new ModelAndView("redirect:/m/personal-info");
+        Role role = LoginUserInfo.getBankRole();
+        if (role == null) {
+            return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role);
         ModelAndView modelAndView = new ModelAndView("/recharge");
         if (userBankCardModel != null){
             modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
         }
-        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role);
         modelAndView.addObject("bankCard", userBankCardModel);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
         modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
@@ -61,7 +63,7 @@ public class RechargeController {
                 LoginUserInfo.getMobile(),
                 AmountConverter.convertStringToCent(dto.getAmount()),
                 dto.getPayType(),
-                dto.getChannel());
+                dto.getChannel(), LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
 import com.tuotiansudai.repository.model.Source;
@@ -13,13 +14,16 @@ import java.util.List;
 @Repository
 public interface BankWithdrawMapper {
 
-    void create(BankWithdrawModel bankWithdrawModel);
+    void createInvestor(BankWithdrawModel bankWithdrawModel);
+
+    void createLoaner(BankWithdrawModel bankWithdrawModel);
 
     BankWithdrawModel findById(long id);
 
     void update(BankWithdrawModel bankWithdrawModel);
 
-    long sumSuccessWithdrawByLoginName(String loginName);
+    long sumSuccessWithdrawByLoginNameAndRole(@Param(value = "loginName") String loginName,
+                                              @Param(value = "roleType") Role roleType);
 
     long sumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,

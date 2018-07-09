@@ -1,7 +1,6 @@
 package com.tuotiansudai.client;
 
 import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.enums.AppUrl;
 import com.tuotiansudai.enums.PushSource;
 import com.tuotiansudai.message.PushMessage;
 import com.xiaomi.xmpush.server.Constants;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -120,15 +118,4 @@ public class MiPushClient {
             logger.error(MessageFormat.format("send mi push in batch fail, batch size:{1}", count), e);
         }
     }
-
-    public static void main(String[] args) {
-        MiPushClient client = new MiPushClient("U4h5OF72+DCYbxM3qsmHJA==", "LX98vLqcQn7v6aS+i+UgeA==", Environment.QA);
-        PushMessage pushMessage = new PushMessage();
-        pushMessage.setLoginNames(Arrays.asList("lixuchen"));
-        pushMessage.setContent("aaaaa");
-        pushMessage.setPushSource(PushSource.ALL);
-        pushMessage.setJumpTo(AppUrl.MY_ASSESS);
-        client.sendPushMessage(pushMessage);
-    }
-
 }

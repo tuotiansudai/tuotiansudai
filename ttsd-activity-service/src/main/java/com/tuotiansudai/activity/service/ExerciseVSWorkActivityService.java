@@ -5,6 +5,7 @@ import com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
@@ -91,7 +92,7 @@ public class ExerciseVSWorkActivityService {
         }
 
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         try {
             if (userExchangePrizeModel == null) {
                 userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", exchangePrize, DateTime.now().toDate(), activityCategory));

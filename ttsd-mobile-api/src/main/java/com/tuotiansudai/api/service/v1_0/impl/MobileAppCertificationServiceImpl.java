@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.BankAccountService;
@@ -39,17 +40,17 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
 
         RegisterAccountDto registerAccountDto = new RegisterAccountDto(loginName, mobile, userName, identityNumber, Source.MOBILE);
 
-        BankAsyncMessage bankAsyncMessage = bankAccountService.registerAccount(registerAccountDto, token, ip, deviceId);
+        BankAsyncMessage bankAsyncMessage = bankAccountService.registerInvestorAccount(registerAccountDto, Source.MOBILE, token, ip, deviceId);
 
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 
     @Override
     public BaseResponseDto<BankAsynResponseDto> resetBankPassword(String loginName) {
-        if (bankAccountService.findBankAccount(loginName) == null) {
+        if (bankAccountService.findBankAccount(loginName, Role.INVESTOR) == null) {
             return new BaseResponseDto<>(ReturnMessage.BANK_ACCOUNT_NOT_EXIST);
         }
-        BankAsyncMessage bankAsyncMessage = bankAccountService.resetPassword(Source.MOBILE, loginName);
+        BankAsyncMessage bankAsyncMessage = bankAccountService.resetPassword(Source.MOBILE, loginName, Role.INVESTOR);
 
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }

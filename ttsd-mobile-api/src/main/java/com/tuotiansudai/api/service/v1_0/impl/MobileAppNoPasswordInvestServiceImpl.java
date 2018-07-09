@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class MobileAppNoPasswordInvestServiceImpl implements MobileAppNoPassword
 
     @Override
     public BaseResponseDto<NoPasswordInvestResponseDataDto> getNoPasswordInvestData(String loginName) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if(bankAccountModel == null){
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED);
         }

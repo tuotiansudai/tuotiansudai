@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -33,12 +34,12 @@ import static org.mockito.Mockito.when;
         BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
         bankAccountModel.setAutoInvest(true);
         bankAccountModel.setAuthorization(true);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(bankAccountModel);
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData(baseParamDto);
+        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData("loginName");
 
         assertTrue(baseResponseDto.getData().isAutoInvest());
         assertTrue(baseResponseDto.getData().isNoPasswordInvest());

@@ -578,11 +578,11 @@ public class InvestMapperTest {
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
         BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111");
-        bankAccountMapper.create(accountModel1);
+        bankAccountMapper.createInvestor(accountModel1);
         BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111");
-        bankAccountMapper.create(accountModel2);
+        bankAccountMapper.createInvestor(accountModel2);
         BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111");
-        bankAccountMapper.create(accountModel3);
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -622,11 +622,11 @@ public class InvestMapperTest {
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
         BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111");
-        bankAccountMapper.create(accountModel1);
+        bankAccountMapper.createInvestor(accountModel1);
         BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111");
-        bankAccountMapper.create(accountModel2);
+        bankAccountMapper.createInvestor(accountModel2);
         BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111");
-        bankAccountMapper.create(accountModel3);
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -669,11 +669,11 @@ public class InvestMapperTest {
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
         BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111");
-        bankAccountMapper.create(accountModel1);
+        bankAccountMapper.createInvestor(accountModel1);
         BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111");
-        bankAccountMapper.create(accountModel2);
+        bankAccountMapper.createInvestor(accountModel2);
         BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111");
-        bankAccountMapper.create(accountModel3);
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -712,11 +712,11 @@ public class InvestMapperTest {
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
         BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111");
-        bankAccountMapper.create(accountModel1);
+        bankAccountMapper.createInvestor(accountModel1);
         BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111");
-        bankAccountMapper.create(accountModel2);
+        bankAccountMapper.createInvestor(accountModel2);
         BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111");
-        bankAccountMapper.create(accountModel3);
+        bankAccountMapper.createInvestor(accountModel3);
 
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());

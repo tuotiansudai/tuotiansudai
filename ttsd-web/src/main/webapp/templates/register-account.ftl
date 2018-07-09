@@ -11,7 +11,7 @@
     </div>
 
 <div class="register-box ">
-    <form class="register-account-form" action="/register/account" id="registerAccountForm" method="post">
+    <form class="register-account-form" action="/register/account/investor" id="registerAccountForm" method="post">
         <ul class="reg-list tl register-step-two">
             <li>
                 <label class="title">真实姓名</label>

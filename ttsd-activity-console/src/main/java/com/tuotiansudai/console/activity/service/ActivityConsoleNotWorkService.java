@@ -5,6 +5,7 @@ import com.tuotiansudai.activity.repository.dto.NotWorkDto;
 import com.tuotiansudai.activity.repository.mapper.NotWorkMapper;
 import com.tuotiansudai.activity.repository.model.NotWorkModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
@@ -66,7 +67,7 @@ public class ActivityConsoleNotWorkService {
 
             int recommendIdentifyAmount = 0;
             for (UserRegisterInfo userModel : users) {
-                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
                 if (null != bankAccountModel && bankAccountModel.getCreatedTime().after(activityStartTime) && bankAccountModel.getCreatedTime().before(activityEndTime)) {
                     ++recommendIdentifyAmount;
                 }

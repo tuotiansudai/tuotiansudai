@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
@@ -47,7 +48,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     @Transactional
     public BaseResponseDto<SignInResponseDataDto> signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.lockByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.lockInvestorByLoginName(loginName);
         if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
@@ -71,7 +72,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     public BaseResponseDto<LastSignInTimeResponseDataDto> getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }
@@ -98,7 +99,7 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     public BaseResponseDto<PointBillResponseDataDto> queryPointBillList(PointBillRequestDto pointBillRequestDto) {
 
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (bankAccountModel == null) {
             return new BaseResponseDto<>(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(), ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
         }

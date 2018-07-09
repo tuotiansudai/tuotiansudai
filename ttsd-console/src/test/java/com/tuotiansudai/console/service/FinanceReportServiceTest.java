@@ -68,7 +68,7 @@ public class FinanceReportServiceTest {
     private BankAccountModel createAccountModel(UserModel userModel) {
         BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), String.valueOf(RandomStringUtils.randomNumeric(32)),
                 String.valueOf(RandomStringUtils.randomNumeric(14)), "111", "111");
-        bankAccountMapper.create(accountModel);
+        bankAccountMapper.createInvestor(accountModel);
         return accountModel;
     }
 

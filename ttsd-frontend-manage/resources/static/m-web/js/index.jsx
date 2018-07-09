@@ -5,14 +5,6 @@ let $homePageContainer = $('#homePageContainer'),
     $imgScroll = $('.banner-img-list', $homePageContainer);
 let viewport = globalFun.browserRedirect();
 //领优惠券
-$.when(commonFun.isUserLogin())
-    .done(function () {
-        commonFun.useAjax({
-            url: '/assign-coupon',
-            type: 'POST',
-            contentType: 'application/json; charset=UTF-8'
-        });
-    })
 
 //首页大图轮播和最新公告滚动,单独打一个包方便cdn缓存
 require.ensure(['webJsModule/image_show_slider'], function(require){
@@ -144,12 +136,13 @@ $('.goToTranDetail').on('click',function (e) {
 })
 //邀请好友判断是否登录
 $('.inviting-friend').click(function () {
-    $.when(commonFun.isUserLogin())
-        .done(function () {
-            location.href = '/m/about/refer-reward';
-        }).fail(function () {
-        location.href = '/m/login'
-    })
+    // $.when(commonFun.isUserLogin())
+    //     .done(function () {
+    //         location.href = '/m/about/refer-reward';
+    //     }).fail(function () {
+    //     location.href = '/m/login'
+    // })
+    layer.msg('此功能暂不可用！')
 })
 //
 commonFun.calculationFun(document,window);

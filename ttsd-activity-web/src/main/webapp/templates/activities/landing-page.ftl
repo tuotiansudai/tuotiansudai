@@ -9,7 +9,7 @@
                     <div class="login-wrap" id="registerContainer">
 
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
-                        <h2 class="title"><span class="icon-title"></span><span>出借资金全程由联动优势存管</span></h2>
+                        <h2 class="title"><span class="icon-title"></span><span>出借资金全程由富滇银行存管</span></h2>
                         <div class="login-con">
                             <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                             <ul>
@@ -207,7 +207,7 @@
                                 <div class="split"></div>
                                 <div class="third">
                                     <p><a href="/loan-list" class="btn-red">马上投资</a></p>
-                                    <p class="bank"><span class="checkbox-red"></span><span>资金存管</span></p>
+                                    <p class="bank"><span class="checkbox-red"></span><span>银行资金存管</span></p>
                                 </div>
                             </div>
                             <div class="bot-content clearfix">
@@ -220,7 +220,7 @@
                                                     <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
-                                                    <p class="other"><span class="icon1"></span><span>资金存管</span> <span
+                                                    <p class="other"><span class="icon1"></span><span>银行资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
                                                     <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                                 </div>
@@ -231,7 +231,7 @@
                                                     <div class="loan-info"><span class="big-num">9</span><span class="percent">%</span>180<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
-                                                    <p class="other"><span class="icon1"></span><span>资金存管</span> <span
+                                                    <p class="other"><span class="icon1"></span><span>银行资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
                                                     <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                                 </div>
@@ -242,7 +242,7 @@
                                                     <div class="loan-info"><span class="big-num">8</span><span class="percent">%</span>90<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
-                                                    <p class="other"><span class="icon1"></span><span>资金存管</span> <span
+                                                    <p class="other"><span class="icon1"></span><span>银行资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
                                                     <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
                                                 </div>
@@ -288,7 +288,7 @@
                 <div class="advance-con clearfix">
                     <dl>
                         <dt class="icon-advance1"></dt>
-                        <dd><p class="profile">资金存管</p>
+                        <dd><p class="profile">银行资金存管</p>
                             <p class="font">与平台自有资金物理隔离</p></dd>
                     </dl>
                     <dl>

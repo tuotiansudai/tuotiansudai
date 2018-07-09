@@ -58,7 +58,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
         List<PointBillModel> pointBillModelList = Lists.newArrayList();
         pointBillModelList.add(pointBillModel);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(new BankAccountModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(new BankAccountModel());
         when(pointBillMapper.findPointBillPagination(anyString(), anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(pointBillModelList);
         when(pointBillMapper.findCountPointBillPagination(anyString(), anyString(), any(Date.class), any(Date.class), any(ArrayList.class))).thenReturn(1L);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
@@ -81,7 +81,7 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     public void shouldGetLastSignInTimeIsOk() {
         BankAccountModel bankAccountModel = new BankAccountModel();
         SignInPointDto signInPointDto = new SignInPointDto(1, DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1), 0, 10, false);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(bankAccountModel);
         when(signInService.getLastSignIn(anyString())).thenReturn(signInPointDto);
         when(signInService.signInIsSuccess(anyString())).thenReturn(true);
         when(signInService.getNextSignInPoint(anyString())).thenReturn(10);

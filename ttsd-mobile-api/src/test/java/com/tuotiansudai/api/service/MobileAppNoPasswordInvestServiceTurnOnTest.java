@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.when;
     public void shouldNoPasswordInvestTurnOnIsOk() {
         BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
         bankAccountModel.setAutoInvest(true);
-        when(bankAccountMapper.findByLoginName(anyString())).thenReturn(bankAccountModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(bankAccountModel);
         NoPasswordInvestTurnOnRequestDto noPasswordInvestTurnOnRequestDto = new NoPasswordInvestTurnOnRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");

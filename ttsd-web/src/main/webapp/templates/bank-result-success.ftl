@@ -20,7 +20,7 @@
     <#--充值成功-->
         <#if bankCallbackType == 'RECHARGE'>
             <div class="handle_btn_container">
-                <div class="go_to_invest investBtn">去投资</div>
+                <div class="see_my_account">查看我的账户</div>
             </div>
         </#if>
     <#--授权成功-->

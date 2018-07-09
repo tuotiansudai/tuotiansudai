@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipDiscount;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -375,7 +376,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public BaseDto<BaseDataDto> buyProduct(String loginName, long id, GoodsType goodsType, int amount, Long addressId, String comment) {
         ProductModel productModel = productMapper.lockById(id);
-        BankAccountModel accountModel = bankAccountMapper.lockByLoginName(loginName);
+        BankAccountModel accountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
         double discount = MembershipDiscount.getMembershipDiscountByLevel(membershipModel == null ? 0 : membershipModel.getLevel());

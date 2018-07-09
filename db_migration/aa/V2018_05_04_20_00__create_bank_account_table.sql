@@ -1,6 +1,7 @@
 CREATE TABLE `aa`.`bank_account` (
   `id`                            INT(32)         NOT NULL AUTO_INCREMENT,
   `login_name`                    VARCHAR(50)     NOT NULL,
+  `role_type`                     VARCHAR(20)     NOT NULL,
   `bank_user_name`                VARCHAR(32)     NOT NULL,
   `bank_account_no`               VARCHAR(50)     NOT NULL,
   `bank_account_order_no`         VARCHAR(20)     NOT NULL,
@@ -16,7 +17,6 @@ CREATE TABLE `aa`.`bank_account` (
 
   PRIMARY KEY (`id`),
   CONSTRAINT FK_BANK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
-  UNIQUE KEY UNIQUE_BANK_ACCOUNT_LOGIN_NAME (`login_name`),
   INDEX INDEX_BANK_ACCOUNT_USER_NAME (bank_user_name),
   INDEX INDEX_BANK_ACCOUNT_ACCOUNT_NO (bank_account_no)
 

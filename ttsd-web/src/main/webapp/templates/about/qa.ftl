@@ -16,7 +16,7 @@
                 ④受短信通道及运营商的政策监管影响。目前同一手机号10分钟之内（联通及电信只能接收到3条平台发出的短信，移动为10条；需查看自己手机是否超出该限制，超出请10分钟后再试。）<br/>如果还是收不到验证码，请致电拓天速贷客服：400-169-1188。
 			</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>4.注册时，推荐人这一栏该怎么填？</span></dt>
-            <dd><strong>答：</strong>推荐朋友投资时，朋友投资金额的年化1%现金将作为奖励给予推荐人。推荐人这一栏可作为奖励发放的根据之一。此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</dd>
+            <dd><strong>答：</strong>此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>5.注册时，推荐人忘记填写怎么办？</span></dt>
             <dd><strong>答：</strong>不能补填（温馨提示：注册步骤请细心填写）</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>6.为什么要进行实名认证？ </span></dt>
@@ -39,8 +39,8 @@
                 ③未满18岁不支持认证；<br/>
                 ④检查无误仍提示错误，请联系客服热线400-169-1188获取帮助。
 			</dd>
-            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>12.账号如何绑定到联动优势？</span></dt>
-            <dd><strong>答：</strong>当您进行实名认证时，平台会将您的帐号绑定到联动优势，资金由联动优势全面托管。</dd>
+            <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>12.账号如何绑定到富滇银行？</span></dt>
+            <dd><strong>答：</strong>当您进行实名认证时，系统会将您的帐号绑定到富滇银行，资金由富滇银行全面存管。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>13.登录时，忘记账户密码了，怎么找回？</span></dt>
             <dd><strong>答：</strong>您可以直接在登录界面，点击“忘记密码”，根据提示直接找回您的密码。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>14.如何修改登录密码？</span></dt>
@@ -79,7 +79,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>26.VIP会员享有哪些特权？ </span></dt>
             <dd>
                 <strong>答：</strong>
-                多重保障：三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>
+                多重保障：银行资金存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>
                 随时提现：24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账<br/>
                 生日特权：生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍<br/>
                 会员礼包：每月发放投资红包，588、688、788、888元随机派送<br/>

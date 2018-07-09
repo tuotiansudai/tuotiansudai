@@ -7,6 +7,7 @@ import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.fudian.dto.RechargePayType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankMapper;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
@@ -47,7 +48,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
 
     @Override
     public BaseResponseDto<BankAsynResponseDto> recharge(String loginName, BankRechargeRequestDto bankRechargeRequestDto) {
-        if (userBankCardMapper.findByLoginName(loginName) == null) {
+        if (userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) == null) {
             return new BaseResponseDto<>(ReturnMessage.BANK_CARD_NOT_BOUND);
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
@@ -57,7 +58,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
                 userModel.getMobile(),
                 AmountConverter.convertStringToCent(bankRechargeRequestDto.getAmount()),
                 RechargePayType.FAST_PAY.name(),
-                bankRechargeRequestDto.getBaseParam().getChannel());
+                bankRechargeRequestDto.getBaseParam().getChannel(), Role.INVESTOR);
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 

@@ -25,18 +25,3 @@ if($riskFlow.length) {
     },3000);
 }
 
-let $bottomClose= $('.bottom-close'),
-    $bottomOpen=$('.bottom-open');
-$('.to-close').on('click',function() {
-    $bottomClose.show();
-    $bottomOpen.hide();
-});
-$bottomClose.on('click',function() {
-    $bottomClose.hide();
-    $bottomOpen.show();
-});
-
-$('.to-shou').on('click',function() {
-    $bottomClose.show();
-    $bottomOpen.hide();
-});

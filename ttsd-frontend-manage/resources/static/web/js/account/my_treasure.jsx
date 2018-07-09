@@ -1,6 +1,5 @@
 require('webStyle/account/my_treasure.scss');
 require('webJsModule/coupon_alert');
-require('webJsModule/assign_coupon');
 var $body = $('body'),
 	$ruleList = $('#ruleList'),
 	$content = $('.model-list');

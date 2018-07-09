@@ -20,16 +20,19 @@ public class BankBindCardMessage extends BankBaseMessage {
 
     private String bankOrderDate;
 
+    private boolean isInvestor;
+
     public BankBindCardMessage() {
     }
 
-    public BankBindCardMessage(String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate) {
+    public BankBindCardMessage(String loginName, String mobile, String bankUserName, String bankAccountNo, String bankOrderNo, String bankOrderDate, boolean isInvestor) {
         this.loginName = loginName;
         this.mobile = mobile;
         this.bankUserName = bankUserName;
         this.bankAccountNo = bankAccountNo;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
+        this.isInvestor = isInvestor;
     }
 
     public String getLoginName() {
@@ -78,5 +81,9 @@ public class BankBindCardMessage extends BankBaseMessage {
 
     public String getBankOrderDate() {
         return bankOrderDate;
+    }
+
+    public boolean isInvestor() {
+        return isInvestor;
     }
 }

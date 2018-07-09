@@ -394,22 +394,21 @@ public class ExportService {
         return rows;
     }
 
-    public List<List<String>> buildUserFunds(List<UserBillPaginationView> records) {
+    public List<List<String>> buildUserFunds(List<BankUserBillModel> records) {
         List<List<String>> rows = Lists.newArrayList();
-        for (UserBillPaginationView record : records) {
+        for (BankUserBillModel record : records) {
             List<String> row = Lists.newArrayList();
             DateTime dateTime = new DateTime(record.getCreatedTime());
             row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
             row.add(String.valueOf(record.getId()));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getOperationType().getDescription());
             row.add(record.getBusinessType().getDescription());
             row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
             row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
-            row.add(String.valueOf(new BigDecimal(record.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add("0");
             rows.add(row);
         }
         return rows;
