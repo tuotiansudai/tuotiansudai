@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -129,7 +130,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/switch", method = RequestMethod.POST)
-    public ModelAndView switchAccount() {
+    public ModelAndView switchAccount(@RequestParam(value = "redirect") String redirect) {
         if (LoginUserInfo.getBankRole() == Role.INVESTOR) {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
         }
@@ -138,7 +139,7 @@ public class AccountController {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
         }
 
-        return new ModelAndView("redirect:/personal-info");
+        return new ModelAndView(String.format("redirect:%s", Strings.isNullOrEmpty(redirect) ? "/personal-info" : redirect));
     }
 
 }
