@@ -1,1 +1,0 @@
-update loan set fund_platform='LIANDONGYOUSHI' where fund_platform is null;

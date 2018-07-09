@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,31 @@ public class LoanListDto {
     private boolean disableCoupon;
 
     private FundPlatform fundPlatform;
+
+    public LoanListDto(){
+
+    }
+
+    public LoanListDto(LoanModel loanModel,List<ExtraLoanRateItemDto> extraLoanRateItemDtoList,LoanDetailsModel loanDetailsModel) {
+        this.id = loanModel.getId();
+        this.name = loanModel.getName();
+        this.type = loanModel.getType();
+        this.agentLoginName = loanModel.getAgentLoginName();
+        this.loanerUserName = loanModel.getLoanerUserName();
+        this.loanAmount = loanModel.getLoanAmount();
+        this.periods = loanModel.getPeriods();
+        this.basicRate = String.valueOf(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%";
+        this.activityRate = String.valueOf(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%";
+        this.status = loanModel.getStatus();
+        this.createdTime = loanModel.getCreatedTime();
+        this.productType = loanModel.getProductType();
+        this.pledgeType = loanModel.getPledgeType();
+        this.extraLoanRateModels = extraLoanRateItemDtoList;
+        this.extraSource = loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null;
+        this.nonTransferable = loanDetailsModel !=null && loanDetailsModel.getNonTransferable();
+        this.disableCoupon = loanDetailsModel !=null && loanDetailsModel.getDisableCoupon();
+        this.fundPlatform = loanModel.getFundPlatform();
+    }
 
     public long getId() {
         return id;

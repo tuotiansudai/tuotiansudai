@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.dto.query.LoanQueryDto;
 import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -81,10 +80,10 @@ public interface LoanMapper {
                                            @Param(value = "startTime") Date startTime,
                                            @Param(value = "endTime") Date endTime);
 
-    List<LoanModel> findLoanList(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
+    List<LoanModel> findLoanList(@Param(value = "fundPlatform") FundPlatform fundPlatform, @Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
                                  @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime, @Param(value = "currentPageNo") int currentPageNo, @Param(value = "pageSize") int pageSize);
 
-    int findLoanListCount(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
+    int findLoanListCount(@Param(value = "fundPlatform") FundPlatform fundPlatform, @Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
                           @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime);
 
     void updateRaisingCompleteTime(@Param(value = "loanId") long loanId);
@@ -109,11 +108,6 @@ public interface LoanMapper {
                                              @Param(value = "activityEndTime") Date activityEndTime);
 
     List<LoanModel> findSuccessLoanOutLoan();
-
-    int findLoanListCountByDto(LoanQueryDto loanQueryDto);
-
-    List<LoanModel> findLoanListByDto(LoanQueryDto loanQueryDto);
-
 
 
 }

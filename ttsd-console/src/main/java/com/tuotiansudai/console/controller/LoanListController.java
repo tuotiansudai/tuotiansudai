@@ -8,7 +8,6 @@ import com.tuotiansudai.dto.AnxinDataDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanListDto;
-import com.tuotiansudai.dto.query.LoanQueryDto;
 import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -23,18 +22,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -70,18 +65,42 @@ public class LoanListController {
     public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList( LoanQueryDto loanQueryDto) {
+    public ModelAndView ConsoleLoanList(@RequestParam(value = "fundPlatform", required = false) FundPlatform fundPlatform,
+                                        @RequestParam(value = "status", required = false) LoanStatus status,
+                                        @RequestParam(value = "loanId", required = false) Long loanId,
+                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                        @RequestParam(value = "loanName", required = false) String loanName) {
+        int pageSize = 10;
+        int loanListCount = consoleLoanService.findLoanListCount(fundPlatform, status, loanId, loanName,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(fundPlatform, status, loanId, loanName,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                index, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
-        loanQueryDto.setRealCount(consoleLoanService.findLoanListCountByDto(loanQueryDto));
-        List<LoanListDto> loanListDtos = consoleLoanService.findLoanListByDto(loanQueryDto);
+        modelAndView.addObject("loanListCount", loanListCount);
         modelAndView.addObject("loanListDtos", loanListDtos);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        long totalPages = PaginationUtil.calculateMaxPage(loanListCount, pageSize);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("selectedStatus", status);
+        modelAndView.addObject("loanId", loanId);
+        modelAndView.addObject("loanName", loanName);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("loanStatusList", LoanStatus.values());
         modelAndView.addObject("fundPlatformList", FundPlatform.values());
-        modelAndView.addObject("hasPreviousPage", loanQueryDto.hasPreviousPage());
-        modelAndView.addObject("hasNextPage", loanQueryDto.hasNextPage());
-        modelAndView.addObject("loanQueryDto",loanQueryDto );
-       return modelAndView;
+        modelAndView.addObject("fundPlatform", fundPlatform);
+        return modelAndView;
     }
+
     @RequestMapping(value = "/contract", method = RequestMethod.GET)
     public ModelAndView contract() {
         ModelAndView modelAndView = new ModelAndView("/contract-list");
@@ -190,33 +209,5 @@ public class LoanListController {
 
         return anxinWrapperClient.queryContract(new AnxinQueryContractDto(businessId, anxinContractType));
     }
-    @InitBinder
-    protected void init(HttpServletRequest request, ServletRequestDataBinder binder){
-        final SimpleDateFormat dateFormatTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormatTime.setLenient(false);
-        final SimpleDateFormat dateFormatDate=new SimpleDateFormat("yyyy-MM-dd");
-        dateFormatDate.setLenient(false);
-        DateFormat dateFormat=new DateFormat() {
-            @Override
-            public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
-                StringBuffer sb=dateFormatTime.format(date,toAppendTo,fieldPosition);
-                return sb;
-            }
 
-            @Override
-            public Date parse(String source, ParsePosition pos) {
-                Date date=null;
-                date =dateFormatTime.parse(source,pos);
-                if(date != null){
-                    return date;
-                }
-                date =dateFormatDate.parse(source,pos);
-                if(date != null){
-                    return date;
-                }
-                return null;
-            }
-        };
-        binder.registerCustomEditor(Date.class,new CustomDateEditor(dateFormat,true));
-    }
 }

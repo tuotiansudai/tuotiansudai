@@ -174,7 +174,6 @@ public class LoanModel implements Serializable {
         this.originalDuration = baseRequestDto.getOriginalDuration();
         this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
-        this.fundPlatform=baseRequestDto.getFundPlatform();
         return this;
     }
 

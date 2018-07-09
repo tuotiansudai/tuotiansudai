@@ -87,12 +87,12 @@
         periods, original_duration, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
         invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time,
         fundraising_end_time, deadline, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
-        recheck_login_name, status, update_time)
+        recheck_login_name, status, update_time,fund_platform)
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
         #{periods}, #{originalDuration}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
         #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
         #{fundraisingEndTime}, #{deadline}, #{showOnHome}, now(), #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
-        #{recheckTime}, #{recheckLoginName}, #{status}, now())
+        #{recheckTime}, #{recheckLoginName}, #{status}, now(),'FUDIAN')
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap" useCache="false">
@@ -467,6 +467,9 @@
             <if test="endTime != null">
                 <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
+            <if test="fundPlatform != null">
+                and t.fund_platform = #{fundPlatform}
+            </if>
         </where>
         order by t.created_time desc
         <if test="currentPageNo >= 0">
@@ -491,6 +494,9 @@
             </if>
             <if test="endTime != null">
                 <![CDATA[ and t.created_time <= #{endTime} ]]>
+            </if>
+            <if test="fundPlatform != null">
+                and t.fund_platform = #{fundPlatform}
             </if>
         </where>
     </select>
@@ -751,56 +757,5 @@
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
     </select>
 
-    <select id="findLoanListCountByDto"  resultType="int">
-        select count(*) from loan t
-        <where>
-            <if test="fundPlatform != null">
-                t.fund_platform = #{fundPlatform}
-            </if>
-            <if test="status != null">
-                t.status = #{status}
-            </if>
-            <if test="loanId != null">
-                and t.id = #{loanId}
-            </if>
-            <if test="loanName != null and loanName != ''">
-                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
-            </if>
-            <if test="startTime != null">
-                and t.created_time >= #{startTime}
-            </if>
-            <if test="endTime != null">
-                <![CDATA[ and t.created_time <= #{endTime} ]]>
-            </if>
-        </where>
-    </select>
-
-    <select id="findLoanListByDto"  resultMap="loanResultMap">
-        select * from loan t
-        <where>
-            <if test="fundPlatform != null">
-                t.fund_platform = #{fundPlatform}
-            </if>
-            <if test="status != null">
-                t.status = #{status}
-            </if>
-            <if test="loanId != null">
-                and t.id = #{loanId}
-            </if>
-            <if test="loanName != null and loanName != ''">
-                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
-            </if>
-            <if test="startTime != null">
-                and t.created_time >= #{startTime}
-            </if>
-            <if test="endTime != null">
-                <![CDATA[ and t.created_time <= #{endTime} ]]>
-            </if>
-        </where>
-        order by t.created_time desc
-        <if test="startRow >= 0">
-            limit #{startRow}, #{pageSize}
-        </if>
-    </select>
 
 </mapper>
