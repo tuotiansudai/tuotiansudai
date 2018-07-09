@@ -4,21 +4,18 @@ $redf63:#FF635A;
 $fontGraya2:#a2a2a2;
 $fontGraya83:#838383;
 $fontSeconed:#FF473C;
-html {
-  font-size: 100px;
-}
 p {
   margin: 0;
 }
 .info-container {
-  padding-top: 2rem;
+  padding-top: 100px;
   .status-container {
-    padding: 0.6rem 0;
+    padding: 30px 0;
     background: #fff;
     .icon-status {
       display: block;
-      width: 0.8rem;
-      height: 0.8rem;
+      width: 40px;
+      height: 40px;
       margin: 0 auto;
       &.icon-success {
         background: url('../images/icon-success.png') center center no-repeat;
@@ -32,13 +29,13 @@ p {
     }
     .desc {
       text-align: center;
-      font-size: 0.3rem;
+      font-size: 15px;
       color: $fontGray;
-      margin-top: 0.34rem;
+      margin-top: 17px;
     }
     .reason-error {
       text-align: center;
-      font-size: 0.26rem;
+      font-size: 13px;
       color: $fontGraya83;
 
     }
@@ -46,12 +43,12 @@ p {
   }
   .other-info-list {
     background: #fff;
-    margin-top: 0.02rem;
-    padding: 0 0.24rem;
+    margin-top: 1px;
+    padding: 0 12px;
     li {
-      height: 0.9rem;
-      line-height: 0.9rem;
-      font-size: 0.26rem;
+      height: 45px;
+      line-height: 45px;
+      font-size: 13px;
       .title {
         color: $fontGray;
       }
@@ -65,112 +62,42 @@ p {
   text-align: center;
   .btn-confirm {
     display: inline-block;
-    width: 6rem;
-    height: 0.9rem;
+    width: 300px;
+    height: 45px;
     background: $redf63;
-    margin-top: 1.2rem;
-    border-radius: 0.45rem;
+    margin-top: 60px;
+    border-radius: 22.5px;
     color: #fff;
-    font-size: 0.4rem;
+    font-size: 20px;
     text-align: center;
-    line-height: 0.9rem;
+    line-height: 45px;
   }
 }
 .contact {
   p {
-    font-size: 0.24rem;
+    font-size: 12px;
     color: $fontGraya2;
     text-align: center;
   }
-  margin-top: 2rem;
-  padding-bottom: 0.5rem;
+  margin-top: 100px;
+  padding-bottom: 25px;
 }
 
 //处理中页面
 .gif-container {
-  width: 4rem;
-  height: 3.1rem;
+  width: 200px;
+  height: 155px;
   margin: 0 auto;
-  margin-top: 4rem;
+  margin-top: 200px;
   background: url("../images/loading.gif");
 
 }
 //读秒页面
 .progress-container {
   color: $fontGraya2;
-  font-size: 0.28rem;
+  font-size: 14px;
   text-align: center;
   span {
     color: $fontSeconed;
-  }
-}
-@media screen and (max-width: 768px) {
-  html {
-    font-size: 102.4px;
-  }
-}
-@media screen and (max-width: 750px) {
-  html {
-    font-size: 100px;
-  }
-}
-@media screen and (max-width: 720px) {
-  html {
-    font-size: 96px;
-  }
-}
-@media screen and (max-width: 640px) {
-  html {
-    font-size: 85.33px;
-  }
-}
-@media screen and (max-width: 600px) {
-  html {
-    font-size: 80px;
-  }
-}
-@media screen and (max-width: 540px) {
-  html {
-    font-size: 72px;
-  }
-}
-@media screen and (max-width: 480px) {
-  html {
-    font-size: 64px;
-  }
-}
-@media screen and (max-width: 414px) {
-  html {
-    font-size: 55.2px;
-  }
-}
-@media screen and (max-width: 400px) {
-  html {
-    font-size: 53.33px;
-  }
-}
-@media screen and (max-width: 384px) {
-  html {
-    font-size: 51.2px;
-  }
-}
-@media screen and (max-width: 375px) {
-  html {
-    font-size: 50px;
-  }
-}
-@media screen and (max-width: 360px) {
-  html {
-    font-size: 48px;
-  }
-}
-@media screen and (max-width: 320px) {
-  html {
-    font-size: 42.66px;
-  }
-}
-@media screen and (max-width: 240px) {
-  html {
-    font-size: 32px;
   }
 }
