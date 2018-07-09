@@ -6,8 +6,8 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,8 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class CommonUtils {
@@ -28,21 +26,16 @@ public class CommonUtils {
         }
 
         if (cardNo.length() > 4) {
-
             cardNo = cardNo.substring(0, 4) + "***" + cardNo.substring(cardNo.length() - 4);
-
         }
         return cardNo;
     }
 
-    public static String convertRealMoneyByType(long amount, UserBillOperationType type) {
-
-        if (UserBillOperationType.TI_BALANCE.equals(type)) {
+    public static String convertRealMoneyByType(long amount, BankUserBillOperationType type) {
+        if (BankUserBillOperationType.IN.equals(type)) {
             return "+" + AmountConverter.convertCentToString(amount);
-        } else if (UserBillOperationType.TO_BALANCE.equals(type) || UserBillOperationType.TO_FREEZE.equals(type)) {
-            return "-" + AmountConverter.convertCentToString(amount);
         }
-        return "" + AmountConverter.convertCentToString(amount);
+        return "-" + AmountConverter.convertCentToString(amount);
     }
 
     public static String mapToFormData(Map<String, String> map) throws UnsupportedEncodingException {

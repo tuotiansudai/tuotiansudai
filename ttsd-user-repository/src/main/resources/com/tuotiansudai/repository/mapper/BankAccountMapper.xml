@@ -20,17 +20,22 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
-        values (#{loginName},#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+    <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
+        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
     </insert>
 
-    <select id="findByLoginName" parameterType="map" resultMap="bankAccountResultMap">
-        select * from bank_account where login_name = #{loginname}
+    <insert id="createLoaner" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
+        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+    </insert>
+
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">
+        select * from bank_account where login_name = #{loginName} and role_type = #{roleType}
     </select>
 
-    <select id="lockByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
-        select * from bank_account where login_name = #{loginName} for update
+    <select id="lockInvestorByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
+        select * from bank_account where login_name = #{loginName} and role_type = 'INVESTOR' for update
     </select>
 
     <update id="update" parameterType="map">
@@ -44,16 +49,19 @@
     </update>
 
     <update id="updateMembershipPoint" parameterType="map">
-        update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName}
+        update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName} and role_type = 'INVESTOR'
     </update>
 
     <update id="updateAutoInvest" parameterType="map">
-        update bank_account set auto_invest = #{autoInvest} where login_name = #{loginName}
+        update bank_account set auto_invest = #{autoInvest} where login_name = #{loginName} and role_type = 'INVESTOR'
     </update>
 
-    <update id="updateBalance" parameterType="map">
-        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName}
+    <update id="updateInvestorBalance" parameterType="map">
+        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'INVESTOR'
     </update>
 
+    <update id="updateLoanerBalance" parameterType="map">
+        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'LOANER'
+    </update>
 
 </mapper>

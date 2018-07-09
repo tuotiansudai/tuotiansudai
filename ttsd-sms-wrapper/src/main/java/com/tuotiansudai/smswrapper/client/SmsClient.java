@@ -107,7 +107,7 @@ public class SmsClient {
             smsSendSize += mobileList.size();
             redisWrapperClient.hset(QA_SEND_COUNT_PER_DAY, hKey, String.valueOf(smsSendSize), 172800);
         }
-        return Environment.QA == environment && exceed;
+        return Lists.newArrayList(Environment.QA1, Environment.QA2, Environment.QA3, Environment.QA4, Environment.QA5).contains(environment) && exceed;
     }
 
     private boolean isInCoolDown(String ip) {

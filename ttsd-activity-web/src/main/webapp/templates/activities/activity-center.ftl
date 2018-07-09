@@ -11,32 +11,43 @@
     </div>
     <div class="activity-container clearfix">
         <div class="actor-list active">
-            <#list data as activityItem>
-                <#if activityItem.longTerm=='longTerm' || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
-                    <div class="activity-box" data-href="${activityItem.webActivityUrl}">
-                        <div class="activity-img">
-                            <div class="img-inner compliance-center">
-                                <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
-                                <div class="invest-tips">市场有风险，投资需谨慎！</div>
+            <#if data!?if_exists?size != 0>
+                <#list data as activityItem>
+                    <#if activityItem.longTerm=='longTerm' || (activityItem.expiredTime?? && activityItem.expiredTime?date gte .now?date)>
+                        <div class="activity-box" data-href="${activityItem.webActivityUrl}">
+                            <div class="activity-img">
+                                <div class="img-inner compliance-center">
+                                    <img src="${commonStaticServer}${activityItem.webPictureUrl}"
+                                         alt="${activityItem.description}">
+                                    <div class="invest-tips">市场有风险，投资需谨慎！</div>
+                                </div>
                             </div>
-                        </div>
-                        <i class="icon-going"><span class="hide">进行中</span></i>
+                            <i class="icon-going"><span class="hide">进行中</span></i>
 
-                        <span class="activity-title">${activityItem.description}</span>
-                        <span class="time">
-                        <#if activityItem.longTerm == 'longTerm'>
-                            长期活动
-                        <#elseif activityItem.activatedTime??&&activityItem.expiredTime??>
-                        ${(activityItem.activatedTime?string('yyyy-MM-dd'))!} - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
-                        </#if>
+                            <span class="activity-title">${activityItem.description}</span>
+                            <span class="time">
+                                <#if activityItem.longTerm == 'longTerm'>
+                                    长期活动
+                                <#elseif activityItem.activatedTime??&&activityItem.expiredTime??>
+                                ${(activityItem.activatedTime?string('yyyy-MM-dd'))!}
+                                    - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
+                                </#if>
                         </span>
-                    <span class="button-pos">
+                            <span class="button-pos">
                         <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                         <i class="fa fa-angle-right hide"></i>
                     </span>
+                        </div>
+                    </#if>
+                </#list>
+            <#else>
+                <div class="no-activity">
+                    <div class="no-data-wap">
+                        <div class="img"></div>
+                        <p>当前暂无活动</p>
                     </div>
-                </#if>
-            </#list>
+                </div>
+            </#if>
         </div>
         <div class="actor-list">
             <#list data as activityItem>
@@ -44,7 +55,8 @@
                     <div class="activity-box" data-href="${activityItem.webActivityUrl}">
                         <div class="activity-img">
                             <div class="img-inner compliance-center">
-                                <img src="${commonStaticServer}${activityItem.webPictureUrl}" alt="${activityItem.description}">
+                                <img src="${commonStaticServer}${activityItem.webPictureUrl}"
+                                     alt="${activityItem.description}">
                                 <div class="invest-tips">市场有风险，投资需谨慎！</div>
                             </div>
                         </div>
@@ -52,11 +64,12 @@
                         <span class="activity-title">${activityItem.description}</span>
                         <span class="time">
                             <#if activityItem.activatedTime??&&activityItem.expiredTime??>
-                                ${(activityItem.activatedTime?string('yyyy-MM-dd'))!} - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
+                            ${(activityItem.activatedTime?string('yyyy-MM-dd'))!}
+                                - ${(activityItem.expiredTime?string('yyyy-MM-dd'))!}
 
                             </#if>
                         </span>
-                    <span class="button-pos">
+                        <span class="button-pos">
                         <a class="btn" href="${activityItem.webActivityUrl}">查看详情</a>
                         <i class="fa fa-angle-right hide"></i>
                     </span>

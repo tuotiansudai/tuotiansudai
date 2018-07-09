@@ -85,6 +85,7 @@
         AND `user_membership`.`login_name` = `user`.`login_name`
         AND `user_membership`.`login_name` = `bank_account`.`login_name`
         AND `user_membership`.`expired_time` > now()
+        AND `aa`.`bank_account`.role_type = 'INVESTOR'
         <where>
             <if test="loginName != null and loginName != ''">
                 user_membership.login_name = #{loginName}
@@ -134,6 +135,7 @@
         AND `user_membership`.`login_name` = `user`.`login_name`
         AND `user_membership`.`login_name` = `bank_account`.`login_name`
         AND `user_membership`.`expired_time` > now()
+        AND `aa`.`bank_account`.role_type = 'INVESTOR'
         <where>
             <if test="loginName != null and loginName != ''">
                 user_membership.login_name = #{loginName}

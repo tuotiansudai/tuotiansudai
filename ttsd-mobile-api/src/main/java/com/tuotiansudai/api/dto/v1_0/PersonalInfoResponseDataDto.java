@@ -50,6 +50,15 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "银行名称", example = "中国工商银行")
     private String bankName = "";
 
+    @ApiModelProperty(value = "银行卡单笔限额", example = "100")
+    private String singleAmount;
+
+    @ApiModelProperty(value = "银行卡单日限额", example = "100")
+    private String singleDayAmount;
+
+    @ApiModelProperty(value = "当日剩余充值金额", example = "100")
+    private String rechargeLeftAmount;
+
     @ApiModelProperty(value = "安心签状态", example = "true")
     private boolean anxinUser;
 
@@ -190,6 +199,30 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getSingleAmount() {
+        return singleAmount;
+    }
+
+    public void setSingleAmount(String singleAmount) {
+        this.singleAmount = singleAmount;
+    }
+
+    public String getSingleDayAmount() {
+        return singleDayAmount;
+    }
+
+    public void setSingleDayAmount(String singleDayAmount) {
+        this.singleDayAmount = singleDayAmount;
+    }
+
+    public String getRechargeLeftAmount() {
+        return rechargeLeftAmount;
+    }
+
+    public void setRechargeLeftAmount(String rechargeLeftAmount) {
+        this.rechargeLeftAmount = rechargeLeftAmount;
     }
 
     public boolean isExperienceEnable() {

@@ -4,24 +4,20 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.service.BankWithdrawService;
-import com.tuotiansudai.service.BlacklistService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,17 +74,21 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         long withdrawAmount = AmountConverter.convertStringToCent(String.valueOf(requestDto.getMoney()));
 
         if (withdrawAmount <= withdrawFee) {
-            return new BaseResponseDto<>(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE);
+            return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
+        }
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(requestDto.getBaseParam().getUserId(), Role.INVESTOR);
+        if (userBankCardModel == null) {
+            return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
         }
 
-        if (userBankCardMapper.findByLoginName(requestDto.getBaseParam().getUserId()) == null) {
+        if (userBankCardMapper.findByLoginNameAndRole(requestDto.getBaseParam().getUserId(), Role.INVESTOR) == null) {
             return new BaseResponseDto<>(ReturnMessage.NOT_BIND_CARD);
         }
 
         BankAsyncMessage bankAsyncMessage = bankWithdrawService.withdraw(Source.valueOf(requestDto.getBaseParam().getPlatform().toUpperCase()),
                 requestDto.getBaseParam().getUserId(),
                 requestDto.getBaseParam().getPhoneNum(),
-                withdrawAmount);
+                withdrawAmount, withdrawFee, Role.INVESTOR);
         return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 }

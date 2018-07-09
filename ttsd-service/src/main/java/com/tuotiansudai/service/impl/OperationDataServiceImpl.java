@@ -46,7 +46,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private OperationDataMapper operationDataMapper;
 
     @Autowired
-    private UserBillMapper userBillMapper;
+    private BankUserBillMapper bankUserBillMapper;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -394,7 +394,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         if (redisWrapperClient.exists(REDIS_USER_SUM_INTEREST)) {
             userSumInterest = Long.parseLong(redisWrapperClient.get(REDIS_USER_SUM_INTEREST));
         } else {
-            userSumInterest = loanRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
+            userSumInterest = loanRepayMapper.findSumActualInterest(endDate);
             redisWrapperClient.setex(REDIS_USER_SUM_INTEREST, timeout, Long.toString(userSumInterest));
         }
         return userSumInterest;

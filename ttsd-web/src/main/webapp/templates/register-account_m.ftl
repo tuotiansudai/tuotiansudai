@@ -8,7 +8,7 @@
     <h3>完成实名认证，即可开通富滇银行个人资金管理账户。<br/>
         资金安全有保障！</h3>
 
-    <form class="register-account-form" action="/m/register/account" id="registerAccountForm" method="post">
+    <form class="register-account-form" action="/m/register/account/investor" id="registerAccountForm" method="post">
         <ul class="input-list">
             <li>
                 <label for="perName">真实姓名</label>

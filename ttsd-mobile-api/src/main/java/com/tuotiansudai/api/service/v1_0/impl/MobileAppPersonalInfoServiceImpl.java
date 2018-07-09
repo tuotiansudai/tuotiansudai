@@ -6,14 +6,20 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
+import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoService {
@@ -32,8 +38,12 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     private final RiskEstimateMapper riskEstimateMapper;
 
+    private final BankMapper bankMapper;
+
+    private final BankRechargeMapper bankRechargeMapper;
+
     @Autowired
-    public MobileAppPersonalInfoServiceImpl(UserMapper userMapper, UserBankCardMapper userBankCardMapper, BankAccountService bankAccountService, InvestMapper investMapper, AnxinSignPropertyMapper anxinSignPropertyMapper, UserCouponMapper userCouponMapper, RiskEstimateMapper riskEstimateMapper) {
+    public MobileAppPersonalInfoServiceImpl(UserMapper userMapper, UserBankCardMapper userBankCardMapper, BankAccountService bankAccountService, InvestMapper investMapper, AnxinSignPropertyMapper anxinSignPropertyMapper, UserCouponMapper userCouponMapper, RiskEstimateMapper riskEstimateMapper, BankMapper bankMapper, BankRechargeMapper bankRechargeMapper) {
         this.userMapper = userMapper;
         this.userBankCardMapper = userBankCardMapper;
         this.bankAccountService = bankAccountService;
@@ -41,6 +51,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         this.anxinSignPropertyMapper = anxinSignPropertyMapper;
         this.userCouponMapper = userCouponMapper;
         this.riskEstimateMapper = riskEstimateMapper;
+        this.bankMapper = bankMapper;
+        this.bankRechargeMapper = bankRechargeMapper;
     }
 
     @Override
@@ -48,8 +60,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto<>();
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(loginName);
-        BankAccountModel account = bankAccountService.findBankAccount(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
+        BankAccountModel account = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
         PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
 
@@ -70,6 +82,11 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setBankId(userBankCardModel.getBankCode());
             personalInfoDataDto.setFastPaymentEnable(true);
             personalInfoDataDto.setBankName(userBankCardModel.getBank());
+            BankModel bankModel = bankMapper.findByBankCode(userBankCardModel.getBankCode());
+            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+            personalInfoDataDto.setSingleAmount(AmountConverter.convertCentToString(bankModel.getSingleAmount()));
+            personalInfoDataDto.setSingleDayAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
+            personalInfoDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));
         }
         if (anxinProp != null) {
             personalInfoDataDto.setAnxinUser(StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));

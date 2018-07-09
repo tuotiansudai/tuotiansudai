@@ -21,7 +21,7 @@ ALIYUN_MNS_ENABLED = config.get('aliyun.mns.enabled', 'false').lower() == 'true'
 ALIYUN_MNS_ACCESS_KEY_ID = config.get('aliyun.mns.accessKeyId', default_value='mns')
 ALIYUN_MNS_ACCESS_KEY_SECRET = config.get('aliyun.mns.accessKeySecret', default_value='mns')
 ALIYUN_MNS_END_POINT = config.get('aliyun.mns.endpoint', default_value='https://mns')
-ALIYUN_MNS_QUEUE_NAME = "LoginLog"
+ALIYUN_MNS_QUEUE_NAME = 'LoginLog' if ENV == 'prod' else "{0}-LoginLog".format(ENV.lower())
 
 MQ_REDIS_DB = config.get('common.redis.db', default_value=2)
 

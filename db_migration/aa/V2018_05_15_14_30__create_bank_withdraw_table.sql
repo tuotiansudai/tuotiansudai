@@ -1,6 +1,7 @@
 CREATE TABLE `aa`.`bank_withdraw` (
   `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`      VARCHAR(25)     NOT NULL,
+  `role_type`       VARCHAR(20)     NOT NULL,
   `amount`          BIGINT UNSIGNED NOT NULL,
   `fee`             BIGINT UNSIGNED NOT NULL,
   `source`          VARCHAR(20)     NOT NULL,

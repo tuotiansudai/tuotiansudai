@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.AppUrl;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
@@ -292,7 +293,7 @@ public class PointTaskServiceImpl implements PointTaskService {
                 }
                 break;
             case FIRST_REFERRER_INVEST:
-                return bankAccountMapper.findByLoginName(referrer) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
+                return bankAccountMapper.findByLoginNameAndRole(referrer, Role.INVESTOR) != null && userPointTaskMapper.findMaxTaskLevelByLoginName(referrer, pointTask) == 0;
             case FIRST_INVEST_180:
                 return userPointTaskMapper.findMaxTaskLevelByLoginName(loginName, pointTask) == 0
                         && loanMapper.findById(investMapper.findLatestSuccessInvest(loginName).getLoanId()).getProductType() == ProductType._180;
@@ -331,11 +332,6 @@ public class PointTaskServiceImpl implements PointTaskService {
             case REGISTER:
                 referrerSuperScholarActivityAccount(loginName, referrer);
                 break;
-        }
-
-        if (couponId != null) {
-            logger.info(MessageFormat.format("[推荐奖励] pointTask:{0} login_name:{1}, referrer:{2}, couponId:{3}", pointTask, loginName, referrer, String.valueOf(couponId)));
-            mqWrapperClient.sendMessage(MessageQueue.CouponAssigning, referrer + ":" + couponId);
         }
     }
 

@@ -105,6 +105,7 @@
         loan temp left join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
+        and temp.product_type &lt;&gt; 'EXPERIENCE'
         and temp.status not in ('WAITING_VERIFY','CANCEL')
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
         'EXPERIENCE')

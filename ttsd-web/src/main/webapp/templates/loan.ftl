@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
-     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"  data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}">
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
@@ -153,114 +153,114 @@
                                 </#if>
                             </dd>
 
-                            <dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
-                                <span class="fl">优惠券：</span>
-                                <div class="fr experience-ticket-box">
-                                    <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
-                                        <span>
-                                            <#if coupons?has_content>
-                                                <#if maxBenefitUserCoupon??>
-                                                    <#switch maxBenefitUserCoupon.couponType>
-                                                        <#case "INTEREST_COUPON">
-                                                            +${maxBenefitUserCoupon.rate * 100}%${maxBenefitUserCoupon.name}
-                                                            <#break>
-                                                        <#case "BIRTHDAY_COUPON">
-                                                        ${maxBenefitUserCoupon.name}
-                                                            <#break>
-                                                        <#default>
-                                                        ${maxBenefitUserCoupon.name}${(maxBenefitUserCoupon.amount / 100)?string("0.00")}元
-                                                    </#switch>
-                                                <#else>
-                                                    请选择优惠券
-                                                </#if>
-                                            <#else>
-                                                当前无可用优惠券
-                                            </#if>
-                                    </span>
-                                        <i class="fa fa-sort-down fr"></i>
-                                        <i class="fa fa-sort-up hide fr"></i>
-                                    </em>
-                                    <#if coupons?has_content>
-                                        <ul class="ticket-list hide">
-                                            <#list coupons as coupon>
-                                                <#if !coupon.shared>
-                                                    <li data-coupon-id="${coupon.couponId?string.computer}"
-                                                        data-user-coupon-id="${coupon.id?string.computer}"
-                                                        data-coupon-type="${coupon.couponType}"
-                                                        data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
-                                                        data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}"
-                                                        <#if coupon.investLowerLimit!=0>class="lower-upper-limit"</#if>>
-                                                        <input type="radio"
-                                                               id="${coupon.id?string.computer}"
-                                                               name="userCouponIds"
-                                                               value="${coupon.id?string.computer}"
-                                                               class="input-use-ticket"
-                                                            <#if maxBenefitUserCoupon?? && maxBenefitUserCoupon.id == coupon.id>
-                                                               checked
-                                                            </#if>
-                                                        />
-                                                        <label>
-                                                            <span class="sign">${coupon.couponType.getAbbr()}</span>
-                                                        <span class="ticket-info">
-                                                            <i class="ticket-title">
-                                                                <#switch coupon.couponType>
-                                                                    <#case "INTEREST_COUPON">
-                                                                        +${coupon.rate * 100}%${coupon.name}
-                                                                        <#break>
-                                                                    <#case "BIRTHDAY_COUPON">
-                                                                    ${coupon.name}
-                                                                        <#break>
-                                                                    <#default>
-                                                                    ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
-                                                                </#switch>
-                                                            </i>
-                                                            <#if !(coupon.productTypeList?seq_contains(loan.productType))>
-                                                                <br/>
-                                                                <#assign minProductType=361>
-                                                                <#list coupon.productTypeList as productType>
-                                                                    <#if productType.getDuration() < minProductType>
-                                                                        <#assign minProductType=productType.getDuration()>
-                                                                    </#if>
-                                                                </#list>
-                                                                <#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>
-                                                                <#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>
-                                                                <#if minProductType=360><#assign couponTips='[适用于200天以上项目可用]'></#if>
-                                                                <i class="ticket-term" title="${couponTips!}">${couponTips!}</i>
-                                                            <#else>
-                                                                <br/>
-                                                                <#if coupon.investLowerLimit!=0>
-                                                                    <i class="ticket-term lower-limit"
-                                                                       data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元即可使用]</i>
-                                                                </#if>
-                                                                <#if coupon.investLowerLimit==0>
-                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>
-                                                                    </i>
-                                                                </#if>
-                                                            </#if>
-                                                            </span>
-                                                        </label>
-                                                    </li>
-                                                </#if>
-                                            </#list>
-                                        </ul>
-                                        <#list coupons as coupon>
-                                            <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.productTypeList?seq_contains(loan.productType))>
-                                                <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}"
-                                                       data-coupon-id="${coupon.couponId?string.computer}"/>
-                                                <p class="red-tiptext clearfix">
-                                                    <i class="icon-redbag"></i>
-                                                    <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>
-                                                </p>
-                                            </#if>
-                                        </#list>
-                                    </#if>
-                                </div>
-                            </dd>
+                            <#--<dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>-->
+                                <#--<span class="fl">优惠券：</span>-->
+                                <#--<div class="fr experience-ticket-box">-->
+                                    <#--<em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">-->
+                                        <#--<span>-->
+                                            <#--<#if coupons?has_content>-->
+                                                <#--<#if maxBenefitUserCoupon??>-->
+                                                    <#--<#switch maxBenefitUserCoupon.couponType>-->
+                                                        <#--<#case "INTEREST_COUPON">-->
+                                                            <#--+${maxBenefitUserCoupon.rate * 100}%${maxBenefitUserCoupon.name}-->
+                                                            <#--<#break>-->
+                                                        <#--<#case "BIRTHDAY_COUPON">-->
+                                                        <#--${maxBenefitUserCoupon.name}-->
+                                                            <#--<#break>-->
+                                                        <#--<#default>-->
+                                                        <#--${maxBenefitUserCoupon.name}${(maxBenefitUserCoupon.amount / 100)?string("0.00")}元-->
+                                                    <#--</#switch>-->
+                                                <#--<#else>-->
+                                                    <#--请选择优惠券-->
+                                                <#--</#if>-->
+                                            <#--<#else>-->
+                                                <#--当前无可用优惠券-->
+                                            <#--</#if>-->
+                                    <#--</span>-->
+                                        <#--<i class="fa fa-sort-down fr"></i>-->
+                                        <#--<i class="fa fa-sort-up hide fr"></i>-->
+                                    <#--</em>-->
+                                    <#--<#if coupons?has_content>-->
+                                        <#--<ul class="ticket-list hide">-->
+                                            <#--<#list coupons as coupon>-->
+                                                <#--<#if !coupon.shared>-->
+                                                    <#--<li data-coupon-id="${coupon.couponId?string.computer}"-->
+                                                        <#--data-user-coupon-id="${coupon.id?string.computer}"-->
+                                                        <#--data-coupon-type="${coupon.couponType}"-->
+                                                        <#--data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"-->
+                                                        <#--data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd")}T${coupon.endTime?string("HH:mm:ss")}"-->
+                                                        <#--<#if coupon.investLowerLimit!=0>class="lower-upper-limit"</#if>>-->
+                                                        <#--<input type="radio"-->
+                                                               <#--id="${coupon.id?string.computer}"-->
+                                                               <#--name="userCouponIds"-->
+                                                               <#--value="${coupon.id?string.computer}"-->
+                                                               <#--class="input-use-ticket"-->
+                                                            <#--<#if maxBenefitUserCoupon?? && maxBenefitUserCoupon.id == coupon.id>-->
+                                                               <#--checked-->
+                                                            <#--</#if>-->
+                                                        <#--/>-->
+                                                        <#--<label>-->
+                                                            <#--<span class="sign">${coupon.couponType.getAbbr()}</span>-->
+                                                        <#--<span class="ticket-info">-->
+                                                            <#--<i class="ticket-title">-->
+                                                                <#--<#switch coupon.couponType>-->
+                                                                    <#--<#case "INTEREST_COUPON">-->
+                                                                        <#--+${coupon.rate * 100}%${coupon.name}-->
+                                                                        <#--<#break>-->
+                                                                    <#--<#case "BIRTHDAY_COUPON">-->
+                                                                    <#--${coupon.name}-->
+                                                                        <#--<#break>-->
+                                                                    <#--<#default>-->
+                                                                    <#--${coupon.name}${(coupon.amount / 100)?string("0.00")}元-->
+                                                                <#--</#switch>-->
+                                                            <#--</i>-->
+                                                            <#--<#if !(coupon.productTypeList?seq_contains(loan.productType))>-->
+                                                                <#--<br/>-->
+                                                                <#--<#assign minProductType=361>-->
+                                                                <#--<#list coupon.productTypeList as productType>-->
+                                                                    <#--<#if productType.getDuration() < minProductType>-->
+                                                                        <#--<#assign minProductType=productType.getDuration()>-->
+                                                                    <#--</#if>-->
+                                                                <#--</#list>-->
+                                                                <#--<#if minProductType=90><#assign couponTips='[适用于60天以上项目可用]'></#if>-->
+                                                                <#--<#if minProductType=180><#assign couponTips='[适用于120天以上项目可用]'></#if>-->
+                                                                <#--<#if minProductType=360><#assign couponTips='[适用于200天以上项目可用]'></#if>-->
+                                                                <#--<i class="ticket-term" title="${couponTips!}">${couponTips!}</i>-->
+                                                            <#--<#else>-->
+                                                                <#--<br/>-->
+                                                                <#--<#if coupon.investLowerLimit!=0>-->
+                                                                    <#--<i class="ticket-term lower-limit"-->
+                                                                       <#--data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元即可使用]</i>-->
+                                                                <#--</#if>-->
+                                                                <#--<#if coupon.investLowerLimit==0>-->
+                                                                    <#--<i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>-->
+                                                                    <#--</i>-->
+                                                                <#--</#if>-->
+                                                            <#--</#if>-->
+                                                            <#--</span>-->
+                                                        <#--</label>-->
+                                                    <#--</li>-->
+                                                <#--</#if>-->
+                                            <#--</#list>-->
+                                        <#--</ul>-->
+                                        <#--<#list coupons as coupon>-->
+                                            <#--<#if (coupon.shared && coupon.investLowerLimit==0 && coupon.productTypeList?seq_contains(loan.productType))>-->
+                                                <#--<input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}"-->
+                                                       <#--data-coupon-id="${coupon.couponId?string.computer}"/>-->
+                                                <#--<p class="red-tiptext clearfix">-->
+                                                    <#--<i class="icon-redbag"></i>-->
+                                                    <#--<span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>-->
+                                                <#--</p>-->
+                                            <#--</#if>-->
+                                        <#--</#list>-->
+                                    <#--</#if>-->
+                                <#--</div>-->
+                            <#--</dd>-->
 
                             <dd class="expected-interest-dd tc" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                                 <span>预计总收益：</span>
                                 <span class="principal-income">0.00</span>
-                                <span class="experience-income"></span>
+                                <#--<span class="experience-income"></span>-->
                                 元
                                     <#if membershipLevel==2>
                                         <i class="icon-graded level2"></i>
@@ -672,51 +672,51 @@
                 </div>
                 <div class="loan-list-con">
                     <div class="content record">
-                        <#if loan.achievement??>
-                        <div class="row title-list">
-                            <div class="col-md-4">
-                                <div class="br">
-                                    <div class="item">
-                                        <h4 class="first"><span><a href="/activity/invest-achievement" target="_blank">拓荒先锋 >></a></span></h4>
-                                        <#if (loan.achievement.firstInvestAchievementMobile)??>
-                                            <p>
-                                                恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
-                                                拔得头筹 奖励0.2％加息券＋50元投资红包</p>
-                                        <#else>
-                                            <p>虚位以待</p>
-                                        </#if>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="br">
-                                    <div class="item">
-                                        <h4 class="king"><span><a href="/activity/invest-achievement" target="_blank">拓天标王 >></a></span></h4>
-                                        <#if (loan.achievement.maxAmountAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span
-                                                    class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元投资红包</p>
-                                        <#else>
-                                            <p>虚位以待</p>
-                                        </#if>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="br">
-                                    <div class="item">
-                                        <h4 class="hammer"><span><a href="/activity/invest-achievement" target="_blank">一锤定音 >></a></span></h4>
-                                        <#if (loan.achievement.lastInvestAchievementMobile)??>
-                                            <p>
-                                                恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
-                                                终结此标 奖励0.2％加息券＋50元投资红包</p>
-                                        <#else>
-                                            <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
-                                        </#if>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </#if>
+                        <#--<#if loan.achievement??>-->
+                        <#--<div class="row title-list">-->
+                            <#--<div class="col-md-4">-->
+                                <#--<div class="br">-->
+                                    <#--<div class="item">-->
+                                        <#--<h4 class="first"><span><a href="/activity/invest-achievement" target="_blank">拓荒先锋 >></a></span></h4>-->
+                                        <#--<#if (loan.achievement.firstInvestAchievementMobile)??>-->
+                                            <#--<p>-->
+                                                <#--恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>-->
+                                                <#--拔得头筹 奖励0.2％加息券＋50元投资红包</p>-->
+                                        <#--<#else>-->
+                                            <#--<p>虚位以待</p>-->
+                                        <#--</#if>-->
+                                    <#--</div>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                            <#--<div class="col-md-4">-->
+                                <#--<div class="br">-->
+                                    <#--<div class="item">-->
+                                        <#--<h4 class="king"><span><a href="/activity/invest-achievement" target="_blank">拓天标王 >></a></span></h4>-->
+                                        <#--<#if (loan.achievement.maxAmountAchievementMobile)??>-->
+                                            <#--<p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span-->
+                                                    <#--class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元投资红包</p>-->
+                                        <#--<#else>-->
+                                            <#--<p>虚位以待</p>-->
+                                        <#--</#if>-->
+                                    <#--</div>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                            <#--<div class="col-md-4">-->
+                                <#--<div class="br">-->
+                                    <#--<div class="item">-->
+                                        <#--<h4 class="hammer"><span><a href="/activity/invest-achievement" target="_blank">一锤定音 >></a></span></h4>-->
+                                        <#--<#if (loan.achievement.lastInvestAchievementMobile)??>-->
+                                            <#--<p>-->
+                                                <#--恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>-->
+                                                <#--终结此标 奖励0.2％加息券＋50元投资红包</p>-->
+                                        <#--<#else>-->
+                                            <#--<p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>-->
+                                        <#--</#if>-->
+                                    <#--</div>-->
+                                <#--</div>-->
+                            <#--</div>-->
+                        <#--</div>-->
+                        <#--</#if>-->
                         <div class="table-box">
 
                         </div>
@@ -728,7 +728,7 @@
         </div>
     </div>
     <div id="authorizeAgreementOptions" class="pad-s-tb tl fl hide">
-        <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
+        <p class="mb-0 text-m color-title">请在新打开的富滇银行完成操作后选择：</p>
         <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
         <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
         <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
@@ -751,6 +751,30 @@
         <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
+</div>
+<div id="bankCardDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+
+    <div class="tc text-m">您还没绑卡，请先进行绑卡</div>
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <form action="${requestContext.getContextPath()}/bank-card/bind/source/WEB" method="post" style="display: block">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+            <input id="accountBtn" class="btn btn-success" value="确定" type="submit"/>
+        </div>
+    </form>
+
+</div>
+<#--切换为出借人 -->
+<div id="turnInvestorDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">是否切换为出借人身份？</div>
+    <form action="/account/switch" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>
+            <button class="btn btn-success" type="submit">确定</button>
+        </div>
+    </form>
 </div>
 
 

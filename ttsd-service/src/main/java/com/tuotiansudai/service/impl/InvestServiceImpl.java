@@ -4,11 +4,11 @@ import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
-import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.exception.InvestException;
@@ -17,9 +17,8 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -98,12 +97,6 @@ public class InvestServiceImpl implements InvestService {
     private UserCouponService userCouponService;
 
     @Autowired
-    private MQWrapperClient mqWrapperClient;
-
-    @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
-
-    @Autowired
     private UserOpLogService userOpLogService;
 
     @Autowired
@@ -121,10 +114,13 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private UserMembershipService userMembershipService;
+
     @Override
     public BankAsyncMessage invest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(false);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -143,7 +139,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public BankReturnCallbackMessage noPasswordInvest(InvestDto investDto) throws InvestException {
         investDto.setNoPassword(true);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
         InvestModel investModel = this.generateInvest(investDto);
@@ -161,7 +157,7 @@ public class InvestServiceImpl implements InvestService {
 
     private InvestModel generateInvest(InvestDto investDto) throws InvestException {
         this.checkInvestAvailable(investDto);
-        double rate = membershipPrivilegePurchaseService.obtainServiceFee(investDto.getLoginName());
+        double rate = userMembershipService.obtainServiceFee(investDto.getLoginName());
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(),
                 Long.parseLong(investDto.getLoanId()),
@@ -179,7 +175,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAvailable(InvestDto investDto) throws InvestException {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
 
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -418,7 +414,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         bankAccountModel.setAutoInvest(isTurnOn);
         bankAccountMapper.updateAutoInvest(loginName, isTurnOn);
         // 发送用户行为日志MQ
@@ -451,7 +447,7 @@ public class InvestServiceImpl implements InvestService {
 
     public long calculateMembershipPreference(String loginName, long loanId, List<Long> couponIds, long investAmount, Source source) {
         long preference;
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
         LoanModel loanModel = loanMapper.findById(loanId);
 
         List<ExtraLoanRateModel> extraLoanRateModels = extraLoanRateMapper.findByLoanId(loanId);

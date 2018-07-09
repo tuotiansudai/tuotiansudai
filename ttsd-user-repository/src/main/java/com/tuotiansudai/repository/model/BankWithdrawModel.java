@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 
 import java.io.Serializable;
@@ -26,6 +27,8 @@ public class BankWithdrawModel implements Serializable {
     private Date createdTime;
 
     private Date updatedTime;
+
+    private Role roleType;
 
     public BankWithdrawModel() {
     }
@@ -116,5 +119,13 @@ public class BankWithdrawModel implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public Role getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Role roleType) {
+        this.roleType = roleType;
     }
 }

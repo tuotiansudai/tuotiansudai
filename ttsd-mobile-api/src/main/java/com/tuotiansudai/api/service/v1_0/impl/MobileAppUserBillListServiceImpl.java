@@ -7,55 +7,51 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserBillListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.UserBillModel;
+import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.mapper.BankUserBillMapper;
+import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListService {
-    static Logger logger = Logger.getLogger(MobileAppUserBillListServiceImpl.class);
+
+    private static Logger logger = Logger.getLogger(MobileAppUserBillListServiceImpl.class);
+
     @Autowired
-    private UserBillMapper userBillMapper;
+    private BankUserBillMapper bankUserBillMapper;
 
     @Autowired
     private PageValidUtils pageValidUtils;
 
-    private final static Map<UserBillCategory, List<UserBillOperationType>> OPERATION_TYPE = Maps.newHashMap(ImmutableMap.<UserBillCategory, List<UserBillOperationType>>builder()
-            .put(UserBillCategory.INCOMING, Lists.newArrayList(UserBillOperationType.TI_BALANCE, UserBillOperationType.UNFREEZE))
-            .put(UserBillCategory.EXPENSE, Lists.newArrayList(UserBillOperationType.TO_BALANCE, UserBillOperationType.FREEZE,UserBillOperationType.TO_FREEZE))
+    private final static Map<UserBillCategory, BankUserBillOperationType> OPERATION_TYPE = Maps.newHashMap(ImmutableMap.<UserBillCategory, BankUserBillOperationType>builder()
+            .put(UserBillCategory.INCOMING, BankUserBillOperationType.IN)
+            .put(UserBillCategory.EXPENSE, BankUserBillOperationType.OUT)
             .build());
 
     @Override
     public BaseResponseDto<UserBillDetailListResponseDataDto> queryUserBillList(UserBillDetailListRequestDto userBillDetailListRequestDto) {
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<UserBillDetailListResponseDataDto> dto = new BaseResponseDto<>();
         String loginName = userBillDetailListRequestDto.getUserId();
         Integer index = userBillDetailListRequestDto.getIndex();
-        if(index == null || index <= 0){
+        if (index == null || index <= 0) {
             index = 1;
         }
         Integer pageSize = pageValidUtils.validPageSizeLimit(userBillDetailListRequestDto.getPageSize());
         UserBillCategory userBillCategory = userBillDetailListRequestDto.getUserBillCategory();
-        List<UserBillOperationType> userBillOperationTypes= userBillCategory != null ? OPERATION_TYPE.get(userBillCategory):Lists.newArrayList();
+        BankUserBillOperationType operationType = userBillCategory != null ? OPERATION_TYPE.get(userBillCategory) : null;
 
-        List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("loginName", loginName)
-                .put("userBillOperationTypes",userBillOperationTypes)
-                .put("indexPage", (index - 1) * pageSize)
-                .put("pageSize", pageSize).build()));
+        List<BankUserBillModel> userBillModels = bankUserBillMapper.findUserBills(loginName, null, null, operationType, null, null, (index - 1) * pageSize, pageSize, Role.INVESTOR);
 
-        int count = userBillMapper.findUserBillsCount(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("loginName", loginName)
-                .put("userBillOperationTypes",userBillOperationTypes)
-                .build()));
+        long count = bankUserBillMapper.countBills(loginName, null, null, operationType, null, null, Role.INVESTOR);
+
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         UserBillDetailListResponseDataDto userBillDetailListResponseDataDto = new UserBillDetailListResponseDataDto();
@@ -67,15 +63,14 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
         return dto;
     }
 
-    private List<UserBillRecordResponseDataDto> convertUserBillRecordDto(List<UserBillModel> userBillList) {
+    private List<UserBillRecordResponseDataDto> convertUserBillRecordDto(List<BankUserBillModel> bankUserBillModels) {
         List<UserBillRecordResponseDataDto> userBillRecords = Lists.newArrayList();
-        for (UserBillModel userBill : userBillList) {
+        for (BankUserBillModel userBill : bankUserBillModels) {
             UserBillRecordResponseDataDto userBillRecordResponseDataDto = new UserBillRecordResponseDataDto();
             userBillRecordResponseDataDto.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userBill.getCreatedTime()));
             userBillRecordResponseDataDto.setMoney(CommonUtils.convertRealMoneyByType(userBill.getAmount(), userBill.getOperationType()));
             userBillRecordResponseDataDto.setTypeInfo(userBill.getBusinessType());
             userBillRecordResponseDataDto.setTypeInfoDesc(userBill.getBusinessType().getDescription());
-            userBillRecordResponseDataDto.setFrozenMoney(AmountConverter.convertCentToString(userBill.getFreeze()));
             userBillRecordResponseDataDto.setDetail(userBill.getOperationType().getDescription());
             userBillRecords.add(userBillRecordResponseDataDto);
         }

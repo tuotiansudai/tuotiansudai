@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.service.v3_0.impl;
 
-import com.google.common.collect.Iterables;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
@@ -10,7 +10,7 @@ import com.tuotiansudai.api.dto.v3_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v3_0.MobileAppLoanListV3Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -25,11 +25,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +49,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
     private InvestMapper investMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -65,101 +67,76 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
-        List<ProductType> noContainExperienceLoans = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
-        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
-        List<ProductType> onlyContainExperienceLoans = Lists.newArrayList(ProductType.EXPERIENCE, ProductType._30, ProductType._90, ProductType._180, ProductType._360);
+        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         LoanModel loanModel = null;
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-
-        //没登录 or 没投资过任何标
-        if (StringUtils.isEmpty(loginName) ||
-                investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
-
-            List<LoanModel> loanModels;
-            if (StringUtils.isEmpty(loginName) || (!StringUtils.isEmpty(loginName)) && investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, onlyContainExperienceLoans) == 0) {
-                loanModels = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(Lists.newArrayList(ProductType.EXPERIENCE)), ActivityType.NEWBIE);
-            } else {
-                loanModels = loanMapper.findByProductType(null, noContainExperienceLoans, null);
-            }
-
-            if (loanModels.size() <= 0) {
-                logger.error("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
-            } else if (loanModels.size() > 0) {
-                loanModel = loanModels.get(0);
-            } else {
-                logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
-            }
-        } else {
-            //登录 && 投资过标
-            //目前同一时间可投标不超过100个
-            List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
-            //有可投标的,版本号小于4.3过滤掉经营性借款
-            if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
-                raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
-            }
-            if (raisingLoanModels.size() != 0) {
-                Collections.sort(raisingLoanModels, new Comparator<LoanModel>() {
-                    @Override
-                    public int compare(LoanModel o1, LoanModel o2) {
-                        if (o1.getActivityType().equals(ActivityType.NEWBIE) && !o2.getActivityType().equals(ActivityType.NEWBIE)) {
-                            return -1;
-                        } else if (!o1.getActivityType().equals(ActivityType.NEWBIE) && o2.getActivityType().equals(ActivityType.NEWBIE)) {
+        //目前同一时间可投标不超过100个
+        List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, allProductTypesCondition, null);
+        //有可投标的,版本号小于4.3过滤掉经营性借款
+        if (AppVersionUtil.compareVersion() == AppVersionUtil.low) {
+            raisingLoanModels = raisingLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+        }
+        if (raisingLoanModels.size() != 0) {
+            Collections.sort(raisingLoanModels, new Comparator<LoanModel>() {
+                @Override
+                public int compare(LoanModel o1, LoanModel o2) {
+                    if (o1.getActivityType().equals(ActivityType.NEWBIE) && !o2.getActivityType().equals(ActivityType.NEWBIE)) {
+                        return -1;
+                    } else if (!o1.getActivityType().equals(ActivityType.NEWBIE) && o2.getActivityType().equals(ActivityType.NEWBIE)) {
+                        return 1;
+                    } else {
+                        if (o1.getProductType().getDuration() > o2.getProductType().getDuration()) {
                             return 1;
+                        } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
+                            return -1;
                         } else {
-                            if (o1.getProductType().getDuration() > o2.getProductType().getDuration()) {
-                                return 1;
-                            } else if (o1.getProductType().getDuration() < o2.getProductType().getDuration()) {
+                            if (o1.getVerifyTime().after(o2.getVerifyTime())) {
                                 return -1;
                             } else {
-                                if (o1.getVerifyTime().after(o2.getVerifyTime())) {
-                                    return -1;
-                                } else {
-                                    return 1;
-                                }
+                                return 1;
                             }
                         }
                     }
-                });
+                }
+            });
 
-                if (0 == investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceLoans)) {
-                    //登录 && 投资过标 && 没投资过体验标外的任何标 = 登录 && 只投资过体验标
-                    loanModel = raisingLoanModels.get(0);
-                } else {
-                    //登录 && 投资过其它标
-                    Collections.reverse(raisingLoanModels);
-                    loanModel = raisingLoanModels.get(0);
-                    if (raisingLoanModels.size() > 1) {
-                        for (int i = 1; i < raisingLoanModels.size(); ++i) {
-                            if (loanModel.getProductType() == raisingLoanModels.get(i).getProductType()) {
-                                loanModel = raisingLoanModels.get(i);
-                            } else {
-                                break;
-                            }
+            if (Strings.isNullOrEmpty(loginName) || 0 == investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition)) {
+                loanModel = raisingLoanModels.get(0);
+            } else {
+                //登录 && 投资过其它标
+                Collections.reverse(raisingLoanModels);
+                loanModel = raisingLoanModels.get(0);
+                if (raisingLoanModels.size() > 1) {
+                    for (int i = 1; i < raisingLoanModels.size(); ++i) {
+                        if (loanModel.getProductType() == raisingLoanModels.get(i).getProductType()) {
+                            loanModel = raisingLoanModels.get(i);
+                        } else {
+                            break;
                         }
+                    }
+                }
+            }
+        } else {
+            //没有可投标的
+            List<LoanModel> soldLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
+            soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
+            //版本号小于4.3过滤掉经营性借款
+            if (AppVersionUtil.compareVersion() == AppVersionUtil.low) {
+                soldLoanModels = soldLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
+            }
+            if (soldLoanModels.size() > 0) {
+                loanModel = soldLoanModels.get(0);
+                for (LoanModel curLoanModel : soldLoanModels) {
+                    if (curLoanModel.getRaisingCompleteTime() == null) {
+                        continue;
+                    }
+                    if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
+                        loanModel = curLoanModel;
                     }
                 }
             } else {
-                //没有可投标的
-                List<LoanModel> soldLoanModels = loanMapper.findByStatus(LoanStatus.COMPLETE);
-                soldLoanModels.addAll(loanMapper.findByStatus(LoanStatus.REPAYING));
-                //版本号小于4.3过滤掉经营性借款
-                if(AppVersionUtil.compareVersion() == AppVersionUtil.low){
-                    soldLoanModels = soldLoanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
-                }
-                if (soldLoanModels.size() > 0) {
-                    loanModel = soldLoanModels.get(0);
-                    for (LoanModel curLoanModel : soldLoanModels) {
-                        if(curLoanModel.getRaisingCompleteTime() == null){
-                            continue;
-                        }
-                        if (loanModel.getRaisingCompleteTime().before(curLoanModel.getRaisingCompleteTime())) {
-                            loanModel = curLoanModel;
-                        }
-                    }
-                } else {
-                    logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]没有售完的标");
-                }
+                logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]没有售完的标");
             }
         }
 
@@ -180,7 +157,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
             return loanDtoList;
         }
 
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
 
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();

@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
+import com.tuotiansudai.fudian.dto.request.BankUserRole;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import org.springframework.web.bind.WebDataBinder;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public abstract class AsyncRequestController {
 
-    BankConfig bankConfig;
+    private BankConfig bankConfig;
 
     public AsyncRequestController(BankConfig bankConfig) {
         this.bankConfig = bankConfig;
@@ -22,7 +23,8 @@ public abstract class AsyncRequestController {
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
-        dataBinder.registerCustomEditor(Source.class, new SourcePropertyEditor());
+        dataBinder.registerCustomEditor(Source.class, new SourcePropertyEditor()) ;
+        dataBinder.registerCustomEditor(BankUserRole.class, new RegisterRoleTypePropertyEditor());
     }
 
     BankAsyncMessage generateAsyncRequestData(BaseRequestDto requestDto, ApiType apiType) {

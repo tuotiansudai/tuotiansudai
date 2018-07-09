@@ -3,7 +3,7 @@ package com.tuotiansudai.util;
 
 public enum CsvHeaderType {
 
-    ConsoleUserFundsCsvHeader("时间,序号,用户名,业务员,姓名,手机号,费用类型,操作类型,金额,余额,冻结金额", "后台用户资金查询导出CSV"),
+    ConsoleUserFundsCsvHeader("时间,序号,用户名,姓名,手机号,费用类型,操作类型,金额,余额,冻结金额", "后台用户资金查询导出CSV"),
     ConsoleReferrerManageCsvHeader("项目名称,期数,投资人,投资人姓名,投资金额,投资时间,来源,推荐人,推荐人姓名,推荐人是否业务员,推荐层级,推荐奖励,奖励状态,奖励时间", "后台推荐人管理导出CSV"),
     ConsoleUsers("用户名,是否绑卡,真实姓名,手机号,电子邮件,推荐人,推荐人是否为业务员,来源,渠道,注册时间,开通自动投标,角色,状态,生日,省,市", "后台用户管理"),
     ConsoleRecharge("编号,时间,用户名,业务员,姓名,手机号,充值金额,快捷充值,充值状态,充值来源,渠道", "后台充值记录"),

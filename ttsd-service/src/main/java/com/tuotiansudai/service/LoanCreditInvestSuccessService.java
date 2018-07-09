@@ -87,30 +87,35 @@ public class LoanCreditInvestSuccessService {
         this.updateInvestRepay(transferApplicationModel);
 
         //承接人购买成功 转出
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                investModel.getLoginName(),
-                transferApplicationId,
-                bankLoanCreditInvestMessage.getBankOrderNo(),
-                bankLoanCreditInvestMessage.getBankOrderDate(),
-                transferApplicationModel.getTransferAmount(),
-                UserBillBusinessType.INVEST_TRANSFER_IN)));
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                Lists.newArrayList(new AmountTransferMessage(transferApplicationId,
+                        investModel.getLoginName(),
+                        Role.INVESTOR,
+                        transferApplicationModel.getTransferAmount(),
+                        bankLoanCreditInvestMessage.getBankOrderNo(),
+                        bankLoanCreditInvestMessage.getBankOrderDate(),
+                        BankUserBillOperationType.OUT,
+                        BankUserBillBusinessType.INVEST_TRANSFER_IN)));
 
         //转让人转让成功 转入
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(
-                new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
-                        transferInvestModel.getLoginName(),
-                        transferApplicationId,
-                        bankLoanCreditInvestMessage.getBankOrderNo(),
-                        bankLoanCreditInvestMessage.getBankOrderDate(),
-                        transferApplicationModel.getTransferAmount(),
-                        UserBillBusinessType.INVEST_TRANSFER_OUT),
-                new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                        transferInvestModel.getLoginName(),
-                        transferApplicationId,
-                        bankLoanCreditInvestMessage.getBankOrderNo(),
-                        bankLoanCreditInvestMessage.getBankOrderDate(),
-                        transferApplicationModel.getTransferFee(),
-                        UserBillBusinessType.TRANSFER_FEE)));
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
+                Lists.newArrayList(
+                        new AmountTransferMessage(transferApplicationId,
+                                transferInvestModel.getLoginName(),
+                                Role.INVESTOR,
+                                transferApplicationModel.getTransferAmount(),
+                                bankLoanCreditInvestMessage.getBankOrderNo(),
+                                bankLoanCreditInvestMessage.getBankOrderDate(),
+                                BankUserBillOperationType.IN,
+                                BankUserBillBusinessType.INVEST_TRANSFER_OUT),
+                        new AmountTransferMessage(transferApplicationId,
+                                transferInvestModel.getLoginName(),
+                                Role.INVESTOR,
+                                transferApplicationModel.getTransferFee(),
+                                bankLoanCreditInvestMessage.getBankOrderNo(),
+                                bankLoanCreditInvestMessage.getBankOrderDate(),
+                                BankUserBillOperationType.OUT,
+                                BankUserBillBusinessType.TRANSFER_FEE)));
 
         //系统账户收取手续费
         mqWrapperClient.sendMessage(MessageQueue.SystemBill,

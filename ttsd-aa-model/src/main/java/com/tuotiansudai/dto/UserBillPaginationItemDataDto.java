@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.AmountConverter;
@@ -12,8 +14,6 @@ public class UserBillPaginationItemDataDto {
     private long id;
 
     private String balance = "0.00";
-
-    private String freeze = "0.00";
 
     private String income = "0.00";
 
@@ -27,18 +27,17 @@ public class UserBillPaginationItemDataDto {
     public UserBillPaginationItemDataDto() {
     }
 
-    public UserBillPaginationItemDataDto(UserBillModel userBillModel) {
-        this.id = userBillModel.getId();
-        this.freeze = AmountConverter.convertCentToString(userBillModel.getFreeze());
-        this.balance = AmountConverter.convertCentToString(userBillModel.getBalance());
-        if (UserBillOperationType.TI_BALANCE == userBillModel.getOperationType()) {
-            this.income = AmountConverter.convertCentToString(userBillModel.getAmount());
+    public UserBillPaginationItemDataDto(BankUserBillModel bankUserBillModel) {
+        this.id = bankUserBillModel.getId();
+        this.balance = AmountConverter.convertCentToString(bankUserBillModel.getBalance());
+        if (BankUserBillOperationType.IN == bankUserBillModel.getOperationType()) {
+            this.income = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
         }
-        if (UserBillOperationType.TO_BALANCE == userBillModel.getOperationType() || UserBillOperationType.TO_FREEZE == userBillModel.getOperationType()) {
-            this.cost = AmountConverter.convertCentToString(userBillModel.getAmount());
+        if (BankUserBillOperationType.OUT == bankUserBillModel.getOperationType()) {
+            this.cost = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
         }
-        this.businessType = userBillModel.getBusinessType().getDescription();
-        this.createdTime = userBillModel.getCreatedTime();
+        this.businessType = bankUserBillModel.getBusinessType().getDescription();
+        this.createdTime = bankUserBillModel.getCreatedTime();
     }
 
     public Date getCreatedTime() {
@@ -71,14 +70,6 @@ public class UserBillPaginationItemDataDto {
 
     public void setCost(String cost) {
         this.cost = cost;
-    }
-
-    public String getFreeze() {
-        return freeze;
-    }
-
-    public void setFreeze(String freeze) {
-        this.freeze = freeze;
     }
 
     public String getBalance() {

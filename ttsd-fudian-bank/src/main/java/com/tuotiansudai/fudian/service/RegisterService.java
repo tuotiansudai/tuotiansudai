@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
+import com.tuotiansudai.fudian.dto.request.BankUserRole;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.RegisterContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
@@ -54,8 +55,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
         this.selectMapper = selectMapper;
     }
 
-    public RegisterRequestDto register(Source source, BankRegisterDto bankRegisterDto) {
-        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), bankRegisterDto.getIdentityCode());
+    public RegisterRequestDto register(Source source, BankUserRole bankUserRole, BankRegisterDto bankRegisterDto) {
+        RegisterRequestDto dto = new RegisterRequestDto(source, bankRegisterDto.getLoginName(), bankRegisterDto.getMobile(), bankRegisterDto.getRealName(), bankUserRole.getCode(), bankRegisterDto.getIdentityCode());
         signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
@@ -70,7 +71,8 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
                 bankRegisterDto.getRealName(),
                 bankRegisterDto.getToken(),
                 null, null,
-                dto.getOrderNo(), dto.getOrderDate()
+                dto.getOrderNo(), dto.getOrderDate(),
+                bankUserRole == BankUserRole.INVESTOR
         );
 
         String bankRegisterMessageKey = MessageFormat.format(BANK_REGISTER_MESSAGE_KEY, dto.getOrderDate());
@@ -106,6 +108,9 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             BankRegisterMessage bankRegisterMessage = gson.fromJson(message, BankRegisterMessage.class);
             bankRegisterMessage.setBankAccountNo(registerContentDto.getAccountNo());
             bankRegisterMessage.setBankUserName(registerContentDto.getUserName());
+            bankRegisterMessage.setBank(registerContentDto.getBank());
+            bankRegisterMessage.setBankCardNo(registerContentDto.getBankCardNo());
+            bankRegisterMessage.setBankCode(registerContentDto.getBankCode());
             this.messageQueueClient.sendMessage(MessageQueue.RegisterBankAccount_Success, bankRegisterMessage);
         }
 

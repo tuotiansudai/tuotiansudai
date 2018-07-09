@@ -6,17 +6,9 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayRequestDto;
 import com.tuotiansudai.api.dto.v1_0.UserInvestRepayResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppUserInvestRepayServiceImpl;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -78,9 +70,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
     private LoanMapper loanMapper;
 
     @Mock
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
-
-    @Mock
     private TransferApplicationMapper transferApplicationMapper;
 
     @Test
@@ -102,7 +91,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 
@@ -136,7 +124,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(loanService.findLoanById(anyLong())).thenReturn(loanModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
 
@@ -189,7 +176,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(investModel.getId()));
 
@@ -256,7 +242,6 @@ public class MobileAppUserInvestRepayServiceTest extends ServiceTestBase{
         when(investExtraRateMapper.findByInvestId(anyLong())).thenReturn(new InvestExtraRateModel());
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(userMembershipEvaluator.evaluateSpecifiedDate(anyString(), any(Date.class))).thenReturn(new MembershipModel(0, 1, 0, 0.1));
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.1);
         UserInvestRepayRequestDto userInvestRepayRequestDto =  new UserInvestRepayRequestDto();
         userInvestRepayRequestDto.setInvestId(String.valueOf(transferInvestModel.getId()));
 

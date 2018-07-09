@@ -11,7 +11,6 @@ import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
@@ -47,9 +46,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
-
-    @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
@@ -165,14 +161,12 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         }));
 
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-
         List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel, new Date());
-            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, investFeeRate);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount, defaultFee);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
                 maxBenefitUserCoupons.add(usableUserCoupon);

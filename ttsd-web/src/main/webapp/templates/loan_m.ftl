@@ -162,5 +162,4 @@
 </div>
     <#include 'project-detail_m.ftl'>
     <#include 'buy-loan_m.ftl'>
-    <#include 'select-coupon_m.ftl'>
 </@global.main>

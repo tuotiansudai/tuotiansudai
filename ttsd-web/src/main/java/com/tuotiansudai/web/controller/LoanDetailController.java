@@ -8,9 +8,10 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.service.BankBindCardService;
@@ -57,7 +58,7 @@ public class LoanDetailController {
     private RiskEstimateService riskEstimateService;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -80,18 +81,15 @@ public class LoanDetailController {
         modelAndView.addObject("interestPerTenThousands", investService.estimateInvestIncome(loanId,
                 membershipModel == null ? defaultFee : membershipModel.getFee(),
                 LoginUserInfo.getLoginName(), 1000000, new Date()));
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), Role.INVESTOR);
         modelAndView.addObject("hasBankCard", userBankCardModel != null);
-        double investFeeRate = ProductType.EXPERIENCE == loanDetail.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName());
+        double investFeeRate = ProductType.EXPERIENCE == loanDetail.getProductType() ? this.defaultFee : userMembershipService.obtainServiceFee(LoginUserInfo.getLoginName());
         int membershipLevel = 0;
         if (null != membershipModel) {
             membershipLevel = membershipModel.getLevel();
         }
         modelAndView.addObject("membershipLevel", membershipLevel);
         modelAndView.addObject("investFeeRate", investFeeRate);
-
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-        modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);
 
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
 
