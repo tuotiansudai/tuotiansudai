@@ -51,6 +51,7 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
             BankRegisterMessage bankRegisterMessage = new Gson().fromJson(message, BankRegisterMessage.class);
             bankAccountService.processBankAccount(bankRegisterMessage);
             signInClient.refreshData(bankRegisterMessage.getToken(), Source.WEB);
+            signInClient.switchRole(bankRegisterMessage.getToken(), bankRegisterMessage.isInvestor() ? Role.INVESTOR : Role.LOANER);
             mqWrapperClient.sendMessage(MessageQueue.RegisterBankAccount_CompletePointTask, message);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
