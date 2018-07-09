@@ -7,10 +7,7 @@ import com.tuotiansudai.dto.query.LoanQueryDto;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ExtraLoanRateModel;
-import com.tuotiansudai.repository.model.LoanDetailsModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,5 +112,16 @@ public class ConsoleLoanService {
         return loanListDtos;
     }
 
-
+    public List<LoanListDto> findLoanList(FundPlatform fundPlatform,LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
+        LoanQueryDto loanQueryDto =new LoanQueryDto();
+        loanQueryDto.setFundPlatform(fundPlatform);
+        loanQueryDto.setStatus(status);
+        loanQueryDto.setLoanId(loanId);
+        loanQueryDto.setLoanName(loanName);
+        loanQueryDto.setStartTime(startTime);
+        loanQueryDto.setEndTime(endTime);
+        loanQueryDto.setPageSize(Integer.MAX_VALUE);
+        loanQueryDto.setStartRow(0);
+        return findLoanListByDto(loanQueryDto);
+    }
 }

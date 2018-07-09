@@ -118,7 +118,8 @@ public interface InvestMapper {
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                     @Param(value = "afterTime") Date afterTime);
 
-    long findCountInvestPagination(@Param(value = "loanId") Long loanId,
+    long findCountInvestPagination( @Param(value = "fundPlatform") FundPlatform fundPlatform,
+                                   @Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
                                    @Param(value = "source") Source source,
@@ -129,7 +130,8 @@ public interface InvestMapper {
                                    @Param(value = "preferenceType") PreferenceType preferenceType,
                                    @Param(value = "productType") ProductType productType);
 
-    List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
+    List<InvestPaginationItemView> findInvestPagination(@Param(value = "fundPlatform") FundPlatform fundPlatform,
+                                                        @Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "channel") String channel,
                                                         @Param(value = "source") Source source,
@@ -152,7 +154,8 @@ public interface InvestMapper {
                          @Param(value = "investStatus") InvestStatus investStatus,
                          @Param(value = "loanStatus") LoanStatus loanStatus);
 
-    long sumInvestAmountConsole(@Param(value = "loanId") Long loanId,
+    long sumInvestAmountConsole(@Param(value = "fundPlatform") FundPlatform fundPlatform,
+                                @Param(value = "loanId") Long loanId,
                                 @Param(value = "investorLoginName") String investorLoginName,
                                 @Param(value = "channel") String channel,
                                 @Param(value = "source") Source source,

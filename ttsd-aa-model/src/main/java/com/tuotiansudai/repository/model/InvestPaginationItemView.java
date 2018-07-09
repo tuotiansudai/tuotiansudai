@@ -34,6 +34,8 @@ public class InvestPaginationItemView implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
+    //新增资金渠道
+    private FundPlatform fundPlatform;
 
     public List<Role> getInvestorRoleList() {
         List<Role> roles = new ArrayList<>();
@@ -239,5 +241,13 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public FundPlatform getFundPlatform() {
+        return fundPlatform;
+    }
+
+    public void setFundPlatform(FundPlatform fundPlatform) {
+        this.fundPlatform = fundPlatform;
     }
 }

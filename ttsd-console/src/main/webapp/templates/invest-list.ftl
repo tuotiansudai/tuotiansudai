@@ -89,6 +89,17 @@
                 </#list>
             </select>
         </div>
+        <div class="form-group">
+            <label>资金平台</label>
+            <select class="selectpicker" name="fundPlatform">
+                <option value="" <#if !(fundPlatform??)>selected</#if>>全部</option>
+                <#list fundPlatformList as item>
+                    <option value="${item}" <#if fundPlatform?? && fundPlatform.name()==item.name()>selected</#if>>
+                    ${item.description}
+                    </option>
+                </#list>
+            </select>
+        </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
     </form>
@@ -102,6 +113,7 @@
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>
+                <th>资金平台</th>
                 <th>投资人</th>
                 <th>投资人姓名</th>
                 <th>投资人手机号</th>
@@ -124,6 +136,7 @@
                     <td>${invest.loanId?string.computer}</td>
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
+                    <td><#if invest.fundPlatform??>${invest.fundPlatform.getDescription()}</#if></td>
                     <td>${invest.investorLoginName!}</td>
                     <td>${invest.investorUserName!}
                         <#if invest.investorStaff>
@@ -166,7 +179,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index - 1}&<#if fundPlatform??>fundPlatform=${fundPlatform}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -177,7 +190,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index + 1}&<#if fundPlatform??>fundPlatform=${fundPlatform}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

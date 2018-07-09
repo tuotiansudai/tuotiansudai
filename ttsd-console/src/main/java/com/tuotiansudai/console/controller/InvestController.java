@@ -45,7 +45,8 @@ public class InvestController {
     private RepayService repayService;
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
-    public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
+    public ModelAndView getInvestList(@RequestParam(name = "fundPlatform", required = false) FundPlatform fundPlatform,
+                                      @RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "mobile", required = false) String investorMobile,
                                       @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType,
                                       @RequestParam(name = "channel", required = false) String channel,
@@ -56,7 +57,7 @@ public class InvestController {
                                       @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(fundPlatform,loanId, investorMobile, channel, source, role,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 investStatus, preferenceType, null, index, pageSize);
@@ -77,6 +78,8 @@ public class InvestController {
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("roleList", Lists.newArrayList(Role.values()).stream().filter(r -> !Lists.newArrayList(Role.AGENT).contains(r)).collect(Collectors.toList()));
+        mv.addObject("fundPlatformList",FundPlatform.values());
+        mv.addObject("fundPlatform",fundPlatform);
         return mv;
     }
 
