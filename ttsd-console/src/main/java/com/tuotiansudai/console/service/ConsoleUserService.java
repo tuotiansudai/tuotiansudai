@@ -186,14 +186,14 @@ public class ConsoleUserService {
         return userMapperConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
-    public List<UserItemDataDto> findUsersAccountBalance(AccountType accountType,String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(AccountType accountType, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         List<UserView> userViews = null;
-        if(accountType == AccountType.LIANDONGYOUSHI){
-            userViews=userMapperConsole.findUsersAccountBalanceOld(mobile, balance.get(0), balance.get(1),
+        if (accountType == AccountType.UMP) {
+            userViews = userMapperConsole.findUsersAccountBalanceOld(mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
-        }else{
-            userViews=userMapperConsole.findUsersAccountBalance(accountType,mobile, balance.get(0), balance.get(1),
+        } else {
+            userViews = userMapperConsole.findUsersAccountBalance(accountType, mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         }
         List<UserItemDataDto> userItemDataDtoList = Lists.newArrayList();
@@ -204,20 +204,20 @@ public class ConsoleUserService {
         return userItemDataDtoList;
     }
 
-    public long findUsersAccountBalanceCount(AccountType accountType,String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceCount(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if(accountType == AccountType.LIANDONGYOUSHI){
+        if (accountType == AccountType.UMP) {
             return userMapperConsole.findUsersAccountBalanceCountOld(mobile, balance.get(0), balance.get(1));
         }
-        return userMapperConsole.findUsersAccountBalanceCount(accountType,mobile, balance.get(0), balance.get(1));
+        return userMapperConsole.findUsersAccountBalanceCount(accountType, mobile, balance.get(0), balance.get(1));
     }
 
-    public long findUsersAccountBalanceSum(AccountType accountType,String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if(accountType == AccountType.LIANDONGYOUSHI){
+        if (accountType == AccountType.UMP) {
             return userMapperConsole.findUsersAccountBalanceSumOld(mobile, balance.get(0), balance.get(1));
         }
-        return userMapperConsole.findUsersAccountBalanceSum(accountType,mobile, balance.get(0), balance.get(1));
+        return userMapperConsole.findUsersAccountBalanceSum(accountType, mobile, balance.get(0), balance.get(1));
     }
 
 
