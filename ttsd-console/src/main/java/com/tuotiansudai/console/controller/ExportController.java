@@ -346,13 +346,14 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
-    public void exportAccountBalance(@RequestParam(value = "mobile", required = false) String mobile,
+    public void exportAccountBalance(@RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+                                     @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                      @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.AccountBalance.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(accountType,mobile, balanceMin, balanceMax, index, pageSize);
         List<List<String>> accountBalanceData = exportService.buildAccountBalance(dataDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
     }

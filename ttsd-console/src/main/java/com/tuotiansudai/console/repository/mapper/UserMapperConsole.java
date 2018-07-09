@@ -5,6 +5,7 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.model.AccountType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
@@ -45,16 +46,31 @@ public interface UserMapperConsole {
                                   @Param(value = "mobile") String mobile,
                                   @Param(value = "identityNumber") String identityNumber);
 
-    long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceSum(@Param(value = "accountType") AccountType accountType,
+                                    @Param(value = "mobile") String mobile,
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
 
+    long findUsersAccountBalanceSumOld(@Param(value = "mobile") String mobile,
+                                    @Param(value = "balanceMin") long balanceMin,
+                                    @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceCount(@Param(value = "accountType") AccountType accountType,
+                                      @Param(value = "mobile") String mobile,
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
 
-    List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceCountOld(@Param(value = "mobile") String mobile,
+                                      @Param(value = "balanceMin") long balanceMin,
+                                      @Param(value = "balanceMax") long balanceMax);
+
+    List<UserView> findUsersAccountBalance(@Param(value = "accountType")AccountType accountType,
+                                           @Param(value = "mobile") String mobile,
+                                           @Param(value = "balanceMin") long balanceMin,
+                                           @Param(value = "balanceMax") long balanceMax,
+                                           @Param(value = "startLimit") Integer startLimit,
+                                           @Param(value = "endLimit") Integer endLimit);
+    List<UserView> findUsersAccountBalanceOld(@Param(value = "mobile") String mobile,
                                            @Param(value = "balanceMin") long balanceMin,
                                            @Param(value = "balanceMax") long balanceMax,
                                            @Param(value = "startLimit") Integer startLimit,

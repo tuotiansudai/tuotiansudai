@@ -283,8 +283,11 @@
         (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        WHERE 1=1
+        <if test="accountType != null">
+            AND `bank_account`.`role_type` = #{accountType}
+        </if>
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -301,12 +304,48 @@
 
     </select>
 
+    <select id="findUsersAccountBalanceOld" parameterType="map" resultMap="userViewResultMap">
+        SELECT
+        user.id as id,
+        user.login_name as login_name,
+        user.mobile as mobile,
+        user.province as province,
+        user.city as city,
+        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
+        user.register_time as register_time,
+        user.status as status,
+        user.user_name as user_name,
+        account.balance as balance,
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+        ORDER BY `account`.`balance` DESC
+        <if test="startLimit != null and endLimit != null">
+            limit #{startLimit}, #{endLimit}
+        </if>
+
+    </select>
+
     <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
         SELECT IFNULL(SUM(`bank_account`.`balance`), 0)
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        WHERE 1=1
+        <if test="accountType != null">
+            AND `bank_account`.`role_type` = #{accountType}
+        </if>
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -318,12 +357,32 @@
         </if>
     </select>
 
+    <select id="findUsersAccountBalanceSumOld" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
+        </if>
+    </select>
+
     <select id="findUsersAccountBalanceCount" parameterType="map" resultType="long">
         SELECT IFNULL(count(1), 0)
         FROM `user`
         JOIN `bank_account`
         ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        WHERE 1=1
+        <if test="accountType != null">
+            AND `bank_account`.`role_type` = #{accountType}
+        </if>
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -332,6 +391,22 @@
         </if>
         <if test="balanceMax >= 0">
             AND `bank_account`.`balance` &lt;= #{balanceMax}
+        </if>
+    </select>
+    <select id="findUsersAccountBalanceCountOld" parameterType="map" resultType="long">
+        SELECT IFNULL(count(1), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        <if test="mobile != null and mobile != '' ">
+            AND `user`.`mobile` = #{mobile}
+        </if>
+        <if test="balanceMin >= 0">
+            AND `account`.`balance` >= #{balanceMin}
+        </if>
+        <if test="balanceMax >= 0">
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
