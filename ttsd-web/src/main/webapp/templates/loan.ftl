@@ -133,7 +133,7 @@
                         <dl class="account-list">
                             <dd class="clearfix">
                                 <span class="fl">账户余额(出借人)：</span>
-                                <a class="fr" href="/recharge">去充值>></a>
+                                <a class="fr" href="/recharge" <@global.role hasRole="'LOANER'">style="display: none"</@global.role>>去充值>></a>
                                 <em class="fr account-amount" data-user-balance="${loan.investor.balance?string.computer}">${(loan.investor.balance / 100)?string("0.00")} 元</em>
                             </dd>
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
@@ -293,16 +293,16 @@
                                     <#if loan.loanStatus == "RAISING">马上投资</#if>
                                 </button>
                             </dd>
-                            <@global.role hasRole="'INVESTOR'">
-                                <#if !loan.investor.noPasswordInvest>
-                                    <dd>
-                                        <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
-                                            推荐您开通免密投资
-                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，投资快人一步"></i>
-                                        </a>
-                                    </dd>
-                                </#if>
-                            </@global.role>
+                            <#--<@global.role hasRole="'INVESTOR'">-->
+                                <#--<#if !loan.investor.noPasswordInvest>-->
+                                    <#--<dd>-->
+                                        <#--<a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">-->
+                                            <#--推荐您开通免密投资-->
+                                            <#--<i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，投资快人一步"></i>-->
+                                        <#--</a>-->
+                                    <#--</dd>-->
+                                <#--</#if>-->
+                            <#--</@global.role>-->
 
                             <input type="hidden" value="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
