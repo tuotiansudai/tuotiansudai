@@ -15,12 +15,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.tuotiansudai.fudian.mapper.fudian")
+@MapperScan(basePackages = "com.tuotiansudai.fudian.mapper.fudian", sqlSessionTemplateRef = "fudianSqlSessionTemplate")
 public class MybatisFudianConfig {
 
     @Primary
     @Bean(name = "fudianDatasource")
-    @ConfigurationProperties(prefix = "spring.fudian-datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.fudian")
     public DataSource fudianDatasource(){
         return DataSourceBuilder.create().build();
     }
@@ -33,14 +33,14 @@ public class MybatisFudianConfig {
         return bean.getObject();
     }
 
-    @Bean(name = "fudianTransactionManager")
     @Primary
+    @Bean(name = "fudianTransactionManager")
     public DataSourceTransactionManager fudianTransactionManager(@Qualifier("fudianDatasource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    @Bean(name = "fudianSqlSessionTemplate")
     @Primary
+    @Bean(name = "fudianSqlSessionTemplate")
     public SqlSessionTemplate fudianSqlSessionTemplate(@Qualifier("fudianSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

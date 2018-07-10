@@ -1,17 +1,14 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
 import com.tuotiansudai.fudian.dto.request.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
 @Repository
-public interface InsertMapper {
+public interface UmpInsertMapper {
 
     @Insert("INSERT INTO card_bind(`request_data`, `merchant_no`, `order_no`, `order_date`, `ext_mark`, `return_url`, `notify_url`, `user_name`, `account_no`, `request_time`) " +
             "VALUES(#{requestData}, #{merchantNo}, #{orderNo}, #{orderDate}, #{extMark}, #{returnUrl}, #{notifyUrl}, #{userName}, #{accountNo}, now())")
