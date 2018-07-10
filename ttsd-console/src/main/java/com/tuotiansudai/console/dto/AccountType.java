@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.console.dto;
 
 /**
  * Created by qduljs2011 on 2018/7/9.

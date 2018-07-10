@@ -5,7 +5,7 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.AccountType;
+import com.tuotiansudai.console.dto.AccountType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
