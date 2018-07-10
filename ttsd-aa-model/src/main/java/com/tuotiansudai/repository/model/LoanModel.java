@@ -148,7 +148,6 @@ public class LoanModel implements Serializable {
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
-        this.fundPlatform=baseRequestDto.getFundPlatform();
     }
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
