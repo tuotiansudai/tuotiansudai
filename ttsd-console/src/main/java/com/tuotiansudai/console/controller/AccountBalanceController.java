@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.service.ConsoleUserService;
-import com.tuotiansudai.console.dto.AccountType;
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

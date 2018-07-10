@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.console.dto.AccountType;
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;

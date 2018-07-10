@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.dto;
+package com.tuotiansudai.enums;
 
 /**
  * Created by qduljs2011 on 2018/7/9.
