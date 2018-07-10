@@ -249,11 +249,13 @@
 <#--切换为出借人 -->
 <div id="turnLenderDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
     <div class="tc text-m">是否切换为出借人身份？</div>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <div class="tc person-info-btn" style="margin-top:40px;">
-        <button class="btn  btn-cancel btn-close" type="button">取消</button>
-        <button class="btn btn-success btn-turn-Lender" type="button">确定</button>
-    </div>
+    <form action="/account/switch?redirect=/transfer/${transferApplication.id?c}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>
+            <button class="btn btn-success btn-turn-Lender" type="button">确定</button>
+        </div>
+    </form>
 </div>
 
     <#include "component/red-envelope-float.ftl" />

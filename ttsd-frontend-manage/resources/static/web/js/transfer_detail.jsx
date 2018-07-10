@@ -150,7 +150,6 @@ function submitData() {
                             location.href = '/login?redirect=' + encodeURIComponent(location.href);
                             return false;
                         }
-alert(isInvestor)
                         var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
                         if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
                             location.href = '/recharge';
@@ -184,16 +183,7 @@ alert(isInvestor)
         }
     });
 }
-$turnToLoanerBtn.on('click',function () {
-    commonFun.useAjax({
-        url: '/XXXXXXXXXXXXXXXXXXX',
-        type: 'POST'
-    },function(data) {
-        if(data.data.status){
-            location.reload();
-        }
-    });
-})
+
 $questionList.find('dl dd').hide();
 $questionList.find('dl dd').eq(0).show();
 $questionList.find('dl dt').eq(0).find('i').addClass('fa-chevron-circle-up').removeClass('fa-chevron-circle-down')
