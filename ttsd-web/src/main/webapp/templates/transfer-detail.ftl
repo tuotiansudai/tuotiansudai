@@ -84,7 +84,7 @@
                         </#if>
                     </p>
                     <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
-                    <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
+                    <p class="user-money"><span class="name-text">账户余额<@global.role hasRole="'LOANER'">(出借人)</@global.role>：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge" <@global.role hasRole="'LOANER'">style="display: none"</@global.role> >去充值 >></a></strong></span></p>
                     <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"/>
                     <input type="hidden" id="userBalance" name="userBalance" value="${transferApplication.balance!}"/>
                     <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}"/>
