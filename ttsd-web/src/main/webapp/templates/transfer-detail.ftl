@@ -253,7 +253,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn  btn-cancel btn-close" type="button">取消</button>
-            <button class="btn btn-success btn-turn-Lender" type="button">确定</button>
+            <button class="btn btn-success" type="submit">确定</button>
         </div>
     </form>
 </div>
