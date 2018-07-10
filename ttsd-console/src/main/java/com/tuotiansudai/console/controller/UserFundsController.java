@@ -1,11 +1,10 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.dto.AccountType;
 import com.tuotiansudai.console.service.ConsoleUserBillService;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.AccountType;
-import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;

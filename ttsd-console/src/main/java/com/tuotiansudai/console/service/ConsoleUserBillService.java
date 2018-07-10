@@ -1,13 +1,13 @@
 package com.tuotiansudai.console.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.dto.AccountType;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.AccountType;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
@@ -35,7 +35,7 @@ public class ConsoleUserBillService {
         this.bankUserBillMapper = bankUserBillMapper;
     }
 
-    public List<BankUserBillModel> findUserFunds(AccountType accountType,BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
+    public List<BankUserBillModel> findUserFunds(AccountType accountType, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
