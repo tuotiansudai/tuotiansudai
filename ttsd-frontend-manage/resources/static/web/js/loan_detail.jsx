@@ -106,45 +106,45 @@ function investSubmit(){
         }
     }
     amountInputElement.val(amountInputElement.autoNumeric("get"));
-    if (noPasswordInvest) {//判断是否开启免密投资
-        layer.open({
-            type: 1,
-            closeBtn: 0,
-            skin: 'layer-tip-loanDetail',
-            title: '免密投资',
-            shadeClose:false,
-            btn:['取消', '确认'],
-            area: ['300px'],
-            content: '<p class="pad-m-tb tc">确认投资？</p>',
-            btn1: function(){
-                layer.closeAll();
-            },
-            btn2:function(){
-                if($isAuthenticationRequired.val()==='false'){
-                    if(!isEstimate){
-                        //风险测评
-                        layer.open({
-                            type: 1,
-                            title:false,
-                            closeBtn: 0,
-                            area: ['400px', '250px'],
-                            shadeClose: true,
-                            content: $('#riskAssessmentFormSubmit')
-
-                        });
-                        return false;
-                    }else {
-                        sendSubmitRequest();
-                    }
-
-                }else{
-                    anxinModule.getSkipPhoneTip();
-                    return false;
-                }
-            }
-        });
-        return;
-    }
+    // if (noPasswordInvest) {//判断是否开启免密投资
+    //     layer.open({
+    //         type: 1,
+    //         closeBtn: 0,
+    //         skin: 'layer-tip-loanDetail',
+    //         title: '免密投资',
+    //         shadeClose:false,
+    //         btn:['取消', '确认'],
+    //         area: ['300px'],
+    //         content: '<p class="pad-m-tb tc">确认投资？</p>',
+    //         btn1: function(){
+    //             layer.closeAll();
+    //         },
+    //         btn2:function(){
+    //             if($isAuthenticationRequired.val()==='false'){
+    //                 if(!isEstimate){
+    //                     //风险测评
+    //                     layer.open({
+    //                         type: 1,
+    //                         title:false,
+    //                         closeBtn: 0,
+    //                         area: ['400px', '250px'],
+    //                         shadeClose: true,
+    //                         content: $('#riskAssessmentFormSubmit')
+    //
+    //                     });
+    //                     return false;
+    //                 }else {
+    //                     sendSubmitRequest();
+    //                 }
+    //
+    //             }else{
+    //                 anxinModule.getSkipPhoneTip();
+    //                 return false;
+    //             }
+    //         }
+    //     });
+    //     return;
+    // }
     //正常投资
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
         if(!isEstimate){

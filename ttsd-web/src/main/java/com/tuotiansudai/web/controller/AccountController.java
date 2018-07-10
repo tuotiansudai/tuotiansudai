@@ -68,7 +68,8 @@ public class AccountController {
 
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
-        UserFundView userFundView = userFundMapper.findByLoginName(loginName, LoginUserInfo.getBankRole());
+        Role role = LoginUserInfo.getBankRole();
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName, role);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 
@@ -91,7 +92,6 @@ public class AccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
-        Role role = LoginUserInfo.getBankRole();
         modelAndView.addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null);
         modelAndView.addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
 
@@ -130,7 +130,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/switch", method = RequestMethod.POST)
-    public ModelAndView switchAccount(@RequestParam(value = "redirect") String redirect) {
+    public ModelAndView switchAccount(@RequestParam(value = "redirect", required = false) String redirect) {
         if (LoginUserInfo.getBankRole() == Role.INVESTOR) {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
         }
