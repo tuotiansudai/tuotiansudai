@@ -114,12 +114,6 @@ function submitData() {
                     btn2: function() {
 
                         if ($transferForm.attr('action') === '/transfer/purchase') {
-
-                            var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                            if (!isInvestor) {alert('不是投资人')
-                                location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                                return false;
-                            }
                             var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
                             if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
                                 location.href = '/recharge';
