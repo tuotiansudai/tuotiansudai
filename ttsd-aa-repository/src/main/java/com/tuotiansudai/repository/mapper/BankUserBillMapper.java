@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.AccountType;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.console.dto.AccountType;
 import com.tuotiansudai.console.service.ConsoleUserBillService;
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
 import com.tuotiansudai.enums.UserBillBusinessType;
