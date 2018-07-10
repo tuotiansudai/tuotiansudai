@@ -31,7 +31,7 @@ public class ConsoleRechargeService {
     }
 
     public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(AccountType accountType,String rechargeId, String mobile, Source source,
-                                                                                                BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
+                                                                                                BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime,String role) {
         index = index < 1 ? 1 : index;
         int count = bankRechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime, null);
 
@@ -63,7 +63,7 @@ public class ConsoleRechargeService {
                                       BankRechargeStatus status,
                                       String channel,
                                       Date startTime,
-                                      Date endTime) {
+                                      Date endTime,String role) {
 
         return bankRechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, null, startTime, endTime);
     }

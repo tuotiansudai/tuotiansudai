@@ -41,9 +41,9 @@ public class RechargeController {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(accountType,rechargeId, mobile, source,
-                status, channel, index, pageSize, startTime, endTime);
+                status, channel, index, pageSize, startTime, endTime,null);
         List<String> channelList = consoleRechargeService.findAllChannel();
-        long sumAmount = consoleRechargeService.findSumRechargeAmount(accountType,rechargeId, mobile, source, status, channel, startTime, endTime);
+        long sumAmount = consoleRechargeService.findSumRechargeAmount(accountType,rechargeId, mobile, source, status, channel, startTime, endTime,null);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(BankRechargeStatus.values()));
