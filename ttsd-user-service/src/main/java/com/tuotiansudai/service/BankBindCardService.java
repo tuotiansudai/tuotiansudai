@@ -76,7 +76,11 @@ public class BankBindCardService {
         }
 
         UserBankCardModel model = new UserBankCardModel(bankBindCardMessage.getLoginName(), bankBindCardMessage.getBank(), bankBindCardMessage.getBankCode(), bankBindCardMessage.getCardNumber(), bankBindCardMessage.getBankOrderNo(), bankBindCardMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
-        userBankCardMapper.createInvestor(model);
+        if (bankBindCardMessage.isInvestor()){
+            userBankCardMapper.createInvestor(model);
+        }else {
+            userBankCardMapper.createLoaner(model);
+        }
     }
 
     public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, Role role) {
