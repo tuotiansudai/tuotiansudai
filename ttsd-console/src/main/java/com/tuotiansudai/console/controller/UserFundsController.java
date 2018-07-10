@@ -3,7 +3,10 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.console.service.ConsoleUserBillService;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.repository.model.AccountType;
 import com.tuotiansudai.repository.model.BankUserBillModel;
+import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,8 +27,11 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
+    public ModelAndView userFunds(@RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+                                  @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
                                   @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
+                                  @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
+                                  @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
                                   @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
@@ -50,6 +56,12 @@ public class UserFundsController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("accountTypeList", AccountType.values());
+        modelAndView.addObject("accountType",accountType);
+        modelAndView.addObject("businessTypeUMP", businessTypeUMP);
+        modelAndView.addObject("businessTypeUMPList", UserBillBusinessType.values());
+        modelAndView.addObject("operationTypeUMP",operationTypeUMP);
+        modelAndView.addObject("operationTypeUMPList", UserBillOperationType.values());
         return modelAndView;
     }
 
