@@ -132,7 +132,7 @@
                         <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
                         <dl class="account-list">
                             <dd class="clearfix">
-                                <span class="fl">账户余额(出借人)：</span>
+                                <span class="fl">账户余额<@global.role hasRole="'LOANER'">(出借人)</@global.role>：</span>
                                 <a class="fr" href="/recharge" <@global.role hasRole="'LOANER'">style="display: none"</@global.role>>去充值>></a>
                                 <em class="fr account-amount" data-user-balance="${loan.investor.balance?string.computer}">${(loan.investor.balance / 100)?string("0.00")} 元</em>
                             </dd>
