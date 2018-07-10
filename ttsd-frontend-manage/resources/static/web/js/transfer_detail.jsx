@@ -17,6 +17,7 @@ let isEstimate = $transferDetailCon.data('estimate');
 let isAuthentication = 'USER' === $transferDetailCon.data('authentication');
 let isInvestor = 'INVESTOR' === $transferDetailCon.data('user-role');
 let isLoaner = 'LOANER' === $transferDetailCon.data('loaner-role');
+let isBankCard = $transferDetailCon.data('bankcard');
 
 let $turnToLoanerBtn = $('.btn-turn-Lender');
 let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
@@ -63,12 +64,95 @@ function submitData() {
         transferAmount = $("#amount").val(),
         userBalance = $("#userBalance").val(),
         $transferDetail = $('.transfer-detail-content');
+    if (isInvestor&&isBankCard) {
+        commonFun.useAjax({
+            url: '/transfer/' + transferApplicationId + '/purchase-check',
+            type: 'GET'
+        },function(data) {
+            if (data.message == "SUCCESS") {
+                layer.open({
+                    title: '温馨提示',
+                    btn: ['确定'],
+                    content: '该项目已被承接，请选择其他项目。',
+                    btn1: function(index, layero) {
+                        layer.closeAll();
+                        location.href = "/transfer-list";
+                    }
+                });
+            } else if (data.message == "CANCEL") {
+                layer.open({
+                    title: '温馨提示',
+                    btn: ['确定'],
+                    content: '该项目已被取消，请选择其他项目。',
+                    btn1: function(index, layero) {
+                        layer.closeAll();
+                        location.href = "/transfer-list";
+                    }
+                });
+            } else if (data.message == "MULTITERM") {
+                layer.open({
+                    title: '温馨提示',
+                    btn: ['确定'],
+                    content: '该项目已被承接或已取消，请选择其他项目。',
+                    btn1: function(index, layero) {
+                        layer.closeAll();
+                        location.href = "/transfer-list";
+                    }
+                });
+            } else {
+                layer.open({
+                    type: 1,
+                    closeBtn: 0,
+                    title: '投资提示',
+                    shadeClose: false,
+                    btn: ['取消', '确认'],
+                    area: ['300px'],
+                    content: '<p class="pad-m-tb tc">确认投资？</p>',
+                    btn1: function() {
+                        layer.closeAll();
+                    },
+                    btn2: function() {
 
-    if (isAuthentication&&!isInvestor) {
-        location.href = '/register/account';
-        return false;
-    }
-    if(isLoaner){
+                        if ($transferForm.attr('action') === '/transfer/purchase') {
+
+                            var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                            if (!isInvestor) {alert('不是投资人')
+                                location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                                return false;
+                            }
+                            var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
+                            if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
+                                location.href = '/recharge';
+                                return false;
+                            }
+                        }
+                        if($isAnxinAuthenticationRequired.val()=='false'){
+                            if(!isEstimate){
+                                //风险测评
+                                layer.open({
+                                    type: 1,
+                                    title:false,
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskAssessment')
+
+                                });
+                                return false;
+                            }else {
+                                $transferForm.submit();
+                            }
+
+                        }else{
+                            anxinModule.getSkipPhoneTip();
+                            return false;
+                        }
+
+                    }
+                });
+            }
+        });
+    }else if(isLoaner){
         layer.open({
             type: 1,
             move: false,
@@ -81,7 +165,10 @@ function submitData() {
         });
         return false;
     }
-    let isBankCard = $transferDetailCon.data('bankcard');
+    if (!isInvestor&&isAuthentication) {
+        location.href = '/register/account';
+        return false;
+    }
     if(!isBankCard) {
         layer.open({
             type: 1,
@@ -95,93 +182,7 @@ function submitData() {
         });
         return false;
     }
-    commonFun.useAjax({
-        url: '/transfer/' + transferApplicationId + '/purchase-check',
-        type: 'GET'
-    },function(data) {
-        if (data.message == "SUCCESS") {
-            layer.open({
-                title: '温馨提示',
-                btn: ['确定'],
-                content: '该项目已被承接，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/transfer-list";
-                }
-            });
-        } else if (data.message == "CANCEL") {
-            layer.open({
-                title: '温馨提示',
-                btn: ['确定'],
-                content: '该项目已被取消，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/transfer-list";
-                }
-            });
-        } else if (data.message == "MULTITERM") {
-            layer.open({
-                title: '温馨提示',
-                btn: ['确定'],
-                content: '该项目已被承接或已取消，请选择其他项目。',
-                btn1: function(index, layero) {
-                    layer.closeAll();
-                    location.href = "/transfer-list";
-                }
-            });
-        } else {
-            layer.open({
-                type: 1,
-                closeBtn: 0,
-                title: '投资提示',
-                shadeClose: false,
-                btn: ['取消', '确认'],
-                area: ['300px'],
-                content: '<p class="pad-m-tb tc">确认投资？</p>',
-                btn1: function() {
-                    layer.closeAll();
-                },
-                btn2: function() {
-
-                    if ($transferForm.attr('action') === '/transfer/purchase') {
-
-                        var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                        if (!isInvestor) {alert('不是投资人')
-                            location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                            return false;
-                        }
-                        var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
-                        if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
-                            location.href = '/recharge';
-                            return false;
-                        }
-                    }
-                    if($isAnxinAuthenticationRequired.val()=='false'){
-                        if(!isEstimate){
-                            //风险测评
-                            layer.open({
-                                type: 1,
-                                title:false,
-                                closeBtn: 0,
-                                area: ['400px', '250px'],
-                                shadeClose: true,
-                                content: $('#riskAssessment')
-
-                            });
-                            return false;
-                        }else {
-                            $transferForm.submit();
-                        }
-
-                    }else{
-                        anxinModule.getSkipPhoneTip();
-                        return false;
-                    }
-
-                }
-            });
-        }
-    });
+   
 }
 
 $questionList.find('dl dd').hide();
