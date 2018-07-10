@@ -47,11 +47,29 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
+            //增加新的参数
+            var accountType=$("input[name='accountType']:checked").val();
+            var operationTypeUMP=$('.operationTypeUMP').val();
+            var businessTypeUMP= $('.businessTypeUMP').val();
+            window.location.href = "/finance-manage/user-funds?accountType="+accountType+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
         });
 
         $('.down-load').click(function () {
             location.href = "/export/user-funds?" + $('form').serialize();
+        });
+        $("input[name='accountType']").click(function () {
+            var self = $(this);
+            if (self.val() == 'UMP') {
+                $('.operationTypeDiv').addClass('hidden');
+                $('.businessTypeDiv').addClass('hidden');
+                $('.operationTypeUMPDiv').removeClass('hidden');
+                $('.businessTypeUMPDiv').removeClass('hidden');
+            } else {
+                $('.operationTypeDiv').removeClass('hidden');
+                $('.businessTypeDiv').removeClass('hidden');
+                $('.operationTypeUMPDiv').addClass('hidden');
+                $('.businessTypeUMPDiv').addClass('hidden');
+            }
         });
     });
 })

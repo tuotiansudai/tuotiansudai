@@ -332,7 +332,11 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public void exportUserFunds(@RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
+    public void exportUserFunds(
+                                @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
+                                @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
+                                @RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+                                @RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
                                 @RequestParam(value = "userBillOperationType", required = false) BankUserBillOperationType operationType,
                                 @RequestParam(value = "mobile", required = false) String mobile,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -340,8 +344,12 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleUserFundsCsvHeader.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<BankUserBillModel> userBillModels = consoleUserBillService.findUserFunds(businessType, operationType, mobile, startTime, endTime, index, pageSize);
-        List<List<String>> userFundsData = exportService.buildUserFunds(userBillModels);
+        List<List<String>> userFundsData =null;
+        if(accountType !=null && accountType == AccountType.UMP){
+            userFundsData=exportService.buildUserFundsUMP(consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize));
+        }else{
+            userFundsData=exportService.buildUserFunds(consoleUserBillService.findUserFunds(accountType,businessType, operationType, mobile, startTime, endTime, index, pageSize));
+        }
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, userFundsData, response.getOutputStream());
     }
 

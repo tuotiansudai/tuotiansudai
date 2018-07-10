@@ -38,7 +38,7 @@
 					                </span>
                 </div>
             </div>
-            <div class="form-group <#if accountType.name() == 'UMP'>hidden</#if>">
+            <div class="form-group operationTypeDiv  <#if accountType.name() == 'UMP'>hidden</#if>">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationType" data-style="btn-default" name="operationType">
                     <option value="">请选择费用类型</option>
@@ -48,17 +48,17 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group <#if accountType.name() != 'UMP'>hidden</#if>">
+            <div class="form-group operationTypeUMPDiv <#if accountType.name() != 'UMP'>hidden</#if>">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationTypeUMP" data-style="btn-default" name="operationTypeUMP">
                     <option value="">请选择费用类型</option>
-                    <#list operationTypes as item>
+                    <#list operationTypeUMPList as item>
                         <option value="${item}"
-                                <#if operationType?has_content && operationType == item>selected</#if>>${item.description}</option>
+                                <#if operationTypeUMP?has_content && operationTypeUMP == item>selected</#if>>${item.description}</option>
                     </#list>
                 </select>
             </div>
-            <div class="form-group <#if accountType.name() == 'UMP'>hidden</#if>">
+            <div class="form-group businessTypeDiv <#if accountType.name() == 'UMP'>hidden</#if>">
                 <label for="control-label">操作类型</label>
                 <select class="selectpicker businessType" data-style="btn-default" name="businessType">
                     <option value="">全部</option>
@@ -68,13 +68,13 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group <#if accountType.name() != 'UMP'>hidden</#if>">
+            <div class="form-group  businessTypeUMPDiv <#if accountType.name() != 'UMP'>hidden</#if>">
                 <label for="control-label">操作类型</label>
                 <select class="selectpicker businessTypeUMP" data-style="btn-default" name="businessTypeUMP">
                     <option value="">全部</option>
-                    <#list businessTypes as item>
+                    <#list businessTypeUMPList as item>
                         <option value="${item}"
-                                <#if businessType?has_content && businessType == item>selected</#if>>${item.description}</option>
+                                <#if businessTypeUMP?has_content && businessTypeUMP == item>selected</#if>>${item.description}</option>
                     </#list>
                 </select>
             </div>
@@ -105,10 +105,10 @@
                     <td>${(userBillModel.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userBillModel.id?string('0')}</td>
                     <td>${userBillModel.loginName!''}</td>
-                    <td>${userBillModel.userName}</td>
-                    <td>${userBillModel.mobile}</td>
-                    <td>${userBillModel.businessType.getDescription()}</td>
+                    <td>${userBillModel.userName!}</td>
+                    <td>${userBillModel.mobile!}</td>
                     <td>${userBillModel.operationType.getDescription()}</td>
+                    <td>${userBillModel.businessType.getDescription()}</td>
                     <td>${userBillModel.amount/100}</td>
                     <td>${userBillModel.balance/100}</td>
                 </tr>

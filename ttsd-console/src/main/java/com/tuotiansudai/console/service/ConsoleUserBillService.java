@@ -7,6 +7,7 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.model.AccountType;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
@@ -34,7 +35,7 @@ public class ConsoleUserBillService {
         this.bankUserBillMapper = bankUserBillMapper;
     }
 
-    public List<BankUserBillModel> findUserFunds(BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
+    public List<BankUserBillModel> findUserFunds(AccountType accountType,BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -49,10 +50,10 @@ public class ConsoleUserBillService {
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }
-        return bankUserBillMapper.findUserBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, Role.INVESTOR);
+        return bankUserBillMapper.findUserBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, transformToRole(accountType));
     }
 
-    public long findUserFundsCount(BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
+    public long findUserFundsCount(AccountType accountType,BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -68,7 +69,7 @@ public class ConsoleUserBillService {
             formattedEndTime = new DateTime(endTime).toDate();
         }
 
-        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, Role.INVESTOR);
+        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, transformToRole(accountType));
     }
 
     public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
@@ -107,4 +108,17 @@ public class ConsoleUserBillService {
         }
         return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime);
     }
+    private Role transformToRole(AccountType accountType){
+        if(accountType == null ){
+           return null;
+        }
+        switch(accountType){
+            case INVESTOR:
+                return Role.INVESTOR;
+            case LOANER:
+                return Role.LOANER;
+        }
+        return null;
+    }
+
 }

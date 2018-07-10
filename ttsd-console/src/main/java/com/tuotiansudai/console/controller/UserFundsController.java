@@ -38,8 +38,15 @@ public class UserFundsController {
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<BankUserBillModel> userBillModels = consoleUserBillService.findUserFunds(businessType, operationType, mobile, startTime, endTime, index, pageSize);
-        long userFundsCount = consoleUserBillService.findUserFundsCount(businessType, operationType, mobile, startTime, endTime);
+        List<? extends Object> userBillModels=null;
+        long userFundsCount=0;
+        if(accountType !=null && accountType == AccountType.UMP){
+            userBillModels=consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
+            userFundsCount=consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
+        }else{
+            userBillModels=consoleUserBillService.findUserFunds(accountType,businessType, operationType, mobile, startTime, endTime, index, pageSize);
+            userFundsCount=consoleUserBillService.findUserFundsCount(accountType,businessType, operationType, mobile, startTime, endTime);
+        }
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
