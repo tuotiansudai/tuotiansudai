@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.BankRechargeModel;
@@ -25,7 +26,8 @@ public interface BankRechargeMapper {
     int sumRechargeSuccessAmountByLoginNameAndRole(@Param(value = "loginName") String loginName,
                                                    @Param(value = "roleType") Role roleType);
 
-    List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
+    List<BankRechargePaginationView> findRechargePagination(@Param(value = "accountType")AccountType accountType,
+                                                            @Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,
                                                             @Param(value = "source") Source source,
                                                             @Param(value = "status") BankRechargeStatus status,
@@ -33,28 +35,26 @@ public interface BankRechargeMapper {
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
                                                             @Param(value = "startTime") Date startTime,
-                                                            @Param(value = "endTime") Date endTime,
-                                                            @Param(value = "role") String role);
+                                                            @Param(value = "endTime") Date endTime);
 
 
-    long findSumRechargeAmount(
+    long findSumRechargeAmount(@Param(value = "accountType")AccountType accountType,
                                @Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
                                @Param(value = "status") BankRechargeStatus status,
                                @Param(value = "channel") String channel,
-                               @Param(value = "role") String role,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
-    int findRechargeCount(@Param(value = "rechargeId") String rechargeId,
+    int findRechargeCount(@Param(value = "accountType")AccountType accountType,
+                          @Param(value = "rechargeId") String rechargeId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "source") Source source,
                           @Param(value = "status") BankRechargeStatus status,
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
-                          @Param(value = "endTime") Date endTime,
-                          @Param(value = "role") String role);
+                          @Param(value = "endTime") Date endTime);
 
     List<String> findAllChannels();
 

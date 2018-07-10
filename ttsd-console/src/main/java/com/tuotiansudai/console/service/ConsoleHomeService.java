@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
@@ -46,17 +47,17 @@ public class ConsoleHomeService {
 
     public long rechargeToday_Loaner() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(AccountType.LOANER, null, null, null, BankRechargeStatus.SUCCESS, null,startTime, null);
     }
 
     public long recharge7Days_Loaner() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(AccountType.LOANER, null, null, null, BankRechargeStatus.SUCCESS, null,startTime, null);
     }
 
     public long recharge30Days_Loaner() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(AccountType.LOANER, null, null, null, BankRechargeStatus.SUCCESS, null,startTime, null);
     }
 
     public long rechargeToday_NotLoaner() {
@@ -75,9 +76,7 @@ public class ConsoleHomeService {
     }
 
     private long getRechargeNotLoaner(Date startTime) {
-        long sumRecharge = bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, null, startTime, null);
-        long sumRechargeLoaner = bankRechargeMapper.findSumRechargeAmount(null, null, null, BankRechargeStatus.SUCCESS, null, Role.LOANER.name(), startTime, null);
-        return sumRecharge - sumRechargeLoaner;
+        return bankRechargeMapper.findSumRechargeAmount(AccountType.INVESTOR,null,null,null,BankRechargeStatus.SUCCESS,null,startTime,null);
     }
 
     public long withdrawToday_Loaner() {

@@ -301,7 +301,8 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public void exportRecharge(@RequestParam(value = "rechargeId", required = false) String rechargeId,
+    public void exportRecharge(@RequestParam(value = "accountType", required = false,defaultValue = "INVESTOR") AccountType accountType,
+                               @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
@@ -313,7 +314,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(null,rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime,role);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(accountType,rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }

@@ -28,8 +28,7 @@ public interface RechargeMapper {
                                                @Param(value = "index") int index,
                                                @Param(value = "pageSize") int pageSize,
                                                @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime,
-                                               @Param(value = "role") String role);
+                                               @Param(value = "endTime") Date endTime);
 
 
     long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
@@ -37,7 +36,6 @@ public interface RechargeMapper {
                                @Param(value = "source") Source source,
                                @Param(value = "status") BankRechargeStatus status,
                                @Param(value = "channel") String channel,
-                               @Param(value = "role") String role,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
@@ -47,8 +45,7 @@ public interface RechargeMapper {
                           @Param(value = "status") BankRechargeStatus status,
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
-                          @Param(value = "endTime") Date endTime,
-                          @Param(value = "role") String role);
+                          @Param(value = "endTime") Date endTime);
 
     long findSumSuccessRechargeByLoginName(String loginName);
 
