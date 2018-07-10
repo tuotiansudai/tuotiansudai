@@ -18,8 +18,7 @@ let isAuthentication = 'USER' === $transferDetailCon.data('authentication');
 let isInvestor = 'INVESTOR' === $transferDetailCon.data('user-role');
 let isLoaner = 'LOANER' === $transferDetailCon.data('loaner-role');
 
-let $turnToLoanerBtn = $('.btn-turn-Lender');
-let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
+let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -77,7 +76,7 @@ function submitData() {
             area: ['490px', '220px'],
             shadeClose: false,
             closeBtn:0,
-            content: $turnToLenderDOM
+            content: $turnToInvestorDOM
         });
         return false;
     }
@@ -146,7 +145,7 @@ function submitData() {
                     if ($transferForm.attr('action') === '/transfer/purchase') {
 
                         var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                        if (!isInvestor) {alert('不是投资人')
+                        if (!isInvestor) {
                             location.href = '/login?redirect=' + encodeURIComponent(location.href);
                             return false;
                         }
