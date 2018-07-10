@@ -521,7 +521,7 @@ function showAuthorizeAgreementOptions(){
             $.when(commonFun.isUserLogin())
                 .done(function() {
                     if (isInvestor&&isBankCard) {
-                        noPasswordRemind || noPasswordInvest ? investSubmit() : markNoPasswordRemind();
+                         investSubmit() ;
                         return;
                     }else if(isLoaner){
                         layer.open({
