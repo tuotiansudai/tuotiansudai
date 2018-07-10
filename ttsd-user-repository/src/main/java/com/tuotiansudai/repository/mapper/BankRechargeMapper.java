@@ -37,7 +37,8 @@ public interface BankRechargeMapper {
                                                             @Param(value = "role") String role);
 
 
-    long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
+    long findSumRechargeAmount(
+                               @Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
                                @Param(value = "status") BankRechargeStatus status,

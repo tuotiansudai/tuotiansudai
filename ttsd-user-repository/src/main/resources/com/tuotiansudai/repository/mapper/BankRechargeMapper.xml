@@ -93,7 +93,7 @@
     </select>
 
     <select id="findAllChannels" resultType="java.lang.String">
-        select distinct channel from bank_recharge where channel is not NULL
+        select distinct channel from bank_recharge UNION  all select distinct channel from recharge;
     </select>
 
     <select id="findSumRechargeAmount" parameterType="map" resultType="long">
