@@ -54,8 +54,8 @@ public class UserBillController {
                 .addObject("balance", balance)
                 .addObject("rechargeAmount", rechargeAmount)
                 .addObject("withdrawAmount", withdrawAmount)
-                .addObject("hasAccount", bankAccountService.findBankAccount(loginName, Role.INVESTOR) != null)
-                .addObject("hasBankCard", bankBindCardService.findBankCard(loginName, Role.INVESTOR) != null);
+                .addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null)
+                .addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
     }
 
     @RequestMapping(value = "/user-bill-list-data", method = RequestMethod.GET)
