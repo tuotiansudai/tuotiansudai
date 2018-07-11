@@ -1,52 +1,47 @@
 package com.tuotiansudai.fudian.umpClient;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.tuotiansudai.enums.SyncUmPayService;
-import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.exception.PayTimeoutException;
-import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
+import com.tuotiansudai.fudian.dto.umpRequest.BaseSyncRequestModel;
+import com.tuotiansudai.fudian.dto.umpRequest.SyncRequestStatus;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.beans.Introspector;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class PaySyncClient implements ApplicationContextAware {
+public class PaySyncClient{
 
-    private static ApplicationContext applicationContext;
+//    private static ApplicationContext applicationContext;
 
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
-    private OkHttpClient commonHttpClient;
-    private OkHttpClient merRegisterPersonHttpClient;
+    private static OkHttpClient client;
 
     @Autowired
-    PayGateWrapper payGateWrapper;
+    private PayGateWrapper payGateWrapper;
 
     public PaySyncClient() {
-        this.commonHttpClient = buildHttpClient(10, TimeUnit.SECONDS);
-        this.merRegisterPersonHttpClient = buildHttpClient(15, TimeUnit.SECONDS);
+        client = new OkHttpClient
+                .Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
     }
 
     @SuppressWarnings(value = "unchecked")
-    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
+    public <T extends BaseSyncResponseModel> T send(BaseSyncRequestModel requestModel, Class<T> responseModelClass){
         ReqData reqData;
         try {
             reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
@@ -54,26 +49,24 @@ public class PaySyncClient implements ApplicationContextAware {
             requestModel.setRequestData(reqData.getField().toString());
             requestModel.setRequestUrl(reqData.getUrl());
             logger.info(reqData.getField());
-            createRequest(baseMapperClass, requestModel);
+//            createRequest(baseMapperClass, requestModel);
         } catch (ReqDataException e) {
             logger.error(e.getLocalizedMessage(), e);
             throw new PayException(e);
         }
 
-        FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder();
         Map<String, String> field = (Map<String, String>) reqData.getField();
+        FormBody.Builder formBody = new FormBody.Builder();
         for (String key : field.keySet()) {
-            String value = field.get(key);
-            formEncodingBuilder.add(key, value);
+            formBody.add(key, field.get(key));
         }
 
-        logger.info(reqData.getUrl());
-        Request request = new Request.Builder().url(reqData.getUrl()).post(formEncodingBuilder.build()).build();
+        Request request = new Request.Builder().url(reqData.getUrl()).post(formBody.build()).build();
 
         String responseBodyString;
         try {
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
-            Response response = selectHttpClient(requestModel.getService()).newCall(request).execute();
+            Response response = client.newCall(request).execute();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             responseBodyString = response.body().string();
         } catch (SocketTimeoutException e) {
@@ -120,33 +113,12 @@ public class PaySyncClient implements ApplicationContextAware {
         return responseModel;
     }
 
-    private BaseSyncMapper getMapperByClass(Class clazz) {
-        String fullName = clazz.getName();
-        String[] strings = fullName.split("\\.");
-
-        String beanName = Introspector.decapitalize(strings[strings.length - 1]);
-
-        return (BaseSyncMapper) applicationContext.getBean(beanName);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        PaySyncClient.applicationContext = applicationContext;
-    }
-
-    private OkHttpClient buildHttpClient(long timeout, TimeUnit unit) {
-        OkHttpClient httpClient = new OkHttpClient();
-        httpClient.setConnectTimeout(timeout, unit);
-        httpClient.setReadTimeout(timeout, unit);
-        httpClient.setWriteTimeout(timeout, unit);
-        return httpClient;
-    }
-
-    public OkHttpClient selectHttpClient(String service){
-        if (SyncUmPayService.MER_REGISTER_PERSON.getServiceName().equalsIgnoreCase(service)) {
-            return merRegisterPersonHttpClient;
-        } else {
-            return commonHttpClient;
-        }
-    }
+//    private BaseSyncMapper getMapperByClass(Class clazz) {
+//        String fullName = clazz.getName();
+//        String[] strings = fullName.split("\\.");
+//
+//        String beanName = Introspector.decapitalize(strings[strings.length - 1]);
+//
+//        return (BaseSyncMapper) applicationContext.getBean(beanName);
+//    }
 }

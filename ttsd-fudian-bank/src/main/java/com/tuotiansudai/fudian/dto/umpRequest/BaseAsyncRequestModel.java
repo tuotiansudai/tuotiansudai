@@ -6,8 +6,6 @@ import java.text.MessageFormat;
 
 public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
 
-    private final static Logger logger = Logger.getLogger(BaseAsyncRequestModel.class);
-
     protected String retUrl;
 
     protected String notifyUrl;
@@ -32,7 +30,7 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel {
     }
 
     public BaseAsyncRequestModel(AsyncUmPayService service) {
-        this.retUrl = MessageFormat.format("{0}/{1}", service.getWebRetCallbackPath());
+        this.retUrl = MessageFormat.format("{0}/{1}", PAY_CALLBACK_WEB_HOST, service.getWebRetCallbackPath());
         this.notifyUrl = MessageFormat.format("{0}/{1}", PAY_CALLBACK_BACK_HOST, service.getNotifyCallbackPath());
     }
 }

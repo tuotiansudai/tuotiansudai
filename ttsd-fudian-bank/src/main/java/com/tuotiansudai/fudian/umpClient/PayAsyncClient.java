@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.dto.umpRequest.BaseAsyncRequestModel;
 import com.tuotiansudai.fudian.dto.umpResponse.BaseCallbackRequestModel;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -48,8 +50,7 @@ public class PayAsyncClient implements ApplicationContextAware {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
-                                                    BaseAsyncRequestModel requestModel) throws PayException {
+    public UmpAsyncMessage generateFormData(BaseAsyncRequestModel requestModel){
         try {
             ReqData reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
 //            Map field = reqData.getField();
@@ -58,18 +59,12 @@ public class PayAsyncClient implements ApplicationContextAware {
 //            requestModel.setRequestData(field.toString());
 //            this.createRequest(baseMapperClass, requestModel);
 //            logger.info(field);
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-            PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(true);
-            payFormDataDto.setUrl(reqData.getUrl());
-            payFormDataDto.setCode("0000");
-            payFormDataDto.setFields(reqData.getField());
-            baseDto.setData(payFormDataDto);
-            return baseDto;
+
+            return new UmpAsyncMessage(true, reqData.getUrl(), reqData.getField(), "0000");
         } catch (ReqDataException e) {
             logger.error(e.getLocalizedMessage(), e);
-            throw new PayException(e);
         }
+        return new UmpAsyncMessage(false, null, null, "请求数据生成失败");
     }
 
     public BaseCallbackRequestModel parseCallbackRequest(Map<String, String> paramsMap,
@@ -108,13 +103,13 @@ public class PayAsyncClient implements ApplicationContextAware {
         // Json String to model
         return objectMapper.readValue(json, callbackRequestModel);
     }
-
-    @Transactional(value = "payTransactionManager")
-    private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
-                               BaseAsyncRequestModel requestModel) {
-        BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
-        mapper.create(requestModel);
-    }
+//
+//    @Transactional(value = "payTransactionManager")
+//    private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
+//                               BaseAsyncRequestModel requestModel) {
+//        BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
+//        mapper.create(requestModel);
+//    }
 
     @Transactional(value = "payTransactionManager")
     private BaseCallbackRequestModel createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass,
