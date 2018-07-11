@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
@@ -82,17 +83,17 @@ public class ConsoleHomeService {
 
     public long withdrawToday_Loaner() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(AccountType.LOANER,null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdraw7Days_Loaner() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(AccountType.LOANER,null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdraw30Days_Loaner() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(AccountType.LOANER,null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdrawToday_NotLoaner() {
@@ -111,9 +112,7 @@ public class ConsoleHomeService {
     }
 
     private long getWithdrawNotLoaner(Date startTime) {
-        long sumWithdraw = bankWithdrawMapper.sumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, startTime, null);
-        long sumWithdrawLoaner = bankWithdrawMapper.sumWithdrawAmount(null, null, WithdrawStatus.SUCCESS, null, startTime, null);
-        return sumWithdraw - sumWithdrawLoaner;
+        return bankWithdrawMapper.sumWithdrawAmount(AccountType.INVESTOR,null,null,WithdrawStatus.SUCCESS,null,startTime,null);
     }
 
     public long investToday() {

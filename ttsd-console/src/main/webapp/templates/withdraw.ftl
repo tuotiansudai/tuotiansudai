@@ -11,6 +11,13 @@
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
+               <label class="control-label">账户类型: </label>&nbsp;&nbsp;
+                <#list accountTypeList as item>
+                    <input type="radio" name="accountType" value="${item.name()}" <#if accountType.name() == item.name()>checked="checked"</#if> >${item.getDescription()} &nbsp;&nbsp;
+               </#list>
+           </div>
+            </br>
+            <div class="form-group">
                 <label for="control-label">编号</label>
                 <input type="text" class="form-control" name="withdrawId" placeholder="" value="${withdrawId!}">
             </div>
@@ -126,7 +133,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
+                    <a href="?accountType=${accountType}&withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -137,7 +144,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
+                    <a href="?accountType=${accountType}&withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
