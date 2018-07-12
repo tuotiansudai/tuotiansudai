@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.umpResponse;
 
-public class BankCardApplyNotifyRequestModel extends BaseCallbackRequestModel {
+public class BindCardApplyNotifyModel extends BaseNotifyModel {
     private String userId;
 
     public String getUserId() {

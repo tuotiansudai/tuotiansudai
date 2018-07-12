@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.umpResponse;
 
-public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
+public class RechargeNotifyModel extends BaseNotifyModel {
 
     private String merCheckDate;
 

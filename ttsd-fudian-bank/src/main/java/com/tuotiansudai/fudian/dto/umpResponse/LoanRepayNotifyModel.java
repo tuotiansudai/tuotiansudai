@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.umpResponse;
 
-public class RepayNotifyRequestModel extends BaseCallbackRequestModel {
+public class LoanRepayNotifyModel extends BaseNotifyModel {
 
     private String status;
 

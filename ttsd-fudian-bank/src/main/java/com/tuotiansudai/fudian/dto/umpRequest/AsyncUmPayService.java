@@ -22,6 +22,7 @@ public enum AsyncUmPayService {
      * 提前还款的转账
      */
     ADVANCE_REPAY_PROJECT_TRANSFER("project_transfer", "account", "", "advance_repay_notify", ""),
+
     /**
      * 投资正常返款的转账
      */

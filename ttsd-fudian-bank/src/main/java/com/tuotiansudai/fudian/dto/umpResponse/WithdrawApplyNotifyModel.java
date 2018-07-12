@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.dto.umpResponse;
 
-public class WithdrawApplyNotifyRequestModel extends BaseCallbackRequestModel {
+public class WithdrawApplyNotifyModel extends BaseNotifyModel {
 
     private String amount;
 
