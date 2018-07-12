@@ -17,4 +17,7 @@ public interface UserBankCardMapper {
                                              @Param(value = "roleType") Role roleType);
 
     void updateStatus(@Param(value = "id") long id, @Param(value = "status") UserBankCardStatus status);
+
+    String findBankCardNumberByloginNameAndRole(@Param(value = "loginName") String loginName,
+                                                @Param(value = "roleType") Role roleType);
 }

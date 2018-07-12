@@ -8,6 +8,7 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankBindCardMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -30,6 +31,9 @@ public class BankBindCardService {
     private final UserMapper userMapper;
 
     private final BankAccountMapper bankAccountMapper;
+
+    @Autowired
+    private BankCardMapper bankCardMapper;
 
     @Autowired
     public BankBindCardService(UserMapper userMapper, BankAccountMapper bankAccountMapper, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
@@ -119,4 +123,11 @@ public class BankBindCardService {
         userBankCardMapper.updateStatus(userBankCardModel.getId(), UserBankCardStatus.UNBOUND);
     }
 
+    public String findBankCardNumberByNameAndRole(String loginName, Role role) {
+        if(role == null){
+            return bankCardMapper.findPassedBankCardNumberByLoginName(loginName);
+        }else{
+            return userBankCardMapper.findBankCardNumberByloginNameAndRole(loginName,role);
+        }
+    }
 }

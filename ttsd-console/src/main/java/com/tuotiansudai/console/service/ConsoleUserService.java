@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -80,6 +81,7 @@ public class ConsoleUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+
     @Transactional(rollbackFor = Exception.class)
     public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
         this.checkUpdateUserData(editUserDto);
@@ -139,11 +141,9 @@ public class ConsoleUserService {
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
-
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName, Role.INVESTOR);
-        if (userBankCardModel != null) {
-            editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
-        }
+        editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName,null));
+        editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.LOANER));
 
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);

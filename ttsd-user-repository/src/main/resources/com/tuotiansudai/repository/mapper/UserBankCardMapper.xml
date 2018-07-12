@@ -37,4 +37,7 @@
         where id = #{id}
     </update>
 
+    <select id="findBankCardNumberByloginNameAndRole" parameterType="map" resultType="string">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = #{roleType}
+    </select>
 </mapper>
