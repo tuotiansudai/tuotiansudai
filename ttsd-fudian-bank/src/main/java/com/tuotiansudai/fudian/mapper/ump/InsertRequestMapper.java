@@ -49,4 +49,14 @@ public interface InsertRequestMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertTransfer(TransferRequestModel model);
 
+    @Insert("insert into mer_send_sms_pwd_request (service, sign_type, sign, charset, mer_Id, version, user_id, order_id, identity_code, request_url, request_data, request_time, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{userId}, #{orderId}, #{identityCode}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertResetPwd(TransferRequestModel model);
+
+    @Insert("insert into mer_register_person_request (service, sign_type, sign, charset, mer_Id, version, order_id, mer_cust_id, mer_cust_name, identity_type, identity_code, mobile_id, request_url, request_data, request_time, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{loginName}, #{userName}, #{identityType}, #{identityNumber}, #{mobile}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertRegister(TransferRequestModel model);
+
 }
