@@ -7,7 +7,8 @@ let $myTransferCon = $('#myTransferCon');
 var activeIndex=$('.filters-list li.active').index(),
 	$ruleList = $('#ruleList'),
 	$paginationElement = $('.pagination');
-let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
+let $turnInvestorDOM_TRANSFERABLE = $('#turnInvestorDOM_TRANSFERABLE');//切换成投资人
+let $turnInvestorDOM_TRANSFERRING = $('#turnInvestorDOM_TRANSFERRING');//切换成投资人
 let isLoaner = $myTransferCon.data('loaner-role');
 
 //template data to page and generate pagenumber
@@ -78,7 +79,7 @@ $('body').on('click', '.cancel-btn' ,function(event) {
             area: ['490px', '220px'],
             shadeClose: false,
             closeBtn:0,
-            content: $turnToInvestorDOM
+            content: $turnInvestorDOM_TRANSFERRING
         });
         return false;
     }
@@ -117,7 +118,7 @@ $('body').on('click', '.cancel-btn' ,function(event) {
                 area: ['490px', '220px'],
                 shadeClose: false,
                 closeBtn:0,
-                content: $turnToInvestorDOM
+                content: $turnInvestorDOM_TRANSFERABLE
             });
             return false;
 		}
@@ -155,18 +156,3 @@ $('body').on('click', '.cancel-btn' ,function(event) {
 $('.btn-close').on('click',function () {
     layer.closeAll();
 })
-
-// let $turnToInvestorBtn = $('.btn-turn-investor');
-// let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
-
-// layer.open({
-//     type: 1,
-//     move: false,
-//     offset: "200px",
-//     title: '温馨提示',
-//     area: ['490px', '220px'],
-//     shadeClose: false,
-//     closeBtn:0,
-//     content: $turnToInvestorDOM
-// });
-// return false;
