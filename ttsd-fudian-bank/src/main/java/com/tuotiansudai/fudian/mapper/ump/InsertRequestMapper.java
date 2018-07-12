@@ -1,11 +1,9 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
-import com.tuotiansudai.fudian.dto.request.*;
-import com.tuotiansudai.fudian.dto.umpRequest.*;
+import com.tuotiansudai.fudian.ump.asyn.request.*;
+import com.tuotiansudai.fudian.ump.sync.request.TransferRequestModel;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Mapper
 @Repository
@@ -31,9 +29,24 @@ public interface InsertRequestMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertWithdraw(WithdrawRequestModel model);
 
-    @Insert("insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type, partic_user_id, amount, request_time, request_url, request_data, status) " +
+    @Insert("insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type, partic_user_id, amount, request_time, request_url, request_data, status)" +
             "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}, #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insertLoanRepay(LoanRepayRequestModel model);
+    void insertProjectTransfer(ProjectTransferRequestModel model);
+
+    @Insert("insert into coupon_repay_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertCouponRepay(TransferRequestModel model);
+
+    @Insert("insert into extra_rate_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertExtraRate(TransferRequestModel model);
+
+    @Insert("insert into transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertTransfer(TransferRequestModel model);
 
 }

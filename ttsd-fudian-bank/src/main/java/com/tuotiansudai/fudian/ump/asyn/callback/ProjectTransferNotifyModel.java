@@ -1,6 +1,6 @@
-package com.tuotiansudai.fudian.dto.umpResponse;
+package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class LoanRepayNotifyModel extends BaseNotifyModel {
+public class ProjectTransferNotifyModel extends BaseNotifyModel {
 
     private String status;
 

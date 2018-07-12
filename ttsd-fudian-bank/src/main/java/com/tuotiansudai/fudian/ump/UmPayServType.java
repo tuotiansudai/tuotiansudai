@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto.umpRequest;
+package com.tuotiansudai.fudian.ump;
 
 /**
  * 业务类型

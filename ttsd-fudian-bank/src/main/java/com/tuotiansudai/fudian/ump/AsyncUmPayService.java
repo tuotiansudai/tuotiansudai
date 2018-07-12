@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto.umpRequest;
+package com.tuotiansudai.fudian.ump;
 
 public enum AsyncUmPayService {
     /**

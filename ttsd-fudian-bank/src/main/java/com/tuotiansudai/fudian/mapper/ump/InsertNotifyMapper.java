@@ -1,7 +1,7 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
-import com.tuotiansudai.fudian.dto.request.*;
-import com.tuotiansudai.fudian.dto.umpResponse.*;
+
+import com.tuotiansudai.fudian.ump.asyn.callback.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -39,6 +39,21 @@ public interface InsertNotifyMapper {
     @Insert("insert into project_transfer_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
             "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insertNotifyLoanRepay(LoanRepayNotifyModel model);
+    void insertNotifyProjectTransfer(ProjectTransferNotifyModel model);
+
+    @Insert("insert into coupon_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
+            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNotifyCouponRepay(TransferNotifyRequestModel model);
+
+    @Insert("insert into extra_rate_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
+            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNotifyExtraRate(TransferNotifyRequestModel model);
+
+    @Insert("insert into experience_interest_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
+            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNotifyExperience(TransferNotifyRequestModel model);
 
 }

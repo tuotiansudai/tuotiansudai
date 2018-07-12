@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto.umpRequest;
+package com.tuotiansudai.fudian.ump.sync.request;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.etcd.ETCDConfigReader;

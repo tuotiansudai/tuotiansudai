@@ -1,7 +1,12 @@
 package com.tuotiansudai.fudian.umpClient;
 
-import com.tuotiansudai.fudian.dto.umpRequest.BaseSyncRequestModel;
-import com.tuotiansudai.fudian.dto.umpRequest.SyncRequestStatus;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
+import com.tuotiansudai.fudian.ump.AsyncUmPayService;
+import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.fudian.ump.sync.request.TransferRequestModel;
+import com.tuotiansudai.fudian.ump.sync.response.BaseSyncResponseModel;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
@@ -10,8 +15,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,26 +25,27 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class PaySyncClient{
 
-//    private static ApplicationContext applicationContext;
-
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
     private static OkHttpClient client;
 
-    @Autowired
-    private PayGateWrapper payGateWrapper;
+    private final PayGateWrapper payGateWrapper;
 
-    public PaySyncClient() {
+    private final InsertRequestMapper insertRequestMapper;
+
+    public PaySyncClient(PayGateWrapper payGateWrapper, InsertRequestMapper insertRequestMapper) {
         client = new OkHttpClient
                 .Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
+        this.payGateWrapper = payGateWrapper;
+        this.insertRequestMapper = insertRequestMapper;
     }
 
     @SuppressWarnings(value = "unchecked")
-    public <T extends BaseSyncResponseModel> T send(BaseSyncRequestModel requestModel, Class<T> responseModelClass){
+    public <T extends BaseSyncResponseModel> T send(BaseSyncRequestModel requestModel, AsyncUmPayService syncUmPayService){
         ReqData reqData;
         try {
             reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
@@ -49,10 +53,12 @@ public class PaySyncClient{
             requestModel.setRequestData(reqData.getField().toString());
             requestModel.setRequestUrl(reqData.getUrl());
             logger.info(reqData.getField());
-//            createRequest(baseMapperClass, requestModel);
+
+            insertRequestModel(requestModel, syncUmPayService);
+
         } catch (ReqDataException e) {
             logger.error(e.getLocalizedMessage(), e);
-            throw new PayException(e);
+            return null;
         }
 
         Map<String, String> field = (Map<String, String>) reqData.getField();
@@ -65,53 +71,56 @@ public class PaySyncClient{
 
         String responseBodyString;
         try {
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
+//            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
             Response response = client.newCall(request).execute();
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
+//            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             responseBodyString = response.body().string();
         } catch (SocketTimeoutException e) {
             logger.error(e.getLocalizedMessage(), e);
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
-            throw new PayTimeoutException(e);
+//            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
+            return null;
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
-            throw new PayException(e);
+//            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
+            return null;
         }
 
         try {
             Map<String, String> resData = payGateWrapper.getResData(responseBodyString);
             logger.info(resData);
-            return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
-        } catch (RetDataException | InstantiationException | IllegalAccessException e) {
+//            return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
+        } catch (RetDataException e) {
             logger.error(e.getLocalizedMessage(), e);
-            throw new PayException(e);
+//            throw new PayException(e);
         }
+        return null;
     }
 
-    private void createRequest(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
-        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
-        mapper.createRequest(requestModel);
+    private <T extends BaseSyncRequestModel> void insertRequestModel(T requestModel, AsyncUmPayService service){
+        Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Runnable>builder()
+                .put(AsyncUmPayService.COUPON_REPAY_TRANSFER, () -> insertRequestMapper.insertCouponRepay((TransferRequestModel) requestModel))
+                .put(AsyncUmPayService.EXTRA_RATE_TRANSFER, () -> insertRequestMapper.insertExtraRate((TransferRequestModel) requestModel))
+                .build()).get(service).run();
     }
 
-    private void updateRequestStatus(Class<? extends BaseSyncMapper> baseMapperClass,
-                                     Long id,
-                                     SyncRequestStatus status) {
-        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
-        mapper.updateRequestStatus(id, status);
-    }
+//    private void updateRequestStatus(Class<? extends BaseSyncMapper> baseMapperClass,
+//                                     Long id,
+//                                     SyncRequestStatus status) {
+//        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
+//        mapper.updateRequestStatus(id, status);
+//    }
 
-    private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseSyncMapper> baseMapperClass,
-                                                               Map<String, String> resData,
-                                                               Class<T> responseModelClass,
-                                                               Long requestId) throws IllegalAccessException, InstantiationException {
-        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
-        T responseModel = responseModelClass.newInstance();
-        responseModel.setRequestId(requestId);
-        responseModel.initializeModel(resData);
-        mapper.createResponse(responseModel);
-        return responseModel;
-    }
+//    private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseSyncMapper> baseMapperClass,
+//                                                               Map<String, String> resData,
+//                                                               Class<T> responseModelClass,
+//                                                               Long requestId) throws IllegalAccessException, InstantiationException {
+//        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
+//        T responseModel = responseModelClass.newInstance();
+//        responseModel.setRequestId(requestId);
+//        responseModel.initializeModel(resData);
+//        mapper.createResponse(responseModel);
+//        return responseModel;
+//    }
 
 //    private BaseSyncMapper getMapperByClass(Class clazz) {
 //        String fullName = clazz.getName();

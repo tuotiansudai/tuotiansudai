@@ -1,6 +1,8 @@
-package com.tuotiansudai.fudian.dto.umpRequest;
+package com.tuotiansudai.fudian.ump.asyn.request;
 
-import org.apache.log4j.Logger;
+
+import com.tuotiansudai.fudian.ump.AsyncUmPayService;
+import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 
 import java.text.MessageFormat;
 

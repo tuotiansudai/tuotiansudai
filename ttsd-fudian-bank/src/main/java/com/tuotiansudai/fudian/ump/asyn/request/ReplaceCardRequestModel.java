@@ -1,4 +1,7 @@
-package com.tuotiansudai.fudian.dto.umpRequest;
+package com.tuotiansudai.fudian.ump.asyn.request;
+
+import com.tuotiansudai.fudian.dto.umpRequest.AsyncUmPayService;
+import com.tuotiansudai.fudian.dto.umpRequest.BaseAsyncRequestModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

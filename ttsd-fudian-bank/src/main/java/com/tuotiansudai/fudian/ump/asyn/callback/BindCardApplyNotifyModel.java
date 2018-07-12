@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.dto.umpResponse;
+package com.tuotiansudai.fudian.ump.asyn.callback;
 
 public class BindCardApplyNotifyModel extends BaseNotifyModel {
     private String userId;

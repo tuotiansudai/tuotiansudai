@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.dto.umpRequest.*;
-import com.tuotiansudai.fudian.dto.umpResponse.BaseNotifyModel;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
+import com.tuotiansudai.fudian.ump.AsyncUmPayService;
+import com.tuotiansudai.fudian.ump.asyn.callback.BaseNotifyModel;
+import com.tuotiansudai.fudian.ump.asyn.request.BaseAsyncRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.*;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -16,11 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -68,24 +67,34 @@ public class PayAsyncClient {
         return new UmpAsyncMessage(false, null, null, "请求数据生成失败");
     }
 
-
-    public BaseNotifyModel parseCallbackRequest(Map<String, String> paramsMap,
-                                                String originalQueryString,
-                                                Class<? extends BaseCallbackMapper> baseMapperClass,
-                                                Class<? extends BaseNotifyModel> callbackRequestModel) {
-        try {
-            BaseNotifyModel model = parseParamsToModel(paramsMap, callbackRequestModel);
-            model.setRequestData(originalQueryString);
-            // 生成返回值，并对其加密，然后将model写库
-            return this.createCallbackRequest(baseMapperClass, model);
-        } catch (VerifyException | IOException e) {
-            logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return null;
+    private <T extends BaseAsyncRequestModel> void insertRequestModel(T requestModel, AsyncUmPayService service){
+        Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Runnable>builder()
+                .put(AsyncUmPayService.PTP_MER_BIND_CARD, () -> insertRequestMapper.insertCardBind((BindCardRequestModel) requestModel))
+                .put(AsyncUmPayService.PTP_MER_REPLACE_CARD, () -> insertRequestMapper.insertReplaceCardBind((ReplaceCardRequestModel) requestModel))
+                .put(AsyncUmPayService.MER_RECHARGE_PERSON, () -> insertRequestMapper.insertRecharge((RechargeRequestModel) requestModel))
+                .put(AsyncUmPayService.CUST_WITHDRAWALS, () -> insertRequestMapper.insertWithdraw((WithdrawRequestModel) requestModel))
+                .put(AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER, () -> insertRequestMapper.insertProjectTransfer((ProjectTransferRequestModel) requestModel))
+                .put(AsyncUmPayService.ADVANCE_REPAY_PROJECT_TRANSFER, () -> insertRequestMapper.insertProjectTransfer((ProjectTransferRequestModel) requestModel))
+                .build()).get(service).run();
     }
 
-    private BaseNotifyModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseNotifyModel> callbackRequestModel) throws VerifyException, IOException {
+//    public BaseNotifyModel parseCallbackRequest(Map<String, String> paramsMap,
+//                                                String originalQueryString,
+//                                                Class<? extends BaseCallbackMapper> baseMapperClass,
+//                                                Class<? extends BaseNotifyModel> callbackRequestModel) {
+//        try {
+//            BaseNotifyModel model = parseParamsToModel(paramsMap, callbackRequestModel);
+//            model.setRequestData(originalQueryString);
+//            // 生成返回值，并对其加密，然后将model写库
+//            return this.createCallbackRequest(baseMapperClass, model);
+//        } catch (VerifyException | IOException e) {
+//            logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));
+//            logger.error(e.getLocalizedMessage(), e);
+//        }
+//        return null;
+//    }
+
+    public BaseNotifyModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseNotifyModel> callbackRequestModel) throws VerifyException, IOException {
         // 解密
         Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
         // aa_bb_cc to aaBbCc
@@ -104,54 +113,5 @@ public class PayAsyncClient {
         String json = objectMapper.writeValueAsString(newPlatNotifyData);
         // Json String to model
         return objectMapper.readValue(json, callbackRequestModel);
-    }
-
-    @Transactional(value = "payTransactionManager")
-    private BaseNotifyModel createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass,
-                                                  BaseNotifyModel requestModel) {
-        BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
-        requestModel.setResponseTime(new Date());
-        Map<String, String> map = requestModel.generatePayResponseData();
-        String notifyResData = payGateWrapper.merNotifyResData(map);
-        requestModel.setResponseData(notifyResData);
-        mapper.create(requestModel);
-        return requestModel;
-    }
-//
-//    private Object getMapperByClass(Class clazz) {
-//        String fullName = clazz.getName();
-//        String[] strings = fullName.split("\\.");
-//
-//        String beanName = Introspector.decapitalize(strings[strings.length - 1]);
-//
-//        return applicationContext.getBean(beanName);
-//    }
-//
-//    @Override
-//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//        PayAsyncClient.applicationContext = applicationContext;
-//    }
-
-
-    private <T extends BaseAsyncRequestModel> void insertRequestModel(T requestModel, AsyncUmPayService service){
-        Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Runnable>builder()
-                .put(AsyncUmPayService.PTP_MER_BIND_CARD, () -> insertRequestMapper.insertCardBind((BindCardRequestModel) requestModel))
-                .put(AsyncUmPayService.PTP_MER_REPLACE_CARD, () -> insertRequestMapper.insertReplaceCardBind((ReplaceCardRequestModel) requestModel))
-                .put(AsyncUmPayService.MER_RECHARGE_PERSON, () -> insertRequestMapper.insertRecharge((RechargeRequestModel) requestModel))
-                .put(AsyncUmPayService.CUST_WITHDRAWALS, () -> insertRequestMapper.insertWithdraw((WithdrawRequestModel) requestModel))
-                .put(AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER, () -> insertRequestMapper.insertLoanRepay((LoanRepayRequestModel) requestModel))
-                .put(AsyncUmPayService.ADVANCE_REPAY_PROJECT_TRANSFER, () -> insertRequestMapper.insertLoanRepay((LoanRepayRequestModel) requestModel))
-                .build()).get(service).run();
-    }
-
-    private <T extends BaseNotifyModel> void insertNotifyModel(T notifyModel, AsyncUmPayService service){
-        Maps.newHashMap(ImmutableMap.<AsyncUmPayService, Runnable>builder()
-                .put(AsyncUmPayService.PTP_MER_BIND_CARD, () -> insertNotifyMapper.insertCardBind((BindCardRequestModel) requestModel))
-                .put(AsyncUmPayService.PTP_MER_REPLACE_CARD, () -> insertNotifyMapper.insertReplaceCardBind((ReplaceCardRequestModel) requestModel))
-                .put(AsyncUmPayService.MER_RECHARGE_PERSON, () -> insertNotifyMapper.insertRecharge((RechargeRequestModel) requestModel))
-                .put(AsyncUmPayService.CUST_WITHDRAWALS, () -> insertNotifyMapper.insertWithdraw((WithdrawRequestModel) requestModel))
-                .put(AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER, () -> insertNotifyMapper.insertLoanRepay((LoanRepayRequestModel) requestModel))
-                .put(AsyncUmPayService.ADVANCE_REPAY_PROJECT_TRANSFER, () -> insertNotifyMapper.insertLoanRepay((LoanRepayRequestModel) requestModel))
-                .build()).get(service).run();
     }
 }
