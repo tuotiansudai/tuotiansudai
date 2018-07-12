@@ -44,15 +44,14 @@
     }
   }
 }
-
 .bank-list {
   .icon-bank {
     width: 30px;
     height: 30px;
     background: url('../../images/bank/bankdefault.png') left top no-repeat;
     background-size: 100%;
-    &.ICBC {
-      background: url('../../images/bank/ICBC.png') left top no-repeat;
+    &.BANK-102 {
+      background: url('../../images/bank/BANK-102.png') left top no-repeat;
       background-size: 100%;
     }
     &.CCB {
