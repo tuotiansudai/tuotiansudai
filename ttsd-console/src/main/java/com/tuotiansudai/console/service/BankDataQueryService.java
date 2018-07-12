@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.dto.QueryTradeType;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -38,7 +39,7 @@ public class BankDataQueryService {
         if (userModel == null) {
             return new BankQueryUserMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         if (bankAccountModel == null) {
             return new BankQueryUserMessage(false, "存管账户不存在");
         }
@@ -62,7 +63,7 @@ public class BankDataQueryService {
         if (userModel == null) {
             return new BankQueryLogAccountMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         if (bankAccountModel == null) {
             return new BankQueryLogAccountMessage(false, "存管账户不存在");
         }

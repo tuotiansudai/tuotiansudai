@@ -55,12 +55,19 @@ public class RegisterAccountController {
         return baseDto;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/investor", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
+    public ModelAndView registerInvestorAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, HttpServletRequest request) {
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
-        BankAsyncMessage bankAsyncData = bankAccountService.registerAccount(registerAccountDto, registerAccountDto.getSource(), LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
+        BankAsyncMessage bankAsyncData = bankAccountService.registerInvestorAccount(registerAccountDto, registerAccountDto.getSource(), LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
+        return new ModelAndView("/pay", "pay", bankAsyncData);
+    }
+
+    @RequestMapping(value = "/loaner", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView registerLoanerAccount(HttpServletRequest request) {
+        BankAsyncMessage bankAsyncData = bankAccountService.registerLoanerAccount(LoginUserInfo.getLoginName(), LoginUserInfo.getToken(), RequestIPParser.parse(request), null);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

@@ -64,9 +64,7 @@
     <#local membershipMenus=[
         {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""},
-        {"title":"积分商城", "url":"/point-shop","category":""},
-        {"title":"积分任务", "url":"/point-shop/task","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,9 +110,7 @@
 
     <#if !errorPage??>
 <#--ad image-->
-<div class="banner-box page-width">
-    <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
-</div>
+
 <#--ad image-->
     </#if>
 <div class="main-frame full-screen clearfix main-frame-ask">
@@ -147,8 +143,6 @@
         <div class="aside-frame fr" >
             <#include "../pageLayout/user.ftl"/>
             <#include "../pageLayout/tags.ftl"/>
-
-            <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
         </#if>

@@ -52,10 +52,19 @@ public class BankWithdrawService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("提现失败");
+        }
+
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
-        bankWithdrawMapper.create(bankWithdrawModel);
+
+        if (role == Role.LOANER){
+            bankWithdrawMapper.createLoaner(bankWithdrawModel);
+        }else {
+            bankWithdrawMapper.createInvestor(bankWithdrawModel);
+        }
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
         return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, fee, optional.map(WeChatUserModel::getOpenid).orElse(null));
@@ -76,13 +85,15 @@ public class BankWithdrawService {
 
         if (bankWithdrawMessage.isStatus()) {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                    Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
-                            bankWithdrawModel.getLoginName(),
+                    Lists.newArrayList(new AmountTransferMessage(
                             bankWithdrawModel.getId(),
+                            bankWithdrawModel.getLoginName(),
+                            bankWithdrawModel.getRoleType(),
+                            bankWithdrawModel.getAmount(),
                             bankWithdrawMessage.getBankOrderNo(),
                             bankWithdrawMessage.getBankOrderDate(),
-                            bankWithdrawModel.getAmount(),
-                            UserBillBusinessType.WITHDRAW_SUCCESS)));
+                            BankUserBillOperationType.OUT,
+                            BankUserBillBusinessType.WITHDRAW_SUCCESS)));
 
             try {
                 String title = MessageFormat.format(MessageEventType.WITHDRAW_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(bankWithdrawMessage.getAmount()));
@@ -109,7 +120,7 @@ public class BankWithdrawService {
         return bankWithdrawMapper.findById(id);
     }
 
-    public long sumSuccessWithdrawByLoginName(String loginName) {
-        return bankWithdrawMapper.sumSuccessWithdrawByLoginName(loginName);
+    public long sumSuccessWithdrawByLoginName(String loginName, Role role) {
+        return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role);
     }
 }

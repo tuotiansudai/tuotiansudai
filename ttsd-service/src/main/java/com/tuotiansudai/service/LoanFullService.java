@@ -59,7 +59,7 @@ public class LoanFullService {
         LoanModel loanModel = loanMapper.findById(loanId);
         String agentLoginName = loanModel.getAgentLoginName();
         UserModel userModel = userMapper.findByLoginName(agentLoginName);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(agentLoginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(agentLoginName, Role.LOANER);
 
         return bankWrapperClient.loanFull(userModel.getLoginName(),
                 userModel.getMobile(),
@@ -89,13 +89,14 @@ public class LoanFullService {
         this.updateLoanStatus(loanModel, bankLoanFullMessage);
 
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                Lists.newArrayList(new AmountTransferMessage(loanModel.getId(),
                         loanModel.getAgentLoginName(),
-                        loanModel.getId(),
+                        Role.LOANER,
+                        loanModel.getLoanAmount(),
                         bankLoanFullMessage.getBankOrderNo(),
                         bankLoanFullMessage.getBankOrderDate(),
-                        loanModel.getLoanAmount(),
-                        UserBillBusinessType.LOAN_SUCCESS))
+                        BankUserBillOperationType.IN,
+                        BankUserBillBusinessType.LOAN_SUCCESS))
         );
 
         this.sendMessage(loanModel);

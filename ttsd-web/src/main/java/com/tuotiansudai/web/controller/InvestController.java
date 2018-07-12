@@ -7,8 +7,8 @@ import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -52,11 +52,14 @@ public class InvestController {
     private UserMembershipEvaluator userMembershipEvaluator;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
+
+        String errorMessage = "投资失败，请联系客服";
+        String errorType = "";
 
         if (!bindingResult.hasErrors()) {
             try {
@@ -64,13 +67,13 @@ public class InvestController {
                 BankAsyncMessage bankAsyncData = investService.invest(investDto);
                 return new ModelAndView("/pay", "pay", bankAsyncData);
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-                redirectAttributes.addFlashAttribute("errorType", e.getType().name());
+                errorMessage = e.getMessage();
+                errorType = e.getType().name();
             }
         }
 
-        redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服");
-        redirectAttributes.addFlashAttribute("errorType", "");
+        redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
 
         if (Source.M.equals(investDto.getSource())) {
@@ -168,7 +171,7 @@ public class InvestController {
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
         String loginName = LoginUserInfo.getLoginName();
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
         long expectedInterest = investService.estimateInvestIncome(loanId, investFeeRate, loginName, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
@@ -180,7 +183,7 @@ public class InvestController {
                                                   @RequestParam List<Long> couponIds) {
         String loginName = LoginUserInfo.getLoginName();
         //根据loginNameName查询出当前会员的相关信息,需要判断是否为空,如果为空则安装在费率0.1计算
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
         long expectedInterest = couponService.estimateCouponExpectedInterest(loginName, investFeeRate, loanId, couponIds, amount, new Date());
         return AmountConverter.convertCentToString(expectedInterest);
     }
@@ -196,11 +199,11 @@ public class InvestController {
         if (StringUtils.isEmpty(loginName)) {
             membershipPreferenceDto.setValid(false);
         } else {
-            double fee = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+            double fee = userMembershipService.obtainServiceFee(loginName);
             membershipPreferenceDto.setValid(true);
             membershipPreferenceDto.setLevel(membershipModel.getLevel());
             membershipPreferenceDto.setRate((int) (fee * 100));
-            membershipPreferenceDto.setMembershipPrivilege(membershipPrivilegePurchaseService.obtainMembershipPrivilege(loginName) != null);
+            membershipPreferenceDto.setMembershipPrivilege(false);
             membershipPreferenceDto.setAmount(AmountConverter.convertCentToString(investService.calculateMembershipPreference(loginName, loanId, couponIds, AmountConverter.convertStringToCent(investAmount), Source.WEB)));
         }
         BaseDto<MembershipPreferenceDto> baseDto = new BaseDto<>();

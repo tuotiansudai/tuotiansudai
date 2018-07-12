@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 
 import java.util.Date;
 
@@ -30,6 +31,8 @@ public class BankRechargeModel {
     private Date updatedTime;
 
     private Date createdTime;
+
+    private Role roleType;
 
     public BankRechargeModel() {
     }
@@ -138,6 +141,14 @@ public class BankRechargeModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Role getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Role roleType) {
+        this.roleType = roleType;
     }
 }
 

@@ -2,8 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanRepayMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -63,14 +62,15 @@ public class LoanRepaySuccessService {
         }
 
         // update agent user bill
-        UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
+        BankUserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? BankUserBillBusinessType.OVERDUE_REPAY : BankUserBillBusinessType.NORMAL_REPAY;
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                Lists.newArrayList(new AmountTransferMessage(currentLoanRepay.getId(),
                         loanModel.getAgentLoginName(),
-                        bankLoanRepayMessage.getLoanRepayId(),
+                        Role.LOANER,
+                        currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        currentLoanRepay.getRepayAmount(),
+                        BankUserBillOperationType.OUT,
                         businessType)));
         logger.info("[Normal Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
@@ -110,13 +110,14 @@ public class LoanRepaySuccessService {
 
         // update agent user bill
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE,
+                Lists.newArrayList(new AmountTransferMessage(currentLoanRepay.getId(),
                         loanModel.getAgentLoginName(),
-                        bankLoanRepayMessage.getLoanRepayId(),
+                        Role.LOANER,
+                        currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        currentLoanRepay.getRepayAmount(),
-                        UserBillBusinessType.ADVANCE_REPAY)));
+                        BankUserBillOperationType.OUT,
+                        BankUserBillBusinessType.ADVANCE_REPAY)));
         logger.info("[Advanced Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
 }

@@ -33,9 +33,9 @@
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationType" data-style="btn-default">
                     <option value="">请选择费用类型</option>
-                    <#list operationTypeList as operationType>
-                        <option value="${operationType}"
-                                <#if userBillOperationType?has_content && operationType == userBillOperationType>selected</#if>>${operationType.description}</option>
+                    <#list operationTypes as item>
+                        <option value="${item}"
+                                <#if operationType?has_content && operationType == item>selected</#if>>${item.description}</option>
                     </#list>
                 </select>
             </div>
@@ -43,11 +43,9 @@
                 <label for="control-label">操作类型</label>
                 <select class="selectpicker businessType" data-style="btn-default">
                     <option value="">全部</option>
-                    <#list businessTypeList as businessType>
-                        <#if businessType != 'PAYROLL'>
-                            <option value="${businessType}"
-                                <#if userBillBusinessType?has_content && businessType == userBillBusinessType>selected</#if>>${businessType.description}</option>
-                        </#if>
+                    <#list businessTypes as item>
+                            <option value="${item}"
+                                <#if businessType?has_content && businessType == item>selected</#if>>${item.description}</option>
                     </#list>
                 </select>
             </div>
@@ -70,7 +68,6 @@
                 <th>操作类型</th>
                 <th>金额(元)</th>
                 <th>余额(元)</th>
-                <th>冻结金额(元)</th>
             </tr>
             </thead>
             <tbody>
@@ -78,18 +75,13 @@
                 <tr>
                     <td>${(userBillModel.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userBillModel.id?string('0')}</td>
-                    <td>${userBillModel.loginName!''}
-                        <#if userBillModel.isStaff()>
-                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
-                        </#if>
-                    </td>
+                    <td>${userBillModel.loginName!''}</td>
                     <td>${userBillModel.userName}</td>
                     <td>${userBillModel.mobile}</td>
                     <td>${userBillModel.operationType.getDescription()}</td>
                     <td>${userBillModel.businessType.getDescription()}</td>
                     <td>${userBillModel.amount/100}</td>
                     <td>${userBillModel.balance/100}</td>
-                    <td>${userBillModel.freeze/100}</td>
                 </tr>
                 </#list>
             </tbody>
@@ -103,7 +95,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -112,7 +104,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

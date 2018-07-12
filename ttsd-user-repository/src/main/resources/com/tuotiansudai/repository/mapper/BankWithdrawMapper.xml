@@ -8,6 +8,7 @@
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="amount" property="amount"/>
+        <result column="role_type" property="roleType"/>
         <result column="fee" property="fee"/>
         <result column="bank_order_no" property="bankOrderNo"/>
         <result column="bank_order_date" property="bankOrderDate"/>
@@ -33,19 +34,24 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time)
-        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now())
+    <insert id="createInvestor" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'INVESTOR')
+    </insert>
+
+    <insert id="createLoaner" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'LOANER')
     </insert>
 
     <select id="findById" parameterType="long" resultMap="bankWithdrawResultMap">
         select * from bank_withdraw where id = #{id}
     </select>
 
-    <select id="sumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+    <select id="sumSuccessWithdrawByLoginNameAndRole" parameterType="map" resultType="long">
         select IFNULL(sum(amount), 0) as amount
         from bank_withdraw
-        where status = 'SUCCESS' and login_name = #{loginName}
+        where status = 'SUCCESS' and login_name = #{loginName} and role_type = #{roleType}
     </select>
 
     <select id="sumWithdrawAmount" parameterType="map" resultType="long">

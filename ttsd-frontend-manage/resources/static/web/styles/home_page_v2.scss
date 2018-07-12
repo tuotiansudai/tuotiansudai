@@ -639,9 +639,15 @@ $pointColor: #ff5400;
           height:100%;
           display: block;
           text-align: center;
+
           &.logo-cfca {
             margin-top: 10px;
             margin-left: 16px;
+          }
+          &.fudian {
+            background: url("../images/homepage/fudian_logo.png") no-repeat;
+            margin-top: 0;
+            margin-left: 0;
           }
 
         }

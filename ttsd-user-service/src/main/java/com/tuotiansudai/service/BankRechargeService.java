@@ -4,8 +4,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.BankRechargeStatus;
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankRechargeMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -41,42 +42,51 @@ public class BankRechargeService {
         this.mqWrapperClient = mqWrapperClient;
     }
 
-    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+    public BankAsyncMessage recharge(Source source, String loginName, String mobile, long amount, String payType, String channel, Role role) {
+        if (role == null){
+            return new BankAsyncMessage("充值失败");
+        }
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankRechargeModel bankRechargeModel = new BankRechargeModel(loginName, amount, payType, source, channel);
-        bankRechargeMapper.create(bankRechargeModel);
+        if (role == Role.LOANER){
+            bankRechargeMapper.createLoaner(bankRechargeModel);
+        }else {
+            bankRechargeMapper.createInvestor(bankRechargeModel);
+        }
         return bankWrapperClient.recharge(bankRechargeModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, payType);
     }
 
     @Transactional
     public void processRecharge(BankRechargeMessage bankRechargeMessage) {
 
-        BankRechargeModel userRechargeModel = bankRechargeMapper.findById(bankRechargeMessage.getRechargeId());
+        BankRechargeModel bankRechargeModel = bankRechargeMapper.findById(bankRechargeMessage.getRechargeId());
 
-        if (userRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
-            logger.error("userRechargeModel statue is not wait, rechargeId: {} ", bankRechargeMessage.getRechargeId());
+        if (bankRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
+            logger.error("bankRechargeModel statue is not wait, rechargeId: {} ", bankRechargeMessage.getRechargeId());
             return;
         }
-        userRechargeModel.setStatus(bankRechargeMessage.isStatus() ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
-        userRechargeModel.setBankOrderNo(bankRechargeMessage.getBankOrderNo());
-        userRechargeModel.setBankOrderDate(bankRechargeMessage.getBankOrderDate());
-        bankRechargeMapper.update(userRechargeModel);
+        bankRechargeModel.setStatus(bankRechargeMessage.isStatus() ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
+        bankRechargeModel.setBankOrderNo(bankRechargeMessage.getBankOrderNo());
+        bankRechargeModel.setBankOrderDate(bankRechargeMessage.getBankOrderDate());
+        bankRechargeMapper.update(bankRechargeModel);
 
 
         if (bankRechargeMessage.isStatus()) {
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
-                    Lists.newArrayList(new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE,
+                    Lists.newArrayList(new AmountTransferMessage(
+                            bankRechargeModel.getId(),
                             bankRechargeMessage.getLoginName(),
-                            bankRechargeMessage.getRechargeId(),
+                            bankRechargeModel.getRoleType(),
+                            bankRechargeModel.getAmount(),
                             bankRechargeMessage.getBankOrderNo(),
                             bankRechargeMessage.getBankOrderDate(),
-                            userRechargeModel.getAmount(),
-                            UserBillBusinessType.RECHARGE_SUCCESS)));
+                            BankUserBillOperationType.IN,
+                            BankUserBillBusinessType.RECHARGE_SUCCESS)));
         }
     }
 
-    public long sumSuccessRechargeAmount(String loginName) {
-        return bankRechargeMapper.sumRechargeSuccessAmountByLoginName(loginName);
+    public long sumSuccessRechargeAmount(String loginName, Role role) {
+        return bankRechargeMapper.sumRechargeSuccessAmountByLoginNameAndRole(loginName, role);
     }
 
     public BankRechargeModel findRechargeById(long id) {

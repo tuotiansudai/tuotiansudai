@@ -3,11 +3,13 @@ package com.tuotiansudai.rest.client.mapper;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 

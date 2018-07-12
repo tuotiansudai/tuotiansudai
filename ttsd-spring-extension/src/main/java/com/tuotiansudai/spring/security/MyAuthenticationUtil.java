@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,8 +67,9 @@ public class MyAuthenticationUtil {
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        boolean isSame = authentication != null && CollectionUtils.isNotEmpty(authentication.getAuthorities()) && Sets.difference(Sets.newHashSet(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)),
-                Sets.newHashSet(signInResult.getUserInfo().getRoles())).isEmpty();
+        HashSet<String> authorities = Sets.newHashSet(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        HashSet<String> roles = Sets.newHashSet(signInResult.getUserInfo().getRoles());
+        boolean isSame = CollectionUtils.isNotEmpty(authentication.getAuthorities()) && Sets.difference(authorities, roles).isEmpty() && Sets.difference(roles, authorities).isEmpty();
 
         if (isSame) {
             return;

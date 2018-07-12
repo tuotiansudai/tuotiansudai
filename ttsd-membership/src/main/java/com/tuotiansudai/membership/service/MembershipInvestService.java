@@ -2,10 +2,7 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.AppUrl;
-import com.tuotiansudai.enums.MessageEventType;
-import com.tuotiansudai.enums.PushSource;
-import com.tuotiansudai.enums.PushType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
@@ -69,7 +66,7 @@ public class MembershipInvestService {
 
         long investMembershipPoint = amount / 100;
         bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         membershipExperienceBillMapper.create(new MembershipExperienceBillModel(loginName,
                 String.valueOf(investId),
                 investMembershipPoint,
@@ -105,6 +102,5 @@ public class MembershipInvestService {
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage(), ex);
         }
-
     }
 }

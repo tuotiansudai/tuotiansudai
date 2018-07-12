@@ -92,8 +92,13 @@ public class BankWrapperClient {
         return null;
     }
 
-    public BankAsyncMessage register(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
-        return asyncExecute(MessageFormat.format("/user/register/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage registerInvestor(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}/role/investor", source.name().toLowerCase()),
+                new BankRegisterDto(loginName, mobile, token, realName, identityCode));
+    }
+
+    public BankAsyncMessage registerLoaner(Source source, String loginName, String mobile, String token, String realName, String identityCode) {
+        return asyncExecute(MessageFormat.format("/user/register/source/{0}/role/loaner", source.name().toLowerCase()),
                 new BankRegisterDto(loginName, mobile, token, realName, identityCode));
     }
 
@@ -107,13 +112,23 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage bindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage investorBindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/investor", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage unbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
-        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}", source.name().toLowerCase()),
+    public BankAsyncMessage loanerBindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/card-bind/source/{0}/role/loaner", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
+    public BankAsyncMessage investorUnbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/investor", source.name().toLowerCase()),
+                new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
+    }
+
+    public BankAsyncMessage loanerUnbindBankCard(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo) {
+        return asyncExecute(MessageFormat.format("/user/cancel-card-bind/source/{0}/role/loaner", source.name().toLowerCase()),
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
@@ -154,8 +169,8 @@ public class BankWrapperClient {
         return new BankReturnCallbackMessage();
     }
 
-    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount) {
-        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount);
+    public BankLoanCreateMessage createLoan(String bankUserName, String bankAccountNo, String loanName, long loanAmount, String endTime) {
+        BankLoanCreateDto bankLoanCreateDto = new BankLoanCreateDto(bankUserName, bankAccountNo, loanName, loanAmount, endTime);
 
         String json = syncExecute("/loan-create", bankLoanCreateDto);
 
@@ -170,6 +185,24 @@ public class BankWrapperClient {
         }
 
         return new BankLoanCreateMessage(false, null);
+    }
+
+    public BankLoanCancelMessage cancelLoan(long loanId, String loanOrderNo, String loanOrderDate, String loanTxNo) {
+        BankLoanCancelDto bankLoanCancelDto = new BankLoanCancelDto(loanId, loanTxNo, loanOrderNo, loanOrderDate);
+
+        String json = syncExecute("/loan-cancel", bankLoanCancelDto);
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankLoanCancelMessage(false, null);
+        }
+
+        try {
+            return gson.fromJson(json, BankLoanCancelMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Loan Create] parse response error, loanId: {0}", String.valueOf(loanId)), e);
+        }
+
+        return new BankLoanCancelMessage(false, null);
     }
 
     public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, long time) {

@@ -17,13 +17,18 @@
         <result column="updated_time" property="updatedTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_bank_card(login_name, bank, bank_code, card_number, bank_order_no, bank_order_date, status, created_time, updated_time)
-        value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now())
+    <insert id="createInvestor" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_bank_card(login_name, bank, bank_code, card_number, bank_order_no, bank_order_date, status, created_time, updated_time,role_type)
+        value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now(),'INVESTOR')
     </insert>
 
-    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
-        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND'
+    <insert id="createLoaner" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_bank_card(login_name, bank, bank_code, card_number, bank_order_no, bank_order_date, status, created_time, updated_time,role_type)
+        value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now(),'LOANER')
+    </insert>
+
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = #{roleType}
     </select>
 
     <update id="updateStatus" parameterType="map">

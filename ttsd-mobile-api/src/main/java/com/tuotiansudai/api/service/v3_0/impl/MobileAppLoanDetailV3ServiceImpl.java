@@ -17,7 +17,7 @@ import com.tuotiansudai.api.service.v3_0.MobileAppLoanDetailV3Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.enums.riskestimation.Estimate;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -92,7 +92,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     private InvestService investService;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
@@ -141,7 +141,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
             dataDto.setEstimate(loanDetailsModelActivity.getEstimate().getType());
         }
-        double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : userMembershipService.obtainServiceFee(loginName);
 
         long expectedInterest = investService.estimateInvestIncome(loanModel.getId(), investFeeRate, loginName, MobileAppLoanListV3ServiceImpl.DEFAULT_INVEST_AMOUNT, new Date());
         dataDto.setInterestPerTenThousands(String.valueOf(expectedInterest));

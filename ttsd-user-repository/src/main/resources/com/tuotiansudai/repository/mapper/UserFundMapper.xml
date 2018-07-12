@@ -21,9 +21,9 @@
         <result column="invest_amount" property="investAmount"/>
     </resultMap>
 
-    <select id="findByLoginName" parameterType="string" resultMap="userFundResultMap">
+    <select id="findByLoginName" parameterType="map" resultMap="userFundResultMap">
         select
-              (select balance from bank_account where login_name = #{loginName}) as balance,
+              (select balance from bank_account where login_name = #{loginName} and role_type = #{roleType}) as balance,
 
               (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
               from invest_repay join invest on invest_repay.invest_id= invest.id

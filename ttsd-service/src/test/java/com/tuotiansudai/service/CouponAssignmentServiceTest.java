@@ -113,30 +113,6 @@ public class CouponAssignmentServiceTest {
     }
 
     @Test
-    public void shouldAsyncAssignUserGroup() throws Exception {
-        UserModel fakeUser = getFakeUser("fakeUser");
-        this.createMockUser("fakeUser");
-        UserMembershipModel userMembershipModel = new UserMembershipModel(fakeUser.getLoginName(), 6, new DateTime().plusDays(1).toDate(), UserMembershipType.UPGRADE);
-        userMembershipModel.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel);
-
-        CouponModel fakeCoupon = getFakeCoupon(UserGroup.MEMBERSHIP_V5, false);
-
-        MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(couponAssignmentService, "mqWrapperClient", mqWrapperClient);
-
-        ArgumentCaptor<MessageQueue> messageQueueCaptor = ArgumentCaptor.forClass(MessageQueue.class);
-        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
-
-        couponAssignmentService.asyncAssignUserCoupon(fakeUser.getLoginName(), Lists.newArrayList(UserGroup.MEMBERSHIP_V5));
-
-        verify(mqWrapperClient, times(1)).sendMessage(messageQueueCaptor.capture(), stringCaptor.capture());
-        assertEquals(MessageQueue.CouponAssigning, messageQueueCaptor.getValue());
-        String queueMessage = fakeUser.getLoginName() + ":" + fakeCoupon.getId();
-        assertEquals(queueMessage, stringCaptor.getValue());
-    }
-
-    @Test
     public void shouldAssign() throws Exception {
         UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);

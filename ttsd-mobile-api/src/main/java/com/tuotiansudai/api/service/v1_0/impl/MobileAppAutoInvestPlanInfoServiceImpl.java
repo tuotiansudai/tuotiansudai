@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanInfoService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
@@ -28,7 +29,7 @@ public class MobileAppAutoInvestPlanInfoServiceImpl implements MobileAppAutoInve
         BaseResponseDto baseDto = new BaseResponseDto();
         AutoInvestPlanInfoResponseDataDto autoInvestPlanInfoResponseDataDto = new AutoInvestPlanInfoResponseDataDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (bankAccountModel == null){
             autoInvestPlanInfoResponseDataDto.setAutoInvest(false);
         }else{

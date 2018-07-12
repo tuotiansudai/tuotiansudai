@@ -20,6 +20,7 @@ public enum ApiType {
     PHONE_UPDATE(new PhoneUpdateResponseParser(), "/phone/update", PasswordResetService.class),
 
     LOAN_CREATE(new LoanCreateResponseParser(), "/loan/create", LoanCreateService.class),
+    LOAN_CANCEL(new LoanCancelResponseParser(), "/loan/cancel", LoanCancelService.class),
     LOAN_INVEST(new LoanInvestResponseParser(), "/loan/invest", LoanInvestService.class),
     LOAN_FAST_INVEST(new LoanInvestResponseParser(), "/loan/fastInvest", LoanInvestService.class),
     LOAN_CREDIT_INVEST(new LoanCreditInvestResponseParser(), "/loanCredit/invest", LoanCreditInvestService.class),

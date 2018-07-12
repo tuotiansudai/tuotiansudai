@@ -6,6 +6,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.*;
@@ -246,13 +247,13 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case CERTIFICATION:
-                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginName(userModel.getLoginName());
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
                     if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
                 case BANK_CARD:
-                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginName(userModel.getLoginName());
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
                     if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }

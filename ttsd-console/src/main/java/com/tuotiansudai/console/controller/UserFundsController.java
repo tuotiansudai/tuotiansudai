@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleUserBillService;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.repository.model.UserBillPaginationView;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,27 +24,27 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
-                                  @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
+    public ModelAndView userFunds(@RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
+                                  @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
                                   @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<UserBillPaginationView> userBillModels = consoleUserBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
-        int userFundsCount = consoleUserBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
+        List<BankUserBillModel> userBillModels = consoleUserBillService.findUserFunds(businessType, operationType, mobile, startTime, endTime, index, pageSize);
+        long userFundsCount = consoleUserBillService.findUserFundsCount(businessType, operationType, mobile, startTime, endTime);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("userBillBusinessType", userBillBusinessType);
-        modelAndView.addObject("userBillOperationType", userBillOperationType);
+        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("userBillModels", userBillModels);
         modelAndView.addObject("userFundsCount", userFundsCount);
-        modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
-        modelAndView.addObject("operationTypeList", UserBillOperationType.values());
+        modelAndView.addObject("businessTypes", BankUserBillBusinessType.values());
+        modelAndView.addObject("operationTypes", BankUserBillOperationType.values());
         long totalPages = PaginationUtil.calculateMaxPage(userFundsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
