@@ -1,6 +1,12 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.ump_account}" pageJavascript="${js.ump_account}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
 <div class="auto-height personal-info" id="personInfoBox">
+    <div class="ump-nav">
+        <div class="ump-tip">
+            联动优势资金托管账号
+        </div>
+
+    </div>
     <div class="content-container">
         <h4 class="column-title"><em class="tc">个人资料</em>
         </h4>
@@ -125,6 +131,11 @@
         <div class="clear-blank"></div>
         <table class="user-bill-list table-striped"></table>
         <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
+    </div>
+    <div class="kindly-tip">
+        <p>温馨提示：</p>
+        <p>1.应国家相关监管要求，拓天速贷已开通富滇银行存管服务。</p>
+        <p>.联动优势托管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。</p>
     </div>
 </div>
 
