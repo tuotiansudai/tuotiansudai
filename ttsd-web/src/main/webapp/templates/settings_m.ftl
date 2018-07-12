@@ -15,7 +15,7 @@
             <a class="reset-bank-password">
                 重置 <i class="icon-more"></i>
             </a>
-            <form id="resetPasswordForm" action="/personal-info/reset-bank-password/source/M" method="post" style="display: none">
+            <form id="resetPasswordForm" action="/m/personal-info/reset-bank-password/source/M" method="post" style="display: none">
                 <input type="submit" class="update-pwd-btn">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
