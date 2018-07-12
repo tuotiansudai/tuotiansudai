@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.transfer}" pageJavascript="${js.transfer}" activeNav="我的账户" activeLeftNav="债权转让" title="债权转让">
-<div class="content-container create-transfer-content">
+<div class="content-container create-transfer-content" id="myTransferCon" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>">
     <h4 class="column-title">
         <em class="tc title-navli active">债权转让</em>
         <span class="rule-show">规则说明<i class="fa fa-question-circle text-b"></i></span>
@@ -34,6 +34,18 @@
             </div>
         </div>
     </div>
+<#--切换为出借人 -->
+    <div id="turnInvestorDOM" class="pad-m popLayer" style="display: none">
+
+        <div class="tc text-m">是否切换为出借人身份？</div>
+        <form action="/account/switch?redirect=/transferrer/transfer-application-list/TRANSFERRING" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <div class="tc person-info-btn" style="margin-top:40px;">
+                <button class="btn  btn-cancel btn-close" type="button">取消</button>
+                <button class="btn btn-success" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
 
 </div>
 
@@ -51,6 +63,7 @@
         </tr>
         </thead>
         <tbody>
+
         <% for(var i = 0; i < records.length; i++) {
         var item = records[i];
         %>
