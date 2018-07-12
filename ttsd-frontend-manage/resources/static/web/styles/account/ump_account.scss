@@ -15,10 +15,16 @@ $CK1:#ffac2a;
 }
 .kindly-tip {
   padding-left: 37px;
+  padding-top: 10px;
+  padding-bottom: 40px;
   p {
+    &.title {
+      font-weight: bold;
+    }
     font-size: 14px;
     margin-bottom: 0;
     line-height: 33px;
+    color: #666;
   }
 }
 .voice-captcha {

@@ -133,9 +133,9 @@
         <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
     </div>
     <div class="kindly-tip">
-        <p>温馨提示：</p>
+        <p class="title">温馨提示：</p>
         <p>1.应国家相关监管要求，拓天速贷已开通富滇银行存管服务。</p>
-        <p>.联动优势托管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。</p>
+        <p>2.联动优势托管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。</p>
     </div>
 </div>
 
