@@ -297,7 +297,7 @@
       }
       span.icon-list{
         position: absolute;
-        width: 60px;
+        width: 100px;
         height: 20px;
         left: 0;
         top: 50%;
@@ -311,6 +311,24 @@
           height: 20px;
           background: url("../../images/sign/icon_result.png") no-repeat;
           background-position: 0px 0px;
+        }
+        .fudian-icon {
+          float: left;
+          width: 30px;
+          height: 16px;
+          text-align: center;
+          line-height: 16px;
+          color: #ff7200;
+          border: 1px solid #ff7200;
+        }
+        .liandong-icon {
+          float: left;
+          width: 30px;
+          height: 16px;
+          text-align: center;
+          line-height: 16px;
+          color: #ff7200;
+          border: 1px solid #ff7200;
         }
         .coupon-icon {
           float: left;
