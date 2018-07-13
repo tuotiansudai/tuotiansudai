@@ -70,7 +70,8 @@ p {
     color: #fff;
     font-size: 20px;
     text-align: center;
-    line-height: 45px;
+    line-height: 45px!important;
+    padding: 0;
   }
 }
 .contact {
