@@ -11,7 +11,7 @@ public enum BankCallbackType {
 
     AUTHORIZATION("免密投资开启成功", "/personal-info", "/personal-info", "get", "tuotian://sign"),
 
-    PASSWORD_RESET("支付密码重置成功", "/personal-info/reset-bank-password/source/WEB",  "/personal-info/reset-bank-password/source/M", "post", ""),
+    PASSWORD_RESET("支付密码重置成功", "/personal-info/reset-bank-password/source/WEB",  "/personal-info/reset-bank-password/source/M", "post", "tuotian://resetPwd"),
 
 
     PHONE_UPDATE("", "", "", "get", ""),
