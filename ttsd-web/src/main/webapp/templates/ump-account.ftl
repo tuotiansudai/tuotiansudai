@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.ump_account}" pageJavascript="${js.ump_account}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
+<@global.main pageCss="${css.ump_account}" pageJavascript="${js.ump_account}" title="联动优势账户">
 <div class="auto-height personal-info" id="personInfoBox">
     <div class="ump-nav">
         <div class="ump-tip">
