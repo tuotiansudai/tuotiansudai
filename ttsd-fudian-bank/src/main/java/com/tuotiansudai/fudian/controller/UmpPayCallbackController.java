@@ -1,9 +1,7 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.service.UmpBindCardService;
-import com.tuotiansudai.fudian.service.UmpRechargeService;
-import com.tuotiansudai.fudian.service.UmpWithdrawService;
+import com.tuotiansudai.fudian.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,12 +26,37 @@ public class UmpPayCallbackController {
 
     private final UmpBindCardService umpBindCardService;
 
+    private final UmpLoanRepayService umpLoanRepayService;
+
+    private final UmpReplaceBindCardService umpReplaceBindCardService;
+
+    private final UmpInvestRepayService umpInvestRepayService;
+
+    private final UmpCouponRepayService umpCouponRepayService;
+
+    private final UmpExtraRateRepayService umpExtraRateRepayService;
+
+    private final UmpExperienceRepayService umpExperienceRepayService;
+
+    private final UmpInvestRepayFeeService umpInvestRepayFeeService;
+
 
     @Autowired
-    public UmpPayCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService, UmpBindCardService umpBindCardService){
+    public UmpPayCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
+                                    UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
+                                    UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
+                                    UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
+                                    UmpExperienceRepayService umpExperienceRepayService, UmpInvestRepayFeeService umpInvestRepayFeeService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
+        this.umpLoanRepayService = umpLoanRepayService;
+        this.umpReplaceBindCardService = umpReplaceBindCardService;
+        this.umpInvestRepayService = umpInvestRepayService;
+        this.umpCouponRepayService = umpCouponRepayService;
+        this.umpExtraRateRepayService = umpExtraRateRepayService;
+        this.umpExperienceRepayService = umpExperienceRepayService;
+        this.umpInvestRepayFeeService = umpInvestRepayFeeService;
     }
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
@@ -67,113 +90,80 @@ public class UmpPayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-//    @RequestMapping(value = "/mer_replace_card_notify", method = RequestMethod.GET)
-//    public ModelAndView replaceBankCard(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData;
-//        if ("mer_bind_card_apply_notify".equalsIgnoreCase(paramsMap.get("service"))) {
-//            responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
-//        } else {
-//            responseData = bindBankCardService.replaceBankCardCallback(paramsMap, request.getQueryString());
-//        }
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
+    @RequestMapping(value = "/mer_replace_card_notify", method = RequestMethod.GET)
+    public ModelAndView replaceBankCard(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData;
+        if ("mer_bind_card_apply_notify".equalsIgnoreCase(paramsMap.get("service"))) {
+            responseData = umpReplaceBindCardService.notifyCallBack(paramsMap, request.getQueryString());
+        } else {
+            responseData = umpReplaceBindCardService.applyNotifyCallBack(paramsMap, request.getQueryString());
+        }
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
-//    public ModelAndView withdrawNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData = this.withdrawService.withdrawCallback(paramsMap, request.getQueryString());
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
+    @RequestMapping(value = "/normal_repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpLoanRepayService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/normal_repay_notify", method = RequestMethod.GET)
-//    public ModelAndView repayNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        try {
-//            String responseData = this.normalRepayService.repayCallback(paramsMap, request.getQueryString());
-//            return new ModelAndView("/callback_response", "content", responseData);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Normal Repay] repay callback is failed (queryString = {0})", request.getQueryString()), e);
-//        }
-//        return new ModelAndView("/callback_response", "content", "");
-//    }
+    @RequestMapping(value = "/advance_repay_notify", method = RequestMethod.GET)
+    public ModelAndView advanceRepayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpLoanRepayService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/normal_repay_payback_notify", method = RequestMethod.GET)
-//    public ModelAndView normalRepayPaybackNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        try {
-//            String responseData = this.normalRepayService.investPaybackCallback(paramsMap, request.getQueryString());
-//            return new ModelAndView("/callback_response", "content", responseData);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Normal Repay] repay payback callback is failed (queryString = {0})", request.getQueryString()), e);
-//        }
-//        return new ModelAndView("/callback_response", "content", "");
-//    }
+    @RequestMapping(value = "/normal_repay_payback_notify", method = RequestMethod.GET)
+    public ModelAndView normalRepayPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpInvestRepayService.normalNotifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/normal_repay_invest_fee_notify", method = RequestMethod.GET)
-//    public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData = this.normalRepayService.investFeeCallback(paramsMap, request.getQueryString());
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
+    @RequestMapping(value = "/advance_repay_payback_notify", method = RequestMethod.GET)
+    public ModelAndView advanceRepayPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpInvestRepayService.advanceNotifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/advance_repay_notify", method = RequestMethod.GET)
-//    public ModelAndView advanceRepayNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        try {
-//            String responseData = this.advanceRepayService.repayCallback(paramsMap, request.getQueryString());
-//            return new ModelAndView("/callback_response", "content", responseData);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Advance Repay] repay callback is failed (queryString = {0})", request.getQueryString()), e);
-//        }
-//        return new ModelAndView("/callback_response", "content", "");
-//    }
+    @RequestMapping(value = "/normal_repay_invest_fee_notify", method = RequestMethod.GET)
+    public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/advance_repay_payback_notify", method = RequestMethod.GET)
-//    public ModelAndView advanceRepayPaybackNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        try {
-//            String responseData = this.advanceRepayService.investPaybackCallback(paramsMap, request.getQueryString());
-//            return new ModelAndView("/callback_response", "content", responseData);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Advance Repay] repay payback callback is failed (queryString = {0})", request.getQueryString()), e);
-//        }
-//        return new ModelAndView("/callback_response", "content", "");
-//    }
+    @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)
+    public ModelAndView advanceRepayInvestFeeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)
-//    public ModelAndView advanceRepayInvestFeeNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData = this.advanceRepayService.investFeeCallback(paramsMap, request.getQueryString());
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
+    @RequestMapping(value = "/coupon_repay_notify", method = RequestMethod.GET)
+    public ModelAndView couponRepayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpCouponRepayService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/coupon_repay_notify", method = RequestMethod.GET)
-//    public ModelAndView couponRepayNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        try {
-//            String responseData = this.couponRepayService.couponRepayCallback(paramsMap, request.getQueryString());
-//            return new ModelAndView("/callback_response", "content", responseData);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("[Coupon Repay] coupon repay callback is failed (queryString = {0})", request.getQueryString()), e);
-//        }
-//        return new ModelAndView("/callback_response", "content", "");
-//    }
+    @RequestMapping(value = "/extra_rate_notify", method = RequestMethod.GET)
+    public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpExtraRateRepayService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
-//    @RequestMapping(value = "/extra_rate_notify", method = RequestMethod.GET)
-//    public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData = this.extraRateService.extraRateInvestCallback(paramsMap, request.getQueryString());
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
-
-//    @ResponseBody
-//    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.GET)
-//    public ModelAndView repayCallback(HttpServletRequest request) {
-//        Map<String, String> paramsMap = this.parseRequestParameters(request);
-//        String responseData = experienceRepayService.repayCallback(paramsMap, request.getQueryString());
-//        return new ModelAndView("/callback_response", "content", responseData);
-//    }
+    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayCallback(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = umpExperienceRepayService.notifyCallBack(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();

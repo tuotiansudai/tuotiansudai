@@ -51,29 +51,19 @@ public class UmpLoanRepayService {
         insertRequestMapper.insertProjectTransfer(requestModel);
 
         if (requestModel.getField().isEmpty()) {
-            logger.error("[UMP WITHDRAW] failed to sign, data: {}", requestModel);
+            logger.error("[UMP LOAN REPAY] failed to sign, data: {}", requestModel);
             return null;
         }
         return requestModel;
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        WithdrawNotifyModel withdrawNotifyModel = new WithdrawNotifyModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawNotifyModel);
-        if (Strings.isNullOrEmpty(withdrawNotifyModel.getResponseData())) {
+        ProjectTransferNotifyModel projectTransferNotifyModel = new ProjectTransferNotifyModel();
+        umpUtils.parseCallbackRequest(paramsMap, queryString, projectTransferNotifyModel);
+        if (Strings.isNullOrEmpty(projectTransferNotifyModel.getResponseData())) {
             return null;
         }
-        insertNotifyMapper.insertNotifyWithdraw(withdrawNotifyModel);
-        return withdrawNotifyModel.getResponseData();
+        insertNotifyMapper.insertNotifyProjectTransfer(projectTransferNotifyModel);
+        return projectTransferNotifyModel.getResponseData();
     }
-//
-//    public String advanceNotifyCallBack(Map<String, String> paramsMap, String queryString) {
-//        WithdrawApplyNotifyModel withdrawApplyNotifyModel = new WithdrawApplyNotifyModel();
-//        umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawApplyNotifyModel);
-//        if (Strings.isNullOrEmpty(withdrawApplyNotifyModel.getResponseData())) {
-//            return null;
-//        }
-//        insertNotifyMapper.insertApplyNotifyWithdraw(withdrawApplyNotifyModel);
-//        return withdrawApplyNotifyModel.getResponseData();
-//    }
 }

@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UpdateMapper {
 
+    @Update("update project_transfer_request set status = #{status} where id = #{id}")
+    void updateProjectTransfer(@Param(value = "status") SyncRequestStatus status,
+                               @Param(value = "id") long id);
+
     @Update("update coupon_repay_transfer_request set status = #{status} where id = #{id}")
     void updateCouponRepay(@Param(value = "status") SyncRequestStatus status,
                            @Param(value = "id") long id);

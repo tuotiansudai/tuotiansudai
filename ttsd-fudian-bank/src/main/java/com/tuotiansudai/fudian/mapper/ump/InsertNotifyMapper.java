@@ -39,7 +39,17 @@ public interface InsertNotifyMapper {
     @Insert("insert into project_transfer_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
             "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insertNotifyProjectTransfer(ProjectTransferNotifyModel model);
+    void insertNotifyProjectTransfer(TransferNotifyRequestModel model);
+
+    @Insert("insert into normal_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, ret_code, ret_msg, request_time, response_time, request_data, response_data, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNotifyNormalRepay(RepayNotifyRequestModel model);
+
+    @Insert("insert into advance_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, ret_code, ret_msg, request_time, response_time, request_data, response_data, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData}, 'NOT_DONE')")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNotifyAdvanceRepay(RepayNotifyRequestModel model);
 
     @Insert("insert into coupon_repay_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
             "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
