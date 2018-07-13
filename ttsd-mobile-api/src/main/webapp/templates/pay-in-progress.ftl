@@ -15,7 +15,6 @@
 <div class="my-account-content personal-profile loading-page">
 
     <div class="gif-container">
-        <img id="gifImg" src="" alt="">
     </div>
     <div class="progress-container">
         正在处理中：<span id="secondsCountDown">5</span>
