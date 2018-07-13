@@ -91,7 +91,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         List<Role> roles = Lists.newArrayList(Role.values())
                 .stream()
-                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT,Role.INVESTOR,Role.LOANER).contains(role))
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT, Role.INVESTOR, Role.LOANER).contains(role))
                 .collect(Collectors.toList());
 
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -109,9 +109,9 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName,null));
-            editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.INVESTOR));
-            editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.LOANER));
+            editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName, null));
+            editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.INVESTOR));
+            editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.LOANER));
 
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());

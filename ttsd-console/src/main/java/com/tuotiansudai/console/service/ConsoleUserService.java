@@ -141,9 +141,9 @@ public class ConsoleUserService {
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
-        editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName,null));
-        editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.INVESTOR));
-        editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName,Role.LOANER));
+        editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName, null));
+        editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.LOANER));
 
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
