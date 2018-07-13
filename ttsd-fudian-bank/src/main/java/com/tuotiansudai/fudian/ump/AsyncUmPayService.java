@@ -9,11 +9,6 @@ public enum AsyncUmPayService {
      * 换卡
      */
     PTP_MER_REPLACE_CARD("ptp_mer_replace_card", "callback/ptp_mer_replace_card", "callback/ptp_mer_replace_card", "mer_replace_card_notify", "tuotian://changecard/{0}"),
-
-    /**
-     * 放款标的转账
-     */
-    LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "loan_out_notify", ""),
     /**
      * 正常还款的转账
      */
@@ -22,7 +17,6 @@ public enum AsyncUmPayService {
      * 提前还款的转账
      */
     ADVANCE_REPAY_PROJECT_TRANSFER("project_transfer", "account", "", "advance_repay_notify", ""),
-
     /**
      * 投资正常返款的转账
      */
@@ -39,10 +33,6 @@ public enum AsyncUmPayService {
      * 手续费提前返款的转账
      */
     ADVANCE_REPAY_INVEST_FEE_PROJECT_TRANSFER("project_transfer", "", "", "advance_repay_invest_fee_notify", ""),
-    /**
-     * 无密还款标的转入
-     */
-    NORMAL_REPAY_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "", "", "normal_repay_notify", ""),
     /**
      * 个人账户充值
      */
@@ -63,14 +53,6 @@ public enum AsyncUmPayService {
      * 体验金还款普通转账
      */
     EXPERIENCE_INTEREST_TRANSFER("transfer", "", "", "experience_repay_notify", ""),
-    /**
-     * 推荐人奖励普通转账
-     */
-    REFERRER_REWARD_TRANSFER("transfer", "", "", "referrer_reward_notify", ""),
-    /**
-     * 推荐人奖励普通转账
-     */
-    RED_ENVELOPE_TRANSFER("transfer", "", "", "red_envelope_notify", "")
     ;
 
     private final String serviceName;

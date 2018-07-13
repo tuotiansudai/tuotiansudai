@@ -19,11 +19,7 @@ public abstract class BaseSyncRequestModel {
 
     public final static String PAY_CALLBACK_WEB_HOST = ETCDConfigReader.getReader().getValue("pay.callback.web.host");
 
-    public final static String PAY_CALLBACK_APP_WEB_HOST = ETCDConfigReader.getReader().getValue("pay.callback.app.web.host");
-
     public final static String PAY_CALLBACK_BACK_HOST = ETCDConfigReader.getReader().getValue("pay.callback.back.host");
-
-    public final static String PAY_CALLBACK_CONSOLE_HOST = ETCDConfigReader.getReader().getValue("pay.callback.console.host");
 
     protected static Properties UMP_PROPS = new Properties();
 
@@ -48,6 +44,8 @@ public abstract class BaseSyncRequestModel {
     private String requestData;
 
     private String requestUrl;
+
+    private Map field;
 
     private SyncRequestStatus status = SyncRequestStatus.READY;
 
@@ -161,7 +159,7 @@ public abstract class BaseSyncRequestModel {
     }
 
     public String getRequestData() {
-        return requestData;
+        return this.field.toString();
     }
 
     public void setRequestData(String requestData) {
@@ -174,6 +172,14 @@ public abstract class BaseSyncRequestModel {
 
     public void setSourceV(String sourceV) {
         this.sourceV = sourceV;
+    }
+
+    public Map getField() {
+        return field;
+    }
+
+    public void setField(Map field) {
+        this.field = field;
     }
 
     @Override

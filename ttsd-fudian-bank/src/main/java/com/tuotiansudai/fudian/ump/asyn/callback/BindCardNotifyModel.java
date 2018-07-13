@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-import com.tuotiansudai.repository.model.AgreementType;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +16,7 @@ public class BindCardNotifyModel extends BaseNotifyModel {
 
     public boolean isOpenPay() {
         try {
-            return userBindAgreementList != null && userBindAgreementList.contains(AgreementType.ZKJP0700.name())
+            return userBindAgreementList != null && userBindAgreementList.contains("ZKJP0700")
                     && URLDecoder.decode(userBindAgreementList, StandardCharsets.UTF_8.toString()).split(",")[1].equals(SUCCESS_CODE);
         } catch (UnsupportedEncodingException e) {
             return false;

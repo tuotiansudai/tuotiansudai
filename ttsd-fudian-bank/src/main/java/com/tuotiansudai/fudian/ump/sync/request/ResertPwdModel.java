@@ -18,7 +18,7 @@ public class ResertPwdModel extends BaseSyncRequestModel {
     }
 
     public ResertPwdModel(String userId, String identityCode, String orderId) {
-        this.service = SyncUmPayService.MER_SEND_SMS_PWD.getServiceName();
+        this.service = "mer_send_sms_pwd";
         this.userId = userId;
         this.identityCode = identityCode;
         this.orderId = orderId;

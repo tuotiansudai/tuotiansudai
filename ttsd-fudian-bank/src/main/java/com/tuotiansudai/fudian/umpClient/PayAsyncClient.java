@@ -29,12 +29,6 @@ public class PayAsyncClient {
 
     private ObjectMapper objectMapper;
 
-    @Value(value = "${pay.callback.web.host}")
-    private String webCallback;
-
-    @Value(value = "${pay.callback.back.host}")
-    private String backCallback;
-
     private final PayGateWrapper payGateWrapper;
 
     private final InsertRequestMapper insertRequestMapper;

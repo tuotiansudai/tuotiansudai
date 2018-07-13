@@ -44,14 +44,6 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
         this.transAction = UmPayTransAction.OUT.getCode();
     }
 
-    public static TransferRequestModel newReferrerRewardTransferRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.REFERRER_REWARD_TRANSFER);
-    }
-
-    public static TransferRequestModel newRedEnvelopeCouponRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.RED_ENVELOPE_TRANSFER);
-    }
-
     public static TransferRequestModel newCouponRepayRequest(String orderId, String payUserId, String particAccountId, String amount) {
         return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.COUPON_REPAY_TRANSFER);
     }
