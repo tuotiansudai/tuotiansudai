@@ -46,6 +46,7 @@
             <label class="col-sm-1 control-label"></label>
             <label class="col-sm-2 control-label">银行卡</label>
         </div>
+        <#if user.bankCardNumberUMP??>
         <div class="form-group">
             <label class="col-sm-2 control-label">联动优势：</label>
 
@@ -53,6 +54,8 @@
                 <p class="form-control-static">${user.bankCardNumberUMP!}</p>
             </div>
         </div>
+        </#if>
+        <#if user.bankCardNumberInvestor??>
         <div class="form-group">
             <label class="col-sm-2 control-label">富滇银行-出借人：</label>
 
@@ -60,6 +63,8 @@
                 <p class="form-control-static">${user.bankCardNumberInvestor!}</p>
             </div>
         </div>
+        </#if>
+        <#if user.bankCardNumberLoaner??>
         <div class="form-group">
             <label class="col-sm-2 control-label">富滇银行-借款人：</label>
 
@@ -67,6 +72,7 @@
                 <p class="form-control-static">${user.bankCardNumberLoaner!}</p>
             </div>
         </div>
+        </#if>
         <hr size="1" color="#999999">
         <div class="form-group">
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
