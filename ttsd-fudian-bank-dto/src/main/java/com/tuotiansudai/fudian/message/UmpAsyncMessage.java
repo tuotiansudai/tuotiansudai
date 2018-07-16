@@ -11,16 +11,13 @@ public class UmpAsyncMessage extends BankBaseMessage{
 
     private Map<String, String> fields = Maps.newHashMap();
 
-    private String code;
-
     public UmpAsyncMessage() {
     }
 
-    public UmpAsyncMessage(boolean status, String url, Map<String, String> fields, String code) {
-        super(status, null);
+    public UmpAsyncMessage(boolean status, String url, Map<String, String> fields, String message) {
+        super(status, message);
         this.url = url;
         this.fields = fields;
-        this.code = code;
     }
 
     public String getUrl() {
@@ -37,13 +34,5 @@ public class UmpAsyncMessage extends BankBaseMessage{
 
     public void setFields(Map<String, String> fields) {
         this.fields = fields;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 }

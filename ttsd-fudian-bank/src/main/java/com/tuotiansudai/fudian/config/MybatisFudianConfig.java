@@ -41,7 +41,7 @@ public class MybatisFudianConfig {
 
     @Primary
     @Bean(name = "fudianSqlSessionTemplate")
-    public SqlSessionTemplate fudianSqlSessionTemplate(@Qualifier("fudianSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate fudianSqlSessionTemplate(@Qualifier("fudianSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

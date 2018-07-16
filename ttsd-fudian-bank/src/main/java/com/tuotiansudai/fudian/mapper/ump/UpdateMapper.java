@@ -25,12 +25,4 @@ public interface UpdateMapper {
     @Update("update transfer_request set status = #{status} where id = #{id}")
     void updateTransfer(@Param(value = "status") SyncRequestStatus status,
                          @Param(value = "id") long id);
-
-    @Update("update mer_send_sms_pwd_request set status = #{status} where id = #{id}")
-    void updateResetPwd(@Param(value = "status") SyncRequestStatus status,
-                        @Param(value = "id") long id);
-
-    @Update("update mer_register_person_request set status = #{status} where id = #{id}")
-    void updateRegister(@Param(value = "status") SyncRequestStatus status,
-                        @Param(value = "id") long id);
 }

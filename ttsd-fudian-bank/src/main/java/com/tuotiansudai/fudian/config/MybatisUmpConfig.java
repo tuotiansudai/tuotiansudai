@@ -36,7 +36,7 @@ public class MybatisUmpConfig {
     }
 
     @Bean(name = "umpSqlSessionTemplate")
-    public SqlSessionTemplate umpSqlSessionTemplate(@Qualifier("umpSqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate umpSqlSessionTemplate(@Qualifier("umpSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

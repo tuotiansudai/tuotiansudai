@@ -1,7 +1,6 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.*;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/ump")
 public class UmpController {
 
-    private final UmpRegisterService umpRegisterService;
-
     private final UmpRechargeService umpRechargeService;
 
     private final UmpWithdrawService umpWithdrawService;
@@ -29,19 +26,12 @@ public class UmpController {
     private final UmpLoanRepayService umpLoanRepayService;
 
     @Autowired
-    public UmpController(UmpRegisterService umpRegisterService, UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService, UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService, UmpLoanRepayService umpLoanRepayService){
-        this.umpRegisterService = umpRegisterService;
+    public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService, UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService, UmpLoanRepayService umpLoanRepayService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> register(){
-        BankBaseMessage message = umpRegisterService.register(null, null, null, null);
-        return ResponseEntity.ok(message);
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
@@ -78,6 +68,6 @@ public class UmpController {
         if (model == null || Strings.isNullOrEmpty(model.getRequestData())) {
             return new UmpAsyncMessage(false, null, null, "请求数据生成失败");
         }
-        return new UmpAsyncMessage(true, model.getRequestUrl(), model.getField(), "0000");
+        return new UmpAsyncMessage(true, model.getRequestUrl(), model.getField(), null);
     }
 }
