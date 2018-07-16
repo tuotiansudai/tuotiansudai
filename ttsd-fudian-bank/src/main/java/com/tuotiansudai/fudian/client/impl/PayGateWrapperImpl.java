@@ -1,6 +1,6 @@
-package com.tuotiansudai.fudian.umpClient.impl;
+package com.tuotiansudai.fudian.client.impl;
 
-import com.tuotiansudai.fudian.umpClient.PayGateWrapper;
+import com.tuotiansudai.fudian.client.PayGateWrapper;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ParameterCheckException;
 import com.umpay.api.exception.ReqDataException;

@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.BaseSyncResponseModel;
-import com.tuotiansudai.fudian.umpClient.PayGateWrapper;
+import com.tuotiansudai.fudian.client.PayGateWrapper;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;

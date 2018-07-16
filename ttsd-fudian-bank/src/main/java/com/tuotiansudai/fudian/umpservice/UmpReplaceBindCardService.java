@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.service;
+package com.tuotiansudai.fudian.umpservice;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;

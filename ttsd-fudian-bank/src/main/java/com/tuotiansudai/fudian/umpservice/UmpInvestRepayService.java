@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.service;
+package com.tuotiansudai.fudian.umpservice;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
@@ -6,8 +6,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertResponseMapper;
 import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
-import com.tuotiansudai.fudian.ump.asyn.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.fudian.ump.asyn.callback.TransferNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.RepayNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
 import com.tuotiansudai.fudian.ump.sync.response.ProjectTransferResponseModel;
@@ -22,9 +21,9 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class UmpInvestRepayFeeService {
+public class UmpInvestRepayService {
 
-    private static Logger logger = LoggerFactory.getLogger(UmpInvestRepayFeeService.class);
+    private static Logger logger = LoggerFactory.getLogger(UmpInvestRepayService.class);
 
     private final static String REPAY_ORDER_ID_TEMPLATE = "{0}X{1}";
 
@@ -39,7 +38,7 @@ public class UmpInvestRepayFeeService {
     private final InsertNotifyMapper insertNotifyMapper;
 
     @Autowired
-    public UmpInvestRepayFeeService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper, InsertNotifyMapper insertNotifyMapper){
+    public UmpInvestRepayService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper,InsertNotifyMapper insertNotifyMapper){
         this.umpUtils = umpUtils;
         this.insertRequestMapper = insertRequestMapper;
         this.updateMapper = updateMapper;
@@ -48,16 +47,17 @@ public class UmpInvestRepayFeeService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage investRepayFee(long loanId, long loanRepayId, long amount, boolean isAdvance){
-        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayInvestFeeRequest(
-                String.valueOf(loanId),
-                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
+    public BankBaseMessage investRepay(long loanId, long investRepayId, String payUserId, long amount, boolean isAdvance){
+        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(loanId),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
+                payUserId,
                 String.valueOf(amount));
 
-        if (isAdvance){
-            model = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(String.valueOf(loanId),
-                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
-                    String.valueOf(model));
+        if (isAdvance) {
+            model = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(loanId),
+                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
+                    payUserId,
+                    String.valueOf(amount));
         }
 
         umpUtils.sign(model);
@@ -65,7 +65,7 @@ public class UmpInvestRepayFeeService {
         insertRequestMapper.insertProjectTransfer(model);
 
         if (model.getField().isEmpty()) {
-            logger.error("[UMP register] failed to sign, data: {}", model);
+            logger.error("[UMP invest repay] failed to sign, data: {}", model);
             return new BankBaseMessage(false, "签名失败");
         }
 
@@ -84,13 +84,23 @@ public class UmpInvestRepayFeeService {
 
     }
 
-    public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        ProjectTransferNotifyRequestModel transferNotifyRequestModel = new ProjectTransferNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, transferNotifyRequestModel);
-        if (Strings.isNullOrEmpty(transferNotifyRequestModel.getResponseData())) {
+    public String normalNotifyCallBack(Map<String, String> paramsMap, String queryString){
+        RepayNotifyRequestModel repayNotifyRequestModel = new RepayNotifyRequestModel();
+        umpUtils.parseCallbackRequest(paramsMap, queryString, repayNotifyRequestModel);
+        if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
             return null;
         }
-        insertNotifyMapper.insertNotifyProjectTransfer(transferNotifyRequestModel);
-        return transferNotifyRequestModel.getResponseData();
+        insertNotifyMapper.insertNotifyNormalRepay(repayNotifyRequestModel);
+        return repayNotifyRequestModel.getResponseData();
+    }
+
+    public String advanceNotifyCallBack(Map<String, String> paramsMap, String queryString){
+        RepayNotifyRequestModel repayNotifyRequestModel = new RepayNotifyRequestModel();
+        umpUtils.parseCallbackRequest(paramsMap, queryString, repayNotifyRequestModel);
+        if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
+            return null;
+        }
+        insertNotifyMapper.insertNotifyAdvanceRepay(repayNotifyRequestModel);
+        return repayNotifyRequestModel.getResponseData();
     }
 }

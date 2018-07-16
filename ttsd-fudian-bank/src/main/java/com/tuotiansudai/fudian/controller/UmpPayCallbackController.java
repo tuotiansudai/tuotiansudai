@@ -1,7 +1,7 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.service.*;
+import com.tuotiansudai.fudian.umpservice.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

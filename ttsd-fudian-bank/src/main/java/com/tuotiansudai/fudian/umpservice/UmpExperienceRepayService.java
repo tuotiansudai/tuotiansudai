@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.service;
+package com.tuotiansudai.fudian.umpservice;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
@@ -21,11 +21,11 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class UmpExtraRateRepayService {
+public class UmpExperienceRepayService {
 
-    private static Logger logger = LoggerFactory.getLogger(UmpExtraRateRepayService.class);
+    private static Logger logger = LoggerFactory.getLogger(UmpExperienceRepayService.class);
 
-    private final static String EXTRA_RATE_ORDER_ID_TEMPLATE = "{0}X{1}";
+    private final static String EXPERIENCE_ORDER_ID_TEMPLATE = "{0}X{1}";
 
     private final UmpUtils umpUtils;
 
@@ -38,7 +38,7 @@ public class UmpExtraRateRepayService {
     private final InsertNotifyMapper insertNotifyMapper;
 
     @Autowired
-    public UmpExtraRateRepayService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper, InsertNotifyMapper insertNotifyMapper){
+    public UmpExperienceRepayService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper, InsertNotifyMapper insertNotifyMapper){
         this.umpUtils = umpUtils;
         this.insertRequestMapper = insertRequestMapper;
         this.updateMapper = updateMapper;
@@ -47,33 +47,33 @@ public class UmpExtraRateRepayService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage extraRateRepay(long investExtraRateModelId, String payUserId, String payAccountId, long amount){
-        TransferRequestModel model = TransferRequestModel.newExtraRateRequest(
-                MessageFormat.format(EXTRA_RATE_ORDER_ID_TEMPLATE, String.valueOf(investExtraRateModelId), String.valueOf(new Date().getTime())),
+    public BankBaseMessage experienceRepay(long investRepayModelId, String payUserId, String payAccountId, long amount){
+        TransferRequestModel model = TransferRequestModel.experienceInterestRequest(
+                MessageFormat.format(EXPERIENCE_ORDER_ID_TEMPLATE, String.valueOf(investRepayModelId), String.valueOf(new Date().getTime())),
                 payUserId,
                 payAccountId,
                 String.valueOf(amount));
 
         umpUtils.sign(model);
 
-        insertRequestMapper.insertExtraRate(model);
+        insertRequestMapper.insertTransfer(model);
 
         if (model.getField().isEmpty()) {
             logger.error("[UMP COUPON REPAY] failed to sign, data: {}", model);
             return new BankBaseMessage(false, "签名失败");
         }
 
-        updateMapper.updateExtraRate(SyncRequestStatus.SENT, model.getId());
+        updateMapper.updateTransfer(SyncRequestStatus.SENT, model.getId());
         String responseBody = umpUtils.send(model.getRequestUrl(), (Map<String, String>) model.getField());
         if (responseBody == null){
             updateMapper.updateTransfer(SyncRequestStatus.FAILURE, model.getId());
             return new BankBaseMessage(false, "请求联动优势失败");
         }
 
-        updateMapper.updateExtraRate(SyncRequestStatus.SUCCESS, model.getId());
+        updateMapper.updateTransfer(SyncRequestStatus.SUCCESS, model.getId());
         TransferResponseModel responseModel = new TransferResponseModel();
         umpUtils.generateResponse(model.getId(), responseBody, responseModel);
-        insertResponseMapper.insertResponseExtraRate(responseModel);
+        insertResponseMapper.insertResponseTransfer(responseModel);
         return new BankBaseMessage(true, null);
 
     }
@@ -84,7 +84,7 @@ public class UmpExtraRateRepayService {
         if (Strings.isNullOrEmpty(transferNotifyRequestModel.getResponseData())) {
             return null;
         }
-        insertNotifyMapper.insertNotifyExtraRate(transferNotifyRequestModel);
+        insertNotifyMapper.insertNotifyExperience(transferNotifyRequestModel);
         return transferNotifyRequestModel.getResponseData();
     }
 }

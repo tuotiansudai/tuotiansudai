@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.service;
+package com.tuotiansudai.fudian.umpservice;
 
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertResponseMapper;
