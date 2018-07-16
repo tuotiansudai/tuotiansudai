@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>正在处理中...</title>
+    <title>${bankCallbackType.getTitle()}</title>
     <link rel="stylesheet" type="text/css" href="${css.index!}" charset="utf-8"/>
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="yes" name="apple-touch-fullscreen">
