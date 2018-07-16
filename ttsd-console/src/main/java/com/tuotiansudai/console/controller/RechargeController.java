@@ -28,7 +28,7 @@ public class RechargeController {
     private ConsoleRechargeService consoleRechargeService;
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public ModelAndView getRechargeList(@RequestParam(value = "accountType", required = false,defaultValue = "INVESTOR") AccountType accountType,
+    public ModelAndView getRechargeList(@RequestParam(value = "accountType", required = false,defaultValue = "BANK_INVESTOR") AccountType accountType,
                                         @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                         @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,

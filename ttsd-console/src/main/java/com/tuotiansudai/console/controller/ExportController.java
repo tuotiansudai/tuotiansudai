@@ -301,7 +301,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public void exportRecharge(@RequestParam(value = "accountType", required = false,defaultValue = "INVESTOR") AccountType accountType,
+    public void exportRecharge(@RequestParam(value = "accountType", required = false,defaultValue ="BANK_INVESTOR") AccountType accountType,
                                @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -311,6 +311,7 @@ public class ExportController {
                                @RequestParam(value = "channel", required = false) String channel,
                                @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
+        ;
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
