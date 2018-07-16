@@ -49,8 +49,7 @@ public class UmpWithdrawService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        WithdrawNotifyRequestModel withdrawNotifyModel = new WithdrawNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawNotifyModel);
+        WithdrawNotifyRequestModel withdrawNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new WithdrawNotifyRequestModel());
         if (Strings.isNullOrEmpty(withdrawNotifyModel.getResponseData())) {
             return null;
         }
@@ -59,8 +58,7 @@ public class UmpWithdrawService {
     }
 
     public String applyNotifyCallBack(Map<String, String> paramsMap, String queryString) {
-        WithdrawApplyNotifyRequestModel withdrawApplyNotifyModel = new WithdrawApplyNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawApplyNotifyModel);
+        WithdrawApplyNotifyRequestModel withdrawApplyNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new WithdrawApplyNotifyRequestModel());
         if (Strings.isNullOrEmpty(withdrawApplyNotifyModel.getResponseData())) {
             return null;
         }

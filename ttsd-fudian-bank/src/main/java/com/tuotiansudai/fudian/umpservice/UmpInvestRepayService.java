@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertResponseMapper;
-import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
+import com.tuotiansudai.fudian.mapper.ump.UpdateRequestMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.ump.asyn.callback.RepayNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
@@ -31,17 +31,17 @@ public class UmpInvestRepayService {
 
     private final InsertRequestMapper insertRequestMapper;
 
-    private final UpdateMapper updateMapper;
+    private final UpdateRequestMapper updateRequestMapper;
 
     private final InsertResponseMapper insertResponseMapper;
 
     private final InsertNotifyMapper insertNotifyMapper;
 
     @Autowired
-    public UmpInvestRepayService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper,InsertNotifyMapper insertNotifyMapper){
+    public UmpInvestRepayService(UmpUtils umpUtils, InsertRequestMapper insertRequestMapper, UpdateRequestMapper updateRequestMapper, InsertResponseMapper insertResponseMapper, InsertNotifyMapper insertNotifyMapper){
         this.umpUtils = umpUtils;
         this.insertRequestMapper = insertRequestMapper;
-        this.updateMapper = updateMapper;
+        this.updateRequestMapper = updateRequestMapper;
         this.insertResponseMapper = insertResponseMapper;
         this.insertNotifyMapper = insertNotifyMapper;
     }
@@ -69,14 +69,14 @@ public class UmpInvestRepayService {
             return new BankBaseMessage(false, "签名失败");
         }
 
-        updateMapper.updateProjectTransfer(SyncRequestStatus.SENT, model.getId());
+        updateRequestMapper.updateProjectTransfer(SyncRequestStatus.SENT, model.getId());
         String responseBody = umpUtils.send(model.getRequestUrl(), (Map<String, String>) model.getField());
         if (responseBody == null){
-            updateMapper.updateProjectTransfer(SyncRequestStatus.FAILURE, model.getId());
+            updateRequestMapper.updateProjectTransfer(SyncRequestStatus.FAILURE, model.getId());
             return new BankBaseMessage(false, "请求联动优势失败");
         }
 
-        updateMapper.updateProjectTransfer(SyncRequestStatus.SUCCESS, model.getId());
+        updateRequestMapper.updateProjectTransfer(SyncRequestStatus.SUCCESS, model.getId());
         ProjectTransferResponseModel responseModel = new ProjectTransferResponseModel();
         umpUtils.generateResponse(model.getId(), responseBody, responseModel);
         insertResponseMapper.invertProjectTransfer(responseModel);
@@ -85,8 +85,7 @@ public class UmpInvestRepayService {
     }
 
     public String normalNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        RepayNotifyRequestModel repayNotifyRequestModel = new RepayNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, repayNotifyRequestModel);
+        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new RepayNotifyRequestModel());
         if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
             return null;
         }
@@ -95,8 +94,7 @@ public class UmpInvestRepayService {
     }
 
     public String advanceNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        RepayNotifyRequestModel repayNotifyRequestModel = new RepayNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, repayNotifyRequestModel);
+        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new RepayNotifyRequestModel());
         if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
             return null;
         }

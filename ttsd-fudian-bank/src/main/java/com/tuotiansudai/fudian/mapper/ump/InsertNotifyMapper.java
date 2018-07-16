@@ -26,8 +26,8 @@ public interface InsertNotifyMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNotifyRecharge(RechargeNotifyRequestModel model);
 
-    @Insert("insert into cust_withdrawals_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, apply_notify_flag,  order_id, mer_date, user_id, amount, com_amt_type, request_time, request_url, request_data)" +
-            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{applyNotifyFlag}, #{orderId}, #{merDate}, #{userId}, #{amount}, #{comAmtType}, #{requestTime}, #{requestUrl}, #{requestData})")
+    @Insert("insert into withdraw_notify_request (sign_type, sign, mer_id, version, order_id, mer_date, trade_no, amount, com_amt, com_amt_type, trade_state, transfer_date, transfer_settle_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
+            "values (#{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{amount}, #{comAmt}, #{comAmtType}, #{tradeState}, #{transferDate}, #{transferSettleDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNotifyWithdraw(WithdrawNotifyRequestModel model);
 

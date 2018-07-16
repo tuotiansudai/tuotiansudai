@@ -48,7 +48,7 @@ public class UmpController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> recharge(){
-        MerRechargePersonRequestModel model = umpRechargeService.recharge(null, null, false, 0, 0, null);
+        MerRechargePersonRequestModel model = umpRechargeService.recharge("asdd", "asdasd", false, 123, 100, "ICBC");
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface UpdateMapper {
+public interface UpdateRequestMapper {
 
     @Update("update project_transfer_request set status = #{status} where id = #{id}")
     void updateProjectTransfer(@Param(value = "status") SyncRequestStatus status,
@@ -20,9 +20,9 @@ public interface UpdateMapper {
 
     @Update("update extra_rate_transfer_request set status = #{status} where id = #{id}")
     void updateExtraRate(@Param(value = "status") SyncRequestStatus status,
-                           @Param(value = "id") long id);
+                         @Param(value = "id") long id);
 
     @Update("update transfer_request set status = #{status} where id = #{id}")
     void updateTransfer(@Param(value = "status") SyncRequestStatus status,
-                         @Param(value = "id") long id);
+                        @Param(value = "id") long id);
 }

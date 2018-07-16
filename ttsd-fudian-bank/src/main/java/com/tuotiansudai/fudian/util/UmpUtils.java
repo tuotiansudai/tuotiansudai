@@ -46,7 +46,7 @@ public class UmpUtils {
 
     public <T extends BaseSyncRequestModel> void sign(T model){
         try {
-            ReqData reqData = this.makeReqDataByPost(model);
+            ReqData reqData = this.makeReqDataByPost(model.generatePayRequestData());
             model.setSign(reqData.getSign());
             model.setRequestUrl(reqData.getUrl());
             model.setField(reqData.getField());
@@ -57,15 +57,15 @@ public class UmpUtils {
 
     @SuppressWarnings(value = "unchecked")
     public <T extends BaseCallbackRequestModel> T parseCallbackRequest(Map<String, String> paramsMap,
-                                                                       String originalQueryString,
-                                                                       T model) {
+                                                                          String originalQueryString,
+                                                                          T model) {
         try {
             model = (T) parseParamsToModel(paramsMap, model.getClass());
             model.setRequestData(originalQueryString);
             model.setResponseTime(new Date());
             model.setResponseData(this.merNotifyResData(model.generatePayResponseData()));
             return model;
-        } catch (VerifyException | IOException e) {
+        } catch (Exception e) {
             logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));
         }
         return null;

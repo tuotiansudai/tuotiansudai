@@ -52,8 +52,7 @@ public class UmpBindCardService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        BankCardNotifyRequestModel bindCardNotifyModel = new BankCardNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, bindCardNotifyModel);
+        BankCardNotifyRequestModel bindCardNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new BankCardNotifyRequestModel());
         if (Strings.isNullOrEmpty(bindCardNotifyModel.getResponseData())) {
             return null;
         }
@@ -62,8 +61,7 @@ public class UmpBindCardService {
     }
 
     public String applyNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        BankCardApplyNotifyRequestModel bindCardApplyNotifyModel = new BankCardApplyNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, bindCardApplyNotifyModel);
+        BankCardApplyNotifyRequestModel bindCardApplyNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new BankCardApplyNotifyRequestModel());
         if (Strings.isNullOrEmpty(bindCardApplyNotifyModel.getResponseData())) {
             return null;
         }

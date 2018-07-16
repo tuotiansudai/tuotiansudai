@@ -55,13 +55,10 @@ public class UmpRechargeService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        RechargeNotifyRequestModel model = new RechargeNotifyRequestModel();
-        umpUtils.parseCallbackRequest(paramsMap, queryString, model);
-
+        RechargeNotifyRequestModel model = umpUtils.parseCallbackRequest(paramsMap, queryString, new RechargeNotifyRequestModel());
         if (Strings.isNullOrEmpty(model.getResponseData())){
             return null;
         }
-
         insertNotifyMapper.insertNotifyRecharge(model);
         return model.getResponseData();
     }
