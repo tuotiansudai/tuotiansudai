@@ -21,10 +21,7 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -81,6 +78,11 @@ public class ConsoleUserService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private UserBankCardMapper userBankCardMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
@@ -144,7 +146,7 @@ public class ConsoleUserService {
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
-        editUserDto=bankBindCardService.setUserBankCardNumberByLoginName(loginName,editUserDto);
+        editUserDto = setUserBankCardNumberByLoginName(loginName, editUserDto);
         return editUserDto;
     }
 
@@ -167,7 +169,9 @@ public class ConsoleUserService {
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userView.getLoginName());
-            userRoleModels=userRoleModels.stream().filter(userRoleModel -> { return  userRoleModel.getRole() != Role.INVESTOR && userRoleModel.getRole() !=Role.LOANER ;}).collect(Collectors.toList());
+            userRoleModels = userRoleModels.stream().filter(userRoleModel -> {
+                return userRoleModel.getRole() != Role.INVESTOR && userRoleModel.getRole() != Role.LOANER;
+            }).collect(Collectors.toList());
             userItemDataDto.setUserRoles(userRoleModels);
             String taskId = OperationType.USER + "-" + userView.getLoginName();
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
@@ -475,6 +479,21 @@ public class ConsoleUserService {
             }
         }
         return false;
+    }
+
+    public EditUserDto setUserBankCardNumberByLoginName(String loginName, EditUserDto editUserDto) {
+        editUserDto.setBankCardNumberUMP(bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
+
+        String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> {
+            return Role.BANK_INVESTOR.equals(userItem.getRoleType());
+        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        editUserDto.setBankCardNumberInvestor(bankCardNumberInvestor);
+        String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> {
+            return Role.BANK_LOANER.equals(userItem.getRoleType());
+        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        editUserDto.setBankCardNumberLoaner(bankCardNumberLoaner);
+        return editUserDto;
     }
 
 }

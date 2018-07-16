@@ -2,8 +2,8 @@ package com.tuotiansudai.enums;
 
 public enum Role {
     USER("注册用户"),
-    BANK_INVESTOR("出借人"),
-    BANK_LOANER("借款人"),
+    BANK_INVESTOR("银行出借人"),
+    BANK_LOANER("银行借款人"),
     INVESTOR("出借人"),
     LOANER("代理人"),
     SD_STAFF("速贷业务员"),

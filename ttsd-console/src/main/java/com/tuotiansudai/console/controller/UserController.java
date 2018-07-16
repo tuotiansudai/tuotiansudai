@@ -92,7 +92,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         List<Role> roles = Lists.newArrayList(Role.values())
                 .stream()
-                .filter(role -> !Lists.newArrayList(Role.BANK_INVESTOR,Role.BANK_LOANER,Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT, Role.INVESTOR, Role.LOANER).contains(role))
+                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT).contains(role))
                 .collect(Collectors.toList());
 
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -110,7 +110,7 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            editUserDto=bankBindCardService.setUserBankCardNumberByLoginName(loginName,editUserDto);
+            editUserDto = consoleUserService.setUserBankCardNumberByLoginName(loginName, editUserDto);
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
@@ -216,9 +216,8 @@ public class UserController {
         mv.addObject("selectedUserOperation", userOperation);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
-        List<RoleStage> roleStageList = Arrays.stream(RoleStage.values()).filter(roleItem -> {return roleItem !=RoleStage.LOANER && roleItem !=RoleStage.INVESTOR ;}).collect(Collectors.toList());
         List<String> channelList = consoleUserService.findAllUserChannels();
-        mv.addObject("roleStageList", roleStageList);
+        mv.addObject("roleStageList", RoleStage.values());
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("userOperations", UserOperation.values());

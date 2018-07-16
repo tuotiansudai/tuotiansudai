@@ -51,7 +51,7 @@ public class BankBindCardService {
     }
 
     public BankAsyncMessage bind(String loginName, Source source, String ip, String deviceId, Role role) {
-        if (role == null ){
+        if (role == null) {
             return new BankAsyncMessage("绑卡失败");
         }
 
@@ -68,9 +68,9 @@ public class BankBindCardService {
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
 
-        if (role == Role.LOANER){
+        if (role == Role.LOANER) {
             return bankWrapperClient.loanerBindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
-        }else {
+        } else {
             return bankWrapperClient.investorBindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }
     }
@@ -83,16 +83,16 @@ public class BankBindCardService {
         }
 
         UserBankCardModel model = new UserBankCardModel(bankBindCardMessage.getLoginName(), bankBindCardMessage.getBank(), bankBindCardMessage.getBankCode(), bankBindCardMessage.getCardNumber(), bankBindCardMessage.getBankOrderNo(), bankBindCardMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
-        if (bankBindCardMessage.isInvestor()){
+        if (bankBindCardMessage.isInvestor()) {
             userBankCardMapper.createInvestor(model);
-        }else {
+        } else {
             userBankCardMapper.createLoaner(model);
         }
     }
 
     public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, Role role) {
 
-        if (role == null ){
+        if (role == null) {
             return new BankAsyncMessage("解绑失败");
         }
 
@@ -109,9 +109,9 @@ public class BankBindCardService {
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
 
-        if (role == Role.LOANER){
+        if (role == Role.LOANER) {
             return bankWrapperClient.loanerUnbindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
-        }else{
+        } else {
             return bankWrapperClient.investorUnbindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }
     }
@@ -127,16 +127,4 @@ public class BankBindCardService {
     }
 
 
-    public EditUserDto setUserBankCardNumberByLoginName(String loginName,EditUserDto editUserDto){
-        editUserDto.setBankCardNumberUMP(bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
-        List<UserBankCardModel> userBankCardModelList=userBankCardMapper.findBankCardNumberByloginName(loginName);
-        for(UserBankCardModel userBankCardModel :userBankCardModelList){
-            if(Role.BANK_INVESTOR.equals(userBankCardModel.getRoleType())){
-                editUserDto.setBankCardNumberInvestor(userBankCardModel.getCardNumber());
-            }else if(Role.BANK_LOANER.equals(userBankCardModel.getRoleType())){
-                editUserDto.setBankCardNumberLoaner(userBankCardModel.getCardNumber());
-            }
-        }
-        return editUserDto;
-    }
 }
