@@ -109,10 +109,10 @@ public class ConsoleUserBillService {
            return null;
         }
         switch(accountType){
-            case INVESTOR:
-                return Role.INVESTOR;
-            case LOANER:
-                return Role.LOANER;
+            case BANK_INVESTOR:
+                return Role.BANK_INVESTOR;
+            case BANK_LOANER:
+                return Role.BANK_LOANER;
         }
         return null;
     }

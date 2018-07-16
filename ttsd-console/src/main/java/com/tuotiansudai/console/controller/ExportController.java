@@ -336,7 +336,7 @@ public class ExportController {
     public void exportUserFunds(
                                 @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
                                 @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
-                                @RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+                                @RequestParam(value = "accountType", defaultValue ="BANK_INVESTOR", required = false)AccountType accountType,
                                 @RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
                                 @RequestParam(value = "userBillOperationType", required = false) BankUserBillOperationType operationType,
                                 @RequestParam(value = "mobile", required = false) String mobile,

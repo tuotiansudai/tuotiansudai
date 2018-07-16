@@ -26,7 +26,7 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+    public ModelAndView userFunds(@RequestParam(value = "accountType", defaultValue ="BANK_INVESTOR", required = false)AccountType accountType,
                                   @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
                                   @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
                                   @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
