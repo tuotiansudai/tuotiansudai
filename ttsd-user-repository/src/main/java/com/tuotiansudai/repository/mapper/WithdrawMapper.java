@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,14 +23,14 @@ public interface WithdrawMapper {
 
     long findSumSuccessWithdrawByLoginName(String loginName);
 
-    List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") Long withdrawId,
-                                               @Param(value = "mobile") String mobile,
-                                               @Param(value = "status") WithdrawStatus status,
-                                               @Param(value = "source") Source source,
-                                               @Param(value = "index") int index,
-                                               @Param(value = "pageSize") int pageSize,
-                                               @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
+    List<WithdrawPaginationView> findWithdrawPagination(@Param(value = "withdrawId") Long withdrawId,
+                                                        @Param(value = "mobile") String mobile,
+                                                        @Param(value = "status") WithdrawStatus status,
+                                                        @Param(value = "source") Source source,
+                                                        @Param(value = "index") int index,
+                                                        @Param(value = "pageSize") int pageSize,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime);
 
 
     long findSumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,

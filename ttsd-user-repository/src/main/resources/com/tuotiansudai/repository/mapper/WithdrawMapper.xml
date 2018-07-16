@@ -28,10 +28,18 @@
         </association>
     </resultMap>
 
-    <resultMap id="withdrawResultView" type="WithdrawResultPaginationView" extends="withdrawResultMap">
-        <result column="user_name" property="userName"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="is_staff" property="isStaff"></result>
+
+    <resultMap id="bankWithdrawViewResultMap" type="WithdrawPaginationView">
+        <id column="withdraw_id" property="id"/>
+        <result column="withdraw_login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="is_staff" property="isStaff"/>
+        <result column="withdraw_amount" property="amount"/>
+        <result column="withdraw_fee" property="fee"/>
+        <result column="withdraw_source" property="source"/>
+        <result column="withdraw_status" property="status"/>
+        <result column="withdraw_created_time" property="createdTime"/>
     </resultMap>
 
     <sql id="columns">
@@ -62,7 +70,8 @@
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
-        select <include refid="columns"></include> from withdraw join bank_card on withdraw.bank_card_id = bank_card.id where withdraw.id = #{id}
+        select <include refid="columns"></include> from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
+        where withdraw.id = #{id}
     </select>
 
     <update id="update" parameterType="WithdrawModel">
@@ -82,11 +91,12 @@
         select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
     </select>
 
-    <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultView">
+    <select id="findWithdrawPagination" parameterType="map" resultMap="bankWithdrawViewResultMap">
         select <include refid="columns"></include>,
         u.user_name,
         u.mobile,
-        IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role in ('SD_STAFF', 'ZC_STAFF')),0) as is_staff
+        IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role in ('SD_STAFF',
+        'ZC_STAFF')),0) as is_staff
         from withdraw
         join bank_card on withdraw.bank_card_id = bank_card.id
         JOIN `user` u on withdraw.login_name = u.login_name
@@ -97,7 +107,7 @@
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
             </if>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
@@ -125,7 +135,7 @@
             <if test="withdrawId != null and withdrawId != '' ">
                 and withdraw.id = #{withdrawId}
             </if>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
@@ -152,7 +162,7 @@
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
             </if>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
@@ -179,7 +189,7 @@
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
             </if>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
