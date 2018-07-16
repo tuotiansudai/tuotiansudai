@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
@@ -187,14 +186,14 @@ public class ConsoleUserService {
         return userMapperConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
-    public List<UserItemDataDto> findUsersAccountBalance(AccountType accountType, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(Role role, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         List<UserView> userViews = null;
-        if (accountType == AccountType.UMP) {
-            userViews = userMapperConsole.findUsersAccountBalanceOld(mobile, balance.get(0), balance.get(1),
+        if (role == Role.INVESTOR) {
+            userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         } else {
-            userViews = userMapperConsole.findUsersAccountBalance(accountType, mobile, balance.get(0), balance.get(1),
+            userViews = userMapperConsole.findUsersAccountBalance(role, mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         }
         List<UserItemDataDto> userItemDataDtoList = Lists.newArrayList();
@@ -205,20 +204,20 @@ public class ConsoleUserService {
         return userItemDataDtoList;
     }
 
-    public long findUsersAccountBalanceCount(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceCount(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (accountType == AccountType.UMP) {
-            return userMapperConsole.findUsersAccountBalanceCountOld(mobile, balance.get(0), balance.get(1));
+        if (role == Role.INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
         }
-        return userMapperConsole.findUsersAccountBalanceCount(accountType, mobile, balance.get(0), balance.get(1));
+        return userMapperConsole.findUsersAccountBalanceCount(role, mobile, balance.get(0), balance.get(1));
     }
 
-    public long findUsersAccountBalanceSum(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (accountType == AccountType.UMP) {
-            return userMapperConsole.findUsersAccountBalanceSumOld(mobile, balance.get(0), balance.get(1));
+        if (role == Role.INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
         }
-        return userMapperConsole.findUsersAccountBalanceSum(accountType, mobile, balance.get(0), balance.get(1));
+        return userMapperConsole.findUsersAccountBalanceSum(role, mobile, balance.get(0), balance.get(1));
     }
 
 

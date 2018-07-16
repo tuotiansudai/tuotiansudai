@@ -3,7 +3,6 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.console.bi.dto.RoleStage;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
@@ -348,14 +347,14 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
-    public void exportAccountBalance(@RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+    public void exportAccountBalance(@RequestParam(value = "role", defaultValue ="BANK_INVESTOR", required = false)Role role,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                      @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.AccountBalance.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(accountType,mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(role,mobile, balanceMin, balanceMax, index, pageSize);
         List<List<String>> accountBalanceData = exportService.buildAccountBalance(dataDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
     }
