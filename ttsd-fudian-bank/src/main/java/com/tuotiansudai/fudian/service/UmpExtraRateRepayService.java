@@ -73,7 +73,7 @@ public class UmpExtraRateRepayService {
         updateMapper.updateExtraRate(SyncRequestStatus.SUCCESS, model.getId());
         TransferResponseModel responseModel = new TransferResponseModel();
         umpUtils.generateResponse(model.getId(), responseBody, responseModel);
-        insertResponseMapper.insertResponseCouponRepay(responseModel);
+        insertResponseMapper.insertResponseExtraRate(responseModel);
         return new BankBaseMessage(true, null);
 
     }

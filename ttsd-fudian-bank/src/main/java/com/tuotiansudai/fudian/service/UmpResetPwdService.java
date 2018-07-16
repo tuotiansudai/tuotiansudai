@@ -52,14 +52,14 @@ public class UmpResetPwdService {
             return new BankBaseMessage(false, "签名失败");
         }
 
-        updateMapper.updateRegister(SyncRequestStatus.SENT, model.getId());
+        updateMapper.updateResetPwd(SyncRequestStatus.SENT, model.getId());
         String responseBody = umpUtils.send(model.getRequestUrl(), (Map<String, String>) model.getField());
         if (responseBody == null){
             updateMapper.updateRegister(SyncRequestStatus.FAILURE, model.getId());
             return new BankBaseMessage(false, "请求联动优势失败");
         }
 
-        updateMapper.updateRegister(SyncRequestStatus.SUCCESS, model.getId());
+        updateMapper.updateResetPwd(SyncRequestStatus.SUCCESS, model.getId());
         MerSendSmsPwdResponseModel responseModel = new MerSendSmsPwdResponseModel();
         umpUtils.generateResponse(model.getId(), responseBody, responseModel);
         insertResponseMapper.insertResponseResetPwd(responseModel);

@@ -2,7 +2,6 @@ package com.tuotiansudai.fudian.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
 import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.BaseSyncResponseModel;
@@ -36,7 +35,7 @@ public class UmpUtils {
     private static OkHttpClient CLIENT;
 
     @Autowired
-    public UmpUtils(PayGateWrapper payGateWrapper, UpdateMapper updateMapper){
+    public UmpUtils(PayGateWrapper payGateWrapper){
         this.payGateWrapper = payGateWrapper;
         CLIENT = new OkHttpClient
                 .Builder()
