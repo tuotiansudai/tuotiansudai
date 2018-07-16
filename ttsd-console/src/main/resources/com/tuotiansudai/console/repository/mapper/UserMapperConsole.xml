@@ -285,8 +285,8 @@
         JOIN `bank_account`
         ON `user`.`login_name` = `bank_account`.`login_name`
         WHERE 1=1
-        <if test="accountType != null">
-            AND `bank_account`.`role_type` = #{accountType}
+        <if test="role != null">
+            AND `bank_account`.`role_type` = #{role}
         </if>
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
@@ -343,8 +343,8 @@
         JOIN `bank_account`
         ON `user`.`login_name` = `bank_account`.`login_name`
         WHERE 1=1
-        <if test="accountType != null">
-            AND `bank_account`.`role_type` = #{accountType}
+        <if test="role != null">
+            AND `bank_account`.`role_type` = #{role}
         </if>
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
@@ -380,8 +380,8 @@
         JOIN `bank_account`
         ON `user`.`login_name` = `bank_account`.`login_name`
         <where>
-            <if test="accountType != null">
-                AND `bank_account`.`role_type` = #{accountType}
+            <if test="role != null">
+                AND `bank_account`.`role_type` = #{role}
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND `user`.`mobile` = #{mobile}
