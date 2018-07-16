@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleUserBillService;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.PaginationUtil;
@@ -26,7 +26,7 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "accountType", defaultValue ="BANK_INVESTOR", required = false)AccountType accountType,
+    public ModelAndView userFunds(@RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
                                   @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
                                   @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
                                   @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
@@ -37,14 +37,14 @@ public class UserFundsController {
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<? extends Object> userBillModels=null;
-        long userFundsCount=0;
-        if(accountType !=null && accountType == AccountType.UMP){
-            userBillModels=consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
-            userFundsCount=consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
-        }else{
-            userBillModels=consoleUserBillService.findUserFunds(accountType,businessType, operationType, mobile, startTime, endTime, index, pageSize);
-            userFundsCount=consoleUserBillService.findUserFundsCount(accountType,businessType, operationType, mobile, startTime, endTime);
+        List<? extends Object> userBillModels = null;
+        long userFundsCount = 0;
+        if (role == Role.INVESTOR) {
+            userBillModels = consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
+        } else {
+            userBillModels = consoleUserBillService.findUserFunds(role, businessType, operationType, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(role, businessType, operationType, mobile, startTime, endTime);
         }
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
@@ -62,11 +62,10 @@ public class UserFundsController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
-        modelAndView.addObject("accountTypeList", AccountType.values());
-        modelAndView.addObject("accountType",accountType);
+        modelAndView.addObject("role", role);
         modelAndView.addObject("businessTypeUMP", businessTypeUMP);
         modelAndView.addObject("businessTypeUMPList", UserBillBusinessType.values());
-        modelAndView.addObject("operationTypeUMP",operationTypeUMP);
+        modelAndView.addObject("operationTypeUMP", operationTypeUMP);
         modelAndView.addObject("operationTypeUMPList", UserBillOperationType.values());
         return modelAndView;
     }

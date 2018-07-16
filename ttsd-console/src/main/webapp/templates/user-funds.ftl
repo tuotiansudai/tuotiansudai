@@ -7,11 +7,16 @@
     <form action="" class="form-inline query-build">
         <div class="form-group">
             <label class="control-label">账户类型: </label>&nbsp;&nbsp;
-            <#list accountTypeList as item>
-                <input type="radio" name="accountType" value="${item.name()}"
-                       <#if accountType.name() == item.name()>checked="checked"</#if>
-                >${item.getDescription()} &nbsp;&nbsp;
-            </#list>
+            <input type="radio" name="role" value="INVESTOR"
+                          <#if role?? && role == 'INVESTOR'>checked="checked"</#if>
+                          />联动优势 &nbsp;&nbsp;
+            <input type="radio" name="role" value="BANK_INVESTOR"
+                  <#if role?? && role=='BANK_INVESTOR'>checked="checked"</#if>
+            />富滇银行-借款人 &nbsp;&nbsp;
+            <input type="radio" name="role" value="BANK_LOANER"
+                  <#if role?? && role=='BANK_LOANER'>checked="checked"</#if>
+            />富滇银行-出借人 &nbsp;&nbsp;
+
         </div>
         </br>
         <div class="row">
@@ -38,7 +43,7 @@
 					                </span>
                 </div>
             </div>
-            <div class="form-group operationTypeDiv  <#if accountType.name() == 'UMP'>hidden</#if>">
+            <div class="form-group operationTypeDiv  <#if role.name() == 'INVESTOR'>hidden</#if>">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationType" data-style="btn-default" name="operationType">
                     <option value="">请选择费用类型</option>
@@ -48,7 +53,7 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group operationTypeUMPDiv <#if accountType.name() != 'UMP'>hidden</#if>">
+            <div class="form-group operationTypeUMPDiv <#if role.name() != 'INVESTOR'>hidden</#if>">
                 <label for="control-label">费用类型</label>
                 <select class="selectpicker operationTypeUMP" data-style="btn-default" name="operationTypeUMP">
                     <option value="">请选择费用类型</option>
@@ -58,7 +63,7 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group businessTypeDiv <#if accountType.name() == 'UMP'>hidden</#if>">
+            <div class="form-group businessTypeDiv <#if role.name() == 'INVESTOR'>hidden</#if>">
                 <label for="control-label">操作类型</label>
                 <select class="selectpicker businessType" data-style="btn-default" name="businessType">
                     <option value="">全部</option>
@@ -68,7 +73,7 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group  businessTypeUMPDiv <#if accountType.name() != 'UMP'>hidden</#if>">
+            <div class="form-group  businessTypeUMPDiv <#if role.name() != 'INVESTOR'>hidden</#if>">
                 <label for="control-label">操作类型</label>
                 <select class="selectpicker businessTypeUMP" data-style="btn-default" name="businessTypeUMP">
                     <option value="">全部</option>
@@ -124,7 +129,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -133,7 +138,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/user-funds?mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

@@ -31,7 +31,7 @@ public class ConsoleUserBillService {
         this.bankUserBillMapper = bankUserBillMapper;
     }
 
-    public List<BankUserBillModel> findUserFunds(AccountType accountType, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
+    public List<BankUserBillModel> findUserFunds(Role role, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -46,10 +46,10 @@ public class ConsoleUserBillService {
         } else {
             formattedEndTime = new DateTime(endTime).toDate();
         }
-        return bankUserBillMapper.findUserBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, transformToRole(accountType));
+        return bankUserBillMapper.findUserBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, role);
     }
 
-    public long findUserFundsCount(AccountType accountType,BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
+    public long findUserFundsCount(Role role, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -65,7 +65,7 @@ public class ConsoleUserBillService {
             formattedEndTime = new DateTime(endTime).toDate();
         }
 
-        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, transformToRole(accountType));
+        return bankUserBillMapper.countBills(null, mobile, Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, role);
     }
 
     public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
@@ -103,18 +103,6 @@ public class ConsoleUserBillService {
             formattedEndTime = new DateTime(endTime).toDate();
         }
         return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, formattedStartTime, formattedEndTime);
-    }
-    private Role transformToRole(AccountType accountType){
-        if(accountType == null ){
-           return null;
-        }
-        switch(accountType){
-            case BANK_INVESTOR:
-                return Role.BANK_INVESTOR;
-            case BANK_LOANER:
-                return Role.BANK_LOANER;
-        }
-        return null;
     }
 
 }

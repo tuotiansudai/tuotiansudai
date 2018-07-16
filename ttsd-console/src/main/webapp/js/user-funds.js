@@ -48,18 +48,18 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
             //增加新的参数
-            var accountType=$("input[name='accountType']:checked").val();
+            var role=$("input[name='role']:checked").val();
             var operationTypeUMP=$('.operationTypeUMP').val();
             var businessTypeUMP= $('.businessTypeUMP').val();
-            window.location.href = "/finance-manage/user-funds?accountType="+accountType+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
+            window.location.href = "/finance-manage/user-funds?role="+role+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
         });
 
         $('.down-load').click(function () {
             location.href = "/export/user-funds?" + $('form').serialize();
         });
-        $("input[name='accountType']").click(function () {
+        $("input[name='role']").click(function () {
             var self = $(this);
-            if (self.val() == 'UMP') {
+            if (self.val() == 'INVESTOR') {
                 $('.operationTypeDiv').addClass('hidden');
                 $('.businessTypeDiv').addClass('hidden');
                 $('.operationTypeUMPDiv').removeClass('hidden');
