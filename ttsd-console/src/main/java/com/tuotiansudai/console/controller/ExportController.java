@@ -347,7 +347,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
-    public void exportAccountBalance(@RequestParam(value = "accountType", defaultValue ="INVESTOR", required = false)AccountType accountType,
+    public void exportAccountBalance(@RequestParam(value = "accountType", defaultValue ="BANK_INVESTOR", required = false)AccountType accountType,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                      @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
