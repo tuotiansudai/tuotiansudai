@@ -3,6 +3,8 @@ package com.tuotiansudai.console.bi.dto;
 public enum RoleStage {
 
     ALL("全部"),
+    BANK_INVESTOR("出借人"),
+    BANK_LOANER("借款人"),
     USER("注册用户"),
     INVESTOR("出借人"),
     LOANER("代理人"),

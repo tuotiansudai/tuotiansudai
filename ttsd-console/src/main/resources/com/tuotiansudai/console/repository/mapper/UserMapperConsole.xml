@@ -304,7 +304,7 @@
 
     </select>
 
-    <select id="findUsersAccountBalanceOld" parameterType="map" resultMap="userViewResultMap">
+    <select id="findUsersAccountBalanceUMP" parameterType="map" resultMap="userViewResultMap">
         SELECT
         user.id as id,
         user.login_name as login_name,
@@ -357,7 +357,7 @@
         </if>
     </select>
 
-    <select id="findUsersAccountBalanceSumOld" parameterType="map" resultType="long">
+    <select id="findUsersAccountBalanceSumUMP" parameterType="map" resultType="long">
         SELECT IFNULL(SUM(`account`.`balance`), 0)
         FROM `user`
         JOIN `account`
@@ -378,22 +378,23 @@
         SELECT IFNULL(count(1), 0)
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE 1=1
-        <if test="accountType != null">
-            AND `bank_account`.`role_type` = #{accountType}
-        </if>
-        <if test="mobile != null and mobile != '' ">
-            AND `user`.`mobile` = #{mobile}
-        </if>
-        <if test="balanceMin >= 0">
-            AND `bank_account`.`balance` >= #{balanceMin}
-        </if>
-        <if test="balanceMax >= 0">
-            AND `bank_account`.`balance` &lt;= #{balanceMax}
-        </if>
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        <where>
+            <if test="accountType != null">
+                AND `bank_account`.`role_type` = #{accountType}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND `user`.`mobile` = #{mobile}
+            </if>
+            <if test="balanceMin >= 0">
+                AND `bank_account`.`balance` >= #{balanceMin}
+            </if>
+            <if test="balanceMax >= 0">
+                AND `bank_account`.`balance` &lt;= #{balanceMax}
+            </if>
+        </where>
     </select>
-    <select id="findUsersAccountBalanceCountOld" parameterType="map" resultType="long">
+    <select id="findUsersAccountBalanceCountUMP" parameterType="map" resultType="long">
         SELECT IFNULL(count(1), 0)
         FROM `user`
         JOIN `account`
