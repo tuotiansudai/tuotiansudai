@@ -67,7 +67,6 @@
         <#if user.bankCardNumberLoaner??>
         <div class="form-group">
             <label class="col-sm-2 control-label">富滇银行-借款人：</label>
-
             <div class="col-sm-3">
                 <p class="form-control-static">${user.bankCardNumberLoaner!}</p>
             </div>

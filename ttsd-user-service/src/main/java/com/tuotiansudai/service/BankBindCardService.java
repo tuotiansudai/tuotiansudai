@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.BankWrapperClient;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BankBindCardService {
@@ -123,11 +126,17 @@ public class BankBindCardService {
         userBankCardMapper.updateStatus(userBankCardModel.getId(), UserBankCardStatus.UNBOUND);
     }
 
-    public String findBankCardNumberByNameAndRole(String loginName, Role role) {
-        if(role == null){
-            return bankCardMapper.findPassedBankCardNumberByLoginName(loginName);
-        }else{
-            return userBankCardMapper.findBankCardNumberByloginNameAndRole(loginName,role);
+
+    public EditUserDto setUserBankCardNumberByLoginName(String loginName,EditUserDto editUserDto){
+        editUserDto.setBankCardNumberUMP(bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        List<UserBankCardModel> userBankCardModelList=userBankCardMapper.findBankCardNumberByloginName(loginName);
+        for(UserBankCardModel userBankCardModel :userBankCardModelList){
+            if(Role.BANK_INVESTOR.equals(userBankCardModel.getRoleType())){
+                editUserDto.setBankCardNumberInvestor(userBankCardModel.getCardNumber());
+            }else if(Role.BANK_LOANER.equals(userBankCardModel.getRoleType())){
+                editUserDto.setBankCardNumberLoaner(userBankCardModel.getCardNumber());
+            }
         }
+        return editUserDto;
     }
 }

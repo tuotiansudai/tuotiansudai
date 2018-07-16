@@ -15,6 +15,7 @@
         <result column="bank_order_date" property="bankOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="role_type" property="roleType"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
@@ -37,7 +38,7 @@
         where id = #{id}
     </update>
 
-    <select id="findBankCardNumberByloginNameAndRole" parameterType="map" resultType="string">
-        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = #{roleType}
+    <select id="findBankCardNumberByloginName"  resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND'
     </select>
 </mapper>

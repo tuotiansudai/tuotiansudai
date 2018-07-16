@@ -42,6 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,7 +92,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         List<Role> roles = Lists.newArrayList(Role.values())
                 .stream()
-                .filter(role -> !Lists.newArrayList(Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT, Role.INVESTOR, Role.LOANER).contains(role))
+                .filter(role -> !Lists.newArrayList(Role.BANK_INVESTOR,Role.BANK_LOANER,Role.NOT_STAFF_RECOMMEND, Role.SD_STAFF_RECOMMEND, Role.ZC_STAFF_RECOMMEND, Role.AGENT, Role.INVESTOR, Role.LOANER).contains(role))
                 .collect(Collectors.toList());
 
         if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -109,10 +110,7 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName, null));
-            editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.INVESTOR));
-            editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.LOANER));
-
+            editUserDto=bankBindCardService.setUserBankCardNumberByLoginName(loginName,editUserDto);
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
@@ -218,7 +216,7 @@ public class UserController {
         mv.addObject("selectedUserOperation", userOperation);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
-        List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
+        List<RoleStage> roleStageList = Arrays.stream(RoleStage.values()).filter(roleItem -> {return roleItem !=RoleStage.LOANER && roleItem !=RoleStage.INVESTOR ;}).collect(Collectors.toList());
         List<String> channelList = consoleUserService.findAllUserChannels();
         mv.addObject("roleStageList", roleStageList);
         mv.addObject("channelList", channelList);

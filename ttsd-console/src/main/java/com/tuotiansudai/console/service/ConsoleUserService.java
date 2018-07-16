@@ -141,13 +141,10 @@ public class ConsoleUserService {
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
-        editUserDto.setBankCardNumberUMP(bankBindCardService.findBankCardNumberByNameAndRole(loginName, null));
-        editUserDto.setBankCardNumberInvestor(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.INVESTOR));
-        editUserDto.setBankCardNumberLoaner(bankBindCardService.findBankCardNumberByNameAndRole(loginName, Role.LOANER));
-
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
+        editUserDto=bankBindCardService.setUserBankCardNumberByLoginName(loginName,editUserDto);
         return editUserDto;
     }
 
@@ -170,6 +167,7 @@ public class ConsoleUserService {
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userView.getLoginName());
+            userRoleModels=userRoleModels.stream().filter(userRoleModel -> { return  userRoleModel.getRole() != Role.INVESTOR && userRoleModel.getRole() !=Role.LOANER ;}).collect(Collectors.toList());
             userItemDataDto.setUserRoles(userRoleModels);
             String taskId = OperationType.USER + "-" + userView.getLoginName();
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
@@ -478,4 +476,5 @@ public class ConsoleUserService {
         }
         return false;
     }
+
 }
