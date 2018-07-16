@@ -300,7 +300,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public void exportRecharge(@RequestParam(value = "accountType", required = false,defaultValue ="BANK_INVESTOR") AccountType accountType,
+    public void exportRecharge(@RequestParam(value = "role", required = false,defaultValue ="BANK_INVESTOR") Role role,
                                @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -308,13 +308,12 @@ public class ExportController {
                                @RequestParam(value = "status", required = false) BankRechargeStatus status,
                                @RequestParam(value = "source", required = false) Source source,
                                @RequestParam(value = "channel", required = false) String channel,
-                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
         ;
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(accountType,rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(role,rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }

@@ -76,8 +76,8 @@
             <if test="channel !=null and channel != ''">
                 and recharge.channel  = #{channel}
             </if>
-            <if test="accountType !=null">
-                and recharge.role_type  = #{accountType}
+            <if test="role !=null">
+                and recharge.role_type  = #{role}
             </if>
         </where>
     </select>
@@ -110,8 +110,8 @@
             <if test="channel !=null and channel != ''">
                 and re.channel  = #{channel}
             </if>
-            <if test="accountType !=null">
-                and re.role_type  = #{accountType}
+            <if test="role !=null">
+                and re.role_type  = #{role}
             </if>
         </where>
     </select>
@@ -143,8 +143,8 @@
             <if test="channel !=null and channel != ''">
                 and r.channel  = #{channel}
             </if>
-            <if test="accountType !=null">
-                and r.role_type  = #{accountType}
+            <if test="role !=null">
+                and r.role_type  = #{role}
             </if>
         </where>
         order by r.created_time desc

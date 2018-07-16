@@ -3,13 +3,11 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargePaginationView;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +31,18 @@ public class ConsoleRechargeService {
         return bankRechargeMapper.findAllChannels().stream().filter(item -> !StringUtils.isEmpty(item)).distinct().collect(Collectors.toList());
     }
 
-    public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(AccountType accountType, String rechargeId, String mobile, Source source,
+    public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(Role role, String rechargeId, String mobile, Source source,
                                                                                                 BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
 
         index = index < 1 ? 1 : index;
         int count = 0;
         List<BankRechargePaginationView> views = null;
-        if (accountType != null && accountType == AccountType.UMP) {
+        if (role == Role.INVESTOR) {
             count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);
             views = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
         } else {
-            count = bankRechargeMapper.findRechargeCount(accountType, rechargeId, mobile, source, status, channel, startTime, endTime);
-            views = bankRechargeMapper.findRechargePagination(accountType, rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
+            count = bankRechargeMapper.findRechargeCount(role, rechargeId, mobile, source, status, channel, startTime, endTime);
+            views = bankRechargeMapper.findRechargePagination(role, rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
 
         }
         return new BaseDto<>(true, new BasePaginationDataDto<RechargePaginationItemDataDto>(
@@ -65,7 +63,7 @@ public class ConsoleRechargeService {
     }
 
     public long findSumRechargeAmount(
-            AccountType accountType,
+            Role role,
             String rechargeId,
             String mobile,
             Source source,
@@ -73,10 +71,10 @@ public class ConsoleRechargeService {
             String channel,
             Date startTime,
             Date endTime) {
-        if (accountType != null && accountType == AccountType.UMP) {
+        if (role  == Role.INVESTOR) {
             return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
         } else {
-            return bankRechargeMapper.findSumRechargeAmount(accountType, rechargeId, mobile, source, status, channel, startTime, endTime);
+            return bankRechargeMapper.findSumRechargeAmount(role, rechargeId, mobile, source, status, channel, startTime, endTime);
         }
 
     }

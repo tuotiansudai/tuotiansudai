@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.BankRechargeModel;
@@ -26,7 +25,7 @@ public interface BankRechargeMapper {
     int sumRechargeSuccessAmountByLoginNameAndRole(@Param(value = "loginName") String loginName,
                                                    @Param(value = "roleType") Role roleType);
 
-    List<BankRechargePaginationView> findRechargePagination(@Param(value = "accountType")AccountType accountType,
+    List<BankRechargePaginationView> findRechargePagination(@Param(value = "role")Role role,
                                                             @Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,
                                                             @Param(value = "source") Source source,
@@ -38,7 +37,7 @@ public interface BankRechargeMapper {
                                                             @Param(value = "endTime") Date endTime);
 
 
-    long findSumRechargeAmount(@Param(value = "accountType")AccountType accountType,
+    long findSumRechargeAmount(@Param(value = "role")Role role,
                                @Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
@@ -47,7 +46,7 @@ public interface BankRechargeMapper {
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
-    int findRechargeCount(@Param(value = "accountType")AccountType accountType,
+    int findRechargeCount(@Param(value = "role")Role role,
                           @Param(value = "rechargeId") String rechargeId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "source") Source source,

@@ -5,8 +5,8 @@ import com.tuotiansudai.console.service.ConsoleRechargeService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,7 +28,7 @@ public class RechargeController {
     private ConsoleRechargeService consoleRechargeService;
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public ModelAndView getRechargeList(@RequestParam(value = "accountType", required = false,defaultValue = "BANK_INVESTOR") AccountType accountType,
+    public ModelAndView getRechargeList(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
                                         @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                         @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -39,10 +39,10 @@ public class RechargeController {
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(accountType,rechargeId, mobile, source,
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(role, rechargeId, mobile, source,
                 status, channel, index, pageSize, startTime, endTime);
         List<String> channelList = consoleRechargeService.findAllChannel();
-        long sumAmount = consoleRechargeService.findSumRechargeAmount(accountType,rechargeId, mobile, source, status, channel, startTime, endTime);
+        long sumAmount = consoleRechargeService.findSumRechargeAmount(role, rechargeId, mobile, source, status, channel, startTime, endTime);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(BankRechargeStatus.values()));
@@ -60,8 +60,7 @@ public class RechargeController {
         if (status != null) {
             modelAndView.addObject("rechargeStatus", status);
         }
-        modelAndView.addObject("accountType", accountType);
-        modelAndView.addObject("accountTypeList", AccountType.values());
+        modelAndView.addObject("role", role);
         return modelAndView;
     }
 
