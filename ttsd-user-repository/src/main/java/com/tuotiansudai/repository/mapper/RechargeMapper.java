@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.repository.model.BankRechargePaginationView;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
@@ -20,15 +21,15 @@ public interface RechargeMapper {
 
     RechargeModel findById(long id);
 
-    List<RechargeModel> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
-                                               @Param(value = "mobile") String mobile,
-                                               @Param(value = "source") Source source,
-                                               @Param(value = "status") BankRechargeStatus status,
-                                               @Param(value = "channel") String channel,
-                                               @Param(value = "index") int index,
-                                               @Param(value = "pageSize") int pageSize,
-                                               @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
+    List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
+                                                            @Param(value = "mobile") String mobile,
+                                                            @Param(value = "source") Source source,
+                                                            @Param(value = "status") BankRechargeStatus status,
+                                                            @Param(value = "channel") String channel,
+                                                            @Param(value = "index") int index,
+                                                            @Param(value = "pageSize") int pageSize,
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
 
 
     long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,

@@ -17,12 +17,17 @@
         <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <resultMap id="rechargeResultView" type="RechargePaginationView" extends="rechargeResultMap">
+    <resultMap id="rechargeResultView" type="BankRechargePaginationView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="channel" property="channel"/>
+        <result column="created_time" property="createdTime"/>
         <result column="user_name" property="userName"/>
         <result column="mobile" property="mobile"/>
         <result column="is_staff" property="isStaff"/>
     </resultMap>
-
 
     <insert id="create" parameterType="RechargeModel">
         insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time, updated_time)
