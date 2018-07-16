@@ -5,7 +5,6 @@ import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserView;
 import org.apache.ibatis.annotations.Param;
@@ -46,7 +45,7 @@ public interface UserMapperConsole {
                                   @Param(value = "mobile") String mobile,
                                   @Param(value = "identityNumber") String identityNumber);
 
-    long findUsersAccountBalanceSum(@Param(value = "accountType") AccountType accountType,
+    long findUsersAccountBalanceSum(@Param(value = "role") Role role,
                                     @Param(value = "mobile") String mobile,
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
@@ -55,7 +54,7 @@ public interface UserMapperConsole {
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceCount(@Param(value = "accountType") AccountType accountType,
+    long findUsersAccountBalanceCount(@Param(value = "role") Role role,
                                       @Param(value = "mobile") String mobile,
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
@@ -64,7 +63,7 @@ public interface UserMapperConsole {
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
 
-    List<UserView> findUsersAccountBalance(@Param(value = "accountType")AccountType accountType,
+    List<UserView> findUsersAccountBalance(@Param(value = "role")Role role,
                                            @Param(value = "mobile") String mobile,
                                            @Param(value = "balanceMin") long balanceMin,
                                            @Param(value = "balanceMax") long balanceMax,
