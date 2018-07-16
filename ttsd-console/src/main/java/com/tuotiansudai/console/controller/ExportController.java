@@ -318,7 +318,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void exportWithdraw(@RequestParam(value = "accountType", required = false, defaultValue = "INVESTOR") AccountType accountType,
+    public void exportWithdraw(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
                                @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -327,7 +327,7 @@ public class ExportController {
                                @RequestParam(value = "source", required = false) Source source,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(accountType,withdrawId, mobile, status, source, 1, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(role, withdrawId, mobile, status, source, 1, startTime, endTime);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }
@@ -347,14 +347,14 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
-    public void exportAccountBalance(@RequestParam(value = "role", defaultValue ="BANK_INVESTOR", required = false)Role role,
+    public void exportAccountBalance(@RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                      @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.AccountBalance.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(role,mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> dataDtos = consoleUserService.findUsersAccountBalance(role, mobile, balanceMin, balanceMax, index, pageSize);
         List<List<String>> accountBalanceData = exportService.buildAccountBalance(dataDtos);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.AccountBalance, accountBalanceData, response.getOutputStream());
     }

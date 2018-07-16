@@ -77,8 +77,8 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
-            <if test="accountType !=null">
-                and bank_withdraw.role_type = #{accountType}
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
     </select>
@@ -106,8 +106,8 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
-            <if test="accountType !=null">
-                and bank_withdraw.role_type = #{accountType}
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
     </select>
@@ -134,8 +134,8 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
-            <if test="accountType !=null">
-                and bank_withdraw.role_type = #{accountType}
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
     </select>
@@ -167,8 +167,8 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
-            <if test="accountType !=null">
-                and bank_withdraw.role_type = #{accountType}
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
         order by bank_withdraw.created_time desc, bank_withdraw.id asc

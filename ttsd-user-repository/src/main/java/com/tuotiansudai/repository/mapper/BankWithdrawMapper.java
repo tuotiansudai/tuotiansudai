@@ -1,6 +1,5 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.AccountType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
@@ -26,7 +25,7 @@ public interface BankWithdrawMapper {
     long sumSuccessWithdrawByLoginNameAndRole(@Param(value = "loginName") String loginName,
                                               @Param(value = "roleType") Role roleType);
 
-    long sumWithdrawAmount(@Param(value = "accountType") AccountType accountType,
+    long sumWithdrawAmount(@Param(value = "role") Role role,
                            @Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,
                            @Param(value = "status") WithdrawStatus status,
@@ -34,7 +33,7 @@ public interface BankWithdrawMapper {
                            @Param(value = "startTime") Date startTime,
                            @Param(value = "endTime") Date endTime);
 
-    long sumWithdrawFee(@Param(value = "accountType") AccountType accountType,
+    long sumWithdrawFee(@Param(value = "role") Role role,
                         @Param(value = "withdrawId") Long withdrawId,
                         @Param(value = "mobile") String mobile,
                         @Param(value = "status") WithdrawStatus status,
@@ -42,7 +41,7 @@ public interface BankWithdrawMapper {
                         @Param(value = "startTime") Date startTime,
                         @Param(value = "endTime") Date endTime);
 
-    int findWithdrawCount(@Param(value = "accountType") AccountType accountType,
+    int findWithdrawCount(@Param(value = "role") Role role,
                           @Param(value = "withdrawId") Long withdrawId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "status") WithdrawStatus status,
@@ -50,7 +49,7 @@ public interface BankWithdrawMapper {
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
 
-    List<WithdrawPaginationView> findWithdrawPagination(@Param(value = "accountType") AccountType accountType,
+    List<WithdrawPaginationView> findWithdrawPagination(@Param(value = "role") Role role,
                                                         @Param(value = "withdrawId") Long withdrawId,
                                                         @Param(value = "mobile") String mobile,
                                                         @Param(value = "status") WithdrawStatus status,

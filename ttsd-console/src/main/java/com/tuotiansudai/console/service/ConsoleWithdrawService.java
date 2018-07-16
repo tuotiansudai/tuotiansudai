@@ -3,7 +3,7 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
-import com.tuotiansudai.enums.AccountType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
@@ -31,17 +31,17 @@ public class ConsoleWithdrawService {
         this.bankWithdrawMapper = bankWithdrawMapper;
     }
 
-    public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(AccountType accountType, Long withdrawId, String mobile, WithdrawStatus status, Source source, int index, Date startTime, Date endTime) {
+    public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, int index, Date startTime, Date endTime) {
         index = index < 1 ? 1 : index;
         List<WithdrawPaginationView> views = null;
         long count = 0;
-        if (accountType != null && accountType == AccountType.UMP) {
+        if (role == Role.INVESTOR) {
             count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
             views = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * 10, 10, startTime, endTime);
 
         } else {
-            count = bankWithdrawMapper.findWithdrawCount(accountType, withdrawId, mobile, status, source, startTime, endTime);
-            views = bankWithdrawMapper.findWithdrawPagination(accountType, withdrawId, mobile, status, source, PaginationUtil.calculateOffset(index, 10, count), 10, startTime, endTime);
+            count = bankWithdrawMapper.findWithdrawCount(role, withdrawId, mobile, status, source, startTime, endTime);
+            views = bankWithdrawMapper.findWithdrawPagination(role, withdrawId, mobile, status, source, PaginationUtil.calculateOffset(index, 10, count), 10, startTime, endTime);
         }
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = views.stream().map(item -> new WithdrawPaginationItemDataDto(item.getId(),
                 item.getLoginName(),
@@ -57,19 +57,19 @@ public class ConsoleWithdrawService {
         return new BaseDto<>(true, new BasePaginationDataDto<>(index, 10, count, withdrawPaginationItemDataDtos));
     }
 
-    public long findSumWithdrawAmount(AccountType accountType, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
-        if (accountType != null && accountType == AccountType.UMP) {
+    public long findSumWithdrawAmount(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
+        if (role == Role.INVESTOR) {
             return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
         } else {
-            return bankWithdrawMapper.sumWithdrawAmount(accountType, withdrawId, mobile, status, source, startTime, endTime);
+            return bankWithdrawMapper.sumWithdrawAmount(role, withdrawId, mobile, status, source, startTime, endTime);
         }
     }
 
-    public long findSumWithdrawFee(AccountType accountType, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
-        if (accountType != null && accountType == AccountType.UMP) {
+    public long findSumWithdrawFee(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
+        if (role == Role.INVESTOR) {
             return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
         } else {
-            return bankWithdrawMapper.sumWithdrawFee(accountType, withdrawId, mobile, status, source, startTime, endTime);
+            return bankWithdrawMapper.sumWithdrawFee(role, withdrawId, mobile, status, source, startTime, endTime);
         }
 
     }
