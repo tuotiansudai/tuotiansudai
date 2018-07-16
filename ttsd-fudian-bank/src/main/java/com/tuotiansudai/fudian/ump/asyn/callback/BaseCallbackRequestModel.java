@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
-public class BaseNotifyModel {
+public class BaseCallbackRequestModel {
 
-    static Logger logger = Logger.getLogger(BaseNotifyModel.class);
+    static Logger logger = Logger.getLogger(BaseCallbackRequestModel.class);
 
     protected static String SUCCESS_CODE = "0000";
 
@@ -46,7 +46,7 @@ public class BaseNotifyModel {
         if (props.isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("SignVerProp.properties");
-                BaseNotifyModel.props = PropertiesLoaderUtils.loadProperties(resource);
+                BaseCallbackRequestModel.props = PropertiesLoaderUtils.loadProperties(resource);
             } catch (IOException e) {
                 logger.error("SignVerProp.properties 不存在!");
                 logger.error(e.getLocalizedMessage(), e);

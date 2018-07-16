@@ -4,9 +4,9 @@ import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertResponseMapper;
 import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
-import com.tuotiansudai.fudian.ump.sync.request.MerRegisterPersonRequestModel;
+import com.tuotiansudai.fudian.ump.sync.request.MerSendSmsPwdRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
-import com.tuotiansudai.fudian.ump.sync.response.MerRegisterPersonResponseModel;
+import com.tuotiansudai.fudian.ump.sync.response.MerSendSmsPwdResponseModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +17,9 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class UmpRegisterService {
+public class UmpResetPwdService {
 
-    private static Logger logger = LoggerFactory.getLogger(UmpRegisterService.class);
+    private static Logger logger = LoggerFactory.getLogger(UmpResetPwdService.class);
 
     private final InsertRequestMapper insertRequestMapper;
 
@@ -30,7 +30,7 @@ public class UmpRegisterService {
     private final UmpUtils umpUtils;
 
     @Autowired
-    public UmpRegisterService(InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper, UmpUtils umpUtils){
+    public UmpResetPwdService(InsertRequestMapper insertRequestMapper, UpdateMapper updateMapper, InsertResponseMapper insertResponseMapper, UmpUtils umpUtils){
         this.insertRequestMapper = insertRequestMapper;
         this.updateMapper = updateMapper;
         this.insertResponseMapper = insertResponseMapper;
@@ -38,20 +38,17 @@ public class UmpRegisterService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage register(String loginName, String mobile, String userName, String identityNumber){
-        MerRegisterPersonRequestModel model = new MerRegisterPersonRequestModel(
-                String.valueOf(new Date().getTime()),
-                loginName,
-                userName,
+    public BankBaseMessage reset(String loginName, String payUserId, String identityNumber){
+        MerSendSmsPwdRequestModel model = new MerSendSmsPwdRequestModel(payUserId,
                 identityNumber,
-                mobile);
+                String.valueOf(new Date().getTime()));
 
         umpUtils.sign(model);
 
-        insertRequestMapper.insertRegister(model);
+        insertRequestMapper.insertResetPwd(model);
 
         if (model.getField().isEmpty()) {
-            logger.error("[UMP register] failed to sign, data: {}", model);
+            logger.error("[UMP reset] failed to sign, data: {}", model);
             return new BankBaseMessage(false, "签名失败");
         }
 
@@ -63,9 +60,9 @@ public class UmpRegisterService {
         }
 
         updateMapper.updateRegister(SyncRequestStatus.SUCCESS, model.getId());
-        MerRegisterPersonResponseModel responseModel = new MerRegisterPersonResponseModel();
+        MerSendSmsPwdResponseModel responseModel = new MerSendSmsPwdResponseModel();
         umpUtils.generateResponse(model.getId(), responseBody, responseModel);
-        insertResponseMapper.insertResponseRegister(responseModel);
+        insertResponseMapper.insertResponseResetPwd(responseModel);
         return new BankBaseMessage(true, null);
 
     }

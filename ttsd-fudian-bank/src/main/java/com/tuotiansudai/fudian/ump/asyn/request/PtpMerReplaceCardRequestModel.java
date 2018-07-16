@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class BindCardRequestModel extends BaseAsyncRequestModel {
+public class PtpMerReplaceCardRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
 
@@ -23,21 +23,19 @@ public class BindCardRequestModel extends BaseAsyncRequestModel {
 
     private String identityCode;
 
-    private String isOpenFastPayment = "0";
+    public PtpMerReplaceCardRequestModel() {
 
-    public BindCardRequestModel() {
     }
 
-    public BindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, boolean isOpenFastPayment) {
-        super(AsyncUmPayService.PTP_MER_BIND_CARD);
-        this.service = AsyncUmPayService.PTP_MER_BIND_CARD.getServiceName();
+    public PtpMerReplaceCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
+        super(AsyncUmPayService.PTP_MER_REPLACE_CARD);
+        this.service = AsyncUmPayService.PTP_MER_REPLACE_CARD.getServiceName();
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.cardId = cardNumber;
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.isOpenFastPayment = isOpenFastPayment ? "1" : "0";
     }
 
     @Override
@@ -52,7 +50,6 @@ public class BindCardRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("account_name", this.accountName);
         payRequestData.put("identity_type", this.identityType);
         payRequestData.put("identity_code", this.identityCode);
-        payRequestData.put("is_open_fastPayment", this.isOpenFastPayment);
         return payRequestData;
     }
 }

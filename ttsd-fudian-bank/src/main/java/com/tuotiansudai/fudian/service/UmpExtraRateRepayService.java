@@ -8,7 +8,7 @@ import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.ump.asyn.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
-import com.tuotiansudai.fudian.ump.sync.request.TransferRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.TransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferResponseModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;

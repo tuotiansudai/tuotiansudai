@@ -65,7 +65,7 @@ public class UmpInvestRepayService {
         insertRequestMapper.insertProjectTransfer(model);
 
         if (model.getField().isEmpty()) {
-            logger.error("[UMP register] failed to sign, data: {}", model);
+            logger.error("[UMP invest repay] failed to sign, data: {}", model);
             return new BankBaseMessage(false, "签名失败");
         }
 

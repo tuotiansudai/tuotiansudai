@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class WithdrawNotifyModel extends BaseNotifyModel {
+public class WithdrawNotifyRequestModel extends BaseCallbackRequestModel {
     private String amount;
 
     private String comAmt;

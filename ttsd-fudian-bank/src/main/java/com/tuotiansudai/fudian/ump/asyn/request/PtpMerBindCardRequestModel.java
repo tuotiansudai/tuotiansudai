@@ -1,13 +1,13 @@
 package com.tuotiansudai.fudian.ump.asyn.request;
 
-import com.tuotiansudai.fudian.dto.umpRequest.AsyncUmPayService;
-import com.tuotiansudai.fudian.dto.umpRequest.BaseAsyncRequestModel;
+
+import com.tuotiansudai.fudian.ump.AsyncUmPayService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class ReplaceCardRequestModel extends BaseAsyncRequestModel {
+public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
 
@@ -23,19 +23,21 @@ public class ReplaceCardRequestModel extends BaseAsyncRequestModel {
 
     private String identityCode;
 
-    public ReplaceCardRequestModel() {
+    private String isOpenFastPayment = "0";
 
+    public PtpMerBindCardRequestModel() {
     }
 
-    public ReplaceCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
-        super(AsyncUmPayService.PTP_MER_REPLACE_CARD);
-        this.service = AsyncUmPayService.PTP_MER_REPLACE_CARD.getServiceName();
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, boolean isOpenFastPayment) {
+        super(AsyncUmPayService.PTP_MER_BIND_CARD);
+        this.service = AsyncUmPayService.PTP_MER_BIND_CARD.getServiceName();
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.cardId = cardNumber;
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
+        this.isOpenFastPayment = isOpenFastPayment ? "1" : "0";
     }
 
     @Override
@@ -50,6 +52,7 @@ public class ReplaceCardRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("account_name", this.accountName);
         payRequestData.put("identity_type", this.identityType);
         payRequestData.put("identity_code", this.identityCode);
+        payRequestData.put("is_open_fastPayment", this.isOpenFastPayment);
         return payRequestData;
     }
 }

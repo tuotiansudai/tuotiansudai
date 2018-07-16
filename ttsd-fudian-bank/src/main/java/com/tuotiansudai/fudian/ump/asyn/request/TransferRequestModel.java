@@ -1,10 +1,9 @@
-package com.tuotiansudai.fudian.ump.sync.request;
+package com.tuotiansudai.fudian.ump.asyn.request;
 
 
 import com.tuotiansudai.fudian.ump.AsyncUmPayService;
 import com.tuotiansudai.fudian.ump.UmPayParticAccType;
 import com.tuotiansudai.fudian.ump.UmPayTransAction;
-import com.tuotiansudai.fudian.ump.asyn.request.BaseAsyncRequestModel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;

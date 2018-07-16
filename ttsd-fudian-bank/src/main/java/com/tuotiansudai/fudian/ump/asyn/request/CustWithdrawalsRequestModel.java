@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class WithdrawRequestModel extends BaseAsyncRequestModel {
+public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
 
     private String applyNotifyFlag;
 
@@ -21,10 +21,10 @@ public class WithdrawRequestModel extends BaseAsyncRequestModel {
 
     private String comAmtType;
 
-    public WithdrawRequestModel() {
+    public CustWithdrawalsRequestModel() {
     }
 
-    public WithdrawRequestModel(String orderId, String userId, String amount) {
+    public CustWithdrawalsRequestModel(String orderId, String userId, String amount) {
         super(AsyncUmPayService.CUST_WITHDRAWALS);
         this.service = AsyncUmPayService.CUST_WITHDRAWALS.getServiceName();
         this.applyNotifyFlag = "1";

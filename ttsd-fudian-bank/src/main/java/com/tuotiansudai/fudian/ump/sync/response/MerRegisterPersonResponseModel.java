@@ -2,7 +2,7 @@ package com.tuotiansudai.fudian.ump.sync.response;
 
 import java.util.Map;
 
-public class RegisterResponseModel extends BaseSyncResponseModel {
+public class MerRegisterPersonResponseModel extends BaseSyncResponseModel {
 
     private String regDate;
 

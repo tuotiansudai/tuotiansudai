@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class RechargeNotifyModel extends BaseNotifyModel {
+public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String merCheckDate;
 

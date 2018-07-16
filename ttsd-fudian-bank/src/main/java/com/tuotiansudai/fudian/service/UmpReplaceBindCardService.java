@@ -3,10 +3,9 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
-import com.tuotiansudai.fudian.ump.asyn.callback.BindCardApplyNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.callback.BindCardNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.request.BindCardRequestModel;
-import com.tuotiansudai.fudian.ump.asyn.request.ReplaceCardRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.BankCardApplyNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.BankCardNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.PtpMerReplaceCardRequestModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +32,8 @@ public class UmpReplaceBindCardService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public ReplaceCardRequestModel replaceBindCard(String loginName, long bankCardModelId, String payUserId, String cardNumber, String userName, String identityNumber) {
-        ReplaceCardRequestModel requestModel = new ReplaceCardRequestModel(String.valueOf(bankCardModelId),
+    public PtpMerReplaceCardRequestModel replaceBindCard(String loginName, long bankCardModelId, String payUserId, String cardNumber, String userName, String identityNumber) {
+        PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(bankCardModelId),
                 cardNumber,
                 payUserId,
                 userName,
@@ -52,7 +51,7 @@ public class UmpReplaceBindCardService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        BindCardNotifyModel bindCardNotifyModel = new BindCardNotifyModel();
+        BankCardNotifyRequestModel bindCardNotifyModel = new BankCardNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, bindCardNotifyModel);
         if (Strings.isNullOrEmpty(bindCardNotifyModel.getResponseData())) {
             return null;
@@ -62,7 +61,7 @@ public class UmpReplaceBindCardService {
     }
 
     public String applyNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        BindCardApplyNotifyModel bindCardApplyNotifyModel = new BindCardApplyNotifyModel();
+        BankCardApplyNotifyRequestModel bindCardApplyNotifyModel = new BankCardApplyNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, bindCardApplyNotifyModel);
         if (Strings.isNullOrEmpty(bindCardApplyNotifyModel.getResponseData())) {
             return null;

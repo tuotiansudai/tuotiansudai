@@ -3,12 +3,8 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
-import com.tuotiansudai.fudian.ump.asyn.callback.ProjectTransferNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawApplyNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawNotifyModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
-import com.tuotiansudai.fudian.ump.asyn.request.WithdrawRequestModel;
-import com.tuotiansudai.fudian.ump.sync.request.TransferRequestModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +54,7 @@ public class UmpLoanRepayService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        ProjectTransferNotifyModel projectTransferNotifyModel = new ProjectTransferNotifyModel();
+        ProjectTransferNotifyRequestModel projectTransferNotifyModel = new ProjectTransferNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, projectTransferNotifyModel);
         if (Strings.isNullOrEmpty(projectTransferNotifyModel.getResponseData())) {
             return null;

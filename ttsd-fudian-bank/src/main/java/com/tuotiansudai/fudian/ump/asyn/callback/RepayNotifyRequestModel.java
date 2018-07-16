@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class RepayNotifyRequestModel extends BaseNotifyModel {
+public class RepayNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String status;
 

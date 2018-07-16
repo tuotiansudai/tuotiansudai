@@ -6,7 +6,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertResponseMapper;
 import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
-import com.tuotiansudai.fudian.ump.asyn.callback.RepayNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
@@ -49,13 +49,13 @@ public class UmpInvestRepayFeeService {
 
     @SuppressWarnings(value = "unchecked")
     public BankBaseMessage investRepayFee(long loanId, long loanRepayId, long amount, boolean isAdvance){
-        ProjectTransferRequestModel model = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(
+        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayInvestFeeRequest(
                 String.valueOf(loanId),
                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
                 String.valueOf(amount));
 
         if (isAdvance){
-            model = ProjectTransferRequestModel.newNormalRepayInvestFeeRequest(String.valueOf(loanId),
+            model = ProjectTransferRequestModel.newAdvanceRepayInvestFeeRequest(String.valueOf(loanId),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
                     String.valueOf(model));
         }
@@ -85,7 +85,7 @@ public class UmpInvestRepayFeeService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        TransferNotifyRequestModel transferNotifyRequestModel = new TransferNotifyRequestModel();
+        ProjectTransferNotifyRequestModel transferNotifyRequestModel = new ProjectTransferNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, transferNotifyRequestModel);
         if (Strings.isNullOrEmpty(transferNotifyRequestModel.getResponseData())) {
             return null;

@@ -2,11 +2,9 @@ package com.tuotiansudai.fudian.ump.sync.request;
 
 
 
-import com.tuotiansudai.fudian.ump.SyncUmPayService;
-
 import java.util.Map;
 
-public class ResertPwdModel extends BaseSyncRequestModel {
+public class MerSendSmsPwdRequestModel extends BaseSyncRequestModel {
 
     private String userId;
 
@@ -14,10 +12,10 @@ public class ResertPwdModel extends BaseSyncRequestModel {
 
     private String orderId;
 
-    public ResertPwdModel() {
+    public MerSendSmsPwdRequestModel() {
     }
 
-    public ResertPwdModel(String userId, String identityCode, String orderId) {
+    public MerSendSmsPwdRequestModel(String userId, String identityCode, String orderId) {
         this.service = "mer_send_sms_pwd";
         this.userId = userId;
         this.identityCode = identityCode;

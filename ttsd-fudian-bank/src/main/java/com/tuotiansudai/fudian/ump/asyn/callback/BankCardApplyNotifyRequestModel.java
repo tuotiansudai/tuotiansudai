@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class BindCardApplyNotifyModel extends BaseNotifyModel {
+public class BankCardApplyNotifyRequestModel extends BaseCallbackRequestModel {
     private String userId;
 
     public String getUserId() {

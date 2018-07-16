@@ -3,8 +3,8 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
-import com.tuotiansudai.fudian.ump.asyn.callback.RechargeNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.request.RechargeRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.RechargeNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.MerRechargePersonRequestModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +31,14 @@ public class UmpRechargeService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public RechargeRequestModel recharge(String loginName, String payUserId, boolean isPublicPay, long rechargeId, long amount, String bankCode) {
-        RechargeRequestModel model = RechargeRequestModel.newRecharge(String.valueOf(rechargeId),
+    public MerRechargePersonRequestModel recharge(String loginName, String payUserId, boolean isFastPay, long rechargeId, long amount, String bankCode) {
+        MerRechargePersonRequestModel model = MerRechargePersonRequestModel.newRecharge(String.valueOf(rechargeId),
                 payUserId,
                 String.valueOf(amount),
                 bankCode);
 
-        if (isPublicPay) {
-            model = RechargeRequestModel.newFastRecharge(String.valueOf(rechargeId),
+        if (isFastPay) {
+            model = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(rechargeId),
                     payUserId,
                     String.valueOf(amount));
         }
@@ -55,7 +55,7 @@ public class UmpRechargeService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        RechargeNotifyModel model = new RechargeNotifyModel();
+        RechargeNotifyRequestModel model = new RechargeNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, model);
 
         if (Strings.isNullOrEmpty(model.getResponseData())){

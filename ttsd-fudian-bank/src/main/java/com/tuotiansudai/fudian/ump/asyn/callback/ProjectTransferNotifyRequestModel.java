@@ -1,6 +1,6 @@
 package com.tuotiansudai.fudian.ump.asyn.callback;
 
-public class TransferNotifyRequestModel extends BaseCallbackRequestModel {
+public class ProjectTransferNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String merCheckDate;
 
@@ -11,5 +11,4 @@ public class TransferNotifyRequestModel extends BaseCallbackRequestModel {
     public void setMerCheckDate(String merCheckDate) {
         this.merCheckDate = merCheckDate;
     }
-
 }

@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class RechargeRequestModel extends BaseAsyncRequestModel {
+public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     private static final String NORMAL_PAY = "B2CDEBITBANK";
 
@@ -27,11 +27,11 @@ public class RechargeRequestModel extends BaseAsyncRequestModel {
 
     private String comAmtType;
 
-    public RechargeRequestModel() {
+    public MerRechargePersonRequestModel() {
 
     }
 
-    private RechargeRequestModel(String orderId, String userId, String amount) {
+    private MerRechargePersonRequestModel(String orderId, String userId, String amount) {
         super(AsyncUmPayService.MER_RECHARGE_PERSON);
         this.service = AsyncUmPayService.MER_RECHARGE_PERSON.getServiceName();
         this.orderId = orderId;
@@ -42,15 +42,15 @@ public class RechargeRequestModel extends BaseAsyncRequestModel {
 
     }
 
-    public static RechargeRequestModel newRecharge(String orderId, String userId, String amount, String gateId) {
-        RechargeRequestModel model = new RechargeRequestModel(orderId, userId, amount);
+    public static MerRechargePersonRequestModel newRecharge(String orderId, String userId, String amount, String gateId) {
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(orderId, userId, amount);
         model.setPayType(NORMAL_PAY);
         model.setGateId(gateId);
         return model;
     }
 
-    public static RechargeRequestModel newFastRecharge(String orderId, String userId, String amount) {
-        RechargeRequestModel model = new RechargeRequestModel(orderId, userId, amount);
+    public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount) {
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(orderId, userId, amount);
         model.setPayType(FAST_PAY);
         return model;
     }

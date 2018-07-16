@@ -46,25 +46,25 @@ public class UmpController {
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> bindCard(){
-        BindCardRequestModel model = umpBindCardService.bindCard(null, 0, null, null, null, null, true);
+        PtpMerBindCardRequestModel model = umpBindCardService.bindCard(null, 0, null, null, null, null, true);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/replace-bind-card", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> replaceBindCard(){
-        ReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(null, 0, null, null, null, null);
+        PtpMerReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(null, 0, null, null, null, null);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> recharge(){
-        RechargeRequestModel model = umpRechargeService.recharge(null, null, false, 0, 0, null);
+        MerRechargePersonRequestModel model = umpRechargeService.recharge(null, null, false, 0, 0, null);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> withdraw(){
-        WithdrawRequestModel model = umpWithdrawService.withdraw(null, null, 0, 0);
+        CustWithdrawalsRequestModel model = umpWithdrawService.withdraw(null, null, 0, 0);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 

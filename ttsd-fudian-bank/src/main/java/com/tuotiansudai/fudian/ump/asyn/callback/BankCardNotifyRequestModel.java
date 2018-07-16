@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
-public class BindCardNotifyModel extends BaseNotifyModel {
+public class BankCardNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String userId;
 

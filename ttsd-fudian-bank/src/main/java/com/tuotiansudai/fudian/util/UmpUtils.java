@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.mapper.ump.UpdateMapper;
-import com.tuotiansudai.fudian.ump.asyn.callback.BaseNotifyModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.fudian.umpClient.PayGateWrapper;
@@ -58,9 +58,9 @@ public class UmpUtils {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public <T extends BaseNotifyModel> T parseCallbackRequest(Map<String, String> paramsMap,
-                                                String originalQueryString,
-                                                T model) {
+    public <T extends BaseCallbackRequestModel> T parseCallbackRequest(Map<String, String> paramsMap,
+                                                                       String originalQueryString,
+                                                                       T model) {
         try {
             model = (T) parseParamsToModel(paramsMap, model.getClass());
             model.setRequestData(originalQueryString);
@@ -73,7 +73,7 @@ public class UmpUtils {
         return null;
     }
 
-    private BaseNotifyModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseNotifyModel> model) throws VerifyException, IOException {
+    private BaseCallbackRequestModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseCallbackRequestModel> model) throws VerifyException, IOException {
         Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
         Map<String, String> newPlatNotifyData = Maps.newHashMap();
         for (String key : platNotifyData.keySet()) {
@@ -116,15 +116,13 @@ public class UmpUtils {
         return null;
     }
 
-    public <T extends BaseSyncResponseModel> T generateResponse(long requestId, String responseBody, T model) {
+    public <T extends BaseSyncResponseModel> void generateResponse(long requestId, String responseBody, T model) {
         try {
             Map<String, String> resData = payGateWrapper.getResData(responseBody);
             model.setRequestId(requestId);
             model.initializeModel(resData);
-            return model;
         } catch (RetDataException e) {
             logger.error(MessageFormat.format("[UMP response] generate exception, data: {0}",  responseBody), e);
         }
-        return null;
     }
 }

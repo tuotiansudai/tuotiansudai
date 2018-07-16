@@ -2,7 +2,7 @@ package com.tuotiansudai.fudian.ump.sync.request;
 
 import java.util.Map;
 
-public class RegisterRequestModel extends BaseSyncRequestModel {
+public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
 
     private String orderId;
 
@@ -16,10 +16,10 @@ public class RegisterRequestModel extends BaseSyncRequestModel {
 
     private String mobile;
 
-    public RegisterRequestModel() {
+    public MerRegisterPersonRequestModel() {
     }
 
-    public RegisterRequestModel(String orderId, String loginName, String userName, String identityNumber, String mobile) {
+    public MerRegisterPersonRequestModel(String orderId, String loginName, String userName, String identityNumber, String mobile) {
         this.service = "mer_register_person";
         this.orderId = orderId;
         this.loginName = loginName;

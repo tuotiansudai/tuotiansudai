@@ -3,9 +3,9 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
-import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawApplyNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawNotifyModel;
-import com.tuotiansudai.fudian.ump.asyn.request.WithdrawRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawApplyNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawNotifyRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.CustWithdrawalsRequestModel;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +32,8 @@ public class UmpWithdrawService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public WithdrawRequestModel withdraw(String loginName, String payUserId, long withdrawId, long amount) {
-        WithdrawRequestModel requestModel = new WithdrawRequestModel(String.valueOf(withdrawId),
+    public CustWithdrawalsRequestModel withdraw(String loginName, String payUserId, long withdrawId, long amount) {
+        CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawId),
                 payUserId,
                 String.valueOf(amount));
 
@@ -49,7 +49,7 @@ public class UmpWithdrawService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        WithdrawNotifyModel withdrawNotifyModel = new WithdrawNotifyModel();
+        WithdrawNotifyRequestModel withdrawNotifyModel = new WithdrawNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawNotifyModel);
         if (Strings.isNullOrEmpty(withdrawNotifyModel.getResponseData())) {
             return null;
@@ -59,7 +59,7 @@ public class UmpWithdrawService {
     }
 
     public String applyNotifyCallBack(Map<String, String> paramsMap, String queryString) {
-        WithdrawApplyNotifyModel withdrawApplyNotifyModel = new WithdrawApplyNotifyModel();
+        WithdrawApplyNotifyRequestModel withdrawApplyNotifyModel = new WithdrawApplyNotifyRequestModel();
         umpUtils.parseCallbackRequest(paramsMap, queryString, withdrawApplyNotifyModel);
         if (Strings.isNullOrEmpty(withdrawApplyNotifyModel.getResponseData())) {
             return null;
