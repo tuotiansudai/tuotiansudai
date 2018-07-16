@@ -5,8 +5,8 @@ package com.tuotiansudai.enums;
  */
 public enum AccountType {
     UMP("联动优势"),
-    INVESTOR("富滇银行-出借人"),
-    LOANER("富滇银行-借款人");
+    BANK_INVESTOR("富滇银行-出借人"),
+    BANK_LOANER("富滇银行-借款人");
 
     final private String description;
 

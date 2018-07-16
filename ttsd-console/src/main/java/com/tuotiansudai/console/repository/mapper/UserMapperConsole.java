@@ -51,7 +51,7 @@ public interface UserMapperConsole {
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceSumOld(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceSumUMP(@Param(value = "mobile") String mobile,
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
 
@@ -60,7 +60,7 @@ public interface UserMapperConsole {
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceCountOld(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceCountUMP(@Param(value = "mobile") String mobile,
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
 
@@ -70,7 +70,7 @@ public interface UserMapperConsole {
                                            @Param(value = "balanceMax") long balanceMax,
                                            @Param(value = "startLimit") Integer startLimit,
                                            @Param(value = "endLimit") Integer endLimit);
-    List<UserView> findUsersAccountBalanceOld(@Param(value = "mobile") String mobile,
+    List<UserView> findUsersAccountBalanceUMP(@Param(value = "mobile") String mobile,
                                            @Param(value = "balanceMin") long balanceMin,
                                            @Param(value = "balanceMax") long balanceMax,
                                            @Param(value = "startLimit") Integer startLimit,

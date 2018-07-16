@@ -191,7 +191,7 @@ public class ConsoleUserService {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         List<UserView> userViews = null;
         if (accountType == AccountType.UMP) {
-            userViews = userMapperConsole.findUsersAccountBalanceOld(mobile, balance.get(0), balance.get(1),
+            userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         } else {
             userViews = userMapperConsole.findUsersAccountBalance(accountType, mobile, balance.get(0), balance.get(1),
@@ -208,7 +208,7 @@ public class ConsoleUserService {
     public long findUsersAccountBalanceCount(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         if (accountType == AccountType.UMP) {
-            return userMapperConsole.findUsersAccountBalanceCountOld(mobile, balance.get(0), balance.get(1));
+            return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceCount(accountType, mobile, balance.get(0), balance.get(1));
     }
@@ -216,7 +216,7 @@ public class ConsoleUserService {
     public long findUsersAccountBalanceSum(AccountType accountType, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         if (accountType == AccountType.UMP) {
-            return userMapperConsole.findUsersAccountBalanceSumOld(mobile, balance.get(0), balance.get(1));
+            return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceSum(accountType, mobile, balance.get(0), balance.get(1));
     }
