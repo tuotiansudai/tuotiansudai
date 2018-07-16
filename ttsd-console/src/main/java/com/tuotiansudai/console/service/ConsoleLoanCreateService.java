@@ -6,6 +6,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankLoanCancelMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
@@ -378,7 +379,10 @@ public class ConsoleLoanCreateService {
 
         investMapper.cleanWaitingInvest(loanId);
 
-        return payWrapperClient.cancelLoan(loanId);
+        BankLoanCancelMessage message = bankWrapperClient.cancelLoan(loanId, loanModel.getBankOrderNo(), loanModel.getBankOrderDate(), loanModel.getLoanTxNo());
+        payDataDto.setStatus(message.isStatus());
+        payDataDto.setMessage(message.getMessage());
+        return baseDto;
     }
 
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {

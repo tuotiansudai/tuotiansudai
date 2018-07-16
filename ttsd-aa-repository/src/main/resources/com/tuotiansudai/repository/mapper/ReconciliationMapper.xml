@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ReconciliationMapper">
+    <resultMap id="reconciliationResultMap" type="ReconciliationModel">
+        <result column="orderNo" property="orderNo"></result>
+        <result column="status" property="status"></result>
+        <result column="amount" property="amount"></result>
+        <result column="billCount" property="billCount"></result>
+    </resultMap>
+    
+    <select id="recharge" resultMap="reconciliationResultMap">
+        SELECT r.bank_order_no as 'orderNo', r.status, r.amount,(select count(1) from user_bill where bank_order_no = r.bank_order_no) as 'billCount' from bank_recharge r where r.bank_order_date = #{queryDate}
+    </select>
+
+    <select id="withdraw" resultMap="reconciliationResultMap">
+        SELECT w.bank_order_no as 'orderNo', w.status, w.amount, (select count(1) from user_bill where bank_order_no = w.bank_order_no) as 'billCount' from bank_withdraw w where w.bank_order_date = #{queryDate}
+    </select>
+
+    <select id="invest" resultMap="reconciliationResultMap">
+        SELECT i.bank_order_no as 'orderNo', i.status, i.amount, (select count(1) from user_bill where bank_order_no = i.bank_order_no) as 'billCount' from invest i where i.bank_order_date = #{queryDate} and i.transfer_invest_id is null
+    </select>
+
+    <select id="transferInvest" resultMap="reconciliationResultMap">
+        SELECT i.bank_order_no as 'orderNo', i.status, a.transfer_amount as 'amount', (select count(1) from user_bill where bank_order_no = i.bank_order_no) as 'billCount'
+        from invest i join transfer_application a on i.id = a.invest_id
+        where i.bank_order_date = #{queryDate} and i.transfer_invest_id is not null
+    </select>
+
+    <select id="loanFull" resultMap="reconciliationResultMap">
+        SELECT loan_full_bank_order_no as 'orderNo', status, loan_amount as 'amount' from loan where loan_full_bank_order_date = #{queryDate}
+    </select>
+
+    <select id="loanRepay" resultMap="reconciliationResultMap">
+        SELECT r.bank_order_no as 'orderNo', r.status, r.repay_amount as 'amount', (select count(1) from user_bill where bank_order_no = r.bank_order_no) as 'billCount' from loan_repay r where r.bank_order_date = #{queryDate}
+    </select>
+
+    <select id="loanCallBack" resultMap="reconciliationResultMap">
+        SELECT r.bank_order_no as 'orderNo', r.status, r.repay_amount as 'amount', (select count(1) from user_bill where bank_order_no = r.bank_order_no) as 'billCount' from invest_repay r where r.bank_order_date = #{queryDate}
+    </select>
+
+</mapper>
