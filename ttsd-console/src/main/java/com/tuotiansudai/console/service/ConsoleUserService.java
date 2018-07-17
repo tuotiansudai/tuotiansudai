@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
@@ -20,10 +21,7 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -41,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -79,6 +78,12 @@ public class ConsoleUserService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private UserBankCardMapper userBankCardMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
@@ -139,15 +144,13 @@ public class ConsoleUserService {
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
-
-        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(loginName, Role.INVESTOR);
-        if (userBankCardModel != null) {
-            editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
-        }
-
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
+        Map<Role,String> bankCardMap=getUserBankCardNumberByLoginName(loginName);
+        editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
+        editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
         return editUserDto;
     }
 
@@ -489,4 +492,22 @@ public class ConsoleUserService {
         }
         return false;
     }
+
+    public Map<Role, String> getUserBankCardNumberByLoginName(String loginName) {
+        Map<Role, String> bankCardMap = new HashMap<>();
+
+        List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
+        String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> {
+            return Role.BANK_INVESTOR.equals(userItem.getRoleType());
+        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> {
+            return Role.BANK_LOANER.equals(userItem.getRoleType());
+        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+
+        bankCardMap.put(Role.INVESTOR, bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        bankCardMap.put(Role.BANK_INVESTOR, bankCardNumberInvestor);
+        bankCardMap.put(Role.BANK_LOANER, bankCardNumberLoaner);
+        return bankCardMap;
+    }
+
 }
