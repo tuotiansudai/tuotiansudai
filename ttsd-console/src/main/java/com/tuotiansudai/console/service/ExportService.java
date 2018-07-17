@@ -282,6 +282,7 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(String.valueOf(loanListDto.getId()));
             row.add(loanListDto.getName());
+            row.add(loanListDto.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(loanListDto.getProductType() == null ? "" : loanListDto.getProductType().getName());
             row.add(loanListDto.getLoanerUserName());
             row.add(loanListDto.getAgentLoginName());
@@ -329,6 +330,7 @@ public class ExportService {
             row.add(String.valueOf(record.getLoanId()));
             row.add(record.getLoanName());
             row.add(String.valueOf(record.getLoanPeriods()));
+            row.add(record.getIsBankPlatform()==null?"":record.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(record.getInvestorLoginName());
             row.add(record.isInvestorStaff() ? "是" : "否");
             row.add(record.getInvestorUserName());

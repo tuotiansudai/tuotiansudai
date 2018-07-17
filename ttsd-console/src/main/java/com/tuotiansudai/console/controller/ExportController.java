@@ -246,7 +246,8 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public void consoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
+    public void consoleLoanList(@RequestParam(value = "isBankPlatform", required = false,defaultValue = "true") Boolean isBankPlatform,
+                                @RequestParam(value = "status", required = false) LoanStatus status,
                                 @RequestParam(value = "loanId", required = false) Long loanId,
                                 @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                 @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -254,7 +255,7 @@ public class ExportController {
                                 @RequestParam(value = "loanName", required = false) String loanName, HttpServletResponse httpServletResponse) throws IOException {
 
         fillExportResponse(httpServletResponse, CsvHeaderType.ConsoleLoanList.getDescription());
-        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(status, loanId, loanName,
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(isBankPlatform,status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, Integer.MAX_VALUE);
@@ -280,7 +281,8 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
-    public void exportInvests(@RequestParam(name = "loanId", required = false) Long loanId,
+    public void exportInvests(@RequestParam(value = "isBankPlatform", required = false,defaultValue ="true") Boolean isBankPlatform,
+                              @RequestParam(name = "loanId", required = false) Long loanId,
                               @RequestParam(name = "mobile", required = false) String investorMobile,
                               @RequestParam(name = "channel", required = false) String channel,
                               @RequestParam(name = "source", required = false) Source source,
@@ -292,7 +294,7 @@ public class ExportController {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
+        InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(isBankPlatform,loanId, investorMobile, channel, source,
                 role, startTime, endTime, investStatus, preferenceType, null, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);

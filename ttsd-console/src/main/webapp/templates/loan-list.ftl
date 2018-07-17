@@ -43,7 +43,15 @@
                             </span>
             </div>
         </div>
-
+        <div class="form-group">
+            <label for="project">资金平台</label>
+            <select class="selectpicker" name="isBankPlatform">
+                <option value="false"
+                        <#if (isBankPlatform?? && !isBankPlatform) >selected</#if>>联动优势</option>
+                <option value="true"
+                        <#if (isBankPlatform?? && isBankPlatform) >selected</#if>>富滇银行</option>
+            </select>
+        </div>
         <button type="button" class="btn btn-sm btn-primary search">查询</button>
     </form>
     <div class="table-responsive" style="overflow: visible">
@@ -53,6 +61,7 @@
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>借款期限</th>
+                <th>资金平台</th>
                 <th>借款人</th>
                 <th>代理人</th>
                 <th>借款金额(元)</th>
@@ -77,6 +86,7 @@
                         </span>
                     </td>
                     <td><#if loanListDto.productType??>${loanListDto.productType.getName()}</#if></td>
+                    <td>${isBankPlatform?string("富滇银行","联动优势")}</td>
                     <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName!}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
@@ -143,7 +153,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -154,7 +164,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
