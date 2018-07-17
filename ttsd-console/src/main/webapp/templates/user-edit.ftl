@@ -145,7 +145,7 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
                                           <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          <#if !editRole || roleItem.name()=='INVESTOR'|| roleItem.name()=='LOANER' || roleItem.name()=='BANK_INVESTOR' || roleItem.name()=='BANK_LOANER'>disabled="disabled"</#if>
+                                          <#if !editRole || roleItem.name()=='INVESTOR'|| roleItem.name()=='LOANER' || roleItem.name()=='BANK_INVESTOR' || roleItem.name()=='BANK_LOANER'>onclick="return false"</#if>
                                           value="${roleItem.name()}">${roleItem.getDescription()}
                             </label>
                         </div>
