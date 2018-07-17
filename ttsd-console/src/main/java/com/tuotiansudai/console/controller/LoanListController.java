@@ -12,7 +12,10 @@ import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AnxinContractType;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.CalculateUtil;
@@ -65,7 +68,7 @@ public class LoanListController {
     public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList(@RequestParam(value = "fundPlatform", required = false) FundPlatform fundPlatform,
+    public ModelAndView ConsoleLoanList(@RequestParam(value = "isBankPlatform", required = false, defaultValue = "true") Boolean isBankPlatform,
                                         @RequestParam(value = "status", required = false) LoanStatus status,
                                         @RequestParam(value = "loanId", required = false) Long loanId,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
@@ -73,10 +76,10 @@ public class LoanListController {
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName) {
         int pageSize = 10;
-        int loanListCount = consoleLoanService.findLoanListCount(fundPlatform, status, loanId, loanName,
+        int loanListCount = consoleLoanService.findLoanListCount(isBankPlatform, status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(fundPlatform, status, loanId, loanName,
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(isBankPlatform, status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize);
@@ -96,8 +99,7 @@ public class LoanListController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("loanStatusList", LoanStatus.values());
-        modelAndView.addObject("fundPlatformList", FundPlatform.values());
-        modelAndView.addObject("fundPlatform", fundPlatform);
+        modelAndView.addObject("isBankPlatform", isBankPlatform);
         return modelAndView;
     }
 

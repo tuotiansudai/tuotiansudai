@@ -113,7 +113,7 @@ public class LoanModel implements Serializable {
 
     private long unpaidAmount; // 待还总额
 
-    private FundPlatform fundPlatform;//资金平台
+    private Boolean isBankPlatform;//资金平台
 
     public LoanModel() {
     }
@@ -207,7 +207,7 @@ public class LoanModel implements Serializable {
         this.createdLoginName = loanDto.getCreatedLoginName();
         this.verifyLoginName = loanDto.getVerifyLoginName();
         this.recheckLoginName = loanDto.getRecheckLoginName();
-        this.fundPlatform=loanDto.getFundPlatform();
+        this.isBankPlatform = loanDto.getIsBankPlatform();
     }
 
     private String rateStrDivideOneHundred(String rate) {
@@ -607,11 +607,11 @@ public class LoanModel implements Serializable {
         this.unpaidAmount = unpaidAmount;
     }
 
-    public FundPlatform getFundPlatform() {
-        return fundPlatform;
+    public Boolean getIsBankPlatform() {
+        return isBankPlatform;
     }
 
-    public void setFundPlatform(FundPlatform fundPlatform) {
-        this.fundPlatform = fundPlatform;
+    public void setIsBankPlatForm(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
     }
 }

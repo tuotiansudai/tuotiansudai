@@ -34,7 +34,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
-    private FundPlatform fundPlatform;
+    private Boolean isBankPlatform;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -59,7 +59,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.province = view.getProvince();
         this.city = view.getCity();
         this.identityNumber = view.getIdentityNumber();
-        this.fundPlatform=view.getFundPlatform();
+        this.isBankPlatform=view.getIsBankPlatform();
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -289,11 +289,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.couponActualInterest = couponActualInterest;
     }
 
-    public FundPlatform getFundPlatform() {
-        return fundPlatform;
+    public Boolean getIsBankPlatform() {
+        return isBankPlatform;
     }
 
-    public void setFundPlatform(FundPlatform fundPlatform) {
-        this.fundPlatform = fundPlatform;
+    public void setIsBankPlatform(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
     }
 }

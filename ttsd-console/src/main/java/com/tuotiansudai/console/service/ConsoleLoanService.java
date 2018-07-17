@@ -35,13 +35,13 @@ public class ConsoleLoanService {
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
 
-    public int findLoanListCount(FundPlatform fundPlatform,LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
-        return loanMapper.findLoanListCount(fundPlatform,status, loanId, loanName, startTime, endTime);
+    public int findLoanListCount(Boolean isBankPlatform,LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
+        return loanMapper.findLoanListCount(isBankPlatform,status, loanId, loanName, startTime, endTime);
     }
 
-    public List<LoanListDto> findLoanList(FundPlatform fundPlatform,LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
+    public List<LoanListDto> findLoanList(Boolean isBankPlatform,LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanList(fundPlatform,status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
+        List<LoanModel> loanModels = loanMapper.findLoanList(isBankPlatform,status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         return loanModels.stream().map(loanModel->{return new LoanListDto(loanModel,fillExtraLoanRate(extraLoanRateMapper.findByLoanId(loanModel.getId())),loanDetailsMapper.getByLoanId(loanModel.getId()));}).collect(Collectors.toList());
     }
 

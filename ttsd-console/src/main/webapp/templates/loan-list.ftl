@@ -45,12 +45,11 @@
         </div>
         <div class="form-group">
             <label for="project">资金平台</label>
-            <select class="selectpicker" name="fundPlatform">
-                <option value="">全部</option>
-                <#list fundPlatformList as item>
-                    <option value="${item.name()}"
-                            <#if (fundPlatform?? && fundPlatform.name() == item.name()) >selected</#if>>${item.description}</option>
-                </#list>
+            <select class="selectpicker" name="isBankPlatform">
+                <option value="false"
+                        <#if (isBankPlatform?? && !isBankPlatform) >selected</#if>>联动优势</option>
+                <option value="true"
+                        <#if (isBankPlatform?? && isBankPlatform) >selected</#if>>富滇银行</option>
             </select>
         </div>
         <button type="button" class="btn btn-sm btn-primary search">查询</button>
@@ -87,7 +86,7 @@
                         </span>
                     </td>
                     <td><#if loanListDto.productType??>${loanListDto.productType.getName()}</#if></td>
-                    <td><#if loanListDto.fundPlatform??>${loanListDto.fundPlatform.getDescription()}</#if></td>
+                    <td>${isBankPlatform?string("富滇银行","联动优势")}</td>
                     <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName!}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
@@ -154,7 +153,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?fundPlatform=${fundPlatform!}&status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -165,7 +164,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?fundPlatform=${fundPlatform!}&status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

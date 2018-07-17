@@ -118,7 +118,7 @@ public interface InvestMapper {
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                     @Param(value = "afterTime") Date afterTime);
 
-    long findCountInvestPagination( @Param(value = "fundPlatform") FundPlatform fundPlatform,
+    long findCountInvestPagination(@Param(value = "isBankPlatform") Boolean isBankPlatform,
                                    @Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
@@ -130,7 +130,7 @@ public interface InvestMapper {
                                    @Param(value = "preferenceType") PreferenceType preferenceType,
                                    @Param(value = "productType") ProductType productType);
 
-    List<InvestPaginationItemView> findInvestPagination(@Param(value = "fundPlatform") FundPlatform fundPlatform,
+    List<InvestPaginationItemView> findInvestPagination(@Param(value = "isBankPlatform") Boolean isBankPlatform,
                                                         @Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "channel") String channel,
@@ -154,7 +154,7 @@ public interface InvestMapper {
                          @Param(value = "investStatus") InvestStatus investStatus,
                          @Param(value = "loanStatus") LoanStatus loanStatus);
 
-    long sumInvestAmountConsole(@Param(value = "fundPlatform") FundPlatform fundPlatform,
+    long sumInvestAmountConsole(@Param(value = "isBankPlatform") Boolean isBankPlatform,
                                 @Param(value = "loanId") Long loanId,
                                 @Param(value = "investorLoginName") String investorLoginName,
                                 @Param(value = "channel") String channel,

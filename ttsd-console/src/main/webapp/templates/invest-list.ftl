@@ -90,14 +90,12 @@
             </select>
         </div>
         <div class="form-group">
-            <label>资金平台</label>
-            <select class="selectpicker" name="fundPlatform">
-                <option value="">全部</option>
-                <#list fundPlatformList as item>
-                    <option value="${item}" <#if fundPlatform?? && fundPlatform.name()==item.name()>selected</#if>>
-                    ${item.description}
-                    </option>
-                </#list>
+            <label for="project">资金平台</label>
+            <select class="selectpicker" name="isBankPlatform">
+                <option value="false"
+                        <#if (isBankPlatform?? && !isBankPlatform) >selected</#if>>联动优势</option>
+                <option value="true"
+                        <#if (isBankPlatform?? && isBankPlatform) >selected</#if>>富滇银行</option>
             </select>
         </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
@@ -136,7 +134,7 @@
                     <td>${invest.loanId?string.computer}</td>
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
-                    <td><#if invest.fundPlatform??>${invest.fundPlatform.getDescription()}</#if></td>
+                    <td>${isBankPlatform?string("富滇银行","联动优势")}</td>
                     <td>${invest.investorLoginName!}</td>
                     <td>${invest.investorUserName!}
                         <#if invest.investorStaff>
@@ -179,7 +177,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if fundPlatform??>fundPlatform=${fundPlatform}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index - 1}&isBankPlatform=${isBankPlatform?string("true","flase")}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -190,7 +188,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if fundPlatform??>fundPlatform=${fundPlatform}&</#if><#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index + 1}&isBankPlatform=${isBankPlatform?string("true","flase")}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

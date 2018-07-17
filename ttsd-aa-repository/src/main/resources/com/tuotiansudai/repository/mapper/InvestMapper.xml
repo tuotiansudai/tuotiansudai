@@ -52,7 +52,7 @@
         <result column="province" property="province"/>
         <result column="city" property="city"/>
         <result column="identity_number" property="identityNumber"/>
-        <result column="fund_platform" property="fundPlatform"/>
+        <result column="is_bank_platform" property="isBankPlatform"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -271,7 +271,7 @@
     <select id="findInvestPagination" resultMap="investPaginationItemView">
         SELECT
         invest.id AS invest_id,
-        loan.fund_platform as fund_platform,
+        loan.is_bank_platform as is_bank_platform,
         loan.id AS loan_id,
         loan.name AS loan_name,
         loan.periods AS loan_periods,
@@ -308,8 +308,8 @@
         invest join loan on invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
-            <if test="fundPlatform != null">
-                AND loan.fund_platform = #{fundPlatform}
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
             </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
@@ -411,8 +411,8 @@
         SELECT COUNT(1) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
-            <if test="fundPlatform != null">
-                AND loan.fund_platform = #{fundPlatform}
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
             </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
@@ -493,8 +493,8 @@
         SELECT IFNULL(sum(amount), 0) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
-            <if test="fundPlatform != null">
-                AND loan.fund_platform = #{fundPlatform}
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
             </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
