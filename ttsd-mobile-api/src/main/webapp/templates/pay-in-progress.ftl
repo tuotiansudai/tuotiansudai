@@ -17,7 +17,7 @@
     <div class="gif-container">
     </div>
     <div class="progress-container">
-        正在处理中222222222222222222：<span id="secondsCountDown">5</span>
+        正在处理中：<span id="secondsCountDown">5</span>
     </div>
     <form id="isPaySuccess"
           action="${requestContext.getContextPath()}/callback/${bankCallbackType.name()}/order-no/${orderNo}/is-success"
