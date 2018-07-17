@@ -300,25 +300,26 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public void exportRecharge(@RequestParam(value = "rechargeId", required = false) String rechargeId,
+    public void exportRecharge(@RequestParam(value = "role", required = false,defaultValue ="BANK_INVESTOR") Role role,
+                               @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                @RequestParam(value = "status", required = false) BankRechargeStatus status,
                                @RequestParam(value = "source", required = false) Source source,
-                               @RequestParam(value = "channel", required = false) String channel,
-                               @RequestParam(value = "role", required = false) String role,
                                HttpServletResponse response) throws IOException {
+        ;
         fillExportResponse(response, CsvHeaderType.ConsoleRecharge.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
-        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(rechargeId, mobile, source, status, channel, index, pageSize, startTime, endTime, role);
+        BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(role,rechargeId, mobile, source, status, null, index, pageSize, startTime, endTime);
         List<List<String>> rechargeData = exportService.buildRecharge(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleRecharge, rechargeData, response.getOutputStream());
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) Long withdrawId,
+    public void exportWithdraw(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
+                               @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
@@ -326,7 +327,7 @@ public class ExportController {
                                @RequestParam(value = "source", required = false) Source source,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, 1, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(role, withdrawId, mobile, status, source, 1, startTime, endTime);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }
