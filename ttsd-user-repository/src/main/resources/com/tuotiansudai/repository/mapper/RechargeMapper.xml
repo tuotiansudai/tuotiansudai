@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.RechargeMapper">
+
+    <resultMap id="rechargeResultMap" type="RechargeModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="amount" property="amount"/>
+        <result column="bank_code" property="bankCode"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="channel" property="channel"/>
+        <result column="fast_pay" property="fastPay"/>
+        <result column="public_pay" property="publicPay"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <resultMap id="rechargeResultView" type="BankRechargePaginationView">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="status" property="status"/>
+        <result column="source" property="source"/>
+        <result column="channel" property="channel"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="is_staff" property="isStaff"/>
+    </resultMap>
+
+    <insert id="create" parameterType="RechargeModel">
+        insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time, updated_time)
+        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime}, now())
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="rechargeResultMap">
+        select * from recharge where id = #{id}
+    </select>
+
+    <update id="updateStatus" parameterType="map">
+        update recharge set status = #{status}, updated_time = now() where id = #{id}
+    </update>
+
+    <select id="findSumSuccessRechargeByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName} and bank_code != 'ADMIN'
+    </select>
+
+    <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultView">
+        select r.*, u.user_name, u.mobile,
+        IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role in ('SD_STAFF',
+        'ZC_STAFF')),0) as is_staff
+        from recharge r
+        JOIN `user` u on r.login_name = u.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and u.mobile = #{mobile}
+        </if>
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                r.id = #{rechargeId}
+            </if>
+            <if test="startTime !=null">
+                and r.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and r.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and r.status = #{status}
+            </if>
+            <if test="source !=null">
+                and r.source = #{source}
+            </if>
+            <if test="channel !=null and channel != ''">
+                and r.channel = #{channel}
+            </if>
+        </where>
+        order by r.created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findRechargeCount" parameterType="map" resultType="int">
+        select count(1) from recharge join user on recharge.login_name = user.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and user.mobile = #{mobile}
+        </if>
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                recharge.id = #{rechargeId}
+            </if>
+            <if test="startTime !=null">
+                and recharge.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and recharge.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and recharge.status = #{status}
+            </if>
+            <if test="source !=null">
+                and recharge.source = #{source}
+            </if>
+            <if test="channel !=null and channel != ''">
+                and recharge.channel = #{channel}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findSumRechargeAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(re.amount),0) as amount from recharge re join user u on re.login_name = u.login_name
+        <if test="mobile !=null and mobile != '' ">
+            and u.mobile = #{mobile}
+        </if>
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                re.id = #{rechargeId}
+            </if>
+            <if test="startTime !=null">
+                and re.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and re.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and re.status = #{status}
+            </if>
+            <if test="source !=null">
+                and re.source = #{source}
+            </if>
+            <if test="channel !=null and channel != ''">
+                and re.channel = #{channel}
+            </if>
+        </where>
+    </select>
+
+</mapper>

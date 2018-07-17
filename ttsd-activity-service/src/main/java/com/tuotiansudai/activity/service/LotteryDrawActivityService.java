@@ -12,10 +12,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.enums.BankRechargeStatus;
-import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
-import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
@@ -338,7 +335,7 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
+                    if (rechargeMapper.findRechargeCount(Role.BANK_INVESTOR,null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
                         time++;
                     }
                     break;

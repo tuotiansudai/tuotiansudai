@@ -189,11 +189,16 @@ public class ConsoleUserService {
         return userMapperConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
-    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(Role role, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserView> userViews = userMapperConsole.findUsersAccountBalance(mobile, balance.get(0), balance.get(1),
-                index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
-
+        List<UserView> userViews = null;
+        if (role == Role.INVESTOR) {
+            userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
+                    index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
+        } else {
+            userViews = userMapperConsole.findUsersAccountBalance(role, mobile, balance.get(0), balance.get(1),
+                    index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
+        }
         List<UserItemDataDto> userItemDataDtoList = Lists.newArrayList();
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
@@ -202,14 +207,20 @@ public class ConsoleUserService {
         return userItemDataDtoList;
     }
 
-    public long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceCount(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapperConsole.findUsersAccountBalanceCount(mobile, balance.get(0), balance.get(1));
+        if (role == Role.INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
+        }
+        return userMapperConsole.findUsersAccountBalanceCount(role, mobile, balance.get(0), balance.get(1));
     }
 
-    public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapperConsole.findUsersAccountBalanceSum(mobile, balance.get(0), balance.get(1));
+        if (role == Role.INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
+        }
+        return userMapperConsole.findUsersAccountBalanceSum(role, mobile, balance.get(0), balance.get(1));
     }
 
 
