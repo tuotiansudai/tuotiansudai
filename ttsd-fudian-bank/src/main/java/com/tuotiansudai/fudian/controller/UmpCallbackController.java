@@ -16,9 +16,9 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/ump/callback")
-public class UmpPayCallbackController {
+public class UmpCallbackController {
 
-    static Logger logger = Logger.getLogger(UmpPayCallbackController.class);
+    static Logger logger = Logger.getLogger(UmpCallbackController.class);
 
     private final UmpRechargeService umpRechargeService;
 
@@ -42,11 +42,11 @@ public class UmpPayCallbackController {
 
 
     @Autowired
-    public UmpPayCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
-                                    UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
-                                    UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
-                                    UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                    UmpExperienceRepayService umpExperienceRepayService, UmpInvestRepayFeeService umpInvestRepayFeeService){
+    public UmpCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
+                                 UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
+                                 UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
+                                 UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
+                                 UmpExperienceRepayService umpExperienceRepayService, UmpInvestRepayFeeService umpInvestRepayFeeService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
