@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

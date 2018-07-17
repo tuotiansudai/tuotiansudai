@@ -15,7 +15,7 @@
         </div>
         <div class="btns">
             <a class="btn-recharge btn-list" href="/recharge">充值</a>
-            <a class="btn-invest btn-list" href="/loan-list">投资</a>
+            <a class="btn-invest btn-list" href="/loan-list" <@global.role hasRole="'LOANER'">style="display: none"</@global.role>>投资</a>
             <a id="cashMoneyBtn" class="btn-withdraw btn-list" href="javascript:;">提现</a>
         </div>
     </div>

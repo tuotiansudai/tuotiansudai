@@ -25,7 +25,7 @@
                     <em class="info">出借人 （如果需要借款，请切换为借款人）</em>
                 </@global.role>
                 <@global.role hasRole="'LOANER'">
-                    <em class="info">借款人 （如果需要出借，请切换为出借人）</em>
+                    <em class="info">借款人 （如果需要投资，请切换为出借人）</em>
                 </@global.role>
                 <span class="binding-set "><i class="fa fa-user-circle ok" aria-hidden="true"></i>
                 <@global.role hasRole="'INVESTOR'">
@@ -108,29 +108,29 @@
                 </form>
             </li>
         </#if>
-        <@global.role hasRole="'INVESTOR'">
-            <li><span class="info-title"> 免密投资</span>
-                <#if autoInvest>
-                    <em class="info">您已开启免密投资，投资快人一步</em>
-                    <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest"
-                                                               href="javascript:void(0);">关闭</a>
-                </span>
-                <#elseif authorization>
-                    <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
-                    <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest"
-                                                               href="javascript:void(0);">开启</a>
-                </span>
-                <#else>
-                    <em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>
-                    <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest"
-                                                               href="javascript:void(0);">开启</a>
-                </span>
-                </#if>
-            </li>
-        </@global.role>
+        <#--<@global.role hasRole="'INVESTOR'">-->
+            <#--<li><span class="info-title"> 免密投资</span>-->
+                <#--<#if autoInvest>-->
+                    <#--<em class="info">您已开启免密投资，投资快人一步</em>-->
+                    <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest"-->
+                                                               <#--href="javascript:void(0);">关闭</a>-->
+                <#--</span>-->
+                <#--<#elseif authorization>-->
+                    <#--<em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>-->
+                    <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest"-->
+                                                               <#--href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+                <#--<#else>-->
+                    <#--<em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>-->
+                    <#--<span class="binding-set">-->
+                    <#--<i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest"-->
+                                                               <#--href="javascript:void(0);">开启</a>-->
+                <#--</span>-->
+                <#--</#if>-->
+            <#--</li>-->
+        <#--</@global.role>-->
         <li>
             <span class="info-title">投资偏好</span>
             <#if estimate??>
@@ -285,7 +285,7 @@
 <#--切换为借款人 -->
 <div id="turnToLoanerDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
     <div class="tc text-m">是否切换为借款人身份？</div>
-    <form action="/account/switch" method="post">
+    <form action="/account/switch?redirect=/personal-info" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn btn-cancel btn-close" type="button">取消</button>
@@ -296,7 +296,7 @@
 <#--切换为出借人 -->
 <div id="turnInvestorDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
     <div class="tc text-m">是否切换为出借人身份？</div>
-    <form action="/account/switch" method="post">
+    <form action="/account/switch?redirect=/personal-info" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn btn-cancel btn-close" type="button">取消</button>

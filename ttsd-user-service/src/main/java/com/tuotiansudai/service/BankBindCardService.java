@@ -76,7 +76,11 @@ public class BankBindCardService {
         }
 
         UserBankCardModel model = new UserBankCardModel(bankBindCardMessage.getLoginName(), bankBindCardMessage.getBank(), bankBindCardMessage.getBankCode(), bankBindCardMessage.getCardNumber(), bankBindCardMessage.getBankOrderNo(), bankBindCardMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
-        userBankCardMapper.createInvestor(model);
+        if (bankBindCardMessage.isInvestor()){
+            userBankCardMapper.createInvestor(model);
+        }else {
+            userBankCardMapper.createLoaner(model);
+        }
     }
 
     public BankAsyncMessage unbind(String loginName, Source source, String ip, String deviceId, Role role) {
@@ -99,9 +103,9 @@ public class BankBindCardService {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
 
         if (role == Role.LOANER){
-            return bankWrapperClient.loanerUnbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+            return bankWrapperClient.loanerUnbindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }else{
-            return bankWrapperClient.investorUnbindBankCard(Source.WEB, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+            return bankWrapperClient.investorUnbindBankCard(source, loginName, userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }
     }
 

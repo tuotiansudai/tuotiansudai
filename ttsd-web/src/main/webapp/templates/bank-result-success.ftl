@@ -8,7 +8,7 @@
             <#if isInProgress>
                 业务正在处理中，请稍后查询。
             <#else>
-            ${bankCallbackType.getTitle()}
+            ${bankCallbackType.getTitle()}成功
             </#if>
         </p>
     <#--实名认证成功-->
@@ -20,7 +20,7 @@
     <#--充值成功-->
         <#if bankCallbackType == 'RECHARGE'>
             <div class="handle_btn_container">
-                <div class="go_to_invest investBtn">去投资</div>
+                <div class="see_my_account">查看我的账户</div>
             </div>
         </#if>
     <#--授权成功-->

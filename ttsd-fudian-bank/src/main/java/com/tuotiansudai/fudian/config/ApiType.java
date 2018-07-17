@@ -35,6 +35,7 @@ public enum ApiType {
     QUERY_TRADE(new QueryTradeResponseParser(), "/query/trade", null),
     QUERY_LOG_ACCOUNT(new QueryLogAccountResponseParser(), "/query/logAccount", null),
     QUERY_LOG_LOAN_ACCOUNT(new QueryLogLoanAccountResponseParser(), "/query/logLoanAccount", null),
+    QUERY_DOWNLOAD_LOG_FILES(new QueryDownloadLogFilesResponseParser(), "/query/downloadLogFiles", null),
 
     MERCHANT_TRANSFER(new MerchantTransferResponseParser(), "/merchant/merchantTransfer", null),
 
