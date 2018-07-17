@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.*;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
@@ -25,13 +26,29 @@ public class UmpController {
 
     private final UmpLoanRepayService umpLoanRepayService;
 
+    private final UmpInvestRepayService umpInvestRepayService;
+
+    private final UmpInvestRepayFeeService umpInvestRepayFeeService;
+
+    private final UmpCouponRepayService umpCouponRepayService;
+
+    private final UmpExtraRateRepayService umpExtraRateRepayService;
+
     @Autowired
-    public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService, UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService, UmpLoanRepayService umpLoanRepayService){
+    public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
+                         UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService,
+                         UmpLoanRepayService umpLoanRepayService, UmpInvestRepayService umpInvestRepayService,
+                         UmpInvestRepayFeeService umpInvestRepayFeeService, UmpCouponRepayService umpCouponRepayService,
+                         UmpExtraRateRepayService umpExtraRateRepayService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
+        this.umpInvestRepayService = umpInvestRepayService;
+        this.umpInvestRepayFeeService = umpInvestRepayFeeService;
+        this.umpCouponRepayService = umpCouponRepayService;
+        this.umpExtraRateRepayService = umpExtraRateRepayService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
@@ -62,6 +79,30 @@ public class UmpController {
     public ResponseEntity<UmpAsyncMessage> loanRepay(){
         ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(null, null, 0, 0, 0, false);
         return ResponseEntity.ok(generateAsyncRequestData(model));
+    }
+
+    @RequestMapping(value = "/invest-repay", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> investRepay(){
+        BankBaseMessage message = umpInvestRepayService.investRepay(0, 0, "asd", 0, false);
+        return ResponseEntity.ok(message);
+    }
+
+    @RequestMapping(value = "/invest-repay-fee", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> investRepayFee(){
+        BankBaseMessage message = umpInvestRepayFeeService.investRepayFee(0, 0, 0, true);
+        return ResponseEntity.ok(message);
+    }
+
+    @RequestMapping(value = "/coupon-repay", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> couponRepay(){
+        BankBaseMessage message = umpCouponRepayService.couponRepay(0, "", "", 0);
+        return ResponseEntity.ok(message);
+    }
+
+    @RequestMapping(value = "/extra-rate-repay", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> extraRateRepay(){
+        BankBaseMessage message = umpExtraRateRepayService.extraRateRepay(0, "", "", 0);
+        return ResponseEntity.ok(message);
     }
 
     private UmpAsyncMessage generateAsyncRequestData(BaseSyncRequestModel model) {
