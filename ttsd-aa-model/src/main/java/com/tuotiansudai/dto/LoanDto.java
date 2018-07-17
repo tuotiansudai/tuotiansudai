@@ -222,7 +222,7 @@ public class LoanDto extends BaseDataDto implements Serializable {
     /**
      *资金平台
      */
-    private Boolean isBankPlatform;//资金平台
+    private boolean isBankPlatform;//资金平台
 
     public LoanDto() {
     }

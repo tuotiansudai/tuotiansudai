@@ -35,7 +35,7 @@ public class InvestPaginationItemView implements Serializable {
     private String city;
     private String identityNumber;
     //新增资金渠道
-    private Boolean isBankPlatform;
+    private boolean isBankPlatform;
 
     public List<Role> getInvestorRoleList() {
         List<Role> roles = new ArrayList<>();
@@ -243,7 +243,7 @@ public class InvestPaginationItemView implements Serializable {
         this.identityNumber = identityNumber;
     }
 
-    public Boolean getIsBankPlatform() {
+    public boolean getIsBankPlatform() {
         return isBankPlatform;
     }
 

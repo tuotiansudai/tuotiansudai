@@ -43,7 +43,7 @@ public class LoanListDto {
 
     private boolean disableCoupon;
 
-    private Boolean isBankPlatForm;
+    private boolean isBankPlatform;
 
     public LoanListDto(){
 
@@ -67,7 +67,7 @@ public class LoanListDto {
         this.extraSource = loanDetailsModel != null ? loanDetailsModel.getExtraSource() : null;
         this.nonTransferable = loanDetailsModel !=null && loanDetailsModel.getNonTransferable();
         this.disableCoupon = loanDetailsModel !=null && loanDetailsModel.getDisableCoupon();
-        this.isBankPlatForm=loanModel.getIsBankPlatform();
+        this.isBankPlatform=loanModel.getIsBankPlatform();
     }
 
     public long getId() {
@@ -217,11 +217,11 @@ public class LoanListDto {
         return disableCoupon;
     }
 
-    public Boolean getIsBankPlatForm() {
-        return isBankPlatForm;
+    public boolean getIsBankPlatform() {
+        return isBankPlatform;
     }
 
-    public void setIsBankPlatForm(Boolean isBankPlatForm) {
-        this.isBankPlatForm = isBankPlatForm;
+    public void setIsBankPlatform(boolean isBankPlatForm) {
+        this.isBankPlatform = isBankPlatForm;
     }
 }

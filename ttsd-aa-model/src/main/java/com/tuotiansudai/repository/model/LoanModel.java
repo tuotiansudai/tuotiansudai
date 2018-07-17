@@ -113,7 +113,7 @@ public class LoanModel implements Serializable {
 
     private long unpaidAmount; // 待还总额
 
-    private Boolean isBankPlatform;//资金平台
+    private boolean isBankPlatform;//资金平台
 
     public LoanModel() {
     }
@@ -607,11 +607,11 @@ public class LoanModel implements Serializable {
         this.unpaidAmount = unpaidAmount;
     }
 
-    public Boolean getIsBankPlatform() {
+    public boolean getIsBankPlatform() {
         return isBankPlatform;
     }
 
-    public void setIsBankPlatForm(Boolean isBankPlatform) {
+    public void setIsBankPlatForm(boolean isBankPlatform) {
         this.isBankPlatform = isBankPlatform;
     }
 }

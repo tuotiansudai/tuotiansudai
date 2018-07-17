@@ -282,7 +282,7 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(String.valueOf(loanListDto.getId()));
             row.add(loanListDto.getName());
-            row.add(loanListDto.getIsBankPlatForm() == null ?"":loanListDto.getIsBankPlatForm()?"富滇银行":"联动优势");
+            row.add(loanListDto.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(loanListDto.getProductType() == null ? "" : loanListDto.getProductType().getName());
             row.add(loanListDto.getLoanerUserName());
             row.add(loanListDto.getAgentLoginName());
