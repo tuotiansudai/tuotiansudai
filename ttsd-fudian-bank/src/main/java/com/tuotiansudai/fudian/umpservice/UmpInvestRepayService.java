@@ -10,6 +10,7 @@ import com.tuotiansudai.fudian.ump.asyn.callback.RepayNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
 import com.tuotiansudai.fudian.ump.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.fudian.umpdto.UmpInvestRepayDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,17 +48,17 @@ public class UmpInvestRepayService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage investRepay(long loanId, long investRepayId, String payUserId, long amount, boolean isAdvance){
-        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(loanId),
-                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
-                payUserId,
-                String.valueOf(amount));
+    public BankBaseMessage investRepay(UmpInvestRepayDto dto){
+        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(dto.getLoanId()),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayId()), String.valueOf(new Date().getTime())),
+                dto.getPayUserId(),
+                String.valueOf(dto.getAmount()));
 
-        if (isAdvance) {
-            model = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(loanId),
-                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
-                    payUserId,
-                    String.valueOf(amount));
+        if (dto.isAdvance()) {
+            model = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(dto.getLoanId()),
+                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayId()), String.valueOf(new Date().getTime())),
+                    dto.getPayUserId(),
+                    String.valueOf(dto.getAmount()));
         }
 
         umpUtils.sign(model);

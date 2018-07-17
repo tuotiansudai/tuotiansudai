@@ -5,6 +5,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.ump.asyn.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.MerRechargePersonRequestModel;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +32,16 @@ public class UmpRechargeService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public MerRechargePersonRequestModel recharge(String loginName, String payUserId, boolean isFastPay, long rechargeId, long amount, String bankCode) {
-        MerRechargePersonRequestModel model = MerRechargePersonRequestModel.newRecharge(String.valueOf(rechargeId),
-                payUserId,
-                String.valueOf(amount),
-                bankCode);
+    public MerRechargePersonRequestModel recharge(UmpRechargeDto dto) {
+        MerRechargePersonRequestModel model = MerRechargePersonRequestModel.newRecharge(String.valueOf(dto.getRechargeId()),
+                dto.getPayUserId(),
+                String.valueOf(dto.getAmount()),
+                dto.getBankCode());
 
-        if (isFastPay) {
-            model = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(rechargeId),
-                    payUserId,
-                    String.valueOf(amount));
+        if (dto.isFastPay()) {
+            model = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(dto.getRechargeId()),
+                    dto.getPayUserId(),
+                    String.valueOf(dto.getAmount()));
         }
 
         umpUtils.sign(model);

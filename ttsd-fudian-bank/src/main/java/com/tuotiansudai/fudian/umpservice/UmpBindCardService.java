@@ -6,6 +6,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.ump.asyn.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.PtpMerBindCardRequestModel;
+import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +33,13 @@ public class UmpBindCardService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public PtpMerBindCardRequestModel bindCard(String loginName, long bankCardModelId, String payUserId, String cardNumber, String userName, String identityNumber, boolean isFastPay) {
-        PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModelId),
-                cardNumber,
-                payUserId,
-                userName,
-                identityNumber,
-                isFastPay);
+    public PtpMerBindCardRequestModel bindCard(UmpBindCardDto dto) {
+        PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(dto.getBankCardModelId()),
+                dto.getCardNumber(),
+                dto.getPayUserId(),
+                dto.getUserName(),
+                dto.getIdentityNumber(),
+                dto.isFastPay());
 
         umpUtils.sign(requestModel);
 

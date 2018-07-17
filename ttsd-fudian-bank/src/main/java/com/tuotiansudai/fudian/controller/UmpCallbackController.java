@@ -38,7 +38,7 @@ public class UmpCallbackController {
 
     private final UmpExperienceRepayService umpExperienceRepayService;
 
-    private final UmpInvestRepayFeeService umpInvestRepayFeeService;
+    private final UmpLoanRepayFeeService umpLoanRepayFeeService;
 
 
     @Autowired
@@ -46,7 +46,7 @@ public class UmpCallbackController {
                                  UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
                                  UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
                                  UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                 UmpExperienceRepayService umpExperienceRepayService, UmpInvestRepayFeeService umpInvestRepayFeeService){
+                                 UmpExperienceRepayService umpExperienceRepayService, UmpLoanRepayFeeService umpLoanRepayFeeService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
@@ -56,7 +56,7 @@ public class UmpCallbackController {
         this.umpCouponRepayService = umpCouponRepayService;
         this.umpExtraRateRepayService = umpExtraRateRepayService;
         this.umpExperienceRepayService = umpExperienceRepayService;
-        this.umpInvestRepayFeeService = umpInvestRepayFeeService;
+        this.umpLoanRepayFeeService = umpLoanRepayFeeService;
     }
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
@@ -133,14 +133,14 @@ public class UmpCallbackController {
     @RequestMapping(value = "/normal_repay_invest_fee_notify", method = RequestMethod.GET)
     public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        String responseData = umpLoanRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
     @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)
     public ModelAndView advanceRepayInvestFeeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        String responseData = umpLoanRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

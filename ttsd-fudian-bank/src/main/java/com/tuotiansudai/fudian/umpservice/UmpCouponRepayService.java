@@ -10,6 +10,7 @@ import com.tuotiansudai.fudian.ump.asyn.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
 import com.tuotiansudai.fudian.ump.asyn.request.TransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferResponseModel;
+import com.tuotiansudai.fudian.umpdto.UmpCouponRepayDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +48,12 @@ public class UmpCouponRepayService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage couponRepay(long couponModelId, String payUserId, String payAccountId, long amount){
+    public BankBaseMessage couponRepay(UmpCouponRepayDto dto){
         TransferRequestModel model = TransferRequestModel.newCouponRepayRequest(
-                MessageFormat.format(COUPON_ORDER_ID_TEMPLATE,String.valueOf(couponModelId), String.valueOf(new Date().getTime())),
-                payUserId,
-                payAccountId,
-                String.valueOf(amount));
+                MessageFormat.format(COUPON_ORDER_ID_TEMPLATE,String.valueOf(dto.getCouponModelId()), String.valueOf(new Date().getTime())),
+                dto.getPayUserId(),
+                dto.getPayAccountId(),
+                String.valueOf(dto.getAmount()));
 
         umpUtils.sign(model);
 
