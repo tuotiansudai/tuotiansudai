@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.enums.WithdrawStatus;
-import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
 
@@ -35,7 +34,6 @@ public class WithdrawModel {
 
     private String userName;
 
-    private BankCardModel bankCard;
 
     public WithdrawModel() {
     }
@@ -145,11 +143,5 @@ public class WithdrawModel {
         this.userName = userName;
     }
 
-    public BankCardModel getBankCard() {
-        return bankCard;
-    }
 
-    public void setBankCard(BankCardModel bankCard) {
-        this.bankCard = bankCard;
-    }
 }

@@ -5,27 +5,18 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.WithdrawMapper">
 
     <resultMap id="withdrawResultMap" type="WithdrawModel">
-        <id column="withdraw_id" property="id"></id>
-        <result column="withdraw_bank_card_id" property="bankCardId"></result>
-        <result column="withdraw_login_name" property="loginName"></result>
-        <result column="withdraw_amount" property="amount"></result>
-        <result column="withdraw_fee" property="fee"></result>
-        <result column="withdraw_apply_notify_message" property="applyNotifyMessage"></result>
-        <result column="withdraw_apply_notify_time" property="applyNotifyTime"></result>
-        <result column="withdraw_notify_message" property="notifyMessage"></result>
-        <result column="withdraw_notify_time" property="notifyTime"></result>
-        <result column="withdraw_status" property="status"></result>
-        <result column="withdraw_source" property="source"></result>
-        <result column="withdraw_created_time" property="createdTime"></result>
-        <association property="bankCard" javaType="BankCardModel">
-            <id column="bank_card_id" property="id"></id>
-            <result column="bank_card_bank_code" property="bankCode"></result>
-            <result column="bank_card_card_number" property="cardNumber"></result>
-            <result column="bank_card_created_time" property="createdTime"></result>
-            <result column="bank_card_status" property="status"></result>
-            <result column="bank_card_login_name" property="loginName"></result>
-            <result column="bank_card_is_fast_pay_on" property="isFastPayOn"></result>
-        </association>
+        <id column="id" property="id"></id>
+        <result column="bank_card_id" property="bankCardId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="amount" property="amount"></result>
+        <result column="fee" property="fee"></result>
+        <result column="apply_notify_message" property="applyNotifyMessage"></result>
+        <result column="apply_notify_time" property="applyNotifyTime"></result>
+        <result column="notify_message" property="notifyMessage"></result>
+        <result column="notify_time" property="notifyTime"></result>
+        <result column="status" property="status"></result>
+        <result column="source" property="source"></result>
+        <result column="created_time" property="createdTime"></result>
     </resultMap>
 
 
@@ -86,10 +77,6 @@
         </set>
         where id = #{id}
     </update>
-
-    <select id="findSumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
-        select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
-    </select>
 
     <select id="findWithdrawPagination" parameterType="map" resultMap="bankWithdrawViewResultMap">
         select <include refid="columns"></include>,
