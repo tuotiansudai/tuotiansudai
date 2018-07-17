@@ -18,19 +18,7 @@
     <div class="info-container">
         <div class="status-container">
             <div class="icon-status icon-failure"></div>
-        <#if bankCallbackType == 'REGISTER'>
-            <p class="desc">实名认证失败</p>
-        </#if>
-        <#if bankCallbackType == 'CARD_BIND'>
-            <p class="desc">绑卡失败</p>
-        </#if>
-        <#--申请提现失败-->
-        <#if bankCallbackType == 'WITHDRAW'>
-            <p class="desc">申请提现</p>
-        </#if>
-        <#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
-            <p class="desc">投资失败</p>
-        </#if>
+            <p class="desc">${bankCallbackType.getTitle()}失败</p>
             <p class="reason-error">${message!('业务处理失败')}</p>
         </div>
 

@@ -20,7 +20,7 @@
                 <#if isInProgress>
                 业务正在处理中，请稍后查询。
                 <#else>
-                ${bankCallbackType.getTitle()}
+                ${bankCallbackType.getTitle()}成功
                 </#if>
             </p>
         </div>
