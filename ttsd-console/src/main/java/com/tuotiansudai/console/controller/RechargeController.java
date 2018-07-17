@@ -35,19 +35,16 @@ public class RechargeController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                         @RequestParam(value = "status", required = false) BankRechargeStatus status,
                                         @RequestParam(value = "source", required = false) Source source,
-                                        @RequestParam(value = "channel", required = false) String channel,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/recharge");
         BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> baseDto = consoleRechargeService.findRechargePagination(role, rechargeId, mobile, source,
-                status, channel, index, pageSize, startTime, endTime);
-        List<String> channelList = consoleRechargeService.findAllChannel();
-        long sumAmount = consoleRechargeService.findSumRechargeAmount(role, rechargeId, mobile, source, status, channel, startTime, endTime);
+                status, null, index, pageSize, startTime, endTime);
+        long sumAmount = consoleRechargeService.findSumRechargeAmount(role, rechargeId, mobile, source, status, null, startTime, endTime);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(BankRechargeStatus.values()));
         modelAndView.addObject("rechargeSourceList", Lists.newArrayList(Source.values()));
-        modelAndView.addObject("rechargeChannelList", channelList);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("rechargeId", rechargeId);
@@ -56,7 +53,6 @@ public class RechargeController {
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("source", source);
         modelAndView.addObject("status", status);
-        modelAndView.addObject("channel", channel);
         if (status != null) {
             modelAndView.addObject("rechargeStatus", status);
         }

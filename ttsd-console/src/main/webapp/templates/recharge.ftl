@@ -64,17 +64,6 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="control-label">渠道</label>
-                <select class="selectpicker" name="channel">
-                    <option value="">全部</option>
-                    <#list rechargeChannelList as channelItem>
-                        <option value="${channelItem!}"
-                                <#if channel?has_content && channel == channelItem>selected</#if>
-                                >${channelItem}</option>
-                    </#list>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="control-label">充值来源</label>
                 <select class="selectpicker" name="source">
                     <option value="">全部</option>
@@ -149,7 +138,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?accountType=${accountType!}&rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&channel=${channel!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
+                    <a href="?accountType=${accountType!}&rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -160,7 +149,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?accountType=${accountType!}&rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&channel=${channel!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
+                    <a href="?accountType=${accountType!}&rechargeId=${rechargeId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

@@ -25,7 +25,7 @@ public interface BankRechargeMapper {
     int sumRechargeSuccessAmountByLoginNameAndRole(@Param(value = "loginName") String loginName,
                                                    @Param(value = "roleType") Role roleType);
 
-    List<BankRechargePaginationView> findRechargePagination(@Param(value = "role")Role role,
+    List<BankRechargePaginationView> findRechargePagination(@Param(value = "role") Role role,
                                                             @Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,
                                                             @Param(value = "source") Source source,
@@ -37,7 +37,7 @@ public interface BankRechargeMapper {
                                                             @Param(value = "endTime") Date endTime);
 
 
-    long findSumRechargeAmount(@Param(value = "role")Role role,
+    long findSumRechargeAmount(@Param(value = "role") Role role,
                                @Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
@@ -46,7 +46,7 @@ public interface BankRechargeMapper {
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
-    int findRechargeCount(@Param(value = "role")Role role,
+    int findRechargeCount(@Param(value = "role") Role role,
                           @Param(value = "rechargeId") String rechargeId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "source") Source source,
@@ -54,7 +54,5 @@ public interface BankRechargeMapper {
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
-
-    List<String> findAllChannels();
 
 }

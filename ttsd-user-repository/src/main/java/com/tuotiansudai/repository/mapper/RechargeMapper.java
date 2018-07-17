@@ -50,5 +50,4 @@ public interface RechargeMapper {
 
     long findSumSuccessRechargeByLoginName(String loginName);
 
-    List<String> findAllChannels();
 }

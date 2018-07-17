@@ -27,9 +27,6 @@ public class ConsoleRechargeService {
     @Autowired
     private RechargeMapper rechargeMapper;
 
-    public List<String> findAllChannel() {
-        return bankRechargeMapper.findAllChannels().stream().filter(item -> !StringUtils.isEmpty(item)).distinct().collect(Collectors.toList());
-    }
 
     public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(Role role, String rechargeId, String mobile, Source source,
                                                                                                 BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
@@ -71,7 +68,7 @@ public class ConsoleRechargeService {
             String channel,
             Date startTime,
             Date endTime) {
-        if (role  == Role.INVESTOR) {
+        if (role == Role.INVESTOR) {
             return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
         } else {
             return bankRechargeMapper.findSumRechargeAmount(role, rechargeId, mobile, source, status, channel, startTime, endTime);

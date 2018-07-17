@@ -82,10 +82,6 @@
         </where>
     </select>
 
-    <select id="findAllChannels" resultType="java.lang.String">
-        select distinct channel from bank_recharge UNION  all select distinct channel from recharge;
-    </select>
-
     <select id="findSumRechargeAmount" parameterType="map" resultType="long">
         select IFNULL(sum(re.amount),0) as amount from bank_recharge re join user u on re.login_name = u.login_name
         <if test="mobile !=null and mobile != '' ">
