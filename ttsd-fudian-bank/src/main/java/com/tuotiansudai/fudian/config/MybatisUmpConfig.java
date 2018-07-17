@@ -17,21 +17,21 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.tuotiansudai.fudian.mapper.ump", sqlSessionTemplateRef = "umpSqlSessionTemplate")
 public class MybatisUmpConfig {
 
-    @Bean(name = "umpDatasource")
+    @Bean(name = "umpDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.ump")
-    public DataSource fudianDatasource(){
+    public DataSource umpDataSource(){
         return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "umpSqlSessionFactory")
-    public SqlSessionFactory umpSqlSessionFactory(@Qualifier("umpDatasource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory umpSqlSessionFactory(@Qualifier("umpDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         return bean.getObject();
     }
 
     @Bean(name = "umpTransactionManager")
-    public DataSourceTransactionManager umpTransactionManager(@Qualifier("umpDatasource") DataSource dataSource) {
+    public DataSourceTransactionManager umpTransactionManager(@Qualifier("umpDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 

@@ -19,15 +19,15 @@ import javax.sql.DataSource;
 public class MybatisFudianConfig {
 
     @Primary
-    @Bean(name = "fudianDatasource")
+    @Bean(name = "fudianDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.fudian")
-    public DataSource fudianDatasource(){
+    public DataSource fudianDataSource(){
         return DataSourceBuilder.create().build();
     }
 
     @Primary
     @Bean(name = "fudianSqlSessionFactory")
-    public SqlSessionFactory fudianSqlSessionFactory(@Qualifier("fudianDatasource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory fudianSqlSessionFactory(@Qualifier("fudianDataSource") DataSource dataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         return bean.getObject();
@@ -35,7 +35,7 @@ public class MybatisFudianConfig {
 
     @Primary
     @Bean(name = "fudianTransactionManager")
-    public DataSourceTransactionManager fudianTransactionManager(@Qualifier("fudianDatasource") DataSource dataSource) {
+    public DataSourceTransactionManager fudianTransactionManager(@Qualifier("fudianDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
