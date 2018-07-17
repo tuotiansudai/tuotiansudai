@@ -10,6 +10,7 @@ import com.tuotiansudai.fudian.ump.asyn.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.SyncRequestStatus;
 import com.tuotiansudai.fudian.ump.asyn.request.TransferRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferResponseModel;
+import com.tuotiansudai.fudian.umpdto.UmpExperienceRepayDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +48,12 @@ public class UmpExperienceRepayService {
     }
 
     @SuppressWarnings(value = "unchecked")
-    public BankBaseMessage experienceRepay(long investRepayModelId, String payUserId, String payAccountId, long amount){
+    public BankBaseMessage experienceRepay(UmpExperienceRepayDto dto){
         TransferRequestModel model = TransferRequestModel.experienceInterestRequest(
-                MessageFormat.format(EXPERIENCE_ORDER_ID_TEMPLATE, String.valueOf(investRepayModelId), String.valueOf(new Date().getTime())),
-                payUserId,
-                payAccountId,
-                String.valueOf(amount));
+                MessageFormat.format(EXPERIENCE_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayModelId()), String.valueOf(new Date().getTime())),
+                dto.getPayUserId(),
+                dto.getPayAccountId(),
+                String.valueOf(dto.getAmount()));
 
         umpUtils.sign(model);
 

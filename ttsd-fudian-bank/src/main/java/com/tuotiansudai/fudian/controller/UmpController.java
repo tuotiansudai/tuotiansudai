@@ -28,15 +28,18 @@ public class UmpController {
 
     private final UmpLoanRepayService umpLoanRepayService;
 
+    private final UmpExperienceRepayService umpExperienceRepayService;
+
     @Autowired
     public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
                          UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService,
-                         UmpLoanRepayService umpLoanRepayService){
+                         UmpLoanRepayService umpLoanRepayService, UmpExperienceRepayService umpExperienceRepayService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
+        this.umpExperienceRepayService = umpExperienceRepayService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
@@ -67,6 +70,12 @@ public class UmpController {
     public ResponseEntity<UmpAsyncMessage> loanRepay(@RequestBody UmpLoanRepayDto dto){
         ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
+    }
+
+    @RequestMapping(value = "/experience-repay", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> experienceRepay(@RequestBody UmpExperienceRepayDto dto){
+        BankBaseMessage message = umpExperienceRepayService.experienceRepay(dto);
+        return ResponseEntity.ok(message);
     }
 
     private UmpAsyncMessage generateAsyncRequestData(BaseSyncRequestModel model) {
