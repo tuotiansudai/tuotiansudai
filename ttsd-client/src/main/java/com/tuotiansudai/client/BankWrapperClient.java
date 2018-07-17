@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BankWrapperClient {
@@ -424,5 +425,22 @@ public class BankWrapperClient {
 
     public UmpAsyncMessage umpWithdraw() {
         return umpAsyncExecute("/ump/withdraw", null);
+    }
+
+    public Boolean isUmpCallbackSuccess(Map<String, String> params) {
+        String content = gson.toJson(params);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + "/ump/callback/validate-front-callback")
+                    .post(requestBody)
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+            return response.code() == HttpStatus.OK.value();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

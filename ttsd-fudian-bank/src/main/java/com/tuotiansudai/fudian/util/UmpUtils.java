@@ -71,7 +71,7 @@ public class UmpUtils {
         return null;
     }
 
-    private BaseCallbackRequestModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseCallbackRequestModel> model) throws VerifyException, IOException {
+    public BaseCallbackRequestModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseCallbackRequestModel> model) throws VerifyException, IOException {
         Map<String, String> platNotifyData = this.getPlatNotifyData(paramsMap);
         Map<String, String> newPlatNotifyData = Maps.newHashMap();
         for (String key : platNotifyData.keySet()) {
