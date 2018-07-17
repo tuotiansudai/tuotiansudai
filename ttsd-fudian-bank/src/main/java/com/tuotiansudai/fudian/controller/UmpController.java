@@ -65,13 +65,13 @@ public class UmpController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> recharge(){
-        MerRechargePersonRequestModel model = umpRechargeService.recharge("asdd", "asdasd", false, 123, 100, "ICBC");
+        MerRechargePersonRequestModel model = umpRechargeService.recharge("sidneygao", "UB201504161125550000000003661819", true, 1231239, 1, "ICBC");
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> withdraw(){
-        CustWithdrawalsRequestModel model = umpWithdrawService.withdraw(null, null, 0, 0);
+        CustWithdrawalsRequestModel model = umpWithdrawService.withdraw("sidneygao", "UB201710111613550000000022517516", 12312312, 100);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 

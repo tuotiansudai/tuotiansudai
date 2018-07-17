@@ -28,6 +28,8 @@ spring:
         max-wait: 3s
         min-idle: 10
         max-idle: 15
+  freemarker:
+    template-loader-path: classpath:/templates
 
 bank:
   merchant: M02608959047521001

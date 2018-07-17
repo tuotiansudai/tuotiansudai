@@ -417,4 +417,12 @@ public class BankWrapperClient {
 
         return new UmpAsyncMessage();
     }
+
+    public UmpAsyncMessage umpRecharge() {
+        return umpAsyncExecute("/ump/recharge", null);
+    }
+
+    public UmpAsyncMessage umpWithdraw() {
+        return umpAsyncExecute("/ump/withdraw", null);
+    }
 }
