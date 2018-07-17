@@ -2,6 +2,7 @@ package com.tuotiansudai.point.service.impl;
 
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
@@ -77,7 +78,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     @Transactional(transactionManager = "aaTransactionManager")
     public SignInPointDto signIn(String loginName) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (null == bankAccountModel) {
             return null;
         }

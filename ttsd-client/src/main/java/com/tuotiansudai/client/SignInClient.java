@@ -191,7 +191,7 @@ public class SignInClient {
 
         Request.Builder request = new Request.Builder()
                 .url(MessageFormat.format("{0}/switch/role/{1}/session/{2}", SIGN_IN_SERVICE, role.name().toLowerCase(), token))
-                .post(null);
+                .post(RequestBody.create(null, new byte[]{}));
         try {
             return objectMapper.readValue(execute(request).body().string(), SignInResult.class);
         } catch (IOException e) {

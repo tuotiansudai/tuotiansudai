@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.UserBillPaginationItemDataDto;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.service.UserBillService;
@@ -30,7 +31,7 @@ public class UserBillServiceImpl implements UserBillService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getUserBillData(String loginName, int index, int pageSize, Date startTime, Date endTime, List<BankUserBillBusinessType> businessTypes) {
+    public BaseDto<BasePaginationDataDto> getUserBillData(String loginName, int index, int pageSize, Date startTime, Date endTime, List<BankUserBillBusinessType> businessTypes, Role role) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -43,9 +44,9 @@ public class UserBillServiceImpl implements UserBillService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        List<BankUserBillModel> userBillModels = bankUserBillMapper.findBills(loginName, null, businessTypes, null, startTime, endTime, (index - 1) * pageSize, pageSize);
+        List<BankUserBillModel> userBillModels = bankUserBillMapper.findUserBills(loginName, null, businessTypes, null, startTime, endTime, (index - 1) * pageSize, pageSize, role);
 
-        long count = bankUserBillMapper.countBills(loginName, null, businessTypes, null, startTime, endTime);
+        long count = bankUserBillMapper.countBills(loginName, null, businessTypes, null, startTime, endTime, role);
 
         List<UserBillPaginationItemDataDto> records = userBillModels.stream().map(UserBillPaginationItemDataDto::new).collect(Collectors.toList());
         BasePaginationDataDto<UserBillPaginationItemDataDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);

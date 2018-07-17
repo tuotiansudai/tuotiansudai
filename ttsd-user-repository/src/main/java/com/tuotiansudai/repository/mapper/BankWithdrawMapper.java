@@ -23,30 +23,34 @@ public interface BankWithdrawMapper {
     void update(BankWithdrawModel bankWithdrawModel);
 
     long sumSuccessWithdrawByLoginNameAndRole(@Param(value = "loginName") String loginName,
-                                              @Param(value = "roleType") String roleType);
+                                              @Param(value = "roleType") Role roleType);
 
-    long sumWithdrawAmount(@Param(value = "withdrawId") Long withdrawId,
+    long sumWithdrawAmount(@Param(value = "role") Role role,
+                           @Param(value = "withdrawId") Long withdrawId,
                            @Param(value = "mobile") String mobile,
                            @Param(value = "status") WithdrawStatus status,
                            @Param(value = "source") Source source,
                            @Param(value = "startTime") Date startTime,
                            @Param(value = "endTime") Date endTime);
 
-    long sumWithdrawFee(@Param(value = "withdrawId") Long withdrawId,
+    long sumWithdrawFee(@Param(value = "role") Role role,
+                        @Param(value = "withdrawId") Long withdrawId,
                         @Param(value = "mobile") String mobile,
                         @Param(value = "status") WithdrawStatus status,
                         @Param(value = "source") Source source,
                         @Param(value = "startTime") Date startTime,
                         @Param(value = "endTime") Date endTime);
 
-    int findWithdrawCount(@Param(value = "withdrawId") Long withdrawId,
+    int findWithdrawCount(@Param(value = "role") Role role,
+                          @Param(value = "withdrawId") Long withdrawId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "source") Source source,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
 
-    List<WithdrawPaginationView> findWithdrawPagination(@Param(value = "withdrawId") Long withdrawId,
+    List<WithdrawPaginationView> findWithdrawPagination(@Param(value = "role") Role role,
+                                                        @Param(value = "withdrawId") Long withdrawId,
                                                         @Param(value = "mobile") String mobile,
                                                         @Param(value = "status") WithdrawStatus status,
                                                         @Param(value = "source") Source source,

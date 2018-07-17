@@ -8,6 +8,7 @@ import com.tuotiansudai.api.service.v1_0.MobileAppUserBillListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
@@ -47,9 +48,9 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
         UserBillCategory userBillCategory = userBillDetailListRequestDto.getUserBillCategory();
         BankUserBillOperationType operationType = userBillCategory != null ? OPERATION_TYPE.get(userBillCategory) : null;
 
-        List<BankUserBillModel> userBillModels = bankUserBillMapper.findBills(loginName, null, null, operationType, null, null, (index - 1) * pageSize, pageSize);
+        List<BankUserBillModel> userBillModels = bankUserBillMapper.findUserBills(loginName, null, null, operationType, null, null, (index - 1) * pageSize, pageSize, Role.INVESTOR);
 
-        long count = bankUserBillMapper.countBills(loginName, null, null, operationType, null, null);
+        long count = bankUserBillMapper.countBills(loginName, null, null, operationType, null, null, Role.INVESTOR);
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

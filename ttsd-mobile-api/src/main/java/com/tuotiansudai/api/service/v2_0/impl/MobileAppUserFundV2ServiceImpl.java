@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.UserFundResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppUserFundV2Service;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
@@ -47,9 +48,9 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
 
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
-        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName, Role.INVESTOR);
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
 
         MembershipModel evaluate = userMembershipEvaluator.evaluate(loginName);
 

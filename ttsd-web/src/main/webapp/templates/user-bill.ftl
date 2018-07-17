@@ -15,7 +15,7 @@
         </div>
         <div class="btns">
             <a class="btn-recharge btn-list" href="/recharge">充值</a>
-            <a class="btn-invest btn-list" href="/loan-list">投资</a>
+            <a class="btn-invest btn-list" href="/loan-list" <@global.role hasRole="'LOANER'">style="display: none"</@global.role>>投资</a>
             <a id="cashMoneyBtn" class="btn-withdraw btn-list" href="javascript:;">提现</a>
         </div>
     </div>
@@ -35,8 +35,14 @@
         <span class="select-item current" data-status="">全部</span>
         <span class="select-item" data-status="WITHDRAW_SUCCESS">提现</span>
         <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
-        <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
-        <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
+        <@global.role hasRole="'INVESTOR'">
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
+            <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
+        </@global.role>
+        <@global.role hasRole="'LOANER'">
+            <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">放款</span>
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">还款</span>
+        </@global.role>
     </div>
 
     <div class="clear-blank"></div>

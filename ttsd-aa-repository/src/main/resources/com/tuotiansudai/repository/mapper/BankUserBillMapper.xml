@@ -22,8 +22,8 @@
     </resultMap>
 
     <insert id="create" parameterType="BankUserBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_user_bill (login_name, role, amount, balance, bank_order_no, bank_order_date, operation_type, business_type)
-        value(#{loginName}, #{role}, #{amount}, #{balance}, #{bankOrderNo}, #{bankOrderDate}, #{operationType}, #{businessType})
+        insert into bank_user_bill (login_name, mobile, user_name, business_id, role, amount, balance, bank_order_no, bank_order_date, operation_type, business_type)
+        value(#{loginName}, #{mobile}, #{userName}, #{businessId}, #{role}, #{amount}, #{balance}, #{bankOrderNo}, #{bankOrderDate}, #{operationType}, #{businessType})
     </insert>
 
     <select id="countBills" parameterType="map" resultType="long">
@@ -32,11 +32,11 @@
             <if test="loginName != null">
                 AND login_name = #{loginName}
             </if>
-            <if test="mobile != null">
+            <if test="mobile != null and mobile != ''">
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">
-                business_type in
+                and business_type in
                 <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
@@ -49,6 +49,9 @@
             </if>
             <if test="endTime != null">
                 and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
             </if>
         </where>
     </select>
@@ -59,11 +62,11 @@
             <if test="loginName != null">
                 AND login_name = #{loginName}
             </if>
-            <if test="mobile != null">
+            <if test="mobile != null and mobile != ''">
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">
-                business_type in
+                and business_type in
                 <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
@@ -76,6 +79,9 @@
             </if>
             <if test="endTime != null">
                 and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
             </if>
         </where>
         order by created_time desc, id desc

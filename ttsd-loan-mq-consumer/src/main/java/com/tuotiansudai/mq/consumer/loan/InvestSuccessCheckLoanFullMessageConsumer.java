@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.BankWrapperClient;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -76,7 +77,7 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
             if (sumInvestAmount + investModel.getAmount() == loanModel.getLoanAmount()) {
                 loanMapper.updateRaisingCompleteTime(loanModel.getId());
                 UserModel agentUser = userMapper.findByLoginName(loanModel.getAgentLoginName());
-                BankAccountModel agentAccount = bankAccountMapper.findLoanerByLoginName(loanModel.getAgentLoginName());
+                BankAccountModel agentAccount = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
 
                 BankBaseMessage loanFullMessage = bankWrapperClient.loanFull(agentUser.getLoginName(),
                         agentUser.getMobile(),

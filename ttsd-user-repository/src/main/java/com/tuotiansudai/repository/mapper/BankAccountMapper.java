@@ -16,12 +16,8 @@ public interface BankAccountMapper {
 
     void update(BankAccountModel bankAccountModel);
 
-    BankAccountModel findInvestorByLoginName(String loginName);
-
-    BankAccountModel findLoanerByLoginName(String loginName);
-
     BankAccountModel findByLoginNameAndRole(@Param(value = "loginName") String loginName,
-                                            @Param(value = "roleType") String roleType);
+                                            @Param(value = "roleType") Role roleType);
 
     BankAccountModel lockInvestorByLoginName(String loginName);
 

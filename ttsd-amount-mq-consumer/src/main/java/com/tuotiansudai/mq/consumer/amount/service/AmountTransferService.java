@@ -3,6 +3,7 @@ package com.tuotiansudai.mq.consumer.amount.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
@@ -43,7 +44,7 @@ public class AmountTransferService {
         logger.info("start amount transfer messages process.");
 
         for (AmountTransferMessage message : messages) {
-            BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(message.getLoginName());
+            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(message.getLoginName(),  message.getRole());
             if (bankAccountModel == null) {
                 logger.error("user bank account is not found, user: {}", message.getLoginName());
                 continue;
@@ -52,7 +53,11 @@ public class AmountTransferService {
 
             long amount = message.getAmount() * (message.getOperationType() == BankUserBillOperationType.IN ? 1 : -1);
 
-            bankAccountMapper.updateInvestorBalance(message.getLoginName(), amount);
+            if (message.getRole() == Role.INVESTOR){
+                bankAccountMapper.updateInvestorBalance(message.getLoginName(), amount);
+            }else {
+                bankAccountMapper.updateLoanerBalance(message.getLoginName(), amount);
+            }
 
             UserModel userModel = userMapper.findByLoginName(message.getLoginName());
 

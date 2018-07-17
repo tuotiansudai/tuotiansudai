@@ -42,8 +42,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -109,10 +111,10 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(loginName);
-            if (userBankCardModel != null) {
-                editUserDto.setBankCardNumber(userBankCardModel.getCardNumber());
-            }
+            Map<Role,String> bankCardMap=consoleUserService.getUserBankCardNumberByLoginName(loginName);
+            editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
+            editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
+            editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
 
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
@@ -219,9 +221,8 @@ public class UserController {
         mv.addObject("selectedUserOperation", userOperation);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
-        List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
         List<String> channelList = consoleUserService.findAllUserChannels();
-        mv.addObject("roleStageList", roleStageList);
+        mv.addObject("roleStageList", RoleStage.values());
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("userOperations", UserOperation.values());

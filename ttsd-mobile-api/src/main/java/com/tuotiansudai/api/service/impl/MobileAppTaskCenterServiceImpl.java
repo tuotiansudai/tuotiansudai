@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.TaskCenterResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppTaskCenterService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.PointTaskDto;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -36,7 +37,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) != null) {
             data.setAdvancedTasks(pointTaskService.getAdvancedPointTasks(loginName));
         }
 
@@ -63,7 +64,7 @@ public class MobileAppTaskCenterServiceImpl implements MobileAppTaskCenterServic
             data.setNewbieTasks(newbiePointTasks);
         }
 
-        if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) != null) {
             data.setAdvancedTasks(pointTaskService.getCompletedAdvancedPointTasks(loginName));
         }
 

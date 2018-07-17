@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.SignInClient;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
@@ -50,6 +51,7 @@ public class BankRegisterMessageConsumer implements MessageConsumer {
             BankRegisterMessage bankRegisterMessage = new Gson().fromJson(message, BankRegisterMessage.class);
             bankAccountService.processBankAccount(bankRegisterMessage);
             signInClient.refreshData(bankRegisterMessage.getToken(), Source.WEB);
+            signInClient.switchRole(bankRegisterMessage.getToken(), bankRegisterMessage.isInvestor() ? Role.INVESTOR : Role.LOANER);
             mqWrapperClient.sendMessage(MessageQueue.RegisterBankAccount_CompletePointTask, message);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);

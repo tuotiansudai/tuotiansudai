@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.GivenMembershipDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.model.*;
 import com.tuotiansudai.membership.service.MembershipExperienceBillService;
@@ -57,7 +58,7 @@ public class MembershipController {
         if (loginName != null) {
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             MembershipModel nextLevelMembershipModel = membershipModel.getLevel() == 5 ? membershipModel : userMembershipService.getMembershipByLevel(membershipModel.getLevel() + 1);
-            BankAccountModel bankAccountModel = bankAccountService.findInvestorBankAccount(loginName);
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
             long membershipPoint = bankAccountModel == null ? 0 : bankAccountModel.getMembershipPoint();
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
             MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
@@ -82,7 +83,7 @@ public class MembershipController {
 
         String loginName = LoginUserInfo.getLoginName();
         if (loginName != null) {
-            BankAccountModel bankAccountModel = bankAccountService.findInvestorBankAccount(loginName);
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
             MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
             UserMembershipModel userMembershipModel = userMembershipEvaluator.evaluateUserMembership(loginName, new Date());
 

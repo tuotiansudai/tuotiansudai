@@ -58,19 +58,22 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         investDto.setSource(request.getSession().getAttribute("weChatUserOpenid") == null ? investDto.getSource() : Source.WE_CHAT);
 
+        String errorMessage = "投资失败，请联系客服";
+        String errorType = "";
+
         if (!bindingResult.hasErrors()) {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BankAsyncMessage bankAsyncData = investService.invest(investDto);
                 return new ModelAndView("/pay", "pay", bankAsyncData);
             } catch (InvestException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-                redirectAttributes.addFlashAttribute("errorType", e.getType().name());
+                errorMessage = e.getMessage();
+                errorType = e.getType().name();
             }
         }
 
-        redirectAttributes.addFlashAttribute("errorMessage", "投资失败，请联系客服");
-        redirectAttributes.addFlashAttribute("errorType", "");
+        redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        redirectAttributes.addFlashAttribute("errorType", errorType);
         redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
 
         if (Source.M.equals(investDto.getSource())) {

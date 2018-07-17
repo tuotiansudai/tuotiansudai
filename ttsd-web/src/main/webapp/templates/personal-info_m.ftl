@@ -19,7 +19,7 @@
             <label for="perCard">银行卡</label>
             <span>
                 <#if bankCard??>
-                    <input type="text" id="perCard" value="${bankName}(尾号${bankCard[(bankCard?length - 4)..]})" readonly unselectable="on" onfocus="this.blur()">
+                    <input type="text" id="perCard" value="${bankCard.cardNumber}(尾号${bankCard.cardNumber[(bankCard.cardNumber?length - 4)..]})" readonly unselectable="on" onfocus="this.blur()">
                 <#else>
                     <input type="text" id="perCardUnboundCard" <#if userName??>data-has-name="true"</#if> value="未绑卡" readonly unselectable="on" onfocus="this.blur()"><i class="iconRight"></i>
                     <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">

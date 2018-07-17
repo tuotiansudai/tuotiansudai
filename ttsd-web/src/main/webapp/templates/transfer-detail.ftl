@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR2</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
@@ -84,7 +84,7 @@
                         </#if>
                     </p>
                     <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
-                    <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
+                    <p class="user-money"><span class="name-text">账户余额<@global.role hasRole="'LOANER'">(出借人)</@global.role>：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge" <@global.role hasRole="'LOANER'">style="display: none"</@global.role> >去充值 >></a></strong></span></p>
                     <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"/>
                     <input type="hidden" id="userBalance" name="userBalance" value="${transferApplication.balance!}"/>
                     <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}"/>
@@ -246,6 +246,18 @@
     </form>
 
 </div>
+<#--切换为出借人 -->
+<div id="turnLenderDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+    <div class="tc text-m">是否切换为出借人身份？</div>
+    <form action="/account/switch?redirect=/transfer/${transferApplication.id?c}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="tc person-info-btn" style="margin-top:40px;">
+            <button class="btn  btn-cancel btn-close" type="button">取消</button>
+            <button class="btn btn-success" type="submit">确定</button>
+        </div>
+    </form>
+</div>
+
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
 </@global.main>

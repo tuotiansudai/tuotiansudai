@@ -47,11 +47,29 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
+            //增加新的参数
+            var role=$("input[name='role']:checked").val();
+            var operationTypeUMP=$('.operationTypeUMP').val();
+            var businessTypeUMP= $('.businessTypeUMP').val();
+            window.location.href = "/finance-manage/user-funds?role="+role+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&operationType=" + operationType + "&businessType=" + businessType + "&index=1&pageSize=10";
         });
 
         $('.down-load').click(function () {
             location.href = "/export/user-funds?" + $('form').serialize();
+        });
+        $("input[name='role']").click(function () {
+            var self = $(this);
+            if (self.val() == 'INVESTOR') {
+                $('.operationTypeDiv').addClass('hidden');
+                $('.businessTypeDiv').addClass('hidden');
+                $('.operationTypeUMPDiv').removeClass('hidden');
+                $('.businessTypeUMPDiv').removeClass('hidden');
+            } else {
+                $('.operationTypeDiv').removeClass('hidden');
+                $('.businessTypeDiv').removeClass('hidden');
+                $('.operationTypeUMPDiv').addClass('hidden');
+                $('.businessTypeUMPDiv').addClass('hidden');
+            }
         });
     });
 })

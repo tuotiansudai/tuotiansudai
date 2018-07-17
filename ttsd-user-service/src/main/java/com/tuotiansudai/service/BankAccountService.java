@@ -55,7 +55,7 @@ public class BankAccountService {
     }
 
     public BankAsyncMessage registerInvestorAccount(RegisterAccountDto registerAccountDto, Source source, String token, String ip, String deviceId) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(registerAccountDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(registerAccountDto.getLoginName(), Role.INVESTOR);
         if (bankAccountModel != null) {
             return new BankAsyncMessage("已实名认证");
         }
@@ -64,11 +64,11 @@ public class BankAccountService {
     }
 
     public BankAsyncMessage registerLoanerAccount(String loginName, String token, String ip, String deviceId) {
-        if (bankAccountMapper.findInvestorByLoginName(loginName) == null){
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) == null){
             return new BankAsyncMessage("未完成出借人实名认证");
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findLoanerByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER);
         if (bankAccountModel != null) {
             return new BankAsyncMessage("已实名认证");
         }
@@ -78,7 +78,7 @@ public class BankAccountService {
     }
 
     public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(loginName);
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (bankAccountModel.isAuthorization()) {
             return new BankAsyncMessage("已开通免密投资");
         }
@@ -98,7 +98,7 @@ public class BankAccountService {
     private void createInvestorBankAccount(BankRegisterMessage bankRegisterMessage) {
         String loginName = bankRegisterMessage.getLoginName();
 
-        if (bankAccountMapper.findInvestorByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) != null) {
             logger.error("investor bank account is existed, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
@@ -123,7 +123,7 @@ public class BankAccountService {
     private void createLoanerBankAccount(BankRegisterMessage bankRegisterMessage) {
         String loginName = bankRegisterMessage.getLoginName();
 
-        if (bankAccountMapper.findLoanerByLoginName(loginName) != null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER) != null) {
             logger.error("loaner bank account is existed, message:{} ", new Gson().toJson(bankRegisterMessage));
             return;
         }
@@ -144,7 +144,7 @@ public class BankAccountService {
     }
 
     public void authorizationSuccess(BankAuthorizationMessage bankAuthorizationMessage) {
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(bankAuthorizationMessage.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(bankAuthorizationMessage.getLoginName(), Role.INVESTOR);
         if (bankAccountModel == null) {
             logger.error("[MQ] investor bank account is not exist, message: {}", new Gson().toJson(bankAuthorizationMessage));
             return;
@@ -180,15 +180,7 @@ public class BankAccountService {
     }
 
     public BankAccountModel findBankAccount(String loginName, Role role) {
-        return bankAccountMapper.findByLoginNameAndRole(loginName, role.name());
-    }
-
-    public BankAccountModel findInvestorBankAccount(String loginName) {
-        return bankAccountMapper.findInvestorByLoginName(loginName);
-    }
-
-    public BankAccountModel findLoanerBankAccount(String loginName) {
-        return bankAccountMapper.findLoanerByLoginName(loginName);
+        return bankAccountMapper.findByLoginNameAndRole(loginName, role);
     }
 
     public BankAsyncMessage resetPassword(Source source, String loginName, Role role) {

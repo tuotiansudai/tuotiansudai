@@ -12,9 +12,7 @@ import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.*;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.enums.BankRechargeStatus;
-import com.tuotiansudai.enums.ExperienceBillBusinessType;
-import com.tuotiansudai.enums.ExperienceBillOperationType;
+import com.tuotiansudai.enums.*;
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipLevel;
@@ -148,7 +146,7 @@ public class LotteryDrawActivityService {
             grantExperience(userModel.getLoginName(), lotteryPrize);
         }
 
-        BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         try {
             userLotteryPrizeMapper.create(new UserLotteryPrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", lotteryPrize, DateTime.now().toDate(), activityCategory));
         } catch (Exception e) {
@@ -325,19 +323,19 @@ public class LotteryDrawActivityService {
                     }
                     break;
                 case CERTIFICATION:
-                    BankAccountModel bankAccountModel = bankAccountMapper.findInvestorByLoginName(userModel.getLoginName());
+                    BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
                     if (bankAccountModel != null && bankAccountModel.getCreatedTime().before(endTime) && bankAccountModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
                 case BANK_CARD:
-                    UserBankCardModel userBankCardModel = userBankCardMapper.findInvestorByLoginName(userModel.getLoginName());
+                    UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
                     if (userBankCardModel != null && userBankCardModel.getCreatedTime().before(endTime) && userBankCardModel.getCreatedTime().after(startTime)) {
                         time++;
                     }
                     break;
                 case RECHARGE:
-                    if (rechargeMapper.findRechargeCount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
+                    if (rechargeMapper.findRechargeCount(Role.BANK_INVESTOR,null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
                         time++;
                     }
                     break;
@@ -432,7 +430,7 @@ public class LotteryDrawActivityService {
             return steps;
         }
         steps.set(0, 2);
-        if (bankAccountMapper.findInvestorByLoginName(loginName) == null) {
+        if (bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) == null) {
             steps.set(1, 1);
             return steps;
         }
@@ -440,7 +438,7 @@ public class LotteryDrawActivityService {
         steps.set(2, 1);
         steps.set(3, 1);
         steps.set(4, 1);
-        if (userBankCardMapper.findInvestorByLoginName(loginName) != null) {
+        if (userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) != null) {
             steps.set(2, 2);
         }
         return steps;

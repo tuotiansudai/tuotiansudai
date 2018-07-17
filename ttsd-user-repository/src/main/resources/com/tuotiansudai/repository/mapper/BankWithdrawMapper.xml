@@ -8,6 +8,7 @@
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="amount" property="amount"/>
+        <result column="role_type" property="roleType"/>
         <result column="fee" property="fee"/>
         <result column="bank_order_no" property="bankOrderNo"/>
         <result column="bank_order_date" property="bankOrderDate"/>
@@ -47,7 +48,7 @@
         select * from bank_withdraw where id = #{id}
     </select>
 
-    <select id="sumSuccessWithdrawByLoginNameAndRole" parameterType="java.lang.String" resultType="long">
+    <select id="sumSuccessWithdrawByLoginNameAndRole" parameterType="map" resultType="long">
         select IFNULL(sum(amount), 0) as amount
         from bank_withdraw
         where status = 'SUCCESS' and login_name = #{loginName} and role_type = #{roleType}
@@ -76,6 +77,9 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
+            </if>
         </where>
     </select>
 
@@ -102,6 +106,9 @@
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
             </if>
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
+            </if>
         </where>
     </select>
 
@@ -126,6 +133,9 @@
             </if>
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
+            </if>
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
     </select>
@@ -156,6 +166,9 @@
             </if>
             <if test="source !=null">
                 and bank_withdraw.source = #{source}
+            </if>
+            <if test="role !=null">
+                and bank_withdraw.role_type = #{role}
             </if>
         </where>
         order by bank_withdraw.created_time desc, bank_withdraw.id asc

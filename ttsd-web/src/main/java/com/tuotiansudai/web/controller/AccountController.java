@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -67,7 +68,8 @@ public class AccountController {
 
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
-        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+        Role role = LoginUserInfo.getBankRole();
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName, role);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
 
@@ -90,7 +92,6 @@ public class AccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
-        Role role = LoginUserInfo.getBankRole();
         modelAndView.addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null);
         modelAndView.addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
 
@@ -129,7 +130,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/switch", method = RequestMethod.POST)
-    public ModelAndView switchAccount() {
+    public ModelAndView switchAccount(@RequestParam(value = "redirect", required = false) String redirect) {
         if (LoginUserInfo.getBankRole() == Role.INVESTOR) {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
         }
@@ -138,7 +139,7 @@ public class AccountController {
             signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
         }
 
-        return new ModelAndView("redirect:/account");
+        return new ModelAndView(String.format("redirect:%s", Strings.isNullOrEmpty(redirect) ? "/personal-info" : redirect));
     }
 
 }

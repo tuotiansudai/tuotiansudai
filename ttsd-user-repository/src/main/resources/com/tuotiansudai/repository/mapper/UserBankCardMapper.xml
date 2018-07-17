@@ -15,6 +15,7 @@
         <result column="bank_order_date" property="bankOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="role_type" property="roleType"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="com.tuotiansudai.repository.model.UserBankCardModel" useGeneratedKeys="true" keyProperty="id">
@@ -27,11 +28,7 @@
         value(#{loginName}, #{bank}, #{bankCode}, #{cardNumber}, #{bankOrderNo}, #{bankOrderDate}, #{status}, now(), now(),'LOANER')
     </insert>
 
-    <select id="findInvestorByLoginName" parameterType="java.lang.String" resultMap="userBankCardResultMap">
-        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = 'INVESTOR'
-    </select>
-
-    <select id="findByLoginNameAndRole" parameterType="java.lang.String" resultMap="userBankCardResultMap">
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="userBankCardResultMap">
         select * from user_bank_card where login_name = #{loginName} and status = 'BOUND' and role_type = #{roleType}
     </select>
 
@@ -41,4 +38,7 @@
         where id = #{id}
     </update>
 
+    <select id="findBankCardNumberByloginName"  resultMap="userBankCardResultMap">
+        select * from user_bank_card where login_name = #{loginName} and status = 'BOUND'
+    </select>
 </mapper>

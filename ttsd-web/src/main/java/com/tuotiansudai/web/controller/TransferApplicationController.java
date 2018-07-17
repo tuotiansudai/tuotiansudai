@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.membership.service.UserMembershipService;
@@ -82,7 +83,7 @@ public class TransferApplicationController {
         modelAndView.addObject("anxinUser", anxinProp != null && anxinProp.isAnxinUser());
         modelAndView.addObject("transferApplicationReceiver", transferService.getTransferee(transferApplicationId, LoginUserInfo.getLoginName()));
         modelAndView.addObject("investRepay", transferService.getUserTransferInvestRepay(dto.getTransferInvestId()));
-        UserBankCardModel userBankCardModel = bankBindCardService.findInvestorBankCard(LoginUserInfo.getLoginName());
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), Role.INVESTOR);
         modelAndView.addObject("hasBankCard", userBankCardModel != null);
 
         modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);

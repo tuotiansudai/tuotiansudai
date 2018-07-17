@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户: </label>
+                    <label class="col-sm-2 control-label">借款人姓名: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
