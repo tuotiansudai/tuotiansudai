@@ -318,7 +318,8 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void exportWithdraw(@RequestParam(value = "withdrawId", required = false) Long withdrawId,
+    public void exportWithdraw(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
+                               @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
@@ -326,7 +327,7 @@ public class ExportController {
                                @RequestParam(value = "source", required = false) Source source,
                                HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleWithdraw.getDescription());
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, 1, startTime, endTime);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(role, withdrawId, mobile, status, source, 1, startTime, endTime);
         List<List<String>> withdrawData = exportService.buildWithdraw(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleWithdraw, withdrawData, response.getOutputStream());
     }
