@@ -80,9 +80,12 @@
         u.user_name as user_name,
         u.identity_number as identity_number,
         (select mobile from user referrer where referrer.login_name = u.referrer) AS referrer_mobile,
-        IF(exists (select 1 from auto_invest_plan au where u.login_name = au.login_name and enabled is TRUE), "0", "1") as auto_invest_status,
-        IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and referrer_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_referrer_staff,
-        IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
+        IF(exists (select 1 from auto_invest_plan au where u.login_name = au.login_name and enabled is TRUE), "0", "1")
+        as auto_invest_status,
+        IF(exists (select 1 from user_role referrer_role where referrer_role.login_name = u.referrer and
+        referrer_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_referrer_staff,
+        IF(exists (select 1 from user_role where user_role.login_name = u.login_name and user_role.role in ('SD_STAFF',
+        'ZC_STAFF')), TRUE, FALSE) as is_staff,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'),
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
@@ -94,12 +97,14 @@
             </when>
             <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name =
+                gg.login_name)
                 u
             </when>
             <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name =
+                gg.login_name)
                 u
             </when>
             <otherwise>
@@ -127,7 +132,8 @@
                 and u.register_time &lt;= #{endTime}
             </if>
             <if test="referrerMobile !=null and referrerMobile != '' ">
-                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
+                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile =
+                #{referrerMobile})
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
@@ -170,12 +176,14 @@
             </when>
             <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name =
+                gg.login_name)
                 u
             </when>
             <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
                 (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name =
+                gg.login_name)
                 u
             </when>
             <otherwise>
@@ -202,7 +210,8 @@
                 and u.register_time &lt;= #{endTime}
             </if>
             <if test="referrerMobile !=null and referrerMobile != '' ">
-                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
+                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile =
+                #{referrerMobile})
             </if>
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
@@ -259,7 +268,8 @@
                 AND user.`login_name` = #{loginName}
             </if>
             <if test="referrerMobile != null and referrerMobile != '' ">
-                AND EXISTS (select 1 from user referrer where referrer.login_name = user.referrer and referrer.mobile = #{referrerMobile})
+                AND EXISTS (select 1 from user referrer where referrer.login_name = user.referrer and referrer.mobile =
+                #{referrerMobile})
             </if>
             <if test="mobile != null and mobile != '' ">
                 AND user.`mobile` = #{mobile}
@@ -275,26 +285,67 @@
         user.mobile as mobile,
         user.province as province,
         user.city as city,
-        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
+        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role in
+        ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
         user.register_time as register_time,
         user.status as status,
         user.user_name as user_name,
         bank_account.balance as balance,
-        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`) as last_bill_time
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`)
+        as last_bill_time
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        <where>
+            <if test="role != null">
+                AND `bank_account`.`role_type` = #{role}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND `user`.`mobile` = #{mobile}
+            </if>
+            <if test="balanceMin >= 0">
+                AND `bank_account`.`balance` >= #{balanceMin}
+            </if>
+            <if test="balanceMax >= 0">
+                AND `bank_account`.`balance` &lt;= #{balanceMax}
+            </if>
+            ORDER BY `bank_account`.`balance` DESC
+            <if test="startLimit != null and endLimit != null">
+                limit #{startLimit}, #{endLimit}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUsersAccountBalanceUMP" parameterType="map" resultMap="userViewResultMap">
+        SELECT
+        user.id as id,
+        user.login_name as login_name,
+        user.mobile as mobile,
+        user.province as province,
+        user.city as city,
+        IF(exists (select 1 from user_role where user_role.login_name = user.login_name and user_role.role in
+        ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE) as is_staff,
+        user.register_time as register_time,
+        user.status as status,
+        user.user_name as user_name,
+        account.balance as balance,
+        (select max(`user_bill`.`created_time`) from `user_bill` where `user_bill`.`login_name` = `user`.`login_name`)
+        as last_bill_time
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
+        `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `bank_account`.`balance` >= #{balanceMin}
+            AND `account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `bank_account`.`balance` &lt;= #{balanceMax}
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
-        ORDER BY `bank_account`.`balance` DESC
+        ORDER BY `account`.`balance` DESC
         <if test="startLimit != null and endLimit != null">
             limit #{startLimit}, #{endLimit}
         </if>
@@ -305,16 +356,38 @@
         SELECT IFNULL(SUM(`bank_account`.`balance`), 0)
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        <where>
+            <if test="role != null">
+                AND `bank_account`.`role_type` = #{role}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND `user`.`mobile` = #{mobile}
+            </if>
+            <if test="balanceMin >= 0">
+                AND `bank_account`.`balance` >= #{balanceMin}
+            </if>
+            <if test="balanceMax >= 0">
+                AND `bank_account`.`balance` &lt;= #{balanceMax}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUsersAccountBalanceSumUMP" parameterType="map" resultType="long">
+        SELECT IFNULL(SUM(`account`.`balance`), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
+        `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `bank_account`.`balance` >= #{balanceMin}
+            AND `account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `bank_account`.`balance` &lt;= #{balanceMax}
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
@@ -322,16 +395,37 @@
         SELECT IFNULL(count(1), 0)
         FROM `user`
         JOIN `bank_account`
-        ON `user`.`login_name` = `bank_account`.`login_name` and `bank_account`.role_type = 'INVESTOR'
-        WHERE NOT EXISTS (SELECT 1 FROM `user_role`  WHERE `user`.`login_name` = `user_role`.`login_name` AND `user_role`.`role` = 'LOANER')
+        ON `user`.`login_name` = `bank_account`.`login_name`
+        <where>
+            <if test="role != null">
+                AND `bank_account`.`role_type` = #{role}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND `user`.`mobile` = #{mobile}
+            </if>
+            <if test="balanceMin >= 0">
+                AND `bank_account`.`balance` >= #{balanceMin}
+            </if>
+            <if test="balanceMax >= 0">
+                AND `bank_account`.`balance` &lt;= #{balanceMax}
+            </if>
+        </where>
+    </select>
+    <select id="findUsersAccountBalanceCountUMP" parameterType="map" resultType="long">
+        SELECT IFNULL(count(1), 0)
+        FROM `user`
+        JOIN `account`
+        ON `user`.`login_name` = `account`.`login_name`
+        WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
+        `user_role`.`role` = 'LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
         <if test="balanceMin >= 0">
-            AND `bank_account`.`balance` >= #{balanceMin}
+            AND `account`.`balance` >= #{balanceMin}
         </if>
         <if test="balanceMax >= 0">
-            AND `bank_account`.`balance` &lt;= #{balanceMax}
+            AND `account`.`balance` &lt;= #{balanceMax}
         </if>
     </select>
 
@@ -367,14 +461,15 @@
 
     <select id="findUserMicroModelCount" parameterType="map" resultType="int">
         select
-            count(1)
+        count(1)
         from user u
         <where>
             <if test="mobile != null and mobile != '' ">
                 AND u.mobile = #{mobile}
             </if>
             <if test="role != null">
-                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role = #{role})
+                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role =
+                #{role})
             </if>
             <if test="registerTimeStart != null">
                 AND u.register_time >= #{registerTimeStart}
@@ -389,92 +484,130 @@
                 AND u.identity_number is null
             </if>
             <if test="invested != null and invested == 'true' ">
-                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
+                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id !=
+                1 order by i.created_time asc limit 1)
             </if>
             <if test="invested != null and invested == 'false' ">
-                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
+                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="totalInvestAmountStart != null and totalInvestAmountStart != '' ">
-                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{totalInvestAmountStart}
+                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1) >= #{totalInvestAmountStart}
             </if>
             <if test="totalInvestAmountEnd != null and totalInvestAmountEnd != '' ">
-                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
+                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
             </if>
             <if test="totalWithdrawAmountStart != null and totalWithdrawAmountStart != '' ">
-                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >= #{totalWithdrawAmountStart}
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >=
+                #{totalWithdrawAmountStart}
             </if>
             <if test="totalWithdrawAmountEnd != null and totalWithdrawAmountEnd != '' ">
-                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;=
+                #{totalWithdrawAmountEnd}
             </if>
             <if test="userBalanceStart != null and userBalanceStart != '' ">
-                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') >= #{userBalanceStart}
+                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') >=
+                #{userBalanceStart}
             </if>
             <if test="userBalanceEnd != null and userBalanceEnd != '' ">
-                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') &lt;= #{userBalanceEnd}
+                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR')
+                &lt;= #{userBalanceEnd}
             </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
-                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}
+                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1) >= #{investCountStart}
             </if>
             <if test="investCountEnd != null and investCountEnd >= 0 ">
-                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{investCountEnd}
+                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1) &lt;= #{investCountEnd}
             </if>
             <if test="loanCountStart != null and loanCountStart >= 0 ">
-                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) >= #{loanCountStart}
+                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and
+                i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) >= #{loanCountStart}
             </if>
             <if test="loanCountEnd != null and loanCountEnd >= 0 ">
-                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) &lt;= #{loanCountEnd}
+                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and
+                i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) &lt;= #{loanCountEnd}
             </if>
             <if test="transformPeriodStart != null and transformPeriodStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1),
                 u.register_time) >= #{transformPeriodStart}
             </if>
             <if test="transformPeriodEnd != null and transformPeriodEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1),
                 u.register_time) &lt;= #{transformPeriodEnd}
             </if>
             <if test="invest1st2ndTimingStart != null and invest1st2ndTimingStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) >= #{invest1st2ndTimingStart}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) >= #{invest1st2ndTimingStart}
             </if>
             <if test="invest1st2ndTimingEnd != null and invest1st2ndTimingEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st2ndTimingEnd}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st2ndTimingEnd}
             </if>
             <if test="invest1st3ndTimingStart != null and invest1st3ndTimingStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) >= #{invest1st3ndTimingStart}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 2,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) >= #{invest1st3ndTimingStart}
             </if>
             <if test="invest1st3ndTimingEnd != null and invest1st3ndTimingEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st3ndTimingEnd}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 2,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st3ndTimingEnd}
             </if>
             <if test="lastInvestTimeStart != null">
-                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) > #{lastInvestTimeStart}
+                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1 order by i.created_time desc limit 1) > #{lastInvestTimeStart}
             </if>
             <if test="lastInvestTimeEnd != null">
-                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
+                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
             </if>
             <if test="lastRepayTimeStart != null">
-                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) > #{lastRepayTimeStart}
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where
+                i.login_name=u.login_name) > #{lastRepayTimeStart}
             </if>
             <if test="lastRepayTimeEnd != null">
-                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where
+                i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
             </if>
             <if test="lastWithdrawTimeStart != null">
-                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') > #{lastWithdrawTimeStart}
+                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') >
+                #{lastWithdrawTimeStart}
             </if>
             <if test="lastWithdrawTimeEnd != null">
-                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt; #{lastWithdrawTimeEnd}
+                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt;
+                #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) >= #{repayingAmountStart}
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from
+                invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING'
+                and i.status='SUCCESS'),0) +
+                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where
+                i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
+                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where
+                i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0))
+                >= #{repayingAmountStart}
             </if>
             <if test="repayingAmountEnd != null and repayingAmountEnd >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) &lt;= #{repayingAmountEnd}
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from
+                invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING'
+                and i.status='SUCCESS'),0) +
+                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where
+                i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
+                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where
+                i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0))
+                &lt;= #{repayingAmountEnd}
             </if>
             <if test="lastLoginTimeStart != null">
                 AND u.last_login_time >= #{lastLoginTimeStart}
@@ -490,40 +623,61 @@
 
     <select id="queryUserMicroModel" parameterType="map" resultMap="userMicroModelView">
         select
-            u.id,
-            u.user_name,
-            u.mobile,
-            u.channel,
-            u.register_time,
-            DATEDIFF(IFNULL((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),now()),
-                u.register_time) as no_invest_period,
-            EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1) as invested,
-            (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as total_invest_amount,
-            (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') as total_withdraw_amount,
-            (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') as user_balance,
-            (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as invest_count,
-            (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) as loan_count,
-            DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
-            u.register_time) as transform_period,
-            DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1,1),
-            (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) as invest_1st_2nd_timing,
-            DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
-            (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) as invest_1st_3rd_timing,
-            (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) as last_invest_time,
-            (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) as last_repay_time,
-            (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') as last_withdraw_time,
-            (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
-            IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
-            IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) as total_repaying_amount,
-            u.last_login_time,
-            u.last_login_source
+        u.id,
+        u.user_name,
+        u.mobile,
+        u.channel,
+        u.register_time,
+        DATEDIFF(IFNULL((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+        i.loan_id != 1 order by i.created_time asc limit 1),now()),
+        u.register_time) as no_invest_period,
+        EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by
+        i.created_time asc limit 1) as invested,
+        (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as
+        total_invest_amount,
+        (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') as
+        total_withdraw_amount,
+        (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') as
+        user_balance,
+        (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) as
+        invest_count,
+        (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+        i.loan_id = l.id and l.id != 1) as loan_count,
+        DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+        != 1 order by i.created_time asc limit 1),
+        u.register_time) as transform_period,
+        DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+        != 1 order by i.created_time asc limit 1,1),
+        (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1
+        order by i.created_time asc limit 1)) as invest_1st_2nd_timing,
+        DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+        != 1 order by i.created_time asc limit 2,1),
+        (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1
+        order by i.created_time asc limit 1)) as invest_1st_3rd_timing,
+        (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1
+        order by i.created_time desc limit 1) as last_invest_time,
+        (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where
+        i.login_name=u.login_name) as last_repay_time,
+        (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') as
+        last_withdraw_time,
+        (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir,
+        invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and
+        i.status='SUCCESS'),0) +
+        IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where
+        i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
+        IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where
+        i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) as
+        total_repaying_amount,
+        u.last_login_time,
+        u.last_login_source
         from user u
         <where>
             <if test="mobile != null and mobile != '' ">
                 AND u.mobile = #{mobile}
             </if>
             <if test="role != null">
-                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role = #{role})
+                AND exists (select 1 from user_role where u.login_name = user_role.login_name and user_role.role =
+                #{role})
             </if>
             <if test="registerTimeStart != null">
                 AND u.register_time >= #{registerTimeStart}
@@ -538,92 +692,130 @@
                 AND u.identity_number is null
             </if>
             <if test="invested != null and invested == 'true' ">
-                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
+                AND EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id !=
+                1 order by i.created_time asc limit 1)
             </if>
             <if test="invested != null and invested == 'false' ">
-                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and loan_id != 1 order by i.created_time asc limit 1)
+                AND NOT EXISTS (select 1 from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                loan_id != 1 order by i.created_time asc limit 1)
             </if>
             <if test="totalInvestAmountStart != null and totalInvestAmountStart != '' ">
-                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{totalInvestAmountStart}
+                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1) >= #{totalInvestAmountStart}
             </if>
             <if test="totalInvestAmountEnd != null and totalInvestAmountEnd != '' ">
-                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
+                AND (select sum(amount) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1) &lt;= #{totalInvestAmountEnd}
             </if>
             <if test="totalWithdrawAmountStart != null and totalWithdrawAmountStart != '' ">
-                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >= #{totalWithdrawAmountStart}
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') >=
+                #{totalWithdrawAmountStart}
             </if>
             <if test="totalWithdrawAmountEnd != null and totalWithdrawAmountEnd != '' ">
-                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;= #{totalWithdrawAmountEnd}
+                AND (select sum(amount) from withdraw w where w.login_name=u.login_name and w.status='SUCCESS') &lt;=
+                #{totalWithdrawAmountEnd}
             </if>
             <if test="userBalanceStart != null and userBalanceStart != '' ">
-                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') >= #{userBalanceStart}
+                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') >=
+                #{userBalanceStart}
             </if>
             <if test="userBalanceEnd != null and userBalanceEnd != '' ">
-                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR') &lt;= #{userBalanceEnd}
+                AND (select balance from bank_account a where a.login_name=u.login_name and a.role_type = 'INVESTOR')
+                &lt;= #{userBalanceEnd}
             </if>
             <if test="investCountStart != null and investCountStart >= 0 ">
-                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) >= #{investCountStart}
+                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1) >= #{investCountStart}
             </if>
             <if test="investCountEnd != null and investCountEnd >= 0 ">
-                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1) &lt;= #{investCountEnd}
+                AND (select count(1) from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1) &lt;= #{investCountEnd}
             </if>
             <if test="loanCountStart != null and loanCountStart >= 0 ">
-                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) >= #{loanCountStart}
+                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and
+                i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) >= #{loanCountStart}
             </if>
             <if test="loanCountEnd != null and loanCountEnd >= 0 ">
-                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) &lt;= #{loanCountEnd}
+                AND (select count(distinct l.id) from loan l, invest i where i.login_name=u.login_name and
+                i.status='SUCCESS' and i.loan_id = l.id and l.id != 1) &lt;= #{loanCountEnd}
             </if>
             <if test="transformPeriodStart != null and transformPeriodStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1),
                 u.register_time) >= #{transformPeriodStart}
             </if>
             <if test="transformPeriodEnd != null and transformPeriodEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1),
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1),
                 u.register_time) &lt;= #{transformPeriodEnd}
             </if>
             <if test="invest1st2ndTimingStart != null and invest1st2ndTimingStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) >= #{invest1st2ndTimingStart}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) >= #{invest1st2ndTimingStart}
             </if>
             <if test="invest1st2ndTimingEnd != null and invest1st2ndTimingEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st2ndTimingEnd}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 1,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st2ndTimingEnd}
             </if>
             <if test="invest1st3ndTimingStart != null and invest1st3ndTimingStart >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) >= #{invest1st3ndTimingStart}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 2,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) >= #{invest1st3ndTimingStart}
             </if>
             <if test="invest1st3ndTimingEnd != null and invest1st3ndTimingEnd >= 0 ">
-                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 2,1),
-                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st3ndTimingEnd}
+                AND DATEDIFF((select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS'
+                and i.loan_id != 1 order by i.created_time asc limit 2,1),
+                (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id
+                != 1 order by i.created_time asc limit 1)) &lt;= #{invest1st3ndTimingEnd}
             </if>
             <if test="lastInvestTimeStart != null">
-                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) > #{lastInvestTimeStart}
+                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1 order by i.created_time desc limit 1) > #{lastInvestTimeStart}
             </if>
             <if test="lastInvestTimeEnd != null">
-                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
+                AND (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and
+                i.loan_id != 1 order by i.created_time desc limit 1) &lt; #{lastInvestTimeEnd}
             </if>
             <if test="lastRepayTimeStart != null">
-                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) > #{lastRepayTimeStart}
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where
+                i.login_name=u.login_name) > #{lastRepayTimeStart}
             </if>
             <if test="lastRepayTimeEnd != null">
-                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
+                AND (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where
+                i.login_name=u.login_name) &lt; #{lastRepayTimeEnd}
             </if>
             <if test="lastWithdrawTimeStart != null">
-                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') > #{lastWithdrawTimeStart}
+                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') >
+                #{lastWithdrawTimeStart}
             </if>
             <if test="lastWithdrawTimeEnd != null">
-                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt; #{lastWithdrawTimeEnd}
+                AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt;
+                #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) >= #{repayingAmountStart}
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from
+                invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING'
+                and i.status='SUCCESS'),0) +
+                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where
+                i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
+                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where
+                i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0))
+                >= #{repayingAmountStart}
             </if>
             <if test="repayingAmountEnd != null and repayingAmountEnd >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
-                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) &lt;= #{repayingAmountEnd}
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from
+                invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING'
+                and i.status='SUCCESS'),0) +
+                IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where
+                i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
+                IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where
+                i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0))
+                &lt;= #{repayingAmountEnd}
             </if>
             <if test="lastLoginTimeStart != null">
                 AND u.last_login_time >= #{lastLoginTimeStart}
@@ -640,14 +832,21 @@
 
     <select id="findRemainUsers" resultMap="remainUserViewResultMap">
         SELECT login_name, mobile, user_name, register_time,
-        (select count(1) > 0 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") as use_experience_coupon,
-        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" order by invest_time desc limit 1) as experience_time,
-        (select count(1) from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS") as invest_count,
+        (select count(1) > 0 from invest where loan_id = 1 and invest.login_name = user.login_name and status =
+        "SUCCESS") as use_experience_coupon,
+        (select invest_time from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS"
+        order by invest_time desc limit 1) as experience_time,
+        (select count(1) from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS") as
+        invest_count,
         (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") as invest_sum,
-        (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1) as first_invest_time,
-        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1) as first_invest_amount,
-        (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1) as second_invest_time,
-        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1) as second_invest_amount
+        (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"
+        order by trading_time limit 1) as first_invest_time,
+        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by
+        trading_time limit 1) as first_invest_amount,
+        (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"
+        order by trading_time limit 1, 1) as second_invest_time,
+        (select amount from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by
+        trading_time limit 1, 1) as second_invest_amount
         FROM aa.user
         <where>
             <if test="loginName != null and loginName != ''">
@@ -664,41 +863,53 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and
+                    status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and
+                    status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status =
+                "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status =
+                "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
-                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}
+                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status =
+                "SUCCESS") &gt;= #{investCountLowLimit}
             </if>
             <if test="investCountHighLimit != null">
-                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &lt;= #{investCountHighLimit}
+                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status =
+                "SUCCESS") &lt;= #{investCountHighLimit}
             </if>
             <if test="investSumLowLimit != null">
-                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &gt;= #{investSumLowLimit}
+                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &gt;=
+                #{investSumLowLimit}
             </if>
             <if test="investSumHighLimit != null">
-                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;= #{investSumHighLimit}
+                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;=
+                #{investSumHighLimit}
             </if>
             <if test="firstInvestStartTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by trading_time limit 1 ) &gt;= #{firstInvestStartTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS"order by trading_time limit 1 ) &gt;= #{firstInvestStartTime}
             </if>
             <if test="firstInvestEndTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1 ) &lt;= #{firstInvestEndTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1 ) &lt;= #{firstInvestEndTime}
             </if>
             <if test="secondInvestStartTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
             </if>
             <if test="secondInvestEndTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
             </if>
         </where>
         ORDER BY register_time DESC
@@ -723,41 +934,53 @@
             </if>
             <if test="useExperienceCoupon != null">
                 <if test="useExperienceCoupon == true">
-                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") > 0
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and
+                    status = "SUCCESS") > 0
                 </if>
                 <if test="useExperienceCoupon == false">
-                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS") = 0
+                    AND (select count(1) from invest where loan_id = 1 and invest.login_name = user.login_name and
+                    status = "SUCCESS") = 0
                 </if>
             </if>
             <if test="experienceStartTime != null">
-                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &gt;= #{experienceStartTime})
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status =
+                "SUCCESS" and invest_time &gt;= #{experienceStartTime})
             </if>
             <if test="experienceEndTime != null">
-                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status = "SUCCESS" and invest_time &lt;= #{experienceEndTime})
+                AND exists (select 1 from invest where loan_id = 1 and invest.login_name = user.login_name and status =
+                "SUCCESS" and invest_time &lt;= #{experienceEndTime})
             </if>
             <if test="investCountLowLimit != null">
-                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &gt;= #{investCountLowLimit}
+                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status =
+                "SUCCESS") &gt;= #{investCountLowLimit}
             </if>
             <if test="investCountHighLimit != null">
-                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status = "SUCCESS") &lt;= #{investCountHighLimit}
+                AND (select count(1) from invest where login_name = user.login_name AND loan_id != 1 and status =
+                "SUCCESS") &lt;= #{investCountHighLimit}
             </if>
             <if test="investSumLowLimit != null">
-                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &gt;= #{investSumLowLimit}
+                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &gt;=
+                #{investSumLowLimit}
             </if>
             <if test="investSumHighLimit != null">
-                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;= #{investSumHighLimit}
+                AND (select sum(amount) from invest where login_name = user.login_name and status = "SUCCESS") &lt;=
+                #{investSumHighLimit}
             </if>
             <if test="firstInvestStartTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS"order by trading_time limit 1 ) &gt;= #{firstInvestStartTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS"order by trading_time limit 1 ) &gt;= #{firstInvestStartTime}
             </if>
             <if test="firstInvestEndTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1 ) &lt;= #{firstInvestEndTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1 ) &lt;= #{firstInvestEndTime}
             </if>
             <if test="secondInvestStartTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1, 1 ) &gt;= #{secondInvestStartTime}
             </if>
             <if test="secondInvestEndTime != null">
-                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status = "SUCCESS" order by trading_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
+                AND (select trading_time from invest where login_name = user.login_name and loan_id != 1 and status =
+                "SUCCESS" order by trading_time limit 1, 1 ) &lt;= #{secondInvestEndTime}
             </if>
         </where>
     </select>
@@ -786,7 +1009,7 @@
         select count(*)
         from experience_account e
         <if test="mobile != null and mobile != ''">
-        inner join user u on u.login_name = e.login_name
+            inner join user u on u.login_name = e.login_name
         </if>
         <where>
             e.experience_balance > 0
@@ -806,7 +1029,7 @@
         select ifnull(sum(e.experience_balance),0)
         from experience_account e
         <if test="mobile != null and mobile != ''">
-        inner join user u on u.login_name = e.login_name
+            inner join user u on u.login_name = e.login_name
         </if>
         <where>
             e.experience_balance > 0
