@@ -15,11 +15,11 @@
                 <input type="radio" name="role" value="INVESTOR"
                        <#if role?? && role == 'INVESTOR'>checked="checked"</#if>
                 />联动优势 &nbsp;&nbsp;
-                <input type="radio" name="role" value="BANK_INVESTOR"
-                       <#if role?? && role=='BANK_INVESTOR'>checked="checked"</#if>
-                />富滇银行-借款人 &nbsp;&nbsp;
                 <input type="radio" name="role" value="BANK_LOANER"
                        <#if role?? && role=='BANK_LOANER'>checked="checked"</#if>
+                />富滇银行-借款人 &nbsp;&nbsp;
+                <input type="radio" name="role" value="BANK_INVESTOR"
+                       <#if role?? && role=='BANK_INVESTOR'>checked="checked"</#if>
                 />富滇银行-出借人 &nbsp;&nbsp;
 
             </div>
