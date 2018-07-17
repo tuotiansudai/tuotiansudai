@@ -129,7 +129,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&operationTypeUMP=${operationTypeUMP!}&businessType=${businessType!}&businessTypeUMP=${businessTypeUMP!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -138,7 +138,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&businessType=${businessType!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?role=${role!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&operationType=${operationType!}&operationTypeUMP=${operationTypeUMP!}&businessType=${businessType!}&businessTypeUMP=${businessTypeUMP!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

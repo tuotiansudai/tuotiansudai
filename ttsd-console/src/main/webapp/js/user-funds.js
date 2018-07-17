@@ -51,7 +51,7 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker', 'j
             var role=$("input[name='role']:checked").val();
             var operationTypeUMP=$('.operationTypeUMP').val();
             var businessTypeUMP= $('.businessTypeUMP').val();
-            window.location.href = "/finance-manage/user-funds?role="+role+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&userBillOperationType=" + operationType + "&userBillBusinessType=" + businessType + "&index=1&pageSize=10";
+            window.location.href = "/finance-manage/user-funds?role="+role+"&businessTypeUMP="+businessTypeUMP+"&operationTypeUMP="+operationTypeUMP+"&mobile=" + mobile + "&startTime=" + startTime + "&endTime=" + endTime + "&operationType=" + operationType + "&businessType=" + businessType + "&index=1&pageSize=10";
         });
 
         $('.down-load').click(function () {
