@@ -45,6 +45,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -110,7 +111,11 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            editUserDto = consoleUserService.setUserBankCardNumberByLoginName(loginName, editUserDto);
+            Map<Role,String> bankCardMap=consoleUserService.getUserBankCardNumberByLoginName(loginName);
+            editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
+            editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
+            editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
+
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());

@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -146,7 +147,10 @@ public class ConsoleUserService {
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
-        editUserDto = setUserBankCardNumberByLoginName(loginName, editUserDto);
+        Map<Role,String> bankCardMap=getUserBankCardNumberByLoginName(loginName);
+        editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
+        editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
         return editUserDto;
     }
 
@@ -169,9 +173,6 @@ public class ConsoleUserService {
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userView.getLoginName());
-            userRoleModels = userRoleModels.stream().filter(userRoleModel -> {
-                return userRoleModel.getRole() != Role.INVESTOR && userRoleModel.getRole() != Role.LOANER;
-            }).collect(Collectors.toList());
             userItemDataDto.setUserRoles(userRoleModels);
             String taskId = OperationType.USER + "-" + userView.getLoginName();
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
@@ -481,19 +482,21 @@ public class ConsoleUserService {
         return false;
     }
 
-    public EditUserDto setUserBankCardNumberByLoginName(String loginName, EditUserDto editUserDto) {
-        editUserDto.setBankCardNumberUMP(bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
-        List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
+    public Map<Role, String> getUserBankCardNumberByLoginName(String loginName) {
+        Map<Role, String> bankCardMap = new HashMap<>();
 
+        List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
         String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> {
             return Role.BANK_INVESTOR.equals(userItem.getRoleType());
         }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
-        editUserDto.setBankCardNumberInvestor(bankCardNumberInvestor);
         String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> {
             return Role.BANK_LOANER.equals(userItem.getRoleType());
         }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
-        editUserDto.setBankCardNumberLoaner(bankCardNumberLoaner);
-        return editUserDto;
+
+        bankCardMap.put(Role.INVESTOR, bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        bankCardMap.put(Role.BANK_INVESTOR, bankCardNumberInvestor);
+        bankCardMap.put(Role.BANK_LOANER, bankCardNumberLoaner);
+        return bankCardMap;
     }
 
 }
