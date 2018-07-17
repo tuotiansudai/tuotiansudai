@@ -3,7 +3,9 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.console.service.ConsoleUserBillService;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BankUserBillOperationType;
-import com.tuotiansudai.repository.model.BankUserBillModel;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,16 +26,26 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
+    public ModelAndView userFunds(@RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
+                                  @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
                                   @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
+                                  @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
+                                  @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
                                   @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<BankUserBillModel> userBillModels = consoleUserBillService.findUserFunds(businessType, operationType, mobile, startTime, endTime, index, pageSize);
-        long userFundsCount = consoleUserBillService.findUserFundsCount(businessType, operationType, mobile, startTime, endTime);
+        List<? extends Object> userBillModels = null;
+        long userFundsCount = 0;
+        if (role == Role.INVESTOR) {
+            userBillModels = consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
+        } else {
+            userBillModels = consoleUserBillService.findUserFunds(role, businessType, operationType, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(role, businessType, operationType, mobile, startTime, endTime);
+        }
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
@@ -50,6 +62,11 @@ public class UserFundsController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("role", role);
+        modelAndView.addObject("businessTypeUMP", businessTypeUMP);
+        modelAndView.addObject("businessTypeUMPList", UserBillBusinessType.values());
+        modelAndView.addObject("operationTypeUMP", operationTypeUMP);
+        modelAndView.addObject("operationTypeUMPList", UserBillOperationType.values());
         return modelAndView;
     }
 
