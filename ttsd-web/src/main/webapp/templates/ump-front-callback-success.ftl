@@ -3,7 +3,7 @@
 <div class="invest-success-container" id="successBox">
     <div class="invest-text-model">
         <i class="success-tip"></i>
-        <p class="pay-tip">${umpCallbackType.getTitle()}成功</p>
+        <p class="pay-tip">${umpCallbackType.getTitle()}</p>
         <p class="pay-text">
             <span class="count-time">5</span>秒后将自动返回“个人资料”，如果没有跳转，您可以 <a href="/ump/account">点击这里</a>
         </p>
