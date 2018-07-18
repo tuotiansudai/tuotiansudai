@@ -13,6 +13,7 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -418,8 +419,8 @@ public class BankWrapperClient {
         return new UmpAsyncMessage();
     }
 
-    public UmpAsyncMessage umpRecharge() {
-        return umpAsyncExecute("/ump/recharge", null);
+    public UmpAsyncMessage umpRecharge(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
+        return umpAsyncExecute("/ump/recharge", new UmpRechargeDto(loginName, payUserId, rechargeId, amount, isFastPay, bankCode));
     }
 
     public UmpAsyncMessage umpWithdraw() {

@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.request.UmpRechargeRequestDto;
 import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Date;
 /**
  * Created by qduljs2011 on 2018/7/10.
  */
-public class RechargeModel  implements Serializable{
+public class RechargeModel implements Serializable{
     private long id;
 
     private String loginName;
@@ -32,6 +34,18 @@ public class RechargeModel  implements Serializable{
     public RechargeModel() {
 
     }
+
+    public RechargeModel(UmpRechargeRequestDto dto) {
+        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
+        this.bankCode = dto.getBankCode();
+        this.loginName = dto.getLoginName();
+        this.status = BankRechargeStatus.WAIT_PAY;
+        this.source = Source.WEB;
+        this.fastPay = dto.isFastPay();
+        this.publicPay = dto.isPublicPay();
+        this.createdTime = new Date();
+    }
+
     public long getId() {
         return id;
     }
