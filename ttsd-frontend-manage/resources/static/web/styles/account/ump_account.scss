@@ -1,7 +1,125 @@
+//Personal Info Page
 $CK1:#ffac2a;
-//Account Overview
+.main-frame .content-container {
+  min-height: auto;
+  margin-top: 18px;
+}
+.ump-nav {
+
+  .ump-tip {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    padding-top: 30px;
+  }
+}
+.kindly-tip {
+  padding-left: 37px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  p {
+    &.title {
+      font-weight: bold;
+    }
+    font-size: 14px;
+    margin-bottom: 0;
+    line-height: 33px;
+    color: #666;
+  }
+}
+.voice-captcha {
+  width: 94px;
+  color: #999;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 12px;
+  line-height: 16px;
+  a {
+    color: #ff9c1b;
+  }
+}
+#alreadyTurnOffDOM {
+  .font-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    background:url('../../images/myaccount/rightOk.png') no-repeat center;
+    background-size:100%;
+  }
+  .text-m {
+    margin-top: 10px;
+  }
+}
+#turnOnNoPasswordInvestForm {
+  .person-info-btn {
+    margin-top: 16px;
+  }
+  .error-box {
+    text-indent: 86px;
+  }
+}
+
+.person-info-btn {
+  button {
+    margin-top: 0px;
+    width: 37%;
+    letter-spacing: 2px;
+    font-size: 13px;
+    &.btn-cancel {
+      margin-right:20px;
+    }
+    &.btn-close {
+      background: #e5e5e5;
+      border-width: 0!important;
+      color:#808080;
+    }
+  }
+}
+
+.personal-info {
+  .info-list {
+    color: #797979;
+    line-height: 38px;
+    em.info {
+      display: inline-block;
+    }
+    .fa {
+      font-size: 16px;
+      padding-right: 5px;
+    }
+    .info-title {
+      font-weight: bold;
+      display: inline-block;
+      width: 70px;
+      text-align: right;
+      margin-right: 20px;
+      color: #000;
+    }
+    .binding-set {
+      display: inline-block;
+      width: 140px;
+      float: right;
+
+      .ok {
+        color: #2ac30c;
+      }
+      .no {
+        color: #ff1010;
+      }
+      a.setlink {
+        color: #ffac2a;
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
+
 .account-overview {
   padding: 0 !important;
+  background: red;
   font-size: 14px;
   .more {
     padding-right:15px;
@@ -334,89 +452,84 @@ $CK1:#ffac2a;
     }
   }
 
-.table tfoot td.last {
-  border-bottom-width:0;
-}
-
-.new-projects {
-  margin-top:15px;
-  .trade-detail {
-    width: 170px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .table tfoot td.last {
+    border-bottom-width:0;
   }
-}
+
+  .new-projects {
+    margin-top:15px;
+    .trade-detail {
+      width: 170px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 
   .last-month {
 
   }
 }
 
-.user-role-font {
-  font-size: 14px;
-  color:#808080;
-  padding-left: 17px;
-  line-height: 32px;
-  i {
+.item-block {
+  display: block;
+  margin-top: 10px;
+  line-height: 30px;
+  font-size: 12px;
+
+  .select-item {
+    display: inline-block;
+    padding: 0 10px;
+    margin-left: 10px;
+    color: #333;
+    cursor: pointer;
+
+    &.current {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
+}
+
+.recharge-cash {
+  font-size: 16px;
+  color: #999;
+  text-align: center;
+  background: #fafafa;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  >span {
+    vert-align: middle;
+  }
+  .money {
+    font-size: 20px;
     color: #333;
     font-weight: bold;
   }
-}
-
-
-  .safety-notification {
+  p {
     position: relative;
-    margin-right: 20px;
-    .tip-title {
-      background: #ff7200;
-      color: #fff;
-      padding-right: 10px;
-      padding-left: 10px;
-      display: inline-block;
-      height: 33px;
-      line-height: 33px;
+    text-indent: 30px;
+    display:inline-block;
+    margin-bottom: 0;
+    &.cash-p {
+      margin-left: 60px;
     }
-    i {
+    .icon-small {
+      width: 18px;
+      height: 18px;
       position: absolute;
-      color: #ff752a;
-      top: 5px;
-      right: -20px;
-      cursor: pointer;
+      left: 0;
+      top: 10px;
+      &.icon-recharge {
+        background: url('../../images/sign/icon_recharge.png') no-repeat left center;
+        background-size: contain;
+      }
+      &.icon-cash {
+        background: url('../../images/sign/icon_getCash.png') no-repeat left center;
+        background-size: contain;
+      }
     }
-  }
-
-
-.extra-rate-popup {
-  background: #fff;
-  position: absolute;
-  z-index: 100;
-  right: 0;
-  border: 1px solid #ffd4b2;
-  width: 400px;
-  text-align: center;
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: -7px;
-    right: 10px;
-    color: #ffd4b2;
-    background: #fff;
-    width: 12px;
-    height: 7px;
-    background: url("../../images/sign/chevron-up.png") no-repeat;
-  }
-}
-.notice-tips {
-  padding: 10px;
-  text-align: left;
-  position: absolute;
-  right: -28px;
-  top: 33px;
-  strong {
-    color: #ff7200;
-    font-weight: normal;
   }
 }
