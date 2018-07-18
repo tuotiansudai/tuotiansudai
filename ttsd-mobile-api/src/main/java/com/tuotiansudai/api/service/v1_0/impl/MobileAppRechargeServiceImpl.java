@@ -63,7 +63,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     }
 
     private long getLeftRechargeAmount(String mobile, BankModel bankModel) {
-        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null, mobile, null, BankRechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null,null, mobile, null, BankRechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
         return bankModel.getSingleDayAmount() - rechargeAmount;
     }
 

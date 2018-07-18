@@ -32,8 +32,8 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
         }
         Integer offset = (index - 1) * pageSize;
 
-        List<BankRechargePaginationView> rechargeModels = rechargeMapper.findRechargePagination(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null, "");
-        int count = rechargeMapper.findRechargeCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null, "");
+        List<BankRechargePaginationView> rechargeModels = rechargeMapper.findRechargePagination(null,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);
+        int count = rechargeMapper.findRechargeCount(null,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null);
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if (rechargeModels != null) {

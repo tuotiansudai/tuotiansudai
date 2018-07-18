@@ -27,6 +27,9 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     private String isStaff;
 
+    public WithdrawPaginationItemDataDto() {
+    }
+
     public WithdrawPaginationItemDataDto(long withdrawId, String loginName, String mobile, String userName, String amount, String fee, Source source, String status, Date createdTime, String isStaff) {
         this.withdrawId = withdrawId;
         this.loginName = loginName;

@@ -50,17 +50,17 @@ public class ConsoleInvestService {
     @Autowired
     private UserMapper userMapper;
 
-    public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
+    public InvestPaginationDataDto getInvestPagination(Boolean isBankPlatform,Long loanId, String investorMobile, String channel, Source source,
                                                        Role role, Date startTime, Date endTime, InvestStatus investStatus,
                                                        PreferenceType preferenceType, ProductType productType, int index, int pageSize) {
         UserModel investor = userMapper.findByLoginNameOrMobile(investorMobile);
         String investorLoginName = investor != null ? investor.getLoginName() : null;
 
         endTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
-        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
-        long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
+        long count = investMapper.findCountInvestPagination(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
+        long investAmountSum = investMapper.sumInvestAmountConsole(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
         index = PaginationUtil.validateIndex(index, pageSize, count);
-        List<InvestPaginationItemView> items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<InvestPaginationItemView> items = investMapper.findInvestPagination(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, view -> {
             InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
