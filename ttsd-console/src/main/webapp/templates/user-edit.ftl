@@ -43,7 +43,6 @@
         </div>
         <hr size="1" color="#999999">
         <div class="form-group">
-            <label class="col-sm-1 control-label"></label>
             <label class="col-sm-2 control-label">银行卡</label>
         </div>
         <#if user.bankCardNumberUMP??>
