@@ -26,8 +26,8 @@
 </div>
 
 <script type="text/javascript">
-    countDown($('#secondsCountDown'),5,function () {
-        $("#isPaySuccess").submit();
+    countDown('#secondsCountDown',5,function () {
+        document.getElementById("#isPaySuccess").submit();
     });
     function countDown(dom,time,callback){
         var downtimer = null;
@@ -39,7 +39,7 @@
                 callback && callback();
             } else {
                 time = time*1-1;
-                dom.text(time);
+                document.getElementById(dom).innerHTML = time
             }
 
         }
