@@ -6,5 +6,5 @@ import com.tuotiansudai.api.dto.v1_0.PersonalInfoRequestDto;
 import com.tuotiansudai.api.dto.v1_0.PersonalInfoResponseDataDto;
 
 public interface MobileAppPersonalInfoService {
-    BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto);
+    BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(String loginName);
 }

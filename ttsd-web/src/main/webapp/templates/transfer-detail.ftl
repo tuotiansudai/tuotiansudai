@@ -5,7 +5,7 @@
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR2</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" data-loaner-role="<@global.role hasRole="'LOANER'">LOANER</@global.role>" data-bankcard="${hasBankCard?c}" data-authentication="<@global.role hasRole="'USER'">USER</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
@@ -247,7 +247,7 @@
 
 </div>
 <#--切换为出借人 -->
-<div id="turnLenderDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
+<div id="turnInvestorDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
     <div class="tc text-m">是否切换为出借人身份？</div>
     <form action="/account/switch?redirect=/transfer/${transferApplication.id?c}" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

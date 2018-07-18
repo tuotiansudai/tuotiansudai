@@ -2,6 +2,7 @@ package com.tuotiansudai.util;
 
 
 import com.google.common.base.Strings;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,12 +15,12 @@ public class IdentityNumberValidator {
     /***
      * 中国公民身份证号码最小长度。
      */
-    public static final int CHINA_ID_MIN_LENGTH = 15;
+    private static final int CHINA_ID_MIN_LENGTH = 15;
 
     /**
      * 中国公民身份证号码最大长度。
      */
-    public static final int CHINA_ID_MAX_LENGTH = 18;
+    private static final int CHINA_ID_MAX_LENGTH = 18;
 
     /**
      * 第18位校检码
@@ -48,24 +49,20 @@ public class IdentityNumberValidator {
         return !Strings.isNullOrEmpty(val) && val.matches("^[0-9]*$");
     }
 
-    private static boolean validateFistNumber(String idCard){
+    private static boolean validateFistNumber(String idCard) {
         return Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9;
     }
 
     private static String getIdCode17(String idCard) {
         if (idCard.length() == CHINA_ID_MAX_LENGTH) {
             return idCard.substring(0, 17);
-        } else if (idCard.length() == CHINA_ID_MIN_LENGTH) {
-            return convert15CardTo18(idCard).substring(0, 17);
         }
-        return null;
+        return convert15CardTo18(idCard).substring(0, 17);
     }
 
     private static boolean compareIdCard(String idCard, String countIdCard) {
         if (idCard.length() == 18) {
-            if (!countIdCard.equalsIgnoreCase(idCard)) {
-                return false;
-            }
+            return countIdCard.equalsIgnoreCase(idCard);
         }
         return true;
     }
@@ -93,7 +90,7 @@ public class IdentityNumberValidator {
         return !(Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0);
     }
 
-    private static boolean validateYearByAdult(String idCard){
+    private static boolean validateYearByAdult(String idCard) {
         return ((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6, 14))) / 10000 >= 18);
     }
 
@@ -104,7 +101,7 @@ public class IdentityNumberValidator {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             Calendar cal = Calendar.getInstance();
             if (birthDate != null)
                 cal.setTime(birthDate);

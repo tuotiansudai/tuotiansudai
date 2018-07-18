@@ -20,10 +20,19 @@ public class RegisterAccountDto implements Serializable {
     @Pattern(regexp = "^[1-9]\\d{13,16}[a-zA-Z0-9]$")
     private String identityNumber;
 
-    private String referrer;
-
     @NotNull
     private Source source;
+
+    public RegisterAccountDto() {
+    }
+
+    public RegisterAccountDto(String loginName, String mobile, String userName, String identityNumber, Source source) {
+        this.loginName = loginName;
+        this.mobile = mobile;
+        this.userName = userName;
+        this.identityNumber = identityNumber;
+        this.source = source;
+    }
 
     public String getLoginName() {
         return loginName;
@@ -57,30 +66,11 @@ public class RegisterAccountDto implements Serializable {
         this.mobile = mobile;
     }
 
-    public String getReferrer() {
-        return referrer;
-    }
-
-    public void setReferrer(String referrer) {
-        this.referrer = referrer;
-    }
-
     public Source getSource() {
         return source;
     }
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public RegisterAccountDto(String loginName, String mobile, String userName, String identityNumber) {
-        this.setUserName(userName);
-        this.setLoginName(loginName);
-        this.setMobile(mobile);
-        this.setIdentityNumber(identityNumber);
-    }
-
-    public RegisterAccountDto() {
-
     }
 }
