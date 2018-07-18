@@ -47,7 +47,7 @@ public class RegisterAccountController {
             dataDto.setMessage("身份证不合法");
             return baseDto;
         }
-        if (userService.isIdentityNumberExist(identityNumber)){
+        if (userService.isIdentityNumberExist(identityNumber)) {
             dataDto.setMessage("身份证已存在");
             return baseDto;
         }

@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.util;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Iterator;
@@ -52,9 +53,11 @@ public class DistrictUtil {
     }
 
     public static String convertNameToCode(String desc) {
-        Iterator<Map.Entry<String, String>> iterator = PROVINCES.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
+        if (Strings.isNullOrEmpty(desc)) {
+            return null;
+        }
+
+        for (Map.Entry<String, String> entry : PROVINCES.entrySet()) {
             if (desc.equals(entry.getValue())) {
                 return entry.getKey();
             }

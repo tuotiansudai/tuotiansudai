@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 
-public class BankCardRequestDto extends BaseParamDto {
+public class BankRechargeRequestDto extends BaseParamDto {
 
     /**
      * 充值金额
@@ -13,13 +13,13 @@ public class BankCardRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "充值金额", example = "11.00")
     @NotEmpty(message = "充值金额不能为空")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$", message = "充值金额不正确")
-    private String rechargeAmount;
+    private String amount;
 
-    public String getRechargeAmount() {
-        return rechargeAmount;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setRechargeAmount(String rechargeAmount) {
-        this.rechargeAmount = rechargeAmount;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

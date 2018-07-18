@@ -2,94 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>成功</title>
+    <title>${bankCallbackType.getTitle()}</title>
     <link rel="stylesheet" type="text/css" href="${css.index!}" charset="utf-8"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,target-density dpi=high-dpi,user-scalable=no">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
 
-<div class="my-account-content personal-profile">
-<#if bankCallbackType == 'REGISTER'>
-    <div class="m-header">开通存管账号</div>
+<div class="bank-result-content">
     <div class="info-container">
         <div class="status-container">
             <div class="icon-status icon-success"></div>
-            <p class="desc"> ${bankCallbackType.getTitle()}</p>
+            <p class="desc">
+                <#if isInProgress>
+                业务正在处理中，请稍后查询。
+                <#else>
+                ${bankCallbackType.getTitle()}成功
+                </#if>
+            </p>
         </div>
-
-    </div>
-<#--实名认证成功后下一步 去绑卡-->
-    <form action="${requestContext.getContextPath()}/bank-card/bind/source/M" method="post" >
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-        <div class="btn-container">
-            <input type="submit" class="btn-confirm"  value="下一步"/>
-        </div>
-    </form>
-</#if>
-<#--银行卡绑定成功-->
-<#if bankCallbackType == 'CARD_BIND'>
-    <div class="m-header">开通存管账号</div>
-    <div class="info-container">
-        <div class="status-container">
-            <div class="icon-status icon-success"></div>
-            <p class="desc"> ${bankCallbackType.getTitle()}</p>
-        </div>
-
     </div>
     <div class="btn-container">
-        <a href="/" class="btn-confirm">确定</a>
+        <a href="${bankCallbackType.getMobileLink()}/success" class="btn-confirm">确定</a>
     </div>
-</#if>
-<#if bankCallbackType == 'RECHARGE'>
-    <div class="m-header">充值成功</div>
-    <div class="info-container">
-        <div class="status-container">
-            <div class="icon-status icon-success"></div>
-            <p class="desc"> ${bankCallbackType.getTitle()}</p>
-        </div>
-
-    </div>
-    <div class="btn-container">
-        <a href="/" class="btn-confirm">确定</a>
-    </div>
-
-</#if>
-
-<#--申请提现成功-->
-<#if bankCallbackType == 'WITHDRAW'>
-    <div class="m-header">提现成功</div>
-    <div class="info-container">
-        <div class="status-container">
-            <div class="icon-status icon-success"></div>
-            <p class="desc"> ${bankCallbackType.getTitle()}</p>
-        </div>
-
-    </div>
-    <div class="btn-container">
-        <a href="/" class="btn-confirm">确定</a>
-    </div>
-</#if>
-
-<#--投资成功-->
-<#if bankCallbackType == 'LOAN_INVEST' || bankCallbackType == 'LOAN_FAST_INVEST'>
-    <div class="m-header">投资成功</div>
-    <div class="info-container">
-        <div class="status-container">
-            <div class="icon-status icon-success"></div>
-            <p class="desc"> ${bankCallbackType.getTitle()}</p>
-        </div>
-
-    </div>
-    <div class="btn-container">
-        <a href="/" class="btn-confirm">确定</a>
-    </div>
-</#if>
-
 
     <div class="contact"><p>客服电话：400-169-1188（服务时间：9:00-20:00）</p></div>
 </div>
-
-
 </body>
 </html>
