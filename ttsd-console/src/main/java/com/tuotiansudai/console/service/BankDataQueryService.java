@@ -34,40 +34,67 @@ public class BankDataQueryService {
         this.loanMapper = loanMapper;
     }
 
-    public BankQueryUserMessage getUserStatus(String loginNameOrMobile) {
+    public BankQueryUserMessage getUserStatus(Role role,String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
         if (userModel == null) {
             return new BankQueryUserMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
-        if (bankAccountModel == null) {
-            return new BankQueryUserMessage(false, "存管账户不存在");
+        if(role == Role.INVESTOR){
+            //todo 查询联动优势账户类型  原来的查询不需要 account类型
+            return null;
+        }else{
+            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), role);
+            if (bankAccountModel == null) {
+                return new BankQueryUserMessage(false, "存管账户不存在");
+            }
+            return bankWrapperClient.queryUser(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         }
-        return bankWrapperClient.queryUser(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+
+
     }
 
-    public BankQueryLoanMessage getLoanStatus(long loanId) {
+    public BankQueryLoanMessage getLoanStatus(Role role,long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
             return new BankQueryLoanMessage(false, "标的不存在");
         }
-        return bankWrapperClient.queryLoan(loanModel.getLoanTxNo(), loanModel.getLoanAccNo());
+        if(loanModel.getIsBankPlatform() && role==Role.INVESTOR){
+            return new BankQueryLoanMessage(false, "该标的为联动优势标的");
+        }
+        if(!loanModel.getIsBankPlatform() && (role==Role.BANK_INVESTOR || role == Role.BANK_LOANER)){
+            return new BankQueryLoanMessage(false, "该标的为富滇银行标的");
+        }
+        if(loanModel.getIsBankPlatform()){
+            return bankWrapperClient.queryLoan(loanModel.getLoanTxNo(), loanModel.getLoanAccNo());
+        }
+        //todo 返回联动优势 标的数据
+        return null;
     }
 
-    public BankQueryTradeMessage getTradeStatus(String bankOrderNo, Date bankOrderDate, QueryTradeType queryTradeType) {
-        return bankWrapperClient.queryTrade(bankOrderNo, new DateTime(bankOrderDate).toString("yyyyMMdd"), queryTradeType);
+    public BankQueryTradeMessage getTradeStatus(Role role,String bankOrderNo, Date bankOrderDate, QueryTradeType queryTradeType) {
+        if(role == Role.INVESTOR){
+            //查询联动优势的交易状态
+            return null;
+        }else{
+            return bankWrapperClient.queryTrade(bankOrderNo, new DateTime(bankOrderDate).toString("yyyyMMdd"), queryTradeType);
+        }
     }
 
-    public BankQueryLogAccountMessage getAccountBill(String loginNameOrMobile, Date queryOrderDateStart, Date queryOrderDateEnd) {
+    public BankQueryLogAccountMessage getAccountBill(Role role,String loginNameOrMobile, Date queryOrderDateStart, Date queryOrderDateEnd) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
         if (userModel == null) {
             return new BankQueryLogAccountMessage(false, "用户不存在");
         }
-        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
-        if (bankAccountModel == null) {
-            return new BankQueryLogAccountMessage(false, "存管账户不存在");
-        }
-        return bankWrapperClient.queryAccountBill(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), queryOrderDateStart, queryOrderDateEnd);
+       if(role == Role.INVESTOR){
+            //查询联动优势 交易流水
+           return null;
+       }else{
+           BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), role);
+           if (bankAccountModel == null) {
+               return new BankQueryLogAccountMessage(false, "存管账户不存在");
+           }
+           return bankWrapperClient.queryAccountBill(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), queryOrderDateStart, queryOrderDateEnd);
+       }
     }
 
     public BankQueryLogLoanAccountMessage getLoanBill(long loanId) {

@@ -4,6 +4,18 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="/finance-manage/real-time-status/account-bill" class="form-inline query-build" method="get">
+        <div class="form-group">
+            <label class="control-label">账户类型: </label>&nbsp;&nbsp;
+            <input type="radio" name="role" value="INVESTOR"
+                   <#if role?? && role == 'INVESTOR'>checked="checked"</#if>
+            />联动优势 &nbsp;&nbsp;
+            <input type="radio" name="role" value="BANK_LOANER"
+                   <#if role?? && role=='BANK_LOANER'>checked="checked"</#if>
+            />富滇银行-借款人 &nbsp;&nbsp;
+            <input type="radio" name="role" value="BANK_INVESTOR"
+                   <#if !role?? || role=='BANK_INVESTOR'>checked="checked"</#if>
+            />富滇银行-出借人 &nbsp;&nbsp;
+        </div>
         <div class="row">
             <div class="form-group">
                 <label for="control-label">用户名或手机号</label>

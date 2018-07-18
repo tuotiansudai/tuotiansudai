@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.console.service.BankDataQueryService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.dto.QueryTradeType;
 import com.tuotiansudai.fudian.message.BankQueryLoanMessage;
 import com.tuotiansudai.fudian.message.BankQueryTradeMessage;
@@ -36,47 +37,53 @@ public class BankQueryDataController {
     }
 
     @RequestMapping(path = "/user")
-    public ModelAndView queryUserStatus(@RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
-        BankQueryUserMessage bankQueryUserMessage = bankDataQueryService.getUserStatus(loginNameOrMobile);
+    public ModelAndView queryUserStatus(@RequestParam(value = "role") Role role, @RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
+        BankQueryUserMessage bankQueryUserMessage = bankDataQueryService.getUserStatus(role,loginNameOrMobile);
 
         return new ModelAndView("/real-time-status", "type", "user")
                 .addObject("loginNameOrMobile", loginNameOrMobile)
-                .addObject("data", bankQueryUserMessage);
+                .addObject("data", bankQueryUserMessage)
+                .addObject("role",role);
     }
 
     @RequestMapping(path = "/loan")
-    public ModelAndView queryLoanStatus(@RequestParam(value = "loanId") long loanId) {
-        BankQueryLoanMessage bankQueryLoanMessage = bankDataQueryService.getLoanStatus(loanId);
+    public ModelAndView queryLoanStatus(@RequestParam(value = "role") Role role,@RequestParam(value = "loanId") long loanId) {
+        BankQueryLoanMessage bankQueryLoanMessage = bankDataQueryService.getLoanStatus(role,loanId);
 
         return new ModelAndView("/real-time-status", "type", "loan")
                 .addObject("loanId", loanId)
-                .addObject("data", bankQueryLoanMessage);
+                .addObject("data", bankQueryLoanMessage)
+                .addObject("role",role);
     }
 
     @RequestMapping(path = "/trade")
-    public ModelAndView queryTrade(@RequestParam(value = "orderNo") String orderNo,
+    public ModelAndView queryTrade(@RequestParam(value = "role") Role role,
+                                   @RequestParam(value = "orderNo") String orderNo,
                                    @RequestParam(value = "orderDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date orderDate,
                                    @RequestParam(value = "queryTradeType") QueryTradeType queryTradeType) {
-        BankQueryTradeMessage bankQueryTradeMessage = bankDataQueryService.getTradeStatus(orderNo, orderDate, queryTradeType);
+        BankQueryTradeMessage bankQueryTradeMessage = bankDataQueryService.getTradeStatus(role,orderNo, orderDate, queryTradeType);
 
         return new ModelAndView("/real-time-status", "type", "trade")
                 .addObject("orderNo", orderNo)
                 .addObject("orderDate", orderDate)
                 .addObject("queryTradeType", queryTradeType)
-                .addObject("data", bankQueryTradeMessage);
+                .addObject("data", bankQueryTradeMessage)
+                .addObject("role", role);
     }
 
     @RequestMapping(value = "/account-bill", method = RequestMethod.GET)
-    public ModelAndView queryAccountBill(@RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
+    public ModelAndView queryAccountBill(@RequestParam(value = "role") Role role,
+                                         @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
                                          @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                          @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
         if (Strings.isNullOrEmpty(loginNameOrMobile) || startDate == null || endDate == null) {
             return new ModelAndView("/bank-account-bill");
         }
-        ModelAndView modelAndView = new ModelAndView("/bank-account-bill", "data", bankDataQueryService.getAccountBill(loginNameOrMobile, startDate, endDate));
+        ModelAndView modelAndView = new ModelAndView("/bank-account-bill", "data", bankDataQueryService.getAccountBill(role,loginNameOrMobile, startDate, endDate));
         modelAndView.addObject("loginNameOrMobile", loginNameOrMobile);
         modelAndView.addObject("startDate", startDate);
         modelAndView.addObject("endDate", endDate);
+        modelAndView.addObject("role", role);
         return modelAndView;
     }
 
