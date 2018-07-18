@@ -282,6 +282,7 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(String.valueOf(loanListDto.getId()));
             row.add(loanListDto.getName());
+            row.add(loanListDto.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(loanListDto.getProductType() == null ? "" : loanListDto.getProductType().getName());
             row.add(loanListDto.getLoanerUserName());
             row.add(loanListDto.getAgentLoginName());
@@ -329,6 +330,7 @@ public class ExportService {
             row.add(String.valueOf(record.getLoanId()));
             row.add(record.getLoanName());
             row.add(String.valueOf(record.getLoanPeriods()));
+            row.add(record.getIsBankPlatform()==null?"":record.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(record.getInvestorLoginName());
             row.add(record.isInvestorStaff() ? "是" : "否");
             row.add(record.getInvestorUserName());
@@ -413,7 +415,25 @@ public class ExportService {
         }
         return rows;
     }
-
+    public List<List<String>> buildUserFundsUMP(List<UserBillPaginationView> userBillPaginationViews) {
+        List<List<String>> rows = Lists.newArrayList();
+        userBillPaginationViews.forEach(record->{
+            List<String> row = Lists.newArrayList();
+            row.add(record.getUserName());
+            DateTime dateTime = new DateTime(record.getCreatedTime());
+            row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.getMobile());
+            row.add(record.getOperationType().getDescription());
+            row.add(record.getBusinessType().getDescription());
+            row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add("0");
+            rows.add(row);
+        });
+        return rows;
+    }
     public List<List<String>> buildAccountBalance(List<UserItemDataDto> records) {
         List<List<String>> rows = Lists.newArrayList();
         for (UserItemDataDto record : records) {

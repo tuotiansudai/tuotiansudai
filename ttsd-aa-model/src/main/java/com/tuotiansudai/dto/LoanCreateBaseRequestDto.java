@@ -83,6 +83,8 @@ public class LoanCreateBaseRequestDto {
 
     private Date raisingCompleteTime;
 
+    private Boolean isBankPlatForm;//资金平台
+
     public LoanCreateBaseRequestDto() {
     }
 
@@ -112,6 +114,7 @@ public class LoanCreateBaseRequestDto {
         this.recheckTime = loanModel.getRecheckTime();
         this.recheckLoginName = loanModel.getRecheckLoginName();
         this.raisingCompleteTime = loanModel.getRaisingCompleteTime();
+        this.isBankPlatForm=loanModel.getIsBankPlatform();
     }
 
     public Long getId() {
@@ -320,5 +323,13 @@ public class LoanCreateBaseRequestDto {
 
     public void setRaisingCompleteTime(Date raisingCompleteTime) {
         this.raisingCompleteTime = raisingCompleteTime;
+    }
+
+    public Boolean getIsBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setIsBankPlatForm(Boolean isBankPlatForm) {
+        this.isBankPlatForm = isBankPlatForm;
     }
 }
