@@ -2,13 +2,22 @@ server:
   port: 30000
 spring:
   datasource:
-    url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/fudian?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&useSSL=false
-    username: ${common.jdbc.username}
-    password: ${common.jdbc.password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 50
-      connection-timeout: 10000
+    fudian:
+      jdbc-url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/fudian?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&useSSL=false
+      username: ${common.jdbc.username}
+      password: ${common.jdbc.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 50
+        connection-timeout: 10000
+    ump:
+      jdbc-url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&characterEncoding=UTF-8
+      username: ${common.jdbc.username}
+      password: ${common.jdbc.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 50
+        connection-timeout: 10000
   redis:
     host: ${common.redis.host}
     port: ${common.redis.port}
@@ -19,6 +28,8 @@ spring:
         max-wait: 3s
         min-idle: 10
         max-idle: 15
+  freemarker:
+    template-loader-path: classpath:/templates
 
 bank:
   merchant: M02608959047521001
@@ -31,7 +42,7 @@ bank:
   bank-url: http://116.62.202.105:56502
   web-callback-return-url: ${web.server}/callback/return-url
   m-callback-return-url: ${web.server}/m/callback/return-url
-  mobile-callback-return-url: ${pay.service}/callback/return-url
+  mobile-callback-return-url: ${mobile.server}/callback/return-url
   callback-notify-url: ${pay.service}/callback/notify-url
 
 mybatis:

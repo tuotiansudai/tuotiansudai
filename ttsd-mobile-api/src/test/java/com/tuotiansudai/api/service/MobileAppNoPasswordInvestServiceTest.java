@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData(baseParamDto);
+        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData("loginName");
 
         assertTrue(baseResponseDto.getData().isAutoInvest());
         assertTrue(baseResponseDto.getData().isNoPasswordInvest());

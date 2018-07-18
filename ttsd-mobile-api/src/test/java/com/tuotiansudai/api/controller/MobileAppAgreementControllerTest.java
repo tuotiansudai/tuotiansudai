@@ -10,6 +10,7 @@ import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppAgreementControllerTest extends ControllerTestBase{
@@ -27,7 +28,7 @@ public class MobileAppAgreementControllerTest extends ControllerTestBase{
 
     @Test
     public void shouldGenerateAgreementRequestIsOk() throws Exception{
-        when(service.generateAgreementRequest(any(AgreementOperateRequestDto.class))).thenReturn(successResponseDto);
+        when(service.generateAgreementRequest(anyString(), anyString(), anyString(), any(AgreementOperateRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/agreement", new AgreementOperateRequestDto());
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }

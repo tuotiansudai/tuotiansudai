@@ -21,39 +21,18 @@ public class CertificationRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "用户身份证号码", example = "370412333221123431")
     private String userIdCardNumber;
 
-
-    /**
-     * 用户真实姓名
-     *
-     * @return
-     */
     public String getUserRealName() {
         return userRealName;
     }
 
-    /**
-     * 用户真实姓名
-     *
-     * @param userRealName
-     */
     public void setUserRealName(String userRealName) {
         this.userRealName = userRealName;
     }
 
-    /**
-     * 用户身份证号码
-     *
-     * @return
-     */
     public String getUserIdCardNumber() {
         return userIdCardNumber == null ? null : userIdCardNumber.trim();
     }
 
-    /**
-     * 用户身份证号码
-     *
-     * @param userIdCardNumber
-     */
     public void setUserIdCardNumber(String userIdCardNumber) {
         this.userIdCardNumber = userIdCardNumber;
     }
@@ -67,16 +46,4 @@ public class CertificationRequestDto extends BaseParamDto {
         return registerAccountDto;
 
     }
-
-    public CertificationRequestDto() {
-    }
-
-    public CertificationRequestDto(CommonCertificationRequestDto commonCertificationRequestDto) {
-        BaseParam baseParam = new BaseParam();
-        baseParam.setPhoneNum(commonCertificationRequestDto.getMobile());
-        this.userRealName = commonCertificationRequestDto.getUserRealName();
-        this.userIdCardNumber = commonCertificationRequestDto.getUserIdCardNumber();
-        this.setBaseParam(baseParam);
-    }
-
 }

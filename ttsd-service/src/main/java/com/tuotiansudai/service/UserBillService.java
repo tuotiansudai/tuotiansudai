@@ -19,4 +19,10 @@ public interface UserBillService {
                                                    Date endTime,
                                                    List<BankUserBillBusinessType> businessTypes,
                                                    Role role);
+
+    BaseDto<BasePaginationDataDto> getUmpUserBillData(String loginName, int index,
+                                                      int pageSize,
+                                                      Date startTime,
+                                                      Date endTime,
+                                                      List<UserBillBusinessType> businessTypes);
 }

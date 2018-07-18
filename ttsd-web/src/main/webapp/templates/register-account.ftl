@@ -8,7 +8,6 @@
         <span class="info-note">
         为了保障您的账户及资金安全，根据相关法律法规，我们会对您进行实名认证。
         </span>
-
     </div>
 
 <div class="register-box ">

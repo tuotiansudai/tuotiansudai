@@ -13,6 +13,7 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -387,5 +388,42 @@ public class BankWrapperClient {
         }
 
         return null;
+    }
+
+    private UmpAsyncMessage umpAsyncExecute(String path, Object requestData) {
+        String content = gson.toJson(requestData);
+        String url = this.baseUrl + path;
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                try {
+                    return gson.fromJson(response.body().string(), UmpAsyncMessage.class);
+                } catch (JsonParseException e) {
+                    logger.error(MessageFormat.format("ump parse pay response error, url: {0}, data: {1}, response: {2}", url, content, response.body().string()), e);
+                }
+            }
+            logger.error(MessageFormat.format("ump call pay wrapper status: {0}, url: {1}, data: {2}", response.code(), url, content));
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("ump call pay wrapper error, url: {0}, data: {1}", url, content), e);
+        }
+
+        return new UmpAsyncMessage();
+    }
+
+    public UmpAsyncMessage umpRecharge(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
+        return umpAsyncExecute("/ump/recharge", new UmpRechargeDto(loginName, payUserId, rechargeId, amount, isFastPay, bankCode));
+    }
+
+    public UmpAsyncMessage umpWithdraw() {
+        return umpAsyncExecute("/ump/withdraw", null);
     }
 }

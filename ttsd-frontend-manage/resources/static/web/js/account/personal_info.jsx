@@ -599,5 +599,11 @@ require.ensure([],function(){
 
 },'changeRole')
 
-
+//显示隐藏联动优势资金账号提示
+$('#noticeBtn').on('mouseover',function () {
+    $('.notice-tips').show();
+})
+$('#noticeBtn').on('mouseout',function () {
+    $('.notice-tips').hide();
+})
 

@@ -1,9 +1,6 @@
 package com.tuotiansudai.fudian.sign;
 
-import com.google.gson.GsonBuilder;
-import com.tuotiansudai.fudian.dto.ExtMarkDto;
-import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
-import com.tuotiansudai.fudian.mapper.InsertMapper;
+import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

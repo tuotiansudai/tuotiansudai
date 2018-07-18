@@ -29,23 +29,31 @@
     <script type="text/html" id="investListTpl">
         <table class="invest-list table-striped">
             <thead>
-                <tr>
-                    <th>项目名称</th>
-                    <th class="tr">我的投资(元)</th>
-                    <th>交易时间</th>
-                    <th>交易状态</th>
-                    <th>下次回款(元)</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>项目名称</th>
+                <th class="tr">我的投资(元)</th>
+                <th>交易时间</th>
+                <th>交易状态</th>
+                <th>下次回款(元)</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
             {{if records.length>0}}
             {{each records}}
-                <tr>
-                    <td>
+            <tr>
+                <td>
                         <span class="icon-list">
+
+
                             {{if $value.productType != 'EXPERIENCE'}}
                                 {{each $value.userCoupons}}
+                            {{if $value.couponType=='FUDIAN'}}
+                                <i class="fudian-icon">富</i>
+                            {{/if}}
+                            {{if $value.couponType=='LIANDONG'}}
+                                <i class="liandong-icon">联</i>
+                            {{/if}}
                                 {{if $value.couponType=='BIRTHDAY_COUPON'}}
                                 <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
                                 {{/if}}
@@ -77,42 +85,43 @@
                                 {{/if}}
                             {{/if}}
                         </span>
-                        <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
-                    </td>
-                    <td>
-                        {{$value.amount}}
-                        {{if $value.productType=='EXPERIENCE'}}
-                        体验金
-                        {{/if}}
-                    </td>
-                    <td>{{$value.createdTime}}</td>
-                    <td>{{$value.status}}</td>
-                    <td>
-                        {{if $value.nextRepayDate}}
-                            {{if $value.productType=='EXPERIENCE'}}
-                                {{$value.nextRepayAmount}}
-                            {{else}}
-                                {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
-                            {{/if}}
-                        {{else}}
-                            --
-                        {{/if}}
-                    </td>
-                    <td>
-                    {{if $value.investRepayExist}}
-                        <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款详情</a>
-                        {{if $value.productType!='EXPERIENCE'}}
-                            {{if $value.contractNo == 'OLD'}}
-                                <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}" target="_blank"> | 合同</a>
-                            {{else if $value.contractNo != '' && $value.contractNo != null }}
-                                <a class="red" href="/contract/invest/contractNo/{{$value.contractNo}}"  target="_blank"> | 合同</a>
-                            {{/if}}
-                        {{/if}}
+                    <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
+                </td>
+                <td>
+                    {{$value.amount}}
+                    {{if $value.productType=='EXPERIENCE'}}
+                    体验金
+                    {{/if}}
+                </td>
+                <td>{{$value.createdTime}}</td>
+                <td>{{$value.status}}</td>
+                <td>
+                    {{if $value.nextRepayDate}}
+                    {{if $value.productType=='EXPERIENCE'}}
+                    {{$value.nextRepayAmount}}
+                    {{else}}
+                    {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                    {{/if}}
                     {{else}}
                     --
                     {{/if}}
-                    </td>
-                </tr>
+                </td>
+                <td>
+                    {{if $value.investRepayExist}}
+                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款详情</a>
+                    {{if $value.productType!='EXPERIENCE'}}
+                    {{if $value.contractNo == 'OLD'}}
+                    <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}"
+                       target="_blank"> | 合同</a>
+                    {{else if $value.contractNo != '' && $value.contractNo != null }}
+                    <a class="red" href="/contract/invest/contractNo/{{$value.contractNo}}" target="_blank"> | 合同</a>
+                    {{/if}}
+                    {{/if}}
+                    {{else}}
+                    --
+                    {{/if}}
+                </td>
+            </tr>
             {{/each}}
             {{else}}
             <td colspan="6" class="no-data">暂时没有投资记录</td>
@@ -141,7 +150,8 @@
                 <th class="tr">应收本金(元)</th>
                 <th class="tr">应收收益(元)</th>
                 <th class="tr">应收奖励(元)
-                    <%=couponMessage?'<i class="fa fa-question-circle text-b coupon" style="color:#ff7a2a;" data-benefit="'+couponMessage+'"></i>':''%>
+                    <%=couponMessage?'<i class="fa fa-question-circle text-b coupon" style="color:#ff7a2a;"
+                                         data-benefit="'+couponMessage+'"></i>':''%>
                 </th>
                 <th class="tr">应缴服务费(元)
                     <%=levelMessage?'<i class="fa fa-question-circle text-b fee" data-benefit="'+levelMessage+'"></i>':''%>
@@ -153,7 +163,7 @@
             </tr>
             <tbody>
             <% for(var i = 0; i < records.length; i++) {
-                var item = records[i];
+            var item = records[i];
             %>
             <tr>
                 <td><%=item.repayDate%></td>
@@ -161,15 +171,17 @@
                 <td class="tr"><%=item.corpus%></td>
                 <td class="tr"><%=item.expectedInterest%></td>
                 <td class="tr">
-                <%=item.couponExpectedInterest?item.couponExpectedInterest:'--'%>
+                    <%=item.couponExpectedInterest?item.couponExpectedInterest:'--'%>
                 </td>
                 <td class="tr">
                     <%=item.expectedFee?'-'+item.expectedFee:'--'%>
                 </td>
                 <td class="tr spec-bg">
-                <%=item.actualAmount ? item.actualAmount : '--'%>
-                <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':'' %>
-                
+                    <%=item.actualAmount ? item.actualAmount : '--'%>
+                    <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay"
+                                                                       data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':''
+                    %>
+
                 </td>
                 <td class="tr spec-bg">
                     <%=item.actualRepayDate?item.actualRepayDate:'--'%>
@@ -178,11 +190,12 @@
                     <%=item.status%>
                 </td>
             </tr>
-        <% } %>
-        </tbody>
+            <% } %>
+            </tbody>
             </thead>
         </table>
-        <p class="bottom-note">应收回款=应收本金+应收收益+应收奖励-应缴服务费</p>
+        <p class="bottom-note" style="float: left">应收回款=应收本金+应收收益+应收奖励-应缴服务费</p>
+        <p class="bottom-note" style="color: #ff7200;float: right">备注：此投资项目回款将发放至联动优势资金托管账号</p>
     </div>
 </script>
 
@@ -208,8 +221,8 @@
             var item = records[i];
             %>
             <tr>
-                <td><%=item.repayDate%> </td>
-                <td class="tr"><%=item.expectedInterest%> </td>
+                <td><%=item.repayDate%></td>
+                <td class="tr"><%=item.expectedInterest%></td>
                 <td class="tr"><%=item.investExperienceAmount%></td>
                 <td class="tr spec-bg">
                     <%=item.actualInterest ? item.actualInterest : '--'%>
