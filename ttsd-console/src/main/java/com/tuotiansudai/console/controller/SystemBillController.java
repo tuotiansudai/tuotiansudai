@@ -5,6 +5,7 @@ import com.tuotiansudai.console.service.SystemBillService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,13 @@ public class SystemBillController {
         long sumIncome = systemBillService.findSumSystemIncome(
                 startTime,
                 endTime,
-                operationType,
+                SystemBillOperationType.IN,
                 businessType);
 
         long sumExpend = systemBillService.findSumSystemExpend(
                 startTime,
                 endTime,
-                operationType,
+                SystemBillOperationType.OUT,
                 businessType);
 
         long sumWin = sumIncome - sumExpend;

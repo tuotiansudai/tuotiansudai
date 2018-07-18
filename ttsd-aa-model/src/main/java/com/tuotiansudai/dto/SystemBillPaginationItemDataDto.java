@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.BankSystemBillModel;
 import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -10,7 +11,7 @@ public class SystemBillPaginationItemDataDto implements Serializable {
 
     private long id;
 
-    private Long orderId;
+    private String orderId;
 
     private String amount;
 
@@ -25,7 +26,16 @@ public class SystemBillPaginationItemDataDto implements Serializable {
 
     public SystemBillPaginationItemDataDto(SystemBillModel systemBillModel) {
         this.id = systemBillModel.getId();
-        this.orderId = systemBillModel.getOrderId();
+        this.orderId = String.valueOf(systemBillModel.getOrderId());
+        this.amount = AmountConverter.convertCentToString(systemBillModel.getAmount());
+        this.operationType = systemBillModel.getOperationType().getDescription();
+        this.businessType = systemBillModel.getBusinessType().getDescription();
+        this.detail = systemBillModel.getDetail();
+        this.createdTime = systemBillModel.getCreatedTime();
+    }
+    public SystemBillPaginationItemDataDto(BankSystemBillModel systemBillModel) {
+        this.id = systemBillModel.getId();
+        this.orderId = systemBillModel.getBankOrderNo();
         this.amount = AmountConverter.convertCentToString(systemBillModel.getAmount());
         this.operationType = systemBillModel.getOperationType().getDescription();
         this.businessType = systemBillModel.getBusinessType().getDescription();
@@ -41,11 +51,11 @@ public class SystemBillPaginationItemDataDto implements Serializable {
         this.id = id;
     }
 
-    public Long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

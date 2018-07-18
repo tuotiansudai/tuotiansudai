@@ -4,8 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.repository.mapper.BankSystemBillMapper;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.enums.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.BankSystemBillModel;
 import com.tuotiansudai.repository.model.SystemBillModel;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import java.util.List;
 public class SystemBillService {
 
     @Autowired
-    private SystemBillMapper systemBillMapper;
+    private BankSystemBillMapper bankSystemBillMapper;
 
 
     public BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> findSystemBillPagination(Date startTime,
@@ -37,11 +39,11 @@ public class SystemBillService {
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<SystemBillPaginationItemDataDto> systemBillPaginationItemDataDtos = Lists.newArrayList();
 
-        int count = systemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
+        int count = bankSystemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
 
-        List<SystemBillModel> systemBillModelList = systemBillMapper.findSystemBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
+        List<BankSystemBillModel> systemBillModelList = bankSystemBillMapper.findSystemBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
 
-        for (SystemBillModel model : systemBillModelList) {
+        for (BankSystemBillModel model : systemBillModelList) {
             SystemBillPaginationItemDataDto systemBillDto = new SystemBillPaginationItemDataDto(model);
             systemBillPaginationItemDataDtos.add(systemBillDto);
         }
@@ -56,7 +58,7 @@ public class SystemBillService {
                                     Date endTime,
                                     SystemBillOperationType operationType,
                                     SystemBillBusinessType businessType) {
-        return systemBillMapper.findSumSystemIncome(startTime, endTime, operationType, businessType);
+        return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
     }
 
     public long findSumSystemExpend(Date startTime,
@@ -64,7 +66,7 @@ public class SystemBillService {
                                     SystemBillOperationType operationType,
                                     SystemBillBusinessType businessType) {
 
-        return systemBillMapper.findSumSystemExpend(startTime, endTime, operationType, businessType);
+        return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
     }
 
 }
