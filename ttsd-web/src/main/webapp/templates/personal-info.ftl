@@ -7,7 +7,7 @@
 >
     <h4 class="column-title"><em class="tc">个人资料</em>
         <div class="fr">
-            <div class="safety-notification"><span class="tip-title">联动优势资金账号</span><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
+            <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
                 <div class="notice-tips extra-rate-popup" style="display: none">
                     1.当前内容为富滇银行存管账号的资金信息;<br/>
                     2.应国家相关监管要求，拓天速贷已开通富滇银行存管服务;<br/>

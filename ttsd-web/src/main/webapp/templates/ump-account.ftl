@@ -32,15 +32,11 @@
                 </#if>
             </li>
 
-        <#--<#if identityNumber??>-->
             <li><span class="info-title"> 支付密码</span>
                 <em class="info">********</em>
                 <span class="binding-set">
-               <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
             </span>
             </li>
-        <#--</#if>-->
-
         </ul>
     </div>
     <div class="content-container">
@@ -48,43 +44,42 @@
         <div class="account-overview">
 
             <div class="column-box bg-w clearfix amount-sum">
-            <#--<h3><b>账户总额：</b><span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>-->
-                <h3><b>账户总额：</b><span>444.44元</span>
+                <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
                     <ul class="proList fr">
-                        <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
+                        <#if isLoaner><li class="fr"><a class="btn-normal" href="/recharge">充值</a></li></#if>
                         <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
                     </ul>
                 </h3>
             </div>
 
             <div class="column-box bg-w clearfix amount-sum ">
-                <h3><b>可用余额：</b><span>33元</span> <i class="icon-has-con"></i></h3>
+                <h3><b>可用余额：</b><span>${((balance/100)?string('0.00'))!}元</span> <i class="icon-has-con"></i></h3>
 
                 <ul class="detail-list">
-                    <li>提现冻结中：<span>3</span>元</li>
-                    <li>投资冻结中：<span>3</span>元</li>
+                    <li>提现冻结中：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
+                    <li>投资冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
                 </ul>
             </div>
 
             <div class="column-box bg-w clearfix amount-sum ">
-                <h3><b>累计收益：</b><span>3</span>元 <i class="icon-has-con"></i></h3>
+                <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元  <i class="icon-has-con"></i></h3>
                 <ul class="detail-list">
-                    <li>已收投资收益：<span>3</span>元</li>
-                    <li>已收投资奖励：<span>3</span>元</li>
-                    <li>已收推荐奖励：<span>3</span>元</li>
-                    <li>已收优惠券奖励：<span>3</span>元</li>
-                    <li>已收体验金奖励：<span>3</span>元</li>
+                    <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
+                    <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
+                    <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
+                    <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
+                    <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
                 </ul>
             </div>
 
             <div class="column-box bg-w clearfix amount-sum ">
-                <h3><b>待收回款：</b><span>3</span>元 <i class="icon-has-con"></i></h3>
+                <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
                 <ul class="detail-list">
-                    <li>待收投资本金：<span>3</span>元</li>
-                    <li>待收预期收益：<span>3</span>元</li>
-                    <li>待收投资奖励：<span>3</span>元</li>
-                    <li>待收优惠券奖励：<span>3</span>元</li>
-                    <li>待收体验金收益：<span>3</span>元</li>
+                    <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
+                    <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
+                    <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+                    <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
+                    <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
                 </ul>
             </div>
         </div>
@@ -93,14 +88,8 @@
         <h4 class="column-title"><em>资金管理</em></h4>
         <div class="money-box recharge-cash">
 
-
-        <#--<p><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">${rechargeAmount} </span></p>-->
-        <#--<p><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span class="money">${withdrawAmount} </span></p>-->
-
-            <p><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">33333333 </span>
-            </p>
-            <p class="cash-p"><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span
-                    class="money">33333333</span></p>
+        <p><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">${rechargeAmount} </span></p>
+        <p><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span class="money">${withdrawAmount} </span></p>
 
         </div>
 
@@ -130,7 +119,7 @@
 
         <div class="clear-blank"></div>
         <table class="user-bill-list table-striped"></table>
-        <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
+        <div class="pagination" data-url="/ump/account/user-bill-list-data" data-page-size="10"></div>
     </div>
     <div class="kindly-tip">
         <p class="title">温馨提示：</p>

@@ -190,4 +190,9 @@
             </if>
         </where>
     </select>
+
+    <select id="findSumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
 </mapper>
