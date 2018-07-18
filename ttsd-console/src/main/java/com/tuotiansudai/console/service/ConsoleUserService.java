@@ -504,7 +504,8 @@ public class ConsoleUserService {
             return Role.BANK_LOANER.equals(userItem.getRoleType());
         }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
 
-        bankCardMap.put(Role.INVESTOR, bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
+        bankCardMap.put(Role.INVESTOR, bankCardModel == null ? null : bankCardModel.getCardNumber());
         bankCardMap.put(Role.BANK_INVESTOR, bankCardNumberInvestor);
         bankCardMap.put(Role.BANK_LOANER, bankCardNumberLoaner);
         return bankCardMap;

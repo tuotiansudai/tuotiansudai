@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 @Service
 public class UmpAmountTransferService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AmountTransferService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UmpAmountTransferService.class);
 
     @Autowired
     private AccountMapper accountMapper;

@@ -12,7 +12,7 @@
         </h4>
         <ul class="info-list">
             <li><span class="info-title"> 实名认证</span>
-                <em class="info">dfdf</em>
+                <em class="info">${userName}</em>
                 <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
 
             </li>
@@ -46,7 +46,7 @@
             <div class="column-box bg-w clearfix amount-sum">
                 <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
                     <ul class="proList fr">
-                        <#if isLoaner><li class="fr"><a class="btn-normal" href="/recharge">充值</a></li></#if>
+                        <#if isLoaner><li class="fr"><a class="btn-normal" href="/ump/recharge">充值</a></li></#if>
                         <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
                     </ul>
                 </h3>

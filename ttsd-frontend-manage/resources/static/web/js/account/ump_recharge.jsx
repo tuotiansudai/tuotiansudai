@@ -1,5 +1,12 @@
 require('webStyle/account/ump_bind_card.scss');
 require('webJs/plugins/autoNumeric');
+var u = navigator.userAgent;
+var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
+var isIos = /(iPhone|iPad|iPod|iOS)/i.test(u);
+if (isInWeChat && isIos) {
+    $('#form1').removeAttr('target');
+    $('#form2').removeAttr('target');
+}
 var $rechargeCon = $(".recharge-bind-card"),
     $rechargeForm = $('.recharge-form', $rechargeCon),
     $fastRechargeForm = $(".fast-recharge-form", $rechargeCon),
@@ -111,5 +118,10 @@ $bankList.on('mouseover mouseout', function(event) {
     event.preventDefault();
     $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
 });
+
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
+
 
 
