@@ -1,3 +1,4 @@
+require('webStyle/ump_callback_success.scss');
 let commonFun= require('publicJs/commonFun');
 
 let $successBox= $('#successBox');
@@ -7,6 +8,6 @@ commonFun.countDownLoan({
     btnDom:$countTime,
     time:5
 },function() {
-    window.location.href = '/personal-info';
+    window.location.href = '/ump/account';
 });
 

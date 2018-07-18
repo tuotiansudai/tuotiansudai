@@ -21,21 +21,17 @@ public class FrontUmpCallBackController {
 
     static Logger logger = Logger.getLogger(FrontUmpCallBackController.class);
 
-    private final BankWrapperClient bankWrapperClient;
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
-    public FrontUmpCallBackController(BankWrapperClient bankWrapperClient){
-        this.bankWrapperClient = bankWrapperClient;
-    }
-
-    @RequestMapping(value = "/{service}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{umpCallbackType}", method = RequestMethod.GET)
     public ModelAndView parseCallback(@PathVariable UmpCallbackType umpCallbackType, HttpServletRequest request) {
         logger.info(MessageFormat.format("ump front callback url: {0}", request.getRequestURL()));
         Map<String, String> params = parseRequestParameters(request);
         Boolean isSuccess = bankWrapperClient.isUmpCallbackSuccess(params);
-        if (isSuccess){
-            return new ModelAndView("/front-callback-success").addObject("umpCallbackType", umpCallbackType);
+        if (isSuccess == null || !isSuccess){
+            return new ModelAndView("/error/404");
         }
-        return new ModelAndView("/front-callback-fail").addObject("umpCallbackType", umpCallbackType);
+        return new ModelAndView("/ump-front-callback-success").addObject("umpCallbackType", umpCallbackType);
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
