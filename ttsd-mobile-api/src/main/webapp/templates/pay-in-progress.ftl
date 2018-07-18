@@ -25,25 +25,25 @@
     </form>
 </div>
 
-<script>
-    countDown($('#secondsCountDown'),5,function () {
-        $("#isPaySuccess").submit();
+<script type="text/javascript">
+    countDown('#secondsCountDown',5,function () {
+        document.getElementById("#isPaySuccess").submit();
     });
     function countDown(dom,time,callback){
-        var downtimer;
+        var downtimer = null;
         var countDownStart=function(){
 
-            if(time==0) {
+            if(time*1===0) {
                 //结束倒计时
                 clearInterval(downtimer);
                 callback && callback();
             } else {
-                time = time-1;
-                dom.text(time);
+                time = time*1-1;
+                document.getElementById(dom).innerHTML = time
             }
 
         }
-        if(time>0) {
+        if(time*1>0) {
             downtimer=setInterval( function() {
                 countDownStart();
             },1000);
