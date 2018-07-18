@@ -85,8 +85,9 @@ public class InvestRepaySuccessService {
                             BankUserBillBusinessType.INVEST_FEE)));
 
             mqWrapperClient.sendMessage(MessageQueue.SystemBill,
-                    new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                            investRepayModel.getId(),
+                    new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
                             investRepayModel.getActualFee(),
                             SystemBillBusinessType.INVEST_FEE,
                             MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId()))));
@@ -158,9 +159,10 @@ public class InvestRepaySuccessService {
                             BankUserBillOperationType.OUT,
                             BankUserBillBusinessType.INVEST_FEE)));
 
-            mqWrapperClient.sendMessage(MessageQueue.SystemBill,
-                    new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                            investRepayModel.getId(),
+            mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
+                    new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            bankLoanCallbackMessage.getBankOrderNo(),
+                            bankLoanCallbackMessage.getBankOrderDate(),
                             investRepayModel.getActualFee(),
                             SystemBillBusinessType.INVEST_FEE,
                             MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanRepayModel.getId()))));

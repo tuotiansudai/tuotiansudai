@@ -9,7 +9,7 @@ public class BankSystemBillMessage {
 
     private String bankOrderNo;
 
-    private String BankOrderDate;
+    private String bankOrderDate;
 
     private long amount;
 
@@ -20,11 +20,12 @@ public class BankSystemBillMessage {
     public BankSystemBillMessage() {
     }
 
-    public BankSystemBillMessage(SystemBillMessageType messageType, String bankOrderNo, long amount, SystemBillBusinessType businessType, String detail) {
+    public BankSystemBillMessage(SystemBillMessageType messageType, String bankOrderNo,String bankOrderDate, long amount, SystemBillBusinessType businessType, String detail) {
         this.messageType = messageType;
         this.bankOrderNo = bankOrderNo;
         this.amount = amount;
         this.businessType = businessType;
+        this.bankOrderDate=bankOrderDate;
         this.detail = detail;
     }
 
@@ -69,10 +70,10 @@ public class BankSystemBillMessage {
     }
 
     public String getBankOrderDate() {
-        return BankOrderDate;
+        return bankOrderDate;
     }
 
     public void setBankOrderDate(String bankOrderDate) {
-        BankOrderDate = bankOrderDate;
+        this.bankOrderDate = bankOrderDate;
     }
 }

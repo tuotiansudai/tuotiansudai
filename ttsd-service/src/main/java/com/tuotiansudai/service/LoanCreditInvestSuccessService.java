@@ -119,9 +119,10 @@ public class LoanCreditInvestSuccessService {
 
         //系统账户收取手续费
         mqWrapperClient.sendMessage(MessageQueue.SystemBill,
-                new SystemBillMessage(
+                new BankSystemBillMessage(
                         SystemBillMessageType.TRANSFER_IN,
-                        transferApplicationModel.getId(),
+                        bankLoanCreditInvestMessage.getBankOrderNo(),
+                        bankLoanCreditInvestMessage.getBankOrderDate(),
                         transferApplicationModel.getTransferFee(),
                         SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferApplicationModel.getTransferFee()))));

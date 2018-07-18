@@ -17,8 +17,8 @@
 
 
     <insert id="create" parameterType="BankSystemBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_system_bill ( amount, detail, operation_type, created_time, order_id, business_type)
-        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType})
+        insert into bank_system_bill (amount, detail, operation_type, created_time, bank_order_no,bank_order_date, business_type)
+        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{bankOrderNo},#{bank_order_date},#{businessType})
     </insert>
 
     <select id="findSystemBillPagination" parameterType="map" resultMap="bankSystemBillResultMap">
