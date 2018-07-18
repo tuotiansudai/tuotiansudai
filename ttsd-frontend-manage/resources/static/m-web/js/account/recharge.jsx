@@ -6,6 +6,9 @@ require('webJs/plugins/autoNumeric');
 let $cashMoneyConatiner = $('#cashMoneyConatiner'),
 	$goBackIcon=$('#goBackIcon'),
 	$cashMoney=$('#cashMoney');
+let $limitMoney = $('#limitMoney');
+let limitMoney = parseFloat(currencyToNumber($limitMoney.val()));
+
 
 
 $goBackIcon.on('click', function (event) {
@@ -22,3 +25,20 @@ $cashMoney.keyup(function () {
         $('#toCash').prop('disabled',false).text('确定提交');
     }
 });
+$('#toCash').on('click',function (e) {
+    e.preventDefault();
+    var amount = parseFloat($cashMoney.autoNumeric("get"));
+    if(isNaN(amount) || amount < 1){
+        return;
+    }
+    else if(amount>limitMoney){
+        layer.msg('今日充值总额已超限')
+        return;
+    }else {
+        $('#rechargeForm').submit()
+    }
+
+})
+function currencyToNumber(s){
+    return s.replace(/,/g,"");
+}
