@@ -45,16 +45,31 @@ public interface UserMapperConsole {
                                   @Param(value = "mobile") String mobile,
                                   @Param(value = "identityNumber") String identityNumber);
 
-    long findUsersAccountBalanceSum(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceSum(@Param(value = "role") Role role,
+                                    @Param(value = "mobile") String mobile,
                                     @Param(value = "balanceMin") long balanceMin,
                                     @Param(value = "balanceMax") long balanceMax);
 
+    long findUsersAccountBalanceSumUMP(@Param(value = "mobile") String mobile,
+                                    @Param(value = "balanceMin") long balanceMin,
+                                    @Param(value = "balanceMax") long balanceMax);
 
-    long findUsersAccountBalanceCount(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceCount(@Param(value = "role") Role role,
+                                      @Param(value = "mobile") String mobile,
                                       @Param(value = "balanceMin") long balanceMin,
                                       @Param(value = "balanceMax") long balanceMax);
 
-    List<UserView> findUsersAccountBalance(@Param(value = "mobile") String mobile,
+    long findUsersAccountBalanceCountUMP(@Param(value = "mobile") String mobile,
+                                      @Param(value = "balanceMin") long balanceMin,
+                                      @Param(value = "balanceMax") long balanceMax);
+
+    List<UserView> findUsersAccountBalance(@Param(value = "role")Role role,
+                                           @Param(value = "mobile") String mobile,
+                                           @Param(value = "balanceMin") long balanceMin,
+                                           @Param(value = "balanceMax") long balanceMax,
+                                           @Param(value = "startLimit") Integer startLimit,
+                                           @Param(value = "endLimit") Integer endLimit);
+    List<UserView> findUsersAccountBalanceUMP(@Param(value = "mobile") String mobile,
                                            @Param(value = "balanceMin") long balanceMin,
                                            @Param(value = "balanceMax") long balanceMax,
                                            @Param(value = "startLimit") Integer startLimit,

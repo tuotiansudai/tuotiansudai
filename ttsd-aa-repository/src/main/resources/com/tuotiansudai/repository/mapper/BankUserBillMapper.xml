@@ -32,7 +32,7 @@
             <if test="loginName != null">
                 AND login_name = #{loginName}
             </if>
-            <if test="mobile != null">
+            <if test="mobile != null and mobile != ''">
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">
@@ -62,7 +62,7 @@
             <if test="loginName != null">
                 AND login_name = #{loginName}
             </if>
-            <if test="mobile != null">
+            <if test="mobile != null and mobile != ''">
                 AND mobile = #{mobile}
             </if>
             <if test="businessTypes != null and businessTypes.size != 0">

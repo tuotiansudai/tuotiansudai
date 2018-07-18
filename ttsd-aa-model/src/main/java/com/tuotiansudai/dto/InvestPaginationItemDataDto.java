@@ -1,10 +1,7 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.InvestPaginationItemView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -37,6 +34,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
+    private Boolean isBankPlatform;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -61,6 +59,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.province = view.getProvince();
         this.city = view.getCity();
         this.identityNumber = view.getIdentityNumber();
+        this.isBankPlatform=view.getIsBankPlatform();
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -286,4 +285,15 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.identityNumber = identityNumber;
     }
 
+    public void setCouponActualInterest(String couponActualInterest) {
+        this.couponActualInterest = couponActualInterest;
+    }
+
+    public Boolean getIsBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setIsBankPlatform(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
+    }
 }

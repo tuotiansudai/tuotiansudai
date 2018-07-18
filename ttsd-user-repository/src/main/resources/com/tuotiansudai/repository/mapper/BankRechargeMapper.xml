@@ -57,19 +57,6 @@
         <if test="mobile !=null and mobile != '' ">
             and user.mobile = #{mobile}
         </if>
-        <if test="role != '' and role != 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON recharge.login_name = temp_role.login_name
-        </if>
-
-        <if test="role != '' and role == 'UN_LOANER' ">
-            join (SELECT
-            login_name, GROUP_CONCAT(role) AS role
-            FROM
-            user_role
-            GROUP BY login_name) ur
-            ON ur.login_name = recharge.login_name
-            AND ur.role NOT LIKE '%LOANER%'
-        </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
                 recharge.id = #{rechargeId}
@@ -89,30 +76,16 @@
             <if test="channel !=null and channel != ''">
                 and recharge.channel  = #{channel}
             </if>
+            <if test="role !=null">
+                and recharge.role_type  = #{role}
+            </if>
         </where>
-    </select>
-
-    <select id="findAllChannels" resultType="java.lang.String">
-        select distinct channel from bank_recharge where channel is not NULL
     </select>
 
     <select id="findSumRechargeAmount" parameterType="map" resultType="long">
         select IFNULL(sum(re.amount),0) as amount from bank_recharge re join user u on re.login_name = u.login_name
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
-        </if>
-        <if test="role != null and role != '' and role != 'UN_LOANER' ">
-            join user_role ur on re.login_name = ur.login_name and ur.role = #{role}
-        </if>
-
-        <if test="role != null and role == 'UN_LOANER' ">
-            join (SELECT
-            login_name, GROUP_CONCAT(role) AS role
-            FROM
-            user_role
-            GROUP BY login_name) ur
-            ON ur.login_name = re.login_name
-            AND ur.role NOT LIKE '%LOANER%'
         </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
@@ -133,6 +106,9 @@
             <if test="channel !=null and channel != ''">
                 and re.channel  = #{channel}
             </if>
+            <if test="role !=null">
+                and re.role_type  = #{role}
+            </if>
         </where>
     </select>
 
@@ -141,20 +117,6 @@
         IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role in ('SD_STAFF', 'ZC_STAFF')),0) as is_staff
         from bank_recharge r
         JOIN `user` u on r.login_name = u.login_name
-        <if test="role != '' and role != 'UN_LOANER' ">
-            JOIN (SELECT login_name FROM `user_role` WHERE role = #{role}) temp_role ON r.login_name = temp_role.login_name
-        </if>
-
-        <if test="role != null and role == 'UN_LOANER' ">
-            join (SELECT
-            login_name, GROUP_CONCAT(role) AS role
-            FROM
-            user_role
-            GROUP BY login_name) ur
-            ON ur.login_name = r.login_name
-            AND ur.role NOT LIKE '%LOANER%'
-        </if>
-
         <if test="mobile !=null and mobile != '' ">
             and u.mobile = #{mobile}
         </if>
@@ -176,6 +138,9 @@
             </if>
             <if test="channel !=null and channel != ''">
                 and r.channel  = #{channel}
+            </if>
+            <if test="role !=null">
+                and r.role_type  = #{role}
             </if>
         </where>
         order by r.created_time desc

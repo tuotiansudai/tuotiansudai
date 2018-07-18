@@ -219,6 +219,11 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     private String estimate;
 
+    /**
+     *资金平台
+     */
+    private boolean isBankPlatform;//资金平台
+
     public LoanDto() {
     }
 
@@ -557,5 +562,13 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setEstimate(String estimate) {
         this.estimate = estimate;
+    }
+
+    public Boolean getIsBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setIsBankPlatForm(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
     }
 }
