@@ -30,10 +30,6 @@
     height:30px;
     background: url('../../images/bank/bankdefault.png') left top no-repeat;
     background-size: 100%;
-    &.BANK-100 {
-      background: url('../../images/bank/BANK-100.png') left top no-repeat;
-      background-size: 100%;
-    }
     &.BANK-102 {
       background: url('../../images/bank/BANK-102.png') left top no-repeat;
       background-size: 100%;
@@ -42,7 +38,7 @@
       background: url('../../images/bank/BANK-103.png') left top no-repeat;
       background-size: 100%;
     }
-    &.BANK-104 {
+    &.BANK-104{
       background: url('../../images/bank/BANK-104.png') left top no-repeat;
       background-size: 100%;
     }
@@ -52,6 +48,10 @@
     }
     &.BANK-301 {
       background: url('../../images/bank/BANK-301.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.BANK-100 {
+      background: url('../../images/bank/BANK-100.png') left top no-repeat;
       background-size: 100%;
     }
     &.BANK-302 {
@@ -70,10 +70,10 @@
       background: url('../../images/bank/BANK-305.png') left top no-repeat;
       background-size: 100%;
     }
-    //&.BANK-306 {
-    //  background: url('../../images/bank/BANK-306.png') left top no-repeat;
-    //  background-size: 100%;
-    //}
+    &.BANK-306 {
+      background: url('../../images/bank/BANK-306.png') left top no-repeat;
+      background-size: 100%;
+    }
     &.BANK-307 {
       background: url('../../images/bank/BANK-307.png') left top no-repeat;
       background-size: 100%;
@@ -90,14 +90,14 @@
       background: url('../../images/bank/BANK-310.png') left top no-repeat;
       background-size: 100%;
     }
-    //&.BANK-311 {
-    //  background: url('../../images/bank/BANK-311.png') left top no-repeat;
-    //  background-size: 100%;
-    //}
-    //&.BANK-466 {
-    //  background: url('../../images/bank/BANK-466.png') left top no-repeat;
-    //  background-size: 100%;
-    //}
+    &.BANK-311 {
+      background: url('../../images/bank/BANK-311.png') left top no-repeat;
+      background-size: 100%;
+    }
+    &.BANK-313 {
+      background: url('../../images/bank/BANK-313.png') left top no-repeat;
+      background-size: 100%;
+    }
   }
 
   li {

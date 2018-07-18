@@ -25,6 +25,7 @@ dependencies {
     def springBootVersion = '2.0.1.RELEASE'
 
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion")
     compile("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
@@ -36,12 +37,15 @@ dependencies {
     compile('mysql:mysql-connector-java:8.0.11')
     compile('org.redisson:redisson:3.6.5')
     compile('joda-time:joda-time:2.10')
+    compile('com.jcraft:jsch:0.1.54')
+    compile('com.aliyun.oss:aliyun-sdk-oss:3.1.0')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
     compile project(':ttsd-fudian-bank-dto')
     compile project(':ttsd-etcd')
     compile project(':ttsd-mq-client')
+    compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
 task renameWar {

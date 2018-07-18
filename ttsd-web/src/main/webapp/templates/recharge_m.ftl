@@ -6,7 +6,7 @@
     <div class="m-header"><em class="icon-left" id="goBackIcon"><i></i></em>充值</div>
     <ul class="bank-list">
         <li>
-            <i class="icon-bank bank ${bankCard.bankCode}"></i>
+            <i class="icon-bank bank BANK-${bankCard.bankCode}"></i>
             <span class="bank-show">
                 <em>${bankCard.bank}</em>
             ${bankCard.cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}

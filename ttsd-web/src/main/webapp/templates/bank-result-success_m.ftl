@@ -9,7 +9,7 @@
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
-                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+                <p class="desc"> ${bankCallbackType.getTitle()}成功</p>
             </div>
 
         </div>
@@ -23,7 +23,7 @@
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
-                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+                <p class="desc"> ${bankCallbackType.getTitle()}成功</p>
             </div>
 
         </div>
@@ -51,7 +51,7 @@
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
-                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+                <p class="desc"> ${bankCallbackType.getTitle()}成功</p>
             </div>
 
         </div>
@@ -66,7 +66,7 @@
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
-                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+                <p class="desc"> ${bankCallbackType.getTitle()}成功</p>
             </div>
 
         </div>
@@ -80,7 +80,7 @@
         <div class="info-container">
             <div class="status-container">
                 <div class="icon-status icon-success"></div>
-                <p class="desc"> ${bankCallbackType.getTitle()}</p>
+                <p class="desc"> ${bankCallbackType.getTitle()}成功</p>
             </div>
 
         </div>
