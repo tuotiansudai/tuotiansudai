@@ -2,7 +2,6 @@ package com.tuotiansudai.fudian.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.fudian.umpservice.*;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import com.umpay.api.exception.VerifyException;
@@ -45,7 +44,7 @@ public class UmpCallbackController {
 
     private final UmpExperienceRepayService umpExperienceRepayService;
 
-    private final UmpInvestRepayFeeService umpInvestRepayFeeService;
+    private final UmpLoanRepayFeeService umpLoanRepayFeeService;
 
     private final UmpUtils umpUtils;
 
@@ -54,7 +53,7 @@ public class UmpCallbackController {
                                  UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
                                  UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
                                  UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                 UmpExperienceRepayService umpExperienceRepayService, UmpInvestRepayFeeService umpInvestRepayFeeService,
+                                 UmpExperienceRepayService umpExperienceRepayService, UmpLoanRepayFeeService umpLoanRepayFeeService,
                                  UmpUtils umpUtils){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
@@ -65,8 +64,9 @@ public class UmpCallbackController {
         this.umpCouponRepayService = umpCouponRepayService;
         this.umpExtraRateRepayService = umpExtraRateRepayService;
         this.umpExperienceRepayService = umpExperienceRepayService;
-        this.umpInvestRepayFeeService = umpInvestRepayFeeService;
+        this.umpLoanRepayFeeService = umpLoanRepayFeeService;
         this.umpUtils = umpUtils;
+
     }
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
@@ -143,14 +143,14 @@ public class UmpCallbackController {
     @RequestMapping(value = "/normal_repay_invest_fee_notify", method = RequestMethod.GET)
     public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        String responseData = umpLoanRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
     @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)
     public ModelAndView advanceRepayInvestFeeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = umpInvestRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
+        String responseData = umpLoanRepayFeeService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

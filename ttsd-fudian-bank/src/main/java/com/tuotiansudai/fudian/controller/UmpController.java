@@ -5,10 +5,12 @@ import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.*;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.fudian.umpdto.*;
 import com.tuotiansudai.fudian.umpservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,82 +28,53 @@ public class UmpController {
 
     private final UmpLoanRepayService umpLoanRepayService;
 
-    private final UmpInvestRepayService umpInvestRepayService;
-
-    private final UmpInvestRepayFeeService umpInvestRepayFeeService;
-
-    private final UmpCouponRepayService umpCouponRepayService;
-
-    private final UmpExtraRateRepayService umpExtraRateRepayService;
+    private final UmpExperienceRepayService umpExperienceRepayService;
 
     @Autowired
     public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
                          UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService,
-                         UmpLoanRepayService umpLoanRepayService, UmpInvestRepayService umpInvestRepayService,
-                         UmpInvestRepayFeeService umpInvestRepayFeeService, UmpCouponRepayService umpCouponRepayService,
-                         UmpExtraRateRepayService umpExtraRateRepayService){
+                         UmpLoanRepayService umpLoanRepayService, UmpExperienceRepayService umpExperienceRepayService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
-        this.umpInvestRepayService = umpInvestRepayService;
-        this.umpInvestRepayFeeService = umpInvestRepayFeeService;
-        this.umpCouponRepayService = umpCouponRepayService;
-        this.umpExtraRateRepayService = umpExtraRateRepayService;
+        this.umpExperienceRepayService = umpExperienceRepayService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> bindCard(){
-        PtpMerBindCardRequestModel model = umpBindCardService.bindCard(null, 0, null, null, null, null, true);
+    public ResponseEntity<UmpAsyncMessage> bindCard(@RequestBody UmpBindCardDto dto){
+        PtpMerBindCardRequestModel model = umpBindCardService.bindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/replace-bind-card", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> replaceBindCard(){
-        PtpMerReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(null, 0, null, null, null, null);
+    public ResponseEntity<UmpAsyncMessage> replaceBindCard(@RequestBody UmpReplaceBindCardDto dto){
+        PtpMerReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> recharge(){
-        MerRechargePersonRequestModel model = umpRechargeService.recharge("sidneygao", "UB201504161125550000000003661819", true, 1231239, 1, "ICBC");
+    public ResponseEntity<UmpAsyncMessage> recharge(@RequestBody UmpRechargeDto dto){
+        MerRechargePersonRequestModel model = umpRechargeService.recharge(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> withdraw(){
-        CustWithdrawalsRequestModel model = umpWithdrawService.withdraw("sidneygao", "UB201710111613550000000022517516", 12312312, 100);
+    public ResponseEntity<UmpAsyncMessage> withdraw(@RequestBody UmpWithdrawDto dto){
+        CustWithdrawalsRequestModel model = umpWithdrawService.withdraw(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/loan-repay", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> loanRepay(){
-        ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(null, null, 0, 0, 0, false);
+    public ResponseEntity<UmpAsyncMessage> loanRepay(@RequestBody UmpLoanRepayDto dto){
+        ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
-    @RequestMapping(value = "/invest-repay", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> investRepay(){
-        BankBaseMessage message = umpInvestRepayService.investRepay(0, 0, "asd", 0, false);
-        return ResponseEntity.ok(message);
-    }
-
-    @RequestMapping(value = "/invest-repay-fee", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> investRepayFee(){
-        BankBaseMessage message = umpInvestRepayFeeService.investRepayFee(0, 0, 0, true);
-        return ResponseEntity.ok(message);
-    }
-
-    @RequestMapping(value = "/coupon-repay", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> couponRepay(){
-        BankBaseMessage message = umpCouponRepayService.couponRepay(0, "", "", 0);
-        return ResponseEntity.ok(message);
-    }
-
-    @RequestMapping(value = "/extra-rate-repay", method = RequestMethod.POST)
-    public ResponseEntity<BankBaseMessage> extraRateRepay(){
-        BankBaseMessage message = umpExtraRateRepayService.extraRateRepay(0, "", "", 0);
+    @RequestMapping(value = "/experience-repay", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> experienceRepay(@RequestBody UmpExperienceRepayDto dto){
+        BankBaseMessage message = umpExperienceRepayService.experienceRepay(dto);
         return ResponseEntity.ok(message);
     }
 

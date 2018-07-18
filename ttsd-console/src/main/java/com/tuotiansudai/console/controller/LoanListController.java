@@ -62,22 +62,24 @@ public class LoanListController {
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
 
+
     public static final String LOAN_CONTRACT_IN_CREATING_KEY = "loanContractInCreating:";
 
     public static final String TRANSFER_CONTRACT_IN_CREATING_KEY = "transferContractInCreating:";
 
     @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
+    public ModelAndView ConsoleLoanList(@RequestParam(value = "isBankPlatform", required = false, defaultValue = "true") Boolean isBankPlatform,
+                                        @RequestParam(value = "status", required = false) LoanStatus status,
                                         @RequestParam(value = "loanId", required = false) Long loanId,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName) {
         int pageSize = 10;
-        int loanListCount = consoleLoanService.findLoanListCount(status, loanId, loanName,
+        int loanListCount = consoleLoanService.findLoanListCount(isBankPlatform, status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
-        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(status, loanId, loanName,
+        List<LoanListDto> loanListDtos = consoleLoanService.findLoanList(isBankPlatform, status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize);
@@ -97,9 +99,9 @@ public class LoanListController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("loanStatusList", LoanStatus.values());
+        modelAndView.addObject("isBankPlatform", isBankPlatform);
         return modelAndView;
     }
-
 
     @RequestMapping(value = "/contract", method = RequestMethod.GET)
     public ModelAndView contract() {
@@ -209,4 +211,5 @@ public class LoanListController {
 
         return anxinWrapperClient.queryContract(new AnxinQueryContractDto(businessId, anxinContractType));
     }
+
 }

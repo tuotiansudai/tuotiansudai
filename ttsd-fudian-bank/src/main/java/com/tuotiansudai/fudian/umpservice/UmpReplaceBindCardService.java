@@ -6,6 +6,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.ump.asyn.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.PtpMerReplaceCardRequestModel;
+import com.tuotiansudai.fudian.umpdto.UmpReplaceBindCardDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,12 @@ public class UmpReplaceBindCardService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public PtpMerReplaceCardRequestModel replaceBindCard(String loginName, long bankCardModelId, String payUserId, String cardNumber, String userName, String identityNumber) {
-        PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(bankCardModelId),
-                cardNumber,
-                payUserId,
-                userName,
-                identityNumber);
+    public PtpMerReplaceCardRequestModel replaceBindCard(UmpReplaceBindCardDto dto) {
+        PtpMerReplaceCardRequestModel requestModel = new PtpMerReplaceCardRequestModel(String.valueOf(dto.getBankCardModelId()),
+                dto.getCardNumber(),
+                dto.getPayUserId(),
+                dto.getUserName(),
+                dto.getIdentityNumber());
 
         umpUtils.sign(requestModel);
 

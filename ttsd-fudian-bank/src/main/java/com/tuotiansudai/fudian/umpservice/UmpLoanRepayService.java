@@ -5,6 +5,7 @@ import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
 import com.tuotiansudai.fudian.ump.asyn.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
+import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
 import com.tuotiansudai.fudian.util.UmpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +36,12 @@ public class UmpLoanRepayService {
         this.insertNotifyMapper = insertNotifyMapper;
     }
 
-    public ProjectTransferRequestModel loanRepay(String loginName, String payUserId, long loanId, long loanRepayId, long amount, boolean isAdvanceRepay) {
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
-                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime())),
-                payUserId,
-                String.valueOf(amount),
-                isAdvanceRepay);
+    public ProjectTransferRequestModel loanRepay(UmpLoanRepayDto dto) {
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(dto.getLoanId()),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getLoanRepayId()), String.valueOf(new Date().getTime())),
+                dto.getPayUserId(),
+                String.valueOf(dto.getAmount()),
+                dto.isAdvanceRepay());
 
         umpUtils.sign(requestModel);
 

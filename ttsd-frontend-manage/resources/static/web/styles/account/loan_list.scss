@@ -297,7 +297,7 @@
       }
       span.icon-list{
         position: absolute;
-        width: 60px;
+        width: 100px;
         height: 20px;
         left: 0;
         top: 50%;
@@ -311,6 +311,24 @@
           height: 20px;
           background: url("../../images/sign/icon_result.png") no-repeat;
           background-position: 0px 0px;
+        }
+        .fudian-icon {
+          float: left;
+          width: 30px;
+          height: 16px;
+          text-align: center;
+          line-height: 16px;
+          color: #ff7200;
+          border: 1px solid #ff7200;
+        }
+        .liandong-icon {
+          float: left;
+          width: 30px;
+          height: 16px;
+          text-align: center;
+          line-height: 16px;
+          color: #ff7200;
+          border: 1px solid #ff7200;
         }
         .coupon-icon {
           float: left;
@@ -468,4 +486,64 @@
 .btn-success {
  padding:8px 26px;
 }
+
+.safety-notification {
+  position: relative;
+  margin-right: 42px;
+  .tip-title {
+    background: #ff7200;
+    color: #fff;
+    padding-right: 16px;
+    padding-left: 16px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  i {
+    position: absolute;
+    color: #ff752a;
+    top: 10px;
+    right: -26px;
+    cursor: pointer;
+    font-size: 18px;
+
+  }
+}
+
+
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  border: 1px solid #ffd4b2;
+  width: 400px;
+  text-align: center;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
+  }
+}
+.notice-tips {
+  padding: 10px;
+  text-align: left;
+  position: absolute;
+  right: -28px;
+  top: 33px;
+  strong {
+    color: #ff7200;
+    font-weight: normal;
+  }
+}
+
 
