@@ -50,8 +50,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
             index = 1;
         }
 
-        long count = bankWithdrawMapper.findWithdrawCount(null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null);
-        List<WithdrawPaginationView> views = bankWithdrawMapper.findWithdrawPagination(null,
+        long count = bankWithdrawMapper.findWithdrawCount(null,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null);
+        List<WithdrawPaginationView> views = bankWithdrawMapper.findWithdrawPagination(null,null,
                 requestDto.getBaseParam().getPhoneNum(), null, null, (index - 1) * pageSize, 10, null, null);
 
         List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = views.stream().map(view -> new WithdrawDetailResponseDataDto(view.getId(), view.getAmount(), view.getStatus(), view.getCreatedTime(), view.getUpdatedTime())).collect(Collectors.toList());
