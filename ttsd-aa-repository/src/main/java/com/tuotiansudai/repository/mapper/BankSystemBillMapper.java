@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface BankSystemBillMapper {
-
+    void create(BankSystemBillModel model);
 
     List<BankSystemBillModel> findSystemBillPagination(@Param(value = "startTime") Date startTime,
                                                        @Param(value = "endTime") Date endTime,

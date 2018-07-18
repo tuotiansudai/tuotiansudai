@@ -25,6 +25,19 @@ public class BankSystemBillModel implements Serializable {
 
     private Date createdTime;
 
+    public BankSystemBillModel() {
+    }
+
+    public BankSystemBillModel(String bankOrderNo, String bankOrderDate, long amount, SystemBillOperationType operationType, SystemBillBusinessType businessType, String detail) {
+        this.bankOrderNo = bankOrderNo;
+        this.bankOrderDate = bankOrderDate;
+        this.amount = amount;
+        this.operationType = operationType;
+        this.businessType = businessType;
+        this.detail = detail;
+        this.createdTime=new Date();
+    }
+
     public long getId() {
         return id;
     }

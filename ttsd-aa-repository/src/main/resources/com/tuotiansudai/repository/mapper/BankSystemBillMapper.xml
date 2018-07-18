@@ -15,10 +15,16 @@
         <result column="bank_order_date" property="bankOrderDate"></result>
     </resultMap>
 
+
+    <insert id="create" parameterType="BankSystemBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_system_bill ( amount, detail, operation_type, created_time, order_id, business_type)
+        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType})
+    </insert>
+
     <select id="findSystemBillPagination" parameterType="map" resultMap="bankSystemBillResultMap">
         select * from bank_system_bill
         <where>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
@@ -38,7 +44,7 @@
     <select id="findSystemBillCount" parameterType="map" resultType="int">
         select count(1) from bank_system_bill
         <where>
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
@@ -48,7 +54,7 @@
                 and operation_type = #{operationType}
             </if>
             <if test="businessType !=null">
-                and business_type  = #{businessType}
+                and business_type = #{businessType}
             </if>
         </where>
     </select>
@@ -57,7 +63,7 @@
         select IFNULL(SUM(amount), 0) as amount from bank_system_bill
         <where>
             operation_type = 'IN'
-            <if test="startTime !=null" >
+            <if test="startTime !=null">
                 and created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">

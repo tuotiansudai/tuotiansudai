@@ -41,10 +41,10 @@ public class BankSystemBillService {
 
         switch (messageType) {
             case TRANSFER_IN:
-                transferIn(orderId, amount, businessType, detail);
+                transferIn(bankOrderNo,bankOrderDate, amount, businessType, detail);
                 break;
             case TRANSFER_OUT:
-                transferOut(orderId, amount, businessType, detail);
+                transferOut(bankOrderNo,bankOrderDate, amount, businessType, detail);
                 break;
             default:
                 logger.error("system bill message type incorrect. message type:{0}", messageType);
@@ -53,12 +53,12 @@ public class BankSystemBillService {
     }
 
     private void transferOut(String bankOrderNo,String bankOrderDate, long amount, SystemBillBusinessType businessType, String detail) {
-        BankSystemBillModel bankSystemBillModel = new BankSystemBillModel(orderId, amount, SystemBillOperationType.OUT, businessType, detail);
+        BankSystemBillModel bankSystemBillModel = new BankSystemBillModel(bankOrderNo,bankOrderDate, amount, SystemBillOperationType.OUT, businessType, detail);
         bankSystemBillMapper.create(bankSystemBillModel);
     }
 
-    private void transferIn(String orderId, long amount, SystemBillBusinessType businessType, String detail) {
-        SystemBillModel systemBillModel = new SystemBillModel(orderId, amount, SystemBillOperationType.IN, businessType, detail);
+    private void transferIn(String bankOrderNo,String bankOrderDate, long amount, SystemBillBusinessType businessType, String detail) {
+        BankSystemBillModel bankSystemBillModel = new BankSystemBillModel(bankOrderNo,bankOrderDate, amount, SystemBillOperationType.IN, businessType, detail);
         bankSystemBillMapper.create(bankSystemBillModel);
     }
 }
