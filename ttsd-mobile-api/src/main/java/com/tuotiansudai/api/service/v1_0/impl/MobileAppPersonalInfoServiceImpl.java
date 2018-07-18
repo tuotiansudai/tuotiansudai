@@ -83,7 +83,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setFastPaymentEnable(true);
             personalInfoDataDto.setBankName(userBankCardModel.getBank());
             BankModel bankModel = bankMapper.findByBankCode(userBankCardModel.getBankCode());
-            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
             personalInfoDataDto.setSingleAmount(AmountConverter.convertCentToString(bankModel.getSingleAmount()));
             personalInfoDataDto.setSingleDayAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
             personalInfoDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));
