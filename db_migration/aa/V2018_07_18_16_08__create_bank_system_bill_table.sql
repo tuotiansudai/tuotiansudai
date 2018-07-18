@@ -8,7 +8,7 @@ CREATE TABLE `aa`.`bank_system_bill` (
   `bank_order_no`   VARCHAR(20)     NOT NULL ,
   `bank_order_date` VARCHAR(8)      NOT NULL,
   PRIMARY KEY (`id`),
-  index(`bank_order_no`)
+  INDEX INDEX_BANK_SYSTEM_BILL_BANK_ORDER_NO (bank_order_no)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
