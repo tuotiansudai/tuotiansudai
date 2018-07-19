@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping(value = "/ump/callback")
+@RequestMapping(value = "/ump/notify-url/callback")
 public class UmpCallbackController {
 
     static Logger logger = Logger.getLogger(UmpCallbackController.class);
@@ -184,7 +184,7 @@ public class UmpCallbackController {
             }
         } catch (VerifyException | IOException ignored) {
         }
-        return ResponseEntity.status(-1).build();
+        return ResponseEntity.badRequest().build();
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {

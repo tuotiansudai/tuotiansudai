@@ -16,7 +16,7 @@ import java.util.Enumeration;
 import java.util.Map;
 
 @Controller
-@RequestMapping(path = "/ump/callback")
+@RequestMapping(path = "/ump/return-url/callback")
 public class FrontUmpCallBackController {
 
     static Logger logger = Logger.getLogger(FrontUmpCallBackController.class);
