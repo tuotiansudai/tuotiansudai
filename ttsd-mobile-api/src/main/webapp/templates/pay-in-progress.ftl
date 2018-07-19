@@ -26,7 +26,7 @@
 </div>
 
 <script type="text/javascript">
-    countDown('#secondsCountDown',5,function () {
+    countDown('secondsCountDown',5,function () {
         document.getElementById("#isPaySuccess").submit();
     });
     function countDown(dom,time,callback){
