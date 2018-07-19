@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<#if (pay.data)??>
-    <#assign payData = pay.data>
+<#if (pay.fields)??>
 <head>
-    <#if payData.status>
+    <#if pay.status>
         <script type="text/javascript">
             window.onload=function()  {
                 document.getElementById('payForm').submit()
@@ -12,15 +11,14 @@
     </#if>
 </head>
 <body>
-
     <#if pay.status>
-    <form id="payForm" action="${pay.url}" method="post">
-        <#list pay.fields?keys as key>
-            <input type="hidden" name="${key}" value="${pay.fields[key]}"/>
-        </#list>
-    </form>
+        <form id="payForm" action="${pay.url}" method="post">
+            <#list pay.fields?keys as key>
+                <input type="hidden" name="${key}" value="${pay.fields[key]}"/>
+            </#list>
+        </form>
     <#else>
-    <p>${pay.message!}</p>
+        <p>${pay.message!}</p>
     </#if>
 </body>
 </#if>

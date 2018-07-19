@@ -7,18 +7,18 @@ public class UmpRechargeDto extends UmpBaseDto{
 
     private long amount;
 
-    private boolean isFastPay;
+    private boolean fastPay;
 
     private String bankCode;
 
     public UmpRechargeDto() {
     }
 
-    public UmpRechargeDto(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
+    public UmpRechargeDto(String loginName, String payUserId, long rechargeId, long amount, boolean fastPay, String bankCode) {
         super(loginName, payUserId);
         this.rechargeId = rechargeId;
         this.amount = amount;
-        this.isFastPay = isFastPay;
+        this.fastPay = fastPay;
         this.bankCode = bankCode;
     }
 
@@ -31,7 +31,7 @@ public class UmpRechargeDto extends UmpBaseDto{
     }
 
     public boolean isFastPay() {
-        return isFastPay;
+        return fastPay;
     }
 
     public String getBankCode() {
