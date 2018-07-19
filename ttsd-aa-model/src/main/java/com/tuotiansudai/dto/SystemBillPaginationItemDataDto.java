@@ -33,6 +33,7 @@ public class SystemBillPaginationItemDataDto implements Serializable {
         this.detail = systemBillModel.getDetail();
         this.createdTime = systemBillModel.getCreatedTime();
     }
+
     public SystemBillPaginationItemDataDto(BankSystemBillModel systemBillModel) {
         this.id = systemBillModel.getId();
         this.orderId = systemBillModel.getBankOrderNo();

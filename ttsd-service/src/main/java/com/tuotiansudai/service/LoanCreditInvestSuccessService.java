@@ -121,6 +121,7 @@ public class LoanCreditInvestSuccessService {
         mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
                 new BankSystemBillMessage(
                         SystemBillMessageType.TRANSFER_IN,
+                        transferApplicationId,
                         bankLoanCreditInvestMessage.getBankOrderNo(),
                         bankLoanCreditInvestMessage.getBankOrderDate(),
                         transferApplicationModel.getTransferFee(),

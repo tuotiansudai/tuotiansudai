@@ -86,6 +86,7 @@ public class InvestRepaySuccessService {
 
             mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
                     new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            investRepayModel.getId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
                             investRepayModel.getActualFee(),
@@ -161,6 +162,7 @@ public class InvestRepaySuccessService {
 
             mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
                     new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                            investRepayModel.getId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
                             investRepayModel.getActualFee(),

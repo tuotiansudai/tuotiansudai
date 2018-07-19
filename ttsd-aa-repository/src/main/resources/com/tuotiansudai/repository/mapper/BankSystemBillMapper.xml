@@ -13,12 +13,13 @@
         <result column="detail" property="detail"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="bank_order_date" property="bankOrderDate"></result>
+        <result column="business_id" property="businessId"></result>
     </resultMap>
 
 
     <insert id="create" parameterType="BankSystemBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_system_bill (amount, detail, operation_type, created_time, bank_order_no,bank_order_date, business_type)
-        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{bankOrderNo},#{bankOrderDate},#{businessType})
+        insert into bank_system_bill (business_id,amount, detail, operation_type, created_time, bank_order_no,bank_order_date, business_type)
+        value(#{businessId},#{amount}, #{detail}, #{operationType}, #{createdTime}, #{bankOrderNo},#{bankOrderDate},#{businessType})
     </insert>
 
     <select id="findSystemBillPagination" parameterType="map" resultMap="bankSystemBillResultMap">

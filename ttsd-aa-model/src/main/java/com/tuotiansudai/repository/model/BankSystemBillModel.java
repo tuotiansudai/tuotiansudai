@@ -11,6 +11,8 @@ import java.util.Date;
 public class BankSystemBillModel implements Serializable {
     private long id;
 
+    private long businessId;
+
     private String bankOrderNo;
 
     private String bankOrderDate;
@@ -28,14 +30,15 @@ public class BankSystemBillModel implements Serializable {
     public BankSystemBillModel() {
     }
 
-    public BankSystemBillModel(String bankOrderNo, String bankOrderDate, long amount, SystemBillOperationType operationType, SystemBillBusinessType businessType, String detail) {
+    public BankSystemBillModel(long businessId, String bankOrderNo, String bankOrderDate, long amount, SystemBillOperationType operationType, SystemBillBusinessType businessType, String detail) {
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
         this.amount = amount;
         this.operationType = operationType;
         this.businessType = businessType;
         this.detail = detail;
-        this.createdTime=new Date();
+        this.createdTime = new Date();
+        this.businessId = businessId;
     }
 
     public long getId() {
@@ -102,5 +105,11 @@ public class BankSystemBillModel implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public long getBusinessId() {
+        return businessId;
+    }
 
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
+    }
 }
