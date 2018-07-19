@@ -25,6 +25,7 @@ dependencies {
     def springBootVersion = '2.0.1.RELEASE'
 
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion")
     compile("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
@@ -44,6 +45,7 @@ dependencies {
     compile project(':ttsd-fudian-bank-dto')
     compile project(':ttsd-etcd')
     compile project(':ttsd-mq-client')
+    compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
 task renameWar {

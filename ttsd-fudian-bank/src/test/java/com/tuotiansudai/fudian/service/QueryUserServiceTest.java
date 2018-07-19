@@ -1,10 +1,8 @@
 package com.tuotiansudai.fudian.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.fudian.dto.request.LoanCallbackInvestItemRequestDto;
 import com.tuotiansudai.fudian.dto.response.LoanCallbackInvestItemContentDto;
-import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.mapper.fudian.UpdateMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
