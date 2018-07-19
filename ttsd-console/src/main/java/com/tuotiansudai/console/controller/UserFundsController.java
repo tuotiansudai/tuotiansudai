@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleUserBillService;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
@@ -28,7 +28,7 @@ public class UserFundsController {
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
     public ModelAndView userFunds(@RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
                                   @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
-                                  @RequestParam(value = "operationType", required = false) BankUserBillOperationType operationType,
+                                  @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                   @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
                                   @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
                                   @RequestParam(value = "mobile", required = false) String mobile,
@@ -56,7 +56,7 @@ public class UserFundsController {
         modelAndView.addObject("userBillModels", userBillModels);
         modelAndView.addObject("userFundsCount", userFundsCount);
         modelAndView.addObject("businessTypes", BankUserBillBusinessType.values());
-        modelAndView.addObject("operationTypes", BankUserBillOperationType.values());
+        modelAndView.addObject("operationTypes", BillOperationType.values());
         long totalPages = PaginationUtil.calculateMaxPage(userFundsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
