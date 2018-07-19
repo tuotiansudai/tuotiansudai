@@ -1,11 +1,9 @@
 package com.tuotiansudai.mq.consumer.amount;
 
 import com.tuotiansudai.message.BankSystemBillMessage;
-import com.tuotiansudai.message.SystemBillMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.mq.consumer.amount.service.BankSystemBillService;
-import com.tuotiansudai.mq.consumer.amount.service.SystemBillService;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,4 +37,5 @@ public class BankSystemBillMessageConsumer implements MessageConsumer {
         }
         logger.info("[SystemBill] receive message: {}: {} done.", this.queue(), message);
     }
+
 }

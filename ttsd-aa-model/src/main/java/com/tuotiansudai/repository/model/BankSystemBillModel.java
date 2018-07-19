@@ -101,4 +101,6 @@ public class BankSystemBillModel implements Serializable {
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
+
 }
