@@ -1,11 +1,12 @@
 package com.tuotiansudai.message;
 
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillMessageType;
 
 public class BankSystemBillMessage {
 
-    private SystemBillMessageType messageType;
+    private BillOperationType operationType;
 
     private long businessId;
 
@@ -22,23 +23,16 @@ public class BankSystemBillMessage {
     public BankSystemBillMessage() {
     }
 
-    public BankSystemBillMessage(SystemBillMessageType messageType,long businessId ,String bankOrderNo, String bankOrderDate, long amount, SystemBillBusinessType businessType, String detail) {
-        this.messageType = messageType;
+    public BankSystemBillMessage(BillOperationType operationType, long businessId, String bankOrderNo, String bankOrderDate, long amount, SystemBillBusinessType businessType, String detail) {
+        this.operationType = operationType;
         this.bankOrderNo = bankOrderNo;
         this.amount = amount;
         this.businessType = businessType;
         this.bankOrderDate = bankOrderDate;
         this.detail = detail;
-        this.businessId=businessId;
+        this.businessId = businessId;
     }
 
-    public SystemBillMessageType getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(SystemBillMessageType messageType) {
-        this.messageType = messageType;
-    }
 
     public long getAmount() {
         return amount;
@@ -86,5 +80,13 @@ public class BankSystemBillMessage {
 
     public void setBusinessId(long businessId) {
         this.businessId = businessId;
+    }
+
+    public BillOperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(BillOperationType operationType) {
+        this.operationType = operationType;
     }
 }

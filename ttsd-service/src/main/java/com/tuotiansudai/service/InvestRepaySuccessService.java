@@ -73,7 +73,7 @@ public class InvestRepaySuccessService {
                             bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest() + bankLoanCallbackMessage.getDefaultInterest(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
-                            BankUserBillOperationType.IN,
+                            BillOperationType.IN,
                             investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? BankUserBillBusinessType.NORMAL_REPAY : BankUserBillBusinessType.OVERDUE_REPAY),
                     new AmountTransferMessage(investRepayModel.getId(),
                             investModel.getLoginName(),
@@ -81,11 +81,11 @@ public class InvestRepaySuccessService {
                             investRepayModel.getActualFee(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
-                            BankUserBillOperationType.OUT,
+                            BillOperationType.OUT,
                             BankUserBillBusinessType.INVEST_FEE)));
 
             mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
-                    new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                    new BankSystemBillMessage(BillOperationType.IN,
                             investRepayModel.getId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
@@ -149,7 +149,7 @@ public class InvestRepaySuccessService {
                             bankLoanCallbackMessage.getCorpus() + bankLoanCallbackMessage.getInterest(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
-                            BankUserBillOperationType.IN,
+                            BillOperationType.IN,
                             BankUserBillBusinessType.ADVANCE_REPAY),
                     new AmountTransferMessage(investRepayModel.getId(),
                             investModel.getLoginName(),
@@ -157,11 +157,12 @@ public class InvestRepaySuccessService {
                             bankLoanCallbackMessage.getInterestFee(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),
-                            BankUserBillOperationType.OUT,
+                            BillOperationType.OUT,
                             BankUserBillBusinessType.INVEST_FEE)));
 
             mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
-                    new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
+                    new BankSystemBillMessage(
+                            BillOperationType.IN,
                             investRepayModel.getId(),
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),

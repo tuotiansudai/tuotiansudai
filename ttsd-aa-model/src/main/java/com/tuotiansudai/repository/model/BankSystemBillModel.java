@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class BankSystemBillModel implements Serializable {
 
     private long amount;
 
-    private SystemBillOperationType operationType;
+    private BillOperationType operationType;
 
     private SystemBillBusinessType businessType;
 
@@ -30,7 +31,7 @@ public class BankSystemBillModel implements Serializable {
     public BankSystemBillModel() {
     }
 
-    public BankSystemBillModel(long businessId, String bankOrderNo, String bankOrderDate, long amount, SystemBillOperationType operationType, SystemBillBusinessType businessType, String detail) {
+    public BankSystemBillModel(long businessId, String bankOrderNo, String bankOrderDate, long amount, BillOperationType operationType, SystemBillBusinessType businessType, String detail) {
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
         this.amount = amount;
@@ -73,11 +74,11 @@ public class BankSystemBillModel implements Serializable {
         this.amount = amount;
     }
 
-    public SystemBillOperationType getOperationType() {
+    public BillOperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(SystemBillOperationType operationType) {
+    public void setOperationType(BillOperationType operationType) {
         this.operationType = operationType;
     }
 

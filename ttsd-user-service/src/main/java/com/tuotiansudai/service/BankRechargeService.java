@@ -5,7 +5,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankRechargeMessage;
@@ -80,7 +80,7 @@ public class BankRechargeService {
                             bankRechargeModel.getAmount(),
                             bankRechargeMessage.getBankOrderNo(),
                             bankRechargeMessage.getBankOrderDate(),
-                            BankUserBillOperationType.IN,
+                            BillOperationType.IN,
                             BankUserBillBusinessType.RECHARGE_SUCCESS)));
         }
     }

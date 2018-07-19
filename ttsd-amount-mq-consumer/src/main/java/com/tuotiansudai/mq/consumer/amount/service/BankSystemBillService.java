@@ -1,5 +1,6 @@
 package com.tuotiansudai.mq.consumer.amount.service;
 
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.enums.SystemBillMessageType;
 import com.tuotiansudai.message.BankSystemBillMessage;
@@ -15,11 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 public class BankSystemBillService {
 
     private static final Logger logger = LoggerFactory.getLogger(BankSystemBillService.class);
+
+    public static Map<SystemBillMessageType,SystemBillOperationType> operationTypeMap=new HashMap<>(2);
+    static {
+        operationTypeMap.put(SystemBillMessageType.TRANSFER_IN,SystemBillOperationType.IN);
+        operationTypeMap.put(SystemBillMessageType.TRANSFER_OUT,SystemBillOperationType.OUT);
+    }
+
 
     @Autowired
     private BankSystemBillMapper bankSystemBillMapper;
@@ -28,32 +39,19 @@ public class BankSystemBillService {
     public void systemBillProcess(BankSystemBillMessage message) {
         logger.info("start bank system bill process, message");
 
-        SystemBillMessageType messageType = message.getMessageType();
+        BillOperationType operationType = message.getOperationType();
 
-        logger.info("system bill message type:{}, bankOrderNo:{},bankOrderDate:{}, businessType:{}, amount:{}", messageType,
+        logger.info("system bill message operationType:{}, bankOrderNo:{},bankOrderDate:{}, businessType:{}, amount:{}", operationType,
                 message.getBankOrderNo(), message.getBankOrderDate(), message.getBusinessType(), String.valueOf(message.getAmount()));
 
         String bankOrderNo = message.getBankOrderNo();
         long amount = message.getAmount();
         SystemBillBusinessType businessType = message.getBusinessType();
-        String detail = messageType.getDescription();
+        String detail = operationType.getDescription();
         String bankOrderDate = message.getBankOrderDate();
         long businuessId = message.getBusinessId();
-        switch (messageType) {
-            case TRANSFER_IN:
-                transfer(businuessId, bankOrderNo, bankOrderDate, amount, businessType, SystemBillOperationType.IN, detail);
-                break;
-            case TRANSFER_OUT:
-                transfer(businuessId, bankOrderNo, bankOrderDate, amount, businessType, SystemBillOperationType.OUT, detail);
-                break;
-            default:
-                logger.error("system bill message type incorrect. message type:{0}", messageType);
-                break;
-        }
-    }
-
-    private void transfer(long businessId, String bankOrderNo, String bankOrderDate, long amount, SystemBillBusinessType businessType, SystemBillOperationType operationType, String detail) {
-        BankSystemBillModel bankSystemBillModel = new BankSystemBillModel(businessId, bankOrderNo, bankOrderDate, amount, operationType, businessType, detail);
+        BankSystemBillModel bankSystemBillModel = new BankSystemBillModel(businuessId, bankOrderNo, bankOrderDate, amount, operationType, businessType, detail);
         bankSystemBillMapper.create(bankSystemBillModel);
     }
+
 }

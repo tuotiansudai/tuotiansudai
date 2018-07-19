@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.repository.mapper.BankSystemBillMapper;
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
 import com.tuotiansudai.enums.SystemBillBusinessType;
@@ -25,7 +26,7 @@ public class SystemBillService {
 
     public BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> findSystemBillPagination(Date startTime,
                                                                                                     Date endTime,
-                                                                                                    SystemBillOperationType operationType,
+                                                                                                    BillOperationType operationType,
                                                                                                     SystemBillBusinessType businessType,
                                                                                                     int index,
                                                                                                     int pageSize) {
@@ -56,14 +57,14 @@ public class SystemBillService {
 
     public long findSumSystemIncome(Date startTime,
                                     Date endTime,
-                                    SystemBillOperationType operationType,
+                                    BillOperationType operationType,
                                     SystemBillBusinessType businessType) {
         return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
     }
 
     public long findSumSystemExpend(Date startTime,
                                     Date endTime,
-                                    SystemBillOperationType operationType,
+                                    BillOperationType operationType,
                                     SystemBillBusinessType businessType) {
 
         return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);

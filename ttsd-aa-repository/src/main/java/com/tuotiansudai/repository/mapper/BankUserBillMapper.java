@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.enums.BankUserBillBusinessType;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.BankUserBillModel;
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +19,7 @@ public interface BankUserBillMapper {
                                           @Param(value = "loginName") String loginName,
                                           @Param(value = "mobile") String mobile,
                                           @Param(value = "businessTypes") List<BankUserBillBusinessType> businessTypes,
-                                          @Param(value = "operationType") BankUserBillOperationType operationType,
+                                          @Param(value = "operationType") BillOperationType operationType,
                                           @Param(value = "startTime") Date startTime,
                                           @Param(value = "endTime") Date endTime,
                                           @Param(value = "offset") int offset,
@@ -30,7 +30,7 @@ public interface BankUserBillMapper {
                     @Param(value = "loginName") String loginName,
                     @Param(value = "mobile") String mobile,
                     @Param(value = "businessTypes") List<BankUserBillBusinessType> businessTypes,
-                    @Param(value = "operationType") BankUserBillOperationType operationType,
+                    @Param(value = "operationType") BillOperationType operationType,
                     @Param(value = "startTime") Date startTime,
                     @Param(value = "endTime") Date endTime,
                     @Param(value = "role") Role role);
