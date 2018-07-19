@@ -26,7 +26,7 @@
         <input type="hidden" name="payType" value="FAST_PAY"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
-        <input id="limitMoney" type="hidden" value="${(bankModel.singleAmount/100)}">
+        <input id="limitMoney" type="hidden" value="${(bankModel.singleDayAmount/100)}">
     </form>
 </div>
 </@global.main>
