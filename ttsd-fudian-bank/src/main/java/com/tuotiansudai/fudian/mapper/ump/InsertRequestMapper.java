@@ -1,6 +1,9 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
 import com.tuotiansudai.fudian.ump.asyn.request.*;
+import com.tuotiansudai.fudian.ump.sync.request.ProjectAccountSearchRequestModel;
+import com.tuotiansudai.fudian.ump.sync.request.TransferSearchRequestModel;
+import com.tuotiansudai.fudian.ump.sync.request.UserSearchRequestModel;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -49,5 +52,20 @@ public interface InsertRequestMapper {
             "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertTransfer(TransferRequestModel model);
+
+    @Insert("insert into user_search_request (service, sign_type, sign, charset, mer_id, version, user_id, is_find_account, is_select_agreement, request_time, request_url, request_data, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{userId}, #{isFindAccount}, #{isSelectAgreement}, #{requestTime}, #{requestUrl}, #{requestData}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertUmpUserSearch(UserSearchRequestModel model);
+
+    @Insert("insert into project_account_search_request (service, sign_type, sign, charset, mer_id, version, project_id, request_time, request_url, request_data, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{projectId}, #{requestTime}, #{requestUrl}, #{requestData}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertUmpProjectRequest(ProjectAccountSearchRequestModel model);
+
+    @Insert("insert into transfer_search_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, busi_type, request_time, request_url, request_data, status)" +
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{busiType}, #{requestTime}, #{requestUrl}, #{requestData}, #{status})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertUmpTransferRequest(TransferSearchRequestModel model);
 
 }

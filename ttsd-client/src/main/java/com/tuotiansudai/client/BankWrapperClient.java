@@ -1,6 +1,8 @@
 package com.tuotiansudai.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BankWrapperClient {
@@ -425,4 +428,11 @@ public class BankWrapperClient {
     public UmpAsyncMessage umpWithdraw() {
         return umpAsyncExecute("/ump/withdraw", null);
     }
+
+    public UmpAsyncMessage getUmpUserStatus(String loginName){
+        return umpAsyncExecute(MessageFormat.format("/real-time/user/{0}", loginName),null);
+    }
+
+
+
 }

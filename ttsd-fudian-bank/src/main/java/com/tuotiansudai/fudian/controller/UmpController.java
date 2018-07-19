@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.*;
@@ -10,9 +11,9 @@ import com.tuotiansudai.fudian.umpservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/ump")
@@ -29,6 +30,14 @@ public class UmpController {
     private final UmpLoanRepayService umpLoanRepayService;
 
     private final UmpExperienceRepayService umpExperienceRepayService;
+
+    @Autowired
+    private UmpUserService umpUserService;
+    @Autowired
+    private UmpLoanStatusService umpLoanStatusService;
+
+    @Autowired
+    private UmpTransferService umpTransferService;
 
     @Autowired
     public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
@@ -83,5 +92,27 @@ public class UmpController {
             return new UmpAsyncMessage(false, null, null, "请求数据生成失败");
         }
         return new UmpAsyncMessage(true, model.getRequestUrl(), model.getField(), null);
+    }
+
+    @RequestMapping(path = "/user/{loginName}")
+    @ResponseBody
+    public Map<String, String> getRealTimeUserStatus(@PathVariable String loginName) {
+        return umpUserService.getUserStatus(loginName);
+    }
+
+    @RequestMapping(path = "/loan/{loanId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, String> getRealTimeLoanStatus(@PathVariable long loanId) {
+
+        return umpLoanStatusService.getLoanStatus(loanId);
+    }
+
+    @RequestMapping(path = "/transfer/order-id/{orderId}/mer-date/{merDate}/business-type/{businessType}")
+    @ResponseBody
+    public Map<String, String> getRealTimeTransferStatus(@PathVariable String orderId,
+                                                         @PathVariable String merDate,
+                                                         @PathVariable String businessType) {
+
+        return umpTransferService.getTransferStatus(orderId,merDate,businessType);
     }
 }
