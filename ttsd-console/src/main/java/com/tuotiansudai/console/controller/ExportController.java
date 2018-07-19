@@ -307,7 +307,7 @@ public class ExportController {
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                               @RequestParam(value = "status", required = false) BankRechargeStatus status,
+                               @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) Source source,
                                HttpServletResponse response) throws IOException {
         ;

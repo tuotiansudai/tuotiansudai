@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 
 import java.util.Date;
@@ -22,7 +22,7 @@ public class BankRechargeModel {
 
     private String bankOrderDate;
 
-    private BankRechargeStatus status;
+    private RechargeStatus status;
 
     private Source source;
 
@@ -44,7 +44,7 @@ public class BankRechargeModel {
         this.source = source;
         this.channel = channel;
         this.PayType = payType;
-        this.status = BankRechargeStatus.WAIT_PAY;
+        this.status = RechargeStatus.WAIT_PAY;
     }
 
     public long getId() {
@@ -103,11 +103,11 @@ public class BankRechargeModel {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public BankRechargeStatus getStatus() {
+    public RechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(BankRechargeStatus status) {
+    public void setStatus(RechargeStatus status) {
         this.status = status;
     }
 

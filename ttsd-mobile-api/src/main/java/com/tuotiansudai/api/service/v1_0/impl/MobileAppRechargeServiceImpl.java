@@ -9,7 +9,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.request.BankRechargeRequestDto;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankMapper;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
@@ -83,7 +83,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     }
 
     private long getLeftRechargeAmount(String mobile, BankModel bankModel) {
-        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null,null, mobile, null, BankRechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null,null, mobile, null, RechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
         return bankModel.getSingleDayAmount() - rechargeAmount;
     }
 

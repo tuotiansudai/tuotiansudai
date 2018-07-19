@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.request.UmpRechargeRequestDto;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -19,7 +19,7 @@ public class RechargeModel implements Serializable{
 
     private String bankCode;
 
-    private BankRechargeStatus status;
+    private RechargeStatus status;
 
     private Source source;
 
@@ -39,7 +39,7 @@ public class RechargeModel implements Serializable{
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.bankCode = dto.getBankCode();
         this.loginName = dto.getLoginName();
-        this.status = BankRechargeStatus.WAIT_PAY;
+        this.status = RechargeStatus.WAIT_PAY;
         this.source = Source.WEB;
         this.fastPay = dto.isFastPay();
         this.publicPay = dto.isPublicPay();
@@ -78,11 +78,11 @@ public class RechargeModel implements Serializable{
         this.loginName = loginName;
     }
 
-    public BankRechargeStatus getStatus() {
+    public RechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(BankRechargeStatus status) {
+    public void setStatus(RechargeStatus status) {
         this.status = status;
     }
 
