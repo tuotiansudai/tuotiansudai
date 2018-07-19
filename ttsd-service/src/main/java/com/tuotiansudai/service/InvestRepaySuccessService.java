@@ -84,7 +84,7 @@ public class InvestRepaySuccessService {
                             BankUserBillOperationType.OUT,
                             BankUserBillBusinessType.INVEST_FEE)));
 
-            mqWrapperClient.sendMessage(MessageQueue.SystemBill,
+            mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
                     new BankSystemBillMessage(SystemBillMessageType.TRANSFER_IN,
                             bankLoanCallbackMessage.getBankOrderNo(),
                             bankLoanCallbackMessage.getBankOrderDate(),

@@ -33,10 +33,10 @@ public enum MessageQueue {
     WeChatBoundNotify("WeChatBoundNotify"),
     WeChatMessageNotify("WeChatMessageNotify"),
     SystemBill("SystemBill"),
-    BankSystemBill("BankSystemBill"),
     AmountTransfer("AmountTransfer"),
 
     //fudian new queues
+    BankSystemBill("BankSystemBill"),
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     UnbindBankCard_Success("UnbindBankCard-Success"),
