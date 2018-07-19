@@ -27,7 +27,7 @@
 
 <script type="text/javascript">
     countDown('secondsCountDown',5,function () {
-        document.getElementById("#isPaySuccess").submit();
+        document.getElementById("isPaySuccess").submit();
     });
     function countDown(dom,time,callback){
         var downtimer = null;
