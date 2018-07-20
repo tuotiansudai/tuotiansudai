@@ -26,7 +26,5 @@ public interface SelectMapper {
             "where `query_response_data` is null and DATE_ADD(request_time, INTERVAL 30 MINUTE) > now()")
     List<BaseRequestDto> selectResponseInOneHour(@Param("tableName") String tableName);
 
-    @Select("SELECT `pay_user_id` FROM `account` where `login_name` = #{loginName}")
-    String selectPayUserId(@Param("loginName") String loginName);
 
 }

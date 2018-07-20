@@ -199,7 +199,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public Map<String, String> getUserStatus(String loginName) {
-        String json = this.execute(MessageFormat.format("/real-time/user/{0}", loginName), null, "GET");
+        String json = this.execute(MessageFormat.format("/ump/user/{0}", loginName), null, "GET");
         try {
             return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
             });
@@ -224,7 +224,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public Map<String, String> getLoanStatus(long loanId) {
-        String json = this.execute(MessageFormat.format("/real-time/loan/{0}", String.valueOf(loanId)), null, "GET");
+        String json = this.execute(MessageFormat.format("/ump/loan/{0}", String.valueOf(loanId)), null, "GET");
         try {
             return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
             });
@@ -235,7 +235,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
-        String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
+        String json = this.execute(MessageFormat.format("/ump/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
         try {
             return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
             });
@@ -246,7 +246,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public Map<String, String> getPlatformStatus() {
-        String json = this.execute("/real-time/platform", null, "GET");
+        String json = this.execute("/ump/platform", null, "GET");
         try {
             return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {
             });
@@ -257,7 +257,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public List<List<String>> getTransferBill(String loginName, Date startDate, Date endDate) {
-        String json = this.execute(MessageFormat.format("/transfer-bill/user/{0}/start-date/{1}/end-date/{2}",
+        String json = this.execute(MessageFormat.format("/ump/transfer-bill/user/{0}/start-date/{1}/end-date/{2}",
                 loginName,
                 new SimpleDateFormat("yyyyMMdd").format(startDate),
                 new SimpleDateFormat("yyyyMMdd").format(endDate)), null, "GET");

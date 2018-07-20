@@ -6,7 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.fudian.util.AmountConverter;
 
 import java.util.Map;
 

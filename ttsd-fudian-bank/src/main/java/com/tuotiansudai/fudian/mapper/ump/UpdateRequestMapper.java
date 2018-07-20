@@ -25,15 +25,4 @@ public interface UpdateRequestMapper {
     @Update("update transfer_request set status = #{status} where id = #{id}")
     void updateTransfer(@Param(value = "status") SyncRequestStatus status,
                         @Param(value = "id") long id);
-
-    @Update("update user_search_request set status = #{status} where id = #{id}")
-    void updateUmpUserSearch(@Param(value = "status") SyncRequestStatus status,
-                             @Param(value = "id") long id);
-
-    @Update("update project_account_search_request set status = #{status} where id = #{id}")
-    void updateUmpProjectAccountSearch(@Param(value = "status") SyncRequestStatus sent, @Param(value = "id") Long id);
-
-    @Update("update transfer_search_request set status = #{status} where id = #{id}")
-    void updateUmpTransferSearch(SyncRequestStatus sent, Long id);
-
 }
