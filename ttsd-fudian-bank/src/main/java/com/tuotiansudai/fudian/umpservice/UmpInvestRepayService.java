@@ -86,7 +86,7 @@ public class UmpInvestRepayService {
     }
 
     public String normalNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new RepayNotifyRequestModel());
+        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, RepayNotifyRequestModel.class);
         if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
             return null;
         }
@@ -95,7 +95,7 @@ public class UmpInvestRepayService {
     }
 
     public String advanceNotifyCallBack(Map<String, String> paramsMap, String queryString){
-        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new RepayNotifyRequestModel());
+        RepayNotifyRequestModel repayNotifyRequestModel = umpUtils.parseCallbackRequest(paramsMap, queryString, RepayNotifyRequestModel.class);
         if (Strings.isNullOrEmpty(repayNotifyRequestModel.getResponseData())) {
             return null;
         }
