@@ -483,7 +483,7 @@ public class BankWrapperClient {
     }
 
     public List<List<String>> getUmpTransferBill(String payAccountId, Date startDate, Date endDate) {
-        String json = syncExecute(MessageFormat.format("/ump/transfer-bill/user/{0}/start-date/{1}/end-date/{2}",
+        String json = syncExecute(MessageFormat.format("/ump/transfer-bill/{0}/start-date/{1}/end-date/{2}",
                 payAccountId,
                 new SimpleDateFormat("yyyyMMdd").format(startDate),
                 new SimpleDateFormat("yyyyMMdd").format(endDate)), null);

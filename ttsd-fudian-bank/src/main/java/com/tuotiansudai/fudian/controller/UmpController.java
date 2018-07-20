@@ -1,7 +1,6 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.*;
 import com.tuotiansudai.fudian.ump.sync.request.*;
@@ -87,7 +86,6 @@ public class UmpController {
         }
         return new UmpAsyncMessage(true, model.getRequestUrl(), model.getField(), null);
     }
-
     @RequestMapping(path = "/user/{payUserId}")
     @ResponseBody
     public Map<String, String> getRealTimeUserStatus(@PathVariable String payUserId) {
@@ -101,7 +99,7 @@ public class UmpController {
     @RequestMapping(path = "/loan/{loanId}")
     @ResponseBody
     public Map<String, String> getRealTimeLoanStatus(@PathVariable long loanId) {
-        ProjectAccountSearchResponseModel responseModel = umpSynQueryService.queryUmpInfo(new ProjectAccountSearchRequestModel(), ProjectAccountSearchResponseModel.class);
+        ProjectAccountSearchResponseModel responseModel = umpSynQueryService.queryUmpInfo(new ProjectAccountSearchRequestModel(String.valueOf(loanId)), ProjectAccountSearchResponseModel.class);
         if (responseModel == null) {
             return new HashMap<>(2);
         }
@@ -137,6 +135,4 @@ public class UmpController {
                                               @PathVariable @DateTimeFormat(pattern = "yyyyMMdd") Date endDate) {
         return umpSynQueryService.getUmpTransferBill(payAccountId, startDate, endDate);
     }
-
-
 }
