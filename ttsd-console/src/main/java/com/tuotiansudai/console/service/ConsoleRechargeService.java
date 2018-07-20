@@ -3,7 +3,7 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.RechargePaginationItemDataDto;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
@@ -12,7 +12,6 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ConsoleRechargeService {
 
 
     public BaseDto<BasePaginationDataDto<RechargePaginationItemDataDto>> findRechargePagination(Role role, String rechargeId, String mobile, Source source,
-                                                                                                BankRechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
+                                                                                                RechargeStatus status, String channel, int index, int pageSize, Date startTime, Date endTime) {
 
         index = index < 1 ? 1 : index;
         int count = 0;
@@ -64,7 +63,7 @@ public class ConsoleRechargeService {
             String rechargeId,
             String mobile,
             Source source,
-            BankRechargeStatus status,
+            RechargeStatus status,
             String channel,
             Date startTime,
             Date endTime) {

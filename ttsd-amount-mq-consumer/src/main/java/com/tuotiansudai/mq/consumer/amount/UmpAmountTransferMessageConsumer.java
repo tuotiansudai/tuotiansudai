@@ -41,8 +41,8 @@ public class UmpAmountTransferMessageConsumer implements MessageConsumer {
         logger.info("[UmpAmountTransfer] receive message: {}: {}.", this.queue(), message);
 
         try {
-            UmpAmountTransferMessage amountTransferMessage = gson.fromJson(message, new TypeToken<UmpAmountTransferMessage>(){}.getType());
-            umpAmountTransferService.process(amountTransferMessage);
+            List<UmpAmountTransferMessage> messages = gson.fromJson(message, new TypeToken<List<UmpAmountTransferMessage>>(){}.getType());
+            umpAmountTransferService.process(messages);
             logger.info("[UmpAmountTransfer] receive message: {}: {} done.", this.queue(), message);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] amount transfer consumer fail, message:{0}", message), e);

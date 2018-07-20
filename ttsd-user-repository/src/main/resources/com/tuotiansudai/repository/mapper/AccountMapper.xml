@@ -20,50 +20,19 @@
         <result column="membership_point" property="membershipPoint"/>
     </resultMap>
 
-    <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, pay_user_id, pay_account_id, balance, freeze, register_time, membership_point)
-        value(#{loginName}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime}, #{membershipPoint})
-    </insert>
-
     <select id="findByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
         select * from account where login_name = #{loginName}
-    </select>
-
-    <select id="findByMobile" parameterType="string" resultMap="accountResultMap">
-        select account.* from account join user on account.login_name = user.login_name where user.mobile = #{mobile}
-    </select>
-
-    <select id="findByPayUserId" parameterType="string" resultMap="accountResultMap">
-        select * from account where pay_user_id = #{payUserId}
     </select>
 
     <select id="lockByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
         select * from account where login_name = #{loginName} for update
     </select>
 
-    <update id="update" parameterType="AccountModel">
+    <update id="updateBalanceAndFreeze" parameterType="map">
         update account set
         balance = #{balance},
-        freeze = #{freeze},
-        auto_invest = #{autoInvest},
-        auto_repay = #{autoRepay},
-        no_password_invest = #{noPasswordInvest},
-        membership_point = #{membershipPoint}
+        freeze = #{freeze}
         where login_name = #{loginName}
     </update>
 
-    <select id="count" resultType="long">
-        select count(1) from account
-    </select>
-
-    <select id="findAccountWithBalance" parameterType="map" resultMap="accountResultMap">
-        select id,login_name, balance,register_time from account
-        <where>
-            <if test="startTime != null and startTime != ''">
-                register_time >= #{startTime}
-            </if>
-        </where>
-        order by register_time asc
-        limit #{offset}
-    </select>
 </mapper>

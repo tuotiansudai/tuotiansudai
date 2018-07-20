@@ -7,7 +7,6 @@ import com.tuotiansudai.dto.request.UmpRechargeRequestDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.umpmessage.UmpRechargeMessage;
-import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.UmpAmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -50,21 +49,20 @@ public class UmpRechargeService {
 
     public void processRecharge(UmpRechargeMessage umpRechargeMessage){
         RechargeModel model = rechargeMapper.findById(umpRechargeMessage.getRechargeId());
-        if (model == null || model.getStatus() != BankRechargeStatus.WAIT_PAY) {
+        if (model == null || model.getStatus() != RechargeStatus.WAIT_PAY) {
             logger.error("UmpRechargeModel not exist or status is not wait, rechargeId: {} ", umpRechargeMessage.getRechargeId());
             return;
         }
-        rechargeMapper.updateStatus(umpRechargeMessage.getRechargeId(), umpRechargeMessage.isStatus() ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
+        rechargeMapper.updateStatus(umpRechargeMessage.getRechargeId(), umpRechargeMessage.isStatus() ? RechargeStatus.SUCCESS : RechargeStatus.FAIL);
         if (umpRechargeMessage.isStatus()){
             mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer,
-                    new UmpAmountTransferMessage(
+                    Lists.newArrayList(new UmpAmountTransferMessage(
                             UmpTransferType.TRANSFER_IN_BALANCE,
                             umpRechargeMessage.getLoginName(),
                             model.getId(),
                             umpRechargeMessage.getAmount(),
-                            UserBillBusinessType.RECHARGE_SUCCESS,
-                            null,
-                            null));
+                            UserBillBusinessType.RECHARGE_SUCCESS))
+                    );
         }
     }
 }

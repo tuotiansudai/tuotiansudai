@@ -29,16 +29,6 @@ public class AccountModel implements Serializable {
 
     private long membershipPoint;
 
-    public AccountModel() {
-    }
-
-    public AccountModel(String loginName, String payUserId, String payAccountId, Date registerTime) {
-        this.loginName = loginName;
-        this.payUserId = payUserId;
-        this.payAccountId = payAccountId;
-        this.registerTime = registerTime;
-    }
-
     public long getId() {
         return id;
     }

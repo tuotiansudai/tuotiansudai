@@ -15,25 +15,17 @@ public class UmpAmountTransferMessage {
 
     private UserBillBusinessType businessType;
 
-    private String operatorLoginName;
-
-    private String interventionReason;
-
-    private UmpAmountTransferMessage next;
-
     public UmpAmountTransferMessage() {
 
     }
 
     public UmpAmountTransferMessage(UmpTransferType transferType, String loginName, long orderId, long amount,
-                                    UserBillBusinessType businessType, String operatorLoginName, String interventionReasonl) {
+                                    UserBillBusinessType businessType) {
         this.transferType = transferType;
         this.loginName = loginName;
         this.orderId = orderId;
         this.amount = amount;
         this.businessType = businessType;
-        this.operatorLoginName = operatorLoginName;
-        this.interventionReason = interventionReasonl;
     }
 
     public UmpTransferType getTransferType() {
@@ -74,29 +66,5 @@ public class UmpAmountTransferMessage {
 
     public void setBusinessType(UserBillBusinessType businessType) {
         this.businessType = businessType;
-    }
-
-    public String getOperatorLoginName() {
-        return operatorLoginName;
-    }
-
-    public void setOperatorLoginName(String operatorLoginName) {
-        this.operatorLoginName = operatorLoginName;
-    }
-
-    public String getInterventionReason() {
-        return interventionReason;
-    }
-
-    public void setInterventionReason(String interventionReason) {
-        this.interventionReason = interventionReason;
-    }
-
-    public UmpAmountTransferMessage getNext() {
-        return next;
-    }
-
-    public void setNext(UmpAmountTransferMessage next) {
-        this.next = next;
     }
 }

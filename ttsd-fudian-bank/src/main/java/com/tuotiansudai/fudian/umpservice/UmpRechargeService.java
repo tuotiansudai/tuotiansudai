@@ -74,14 +74,14 @@ public class UmpRechargeService {
         UmpRechargeMessage umpRechargeMessage = new UmpRechargeMessage(dto.getRechargeId(), dto.getLoginName(), dto.getAmount());
 
         String umpRechargeMessageKey = MessageFormat.format(UMP_RECHARGE_MESSAGE_KEY, String.valueOf(umpRechargeMessage.getRechargeId()));
-        redisTemplate.<String, String>opsForValue().set(umpRechargeMessageKey, gson.toJson(umpRechargeMessage), 7, TimeUnit.DAYS);
+        redisTemplate.<String, String>opsForValue().set(umpRechargeMessageKey, gson.toJson(umpRechargeMessage), 1, TimeUnit.DAYS);
 
         return model;
     }
 
-    public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        RechargeNotifyRequestModel model = umpUtils.parseCallbackRequest(paramsMap, queryString, new RechargeNotifyRequestModel());
-        if (Strings.isNullOrEmpty(model.getResponseData())) {
+    public String notifyCallBack(Map<String, String> paramsMap, String queryString){
+        RechargeNotifyRequestModel model = umpUtils.parseCallbackRequest(paramsMap, queryString, RechargeNotifyRequestModel.class);
+        if (Strings.isNullOrEmpty(model.getResponseData())){
             return null;
         }
         insertNotifyMapper.insertNotifyRecharge(model);
