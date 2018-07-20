@@ -91,7 +91,7 @@ public class UmpController {
     public Map<String, String> getRealTimeUserStatus(@PathVariable String payUserId) {
         UserSearchResponseModel responseModel = umpSynQueryService.queryUmpInfo(new UserSearchRequestModel(payUserId), UserSearchResponseModel.class);
         if (responseModel == null) {
-            return new HashMap<>(2);
+            return null;
         }
         return responseModel.generateHumanReadableInfo();
     }
@@ -101,7 +101,7 @@ public class UmpController {
     public Map<String, String> getRealTimeLoanStatus(@PathVariable long loanId) {
         ProjectAccountSearchResponseModel responseModel = umpSynQueryService.queryUmpInfo(new ProjectAccountSearchRequestModel(String.valueOf(loanId)), ProjectAccountSearchResponseModel.class);
         if (responseModel == null) {
-            return new HashMap<>(2);
+            return null;
         }
         return responseModel.generateHumanReadableInfo();
     }
@@ -113,7 +113,7 @@ public class UmpController {
                                                          @PathVariable String businessType) {
         TransferSearchResponseModel responseModel = umpSynQueryService.queryUmpInfo(new TransferSearchRequestModel(orderId, merDate, businessType), TransferSearchResponseModel.class);
         if (responseModel == null) {
-            return new HashMap<>(2);
+            return null;
         }
         return responseModel.generateHumanReadableInfo();
     }
@@ -123,7 +123,7 @@ public class UmpController {
     public Map<String, String> getRealTimePlatformStatus() {
         PtpMerQueryResponseModel responseModel = umpSynQueryService.queryUmpInfo(new PtpMerQueryRequestModel(), PtpMerQueryResponseModel.class);
         if (responseModel == null) {
-            return new HashMap<>(2);
+            return null;
         }
         return responseModel.generateHumanReadableInfo();
     }

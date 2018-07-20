@@ -457,7 +457,7 @@ public class BankWrapperClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new HashMap<>(2);
+        return null;
     }
 
     public Map<String, String> getUmpLoanStatus(long loanId) {
@@ -468,7 +468,7 @@ public class BankWrapperClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new HashMap<>(2);
+        return null;
     }
 
     public Map<String, String> getUmpTransferStatus(String orderId, Date merDate, String businessType) {
@@ -479,7 +479,7 @@ public class BankWrapperClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new HashMap<>(2);
+        return null;
     }
 
     public List<List<String>> getUmpTransferBill(String payAccountId, Date startDate, Date endDate) {
@@ -493,7 +493,7 @@ public class BankWrapperClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return Lists.newArrayList();
+        return null;
     }
 
     public Map<String, String> getUmpPlatformStatus() {
@@ -504,6 +504,6 @@ public class BankWrapperClient {
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new HashMap<>(2);
+        return null;
     }
 }
