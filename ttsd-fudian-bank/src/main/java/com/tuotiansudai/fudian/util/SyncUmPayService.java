@@ -1,25 +1,6 @@
 package com.tuotiansudai.fudian.util;
 
 public enum SyncUmPayService {
-    /**
-     * 开户
-     */
-    MER_REGISTER_PERSON("mer_register_person"),
-    /**
-     * 重置交易密码
-     */
-    MER_SEND_SMS_PWD("mer_send_sms_pwd"),
-    /**
-     * 发标
-     */
-    MER_BIND_PROJECT("mer_bind_project"),
-    /**
-     * 标的更新
-     */
-    MER_UPDATE_PROJECT("mer_update_project"),
-    /**
-     * 标的查询
-     */
     PROJECT_ACCOUNT_SEARCH("project_account_search"),
     /**
      * 商户账户查询

@@ -1,9 +1,6 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
 import com.tuotiansudai.fudian.ump.asyn.request.*;
-import com.tuotiansudai.fudian.ump.sync.request.ProjectAccountSearchRequestModel;
-import com.tuotiansudai.fudian.ump.sync.request.TransferSearchRequestModel;
-import com.tuotiansudai.fudian.ump.sync.request.UserSearchRequestModel;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;

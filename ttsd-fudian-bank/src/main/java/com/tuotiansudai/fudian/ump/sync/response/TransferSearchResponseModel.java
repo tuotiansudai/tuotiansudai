@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.ump.sync.response;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.util.AmountConverter;
+import com.tuotiansudai.fudian.util.AmountUtils;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.Map;
@@ -108,9 +108,9 @@ public class TransferSearchResponseModel extends BaseSyncResponseModel  {
                 .put("对账日期", Strings.isNullOrEmpty(this.merDate) ? "" : DateTimeFormat.forPattern("yyyyMMdd").parseDateTime(this.merDate).toString("yyyy-MM-dd"))
                 .put("交易平台流水号", Strings.isNullOrEmpty(this.tradeNo) ? "" : this.tradeNo)
                 .put("业务类型", Strings.isNullOrEmpty(HUMAN_READABLE_BUSINESS_TYPE.get(this.busiType)) ? "" : HUMAN_READABLE_BUSINESS_TYPE.get(this.busiType))
-                .put("交易金额", Strings.isNullOrEmpty(this.amount) ? "" : AmountConverter.convertCentToString(Long.parseLong(this.amount)))
-                .put("原交易金额", Strings.isNullOrEmpty(this.orgiAmt) ? "" : AmountConverter.convertCentToString(Long.parseLong(this.orgiAmt)))
-                .put("手续费", Strings.isNullOrEmpty(this.comAmt) ? "" : AmountConverter.convertCentToString(Long.parseLong(this.comAmt)))
+                .put("交易金额", Strings.isNullOrEmpty(this.amount) ? "" : AmountUtils.toYuan(Long.parseLong(this.amount)))
+                .put("原交易金额", Strings.isNullOrEmpty(this.orgiAmt) ? "" : AmountUtils.toYuan(Long.parseLong(this.orgiAmt)))
+                .put("手续费", Strings.isNullOrEmpty(this.comAmt) ? "" : AmountUtils.toYuan(Long.parseLong(this.comAmt)))
                 .put("手续费承担方类型", Strings.isNullOrEmpty(HUMAN_READABLE_COM_AMT_TYPE_TYPE.get(this.comAmtType)) ? "" : HUMAN_READABLE_COM_AMT_TYPE_TYPE.get(this.comAmtType))
                 .put("交易状态", Strings.isNullOrEmpty(this.tranState) ? "" : HUMAN_READABLE_TRANSACTION_STATE.get(this.busiType).get(this.tranState))
                 .put("短信个数", Strings.isNullOrEmpty(this.smsNum) ? "" : this.smsNum)

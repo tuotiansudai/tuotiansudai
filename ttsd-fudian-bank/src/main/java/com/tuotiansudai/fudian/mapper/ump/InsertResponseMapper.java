@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
-import com.tuotiansudai.fudian.ump.sync.response.*;
+import com.tuotiansudai.fudian.ump.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.fudian.ump.sync.response.TransferResponseModel;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;

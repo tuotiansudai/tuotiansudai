@@ -6,7 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.util.AmountConverter;
+import com.tuotiansudai.fudian.util.AmountUtils;
 
 import java.util.Map;
 
@@ -82,7 +82,7 @@ public class UserSearchResponseModel extends BaseSyncResponseModel {
                 .put("手机", Strings.isNullOrEmpty(this.contactMobile) ? "" : this.contactMobile)
                 .put("邮箱", Strings.isNullOrEmpty(this.mailAddr) ? "" : this.mailAddr)
                 .put("账户状态", Strings.isNullOrEmpty(HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState)) ? "" : HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState))
-                .put("账户余额", AmountConverter.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
+                .put("账户余额", AmountUtils.toYuan(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
                 .put("发卡银行编号", Strings.isNullOrEmpty(this.gateId) ? "" : this.gateId)
                 .put("提现银行卡", Strings.isNullOrEmpty(this.cardId) ? "" : this.cardId)
                 .put("用户签约约的协议列表信息", Joiner.on(" ").join(Lists.transform(Strings.isNullOrEmpty(this.userBindAgreementList) ? Lists.<String>newArrayList() : Lists.newArrayList(this.userBindAgreementList.split("\\|")), new Function<String, String>() {

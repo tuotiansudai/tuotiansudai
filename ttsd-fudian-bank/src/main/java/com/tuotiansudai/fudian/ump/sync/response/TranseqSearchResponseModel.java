@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.ump.sync.response;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.fudian.util.AmountConverter;
+import com.tuotiansudai.fudian.util.AmountUtils;
 
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -77,8 +77,8 @@ public class TranseqSearchResponseModel extends BaseSyncResponseModel {
                 row.add(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(values.get("trans_date") + values.get("trans_time"))));
                 row.add(MessageFormat.format("{0}{1}",
                         values.get("dc_mark").equals("01") ? "+" : "-",
-                        AmountConverter.convertCentToString(Long.parseLong(values.get("amount")))));
-                row.add(AmountConverter.convertCentToString(Long.parseLong(values.get("balance"))));
+                        AmountUtils.toYuan(Long.parseLong(values.get("amount")))));
+                row.add(AmountUtils.toYuan(Long.parseLong(values.get("balance"))));
                 row.add(HUMAN_READABLE_TRANS_STATUS.get(values.get("trans_state")));
                 row.add(HUMAN_READABLE_TRANS_TYPE.get(values.get("trans_type")));
                 humanReadableData.add(row);
