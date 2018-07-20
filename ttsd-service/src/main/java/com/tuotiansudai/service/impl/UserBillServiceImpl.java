@@ -78,18 +78,9 @@ public class UserBillServiceImpl implements UserBillService {
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("userBillBusinessType", userBillBusinessType)
-                .put("loginName", loginName)
-                .put("indexPage", (index - 1) * pageSize)
-                .put("startTime", startTime)
-                .put("endTime", endTime)
-                .put("pageSize", pageSize).build()));
-        int count = userBillMapper.findUserBillsCount(Maps.newLinkedHashMap(ImmutableMap.<String, Object>builder()
-                .put("userBillBusinessType", userBillBusinessType)
-                .put("loginName", loginName)
-                .put("startTime", startTime)
-                .put("endTime", endTime).build()));
+        List<UserBillModel> userBillModels = userBillMapper.findUserBills(userBillBusinessType, loginName, startTime, endTime, (index - 1) * pageSize, pageSize);
+
+        int count = userBillMapper.findUserBillsCount(userBillBusinessType, loginName, startTime, endTime);
 
         List<UserBillPaginationItemDataDto> records = Lists.transform(userBillModels, new Function<UserBillModel, UserBillPaginationItemDataDto>() {
             @Override
