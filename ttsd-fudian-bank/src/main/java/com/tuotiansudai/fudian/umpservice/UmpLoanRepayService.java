@@ -55,7 +55,7 @@ public class UmpLoanRepayService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString) {
-        ProjectTransferNotifyRequestModel projectTransferNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, new ProjectTransferNotifyRequestModel());
+        ProjectTransferNotifyRequestModel projectTransferNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, ProjectTransferNotifyRequestModel.class);
         if (Strings.isNullOrEmpty(projectTransferNotifyModel.getResponseData())) {
             return null;
         }
