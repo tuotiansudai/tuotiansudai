@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.Source;
@@ -17,14 +17,14 @@ import java.util.List;
 public interface RechargeMapper {
     void create(RechargeModel model);
 
-    void updateStatus(@Param("id") long id, @Param("status") BankRechargeStatus status);
+    void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
 
     RechargeModel findById(long id);
 
     List<BankRechargePaginationView> findRechargePagination(@Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,
                                                             @Param(value = "source") Source source,
-                                                            @Param(value = "status") BankRechargeStatus status,
+                                                            @Param(value = "status") RechargeStatus status,
                                                             @Param(value = "channel") String channel,
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
@@ -35,7 +35,7 @@ public interface RechargeMapper {
     long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
-                               @Param(value = "status") BankRechargeStatus status,
+                               @Param(value = "status") RechargeStatus status,
                                @Param(value = "channel") String channel,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
@@ -43,7 +43,7 @@ public interface RechargeMapper {
     int findRechargeCount(@Param(value = "rechargeId") String rechargeId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "source") Source source,
-                          @Param(value = "status") BankRechargeStatus status,
+                          @Param(value = "status") RechargeStatus status,
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
