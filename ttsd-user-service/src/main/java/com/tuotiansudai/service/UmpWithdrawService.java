@@ -83,8 +83,8 @@ public class UmpWithdrawService {
 
     private void apply(boolean isSuccess, WithdrawModel model){
         if (isSuccess && model.getStatus() == WithdrawStatus.WAIT_PAY){
-            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(UmpTransferType.FREEZE, model.getLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.APPLY_WITHDRAW, null, null);
-            mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, atm);
+            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(UmpTransferType.FREEZE, model.getLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.APPLY_WITHDRAW);
+            mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, Lists.newArrayList(atm));
         }
     }
 
@@ -92,11 +92,11 @@ public class UmpWithdrawService {
         if (isSuccess){
             UmpAmountTransferMessage atm = new UmpAmountTransferMessage(model.getStatus() == WithdrawStatus.UMP_APPLY_SUCCESS ?
                     UmpTransferType.TRANSFER_OUT_FREEZE : UmpTransferType.TRANSFER_OUT_BALANCE,
-                    model.getLoginName(), model.getAmount(), model.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
-            mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, atm);
+                    model.getLoginName(), model.getAmount(), model.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS);
+            mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, Lists.newArrayList(atm));
         }else if (model.getStatus() == WithdrawStatus.UMP_APPLY_SUCCESS){
-            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(UmpTransferType.UNFREEZE, model.getLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.WITHDRAW_FAIL, null, null);
-            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(UmpTransferType.UNFREEZE, model.getLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.WITHDRAW_FAIL);
+            mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(atm));
         }
     }
 
