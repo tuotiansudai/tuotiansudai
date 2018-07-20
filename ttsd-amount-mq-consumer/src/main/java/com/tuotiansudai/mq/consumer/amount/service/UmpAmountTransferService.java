@@ -101,7 +101,7 @@ public class UmpAmountTransferService {
                 return;
         }
         accountMapper.updateBalanceAndFreeze(loginName, balance, freeze);
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, type, null, null);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, type);
         userBillMapper.create(userBillModel);
     }
 }
