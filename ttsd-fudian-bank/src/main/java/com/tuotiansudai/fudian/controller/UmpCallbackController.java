@@ -1,21 +1,27 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.umpservice.*;
+import com.tuotiansudai.fudian.util.UmpUtils;
+import com.umpay.api.exception.VerifyException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 
 
 @Controller
-@RequestMapping(value = "/ump/callback")
+@RequestMapping(value = "/ump/notify-url/callback")
 public class UmpCallbackController {
 
     static Logger logger = Logger.getLogger(UmpCallbackController.class);
@@ -38,13 +44,15 @@ public class UmpCallbackController {
 
     private final UmpLoanRepayFeeService umpLoanRepayFeeService;
 
+    private final UmpUtils umpUtils;
 
     @Autowired
     public UmpCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
                                  UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
                                  UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
                                  UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                 UmpLoanRepayFeeService umpLoanRepayFeeService){
+                                 UmpLoanRepayFeeService umpLoanRepayFeeService,
+                                 UmpUtils umpUtils){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
@@ -54,6 +62,8 @@ public class UmpCallbackController {
         this.umpCouponRepayService = umpCouponRepayService;
         this.umpExtraRateRepayService = umpExtraRateRepayService;
         this.umpLoanRepayFeeService = umpLoanRepayFeeService;
+        this.umpUtils = umpUtils;
+
     }
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
@@ -153,6 +163,18 @@ public class UmpCallbackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = umpExtraRateRepayService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/validate-front-callback", method = RequestMethod.GET)
+    public ResponseEntity validate(@RequestBody Map<String, String> params) {
+        try {
+            BaseCallbackRequestModel model = umpUtils.parseParamsToModel(params, BaseCallbackRequestModel.class);
+            if (model.isSuccess()){
+                return ResponseEntity.ok().build();
+            }
+        } catch (VerifyException | IOException ignored) {
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
