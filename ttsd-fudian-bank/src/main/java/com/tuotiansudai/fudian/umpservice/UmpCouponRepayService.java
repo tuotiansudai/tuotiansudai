@@ -80,7 +80,7 @@ public class UmpCouponRepayService {
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
-        TransferNotifyRequestModel transferNotifyRequestModel  = umpUtils.parseCallbackRequest(paramsMap, queryString, new TransferNotifyRequestModel());
+        TransferNotifyRequestModel transferNotifyRequestModel  = umpUtils.parseCallbackRequest(paramsMap, queryString, TransferNotifyRequestModel.class);
         if (Strings.isNullOrEmpty(transferNotifyRequestModel.getResponseData())) {
             return null;
         }

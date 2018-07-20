@@ -42,8 +42,6 @@ public class UmpCallbackController {
 
     private final UmpExtraRateRepayService umpExtraRateRepayService;
 
-    private final UmpExperienceRepayService umpExperienceRepayService;
-
     private final UmpLoanRepayFeeService umpLoanRepayFeeService;
 
     private final UmpUtils umpUtils;
@@ -53,7 +51,7 @@ public class UmpCallbackController {
                                  UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
                                  UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
                                  UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                 UmpExperienceRepayService umpExperienceRepayService, UmpLoanRepayFeeService umpLoanRepayFeeService,
+                                 UmpLoanRepayFeeService umpLoanRepayFeeService,
                                  UmpUtils umpUtils){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
@@ -63,7 +61,6 @@ public class UmpCallbackController {
         this.umpInvestRepayService = umpInvestRepayService;
         this.umpCouponRepayService = umpCouponRepayService;
         this.umpExtraRateRepayService = umpExtraRateRepayService;
-        this.umpExperienceRepayService = umpExperienceRepayService;
         this.umpLoanRepayFeeService = umpLoanRepayFeeService;
         this.umpUtils = umpUtils;
 
@@ -165,13 +162,6 @@ public class UmpCallbackController {
     public ModelAndView extraRateInvestNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = umpExtraRateRepayService.notifyCallBack(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
-    }
-
-    @RequestMapping(value = "/experience_repay_notify", method = RequestMethod.GET)
-    public ModelAndView repayCallback(HttpServletRequest request) {
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = umpExperienceRepayService.notifyCallBack(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

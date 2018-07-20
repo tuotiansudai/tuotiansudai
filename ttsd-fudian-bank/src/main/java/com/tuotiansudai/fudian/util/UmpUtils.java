@@ -35,7 +35,7 @@ public class UmpUtils {
     private static OkHttpClient CLIENT;
 
     @Autowired
-    public UmpUtils(){
+    public UmpUtils() {
         CLIENT = new OkHttpClient
                 .Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -44,7 +44,7 @@ public class UmpUtils {
                 .build();
     }
 
-    public <T extends BaseSyncRequestModel> void sign(T model){
+    public <T extends BaseSyncRequestModel> void sign(T model) {
         try {
             ReqData reqData = this.makeReqDataByPost(model.generatePayRequestData());
             model.setSign(reqData.getSign());
@@ -55,12 +55,11 @@ public class UmpUtils {
         }
     }
 
-    @SuppressWarnings(value = "unchecked")
     public <T extends BaseCallbackRequestModel> T parseCallbackRequest(Map<String, String> paramsMap,
-                                                                          String originalQueryString,
-                                                                          T model) {
+                                                                       String originalQueryString,
+                                                                       Class<T> modelClass) {
         try {
-            model = (T) parseParamsToModel(paramsMap, model.getClass());
+            T model = parseParamsToModel(paramsMap, modelClass);
             model.setRequestData(originalQueryString);
             model.setResponseTime(new Date());
             model.setResponseData(this.merNotifyResData(model.generatePayResponseData()));
@@ -71,7 +70,7 @@ public class UmpUtils {
         return null;
     }
 
-    public BaseCallbackRequestModel parseParamsToModel(Map<String, String> paramsMap, Class<? extends BaseCallbackRequestModel> model) throws VerifyException, IOException {
+    public <T extends BaseCallbackRequestModel> T parseParamsToModel(Map<String, String> paramsMap, Class<T> model) throws VerifyException, IOException {
         Map<String, String> platNotifyData = this.getPlatNotifyData(paramsMap);
         Map<String, String> newPlatNotifyData = Maps.newHashMap();
         for (String key : platNotifyData.keySet()) {
@@ -108,7 +107,7 @@ public class UmpUtils {
 
 
         } catch (IOException e) {
-            logger.error(MessageFormat.format("[UMP Client] call ump exception, data: {0}",  field), e);
+            logger.error(MessageFormat.format("[UMP Client] call ump exception, data: {0}", field), e);
         }
 
         return null;
@@ -120,7 +119,7 @@ public class UmpUtils {
             model.setRequestId(requestId);
             model.initializeModel(resData);
         } catch (RetDataException e) {
-            logger.error(MessageFormat.format("[UMP response] generate exception, data: {0}",  responseBody), e);
+            logger.error(MessageFormat.format("[UMP response] generate exception, data: {0}", responseBody), e);
         }
     }
 
