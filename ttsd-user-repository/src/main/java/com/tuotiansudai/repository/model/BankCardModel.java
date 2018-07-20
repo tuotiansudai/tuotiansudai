@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.request.UmpBindCardRequestDto;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +20,17 @@ public class BankCardModel implements Serializable {
     private String loginName;
 
     private boolean isFastPayOn;
+
+    public BankCardModel() {
+    }
+
+    public BankCardModel(long id, UmpBindCardRequestDto dto) {
+        this.id = id;
+        this.loginName = dto.getLoginName();
+        this.cardNumber = dto.getCardNumber();
+        this.bankCode = dto.getBankCode();
+        this.status = BankCardStatus.UNCHECKED;
+    }
 
     public long getId() {
         return id;

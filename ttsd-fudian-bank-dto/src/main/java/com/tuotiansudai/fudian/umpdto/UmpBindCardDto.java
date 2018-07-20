@@ -13,18 +13,18 @@ public class UmpBindCardDto extends UmpBaseDto{
 
     private String cardNumber;
 
-    private boolean isFastPay;
+    private boolean fastPay;
 
     public UmpBindCardDto() {
     }
 
-    public UmpBindCardDto(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isFastPay) {
+    public UmpBindCardDto(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean fastPay) {
         super(loginName, payUserId);
         this.bankCardModelId = bankCardModelId;
         this.userName = userName;
         this.identityNumber = identityNumber;
         this.cardNumber = cardNumber;
-        this.isFastPay = isFastPay;
+        this.fastPay = fastPay;
     }
 
     public long getBankCardModelId() {
@@ -44,7 +44,7 @@ public class UmpBindCardDto extends UmpBaseDto{
     }
 
     public boolean isFastPay() {
-        return isFastPay;
+        return fastPay;
     }
 
     @Override

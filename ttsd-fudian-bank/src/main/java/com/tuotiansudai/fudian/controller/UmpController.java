@@ -46,7 +46,7 @@ public class UmpController {
     }
 
     @RequestMapping(value = "/replace-bind-card", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> replaceBindCard(@RequestBody UmpReplaceBindCardDto dto){
+    public ResponseEntity<UmpAsyncMessage> replaceBindCard(@RequestBody UmpBindCardDto dto){
         PtpMerReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }

@@ -177,6 +177,14 @@ public class UmpCallbackController {
         return ResponseEntity.badRequest().build();
     }
 
+    @RequestMapping(value = "/aaa", method = RequestMethod.GET)
+    public void aaa(HttpServletRequest request) {
+        umpInvestRepayService.investRepay(null);
+//        Map<String, String> paramsMap = this.parseRequestParameters(request);
+//        String responseData = umpExtraRateRepayService.notifyCallBack(paramsMap, request.getQueryString());
+//        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
         Map<String, String> paramsMap = Maps.newHashMap();
         Enumeration<String> parameterNames = request.getParameterNames();

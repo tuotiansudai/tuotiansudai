@@ -103,7 +103,7 @@ public class UmpUtils {
 
             ResponseBody body = response.body();
 
-            return body == null ? null : body.toString();
+            return body == null ? null : body.string();
 
 
         } catch (IOException e) {

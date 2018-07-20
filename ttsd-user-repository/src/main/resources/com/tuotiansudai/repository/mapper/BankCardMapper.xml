@@ -14,8 +14,25 @@
         <result column="is_fast_pay_on" property="isFastPayOn"></result>
     </resultMap>
 
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        insert into bank_card (id, bank_code, card_number, created_time, status, login_name, is_fast_pay_on)
+        value(#{id}, #{bankCode}, #{cardNumber}, #{createdTime}, #{status}, #{loginName}, #{isFastPayOn})
+    </insert>
+
+    <update id="updateStatus" parameterType="map">
+        UPDATE bank_card set status = #{status} where id = #{id}
+    </update>
+
     <select id="findPassedBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
         select * from bank_card where login_name = #{loginName} and status = 'PASSED'
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
+        select * from bank_card where id = #{id}
+    </select>
+
+    <select id="findApplyBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'APPLY' and is_fast_pay_on = true
     </select>
 
 </mapper>

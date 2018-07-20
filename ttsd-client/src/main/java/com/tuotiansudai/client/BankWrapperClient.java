@@ -13,7 +13,9 @@ import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
 import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
+import com.tuotiansudai.fudian.umpdto.UmpReplaceBindCardDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -426,6 +428,14 @@ public class BankWrapperClient {
 
     public UmpAsyncMessage umpWithdraw() {
         return umpAsyncExecute("/ump/withdraw", null);
+    }
+
+    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isFastPay){
+        return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isFastPay));
+    }
+
+    public UmpAsyncMessage umpReplaceBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber){
+        return umpAsyncExecute("/ump/replace-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, false));
     }
 
     public Boolean isUmpCallbackSuccess(Map<String, String> params) {
