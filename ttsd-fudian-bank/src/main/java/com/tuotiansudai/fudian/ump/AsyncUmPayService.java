@@ -12,11 +12,11 @@ public enum AsyncUmPayService {
     /**
      * 正常还款的转账
      */
-    NORMAL_REPAY_PROJECT_TRANSFER("project_transfer", "account", "normal_repay_notify"),
+    NORMAL_REPAY_PROJECT_TRANSFER("project_transfer", "ump/account", "normal_repay_notify"),
     /**
      * 提前还款的转账
      */
-    ADVANCE_REPAY_PROJECT_TRANSFER("project_transfer", "account", "advance_repay_notify"),
+    ADVANCE_REPAY_PROJECT_TRANSFER("project_transfer", "ump/account", "advance_repay_notify"),
     /**
      * 投资正常返款的转账
      */

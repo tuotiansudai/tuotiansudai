@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -57,12 +57,12 @@ public class SystemRechargeMapperTest {
 
         systemRechargeMapper.create(systemRechargeModel);
 
-        systemRechargeModel.setStatus(BankRechargeStatus.SUCCESS);
+        systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
 
         systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
 
         SystemRechargeModel systemRechargeModel1 = systemRechargeMapper.findById(systemRechargeModel.getId());
-        assertEquals(BankRechargeStatus.SUCCESS, systemRechargeModel1.getStatus());
+        assertEquals(RechargeStatus.SUCCESS, systemRechargeModel1.getStatus());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class SystemRechargeMapperTest {
         systemRechargeModel.setTime(new Date());
         systemRechargeModel.setAmount(10000);
         systemRechargeModel.setSuccessTime(new Date());
-        systemRechargeModel.setStatus(BankRechargeStatus.SUCCESS);
+        systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
         systemRechargeModel.setRemark("remark");
         return systemRechargeModel;
     }

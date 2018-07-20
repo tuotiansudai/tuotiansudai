@@ -33,22 +33,12 @@
         select * from user_bill where login_name = #{loginName}
     </select>
 
-    <select id="findByOrderIdAndBusinessType" parameterType="map" resultMap="userBillResultMap">
-        select * from user_bill where order_id = #{orderId} and business_type = #{userBillBusinessType}
-    </select>
-
     <select id="findUserBillsCount" parameterType="map" resultType="int">
         select count(*) from user_bill
         <where>
             <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
-                operation_type in
-                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -70,12 +60,6 @@
             <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
-                operation_type in
-                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -146,11 +130,6 @@
             </if>
             AND user_bill.business_type != 'PAYROLL'
         </where>
-    </select>
-
-    <select id="findUserSumInterest" resultType="long">
-      select ifnull(sum(amount),0) from user_bill
-      where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
     </select>
 
 </mapper>

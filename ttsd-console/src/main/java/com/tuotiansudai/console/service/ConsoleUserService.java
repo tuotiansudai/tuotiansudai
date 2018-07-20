@@ -495,12 +495,11 @@ public class ConsoleUserService {
 
     public Map<Role, String> getUserBankCardNumberByLoginName(String loginName) {
         Map<Role, String> bankCardMap = new HashMap<>();
-
         List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
         String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> Role.INVESTOR.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
         String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> Role.LOANER.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
-
-        bankCardMap.put(Role.UMP_INVESTOR, bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
+        bankCardMap.put(Role.UMP_INVESTOR, bankCardModel == null ? null : bankCardModel.getCardNumber());
         bankCardMap.put(Role.INVESTOR, bankCardNumberInvestor);
         bankCardMap.put(Role.LOANER, bankCardNumberLoaner);
         return bankCardMap;

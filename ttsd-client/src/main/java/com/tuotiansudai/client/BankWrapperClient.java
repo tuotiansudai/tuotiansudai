@@ -12,6 +12,7 @@ import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +137,7 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType) {
+    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType){
         return asyncExecute(MessageFormat.format("/recharge/source/{0}", source.name().toLowerCase()),
                 new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, rechargeId, amount, RechargePayType.valueOf(payType)));
     }
@@ -421,12 +423,29 @@ public class BankWrapperClient {
         return new UmpAsyncMessage();
     }
 
-    public UmpAsyncMessage umpRecharge() {
-        return umpAsyncExecute("/ump/recharge", null);
+    public UmpAsyncMessage umpRecharge(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
+        return umpAsyncExecute("/ump/recharge", new UmpRechargeDto(loginName, payUserId, rechargeId, amount, isFastPay, bankCode));
     }
 
     public UmpAsyncMessage umpWithdraw() {
         return umpAsyncExecute("/ump/withdraw", null);
+    }
+
+    public Boolean isUmpCallbackSuccess(Map<String, String> params) {
+        String content = gson.toJson(params);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + "/ump/callback/validate-front-callback")
+                    .post(requestBody)
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+            return response.code() == HttpStatus.OK.value();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 
     public Map<String, String> getUmpUserStatus(String payUserId) {
