@@ -13,7 +13,7 @@
             </span>
         </li>
     </ul>
-    <form action="/m/recharge" method="post" class="form-cash">
+    <form action="/m/recharge" method="post" class="form-cash" id="rechargeForm">
         <div class="int-item">
             <label for="name">充值金额</label>
             <input type="text" class="money-item" id="cashMoney" value="" placeholder="充值金额最少为1元"/>
@@ -26,6 +26,7 @@
         <input type="hidden" name="payType" value="FAST_PAY"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>
+        <input id="limitMoney" type="text" value="${(bankModel.singleAmount/100)}">
     </form>
 </div>
 </@global.main>

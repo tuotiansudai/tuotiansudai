@@ -16,7 +16,7 @@ public class AmountTransferMessage {
 
     private String bankOrderDate;
 
-    private BankUserBillOperationType operationType;
+    private BillOperationType operationType;
 
     private BankUserBillBusinessType businessType;
 
@@ -24,7 +24,7 @@ public class AmountTransferMessage {
 
     }
 
-    public AmountTransferMessage(long businessId, String loginName, Role role, long amount, String bankOrderNo, String bankOrderDate, BankUserBillOperationType operationType, BankUserBillBusinessType businessType) {
+    public AmountTransferMessage(long businessId, String loginName, Role role, long amount, String bankOrderNo, String bankOrderDate, BillOperationType operationType, BankUserBillBusinessType businessType) {
         this.businessId = businessId;
         this.loginName = loginName;
         this.role = role;
@@ -83,11 +83,11 @@ public class AmountTransferMessage {
         this.bankOrderDate = bankOrderDate;
     }
 
-    public BankUserBillOperationType getOperationType() {
+    public BillOperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(BankUserBillOperationType operationType) {
+    public void setOperationType(BillOperationType operationType) {
         this.operationType = operationType;
     }
 

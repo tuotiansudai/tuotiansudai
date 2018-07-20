@@ -259,7 +259,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case RECHARGE:
-                    if (bankRechargeMapper.findRechargeCount(null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime, null) > 0) {
+                    if (bankRechargeMapper.findRechargeCount(null,null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
                         time++;
                     }
                     break;

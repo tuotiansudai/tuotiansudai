@@ -67,7 +67,7 @@ public class LoanCancelService {
                                 successInvest.getAmount(),
                                 message.getBankOrderNo(),
                                 message.getBankOrderDate(),
-                                BankUserBillOperationType.IN,
+                                BillOperationType.IN,
                                 BankUserBillBusinessType.CANCEL_INVEST_PAYBACK)));
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Loan Cancel] failed to send message for pay back invest amount, investId: {0}, amount: {1}", String.valueOf(successInvest.getId()), String.valueOf(successInvest.getAmount())), e);

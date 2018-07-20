@@ -70,7 +70,7 @@ public class LoanRepaySuccessService {
                         currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        BankUserBillOperationType.OUT,
+                        BillOperationType.OUT,
                         businessType)));
         logger.info("[Normal Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
@@ -116,7 +116,7 @@ public class LoanRepaySuccessService {
                         currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        BankUserBillOperationType.OUT,
+                        BillOperationType.OUT,
                         BankUserBillBusinessType.ADVANCE_REPAY)));
         logger.info("[Advanced Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }

@@ -1,12 +1,12 @@
 package com.tuotiansudai.enums;
 
-public enum BankUserBillOperationType {
-    IN("可用余额转入"),
-    OUT("可用余额转出");
+public enum BillOperationType {
+    IN("资金转入"),
+    OUT("资金转出");
 
     private final String description;
 
-    BankUserBillOperationType(String description) {
+    BillOperationType(String description) {
         this.description = description;
     }
 
