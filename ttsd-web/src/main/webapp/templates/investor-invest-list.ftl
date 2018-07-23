@@ -47,13 +47,12 @@
 
 
                             {{if $value.productType != 'EXPERIENCE'}}
-                                {{each $value.userCoupons}}
-                            {{if $value.couponType=='FUDIAN'}}
+                                {{if $value.bankPlatForm}}
                                 <i class="fudian-icon">富</i>
-                            {{/if}}
-                            {{if $value.couponType=='LIANDONG'}}
+                                {{else}}
                                 <i class="liandong-icon">联</i>
-                            {{/if}}
+                                {{/if}}
+                                {{each $value.userCoupons}}
                                 {{if $value.couponType=='BIRTHDAY_COUPON'}}
                                 <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
                                 {{/if}}
