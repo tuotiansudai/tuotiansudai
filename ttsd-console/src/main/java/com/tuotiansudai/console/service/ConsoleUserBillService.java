@@ -31,7 +31,7 @@ public class ConsoleUserBillService {
         this.bankUserBillMapper = bankUserBillMapper;
     }
 
-    public List<BankUserBillModel> findUserFunds(Role role, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
+    public List<BankUserBillModel> findUserFunds(Role role, BankUserBillBusinessType businessType, BillOperationType operationType, String mobile, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
@@ -49,7 +49,7 @@ public class ConsoleUserBillService {
         return bankUserBillMapper.findUserBills(null, mobile, businessType==null?null:Lists.newArrayList(businessType), operationType, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize, role);
     }
 
-    public long findUserFundsCount(Role role, BankUserBillBusinessType businessType, BankUserBillOperationType operationType, String mobile, Date startTime, Date endTime) {
+    public long findUserFundsCount(Role role, BankUserBillBusinessType businessType, BillOperationType operationType, String mobile, Date startTime, Date endTime) {
         Date formattedStartTime;
         Date formattedEndTime;
 

@@ -182,6 +182,10 @@ public abstract class BaseSyncRequestModel {
         this.field = field;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -195,8 +199,25 @@ public abstract class BaseSyncRequestModel {
 
     @Override
     public int hashCode() {
+        if(id == null) return super.hashCode();
         return id.hashCode();
     }
 
-
+    @Override
+    public String toString() {
+        return "BaseSyncRequestModel{" +
+                "id=" + id +
+                ", service='" + service + '\'' +
+                ", signType='" + signType + '\'' +
+                ", sign='" + sign + '\'' +
+                ", charset='" + charset + '\'' +
+                ", version='" + version + '\'' +
+                ", merId='" + merId + '\'' +
+                ", sourceV='" + sourceV + '\'' +
+                ", requestTime=" + requestTime +
+                ", requestData='" + requestData + '\'' +
+                ", requestUrl='" + requestUrl + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

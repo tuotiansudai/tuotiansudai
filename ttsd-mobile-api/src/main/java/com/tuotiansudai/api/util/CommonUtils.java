@@ -3,8 +3,7 @@ package com.tuotiansudai.api.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.enums.BankUserBillOperationType;
-import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,8 +26,8 @@ public class CommonUtils {
         return cardNo;
     }
 
-    public static String convertRealMoneyByType(long amount, BankUserBillOperationType type) {
-        if (BankUserBillOperationType.IN.equals(type)) {
+    public static String convertRealMoneyByType(long amount, BillOperationType type) {
+        if (BillOperationType.IN.equals(type)) {
             return "+" + AmountConverter.convertCentToString(amount);
         }
         return "-" + AmountConverter.convertCentToString(amount);

@@ -1,10 +1,8 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.repository.model.BankUserBillModel;
-import com.tuotiansudai.repository.model.UserBillModel;
-import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
@@ -32,10 +30,10 @@ public class UserBillPaginationItemDataDto {
     public UserBillPaginationItemDataDto(BankUserBillModel bankUserBillModel) {
         this.id = bankUserBillModel.getId();
         this.balance = AmountConverter.convertCentToString(bankUserBillModel.getBalance());
-        if (BankUserBillOperationType.IN == bankUserBillModel.getOperationType()) {
+        if (BillOperationType.IN == bankUserBillModel.getOperationType()) {
             this.income = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
         }
-        if (BankUserBillOperationType.OUT == bankUserBillModel.getOperationType()) {
+        if (BillOperationType.OUT == bankUserBillModel.getOperationType()) {
             this.cost = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
         }
         this.businessType = bankUserBillModel.getBusinessType().getDescription();

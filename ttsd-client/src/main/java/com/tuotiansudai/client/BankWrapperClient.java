@@ -1,17 +1,16 @@
 package com.tuotiansudai.client;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
-import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
-import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
@@ -22,7 +21,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -440,6 +443,65 @@ public class BankWrapperClient {
                     .build();
             Response response = this.okHttpClient.newCall(request).execute();
             return response.code() == HttpStatus.OK.value();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpUserStatus(String payUserId) {
+        String json = syncExecute(MessageFormat.format("/ump/user/{0}", payUserId), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpLoanStatus(long loanId) {
+        String json = syncExecute(MessageFormat.format("/ump/loan/{0}", String.valueOf(loanId)), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpTransferStatus(String orderId, Date merDate, String businessType) {
+        String json = syncExecute(MessageFormat.format("/ump/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public List<List<String>> getUmpTransferBill(String payAccountId, Date startDate, Date endDate) {
+        String json = syncExecute(MessageFormat.format("/ump/transfer-bill/{0}/start-date/{1}/end-date/{2}",
+                payAccountId,
+                new SimpleDateFormat("yyyyMMdd").format(startDate),
+                new SimpleDateFormat("yyyyMMdd").format(endDate)), null);
+        try {
+            return gson.fromJson(json, new TypeToken<List<List<String>>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpPlatformStatus() {
+        String json = syncExecute("/ump/platform", null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
