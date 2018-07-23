@@ -94,7 +94,7 @@ public class LoanCreditInvestSuccessService {
                         transferApplicationModel.getTransferAmount(),
                         bankLoanCreditInvestMessage.getBankOrderNo(),
                         bankLoanCreditInvestMessage.getBankOrderDate(),
-                        BankUserBillOperationType.OUT,
+                        BillOperationType.OUT,
                         BankUserBillBusinessType.INVEST_TRANSFER_IN)));
 
         //转让人转让成功 转入
@@ -106,7 +106,7 @@ public class LoanCreditInvestSuccessService {
                                 transferApplicationModel.getTransferAmount(),
                                 bankLoanCreditInvestMessage.getBankOrderNo(),
                                 bankLoanCreditInvestMessage.getBankOrderDate(),
-                                BankUserBillOperationType.IN,
+                                BillOperationType.IN,
                                 BankUserBillBusinessType.INVEST_TRANSFER_OUT),
                         new AmountTransferMessage(transferApplicationId,
                                 transferInvestModel.getLoginName(),
@@ -114,14 +114,16 @@ public class LoanCreditInvestSuccessService {
                                 transferApplicationModel.getTransferFee(),
                                 bankLoanCreditInvestMessage.getBankOrderNo(),
                                 bankLoanCreditInvestMessage.getBankOrderDate(),
-                                BankUserBillOperationType.OUT,
+                                BillOperationType.OUT,
                                 BankUserBillBusinessType.TRANSFER_FEE)));
 
         //系统账户收取手续费
-        mqWrapperClient.sendMessage(MessageQueue.SystemBill,
-                new SystemBillMessage(
-                        SystemBillMessageType.TRANSFER_IN,
-                        transferApplicationModel.getId(),
+        mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
+                new BankSystemBillMessage(
+                        BillOperationType.IN,
+                        transferApplicationId,
+                        bankLoanCreditInvestMessage.getBankOrderNo(),
+                        bankLoanCreditInvestMessage.getBankOrderDate(),
                         transferApplicationModel.getTransferFee(),
                         SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferApplicationModel.getTransferFee()))));

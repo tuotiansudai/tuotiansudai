@@ -187,7 +187,7 @@ public class ReferrerRewardService {
 //                        model.getAmount(),
 //                        model.getBankOrderNo(),
 //                        model.getBankOrderDate(),
-//                        BankUserBillOperationType.IN,
+//                        BillOperationType.IN,
 //                        BankUserBillBusinessType.REFERRER_REWARD)));
 //
 //        InvestModel investModel = investMapper.findById(model.getInvestId());

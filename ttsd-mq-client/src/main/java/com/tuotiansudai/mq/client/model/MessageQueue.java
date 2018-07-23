@@ -40,6 +40,7 @@ public enum MessageQueue {
     UmpAmountTransfer("UmpAmountTransfer"),
 
     //fudian new queues
+    BankSystemBill("BankSystemBill"),
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     UnbindBankCard_Success("UnbindBankCard-Success"),

@@ -92,7 +92,7 @@ public class BankWithdrawService {
                             bankWithdrawModel.getAmount(),
                             bankWithdrawMessage.getBankOrderNo(),
                             bankWithdrawMessage.getBankOrderDate(),
-                            BankUserBillOperationType.OUT,
+                            BillOperationType.OUT,
                             BankUserBillBusinessType.WITHDRAW_SUCCESS)));
 
             try {
