@@ -9,16 +9,19 @@ public class UmpBindCardMessage extends BankBaseMessage {
 
     private String loginName;
 
+    private String bankCode;
+
     private boolean isApply;
 
-    private boolean isFastPayOn;
+    private boolean isReplaceCard;
 
     public UmpBindCardMessage() {
     }
 
-    public UmpBindCardMessage(long bindCardModelId, String loginName) {
+    public UmpBindCardMessage(long bindCardModelId, String loginName, boolean isReplaceCard) {
         this.bindCardModelId = bindCardModelId;
         this.loginName = loginName;
+        this.isReplaceCard = isReplaceCard;
     }
 
     public long getBindCardModelId() {
@@ -37,19 +40,27 @@ public class UmpBindCardMessage extends BankBaseMessage {
         this.loginName = loginName;
     }
 
-    public boolean isFastPayOn() {
-        return isFastPayOn;
-    }
-
-    public void setFastPayOn(boolean fastPayOn) {
-        isFastPayOn = fastPayOn;
-    }
-
     public boolean isApply() {
         return isApply;
     }
 
     public void setApply(boolean apply) {
         isApply = apply;
+    }
+
+    public boolean isReplaceCard() {
+        return isReplaceCard;
+    }
+
+    public void setReplaceCard(boolean replaceCard) {
+        isReplaceCard = replaceCard;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 }

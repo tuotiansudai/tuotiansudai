@@ -19,8 +19,11 @@
         value(#{id}, #{bankCode}, #{cardNumber}, #{createdTime}, #{status}, #{loginName}, #{isFastPayOn})
     </insert>
 
-    <update id="updateStatus" parameterType="map">
-        UPDATE bank_card set status = #{status} where id = #{id}
+    <update id="updateStatusAndBankCode" parameterType="map">
+        UPDATE bank_card set
+        status = #{status},
+        bank_code = #{bankCode}
+        where id = #{id}
     </update>
 
     <select id="findPassedBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">

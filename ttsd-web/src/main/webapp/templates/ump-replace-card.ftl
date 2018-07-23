@@ -20,7 +20,7 @@
                     </#list>
                 </ol>
                 <div class="recharge-form">
-                    <form action="/bind-card/replace" method="post" target="_blank">
+                    <form action="/ump/bind-card/replace" method="post" target="_blank">
                         银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="tc pad-m">

@@ -45,11 +45,11 @@ public class UmpBindCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
-        ModelAndView view = new ModelAndView("/bind-card");
+        ModelAndView view = new ModelAndView("/ump-bind-card");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
         view.addObject("userName", userModel.getUserName());
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
-        view.addObject("bankList", bankService.findBankList(0L, 0L));
+        view.addObject("bankList", bankService.findUmpBankList(0L, 0L));
         return view;
     }
 
@@ -63,7 +63,7 @@ public class UmpBindCardController {
 
     @RequestMapping(value = "/replace", method = RequestMethod.GET)
     public ModelAndView replaceBankCard() {
-        ModelAndView view = new ModelAndView("/replace-card");
+        ModelAndView view = new ModelAndView("/ump-replace-card");
         view.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()).getUserName());
 
         BankCardModel bankCardModel = umpBindCardService.getPassedBankCard(LoginUserInfo.getLoginName());

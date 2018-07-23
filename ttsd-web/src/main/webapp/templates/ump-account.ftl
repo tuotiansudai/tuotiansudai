@@ -22,12 +22,12 @@
                     <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="javascript:void(0)"
                                                                id="update-bank-card"
-                                                               data-url="${requestContext.getContextPath()}/bind-card/replace">修改</a>
+                                                               data-url="${requestContext.getContextPath()}/ump/bind-card/replace">修改</a>
                 </span>
                 <#else>
                     <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
                     <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="/bind-card">绑定</a>
+                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="/ump/bind-card">绑定</a>
                 </span>
                 </#if>
             </li>

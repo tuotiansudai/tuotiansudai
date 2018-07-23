@@ -42,12 +42,10 @@ public class UmpBindCardMessageConsumer implements MessageConsumer {
         }
 
         try {
-            UmpBindCardMessage umpBindCardMessage = new Gson().fromJson(message, umpBindCardMessage.class);
+            UmpBindCardMessage umpBindCardMessage = new Gson().fromJson(message, UmpBindCardMessage.class);
             umpBindCardService.processBindCard(umpBindCardMessage);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
-
     }
-
 }

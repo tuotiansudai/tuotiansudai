@@ -49,17 +49,17 @@ public class UmpInvestRepayService {
 
     @SuppressWarnings(value = "unchecked")
     public BankBaseMessage investRepay(UmpInvestRepayDto dto){
-        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(1111111111),
-                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(1111111111), String.valueOf(new Date().getTime())),
-                "23121323123121",
-                String.valueOf(12));
+        ProjectTransferRequestModel model = ProjectTransferRequestModel.newNormalRepayPaybackRequest(String.valueOf(dto.getLoanId()),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayId()), String.valueOf(new Date().getTime())),
+                dto.getPayUserId(),
+                String.valueOf(dto.getAmount()));
 
-//        if (dto.isAdvance()) {
-//            model = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(dto.getLoanId()),
-//                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayId()), String.valueOf(new Date().getTime())),
-//                    dto.getPayUserId(),
-//                    String.valueOf(dto.getAmount()));
-//        }
+        if (dto.isAdvance()) {
+            model = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(dto.getLoanId()),
+                    MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(dto.getInvestRepayId()), String.valueOf(new Date().getTime())),
+                    dto.getPayUserId(),
+                    String.valueOf(dto.getAmount()));
+        }
 
         umpUtils.sign(model);
 

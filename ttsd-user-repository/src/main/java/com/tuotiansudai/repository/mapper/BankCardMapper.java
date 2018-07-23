@@ -15,8 +15,9 @@ public interface BankCardMapper {
 
     void create(BankCardModel model);
 
-    void updateStatus(@Param(value = "id") long id,
-                      @Param(value = "status") BankCardStatus status);
+    void updateStatusAndBankCode(@Param(value = "id") long id,
+                                 @Param(value = "status") BankCardStatus status,
+                                 @Param(value = "bankCode") String bankCode);
 
     BankCardModel findById(long id);
 

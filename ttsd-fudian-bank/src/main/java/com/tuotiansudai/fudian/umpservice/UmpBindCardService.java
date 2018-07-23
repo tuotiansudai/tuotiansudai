@@ -53,23 +53,26 @@ public class UmpBindCardService {
     }
 
     public PtpMerBindCardRequestModel bindCard(UmpBindCardDto dto) {
-        PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(dto.getBankCardModelId()),
+        PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(dto.isReplaceCard(), String.valueOf(dto.getBankCardModelId()),
                 dto.getCardNumber(),
                 dto.getPayUserId(),
                 dto.getUserName(),
-                dto.getIdentityNumber(),
-                dto.isFastPay());
+                dto.getIdentityNumber());
 
         umpUtils.sign(requestModel);
 
-        insertRequestMapper.insertCardBind(requestModel);
+        if (dto.isReplaceCard()){
+            insertRequestMapper.insertReplaceCardBind(requestModel);
+        }else{
+            insertRequestMapper.insertCardBind(requestModel);
+        }
 
         if (requestModel.getField().isEmpty()) {
             logger.error("[UMP BIND CARD] failed to sign, data: {}", requestModel);
             return null;
         }
 
-        UmpBindCardMessage umpBindCardMessage = new UmpBindCardMessage(dto.getBankCardModelId(), dto.getLoginName());
+        UmpBindCardMessage umpBindCardMessage = new UmpBindCardMessage(dto.getBankCardModelId(), dto.getLoginName(), dto.isReplaceCard());
         String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(umpBindCardMessage.getBindCardModelId()));
         redisTemplate.<String, String>opsForValue().set(umpBindCardMessageKey, gson.toJson(umpBindCardMessage), 1, TimeUnit.DAYS);
         return requestModel;
@@ -81,12 +84,7 @@ public class UmpBindCardService {
             return null;
         }
         insertNotifyMapper.insertNotifyCardBind(bindCardNotifyModel);
-        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(bindCardNotifyModel.getOrderId()));
-        String message = redisTemplate.<String, String>opsForValue().get(umpBindCardMessageKey);
-        UmpBindCardMessage umpBindCardMessage = gson.fromJson(message, UmpBindCardMessage.class);
-        umpBindCardMessage.setStatus(bindCardNotifyModel.isSuccess());
-        umpBindCardMessage.setApply(false);
-        messageQueueClient.sendMessage(MessageQueue.UmpBindCard_Success, umpBindCardMessage);
+        this.sendMessage(bindCardNotifyModel.isSuccess(), false, bindCardNotifyModel.getId(), bindCardNotifyModel.getGateId());
         return bindCardNotifyModel.getResponseData();
     }
 
@@ -96,12 +94,17 @@ public class UmpBindCardService {
             return null;
         }
         insertNotifyMapper.insertApplyNotifyCardBind(bindCardApplyNotifyModel);
-        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(bindCardApplyNotifyModel.getOrderId()));
+        this.sendMessage(bindCardApplyNotifyModel.isSuccess(), true, bindCardApplyNotifyModel.getId(), null);
+        return bindCardApplyNotifyModel.getResponseData();
+    }
+
+    private void sendMessage(boolean isSuccess, boolean isApply, long orderId, String bankCode){
+        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(orderId));
         String message = redisTemplate.<String, String>opsForValue().get(umpBindCardMessageKey);
         UmpBindCardMessage umpBindCardMessage = gson.fromJson(message, UmpBindCardMessage.class);
-        umpBindCardMessage.setStatus(bindCardApplyNotifyModel.isSuccess());
-        umpBindCardMessage.setApply(true);
+        umpBindCardMessage.setStatus(isSuccess);
+        umpBindCardMessage.setApply(isApply);
+        umpBindCardMessage.setBankCode(bankCode);
         messageQueueClient.sendMessage(MessageQueue.UmpBindCard_Success, umpBindCardMessage);
-        return bindCardApplyNotifyModel.getResponseData();
     }
 }

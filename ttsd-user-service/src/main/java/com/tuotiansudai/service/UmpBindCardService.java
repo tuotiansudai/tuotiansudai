@@ -22,7 +22,7 @@ public class UmpBindCardService {
 
     private static Logger logger = LoggerFactory.getLogger(UmpBindCardService.class);
 
-    private final BankWrapperClient bankWrapperClient;
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     private final BankCardMapper bankCardMapper;
 
@@ -33,8 +33,7 @@ public class UmpBindCardService {
     private final UserMapper userMapper;
 
     @Autowired
-    public UmpBindCardService(BankWrapperClient bankWrapperClient, BankCardMapper bankCardMapper, AccountMapper accountMapper, UserFundMapper userFundMapper, UserMapper userMapper) {
-        this.bankWrapperClient = bankWrapperClient;
+    public UmpBindCardService(BankCardMapper bankCardMapper, AccountMapper accountMapper, UserFundMapper userFundMapper, UserMapper userMapper) {
         this.bankCardMapper = bankCardMapper;
         this.accountMapper = accountMapper;
         this.userFundMapper = userFundMapper;
@@ -53,19 +52,7 @@ public class UmpBindCardService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         BankCardModel model = new BankCardModel(IdGenerator.generate(), dto);
         bankCardMapper.create(model);
-
-        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), dto.isFastPay());
-    }
-
-    public void processBindCard(UmpBindCardMessage message){
-        BankCardModel model = bankCardMapper.findById(message.getBindCardModelId());
-        if (model == null || !Lists.newArrayList(BankCardStatus.UNCHECKED, BankCardStatus.APPLY).contains(model.getStatus())) {
-            logger.error("UmpBankCardModel not exist or status is error, bindCardModelId: {}", message.getBindCardModelId());
-            return;
-        }
-        bankCardMapper.updateStatus(model.getId(), message.isStatus() ?
-                message.isApply() && model.getStatus() == BankCardStatus.UNCHECKED ? BankCardStatus.APPLY : BankCardStatus.PASSED :
-                BankCardStatus.FAILED);
+        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), false);
     }
 
     public UmpAsyncMessage replaceBankCard(UmpBindCardRequestDto dto) {
@@ -74,26 +61,30 @@ public class UmpBindCardService {
         bankCardMapper.create(model);
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
-        return bankWrapperClient.umpReplaceBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber());
+        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), true);
     }
 
-    public void processReplaceBindCard(UmpBindCardMessage message){
+    public void processBindCard(UmpBindCardMessage message) {
         BankCardModel model = bankCardMapper.findById(message.getBindCardModelId());
         if (model == null || !Lists.newArrayList(BankCardStatus.UNCHECKED, BankCardStatus.APPLY).contains(model.getStatus())) {
-            logger.error("UmpReplaceBankCardModel not exist or status is error, bindCardModelId: {}", message.getBindCardModelId());
+            logger.error("UmpBankCardModel not exist or status is error, bindCardModelId: {}", message.getBindCardModelId());
             return;
         }
-
-        if (message.isStatus()){
-
-
-        }else {
-
+        if (message.isReplaceCard()) {
+            if (message.isStatus() && !message.isApply()) {
+                BankCardModel previousBankCard = bankCardMapper.findPassedBankCardByLoginName(model.getLoginName());
+                bankCardMapper.updateStatusAndBankCode(previousBankCard.getId(), BankCardStatus.REMOVED, previousBankCard.getBankCode());
+                bankCardMapper.updateStatusAndBankCode(model.getId(), BankCardStatus.PASSED, message.getBankCode());
+            } else {
+                bankCardMapper.updateStatusAndBankCode(model.getId(), message.isStatus() ? BankCardStatus.APPLY : BankCardStatus.FAILED, message.getBankCode());
+            }
+        } else {
+            bankCardMapper.updateStatusAndBankCode(model.getId(),
+                    message.isStatus() ?
+                            message.isApply() && model.getStatus() == BankCardStatus.UNCHECKED ? BankCardStatus.APPLY : BankCardStatus.PASSED :
+                            BankCardStatus.FAILED,
+                    message.getBankCode());
         }
-
-        bankCardMapper.updateStatus(model.getId(), message.isStatus() ?
-                message.isApply() && model.getStatus() == BankCardStatus.UNCHECKED ? BankCardStatus.APPLY : BankCardStatus.PASSED :
-                BankCardStatus.FAILED);
     }
 
     public BankCardModel getPassedBankCard(String loginName) {
