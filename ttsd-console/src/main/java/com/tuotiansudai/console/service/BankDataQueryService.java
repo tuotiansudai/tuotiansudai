@@ -62,7 +62,7 @@ public class BankDataQueryService {
         if(loanModel.getIsBankPlatform() && role==Role.INVESTOR){
             return new BankQueryLoanMessage(false, "该标的为联动优势标的");
         }
-        if(!loanModel.getIsBankPlatform() && (role==Role.BANK_INVESTOR || role == Role.BANK_LOANER)){
+        if(!loanModel.getIsBankPlatform() && (role==Role.INVESTOR || role == Role.LOANER)){
             return new BankQueryLoanMessage(false, "该标的为富滇银行标的");
         }
         if(loanModel.getIsBankPlatform()){
