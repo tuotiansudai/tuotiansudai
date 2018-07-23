@@ -61,8 +61,7 @@
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
-        select <include refid="columns"></include> from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
-        where withdraw.id = #{id}
+        select * from withdraw where id = #{id}
     </select>
 
     <update id="update" parameterType="WithdrawModel">

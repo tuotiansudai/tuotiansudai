@@ -60,7 +60,8 @@ public class UmpWithdrawService {
     public void processWithdraw(UmpWithdrawMessage message) {
         WithdrawModel model = withdrawMapper.findById(message.getWithdrawId());
         if (model == null || !Lists.newArrayList(WithdrawStatus.WAIT_PAY, WithdrawStatus.UMP_APPLY_SUCCESS).contains(model.getStatus())) {
-            logger.error("UmpWithdrawModel not exist or status is error, isApply:{}, current status:{}, withdrawId: {}", message.isApply(), model.getStatus(), message.getWithdrawId());
+            logger.error("UmpWithdrawModel not exist or status is error, isApply:{}, withdrawId: {}", message.isApply(), message.getWithdrawId());
+            return;
         }
         model.setApplyNotifyMessage(message.getApplyMessage());
         model.setNotifyMessage(message.getNotifyMessage());
