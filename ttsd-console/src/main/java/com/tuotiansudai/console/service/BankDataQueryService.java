@@ -15,6 +15,7 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -113,7 +114,7 @@ public class BankDataQueryService {
                 if (StringUtils.isEmpty(loanId)) {
                     return null;
                 }
-                return bankWrapperClient.getUmpLoanStatus(Long.valueOf(loanId));
+                return bankWrapperClient.getUmpLoanStatus(Long.valueOf(loanId.trim()));
             case "transfer":
                 if (StringUtils.isEmpty(orderId) || merDate == null || StringUtils.isEmpty(businessType)) {
                     return null;
