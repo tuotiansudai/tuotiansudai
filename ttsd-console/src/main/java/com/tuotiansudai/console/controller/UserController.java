@@ -113,8 +113,8 @@ public class UserController {
             UserModel userModel = consoleUserService.findByLoginName(loginName);
             Map<Role,String> bankCardMap=consoleUserService.getUserBankCardNumberByLoginName(loginName);
             editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
-            editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
-            editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
+            editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.LOANER));
+            editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.UMP_INVESTOR));
 
             editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());

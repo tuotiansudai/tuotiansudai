@@ -16,16 +16,19 @@ public interface UserBillMapper {
 
     void create(UserBillModel userBillModel);
 
-    List<UserBillModel> findUserBills(Map<String, Object> params);
+    List<UserBillModel> findUserBills(@Param(value = "userBillBusinessType") List<UserBillBusinessType> userBillBusinessType,
+                                      @Param(value = "loginName") String loginName,
+                                      @Param(value = "startTime") Date startTime,
+                                      @Param(value = "endTime") Date endTime,
+                                      @Param(value = "indexPage") int indexPage,
+                                      @Param(value = "pageSize") int pageSize);
 
-   int findUserBillsCount(Map<String, Object> params);
+   int findUserBillsCount(@Param(value = "userBillBusinessType") List<UserBillBusinessType> userBillBusinessType,
+                          @Param(value = "loginName") String loginName,
+                          @Param(value = "startTime") Date startTime,
+                          @Param(value = "endTime") Date endTime);
 
     List<UserBillModel> findByLoginName(String loginName);
-
-    List<UserBillModel> findByOrderIdAndBusinessType(@Param("orderId") Long orderId,
-                                               @Param("userBillBusinessType") UserBillBusinessType userBillBusinessType);
-
-    long findSumRewardByLoginName(String loginName);
 
     List<UserBillPaginationView> findUserFunds(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
                                                @Param("userBillOperationType") UserBillOperationType userBillOperationType,
@@ -40,6 +43,4 @@ public interface UserBillMapper {
                            @Param("mobile") String mobile,
                            @Param("startTime") Date startTime,
                            @Param("endTime") Date endTime);
-
-    long findUserSumInterest(@Param("endDate") Date endDate);
 }

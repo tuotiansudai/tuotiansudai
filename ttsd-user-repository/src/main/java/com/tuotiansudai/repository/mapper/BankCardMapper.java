@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.BankCardModel;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -7,5 +8,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BankCardMapper {
-    String findPassedBankCardNumberByLoginName(String loginName);
+
+    BankCardModel findPassedBankCardByLoginName(String loginName);
 }

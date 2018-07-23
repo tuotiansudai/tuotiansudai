@@ -23,6 +23,16 @@
             <span class="vip vip${userMembershipLevel!}"></span>
             <a href="/personal-info" class="user-info"></a>
         </div>
+        <div class="fr">
+            <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
+            <div class="notice-tips extra-rate-popup" style="display: none">
+                1.当前内容为富滇银行存管账号的资金信息;<br/>
+                2.应国家相关监管要求，拓天速贷已开通富滇银行存管服务;<br/>
+                3.想要查看老版的资金信息请点击<strong>「联动优势资金账号」</strong>;<br/>
+                4.联动优势托管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。
+            </div>
+            </div>
+        </div>
 
     </div>
 

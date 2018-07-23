@@ -31,7 +31,7 @@ public class WithdrawController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public ModelAndView getWithdrawList(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
+    public ModelAndView getWithdrawList(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
                                         @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                         @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,

@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.mapper;
+package com.tuotiansudai.fudian.mapper.fudian;
 
 import com.tuotiansudai.fudian.dto.request.*;
 import org.apache.ibatis.annotations.Insert;

@@ -3,7 +3,7 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.BankUserBillBusinessType;
 import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
@@ -61,11 +61,11 @@ public class BankRechargeService {
 
         BankRechargeModel bankRechargeModel = bankRechargeMapper.findById(bankRechargeMessage.getRechargeId());
 
-        if (bankRechargeModel.getStatus() != BankRechargeStatus.WAIT_PAY) {
+        if (bankRechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
             logger.error("bankRechargeModel statue is not wait, rechargeId: {} ", bankRechargeMessage.getRechargeId());
             return;
         }
-        bankRechargeModel.setStatus(bankRechargeMessage.isStatus() ? BankRechargeStatus.SUCCESS : BankRechargeStatus.FAIL);
+        bankRechargeModel.setStatus(bankRechargeMessage.isStatus() ? RechargeStatus.SUCCESS : RechargeStatus.FAIL);
         bankRechargeModel.setBankOrderNo(bankRechargeMessage.getBankOrderNo());
         bankRechargeModel.setBankOrderDate(bankRechargeMessage.getBankOrderDate());
         bankRechargeMapper.update(bankRechargeModel);

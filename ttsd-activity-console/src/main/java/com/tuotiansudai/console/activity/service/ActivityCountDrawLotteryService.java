@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.UserLotteryPrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ActivityDrawLotteryTask;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -259,7 +259,7 @@ public class ActivityCountDrawLotteryService {
                     }
                     break;
                 case RECHARGE:
-                    if (bankRechargeMapper.findRechargeCount(null,null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
+                    if (bankRechargeMapper.findRechargeCount(null,null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, startTime, endTime) > 0) {
                         time++;
                     }
                     break;
