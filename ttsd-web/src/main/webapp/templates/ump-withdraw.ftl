@@ -1,5 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.ump_withdraw}" pageJavascript="${js.ump_withdraw}" title="提现">
+<div class="ump-title">
+    <a href="/ump/account">联动优势资金存管账号</a>>我要提现
+</div>
 <div class="content-container auto-height">
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
 
