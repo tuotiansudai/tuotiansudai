@@ -50,7 +50,7 @@ public class BankQueryDataController {
     }
 
     @RequestMapping(path = "/user")
-    public ModelAndView queryUserStatus(@RequestParam(value = "role",required = false,defaultValue = "INVESTOR") Role role, @RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
+    public ModelAndView queryUserStatus(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role, @RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
         BankQueryUserMessage bankQueryUserMessage = bankDataQueryService.getUserStatus(role, loginNameOrMobile);
 
         return new ModelAndView("/real-time-status", "type", "user")
@@ -82,7 +82,7 @@ public class BankQueryDataController {
     }
 
     @RequestMapping(value = "/account-bill", method = RequestMethod.GET)
-    public ModelAndView queryAccountBill(@RequestParam(value = "role",required = false,defaultValue = "INVESTOR") Role role,
+    public ModelAndView queryAccountBill(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
                                          @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
                                          @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                          @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
@@ -135,7 +135,7 @@ public class BankQueryDataController {
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("startDate", startDate);
         modelAndView.addObject("endDate", endDate);
-        if(StringUtils.isEmpty(loginName) || startDate == null || endDate == null){
+        if (StringUtils.isEmpty(loginName) || startDate == null || endDate == null) {
             return modelAndView;
         }
         Ordering<List<String>> ordering = new Ordering<List<String>>() {
@@ -159,9 +159,9 @@ public class BankQueryDataController {
                 queryEndDate = queryStartDate.plusDays(29);
             }
             List<List<String>> transferBill = bankDataQueryService.getUmpTransferBill(loginName, queryStartDate.toDate(), queryEndDate.toDate());
-           if(!CollectionUtils.isEmpty(transferBill)){
-               data.addAll(transferBill);
-           }
+            if (!CollectionUtils.isEmpty(transferBill)) {
+                data.addAll(transferBill);
+            }
             queryStartDate = queryEndDate.plusDays(1);
         }
         modelAndView.addObject("data", ordering.sortedCopy(data));

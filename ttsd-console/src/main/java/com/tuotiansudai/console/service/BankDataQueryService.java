@@ -124,7 +124,7 @@ public class BankDataQueryService {
     }
 
     public List<List<String>> getUmpTransferBill(String loginName, Date startDate, Date endDate) {
-        if(StringUtils.isEmpty(loginName)){
+        if (StringUtils.isEmpty(loginName)) {
             return null;
         }
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
@@ -135,6 +135,6 @@ public class BankDataQueryService {
         if (accountModel == null) {
             return null;
         }
-        return bankWrapperClient.getUmpTransferBill(accountModel.getPayAccountId(),startDate,endDate);
+        return bankWrapperClient.getUmpTransferBill(accountModel.getPayAccountId(), startDate, endDate);
     }
 }
