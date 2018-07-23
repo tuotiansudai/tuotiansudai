@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tuotiansudai.fudian.mapper.ump.InsertNotifyMapper;
 import com.tuotiansudai.fudian.mapper.ump.InsertRequestMapper;
+import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawApplyNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.callback.WithdrawNotifyRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.CustWithdrawalsRequestModel;
@@ -68,7 +69,7 @@ public class UmpWithdrawService {
 
         UmpWithdrawMessage message = new UmpWithdrawMessage(dto.getWithdrawId(), dto.getLoginName(), dto.getAmount());
         String umpWithdrawMessageKey = MessageFormat.format(UMP_WITHDRAW_MESSAGE_KEY, String.valueOf(message.getWithdrawId()));
-        redisTemplate.<String, String>opsForValue().set(umpWithdrawMessageKey, gson.toJson(message), 7, TimeUnit.DAYS);
+        redisTemplate.<String, String>opsForValue().set(umpWithdrawMessageKey, gson.toJson(message), 1, TimeUnit.DAYS);
         return requestModel;
     }
 
@@ -78,13 +79,7 @@ public class UmpWithdrawService {
             return null;
         }
         insertNotifyMapper.insertNotifyWithdraw(withdrawNotifyModel);
-        String umpWithdrawMessageKey = MessageFormat.format(UMP_WITHDRAW_MESSAGE_KEY, String.valueOf(withdrawNotifyModel.getOrderId()));
-        String message = redisTemplate.<String, String>opsForValue().get(umpWithdrawMessageKey);
-        UmpWithdrawMessage umpWithdrawMessage = gson.fromJson(message, UmpWithdrawMessage.class);
-        umpWithdrawMessage.setStatus(withdrawNotifyModel.isSuccess());
-        umpWithdrawMessage.setApply(false);
-        umpWithdrawMessage.setNotifyMessage(withdrawNotifyModel.getRetMsg());
-        messageQueueClient.sendMessage(MessageQueue.UmpWithdraw_Success, message);
+        this.sendMessage(withdrawNotifyModel, false);
         return withdrawNotifyModel.getResponseData();
     }
 
@@ -94,13 +89,17 @@ public class UmpWithdrawService {
             return null;
         }
         insertNotifyMapper.insertApplyNotifyWithdraw(withdrawApplyNotifyModel);
-        String umpWithdrawMessageKey = MessageFormat.format(UMP_WITHDRAW_MESSAGE_KEY, String.valueOf(withdrawApplyNotifyModel.getOrderId()));
+        this.sendMessage(withdrawApplyNotifyModel, true);
+        return withdrawApplyNotifyModel.getResponseData();
+    }
+
+    private void sendMessage(BaseCallbackRequestModel model, boolean isApply){
+        String umpWithdrawMessageKey = MessageFormat.format(UMP_WITHDRAW_MESSAGE_KEY, String.valueOf(model.getOrderId()));
         String message = redisTemplate.<String, String>opsForValue().get(umpWithdrawMessageKey);
         UmpWithdrawMessage umpWithdrawMessage = gson.fromJson(message, UmpWithdrawMessage.class);
-        umpWithdrawMessage.setStatus(withdrawApplyNotifyModel.isSuccess());
-        umpWithdrawMessage.setApply(true);
-        umpWithdrawMessage.setApplyMessage(withdrawApplyNotifyModel.getRetMsg());
-        messageQueueClient.sendMessage(MessageQueue.UmpWithdraw_Success, message);
-        return withdrawApplyNotifyModel.getResponseData();
+        umpWithdrawMessage.setStatus(model.isSuccess());
+        umpWithdrawMessage.setApply(isApply);
+        umpWithdrawMessage.setNotifyMessage(model.getRetMsg());
+        messageQueueClient.sendMessage(MessageQueue.UmpWithdraw_Success, umpWithdrawMessage);
     }
 }
