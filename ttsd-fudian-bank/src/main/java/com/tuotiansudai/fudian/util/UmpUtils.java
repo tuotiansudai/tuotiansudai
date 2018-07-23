@@ -113,7 +113,7 @@ public class UmpUtils {
         return null;
     }
 
-    public <T extends BaseSyncResponseModel> void generateResponse(long requestId, String responseBody, T model) {
+    public <T extends BaseSyncResponseModel> void generateResponse(Long requestId, String responseBody, T model) {
         try {
             Map<String, String> resData = this.getResData(responseBody);
             model.setRequestId(requestId);

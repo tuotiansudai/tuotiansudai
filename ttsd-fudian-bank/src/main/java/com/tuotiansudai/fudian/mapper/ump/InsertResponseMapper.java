@@ -30,4 +30,5 @@ public interface InsertResponseMapper {
             "values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo},#{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertResponseTransfer(TransferResponseModel model);
+
 }
