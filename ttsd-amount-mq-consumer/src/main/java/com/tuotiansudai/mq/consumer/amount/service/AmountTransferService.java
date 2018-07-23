@@ -2,7 +2,7 @@ package com.tuotiansudai.mq.consumer.amount.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -51,7 +51,7 @@ public class AmountTransferService {
             }
             logger.info("start transferInBalance, message: {}", gson.toJson(message));
 
-            long amount = message.getAmount() * (message.getOperationType() == BankUserBillOperationType.IN ? 1 : -1);
+            long amount = message.getAmount() * (message.getOperationType() == BillOperationType.IN ? 1 : -1);
 
             if (message.getRole() == Role.INVESTOR){
                 bankAccountMapper.updateInvestorBalance(message.getLoginName(), amount);

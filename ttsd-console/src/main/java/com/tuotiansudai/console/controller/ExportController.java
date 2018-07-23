@@ -181,7 +181,7 @@ public class ExportController {
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public void exportSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                     @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
+                                     @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                      @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
         fillExportResponse(httpServletResponse, CsvHeaderType.SystemBillHeader.getDescription());
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
@@ -340,7 +340,7 @@ public class ExportController {
             @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
             @RequestParam(value = "role", defaultValue = "INVESTOR", required = false) Role role,
             @RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
-            @RequestParam(value = "userBillOperationType", required = false) BankUserBillOperationType operationType,
+            @RequestParam(value = "userBillOperationType", required = false) BillOperationType operationType,
             @RequestParam(value = "mobile", required = false) String mobile,
             @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
             @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime, HttpServletResponse response) throws IOException {

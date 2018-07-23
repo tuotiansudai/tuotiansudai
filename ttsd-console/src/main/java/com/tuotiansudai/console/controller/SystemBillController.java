@@ -5,6 +5,8 @@ import com.tuotiansudai.console.service.SystemBillService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.enums.BillOperationType;
+import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class SystemBillController {
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                          @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
+                                          @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                           @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType,
                                           @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
@@ -44,13 +46,13 @@ public class SystemBillController {
         long sumIncome = systemBillService.findSumSystemIncome(
                 startTime,
                 endTime,
-                operationType,
+                BillOperationType.IN,
                 businessType);
 
         long sumExpend = systemBillService.findSumSystemExpend(
                 startTime,
                 endTime,
-                operationType,
+                BillOperationType.OUT,
                 businessType);
 
         long sumWin = sumIncome - sumExpend;

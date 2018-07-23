@@ -89,7 +89,7 @@ public class UmpRechargeService {
         String message = redisTemplate.<String, String>opsForValue().get(umpRechargeMessageKey);
         UmpRechargeMessage umpRechargeMessage = gson.fromJson(message, UmpRechargeMessage.class);
         umpRechargeMessage.setStatus(model.isSuccess());
-        messageQueueClient.sendMessage(MessageQueue.UmpRecharge_Success, message);
+        messageQueueClient.sendMessage(MessageQueue.UmpRecharge_Success, umpRechargeMessage);
 
         return model.getResponseData();
     }
