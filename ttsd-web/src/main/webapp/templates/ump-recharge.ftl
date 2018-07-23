@@ -1,5 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.ump_bind_card}" pageJavascript="${js.ump_recharge}" title="充值">
+<div class="ump-title">
+    联动优势资金存管账号
+</div>
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
     <div class="recharge-bind-card pad-s">
