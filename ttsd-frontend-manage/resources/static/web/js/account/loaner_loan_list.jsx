@@ -85,6 +85,7 @@ function loadLoanData(currentPage) {
                     contentType: 'application/json; charset=UTF-8'
                 },function(response) {
 
+                    var isBank = $(this).data('isbank');
                     var data = response.data;
                     data.csrfToken = $("meta[name='_csrf']").attr("content");
                     if (data.status) {
@@ -126,7 +127,7 @@ function loadLoanData(currentPage) {
                         if (data.isNormalRepayEnabled) {
                             $('a.normal-repay').click(function () {
                                  if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
-                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount,data.loanerCategory);
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount,isBank);
                                     return false;
                                  }
 
@@ -139,7 +140,7 @@ function loadLoanData(currentPage) {
                         if (data.isAdvanceRepayEnabled) {
                             $('a.advanced-repay').click(function () {
                                 if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
-                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount,isBank);
                                     return false;
                                 }
                                 $("#advanced-repay-form").submit();
@@ -163,12 +164,12 @@ $('.apply-btn').click(function () {
     $(".date-filter .select-item").removeClass("current");
 });
 
-var showBalanceNotEnoughAlert = function (balance, repayAmount,loanerCategory) {
+var showBalanceNotEnoughAlert = function (balance, repayAmount,isBank) {
     layer.closeAll();
     let loanCategory ;
-    if(loanerCategory=='fudian'){
-        loanCategory='富滇银行';
-    }else if(loanerCategory=='fudian'){
+    if(isBank){
+        loanCategory='富滇银行存管';
+    }else {
         loanCategory='联动优势';
     }
     layer.open({
@@ -179,12 +180,16 @@ var showBalanceNotEnoughAlert = function (balance, repayAmount,loanerCategory) {
         title: '账户余额不足',
         btn: ['关闭', '去充值'],
         area: ['400px', '160px'],
-        content:`<p class="pad-m-tb tc">应还金额 ${repayAmount}元，您的账户${loanCategory}余额仅有${balance}元</p>`,
+        content:`<p class="pad-m-tb tc">应还金额 ${repayAmount}元，您的${loanCategory}账户余额仅有${balance}元</p>`,
         btn1: function () {
             layer.closeAll();
         },
         btn2: function () {
-            window.location.href = "/recharge";
+            if (isBank){
+                window.location.href = "/recharge";
+            }else{
+                window.location.href = "/ump/recharge";
+            }
         }
     });
 }
