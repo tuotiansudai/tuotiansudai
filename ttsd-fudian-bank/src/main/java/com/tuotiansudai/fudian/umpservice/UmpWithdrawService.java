@@ -69,7 +69,7 @@ public class UmpWithdrawService {
 
         UmpWithdrawMessage message = new UmpWithdrawMessage(dto.getWithdrawId(), dto.getLoginName(), dto.getAmount());
         String umpWithdrawMessageKey = MessageFormat.format(UMP_WITHDRAW_MESSAGE_KEY, String.valueOf(message.getWithdrawId()));
-        redisTemplate.<String, String>opsForValue().set(umpWithdrawMessageKey, gson.toJson(message), 1, TimeUnit.DAYS);
+        redisTemplate.<String, String>opsForValue().set(umpWithdrawMessageKey, gson.toJson(message), 7, TimeUnit.DAYS);
         return requestModel;
     }
 

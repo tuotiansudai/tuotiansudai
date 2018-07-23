@@ -70,7 +70,7 @@ public class UmpUtils {
         return null;
     }
 
-    public <T extends BaseCallbackRequestModel> T parseParamsToModel(Map<String, String> paramsMap, Class<T> model) throws VerifyException, IOException {
+    private <T extends BaseCallbackRequestModel> T parseParamsToModel(Map<String, String> paramsMap, Class<T> model) throws VerifyException, IOException {
         Map<String, String> platNotifyData = this.getPlatNotifyData(paramsMap);
         Map<String, String> newPlatNotifyData = Maps.newHashMap();
         for (String key : platNotifyData.keySet()) {
@@ -85,6 +85,11 @@ public class UmpUtils {
 
         String json = objectMapper.writeValueAsString(newPlatNotifyData);
         return objectMapper.readValue(json, model);
+    }
+
+    public boolean validateCallBack(Map<String, String> paramsMap) throws VerifyException {
+        Map<String, String> platNotifyData = this.getPlatNotifyData(paramsMap);
+        return "0000".equals(platNotifyData.get("ret_code"));
     }
 
     public String send(String requestUrl, Map<String, String> field) {

@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/ump/withdraw")
-public class UmpWithdraw {
+public class UmpWithdrawController {
 
     private final BankCardMapper bankCardMapper;
 
@@ -38,7 +38,7 @@ public class UmpWithdraw {
     private long withdrawFee;
 
     @Autowired
-    public UmpWithdraw(BankCardMapper bankCardMapper, AccountMapper accountMapper, BlacklistService blacklistService, UmpWithdrawService umpWithdrawService) {
+    public UmpWithdrawController(BankCardMapper bankCardMapper, AccountMapper accountMapper, BlacklistService blacklistService, UmpWithdrawService umpWithdrawService) {
         this.bankCardMapper = bankCardMapper;
         this.accountMapper = accountMapper;
         this.blacklistService = blacklistService;
@@ -49,7 +49,7 @@ public class UmpWithdraw {
     public ModelAndView withdraw() {
         BankCardModel bankCard = bankCardMapper.findPassedBankCardByLoginName(LoginUserInfo.getLoginName());
         if (bankCard == null) {
-            return new ModelAndView("redirect:/bind-card");
+            return new ModelAndView("redirect:/ump/bind-card");
         }
 
         ModelAndView modelAndView = new ModelAndView("/ump-withdraw");

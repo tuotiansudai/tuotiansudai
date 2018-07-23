@@ -52,7 +52,8 @@ public class UmpWithdrawService {
         withdrawModel.setFee(withdrawFee);
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setId(IdGenerator.generate());
-        return bankWrapperClient.umpWithdraw(loginName, accountMapper.findByLoginName(loginName).getPayUserId(), withdrawModel.getId(), amount - withdrawFee);
+        withdrawMapper.create(withdrawModel);
+        return bankWrapperClient.umpWithdraw(loginName, accountMapper.findByLoginName(loginName).getPayUserId(), withdrawModel.getId(), 1);
     }
 
     @Transactional

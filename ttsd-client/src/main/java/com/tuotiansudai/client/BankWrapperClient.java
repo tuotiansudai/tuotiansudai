@@ -438,7 +438,7 @@ public class BankWrapperClient {
 
         try {
             Request request = new Request.Builder()
-                    .url(this.baseUrl + "/ump/callback/validate-front-callback")
+                    .url(this.baseUrl + "/ump/notify-url/callback/validate-front-callback")
                     .post(requestBody)
                     .build();
             Response response = this.okHttpClient.newCall(request).execute();
