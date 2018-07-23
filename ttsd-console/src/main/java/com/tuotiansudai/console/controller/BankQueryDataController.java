@@ -46,7 +46,7 @@ public class BankQueryDataController {
     }
 
     @RequestMapping(path = "/user")
-    public ModelAndView queryUserStatus(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role, @RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
+    public ModelAndView queryUserStatus(@RequestParam(value = "role",defaultValue = "INVESTOR") Role role, @RequestParam(value = "loginNameOrMobile") String loginNameOrMobile) {
         BankQueryUserMessage bankQueryUserMessage = bankDataQueryService.getUserStatus(role, loginNameOrMobile);
 
         return new ModelAndView("/real-time-status", "type", "user")
@@ -78,7 +78,7 @@ public class BankQueryDataController {
     }
 
     @RequestMapping(value = "/account-bill", method = RequestMethod.GET)
-    public ModelAndView queryAccountBill(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
+    public ModelAndView queryAccountBill(@RequestParam(value = "role",defaultValue = "INVESTOR") Role role,
                                          @RequestParam(value = "loginNameOrMobile", required = false) String loginNameOrMobile,
                                          @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                          @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
