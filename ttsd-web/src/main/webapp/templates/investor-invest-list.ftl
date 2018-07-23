@@ -150,8 +150,7 @@
                 <th class="tr">应收本金(元)</th>
                 <th class="tr">应收收益(元)</th>
                 <th class="tr">应收奖励(元)
-                    <%=couponMessage?'<i class="fa fa-question-circle text-b coupon" style="color:#ff7a2a;"
-                                         data-benefit="'+couponMessage+'"></i>':''%>
+                    <%=couponMessage?'<i class="fa fa-question-circle text-b coupon" style="color:#ff7a2a;" data-benefit="'+couponMessage+'"></i>':''%>
                 </th>
                 <th class="tr">应缴服务费(元)
                     <%=levelMessage?'<i class="fa fa-question-circle text-b fee" data-benefit="'+levelMessage+'"></i>':''%>
@@ -178,9 +177,7 @@
                 </td>
                 <td class="tr spec-bg">
                     <%=item.actualAmount ? item.actualAmount : '--'%>
-                    <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay"
-                                                                       data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':''
-                    %>
+                    <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':'' %>
 
                 </td>
                 <td class="tr spec-bg">
