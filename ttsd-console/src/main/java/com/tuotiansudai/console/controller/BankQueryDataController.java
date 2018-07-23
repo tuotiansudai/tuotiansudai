@@ -2,7 +2,6 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.console.service.BankDataQueryService;
 import com.tuotiansudai.enums.Role;
@@ -26,10 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(path = "/finance-manage/real-time-status")
@@ -138,19 +134,6 @@ public class BankQueryDataController {
         if (StringUtils.isEmpty(loginName) || startDate == null || endDate == null) {
             return modelAndView;
         }
-        Ordering<List<String>> ordering = new Ordering<List<String>>() {
-            @Override
-            public int compare(List<String> left, List<String> right) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    return Longs.compare(simpleDateFormat.parse(left.get(1)).getTime(), simpleDateFormat.parse(right.get(1)).getTime());
-                } catch (ParseException e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
-                return 0;
-            }
-        };
-
         List<List<String>> data = new ArrayList<>();
         DateTime queryStartDate = new DateTime(startDate).withTimeAtStartOfDay();
         while (queryStartDate.isBefore(new DateTime(endDate).withTimeAtStartOfDay()) || queryStartDate.isEqual(new DateTime(endDate).withTimeAtStartOfDay())) {
@@ -164,7 +147,16 @@ public class BankQueryDataController {
             }
             queryStartDate = queryEndDate.plusDays(1);
         }
-        modelAndView.addObject("data", ordering.sortedCopy(data));
+        Collections.sort(data, (t1, t2) -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return Longs.compare(simpleDateFormat.parse(t1.get(1)).getTime(), simpleDateFormat.parse(t2.get(1)).getTime());
+            } catch (ParseException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+            return 0;
+        });
+        modelAndView.addObject("data", data);
         return modelAndView;
     }
 
