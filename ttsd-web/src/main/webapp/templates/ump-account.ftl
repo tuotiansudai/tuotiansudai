@@ -178,11 +178,7 @@
             <td>编号:<%=item.id%></td>
         </tr>
         <% } %>
-        <%=records.length?'':'
-        <tr>
-            <td colspan="7" class="no-data">暂时没有投资记录</td>
-        </tr>
-        '%>
+        <%=records.length?'':'<tr><td colspan="7" class="no-data">暂时没有投资记录</td></tr>'%>
         </tbody>
     </table>
 </script>
