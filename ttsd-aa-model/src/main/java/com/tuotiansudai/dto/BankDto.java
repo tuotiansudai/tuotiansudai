@@ -39,9 +39,10 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     private Boolean isBank;
 
-    public BankDto(){
+    public BankDto() {
     }
-    public BankDto(BankModel bankModel){
+
+    public BankDto(BankModel bankModel) {
         this.id = bankModel.getId();
         this.name = bankModel.getName();
         this.seq = bankModel.getSeq();

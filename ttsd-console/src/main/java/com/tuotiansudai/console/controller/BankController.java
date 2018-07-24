@@ -55,8 +55,8 @@ public class BankController {
         bankModel.setUpdatedTime(new Date());
         consoleBankService.updateBank(bankModel);
         String redirectUrl = "redirect:/finance-manage/bank-list";
-        if(bankDto.getIsBank()!=null && (!bankDto.getIsBank())){
-            redirectUrl+="?isBank=false";
+        if (bankDto.getIsBank() != null && (!bankDto.getIsBank())) {
+            redirectUrl += "?isBank=false";
         }
         return redirectUrl;
     }
