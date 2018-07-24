@@ -41,16 +41,13 @@ public class UmpAccountController {
 
     private final WithdrawMapper withdrawMapper;
 
-    private final UserRoleMapper userRoleMapper;
-
     @Autowired
-    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper, UserRoleMapper userRoleMapper){
+    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper){
         this.userService = userService;
         this.userFundMapper = userFundMapper;
         this.userBillService = userBillService;
         this.rechargeMapper = rechargeMapper;
         this.withdrawMapper = withdrawMapper;
-        this.userRoleMapper = userRoleMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -59,7 +56,6 @@ public class UmpAccountController {
         ModelAndView modelAndView = new ModelAndView("/ump-account");
         UserFundView userFundView = userFundMapper.findUmpByLoginName(loginName);
 
-        modelAndView.addObject("isLoaner", userRoleMapper.findByLoginNameAndRole(loginName, Role.LOANER) != null);
         modelAndView.addObject("userName", userService.findByMobile(loginName).getUserName());
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
         modelAndView.addObject("expectedTotalCorpus", userFundView.getExpectedTotalCorpus()); //待收投资本金
