@@ -49,7 +49,7 @@
                         <@global.role hasRole="'UMP_LOANER'">
                             <li class="fr"><a class="btn-normal" href="/ump/recharge">充值</a></li>
                         </@global.role>
-                        <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
+                        <li class="fr"><a class="btn-primary" href="/ump/withdraw">提现</a></li>
                     </ul>
                 </h3>
             </div>
