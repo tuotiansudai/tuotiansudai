@@ -6,6 +6,7 @@
      data-has-loaner-account=${hasLoanerAccount?c}
 >
     <h4 class="column-title"><em class="tc">个人资料</em>
+    <@global.role hasRole="'UMP_INVESTOR'">
         <div class="fr">
             <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
                 <div class="notice-tips extra-rate-popup" style="display: none">
@@ -16,6 +17,7 @@
                 </div>
             </div>
         </div>
+    </@global.role>
     </h4>
     <ul class="info-list">
         <li><span class="info-title"> 实名认证</span>

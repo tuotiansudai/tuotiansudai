@@ -106,7 +106,7 @@
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
-        <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
+        <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER', 'UMP_LOANER')"/>
 
         <intercept-url pattern="/bind-email/**" access="not isAnonymous()"/>
 
