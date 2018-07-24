@@ -53,22 +53,22 @@ public class UmpWithdrawService {
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setId(IdGenerator.generate());
         withdrawMapper.create(withdrawModel);
-        return bankWrapperClient.umpWithdraw(loginName, accountMapper.findByLoginName(loginName).getPayUserId(), withdrawModel.getId(), 1);
+        return bankWrapperClient.umpWithdraw(loginName, accountMapper.findByLoginName(loginName).getPayUserId(), withdrawModel.getId(), amount - withdrawFee);
     }
 
     @Transactional
     public void processWithdraw(UmpWithdrawMessage message) {
         WithdrawModel model = withdrawMapper.findById(message.getWithdrawId());
-        if (model == null || !Lists.newArrayList(WithdrawStatus.WAIT_PAY, WithdrawStatus.UMP_APPLY_SUCCESS).contains(model.getStatus())) {
+        if (model == null || !Lists.newArrayList(WithdrawStatus.WAIT_PAY, WithdrawStatus.APPLY_SUCCESS).contains(model.getStatus())) {
             logger.error("UmpWithdrawModel not exist or status is error, isApply:{}, withdrawId: {}", message.isApply(), message.getWithdrawId());
             return;
         }
         model.setApplyNotifyMessage(message.getApplyMessage());
         model.setNotifyMessage(message.getNotifyMessage());
         if (message.isStatus()) {
-            model.setStatus(message.isApply() && model.getStatus() == WithdrawStatus.WAIT_PAY ? WithdrawStatus.UMP_APPLY_SUCCESS : WithdrawStatus.SUCCESS);
+            model.setStatus(message.isApply() && model.getStatus() == WithdrawStatus.WAIT_PAY ? WithdrawStatus.APPLY_SUCCESS : WithdrawStatus.SUCCESS);
         } else {
-            model.setStatus(message.isApply() ? WithdrawStatus.UMP_APPLY_FAIL : WithdrawStatus.FAIL);
+            model.setStatus(message.isApply() ? WithdrawStatus.APPLY_FAIL : WithdrawStatus.FAIL);
         }
         withdrawMapper.update(model);
 
@@ -92,11 +92,11 @@ public class UmpWithdrawService {
 
     private void notify(boolean isSuccess, WithdrawModel model){
         if (isSuccess){
-            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(model.getStatus() == WithdrawStatus.UMP_APPLY_SUCCESS ?
+            UmpAmountTransferMessage atm = new UmpAmountTransferMessage(model.getStatus() == WithdrawStatus.APPLY_SUCCESS ?
                     UmpTransferType.TRANSFER_OUT_FREEZE : UmpTransferType.TRANSFER_OUT_BALANCE,
                     model.getLoginName(), model.getAmount(), model.getAmount(), UserBillBusinessType.WITHDRAW_SUCCESS);
             mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, Lists.newArrayList(atm));
-        }else if (model.getStatus() == WithdrawStatus.UMP_APPLY_SUCCESS){
+        }else if (model.getStatus() == WithdrawStatus.APPLY_SUCCESS){
             UmpAmountTransferMessage atm = new UmpAmountTransferMessage(UmpTransferType.UNFREEZE, model.getLoginName(), model.getId(), model.getAmount(), UserBillBusinessType.WITHDRAW_FAIL);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, Lists.newArrayList(atm));
         }

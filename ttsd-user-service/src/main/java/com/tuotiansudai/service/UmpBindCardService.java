@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UmpBindCardService {
@@ -64,6 +65,7 @@ public class UmpBindCardService {
         return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), true);
     }
 
+    @Transactional
     public void processBindCard(UmpBindCardMessage message) {
         BankCardModel model = bankCardMapper.findById(message.getBindCardModelId());
         if (model == null || !Lists.newArrayList(BankCardStatus.UNCHECKED, BankCardStatus.APPLY).contains(model.getStatus())) {

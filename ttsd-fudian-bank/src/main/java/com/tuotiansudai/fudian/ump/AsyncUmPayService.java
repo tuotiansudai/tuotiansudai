@@ -8,7 +8,7 @@ public enum AsyncUmPayService {
     /**
      * 换卡
      */
-    PTP_MER_REPLACE_CARD("ptp_mer_replace_card", "callback/PTP_MER_REPLACE_CARD", "mer_replace_card_notify"),
+    PTP_MER_REPLACE_CARD("ptp_mer_replace_card", "callback/PTP_MER_REPLACE_CARD", "mer_bind_card_notify"),
     /**
      * 正常还款的转账
      */

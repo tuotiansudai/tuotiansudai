@@ -1,5 +1,6 @@
 package com.tuotiansudai.fudian.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
@@ -42,6 +43,7 @@ public class UmpUtils {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.payGateWrapper = payGateWrapper;
     }
 
