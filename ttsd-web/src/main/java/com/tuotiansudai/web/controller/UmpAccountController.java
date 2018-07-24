@@ -73,6 +73,9 @@ public class UmpAccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
+        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
+        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
+
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
                 + userFundView.getActualTotalExtraInterest()
