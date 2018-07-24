@@ -71,6 +71,9 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     private final static String INVEST_COUPON_MESSAGE = "您使用了{0}元体验券";
@@ -231,7 +234,11 @@ public class RepayServiceImpl implements RepayService {
         boolean isRepayingLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING);
 
         dataDto.setLoanId(loanId);
-        dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER).getBalance()));
+        if (loanModel.getIsBankPlatform()){
+            dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER).getBalance()));
+        }else {
+            dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
+        }
 
         if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
             dataDto.setNormalRepayEnabled(true);
