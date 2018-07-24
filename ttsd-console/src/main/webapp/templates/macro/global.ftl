@@ -67,6 +67,10 @@
                         {"name":"accountBill","text":"银行用户交易流水查询","link":"/finance-manage/real-time-status/account-bill","role":"'ADMIN'"},
                         {"name":"loanBill","text":"银行标的交易流水查询","link":"/finance-manage/real-time-status/loan-bill","role":"'ADMIN'"},
                         {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"umpRealTimeStatus","text":"联动优势交易状态查询","link":"/finance-manage/real-time-status/ump","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"umpTransferBill","text":"用户联动优势交易流水","link":"/finance-manage/real-time-status/ump/transfer-bill","role":"'ADMIN'"},
+                        {"name":"umpBankMange","text":"银行卡管理","link":"/finance-manage/ump/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}

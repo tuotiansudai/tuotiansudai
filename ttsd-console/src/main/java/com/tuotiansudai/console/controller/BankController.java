@@ -51,4 +51,12 @@ public class BankController {
         consoleBankService.updateBank(bankModel);
         return "redirect:/finance-manage/bank-list";
     }
+
+    @RequestMapping(value = "/ump/bank-list")
+    public ModelAndView umpBannerList() {
+        ModelAndView modelAndView = new ModelAndView("/bank-list");
+        List<BankDto> bankModelList = bankService.findBankList(null, null);
+        modelAndView.addObject("bankList", bankModelList);
+        return modelAndView;
+    }
 }
