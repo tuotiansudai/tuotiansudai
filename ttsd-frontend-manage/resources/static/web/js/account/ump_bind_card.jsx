@@ -19,19 +19,6 @@ $inputBankcard.keyup(function () {
     }
 });
 
-/*开通快捷支付*/
-$btnOpenFastPay.click(function () {
-    $FormOpenFastPay.submit();
-    layer.open({
-        type: 1,
-        title: '开通快捷支付功能',
-        area: ['560px', '190px'],
-        closeBtn:0,
-        shadeClose: false,
-        content: $('#pop-fast-pay')
-    });
-});
-
 //绑卡提交
 $btnBindCard.click(function () {
     layer.open({
@@ -51,7 +38,7 @@ $bankList.on('mouseover mouseout', function(event) {
 
 $('.bank-checked',$bindCardBox).on('click',function() {
     commonFun.useAjax({
-        url: '/bind-card/limit-tips',
+        url: '/ump/bind-card/limit-tips',
         data: {"bankCode":this.value},
         type: 'GET'
     },function(data) {

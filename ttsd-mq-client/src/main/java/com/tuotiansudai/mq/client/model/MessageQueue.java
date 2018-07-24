@@ -37,6 +37,7 @@ public enum MessageQueue {
 
     //ump queues
     UmpRecharge_Success("UmpRecharge-Success"),
+    UmpBindCard_Success("UmpBindCard-Success"),
     UmpWithdraw_Success("UmpWithdraw-Success"),
     UmpAmountTransfer("UmpAmountTransfer"),
 

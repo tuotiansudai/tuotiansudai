@@ -34,8 +34,6 @@ public class UmpCallbackController {
 
     private final UmpLoanRepayService umpLoanRepayService;
 
-    private final UmpReplaceBindCardService umpReplaceBindCardService;
-
     private final UmpInvestRepayService umpInvestRepayService;
 
     private final UmpCouponRepayService umpCouponRepayService;
@@ -49,15 +47,13 @@ public class UmpCallbackController {
     @Autowired
     public UmpCallbackController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
                                  UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService,
-                                 UmpReplaceBindCardService umpReplaceBindCardService, UmpInvestRepayService umpInvestRepayService,
-                                 UmpCouponRepayService umpCouponRepayService, UmpExtraRateRepayService umpExtraRateRepayService,
-                                 UmpLoanRepayFeeService umpLoanRepayFeeService,
+                                 UmpInvestRepayService umpInvestRepayService, UmpCouponRepayService umpCouponRepayService,
+                                 UmpExtraRateRepayService umpExtraRateRepayService, UmpLoanRepayFeeService umpLoanRepayFeeService,
                                  UmpUtils umpUtils){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
-        this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpInvestRepayService = umpInvestRepayService;
         this.umpCouponRepayService = umpCouponRepayService;
         this.umpExtraRateRepayService = umpExtraRateRepayService;
@@ -93,18 +89,6 @@ public class UmpCallbackController {
             responseData = umpBindCardService.applyNotifyCallBack(paramsMap, request.getQueryString());
         } else {
             responseData = umpBindCardService.notifyCallBack(paramsMap, request.getQueryString());
-        }
-        return new ModelAndView("/callback_response", "content", responseData);
-    }
-
-    @RequestMapping(value = "/mer_replace_card_notify", method = RequestMethod.GET)
-    public ModelAndView replaceBankCard(HttpServletRequest request) {
-        Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData;
-        if ("mer_bind_card_apply_notify".equalsIgnoreCase(paramsMap.get("service"))) {
-            responseData = umpReplaceBindCardService.notifyCallBack(paramsMap, request.getQueryString());
-        } else {
-            responseData = umpReplaceBindCardService.applyNotifyCallBack(paramsMap, request.getQueryString());
         }
         return new ModelAndView("/callback_response", "content", responseData);
     }

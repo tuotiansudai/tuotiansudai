@@ -11,5 +11,7 @@ public interface BankService {
 
     List<BankDto> findBankList(Long singleAmount, Long singleDayAmount);
 
+    List<BankDto> findUmpBankList(Long singleAmount, Long singleDayAmount);
+
     BankModel findByBankCode(String bankCode);
 }

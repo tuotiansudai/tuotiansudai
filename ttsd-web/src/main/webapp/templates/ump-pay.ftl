@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<#if (pay.fields)??>
 <head>
     <#if pay.status>
         <script type="text/javascript">
@@ -21,6 +20,4 @@
         <p>${pay.message!}</p>
     </#if>
 </body>
-</#if>
-
 </html>
