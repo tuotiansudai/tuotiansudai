@@ -23,8 +23,11 @@ public class SystemBillService {
     @Autowired
     private BankSystemBillMapper bankSystemBillMapper;
 
+    @Autowired
+    private SystemBillMapper systemBillMapper;
 
-    public BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> findSystemBillPagination(Date startTime,
+    public BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> findSystemBillPagination(Boolean isBankPlatform,
+                                                                                                    Date startTime,
                                                                                                     Date endTime,
                                                                                                     BillOperationType operationType,
                                                                                                     SystemBillBusinessType businessType,
@@ -39,35 +42,35 @@ public class SystemBillService {
 
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = new BaseDto<>();
         List<SystemBillPaginationItemDataDto> systemBillPaginationItemDataDtos = Lists.newArrayList();
-
-        int count = bankSystemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
-
-        List<BankSystemBillModel> systemBillModelList = bankSystemBillMapper.findSystemBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
-
-        for (BankSystemBillModel model : systemBillModelList) {
-            SystemBillPaginationItemDataDto systemBillDto = new SystemBillPaginationItemDataDto(model);
-            systemBillPaginationItemDataDtos.add(systemBillDto);
+        int count = 0;
+        if (isBankPlatform == null || isBankPlatform) {
+            count = bankSystemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
+            List<BankSystemBillModel> systemBillModelList = bankSystemBillMapper.findSystemBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
+            systemBillModelList.forEach(item -> {
+                systemBillPaginationItemDataDtos.add(new SystemBillPaginationItemDataDto(item));
+            });
+        } else {
+            count = systemBillMapper.findSystemBillCount(startTime, endTime, operationType, businessType);
+            List<SystemBillModel> systemBillModelList = systemBillMapper.findSystemBillPagination(startTime, endTime, operationType, businessType, (index - 1) * pageSize, pageSize);
+            systemBillModelList.forEach(item -> {
+                systemBillPaginationItemDataDtos.add(new SystemBillPaginationItemDataDto(item));
+            });
         }
-
         BasePaginationDataDto<SystemBillPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, systemBillPaginationItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
         return baseDto;
     }
 
-    public long findSumSystemIncome(Date startTime,
-                                    Date endTime,
-                                    BillOperationType operationType,
-                                    SystemBillBusinessType businessType) {
-        return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
+    public long findSumSystemBill(Boolean isBankPlatform,
+                                  Date startTime,
+                                  Date endTime,
+                                  BillOperationType operationType,
+                                  SystemBillBusinessType businessType) {
+        if (isBankPlatform == null || isBankPlatform) {
+            return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
+        } else {
+            return systemBillMapper.findSumSystemBill(startTime, endTime, operationType, businessType);
+        }
     }
-
-    public long findSumSystemExpend(Date startTime,
-                                    Date endTime,
-                                    BillOperationType operationType,
-                                    SystemBillBusinessType businessType) {
-
-        return bankSystemBillMapper.findSumSystemBillAmount(startTime, endTime, operationType, businessType);
-    }
-
 }

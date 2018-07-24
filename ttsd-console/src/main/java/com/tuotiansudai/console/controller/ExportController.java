@@ -179,12 +179,14 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
-    public void exportSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+    public void exportSystemBillList(@RequestParam(value = "isBankPlatform", defaultValue = "true") Boolean isBankPlatform,
+                                     @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                      @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                      @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
         fillExportResponse(httpServletResponse, CsvHeaderType.SystemBillHeader.getDescription());
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
+                isBankPlatform,
                 startTime,
                 endTime,
                 operationType,

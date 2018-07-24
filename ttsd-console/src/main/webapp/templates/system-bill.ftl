@@ -50,6 +50,15 @@
                 </#list>
             </select>
         </div>
+        <div class="form-group">
+            <label for="project">资金平台</label>
+            <select class="selectpicker" name="isBankPlatform">
+                <option value="false"
+                        <#if (isBankPlatform?? && !isBankPlatform) >selected</#if>>联动优势</option>
+                <option value="true"
+                        <#if (isBankPlatform?? && isBankPlatform) >selected</#if>>富滇银行</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
         <button type="reset" class="btn btn-sm btn-default">重置</button>
     </form>
@@ -96,7 +105,7 @@
             <ul class="pagination">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&operationType=${operationType!}&businessType=${businessType!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","false")}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&operationType=${operationType!}&businessType=${businessType!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -107,7 +116,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&operationType=${operationType!}&businessType=${businessType!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","false")}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&operationType=${operationType!}&businessType=${businessType!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
