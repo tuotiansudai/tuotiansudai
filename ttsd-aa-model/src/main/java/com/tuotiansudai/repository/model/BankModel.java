@@ -142,6 +142,7 @@ public class BankModel implements Serializable {
     }
 
     public void setIsBank(boolean isBank) {
-        isBank = isBank;
+        this.isBank = isBank;
     }
+
 }
