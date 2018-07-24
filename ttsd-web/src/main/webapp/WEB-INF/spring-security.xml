@@ -116,6 +116,7 @@
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
+        <intercept-url pattern="/ump/**" access="hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')"/>
         <!--PC rules end-->
 
         <!--M rules start-->

@@ -10,17 +10,11 @@ var $InfoBox = $('#personInfoBox'),
     $closeRisk=$('.close-risk',$riskTip),
     $voiceCaptcha = $('#voice_captcha');
 
-
-
-
-
-
-
 //修改绑定的银行卡
 $updateBankCard.on('click', function(){
     var url = $(this).data('url');
     commonFun.useAjax({
-        url: '/bind-card/is-replacing',
+        url: '/ump/bind-card/is-replacing',
         type: 'GET'
     },function(data) {
         if (data) {
@@ -37,7 +31,7 @@ $updateBankCard.on('click', function(){
             });
         } else {
             commonFun.useAjax({
-                url: '/bind-card/is-manual',
+                url: '/ump/bind-card/is-manual',
                 type: 'GET'
             },function() {
                 if (data) {

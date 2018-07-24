@@ -1,13 +1,12 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.mapper.UserFundMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserFundView;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserBillService;
@@ -41,16 +40,16 @@ public class UmpAccountController {
 
     private final WithdrawMapper withdrawMapper;
 
-    private final UserRoleMapper userRoleMapper;
+    private final BankCardMapper bankCardMapper;
 
     @Autowired
-    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper, UserRoleMapper userRoleMapper){
+    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper, BankCardMapper bankCardMapper){
         this.userService = userService;
         this.userFundMapper = userFundMapper;
         this.userBillService = userBillService;
         this.rechargeMapper = rechargeMapper;
         this.withdrawMapper = withdrawMapper;
-        this.userRoleMapper = userRoleMapper;
+        this.bankCardMapper = bankCardMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -59,8 +58,9 @@ public class UmpAccountController {
         ModelAndView modelAndView = new ModelAndView("/ump-account");
         UserFundView userFundView = userFundMapper.findUmpByLoginName(loginName);
 
-        modelAndView.addObject("isLoaner", userRoleMapper.findByLoginNameAndRole(loginName, Role.LOANER) != null);
         modelAndView.addObject("userName", userService.findByMobile(loginName).getUserName());
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
+        modelAndView.addObject("bankCard", bankCardModel == null ? null : bankCardModel.getCardNumber());
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
         modelAndView.addObject("expectedTotalCorpus", userFundView.getExpectedTotalCorpus()); //待收投资本金
         modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalInterest()); //待收预期收益
@@ -76,6 +76,9 @@ public class UmpAccountController {
         modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
+
+        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
+        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()

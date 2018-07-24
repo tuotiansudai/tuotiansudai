@@ -27,7 +27,12 @@ public class BankServiceImpl implements BankService {
     @Override
     public List<BankDto> findBankList(Long singleAmount, Long singleDayAmount) {
         List<BankModel> bankModels = bankMapper.findBankList(singleAmount, singleDayAmount);
+        return Lists.transform(bankModels, BankDto::new);
+    }
 
+    @Override
+    public List<BankDto> findUmpBankList(Long singleAmount, Long singleDayAmount) {
+        List<BankModel> bankModels = bankMapper.findUmpBankList(singleAmount, singleDayAmount);
         return Lists.transform(bankModels, BankDto::new);
     }
 

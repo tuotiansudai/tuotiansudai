@@ -31,8 +31,6 @@ public class UmpController {
 
     private final UmpBindCardService umpBindCardService;
 
-    private final UmpReplaceBindCardService umpReplaceBindCardService;
-
     private final UmpLoanRepayService umpLoanRepayService;
 
     @Autowired
@@ -41,24 +39,16 @@ public class UmpController {
 
     @Autowired
     public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
-                         UmpBindCardService umpBindCardService, UmpReplaceBindCardService umpReplaceBindCardService,
-                         UmpLoanRepayService umpLoanRepayService){
+                         UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService){
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
-        this.umpReplaceBindCardService = umpReplaceBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> bindCard(@RequestBody UmpBindCardDto dto){
         PtpMerBindCardRequestModel model = umpBindCardService.bindCard(dto);
-        return ResponseEntity.ok(generateAsyncRequestData(model));
-    }
-
-    @RequestMapping(value = "/replace-bind-card", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> replaceBindCard(@RequestBody UmpReplaceBindCardDto dto){
-        PtpMerReplaceCardRequestModel model = umpReplaceBindCardService.replaceBindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 

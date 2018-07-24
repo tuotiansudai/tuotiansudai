@@ -7,7 +7,7 @@
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
         <div class="recharge-wrapper bind-card-frame" >
-            <form action="" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+            <form id="bind-card" action="" method="post" <@global.role hasRole="'UMP_INVESTOR', 'UMP_LOANER'">target="_blank"</@global.role>>
                 <div class="bank-card-limit">
                     <#if userName??>
                     <div class="user-name">
@@ -41,7 +41,7 @@
                     </ol>
                     <div class="recharge-form pad-m">
                         <div class="limit-tips"><span>中国建设银行快捷支付限额:单笔30,000元/单日100,000元</span><i class="fa fa-question-circle text-b" title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
-                        <form action="/bind-card" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                        <form action="/ump/bind-card" method="post" <@global.role hasRole="'UMP_INVESTOR', 'UMP_LOANER'">target="_blank"</@global.role>>
 
                             银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value="" autocomplete="off" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -68,8 +68,8 @@
 <div id="pop-bind-card" class="pad-m recharge-plat" style="display: none;">
     <p>请在新打开的联动优势页面绑卡完成后选择：</p>
     <div class="ret">
-        <p>绑卡成功：<a href="/account" class="btn-success" data-category="确认成功" data-label="recharge">确认成功</a></p>
-        <p>绑卡失败：<a href="/bind-card" class="btn-normal" data-category="重新绑卡" data-label="recharge">重新绑卡</a>
+        <p>绑卡成功：<a href="/ump/account" class="btn-success" data-category="确认成功" data-label="recharge">确认成功</a></p>
+        <p>绑卡失败：<a href="/ump/bind-card" class="btn-normal" data-category="重新绑卡" data-label="recharge">重新绑卡</a>
             <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</p>
@@ -78,7 +78,7 @@
 
 <div id="pop-fast-pay" class="pad-m" style="display: none; margin-top:-10px;">
     <div class="pad-m tc clear-blank-s">
-        <a href="/recharge" class="btn-success">继续充值</a>
+        <a href="/ump/recharge" class="btn-success">继续充值</a>
         <p class="clear-blank-m">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</p>
     </div>
 </div>
