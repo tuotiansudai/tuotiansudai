@@ -359,7 +359,7 @@
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
         select invest.*
         from invest
-        join loan on invest.loan_id = loan.id
+        join loan on invest.loan_id = loan.id and loan.id != 1
         <where>
             and invest.login_name = #{loginName}
             <if test="startTime != null">
@@ -386,7 +386,7 @@
     <select id="countInvestorInvestPagination" parameterType="map" resultType="long">
         select count(1)
         from invest
-        join loan on invest.loan_id = loan.id
+        join loan on invest.loan_id = loan.id and loan.id != 1
         <where>
             and invest.login_name = #{loginName}
             <if test="startTime != null">
@@ -1060,7 +1060,7 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
+        and invest.status = 'SUCCESS' and loan.id != 1
         <if test="loanStatus.name() == 'COMPLETE' ">
             and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE'
             and ir.invest_id = invest.id and ir.period = 1)
@@ -1086,7 +1086,7 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
+        and invest.status = 'SUCCESS' and loan.id != 1
         <if test="loanStatus.name() == 'COMPLETE' ">
             and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) >= loan.duration)
             or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')

@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UmpRechargeService {
@@ -47,6 +48,7 @@ public class UmpRechargeService {
         return bankWrapperClient.umpRecharge(dto.getLoginName(), accountModel.getPayUserId(), rechargeModel.getId(), rechargeModel.getAmount(), rechargeModel.isFastPay(), rechargeModel.getBankCode());
     }
 
+    @Transactional
     public void processRecharge(UmpRechargeMessage umpRechargeMessage){
         RechargeModel model = rechargeMapper.findById(umpRechargeMessage.getRechargeId());
         if (model == null || model.getStatus() != RechargeStatus.WAIT_PAY) {

@@ -28,6 +28,8 @@ public class LoanPaginationItemDataDto implements Serializable {
 
     private Date completedDate;
 
+    private boolean isBankPlatForm;
+
 
     public LoanPaginationItemDataDto(LoanModel loanModel) {
         this.loanId = loanModel.getId();
@@ -39,6 +41,7 @@ public class LoanPaginationItemDataDto implements Serializable {
         this.recheckTime = loanModel.getRecheckTime();
         this.nextRepayDate = loanModel.getNextRepayDate();
         this.completedDate = loanModel.getCompletedDate();
+        this.isBankPlatForm = loanModel.getIsBankPlatform();
     }
 
     public long getLoanId() {
@@ -75,5 +78,9 @@ public class LoanPaginationItemDataDto implements Serializable {
 
     public Date getCompletedDate() {
         return completedDate;
+    }
+
+    public boolean isBankPlatForm() {
+        return isBankPlatForm;
     }
 }

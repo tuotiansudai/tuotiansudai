@@ -57,23 +57,20 @@
 
     <insert id="create" parameterType="WithdrawModel">
         insert into withdraw (id, bank_card_id, login_name, amount, fee, status, source, created_time, updated_time)
-        value(#{id}, #{bankCardId}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime}, now())
+        value(#{id}, #{bankCardId}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, now(), now())
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
-        select <include refid="columns"></include> from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
-        where withdraw.id = #{id}
+        select * from withdraw where id = #{id}
     </select>
 
     <update id="update" parameterType="WithdrawModel">
         update withdraw
         <set>
             updated_time = now(),
-            <if test="status != null">status = #{status},</if>
-            <if test="applyNotifyTime != null">apply_notify_time = #{applyNotifyTime},</if>
-            <if test="applyNotifyMessage != null">apply_notify_message = #{applyNotifyMessage},</if>
-            <if test="notifyTime != null">notify_time = #{notifyTime},</if>
-            <if test="notifyMessage != null">notify_message = #{notifyMessage}</if>
+            status = #{status},
+            <if test="applyNotifyMessage != null">apply_notify_time = now(), apply_notify_message = #{applyNotifyMessage},</if>
+            <if test="notifyMessage != null">notify_time = now(), notify_message = #{notifyMessage}</if>
         </set>
         where id = #{id}
     </update>

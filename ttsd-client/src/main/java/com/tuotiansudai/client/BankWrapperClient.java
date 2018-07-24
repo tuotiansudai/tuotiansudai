@@ -12,7 +12,9 @@ import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
 import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
+import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -427,8 +429,12 @@ public class BankWrapperClient {
         return umpAsyncExecute("/ump/recharge", new UmpRechargeDto(loginName, payUserId, rechargeId, amount, isFastPay, bankCode));
     }
 
-    public UmpAsyncMessage umpWithdraw() {
-        return umpAsyncExecute("/ump/withdraw", null);
+    public UmpAsyncMessage umpWithdraw(String loginName, String payUserId, long withdrawId, long amount) {
+        return umpAsyncExecute("/ump/withdraw", new UmpWithdrawDto(loginName, payUserId, withdrawId, amount));
+    }
+
+    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard){
+        return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isReplaceCard));
     }
 
     public Boolean isUmpCallbackSuccess(Map<String, String> params) {
@@ -437,7 +443,7 @@ public class BankWrapperClient {
 
         try {
             Request request = new Request.Builder()
-                    .url(this.baseUrl + "/ump/callback/validate-front-callback")
+                    .url(this.baseUrl + "/ump/notify-url/callback/validate-front-callback")
                     .post(requestBody)
                     .build();
             Response response = this.okHttpClient.newCall(request).execute();
