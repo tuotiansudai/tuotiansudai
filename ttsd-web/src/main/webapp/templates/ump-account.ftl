@@ -46,8 +46,10 @@
             <div class="column-box bg-w clearfix amount-sum">
                 <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
                     <ul class="proList fr">
-                        <#if isLoaner><li class="fr"><a class="btn-normal" href="/ump/recharge">充值</a></li></#if>
-                        <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
+                        <@global.role hasRole="'UMP_LOANER'">
+                            <li class="fr"><a class="btn-normal" href="/ump/recharge">充值</a></li>
+                        </@global.role>
+                        <li class="fr"><a class="btn-primary" href="/ump/withdraw">提现</a></li>
                     </ul>
                 </h3>
             </div>
@@ -178,11 +180,7 @@
             <td>编号:<%=item.id%></td>
         </tr>
         <% } %>
-        <%=records.length?'':'
-        <tr>
-            <td colspan="7" class="no-data">暂时没有投资记录</td>
-        </tr>
-        '%>
+        <%=records.length?'':'<tr><td colspan="7" class="no-data">暂时没有投资记录</td></tr>'%>
         </tbody>
     </table>
 </script>

@@ -203,6 +203,11 @@ $('.apply-btn').click(function () {
 });
 
 loadLoanData();
+if($('.amount-sum',$InfoBox).find('.icon-has-con').length) {
+    $('.amount-sum h3',$InfoBox).on('click',function() {
+        $(this).parents().toggleClass('open');
+    });
+}
 
 
 

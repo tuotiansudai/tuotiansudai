@@ -149,14 +149,13 @@ public class UmpCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/validate-front-callback", method = RequestMethod.GET)
+    @RequestMapping(value = "/validate-front-callback", method = RequestMethod.POST)
     public ResponseEntity validate(@RequestBody Map<String, String> params) {
         try {
-            BaseCallbackRequestModel model = umpUtils.parseParamsToModel(params, BaseCallbackRequestModel.class);
-            if (model.isSuccess()){
+            if (umpUtils.validateCallBack(params)){
                 return ResponseEntity.ok().build();
             }
-        } catch (VerifyException | IOException ignored) {
+        } catch (VerifyException ignored) {
         }
         return ResponseEntity.badRequest().build();
     }

@@ -4,11 +4,11 @@ public enum AsyncUmPayService {
     /**
      * 绑定银行卡
      */
-    PTP_MER_BIND_CARD("ptp_mer_bind_card", "callback/ptp_mer_bind_card", "mer_bind_card_notify"),
+    PTP_MER_BIND_CARD("ptp_mer_bind_card", "callback/PTP_MER_BIND_CARD", "mer_bind_card_notify"),
     /**
      * 换卡
      */
-    PTP_MER_REPLACE_CARD("ptp_mer_replace_card", "callback/ptp_mer_replace_card", "mer_bind_card_notify"),
+    PTP_MER_REPLACE_CARD("ptp_mer_replace_card", "callback/PTP_MER_REPLACE_CARD", "mer_replace_card_notify"),
     /**
      * 正常还款的转账
      */
@@ -36,11 +36,11 @@ public enum AsyncUmPayService {
     /**
      * 个人账户充值
      */
-    MER_RECHARGE_PERSON("mer_recharge_person", "callback/mer_recharge_person", "recharge_notify"),
+    MER_RECHARGE_PERSON("mer_recharge_person", "callback/MER_RECHARGE_PERSON", "recharge_notify"),
     /**
      * 个人账户提现
      */
-    CUST_WITHDRAWALS("cust_withdrawals", "callback/cust_withdrawals", "withdraw_notify"),
+    CUST_WITHDRAWALS("cust_withdrawals", "callback/CUST_WITHDRAWALS", "withdraw_notify"),
     /**
      * 优惠券还款普通转账
      */

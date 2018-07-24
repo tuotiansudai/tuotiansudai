@@ -40,18 +40,15 @@ public class UmpAccountController {
 
     private final WithdrawMapper withdrawMapper;
 
-    private final UserRoleMapper userRoleMapper;
-
     private final BankCardMapper bankCardMapper;
 
     @Autowired
-    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper, UserRoleMapper userRoleMapper, BankCardMapper bankCardMapper){
+    public UmpAccountController(UserService userService, UserFundMapper userFundMapper, UserBillService userBillService, RechargeMapper rechargeMapper, WithdrawMapper withdrawMapper, BankCardMapper bankCardMapper){
         this.userService = userService;
         this.userFundMapper = userFundMapper;
         this.userBillService = userBillService;
         this.rechargeMapper = rechargeMapper;
         this.withdrawMapper = withdrawMapper;
-        this.userRoleMapper = userRoleMapper;
         this.bankCardMapper = bankCardMapper;
     }
 
@@ -61,7 +58,6 @@ public class UmpAccountController {
         ModelAndView modelAndView = new ModelAndView("/ump-account");
         UserFundView userFundView = userFundMapper.findUmpByLoginName(loginName);
 
-        modelAndView.addObject("isLoaner", userRoleMapper.findByLoginNameAndRole(loginName, Role.UMP_LOANER) != null);
         modelAndView.addObject("userName", userService.findByMobile(loginName).getUserName());
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         modelAndView.addObject("bankCard", bankCardModel == null ? null : bankCardModel.getCardNumber());
@@ -80,6 +76,9 @@ public class UmpAccountController {
         modelAndView.addObject("expectedExperienceInterest", userFundView.getExpectedExperienceInterest()); //待收体验金收益
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
+
+        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
+        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()

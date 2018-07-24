@@ -5,13 +5,11 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.fudian.ump.asyn.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.fudian.ump.sync.response.BaseSyncResponseModel;
+import com.tuotiansudai.fudian.umpwrapper.PayGateWrapper;
 import com.umpay.api.common.ReqData;
-import com.umpay.api.exception.ParameterCheckException;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.exception.VerifyException;
-import com.umpay.api.paygate.v40.Mer2Plat_v40;
-import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,19 +32,22 @@ public class UmpUtils {
 
     private static OkHttpClient CLIENT;
 
+    private final PayGateWrapper payGateWrapper;
+
     @Autowired
-    public UmpUtils() {
+    public UmpUtils(PayGateWrapper payGateWrapper) {
         CLIENT = new OkHttpClient
                 .Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
+        this.payGateWrapper = payGateWrapper;
     }
 
     public <T extends BaseSyncRequestModel> void sign(T model) {
         try {
-            ReqData reqData = this.makeReqDataByPost(model.generatePayRequestData());
+            ReqData reqData = payGateWrapper.makeReqDataByPost(model.generatePayRequestData());
             model.setSign(reqData.getSign());
             model.setRequestUrl(reqData.getUrl());
             model.setField(reqData.getField());
@@ -62,7 +63,7 @@ public class UmpUtils {
             T model = parseParamsToModel(paramsMap, modelClass);
             model.setRequestData(originalQueryString);
             model.setResponseTime(new Date());
-            model.setResponseData(this.merNotifyResData(model.generatePayResponseData()));
+            model.setResponseData(payGateWrapper.merNotifyResData(model.generatePayResponseData()));
             return model;
         } catch (Exception e) {
             logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));
@@ -70,8 +71,8 @@ public class UmpUtils {
         return null;
     }
 
-    public <T extends BaseCallbackRequestModel> T parseParamsToModel(Map<String, String> paramsMap, Class<T> model) throws VerifyException, IOException {
-        Map<String, String> platNotifyData = this.getPlatNotifyData(paramsMap);
+    private <T extends BaseCallbackRequestModel> T parseParamsToModel(Map<String, String> paramsMap, Class<T> model) throws VerifyException, IOException {
+        Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
         Map<String, String> newPlatNotifyData = Maps.newHashMap();
         for (String key : platNotifyData.keySet()) {
             StringBuilder newKeyBuilder = new StringBuilder();
@@ -85,6 +86,11 @@ public class UmpUtils {
 
         String json = objectMapper.writeValueAsString(newPlatNotifyData);
         return objectMapper.readValue(json, model);
+    }
+
+    public boolean validateCallBack(Map<String, String> paramsMap) throws VerifyException {
+        Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
+        return "0000".equals(platNotifyData.get("ret_code"));
     }
 
     public String send(String requestUrl, Map<String, String> field) {
@@ -115,27 +121,11 @@ public class UmpUtils {
 
     public <T extends BaseSyncResponseModel> void generateResponse(Long requestId, String responseBody, T model) {
         try {
-            Map<String, String> resData = this.getResData(responseBody);
+            Map<String, String> resData = payGateWrapper.getResData(responseBody);
             model.setRequestId(requestId);
             model.initializeModel(resData);
         } catch (RetDataException e) {
             logger.error(MessageFormat.format("[UMP response] generate exception, data: {0}", responseBody), e);
         }
-    }
-
-    private Map<String, String> getPlatNotifyData(Map<String, String> paramsMap) throws VerifyException {
-        return Plat2Mer_v40.getPlatNotifyData(paramsMap);
-    }
-
-    private Map<String, String> getResData(String responseBodyString) throws RetDataException {
-        return Plat2Mer_v40.getResData(responseBodyString);
-    }
-
-    private ReqData makeReqDataByPost(Object obj) throws ReqDataException {
-        return Mer2Plat_v40.makeReqDataByPost(obj);
-    }
-
-    private String merNotifyResData(Object map) throws ParameterCheckException {
-        return Mer2Plat_v40.merNotifyResData(map);
     }
 }
