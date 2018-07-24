@@ -47,13 +47,12 @@
 
 
                             {{if $value.productType != 'EXPERIENCE'}}
-                                {{each $value.userCoupons}}
-                            {{if $value.couponType=='FUDIAN'}}
+                                {{if $value.bankPlatForm}}
                                 <i class="fudian-icon">富</i>
-                            {{/if}}
-                            {{if $value.couponType=='LIANDONG'}}
+                                {{else}}
                                 <i class="liandong-icon">联</i>
-                            {{/if}}
+                                {{/if}}
+                                {{each $value.userCoupons}}
                                 {{if $value.couponType=='BIRTHDAY_COUPON'}}
                                 <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
                                 {{/if}}
@@ -108,7 +107,7 @@
                 </td>
                 <td>
                     {{if $value.investRepayExist}}
-                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款详情</a>
+                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data" data-isbank="{{$value.bankPlatForm ? 'true' : 'false'}}">回款详情</a>
                     {{if $value.productType!='EXPERIENCE'}}
                     {{if $value.contractNo == 'OLD'}}
                     <a class="red" href="/contract/investor/loanId/{{$value.loanId}}/investId/{{$value.investId}}"
@@ -178,7 +177,6 @@
                 <td class="tr spec-bg">
                     <%=item.actualAmount ? item.actualAmount : '--'%>
                     <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':'' %>
-
                 </td>
                 <td class="tr spec-bg">
                     <%=item.actualRepayDate?item.actualRepayDate:'--'%>
@@ -192,7 +190,7 @@
             </thead>
         </table>
         <p class="bottom-note" style="float: left">应收回款=应收本金+应收收益+应收奖励-应缴服务费</p>
-        <p class="bottom-note" style="color: #ff7200;float: right">备注：此投资项目回款将发放至联动优势资金托管账号</p>
+        <%=isBank? '':'<p class="bottom-note" style="color: #ff7200;float: right">备注：此投资项目回款将发放至联动优势资金托管账号</p>' %>
     </div>
 </script>
 
