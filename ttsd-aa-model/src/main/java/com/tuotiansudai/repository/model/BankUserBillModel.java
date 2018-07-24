@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.enums.BankUserBillBusinessType;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 
 import java.io.Serializable;
@@ -31,14 +31,14 @@ public class BankUserBillModel implements Serializable {
 
     private BankUserBillBusinessType businessType;
 
-    private BankUserBillOperationType operationType;
+    private BillOperationType operationType;
 
     private Date createdTime;
 
     public BankUserBillModel() {
     }
 
-    public BankUserBillModel(long businessId, String loginName, String mobile, String userName, Role role, long amount, long balance, String bankOrderNo, String bankOrderDate, BankUserBillBusinessType businessType, BankUserBillOperationType operationType) {
+    public BankUserBillModel(long businessId, String loginName, String mobile, String userName, Role role, long amount, long balance, String bankOrderNo, String bankOrderDate, BankUserBillBusinessType businessType, BillOperationType operationType) {
         this.businessId = businessId;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -140,11 +140,11 @@ public class BankUserBillModel implements Serializable {
         this.businessType = businessType;
     }
 
-    public BankUserBillOperationType getOperationType() {
+    public BillOperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(BankUserBillOperationType operationType) {
+    public void setOperationType(BillOperationType operationType) {
         this.operationType = operationType;
     }
 

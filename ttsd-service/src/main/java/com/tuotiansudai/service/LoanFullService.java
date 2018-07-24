@@ -95,7 +95,7 @@ public class LoanFullService {
                         loanModel.getLoanAmount(),
                         bankLoanFullMessage.getBankOrderNo(),
                         bankLoanFullMessage.getBankOrderDate(),
-                        BankUserBillOperationType.IN,
+                        BillOperationType.IN,
                         BankUserBillBusinessType.LOAN_SUCCESS))
         );
 

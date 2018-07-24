@@ -7,11 +7,10 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppUserBillListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.enums.BankUserBillOperationType;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankUserBillMapper;
 import com.tuotiansudai.repository.model.BankUserBillModel;
-import com.tuotiansudai.repository.model.UserBillOperationType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,9 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
     @Autowired
     private PageValidUtils pageValidUtils;
 
-    private final static Map<UserBillCategory, BankUserBillOperationType> OPERATION_TYPE = Maps.newHashMap(ImmutableMap.<UserBillCategory, BankUserBillOperationType>builder()
-            .put(UserBillCategory.INCOMING, BankUserBillOperationType.IN)
-            .put(UserBillCategory.EXPENSE, BankUserBillOperationType.OUT)
+    private final static Map<UserBillCategory, BillOperationType> OPERATION_TYPE = Maps.newHashMap(ImmutableMap.<UserBillCategory, BillOperationType>builder()
+            .put(UserBillCategory.INCOMING, BillOperationType.IN)
+            .put(UserBillCategory.EXPENSE, BillOperationType.OUT)
             .build());
 
     @Override
@@ -46,7 +45,7 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
         }
         Integer pageSize = pageValidUtils.validPageSizeLimit(userBillDetailListRequestDto.getPageSize());
         UserBillCategory userBillCategory = userBillDetailListRequestDto.getUserBillCategory();
-        BankUserBillOperationType operationType = userBillCategory != null ? OPERATION_TYPE.get(userBillCategory) : null;
+        BillOperationType operationType = userBillCategory != null ? OPERATION_TYPE.get(userBillCategory) : null;
 
         List<BankUserBillModel> userBillModels = bankUserBillMapper.findUserBills(loginName, null, null, operationType, null, null, (index - 1) * pageSize, pageSize, Role.INVESTOR);
 

@@ -1,5 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.ump_bind_card}" pageJavascript="${js.ump_bind_card}" title="更换银行卡">
+<div class="ump-title">
+    <a href="/ump/account">联动优势资金存管账号</a>>我要换卡
+</div>
 <div class="content-container">
     <h4 class="column-title"><em class="tc">更换银行卡</em></h4>
     <div class="recharge-bind-card pad-s">
