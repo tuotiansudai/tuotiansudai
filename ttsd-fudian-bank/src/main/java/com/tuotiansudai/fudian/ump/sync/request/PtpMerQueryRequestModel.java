@@ -1,7 +1,7 @@
 package com.tuotiansudai.fudian.ump.sync.request;
 
 
-import com.tuotiansudai.fudian.util.SyncUmPayService;
+import com.tuotiansudai.fudian.ump.SyncUmPayService;
 
 import java.util.Map;
 

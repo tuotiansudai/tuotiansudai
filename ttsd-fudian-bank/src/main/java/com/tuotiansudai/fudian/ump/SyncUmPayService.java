@@ -1,4 +1,4 @@
-package com.tuotiansudai.fudian.util;
+package com.tuotiansudai.fudian.ump;
 
 public enum SyncUmPayService {
     PROJECT_ACCOUNT_SEARCH("project_account_search"),
