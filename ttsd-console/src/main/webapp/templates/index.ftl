@@ -84,7 +84,27 @@
         </div>
     </div>
     <div class="title-type">
-        <h4 class="give-charge">充值金额 (元) (代理人)</h4>
+        <h4 class="give-charge">充值金额 (元) (出借人)</h4>
+    </div>
+    <div class="table-data">
+        <ul class="data-list list-width blue-bg">
+            <li>
+                <p class="num-text">${rechargeTodayNotLoaner/100?float}</p>
+                <p class="name-text">今日充值</p>
+            </li>
+            <li>
+                <p class="num-text">${recharge7DaysNotLoaner/100?float}</p>
+                <p class="name-text">近7天充值</p>
+            </li>
+            <li>
+                <p class="num-text">${recharge30DaysNotLoaner/100?float}</p>
+                <p class="name-text">近30天充值</p>
+            </li>
+
+        </ul>
+    </div>
+    <div class="title-type">
+        <h4 class="give-charge">充值金额 (元) (借款人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width blue-bg">
@@ -103,45 +123,7 @@
         </ul>
     </div>
     <div class="title-type">
-        <h4 class="give-charge">充值金额 (元) (非代理人)</h4>
-    </div>
-    <div class="table-data">
-        <ul class="data-list list-width blue-bg">
-            <li>
-                <p class="num-text">${rechargeTodayNotLoaner/100?float}</p>
-                <p class="name-text">今日充值</p>
-            </li>
-            <li>
-                <p class="num-text">${recharge7DaysNotLoaner/100?float}</p>
-                <p class="name-text">近7天充值</p>
-            </li>
-            <li>
-                <p class="num-text">${recharge30DaysNotLoaner/100?float}</p>
-                <p class="name-text">近30天充值</p>
-            </li>
-        </ul>
-    </div>
-    <div class="title-type">
-        <h4 class="get-money">提现金额 (元) (代理人)</h4>
-    </div>
-    <div class="table-data">
-        <ul class="data-list list-width green-bg">
-            <li>
-                <p class="num-text">${withdrawTodayLoaner/100?float}</p>
-                <p class="name-text">今日提现</p>
-            </li>
-            <li>
-                <p class="num-text">${withdraw7DaysLoaner/100?float}</p>
-                <p class="name-text">近7天提现</p>
-            </li>
-            <li>
-                <p class="num-text">${withdraw30DaysLoaner/100?float}</p>
-                <p class="name-text">近30天提现</p>
-            </li>
-        </ul>
-    </div>
-    <div class="title-type">
-        <h4 class="get-money">提现金额 (元) (非代理人)</h4>
+        <h4 class="get-money">提现金额 (元) (出借人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width green-bg">
@@ -155,6 +137,25 @@
             </li>
             <li>
                 <p class="num-text">${withdraw30DaysNotLoaner/100?float}</p>
+                <p class="name-text">近30天提现</p>
+            </li>
+        </ul>
+    </div>
+    <div class="title-type">
+        <h4 class="get-money">提现金额 (元) (借款人)</h4>
+    </div>
+    <div class="table-data">
+        <ul class="data-list list-width green-bg">
+            <li>
+                <p class="num-text">${withdrawTodayLoaner/100?float}</p>
+                <p class="name-text">今日提现</p>
+            </li>
+            <li>
+                <p class="num-text">${withdraw7DaysLoaner/100?float}</p>
+                <p class="name-text">近7天提现</p>
+            </li>
+            <li>
+                <p class="num-text">${withdraw30DaysLoaner/100?float}</p>
                 <p class="name-text">近30天提现</p>
             </li>
         </ul>
