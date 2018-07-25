@@ -26,15 +26,10 @@ public class BankController {
     @RequestMapping(value = "/bank-list")
     public ModelAndView bannerList(@RequestParam(value = "isBank", defaultValue = "true") Boolean isBank) {
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = null;
         List<BankDto> bankModelList = null;
-        if (isBank) {
-            bankModelList = bankService.findBankList(null, null);
-            modelAndView.setViewName("/bank-list");
-        } else {
-            bankModelList = bankService.findUmpBankList(null, null);
-            modelAndView.setViewName("/ump-bank-list");
-        }
+        bankModelList = isBank ? bankService.findBankList(null, null) : bankService.findUmpBankList(null, null);
+        modelAndView = isBank ? new ModelAndView("/bank-list") : new ModelAndView("/ump-bank-list");
         modelAndView.addObject("bankList", bankModelList);
         return modelAndView;
     }
@@ -54,10 +49,7 @@ public class BankController {
         bankModel.setUpdatedBy(loginName);
         bankModel.setUpdatedTime(new Date());
         consoleBankService.updateBank(bankModel);
-        String redirectUrl = "redirect:/finance-manage/bank-list";
-        if (bankDto.getIsBank() != null && (!bankDto.getIsBank())) {
-            redirectUrl += "?isBank=false";
-        }
+        String redirectUrl = "redirect:/finance-manage/bank-list?isBank=" + bankDto.getIsBank();
         return redirectUrl;
     }
 }
