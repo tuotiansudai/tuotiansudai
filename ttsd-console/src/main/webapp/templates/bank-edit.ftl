@@ -10,6 +10,9 @@
             <#if bank??>
                 <input type="hidden" class="jq-id" name="id" value="${(bank.id?string('0'))!}">
             </#if>
+            <#if bank??>
+                <input type="hidden" class="jq-id" name="isBank" value="${bank.isBank?string("true","false")}">
+            </#if>
             <div class="col-sm-4">
                 <span class="info-text">
                     <#if bank??>${bank.name!}</#if>

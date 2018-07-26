@@ -18,6 +18,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="updated_by" property="updatedBy"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="is_bank" property="isBank"/>
     </resultMap>
 
     <select id="findById" parameterType="map" resultMap="bankResultMap">

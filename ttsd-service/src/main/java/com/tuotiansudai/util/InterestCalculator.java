@@ -141,7 +141,7 @@ public class InterestCalculator {
         return couponExpectedInterest;
     }
 
-    public static long calculateCouponActualInterest(long investAmount, CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
+    public static long calculateCouponActualInterest(long investAmount, double interestCouponRate, Date usedTime, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
         DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
 
         LoanRepayModel lastLoanRepayModel = null;
@@ -151,48 +151,16 @@ public class InterestCalculator {
             }
         }
 
-        DateTime lastRepayDate = new DateTime(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ? userCouponModel.getUsedTime() : loanModel.getRecheckTime()).minusDays(1);
+        DateTime lastRepayDate = new DateTime(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ? usedTime : loanModel.getRecheckTime()).minusDays(1);
         if (lastLoanRepayModel != null) {
             lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
         }
 
         int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
 
-        long expectedInterest = 0;
-        switch (couponModel.getCouponType()) {
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * investAmount)
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case BIRTHDAY_COUPON:
-                if (lastLoanRepayModel != null) {
-                    return -1;
-                }
-
-                DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-                    @Override
-                    public boolean apply(LoanRepayModel input) {
-                        return input.getPeriod() == 1;
-                    }
-                }).get().getRepayDate());
-
-                periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
-
-                expectedInterest = new BigDecimal(periodDuration * investAmount)
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-        }
-
-        return expectedInterest;
+        return new BigDecimal(periodDuration * investAmount)
+                .multiply(new BigDecimal(interestCouponRate))
+                .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
     public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount, double investFeeRate) {

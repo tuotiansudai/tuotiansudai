@@ -1,11 +1,14 @@
-package com.tuotiansudai.fudian.umpdto;
+package com.tuotiansudai.fudian.umpmessage;
 
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 
-public class UmpInvestRepayDto extends UmpBaseDto {
+public class UmpRepayPaybackMessage extends BankBaseMessage {
 
     private long loanId;
 
     private long investId;
+
+    private String loginName;
 
     private long investRepayId;
 
@@ -15,22 +18,22 @@ public class UmpInvestRepayDto extends UmpBaseDto {
 
     private long fee;
 
-    private long defaultFee;
+    private long defaultInterest;
 
     private boolean isNormalRepay;
 
-    public UmpInvestRepayDto() {
+    public UmpRepayPaybackMessage() {
     }
 
-    public UmpInvestRepayDto(String loginName, String payUserId, long loanId, long investId, long investRepayId, long corpus, long interest, long fee, long defaultFee, boolean isNormalRepay) {
-        super(loginName, payUserId);
+    public UmpRepayPaybackMessage(String loginName, long loanId, long investId, long investRepayId, long corpus, long interest, long fee, long defaultInterest, boolean isNormalRepay) {
+        this.loginName = loginName;
         this.loanId = loanId;
         this.investId = investId;
         this.investRepayId = investRepayId;
         this.corpus = corpus;
         this.interest = interest;
         this.fee = fee;
-        this.defaultFee = defaultFee;
+        this.defaultInterest = defaultInterest;
         this.isNormalRepay = isNormalRepay;
     }
 
@@ -40,6 +43,10 @@ public class UmpInvestRepayDto extends UmpBaseDto {
 
     public long getInvestId() {
         return investId;
+    }
+
+    public String getLoginName() {
+        return loginName;
     }
 
     public long getInvestRepayId() {
@@ -58,23 +65,11 @@ public class UmpInvestRepayDto extends UmpBaseDto {
         return fee;
     }
 
-    public long getDefaultFee() {
-        return defaultFee;
+    public long getDefaultInterest() {
+        return defaultInterest;
     }
 
     public boolean isNormalRepay() {
         return isNormalRepay;
-    }
-
-    @Override
-    public boolean isValid() {
-        return super.isValid()
-                && loanId > 0
-                && investId > 0
-                && investRepayId > 0
-                && corpus >= 0
-                && interest > 0
-                && fee >= 0
-                && defaultFee >= 0;
     }
 }

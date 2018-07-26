@@ -1,7 +1,10 @@
-package com.tuotiansudai.fudian.umpdto;
+package com.tuotiansudai.fudian.umpmessage;
 
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 
-public class UmpCouponRepayDto extends UmpBaseDto {
+public class UmpCouponRepayMessage extends BankBaseMessage {
+
+    private String loginName;
 
     private long couponRepayId;
 
@@ -11,15 +14,19 @@ public class UmpCouponRepayDto extends UmpBaseDto {
 
     private boolean isNormalRepay;
 
-    public UmpCouponRepayDto() {
+    public UmpCouponRepayMessage() {
     }
 
-    public UmpCouponRepayDto(String loginName, String payUserId, long couponRepayId, long interest, long fee, boolean isNormalRepay) {
-        super(loginName, payUserId);
+    public UmpCouponRepayMessage(String loginName, long couponRepayId, long interest, long fee, boolean isNormalRepay) {
+        this.loginName = loginName;
         this.couponRepayId = couponRepayId;
         this.interest = interest;
         this.fee = fee;
         this.isNormalRepay = isNormalRepay;
+    }
+
+    public String getLoginName() {
+        return loginName;
     }
 
     public long getCouponRepayId() {
@@ -36,13 +43,5 @@ public class UmpCouponRepayDto extends UmpBaseDto {
 
     public boolean isNormalRepay() {
         return isNormalRepay;
-    }
-
-    @Override
-    public boolean isValid() {
-        return super.isValid()
-                && couponRepayId > 0
-                && interest > 0
-                && fee >= 0;
     }
 }
