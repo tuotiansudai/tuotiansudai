@@ -48,7 +48,7 @@ public class UmpLoanRepayDto extends UmpBaseDto {
         return amount;
     }
 
-    public boolean isNormalRepay() {
+    public boolean getIsNormalRepay() {
         return isNormalRepay;
     }
 

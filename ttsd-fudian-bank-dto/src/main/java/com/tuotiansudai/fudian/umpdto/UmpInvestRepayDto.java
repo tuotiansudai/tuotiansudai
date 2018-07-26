@@ -62,7 +62,7 @@ public class UmpInvestRepayDto extends UmpBaseDto {
         return defaultFee;
     }
 
-    public boolean isNormalRepay() {
+    public boolean getIsNormalRepay() {
         return isNormalRepay;
     }
 

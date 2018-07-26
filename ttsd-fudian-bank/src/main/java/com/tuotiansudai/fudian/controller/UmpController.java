@@ -57,18 +57,27 @@ public class UmpController {
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> bindCard(@RequestBody UmpBindCardDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         PtpMerBindCardRequestModel model = umpBindCardService.bindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> recharge(@RequestBody UmpRechargeDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         MerRechargePersonRequestModel model = umpRechargeService.recharge(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
     public ResponseEntity<UmpAsyncMessage> withdraw(@RequestBody UmpWithdrawDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         CustWithdrawalsRequestModel model = umpWithdrawService.withdraw(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
@@ -78,7 +87,6 @@ public class UmpController {
         if (!dto.isValid()) {
             return ResponseEntity.badRequest().build();
         }
-
         ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }

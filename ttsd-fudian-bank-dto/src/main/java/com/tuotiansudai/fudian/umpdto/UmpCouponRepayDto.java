@@ -34,7 +34,7 @@ public class UmpCouponRepayDto extends UmpBaseDto {
         return fee;
     }
 
-    public boolean isNormalRepay() {
+    public boolean getIsNormalRepay() {
         return isNormalRepay;
     }
 

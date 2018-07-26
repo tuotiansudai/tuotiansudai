@@ -157,7 +157,7 @@ public class UmpLoanRepayService {
                     listOperations.leftPush(UMP_REPAY_FEE_QUEUE, gson.toJson(umpLoanRepayDto.getUmpRepayFeeDto()));
                 }
 
-                messageQueueClient.sendMessage(MessageQueue.UmpLoanRepay_Success, new UmpLoanRepayMessage(umpLoanRepayDto.getLoanId(), umpLoanRepayDto.getLoanRepayId(), umpLoanRepayDto.getAmount(), umpLoanRepayDto.getLoginName(), umpLoanRepayDto.isNormalRepay()));
+                messageQueueClient.sendMessage(MessageQueue.UmpLoanRepay_Success, new UmpLoanRepayMessage(umpLoanRepayDto.getLoanId(), umpLoanRepayDto.getLoanRepayId(), umpLoanRepayDto.getAmount(), umpLoanRepayDto.getLoginName(), umpLoanRepayDto.getIsNormalRepay()));
             }
 
             logger.info("[UMP LOAN REPAY] success to loan repay callback, repay data is {}", repayData);
@@ -196,7 +196,7 @@ public class UmpLoanRepayService {
                                     umpInvestRepayDto.getInterest(),
                                     umpInvestRepayDto.getDefaultFee(),
                                     umpInvestRepayDto.getFee(),
-                                    umpInvestRepayDto.isNormalRepay()));
+                                    umpInvestRepayDto.getIsNormalRepay()));
 
                             continue;
                         }
@@ -253,7 +253,7 @@ public class UmpLoanRepayService {
 
         if (repayNotifyRequestModel.isSuccess() && operations.delete(UMP_REPAY_PAYBACK_DATA_KEY, orderId) > 0) {
             UmpInvestRepayDto umpInvestRepayDto = gson.fromJson(data, UmpInvestRepayDto.class);
-            if (umpInvestRepayDto.isNormalRepay()) {
+            if (umpInvestRepayDto.getIsNormalRepay()) {
                 insertNotifyMapper.insertNotifyNormalRepay(repayNotifyRequestModel);
             } else {
                 insertNotifyMapper.insertNotifyAdvanceRepay(repayNotifyRequestModel);
@@ -267,7 +267,7 @@ public class UmpLoanRepayService {
                     umpInvestRepayDto.getInterest(),
                     umpInvestRepayDto.getDefaultFee(),
                     umpInvestRepayDto.getFee(),
-                    umpInvestRepayDto.isNormalRepay()));
+                    umpInvestRepayDto.getIsNormalRepay()));
         }
 
         return repayNotifyRequestModel.getResponseData();
@@ -296,7 +296,7 @@ public class UmpLoanRepayService {
                                     umpCouponRepayDto.getCouponRepayId(),
                                     umpCouponRepayDto.getInterest(),
                                     umpCouponRepayDto.getFee(),
-                                    umpCouponRepayDto.isNormalRepay()));
+                                    umpCouponRepayDto.getIsNormalRepay()));
                             continue;
                         }
 
@@ -358,7 +358,7 @@ public class UmpLoanRepayService {
                     umpCouponRepayDto.getCouponRepayId(),
                     umpCouponRepayDto.getInterest(),
                     umpCouponRepayDto.getFee(),
-                    umpCouponRepayDto.isNormalRepay()));
+                    umpCouponRepayDto.getIsNormalRepay()));
         }
 
         return transferNotifyRequestModel.getResponseData();

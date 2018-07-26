@@ -12,7 +12,7 @@ public enum AsyncUmPayService {
     /**
      * 还款的转账
      */
-    REPAY_PROJECT_TRANSFER("project_transfer", "ump/account", "loan_repay_notify"),
+    REPAY_PROJECT_TRANSFER("project_transfer", "callback/REPAY_PROJECT_TRANSFER", "loan_repay_notify"),
     /**
      * 投资返款的转账
      */

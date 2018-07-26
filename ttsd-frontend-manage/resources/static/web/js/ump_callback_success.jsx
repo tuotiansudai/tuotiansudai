@@ -3,11 +3,12 @@ let commonFun= require('publicJs/commonFun');
 
 let $successBox= $('#successBox');
 let $countTime = $('.count-time',$successBox);
+let accountUrl = $successBox.data('accounturl');
 
 commonFun.countDownLoan({
     btnDom:$countTime,
     time:5
 },function() {
-    window.location.href = '/ump/account';
+    window.location.href = accountUrl;
 });
 

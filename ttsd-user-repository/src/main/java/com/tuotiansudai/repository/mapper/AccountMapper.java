@@ -11,7 +11,7 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
-    List<AccountModel> findByLoginNames(List<String> loginNames);
+    List<AccountModel> findByLoginNames(@Param(value = "loginNames") List<String> loginNames);
 
     AccountModel lockByLoginName(String loginName);
 

@@ -34,7 +34,7 @@ public class UmpLoanRepayFeeDto extends UmpBaseDto{
         return amount;
     }
 
-    public boolean isAdvance() {
+    public boolean getIsAdvance() {
         return isAdvance;
     }
 
