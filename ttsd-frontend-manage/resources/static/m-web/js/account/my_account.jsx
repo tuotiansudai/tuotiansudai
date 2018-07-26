@@ -68,4 +68,12 @@ $('.btn-close').on('click',function () {
     layer.closeAll();
 })
 
+commonFun.CommonLayerTip({
+    btn: ['我知道了'],
+    area:['280px', '160px'],
+    content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <p style="text-align: center">查看联动优势存管账号资金余额，请<br/>登录pc端拓天速贷</p></div> `
+},function() {
+    layer.closeAll();
+})
+
 
