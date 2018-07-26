@@ -24,6 +24,13 @@
         select * from account where login_name = #{loginName}
     </select>
 
+    <select id="findByLoginNames" parameterType="map" resultMap="accountResultMap" useCache="false">
+        select * from account where login_name in
+        <foreach collection="loginNames" item="loginName" open="(" separator="," close=")">
+            #{loginName}
+        </foreach>
+    </select>
+
     <select id="lockByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
         select * from account where login_name = #{loginName} for update
     </select>

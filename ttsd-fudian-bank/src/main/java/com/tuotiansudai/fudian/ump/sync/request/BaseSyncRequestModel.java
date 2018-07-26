@@ -45,7 +45,7 @@ public abstract class BaseSyncRequestModel {
 
     private String requestUrl;
 
-    private Map field;
+    private Map<String, String> field;
 
     private SyncRequestStatus status = SyncRequestStatus.READY;
 
@@ -174,11 +174,11 @@ public abstract class BaseSyncRequestModel {
         this.sourceV = sourceV;
     }
 
-    public Map getField() {
+    public Map<String, String> getField() {
         return field;
     }
 
-    public void setField(Map field) {
+    public void setField(Map<String, String> field) {
         this.field = field;
     }
 
