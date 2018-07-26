@@ -6,7 +6,7 @@ import com.tuotiansudai.fudian.dto.BankDtoValidator;
 
 import java.io.Serializable;
 
-public class UmpBaseDto implements Serializable, BankDtoValidator{
+public class UmpBaseDto implements Serializable, BankDtoValidator {
 
     private String loginName;
 

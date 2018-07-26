@@ -73,33 +73,33 @@ public class UmpBindCardService {
         }
 
         UmpBindCardMessage umpBindCardMessage = new UmpBindCardMessage(dto.getBankCardModelId(), dto.getLoginName(), dto.isReplaceCard());
-        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(umpBindCardMessage.getBindCardModelId()));
-        redisTemplate.<String, String>opsForValue().set(umpBindCardMessageKey, gson.toJson(umpBindCardMessage), 1, TimeUnit.DAYS);
+        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(dto.getBankCardModelId()));
+        redisTemplate.<String, String>opsForValue().set(umpBindCardMessageKey, gson.toJson(umpBindCardMessage), 7, TimeUnit.DAYS);
         return requestModel;
     }
 
     public String notifyCallBack(Map<String, String> paramsMap, String queryString){
         BankCardNotifyRequestModel bindCardNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, BankCardNotifyRequestModel.class);
-        if (Strings.isNullOrEmpty(bindCardNotifyModel.getResponseData())) {
+        if (bindCardNotifyModel == null || Strings.isNullOrEmpty(bindCardNotifyModel.getResponseData())) {
             return null;
         }
         insertNotifyMapper.insertNotifyCardBind(bindCardNotifyModel);
-        this.sendMessage(bindCardNotifyModel.isSuccess(), false, bindCardNotifyModel.getId(), bindCardNotifyModel.getGateId());
+        this.sendMessage(bindCardNotifyModel.isSuccess(), false, bindCardNotifyModel.getOrderId(), bindCardNotifyModel.getGateId());
         return bindCardNotifyModel.getResponseData();
     }
 
     public String applyNotifyCallBack(Map<String, String> paramsMap, String queryString){
         BankCardApplyNotifyRequestModel bindCardApplyNotifyModel = umpUtils.parseCallbackRequest(paramsMap, queryString, BankCardApplyNotifyRequestModel.class);
-        if (Strings.isNullOrEmpty(bindCardApplyNotifyModel.getResponseData())) {
+        if (bindCardApplyNotifyModel == null || Strings.isNullOrEmpty(bindCardApplyNotifyModel.getResponseData())) {
             return null;
         }
         insertNotifyMapper.insertApplyNotifyCardBind(bindCardApplyNotifyModel);
-        this.sendMessage(bindCardApplyNotifyModel.isSuccess(), true, bindCardApplyNotifyModel.getId(), null);
+        this.sendMessage(bindCardApplyNotifyModel.isSuccess(), true, bindCardApplyNotifyModel.getOrderId(), null);
         return bindCardApplyNotifyModel.getResponseData();
     }
 
-    private void sendMessage(boolean isSuccess, boolean isApply, long orderId, String bankCode){
-        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, String.valueOf(orderId));
+    private void sendMessage(boolean isSuccess, boolean isApply, String orderId, String bankCode){
+        String umpBindCardMessageKey = MessageFormat.format(UMP_BIND_CARD_MESSAGE_KEY, orderId);
         String message = redisTemplate.<String, String>opsForValue().get(umpBindCardMessageKey);
         UmpBindCardMessage umpBindCardMessage = gson.fromJson(message, UmpBindCardMessage.class);
         umpBindCardMessage.setStatus(isSuccess);

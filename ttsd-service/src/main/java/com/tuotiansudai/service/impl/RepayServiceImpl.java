@@ -10,6 +10,11 @@ import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
 import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.UmpAsyncMessage;
+import com.tuotiansudai.fudian.umpdto.UmpCouponRepayDto;
+import com.tuotiansudai.fudian.umpdto.UmpExtraRateRepayDto;
+import com.tuotiansudai.fudian.umpdto.UmpInvestRepayDto;
+import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -54,6 +59,9 @@ public class RepayServiceImpl implements RepayService {
     private InvestMapper investMapper;
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private BankAccountMapper bankAccountMapper;
 
     @Autowired
@@ -70,9 +78,6 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
@@ -371,6 +376,195 @@ public class RepayServiceImpl implements RepayService {
         dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
         return baseDto;
     }
+
+    @Override
+    public UmpAsyncMessage umpNormalRepay(RepayDto repayDto) {
+        long loanId = repayDto.getLoanId();
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+        if (enabledLoanRepay == null || enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY) {
+            logger.error("[Normal Repay] There is no enabled loan repay (loanId = {})", repayDto.getLoanId());
+            return new UmpAsyncMessage(false, null, null, "该标的今天没有待还款，或还款等待支付，请半小时后重试");
+        }
+
+        LoanModel loanModel = loanMapper.findById(loanId);
+
+        long actualInterest = this.calculateLoanRepayActualInterest(loanId, enabledLoanRepay);
+        long repayAmount = enabledLoanRepay.getCorpus() + actualInterest;
+
+        AccountModel accountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
+
+        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+        List<String> investorLoginNames = successInvests.stream().map(InvestModel::getLoginName).collect(Collectors.toList());
+
+        List<AccountModel> investorAccounts = accountMapper.findByLoginNames(investorLoginNames);
+        Map<String, String> umpAccountMap = Maps.newHashMap();
+        for (AccountModel investorAccount : investorAccounts) {
+            umpAccountMap.put(investorAccount.getLoginName(), investorAccount.getPayAccountId());
+        }
+
+        List<InvestRepayModel> investRepays = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanId, enabledLoanRepay.getPeriod());
+
+        List<UmpInvestRepayDto> umpInvestRepayDtoList = Lists.newArrayList();
+        for (InvestRepayModel investRepay : investRepays) {
+            InvestModel investModel = successInvests.stream().filter(successInvest -> successInvest.getId() == investRepay.getInvestId()).findFirst().orElse(null);
+            if (investModel == null) {
+                return new UmpAsyncMessage(false, null, null, "回款计划数据验证失败");
+            }
+            umpInvestRepayDtoList.add(new UmpInvestRepayDto(investModel.getLoginName(), umpAccountMap.get(investModel.getLoginName()), loanId, investRepay.getInvestId(), investRepay.getId(), investRepay.getCorpus(), investRepay.getExpectedInterest(), investRepay.getExpectedFee(), investRepay.getDefaultInterest(), true));
+        }
+
+        List<CouponRepayModel> couponRepays = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanId, enabledLoanRepay.getPeriod());
+        List<UmpCouponRepayDto> umpCouponRepayDtoList = couponRepays.stream().map(couponRepay -> new UmpCouponRepayDto(couponRepay.getLoginName(),
+                umpAccountMap.get(couponRepay.getLoginName()),
+                couponRepay.getId(),
+                couponRepay.getExpectedInterest(),
+                couponRepay.getExpectedFee(),
+                true
+        )).collect(Collectors.toList());
+
+        List<UmpExtraRateRepayDto> umpExtraRateRepayDtoList = loanModel.getPeriods() != enabledLoanRepay.getPeriod() ? Lists.newArrayList() :
+                investExtraRateMapper.findByLoanId(loanId).stream().map(investExtraRateModel -> new UmpExtraRateRepayDto(investExtraRateModel.getLoginName(),
+                        umpAccountMap.get(investExtraRateModel.getLoginName()),
+                        investExtraRateModel.getId(),
+                        investExtraRateModel.getExpectedInterest(),
+                        investExtraRateModel.getExpectedFee())).collect(Collectors.toList());
+
+        UmpAsyncMessage umpAsyncMessage = bankWrapperClient.umpLoanRepay(new UmpLoanRepayDto(loanModel.getAgentLoginName(),
+                accountModel.getPayUserId(),
+                loanId,
+                enabledLoanRepay.getId(),
+                repayAmount,
+                true,
+                umpInvestRepayDtoList,
+                umpCouponRepayDtoList,
+                umpExtraRateRepayDtoList));
+
+        if (umpAsyncMessage.isStatus()) {
+            enabledLoanRepay.setActualInterest(actualInterest);
+            enabledLoanRepay.setActualRepayDate(new Date());
+            enabledLoanRepay.setRepayAmount(repayAmount);
+            enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
+            loanRepayMapper.update(enabledLoanRepay);
+            logger.info(MessageFormat.format("[Normal Repay {0}] generate repay form data to update loan repay status to WAIT_PAY", String.valueOf(enabledLoanRepay.getId())));
+        }
+
+        return umpAsyncMessage;
+    }
+
+    @Override
+    public UmpAsyncMessage umpAdvancedRepay(RepayDto repayDto) {
+        DateTime currentRepayDate = new DateTime();
+        long loanId = repayDto.getLoanId();
+
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel.getStatus() != LoanStatus.REPAYING) {
+            logger.error(MessageFormat.format("[Advance Repay] loan({0}) status({1}) is not REPAYING", String.valueOf(loanId), loanModel.getStatus().name()));
+            return new UmpAsyncMessage(false, null, null, "该标的无法提前还款");
+        }
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+        LoanRepayModel enabledLoanRepay = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING).findFirst().orElse(null);
+
+        if (enabledLoanRepay == null) {
+            logger.error(MessageFormat.format("[Advance Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
+            return new UmpAsyncMessage(false, null, null, "该标的无法提前还款");
+        }
+
+
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
+        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+
+        List<AccountModel> investorAccounts = accountMapper.findByLoginNames(successInvests.stream().map(InvestModel::getLoginName).collect(Collectors.toList()));
+        Map<String, String> umpAccountMap = investorAccounts.stream().collect(Collectors.toMap(AccountModel::getLoginName, AccountModel::getPayUserId));
+
+        List<UmpInvestRepayDto> umpInvestRepayDtoList = Lists.newArrayList();
+        List<InvestRepayModel> investRepays = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanId, enabledLoanRepay.getPeriod());
+        for (InvestModel investModel : successInvests) {
+            //实际利息
+            InvestModel transferInvestModel = investModel.getTransferInvestId() != null ? investMapper.findById(investModel.getTransferInvestId()) : null;
+            long investActualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel.getAmount(),
+                    transferInvestModel == null ? investModel.getTradingTime() : transferInvestModel.getTradingTime(), lastRepayDate, currentRepayDate);
+            //实际手续费
+            long investActualFee = new BigDecimal(investActualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+
+            InvestRepayModel investRepayModel = investRepays.stream().filter(investRepay -> investRepay.getInvestId() == investModel.getId()).findFirst().orElse(null);
+            if (investRepayModel == null) {
+                return new UmpAsyncMessage(false, null, null, "回款计划数据验证失败");
+            }
+            umpInvestRepayDtoList.add(new UmpInvestRepayDto(investModel.getLoginName(),
+                    umpAccountMap.get(investModel.getLoginName()),
+                    loanId,
+                    investModel.getId(),
+                    investRepayModel.getId(),
+                    investModel.getAmount(),
+                    investActualInterest,
+                    investActualFee,
+                    0,
+                    false));
+        }
+
+        List<UmpCouponRepayDto> umpCouponRepayDtoList = Lists.newArrayList();
+        List<CouponRepayModel> couponRepays = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanId, enabledLoanRepay.getPeriod());
+        for (CouponRepayModel couponRepayModel : couponRepays) {
+            CouponModel couponModel = this.couponMapper.findById(couponRepayModel.getCouponId());
+
+            InvestModel investModel = successInvests.stream().filter(invest -> invest.getId() == couponRepayModel.getInvestId()).findFirst().orElse(null);
+            if (investModel == null || investModel.getStatus() != InvestStatus.SUCCESS || investModel.getTransferStatus() == TransferStatus.SUCCESS) {
+                return new UmpAsyncMessage(false, null, null, "回款计划数据验证失败");
+            }
+
+            long actualInterest = InterestCalculator.calculateCouponActualInterest(investModel.getAmount(), couponModel.getRate(), investModel.getTradingTime(), loanModel, enabledLoanRepay, loanRepayModels);
+
+            umpCouponRepayDtoList.add(new UmpCouponRepayDto(couponRepayModel.getLoginName(),
+                    umpAccountMap.get(couponRepayModel.getLoginName()),
+                    couponRepayModel.getId(),
+                    actualInterest,
+                    (long) (actualInterest * investModel.getInvestFeeRate()),
+                    false));
+        }
+
+        List<UmpExtraRateRepayDto> umpExtraRateRepayDtoList = Lists.newArrayList();
+        List<InvestExtraRateModel> investExtraRateModels = investExtraRateMapper.findByLoanId(loanId).stream().filter(investExtraRateModel -> investExtraRateModel.getStatus() == RepayStatus.REPAYING).collect(Collectors.toList());
+        for (InvestExtraRateModel investExtraRateModel : investExtraRateModels) {
+            InvestModel investModel = successInvests.stream().filter(successInvest -> successInvest.getId() == investExtraRateModel.getInvestId()).findFirst().orElse(null);
+            if (investModel == null) {
+                return new UmpAsyncMessage(false, null, null, "回款计划数据验证失败");
+            }
+            long actualInterest = InterestCalculator.calculateExtraLoanRateInterest(loanModel, investExtraRateModel.getExtraRate(), investModel, new Date());
+            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+            umpExtraRateRepayDtoList.add(new UmpExtraRateRepayDto(investExtraRateModel.getLoginName(),
+                    umpAccountMap.get(investExtraRateModel.getLoginName()),
+                    investExtraRateModel.getId(),
+                    actualInterest,
+                    actualFee));
+        }
+
+        long corpus = loanRepayMapper.findLastLoanRepay(loanId).getCorpus();
+        long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastRepayDate, currentRepayDate);
+
+        UmpAsyncMessage umpAsyncMessage = bankWrapperClient.umpLoanRepay(new UmpLoanRepayDto(loanModel.getAgentLoginName(),
+                accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
+                loanId,
+                enabledLoanRepay.getId(),
+                corpus + actualInterest,
+                false,
+                umpInvestRepayDtoList,
+                umpCouponRepayDtoList,
+                umpExtraRateRepayDtoList));
+
+        if (umpAsyncMessage.isStatus()) {
+            enabledLoanRepay.setActualInterest(actualInterest);
+            enabledLoanRepay.setActualRepayDate(currentRepayDate.toDate());
+            enabledLoanRepay.setRepayAmount(corpus + actualInterest);
+            enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
+            loanRepayMapper.update(enabledLoanRepay);
+            logger.info(MessageFormat.format("[advance Repay {0}] generate repay form data to update loan repay status to WAIT_PAY", String.valueOf(enabledLoanRepay.getId())));
+        }
+
+        return umpAsyncMessage;
+    }
+
 
     private static String covertRate(String rate) {
         return rate.contains(".00") ? rate.replaceAll("\\.00", "") : String.valueOf(Double.parseDouble(rate));

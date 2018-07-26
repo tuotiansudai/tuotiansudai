@@ -21,41 +21,24 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     public ProjectTransferRequestModel() {
     }
 
-    public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount, boolean isAdvanceRepay) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,
-                isAdvanceRepay ? AsyncUmPayService.ADVANCE_REPAY_PROJECT_TRANSFER : AsyncUmPayService.NORMAL_REPAY_PROJECT_TRANSFER);
+    public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, AsyncUmPayService.REPAY_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.LOANER.getCode();
         return model;
     }
 
-    public static ProjectTransferRequestModel newNormalRepayPaybackRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, AsyncUmPayService.NORMAL_REPAY_PAYBACK_PROJECT_TRANSFER);
+    public static ProjectTransferRequestModel newRepayPaybackRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, AsyncUmPayService.REPAY_PAYBACK_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
 
-    public static ProjectTransferRequestModel newNormalRepayInvestFeeRequest(String projectId, String orderId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT, AsyncUmPayService.NORMAL_REPAY_INVEST_FEE_PROJECT_TRANSFER);
-        model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
-        model.particType = UmPayParticType.PLATFORM.getCode();
-        return model;
-    }
-
-    public static ProjectTransferRequestModel newAdvanceRepayPaybackRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL, AsyncUmPayService.ADVANCE_REPAY_PAYBACK_PROJECT_TRANSFER);
-        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
-        model.transAction = UmPayTransAction.OUT.getCode();
-        model.particType = UmPayParticType.INVESTOR.getCode();
-        return model;
-    }
-
-    public static ProjectTransferRequestModel newAdvanceRepayInvestFeeRequest(String projectId, String orderId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT, AsyncUmPayService.ADVANCE_REPAY_INVEST_FEE_PROJECT_TRANSFER);
+    public static ProjectTransferRequestModel newRepayFeeRequest(String projectId, String orderId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT, AsyncUmPayService.REPAY_FEE_PROJECT_TRANSFER);
         model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();

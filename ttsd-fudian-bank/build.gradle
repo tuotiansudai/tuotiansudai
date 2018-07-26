@@ -48,6 +48,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
+processResources {
+    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
+        into '/'
+    }
+}
+
 task renameWar {
     doLast {
         file("${project.projectDir.getPath()}/build/libs/ttsd-fudian-bank.war").renameTo(file("${project.projectDir.getPath()}/build/libs/ROOT.war"))

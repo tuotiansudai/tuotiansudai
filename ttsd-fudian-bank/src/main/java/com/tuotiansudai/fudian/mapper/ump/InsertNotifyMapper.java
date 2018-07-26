@@ -60,10 +60,4 @@ public interface InsertNotifyMapper {
             "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNotifyExtraRate(TransferNotifyRequestModel model);
-
-    @Insert("insert into experience_interest_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)" +
-            "values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})")
-    @Options(useGeneratedKeys = true, keyColumn = "id")
-    void insertNotifyExperience(TransferNotifyRequestModel model);
-
 }
