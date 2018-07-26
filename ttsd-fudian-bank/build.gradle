@@ -49,8 +49,7 @@ dependencies {
 }
 
 processResources {
-
-    from("${configPath}/ttsd-fudian-bank/SignVerProp.properties") {
+    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
         into '/'
     }
 }
