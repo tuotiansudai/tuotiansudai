@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
@@ -29,7 +29,7 @@ public interface BankRechargeMapper {
                                                             @Param(value = "rechargeId") String rechargeId,
                                                             @Param(value = "mobile") String mobile,
                                                             @Param(value = "source") Source source,
-                                                            @Param(value = "status") BankRechargeStatus status,
+                                                            @Param(value = "status") RechargeStatus status,
                                                             @Param(value = "channel") String channel,
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
@@ -41,7 +41,7 @@ public interface BankRechargeMapper {
                                @Param(value = "rechargeId") String rechargeId,
                                @Param(value = "mobile") String mobile,
                                @Param(value = "source") Source source,
-                               @Param(value = "status") BankRechargeStatus status,
+                               @Param(value = "status") RechargeStatus status,
                                @Param(value = "channel") String channel,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
@@ -50,7 +50,7 @@ public interface BankRechargeMapper {
                           @Param(value = "rechargeId") String rechargeId,
                           @Param(value = "mobile") String mobile,
                           @Param(value = "source") Source source,
-                          @Param(value = "status") BankRechargeStatus status,
+                          @Param(value = "status") RechargeStatus status,
                           @Param(value = "channel") String channel,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);

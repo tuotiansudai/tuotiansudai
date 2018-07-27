@@ -2,6 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.RepayDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.UmpAsyncMessage;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,14 +21,23 @@ public class RepayController {
 
     private final RepayService repayService;
 
+    private final LoanService loanService;
+
     @Autowired
-    public RepayController(RepayService repayService) {
+    public RepayController(RepayService repayService, LoanService loanService) {
         this.repayService = repayService;
+        this.loanService = loanService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView repay(@Valid @ModelAttribute RepayDto repayDto) {
-        BankAsyncMessage bankAsyncMessage = repayDto.isAdvanced() ? repayService.advancedRepay(repayDto) : repayService.normalRepay(repayDto);
-        return new ModelAndView("/pay", "pay", bankAsyncMessage);
+        LoanModel loanModel = loanService.findLoanById(repayDto.getLoanId());
+        if (loanModel.getIsBankPlatform()) {
+            BankAsyncMessage bankAsyncMessage = repayDto.isAdvanced() ? repayService.advancedRepay(repayDto) : repayService.normalRepay(repayDto);
+            return new ModelAndView("/pay", "pay", bankAsyncMessage);
+        }
+
+        UmpAsyncMessage umpAsyncMessage = repayDto.isAdvanced() ? repayService.umpAdvancedRepay(repayDto) : repayService.umpNormalRepay(repayDto);
+        return new ModelAndView("/ump-pay", "pay", umpAsyncMessage);
     }
 }

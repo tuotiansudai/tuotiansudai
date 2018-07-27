@@ -62,7 +62,7 @@ public class QueryDownloadLogFilesService {
         this.messageQueueClient = messageQueueClient;
     }
 
-    @Scheduled(cron = "0 2 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 2 * * ?", zone = "Asia/Shanghai")
     @SuppressWarnings(value = "unchecked")
     public void schedule() throws JSchException {
         ChannelSftp sftp = downloadClient.getChannel();

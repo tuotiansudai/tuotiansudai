@@ -1,8 +1,8 @@
 package com.tuotiansudai.enums;
 
 public enum BillOperationType {
-    IN("资金转入"),
-    OUT("资金转出");
+    IN("入账"),
+    OUT("出账");
 
     private final String description;
 

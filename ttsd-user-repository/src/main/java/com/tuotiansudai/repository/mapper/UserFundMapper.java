@@ -10,4 +10,6 @@ public interface UserFundMapper {
 
     UserFundView findByLoginName(@Param(value = "loginName") String loginName,
                                  @Param(value = "roleType") Role roleType);
+
+    UserFundView findUmpByLoginName(@Param(value = "loginName") String loginName);
 }

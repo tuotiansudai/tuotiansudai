@@ -1,7 +1,8 @@
 package com.tuotiansudai.fudian.util;
 
 
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import com.jcraft.jsch.*;
 import com.tuotiansudai.fudian.config.DownloadConfig;
 import org.slf4j.Logger;
@@ -29,12 +30,12 @@ public class DownloadClient {
 
     private final DownloadConfig downloadConfig;
 
-    private static OSSClient ossClient;
+    private static OSS oss;
 
     @Autowired
     public DownloadClient(DownloadConfig downloadConfig) {
         this.downloadConfig = downloadConfig;
-        ossClient = new OSSClient(this.downloadConfig.getOssEndpoint(), this.downloadConfig.getAccessKeyId(), this.downloadConfig.getAccessKeySecret());
+        oss = new OSSClientBuilder().build(this.downloadConfig.getOssEndpoint(), this.downloadConfig.getAccessKeyId(), this.downloadConfig.getAccessKeySecret());
     }
 
     public ChannelSftp getChannel() throws JSchException {
@@ -64,7 +65,7 @@ public class DownloadClient {
 
     public List<String> download(ChannelSftp sftp, String path, String name) throws SftpException {
         InputStream inputStream = sftp.get(path + "/" + name);
-        ossClient.putObject(downloadConfig.getBucketName(), name, inputStream);
+        oss.putObject(downloadConfig.getBucketName(), name, inputStream);
         List<String> params = new ArrayList<String>();
         try (Scanner scanner = new Scanner(inputStream)) {
             while (scanner.hasNext()) {

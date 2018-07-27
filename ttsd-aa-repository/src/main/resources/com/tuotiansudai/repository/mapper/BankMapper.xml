@@ -18,6 +18,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="updated_by" property="updatedBy"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="is_bank" property="isBank"/>
     </resultMap>
 
     <select id="findById" parameterType="map" resultMap="bankResultMap">
@@ -35,15 +36,24 @@
     </update>
 
     <select id="findBankList" parameterType="map" resultMap="bankResultMap">
-        select * from bank
-        <where>
-            <if test="singleAmount != null">
-                and single_amount > #{singleAmount}
-            </if>
-            <if test="singleDayAmount != null">
-                and single_day_amount > #{singleDayAmount}
-            </if>
-        </where>
+        select * from bank WHERE is_bank = 1
+        <if test="singleAmount != null">
+            and single_amount > #{singleAmount}
+        </if>
+        <if test="singleDayAmount != null">
+            and single_day_amount > #{singleDayAmount}
+        </if>
+        order by seq, id asc
+    </select>
+
+    <select id="findUmpBankList" parameterType="map" resultMap="bankResultMap">
+        select * from bank WHERE is_bank = 0
+        <if test="singleAmount != null">
+            and single_amount > #{singleAmount}
+        </if>
+        <if test="singleDayAmount != null">
+            and single_day_amount > #{singleDayAmount}
+        </if>
         order by seq, id asc
     </select>
 

@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public interface CreditLoanRechargeMapper {
     CreditLoanRechargeModel findById(long id);
 
     void updateCreditLoanRechargeStatus(@Param(value = "id") long id,
-                                        @Param(value = "rechargeStatus") BankRechargeStatus rechargeStatus);
+                                        @Param(value = "rechargeStatus") RechargeStatus rechargeStatus);
 
     List<CreditLoanRechargeModel> findByAccountName(String accountName);
 }

@@ -7,10 +7,7 @@ import com.tuotiansudai.service.BankService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -27,9 +24,12 @@ public class BankController {
     private ConsoleBankService consoleBankService;
 
     @RequestMapping(value = "/bank-list")
-    public ModelAndView bannerList() {
-        ModelAndView modelAndView = new ModelAndView("/bank-list");
-        List<BankDto> bankModelList = bankService.findBankList(null, null);
+    public ModelAndView bannerList(@RequestParam(value = "isBank", defaultValue = "true") Boolean isBank) {
+
+        ModelAndView modelAndView = null;
+        List<BankDto> bankModelList = null;
+        bankModelList = isBank ? bankService.findBankList(null, null) : bankService.findUmpBankList(null, null);
+        modelAndView = isBank ? new ModelAndView("/bank-list") : new ModelAndView("/ump-bank-list");
         modelAndView.addObject("bankList", bankModelList);
         return modelAndView;
     }
@@ -49,6 +49,7 @@ public class BankController {
         bankModel.setUpdatedBy(loginName);
         bankModel.setUpdatedTime(new Date());
         consoleBankService.updateBank(bankModel);
-        return "redirect:/finance-manage/bank-list";
+        String redirectUrl = "redirect:/finance-manage/bank-list?isBank=" + bankDto.getIsBank();
+        return redirectUrl;
     }
 }

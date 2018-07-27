@@ -26,7 +26,7 @@ public class AccountBalanceController {
 
 
     @RequestMapping(value = "/account-balance")
-    public ModelAndView accountBalance(@RequestParam(value = "role", defaultValue ="BANK_INVESTOR", required = false)Role role,
+    public ModelAndView accountBalance(@RequestParam(value = "role", defaultValue ="INVESTOR", required = false)Role role,
                                        @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "balanceMin", required = false) String balanceMin,

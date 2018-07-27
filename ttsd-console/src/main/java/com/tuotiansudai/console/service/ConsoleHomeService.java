@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.service;
 
 import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
@@ -46,17 +46,17 @@ public class ConsoleHomeService {
 
     public long rechargeToday_Loaner() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(Role.BANK_LOANER, null, null, null, BankRechargeStatus.SUCCESS, null, startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(Role.LOANER, null, null, null, RechargeStatus.SUCCESS, null, startTime, null);
     }
 
     public long recharge7Days_Loaner() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(Role.BANK_LOANER, null, null, null, BankRechargeStatus.SUCCESS, null, startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(Role.LOANER, null, null, null, RechargeStatus.SUCCESS, null, startTime, null);
     }
 
     public long recharge30Days_Loaner() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return bankRechargeMapper.findSumRechargeAmount(Role.BANK_LOANER, null, null, null, BankRechargeStatus.SUCCESS, null, startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(Role.LOANER, null, null, null, RechargeStatus.SUCCESS, null, startTime, null);
     }
 
     public long rechargeToday_NotLoaner() {
@@ -75,22 +75,22 @@ public class ConsoleHomeService {
     }
 
     private long getRechargeNotLoaner(Date startTime) {
-        return bankRechargeMapper.findSumRechargeAmount(Role.BANK_INVESTOR, null, null, null, BankRechargeStatus.SUCCESS, null, startTime, null);
+        return bankRechargeMapper.findSumRechargeAmount(Role.INVESTOR, null, null, null, RechargeStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdrawToday_Loaner() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(Role.BANK_LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(Role.LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdraw7Days_Loaner() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(Role.BANK_LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(Role.LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdraw30Days_Loaner() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return bankWithdrawMapper.sumWithdrawAmount(Role.BANK_LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(Role.LOANER, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long withdrawToday_NotLoaner() {
@@ -109,7 +109,7 @@ public class ConsoleHomeService {
     }
 
     private long getWithdrawNotLoaner(Date startTime) {
-        return bankWithdrawMapper.sumWithdrawAmount(Role.BANK_INVESTOR, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
+        return bankWithdrawMapper.sumWithdrawAmount(Role.INVESTOR, null, null, WithdrawStatus.SUCCESS, null, startTime, null);
     }
 
     public long investToday() {

@@ -179,12 +179,14 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
-    public void exportSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+    public void exportSystemBillList(@RequestParam(value = "isBankPlatform", defaultValue = "true") Boolean isBankPlatform,
+                                     @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                      @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                      @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                      @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType, HttpServletResponse httpServletResponse) throws IOException {
         fillExportResponse(httpServletResponse, CsvHeaderType.SystemBillHeader.getDescription());
         BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
+                isBankPlatform,
                 startTime,
                 endTime,
                 operationType,
@@ -302,12 +304,12 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.GET)
-    public void exportRecharge(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
+    public void exportRecharge(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
                                @RequestParam(value = "rechargeId", required = false) String rechargeId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                               @RequestParam(value = "status", required = false) BankRechargeStatus status,
+                               @RequestParam(value = "status", required = false) RechargeStatus status,
                                @RequestParam(value = "source", required = false) Source source,
                                HttpServletResponse response) throws IOException {
         ;
@@ -320,7 +322,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void exportWithdraw(@RequestParam(value = "role", required = false, defaultValue = "BANK_INVESTOR") Role role,
+    public void exportWithdraw(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
                                @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                @RequestParam(value = "mobile", required = false) String mobile,
                                @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
@@ -338,7 +340,7 @@ public class ExportController {
     public void exportUserFunds(
             @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
             @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
-            @RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
+            @RequestParam(value = "role", defaultValue = "INVESTOR", required = false) Role role,
             @RequestParam(value = "userBillBusinessType", required = false) BankUserBillBusinessType businessType,
             @RequestParam(value = "userBillOperationType", required = false) BillOperationType operationType,
             @RequestParam(value = "mobile", required = false) String mobile,
@@ -357,7 +359,7 @@ public class ExportController {
     }
 
     @RequestMapping(value = "/account-balance", method = RequestMethod.GET)
-    public void exportAccountBalance(@RequestParam(value = "role", defaultValue = "BANK_INVESTOR", required = false) Role role,
+    public void exportAccountBalance(@RequestParam(value = "role", defaultValue = "INVESTOR", required = false) Role role,
                                      @RequestParam(value = "mobile", required = false) String mobile,
                                      @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                      @RequestParam(value = "balanceMax", required = false) String balanceMax, HttpServletResponse response) throws IOException {
