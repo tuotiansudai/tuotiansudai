@@ -42,7 +42,10 @@ def mk_war(targets=None):
         return
 
     for target in targets:
-        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
+        if target == 'ttsd-fudian-bank':
+            local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:bootWar {0}:renameWar'.format(target))
+        else:
+            local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
 
 
 def mk_worker_zip():
@@ -357,14 +360,14 @@ def worker(skip_package):
 
 
 def pay(skip_package):
-    pre_deploy(skip_package, ('ttsd-pay-wrapper',))
-    mk_war(('ttsd-pay-wrapper',))
+    pre_deploy(skip_package, ('ttsd-fudian-bank',))
+    mk_war(('ttsd-fudian-bank',))
     execute(deploy_pay)
 
 
 def point(skip_package):
-    pre_deploy(skip_package, ('ttsd-piont-web',))
-    mk_war(('ttsd-piont-web',))
+    pre_deploy(skip_package, ('ttsd-point-web',))
+    mk_war(('ttsd-point-web',))
     execute(deploy_static)
     execute(deploy_point)
 
