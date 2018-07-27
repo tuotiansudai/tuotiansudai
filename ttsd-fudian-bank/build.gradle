@@ -52,6 +52,9 @@ processResources {
     from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
         into '/'
     }
+    from("${configPath}/ttsd-bank-cfca/") {
+        into '/cfca/'
+    }
 }
 
 task renameWar {
