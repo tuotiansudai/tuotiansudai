@@ -5,14 +5,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
-import com.tuotiansudai.fudian.message.BankAsyncMessage;
-import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
-import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
 import com.tuotiansudai.fudian.message.*;
+import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
+import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
+import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -20,7 +22,10 @@ import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BankWrapperClient {
@@ -386,6 +391,128 @@ public class BankWrapperClient {
             logger.error(MessageFormat.format("call pay wrapper error, url: {0}, request: {1}", url, content), e);
         }
 
+        return null;
+    }
+
+    private UmpAsyncMessage umpAsyncExecute(String path, Object requestData) {
+        String content = gson.toJson(requestData);
+        String url = this.baseUrl + path;
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = this.okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                try {
+                    return gson.fromJson(response.body().string(), UmpAsyncMessage.class);
+                } catch (JsonParseException e) {
+                    logger.error(MessageFormat.format("ump parse pay response error, url: {0}, data: {1}, response: {2}", url, content, response.body().string()), e);
+                }
+            }
+            logger.error(MessageFormat.format("ump call pay wrapper status: {0}, url: {1}, data: {2}", response.code(), url, content));
+            return new UmpAsyncMessage(false, null, null, "支付请求失败");
+        } catch (IOException e) {
+            logger.error(MessageFormat.format("ump call pay wrapper error, url: {0}, data: {1}", url, content), e);
+        }
+
+        return new UmpAsyncMessage(false, null, null, "支付异常");
+    }
+
+    public UmpAsyncMessage umpRecharge(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
+        return umpAsyncExecute("/ump/recharge", new UmpRechargeDto(loginName, payUserId, rechargeId, amount, isFastPay, bankCode));
+    }
+
+    public UmpAsyncMessage umpWithdraw(String loginName, String payUserId, long withdrawId, long amount) {
+        return umpAsyncExecute("/ump/withdraw", new UmpWithdrawDto(loginName, payUserId, withdrawId, amount));
+    }
+
+    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard){
+        return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isReplaceCard));
+    }
+
+    public UmpAsyncMessage umpLoanRepay(UmpLoanRepayDto dto) {
+        return umpAsyncExecute("/ump/loan-repay", dto);
+    }
+
+    public Boolean isUmpCallbackSuccess(Map<String, String> params) {
+        String content = gson.toJson(params);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), content);
+
+        try {
+            Request request = new Request.Builder()
+                    .url(this.baseUrl + "/ump/notify-url/callback/validate-front-callback")
+                    .post(requestBody)
+                    .build();
+            Response response = this.okHttpClient.newCall(request).execute();
+            return response.code() == HttpStatus.OK.value();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpUserStatus(String payUserId) {
+        String json = syncExecute(MessageFormat.format("/ump/user/{0}", payUserId), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpLoanStatus(long loanId) {
+        String json = syncExecute(MessageFormat.format("/ump/loan/{0}", String.valueOf(loanId)), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpTransferStatus(String orderId, Date merDate, String businessType) {
+        String json = syncExecute(MessageFormat.format("/ump/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public List<List<String>> getUmpTransferBill(String payAccountId, Date startDate, Date endDate) {
+        String json = syncExecute(MessageFormat.format("/ump/transfer-bill/{0}/start-date/{1}/end-date/{2}",
+                payAccountId,
+                new SimpleDateFormat("yyyyMMdd").format(startDate),
+                new SimpleDateFormat("yyyyMMdd").format(endDate)), null);
+        try {
+            return gson.fromJson(json, new TypeToken<List<List<String>>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public Map<String, String> getUmpPlatformStatus() {
+        String json = syncExecute("/ump/platform", null);
+        try {
+            return gson.fromJson(json, new TypeToken<Map<String, String>>() {
+            }.getType());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
         return null;
     }
 }

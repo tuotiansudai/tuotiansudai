@@ -10,9 +10,9 @@ import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.response.LoanRepayContentDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
-import com.tuotiansudai.fudian.mapper.InsertMapper;
-import com.tuotiansudai.fudian.mapper.SelectMapper;
-import com.tuotiansudai.fudian.mapper.UpdateMapper;
+import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
+import com.tuotiansudai.fudian.mapper.fudian.SelectMapper;
+import com.tuotiansudai.fudian.mapper.fudian.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankLoanRepayMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
@@ -92,8 +92,6 @@ public class LoanRepayService implements ReturnCallbackInterface, NotifyCallback
                 bankLoanRepayDto.isNormalRepay(),
                 bankLoanRepayDto.getLoginName(),
                 bankLoanRepayDto.getMobile(),
-                bankLoanRepayDto.getBankUserName(),
-                bankLoanRepayDto.getBankAccountNo(),
                 dto.getOrderNo(),
                 dto.getOrderDate());
         String bankLoanRepayHistoryKey = MessageFormat.format(BANK_LOAN_REPAY_MESSAGE_KEY, dto.getOrderDate());

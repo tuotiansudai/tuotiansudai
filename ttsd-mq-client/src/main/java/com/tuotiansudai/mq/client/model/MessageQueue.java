@@ -35,6 +35,17 @@ public enum MessageQueue {
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
 
+    //ump queues
+    UmpRecharge_Success("UmpRecharge-Success"),
+    UmpBindCard_Success("UmpBindCard-Success"),
+    UmpWithdraw_Success("UmpWithdraw-Success"),
+    UmpAmountTransfer("UmpAmountTransfer"),
+    UmpLoanRepay_Success("UmpLoanRepay-Success"),
+    UmpRepayPayback_Success("UmpRepayPayback-Success"),
+    UmpCouponRepay_Success("UmpCouponRepay-Success"),
+    UmpExtraRepay_Success("UmpExtraRepay-Success"),
+    UmpRepayFee_Success("UmpRepayFee-Success"),
+
     //fudian new queues
     BankSystemBill("BankSystemBill"),
     BindBankCard_Success("BindBankCard-Success"),

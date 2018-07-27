@@ -365,3 +365,58 @@ $CK1:#ffac2a;
   }
 }
 
+
+  .safety-notification {
+    position: relative;
+    margin-right: 20px;
+    .tip-title {
+      background: #ff7200;
+      color: #fff;
+      padding-right: 10px;
+      padding-left: 10px;
+      display: inline-block;
+      height: 33px;
+      line-height: 33px;
+    }
+    i {
+      position: absolute;
+      color: #ff752a;
+      top: 5px;
+      right: -20px;
+      cursor: pointer;
+    }
+  }
+
+
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  border: 1px solid #ffd4b2;
+  width: 400px;
+  text-align: center;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
+  }
+}
+.notice-tips {
+  padding: 10px;
+  text-align: left;
+  position: absolute;
+  right: -28px;
+  top: 33px;
+  strong {
+    color: #ff7200;
+    font-weight: normal;
+  }
+}

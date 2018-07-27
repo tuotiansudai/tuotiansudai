@@ -32,12 +32,18 @@ public class WithdrawModel {
 
     private Source source;
 
-    private String userName;
-
-
     public WithdrawModel() {
     }
 
+    public WithdrawModel(long id, long bankCardId, String loginName, long amount, long fee) {
+        this.id = id;
+        this.bankCardId = bankCardId;
+        this.loginName = loginName;
+        this.amount = amount;
+        this.fee = fee;
+        this.status = WithdrawStatus.WAIT_PAY;
+        this.source = Source.WEB;
+    }
 
     public long getId() {
         return id;
@@ -134,14 +140,4 @@ public class WithdrawModel {
     public void setSource(Source source) {
         this.source = source;
     }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-
 }

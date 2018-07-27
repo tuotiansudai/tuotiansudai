@@ -146,10 +146,10 @@
                             select count(*) as v, a.province from user a
                             where a.register_time between #{startTime} and #{endTime}
                             <if test="userStage.name() == 'BindCard'">
-                                and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                                and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED' UNION select * from user_bank_card ubc where ubc.login_name=a.login_name and ubc.status='BOUND')
                             </if>
                             <if test="userStage.name() == 'Certification'">
-                                and exists (select * from account ac where  a.login_name = ac.login_name)
+                                and exists (select * from account ac where  a.login_name = ac.login_name  UNION  select * from bank_account ba where ba.login_name=a.login_name)
                             </if>
                             group by province
                         ) t order by v desc limit 5
@@ -165,10 +165,10 @@
             and u.channel IS NULL
         </if>
         <if test="userStage.name() == 'BindCard'">
-          and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+          and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED' UNION select * from user_bank_card ubc where ubc.login_name=u.login_name and ubc.status='BOUND')
         </if>
         <if test="userStage.name() == 'Certification'">
-          and exists (select * from account ac where  u.login_name = ac.login_name)
+          and exists (select * from account ac where  u.login_name = ac.login_name UNION  select * from bank_account ba where ba.login_name=u.login_name)
         </if>
         group by u.province,
         <if test="granularity.name() == 'Hourly'">
@@ -314,10 +314,10 @@
                         select count(*) as v, a.province from user a
                         where a.register_time between #{startTime} and #{endTime}
                         <if test="userStage.name() == 'BindCard'">
-                            and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                            and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED' UNION select * from user_bank_card ubc where ubc.login_name=a.login_name and ubc.status='BOUND')
                         </if>
                         <if test="userStage.name() == 'Certification'">
-                            and exists (select * from account ac where  a.login_name = ac.login_name)
+                            and exists (select * from account ac where  a.login_name = ac.login_name UNION  select * from bank_account ba where ba.login_name = a.login_name)
                         </if>
                         group by province
                     ) t order by v desc limit 5
@@ -331,10 +331,10 @@
                 and u.channel IS NULL
             </if>
             <if test="userStage.name() == 'BindCard'">
-                and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+                and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED' UNION select * from user_bank_card ubc where ubc.login_name=u.login_name and ubc.status='BOUND')
             </if>
             <if test="userStage.name() == 'Certification'">
-                and exists (select * from account ac where  u.login_name = ac.login_name)
+                and exists (select * from account ac where  u.login_name = ac.login_name union select * from bank_account ba where ba.login_name=u.login_name)
             </if>
             group by
             <if test="granularity.name() == 'Hourly'">
@@ -370,18 +370,22 @@
         us.province AS `group`
         FROM
         `user` us
-        JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
-        <if test="role != '' and role != 'UN_LOANER' ">
+        <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+            JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.role_type=#{role} AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="role != null and role == 'UMP_LOANER'">
+            JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
-        <if test="role != '' and role == 'UN_LOANER' ">
+        <if test="role != null and role == 'UN_UMP_LOANER' ">
+            JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
             JOIN (SELECT
             login_name, GROUP_CONCAT(role) AS role
             FROM
             user_role
             GROUP BY login_name) ur
             ON ur.login_name = us.login_name
-            AND ur.role NOT LIKE '%LOANER%'
+            AND ur.role NOT LIKE '%UMP_LOANER%'
         </if>
         WHERE
         us.user_name IS NOT NULL
@@ -394,18 +398,22 @@
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_re_1.amount / 100), 2) AS `temp_amount_1`
             FROM `user` AS temp_user_1
-            JOIN `bank_recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.role_type=#{role} AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `recharge` temp_re_1 ON temp_user_1.login_name = temp_re_1.login_name AND temp_re_1.status = 'SUCCESS' AND temp_re_1.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = temp_user_1.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
@@ -432,18 +440,22 @@
             '其他' AS `group`
             FROM
             `user` us
-            JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_recharge` re ON us.login_name = re.login_name AND re.role_type=#{role} AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `recharge` re ON us.login_name = re.login_name AND re.status = 'SUCCESS' AND re.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = us.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE
             us.user_name IS NOT NULL
@@ -451,18 +463,22 @@
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_re_2.amount / 100), 2) AS `temp_amount_2`
             FROM `user` AS temp_user_2
-            JOIN `bank_recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.role_type=#{role} AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `recharge` temp_re_2 ON temp_user_2.login_name = temp_re_2.login_name AND temp_re_2.status = 'SUCCESS' AND temp_re_2.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = temp_user_2.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
@@ -489,18 +505,22 @@
         us.province AS `group`
         FROM
         `user` us
-        JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
-        <if test="role != '' and role != 'UN_LOANER' ">
+        <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+            JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.role_type=#{role} AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="role != null and role == 'UMP_LOANER'">
+            JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
             JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
         </if>
-        <if test="role != '' and role == 'UN_LOANER' ">
+        <if test="role != null and role == 'UN_UMP_LOANER' ">
+            JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
             JOIN (SELECT
             login_name, GROUP_CONCAT(role) AS role
             FROM
             user_role
             GROUP BY login_name) ur
             ON ur.login_name = us.login_name
-            AND ur.role NOT LIKE '%LOANER%'
+            AND ur.role NOT LIKE '%UMP_LOANER%'
         </if>
         WHERE
         us.user_name IS NOT NULL
@@ -513,18 +533,22 @@
             (SELECT temp_user_1.province,
             ROUND(SUM(temp_w_1.amount / 100), 2) AS `temp_amount_1`
             FROM `user` AS temp_user_1
-            JOIN `bank_withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.role_type=#{role} AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_1 ON temp_role_1.login_name = temp_user_1.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `withdraw` temp_w_1 ON temp_user_1.login_name = temp_w_1.login_name AND temp_w_1.status = 'SUCCESS' AND temp_w_1.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = temp_user_1.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
@@ -551,18 +575,22 @@
             '其他' AS `group`
             FROM
             `user` us
-            JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_withdraw` w ON us.login_name = w.login_name AND w.role_type=#{role} AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role ON temp_role.login_name = us.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `withdraw` w ON us.login_name = w.login_name AND w.status = 'SUCCESS' AND w.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = us.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE
             us.user_name IS NOT NULL
@@ -570,18 +598,22 @@
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_w_2.amount / 100), 2) AS `temp_amount_2`
             FROM `user` AS temp_user_2
-            JOIN `bank_withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
-            <if test="role != '' and role != 'UN_LOANER' ">
+            <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+                JOIN `bank_withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.role_type=#{role}  AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="role != null and role == 'UMP_LOANER'">
+                JOIN `withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT login_name FROM user_role WHERE role = #{role}) AS temp_role_2 ON temp_role_2.login_name = temp_user_2.login_name
             </if>
-            <if test="role != '' and role == 'UN_LOANER' ">
+            <if test="role != null and role == 'UN_UMP_LOANER' ">
+                JOIN `withdraw` temp_w_2 ON temp_user_2.login_name = temp_w_2.login_name AND temp_w_2.status = 'SUCCESS' AND temp_w_2.created_time BETWEEN #{startTime} AND #{endTime}
                 JOIN (SELECT
                 login_name, GROUP_CONCAT(role) AS role
                 FROM
                 user_role
                 GROUP BY login_name) ur
                 ON ur.login_name = temp_user_2.login_name
-                AND ur.role NOT LIKE '%LOANER%'
+                AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
             WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
@@ -1476,24 +1508,25 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(created_time, '%Y-%m') AS `name`,
         </if>
-        count(distinct(`bank_withdraw`.login_name)) AS `value`,
+        count(distinct(w.login_name)) AS `value`,
         '提现人数' AS `group`
-
-        from bank_withdraw
-
-        <if test="role != '' and role != 'UN_LOANER' ">
-            join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = `bank_withdraw`.login_name
+        <if test="role == null or role == 'INVESTOR' or role == 'LOANER'">
+            from bank_withdraw w
         </if>
-        <if test="role != '' and role == 'UN_LOANER' ">
+        <if test="role != null and role == 'UMP_LOANER'">
+            from withdraw w
+            join (select login_name from `user_role` where role = #{role}) temp_role on temp_role.login_name = w.login_name
+        </if>
+        <if test="role != null and role == 'UN_UMP_LOANER' ">
+            from withdraw w
             JOIN (SELECT
             login_name, GROUP_CONCAT(role) AS role
             FROM
             user_role
             GROUP BY login_name) ur
-            ON ur.login_name = bank_withdraw.login_name
-            AND ur.role NOT LIKE '%LOANER%'
+            ON ur.login_name = w.login_name
+            AND ur.role NOT LIKE '%UMP_LOANER%'
         </if>
-
         where status = 'SUCCESS'
 
         and created_time between #{startTime} and #{endTime}
@@ -1526,7 +1559,8 @@
     </select>
 
     <select id="querySystemBillOutByCreatedTime" parameterType="map" resultMap="keyValueMap">
-        SELECT
+        SELECT  b.name AS `name` ,sum(b.value) AS `value`,b.group as `group` from(
+        (SELECT
             <if test="granularity.name() == 'Daily'">
                 DATE(created_time) AS `name`,
             </if>
@@ -1557,8 +1591,42 @@
             <if test="granularity.name() == 'Monthly'">
                 year(created_time), month(created_time)
             </if>
-            ORDER BY created_time
-    </select>
+            ORDER BY created_time)
+        UNION  ALL
+        (SELECT
+            <if test="granularity.name() == 'Daily'">
+                DATE(bb.created_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                DATE_FORMAT(bb.created_time, '%Y-W%u') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                DATE_FORMAT(bb.created_time, '%Y-%m') AS `name`,
+            </if>
+            ROUND(IFNULL(SUM(bb.amount), 0)/ 100, 2) AS `value`,
+            '支出' as `group`
+            FROM bank_system_bill bb
+            WHERE bb.operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and bb.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and bb.created_time &lt;= #{endTime}
+            </if>
+
+            GROUP BY
+            <if test="granularity.name() == 'Daily'">
+                date(bb.created_time)
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                year(bb.created_time), week(created_time)
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                year(bb.created_time), month(created_time)
+            </if>
+            ORDER BY bb.created_time)
+        ) AS b  GROUP BY b.`name`,b.`group`
+        </select>
 
     <select id="queryAnxinUserStatus" parameterType="map" resultMap="keyValueMap">
         SELECT count(1) AS `value`,

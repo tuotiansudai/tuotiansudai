@@ -28,12 +28,12 @@ public class UserBillModel implements Serializable {
     public UserBillModel() {
     }
 
-    public UserBillModel(String loginName, long orderId, long amount, long balance, UserBillBusinessType businessType, UserBillOperationType operationType) {
+    public UserBillModel(String loginName, long orderId, long amount, long balance, long freeze, UserBillBusinessType businessType, UserBillOperationType operationType) {
         this.loginName = loginName;
         this.orderId = orderId;
         this.amount = amount;
         this.balance = balance;
-        this.freeze = 0;
+        this.freeze = freeze;
         this.businessType = businessType;
         this.operationType = operationType;
     }

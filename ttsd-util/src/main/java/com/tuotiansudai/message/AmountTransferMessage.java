@@ -34,7 +34,6 @@ public class AmountTransferMessage {
         this.operationType = operationType;
         this.businessType = businessType;
     }
-
     public long getBusinessId() {
         return businessId;
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AccountMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="accountResultMap" type="AccountModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="pay_user_id" property="payUserId"/>
+        <result column="pay_account_id" property="payAccountId"/>
+        <result column="balance" property="balance"/>
+        <result column="freeze" property="freeze"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="auto_invest" property="autoInvest"/>
+        <result column="auto_repay" property="autoRepay"/>
+        <result column="no_password_invest" property="noPasswordInvest"/>
+        <result column="membership_point" property="membershipPoint"/>
+    </resultMap>
+
+    <select id="findByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
+        select * from account where login_name = #{loginName}
+    </select>
+
+    <select id="findByLoginNames" parameterType="map" resultMap="accountResultMap" useCache="false">
+        select * from account where login_name in
+        <foreach collection="loginNames" item="loginName" open="(" separator="," close=")">
+            #{loginName}
+        </foreach>
+    </select>
+
+    <select id="lockByLoginName" parameterType="string" resultMap="accountResultMap" useCache="false">
+        select * from account where login_name = #{loginName} for update
+    </select>
+
+    <update id="updateBalanceAndFreeze" parameterType="map">
+        update account set
+        balance = #{balance},
+        freeze = #{freeze}
+        where login_name = #{loginName}
+    </update>
+
+</mapper>

@@ -153,7 +153,7 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","false")}&status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -164,7 +164,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?isBankPlatform=${isBankPlatform?string("true","flase")}&status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?isBankPlatform=${isBankPlatform?string("true","false")}&status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
