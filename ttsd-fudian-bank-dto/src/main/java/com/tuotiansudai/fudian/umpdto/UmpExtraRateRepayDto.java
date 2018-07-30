@@ -1,44 +1,42 @@
 package com.tuotiansudai.fudian.umpdto;
 
 
-import com.google.common.base.Strings;
-
 public class UmpExtraRateRepayDto extends UmpBaseDto{
 
-    private long investExtraRateModelId;
+    private long investExtraRateId;
 
-    private long amount;
+    private long interest;
 
-    private String payAccountId;
+    private long fee;
+
 
     public UmpExtraRateRepayDto() {
     }
 
-    public UmpExtraRateRepayDto(String loginName, String payUserId, long investExtraRateModelId, long amount, String payAccountId) {
+    public UmpExtraRateRepayDto(String loginName, String payUserId, long investExtraRateId, long interest, long fee) {
         super(loginName, payUserId);
-        this.investExtraRateModelId = investExtraRateModelId;
-        this.amount = amount;
-        this.payAccountId = payAccountId;
+        this.investExtraRateId = investExtraRateId;
+        this.interest = interest;
+        this.fee = fee;
     }
 
-    public long getInvestExtraRateModelId() {
-        return investExtraRateModelId;
+    public long getInvestExtraRateId() {
+        return investExtraRateId;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getInterest() {
+        return interest;
     }
 
-    public String getPayAccountId() {
-        return payAccountId;
+    public long getFee() {
+        return fee;
     }
 
     @Override
     public boolean isValid() {
         return super.isValid()
-                && investExtraRateModelId > 0
-                && amount > 0
-                && !Strings.isNullOrEmpty(payAccountId);
+                && investExtraRateId > 0
+                && interest > 0
+                && fee >= 0;
     }
-
 }

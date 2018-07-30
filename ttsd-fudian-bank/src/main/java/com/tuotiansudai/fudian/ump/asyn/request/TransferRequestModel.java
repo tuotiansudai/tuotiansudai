@@ -4,7 +4,6 @@ package com.tuotiansudai.fudian.ump.asyn.request;
 import com.tuotiansudai.fudian.ump.AsyncUmPayService;
 import com.tuotiansudai.fudian.ump.UmPayParticAccType;
 import com.tuotiansudai.fudian.ump.UmPayTransAction;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,35 +23,32 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
 
     private String particUserId;
 
-    private String particAccountId;
-
     private String amount;
 
     public TransferRequestModel() {
     }
 
-    private TransferRequestModel(String orderId, String payUserId, String particAccountId, String amount, AsyncUmPayService asyncUmPayService) {
+    private TransferRequestModel(String orderId, String payUserId, String amount, AsyncUmPayService asyncUmPayService) {
         super(asyncUmPayService);
         this.service = asyncUmPayService.getServiceName();
         this.orderId = orderId;
         this.particUserId = payUserId;
-        this.particAccountId = particAccountId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.transAction = UmPayTransAction.OUT.getCode();
     }
 
-    public static TransferRequestModel newCouponRepayRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.COUPON_REPAY_TRANSFER);
+    public static TransferRequestModel newCouponRepayRequest(String orderId, String payUserId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, amount, AsyncUmPayService.COUPON_REPAY_TRANSFER);
     }
 
-    public static TransferRequestModel newExtraRateRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.EXTRA_RATE_TRANSFER);
+    public static TransferRequestModel newExtraRateRequest(String orderId, String payUserId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, amount, AsyncUmPayService.EXTRA_RATE_TRANSFER);
     }
 
-    public static TransferRequestModel experienceInterestRequest(String orderId, String payUserId, String particAccountId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, particAccountId, amount, AsyncUmPayService.EXPERIENCE_INTEREST_TRANSFER);
+    public static TransferRequestModel experienceInterestRequest(String orderId, String payUserId, String amount) {
+        return new TransferRequestModel(orderId, payUserId, amount, AsyncUmPayService.EXPERIENCE_INTEREST_TRANSFER);
     }
 
     @Override
@@ -64,9 +60,7 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
         payRequestData.put("partic_user_id", this.particUserId);
         payRequestData.put("amount", this.amount);
         payRequestData.put("mer_date", this.merDate);
-        if (StringUtils.isNotEmpty(this.notifyUrl)) {
-            payRequestData.put("notify_url", this.notifyUrl);
-        }
+        payRequestData.put("notify_url", this.notifyUrl);
         return payRequestData;
     }
 
@@ -117,14 +111,6 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
 
     public void setParticUserId(String particUserId) {
         this.particUserId = particUserId;
-    }
-
-    public String getParticAccountId() {
-        return particAccountId;
-    }
-
-    public void setParticAccountId(String particAccountId) {
-        this.particAccountId = particAccountId;
     }
 
     public String getAmount() {

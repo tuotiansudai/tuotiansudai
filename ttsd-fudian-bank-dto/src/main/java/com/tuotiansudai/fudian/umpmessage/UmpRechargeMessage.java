@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.umpmessage;
 
 import com.tuotiansudai.fudian.message.BankBaseMessage;
 
-public class UmpRechargeMessage extends BankBaseMessage{
+public class UmpRechargeMessage extends BankBaseMessage {
 
     private long rechargeId;
 

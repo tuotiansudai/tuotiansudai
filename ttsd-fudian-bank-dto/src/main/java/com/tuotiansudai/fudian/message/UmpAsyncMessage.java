@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-public class UmpAsyncMessage extends BankBaseMessage{
+public class UmpAsyncMessage extends BankBaseMessage {
 
     private String url;
 

@@ -3,7 +3,7 @@ package com.tuotiansudai.fudian.umpdto;
 
 import java.util.List;
 
-public class UmpLoanRepayDto extends UmpBaseDto{
+public class UmpLoanRepayDto extends UmpBaseDto {
 
     private long loanId;
 
@@ -11,29 +11,29 @@ public class UmpLoanRepayDto extends UmpBaseDto{
 
     private long amount;
 
-    private boolean isAdvanceRepay;
+    private boolean isNormalRepay;
 
-    private UmpLoanRepayFeeDto umpLoanRepayFeeDto;
+    private UmpRepayFeeDto umpRepayFeeDto;
 
-    private List<UmpInvestRepayDto> umpInvestRepayDtos;
+    private List<UmpInvestRepayDto> umpInvestRepayDtoList;
 
-    private List<UmpCouponRepayDto> umpCouponRepayDtos;
+    private List<UmpCouponRepayDto> umpCouponRepayDtoList;
 
-    private List<UmpExtraRateRepayDto> umpExtraRateRepayDtos;
+    private List<UmpExtraRateRepayDto> umpExtraRateRepayDtoList;
 
     public UmpLoanRepayDto() {
     }
 
-    public UmpLoanRepayDto(String loginName, String payUserId, long loanId, long loanRepayId, long amount, boolean isAdvanceRepay, UmpLoanRepayFeeDto umpLoanRepayFeeDto, List<UmpInvestRepayDto> umpInvestRepayDtos, List<UmpCouponRepayDto> umpCouponRepayDtos, List<UmpExtraRateRepayDto> umpExtraRateRepayDtos) {
+    public UmpLoanRepayDto(String loginName, String payUserId, long loanId, long loanRepayId, long amount, boolean isNormalRepay, List<UmpInvestRepayDto> umpInvestRepayDtoList, List<UmpCouponRepayDto> umpCouponRepayDtoList, List<UmpExtraRateRepayDto> umpExtraRateRepayDtoList) {
         super(loginName, payUserId);
         this.loanId = loanId;
         this.loanRepayId = loanRepayId;
         this.amount = amount;
-        this.isAdvanceRepay = isAdvanceRepay;
-        this.umpLoanRepayFeeDto = umpLoanRepayFeeDto;
-        this.umpInvestRepayDtos = umpInvestRepayDtos;
-        this.umpCouponRepayDtos = umpCouponRepayDtos;
-        this.umpExtraRateRepayDtos = umpExtraRateRepayDtos;
+        this.isNormalRepay = isNormalRepay;
+        this.umpInvestRepayDtoList = umpInvestRepayDtoList;
+        this.umpCouponRepayDtoList = umpCouponRepayDtoList;
+        this.umpExtraRateRepayDtoList = umpExtraRateRepayDtoList;
+        this.umpRepayFeeDto = new UmpRepayFeeDto(loanId, loanRepayId, amount - umpInvestRepayDtoList.stream().mapToLong(dto -> dto.getCorpus() + dto.getInterest() + dto.getDefaultFee() - dto.getFee()).sum());
     }
 
     public long getLoanId() {
@@ -48,24 +48,24 @@ public class UmpLoanRepayDto extends UmpBaseDto{
         return amount;
     }
 
-    public boolean isAdvanceRepay() {
-        return isAdvanceRepay;
+    public boolean getIsNormalRepay() {
+        return isNormalRepay;
     }
 
-    public UmpLoanRepayFeeDto getUmpLoanRepayFeeDto() {
-        return umpLoanRepayFeeDto;
+    public UmpRepayFeeDto getUmpRepayFeeDto() {
+        return umpRepayFeeDto;
     }
 
-    public List<UmpInvestRepayDto> getUmpInvestRepayDtos() {
-        return umpInvestRepayDtos;
+    public List<UmpInvestRepayDto> getUmpInvestRepayDtoList() {
+        return umpInvestRepayDtoList;
     }
 
-    public List<UmpCouponRepayDto> getUmpCouponRepayDtos() {
-        return umpCouponRepayDtos;
+    public List<UmpCouponRepayDto> getUmpCouponRepayDtoList() {
+        return umpCouponRepayDtoList;
     }
 
-    public List<UmpExtraRateRepayDto> getUmpExtraRateRepayDtos() {
-        return umpExtraRateRepayDtos;
+    public List<UmpExtraRateRepayDto> getUmpExtraRateRepayDtoList() {
+        return umpExtraRateRepayDtoList;
     }
 
     @Override
@@ -73,6 +73,8 @@ public class UmpLoanRepayDto extends UmpBaseDto{
         return super.isValid()
                 && loanId > 0
                 && loanRepayId > 0
-                && amount > 0;
+                && amount > 0
+                && umpInvestRepayDtoList != null && umpInvestRepayDtoList.size() > 0
+                && amount >= umpInvestRepayDtoList.stream().mapToLong(dto -> dto.getCorpus() + dto.getInterest() + dto.getDefaultFee()).sum();
     }
 }

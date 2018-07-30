@@ -36,17 +36,17 @@ public interface InsertRequestMapper {
     void insertProjectTransfer(ProjectTransferRequestModel model);
 
     @Insert("insert into coupon_repay_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
-            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, null,#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertCouponRepay(TransferRequestModel model);
 
     @Insert("insert into extra_rate_transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
-            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, null,#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertExtraRate(TransferRequestModel model);
 
     @Insert("insert into transfer_request (service, sign_type, sign, charset, mer_id, version, order_id, mer_date, mer_account_id, partic_acc_type, trans_action,partic_user_id,partic_account_id,amount,request_url, request_data, request_time, status)" +
-            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, #{particAccountId},#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
+            "values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{merDate}, #{merAccountId}, #{particAccType}, #{transAction},#{particUserId}, null,#{amount},#{requestUrl}, #{requestData}, #{requestTime}, #{status})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertTransfer(TransferRequestModel model);
 

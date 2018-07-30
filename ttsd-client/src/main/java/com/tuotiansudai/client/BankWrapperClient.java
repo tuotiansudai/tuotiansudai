@@ -1,7 +1,6 @@
 package com.tuotiansudai.client;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -13,6 +12,7 @@ import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.*;
 import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
+import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
 import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
 import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
 import com.tuotiansudai.repository.model.Source;
@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -418,11 +416,12 @@ public class BankWrapperClient {
                 }
             }
             logger.error(MessageFormat.format("ump call pay wrapper status: {0}, url: {1}, data: {2}", response.code(), url, content));
+            return new UmpAsyncMessage(false, null, null, "支付请求失败");
         } catch (IOException e) {
             logger.error(MessageFormat.format("ump call pay wrapper error, url: {0}, data: {1}", url, content), e);
         }
 
-        return new UmpAsyncMessage();
+        return new UmpAsyncMessage(false, null, null, "支付异常");
     }
 
     public UmpAsyncMessage umpRecharge(String loginName, String payUserId, long rechargeId, long amount, boolean isFastPay, String bankCode) {
@@ -435,6 +434,10 @@ public class BankWrapperClient {
 
     public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard){
         return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isReplaceCard));
+    }
+
+    public UmpAsyncMessage umpLoanRepay(UmpLoanRepayDto dto) {
+        return umpAsyncExecute("/ump/loan-repay", dto);
     }
 
     public Boolean isUmpCallbackSuccess(Map<String, String> params) {

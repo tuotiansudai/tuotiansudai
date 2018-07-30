@@ -92,8 +92,6 @@ public class LoanRepayService implements ReturnCallbackInterface, NotifyCallback
                 bankLoanRepayDto.isNormalRepay(),
                 bankLoanRepayDto.getLoginName(),
                 bankLoanRepayDto.getMobile(),
-                bankLoanRepayDto.getBankUserName(),
-                bankLoanRepayDto.getBankAccountNo(),
                 dto.getOrderNo(),
                 dto.getOrderDate());
         String bankLoanRepayHistoryKey = MessageFormat.format(BANK_LOAN_REPAY_MESSAGE_KEY, dto.getOrderDate());

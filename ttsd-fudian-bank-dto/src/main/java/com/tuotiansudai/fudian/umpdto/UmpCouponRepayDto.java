@@ -1,44 +1,48 @@
 package com.tuotiansudai.fudian.umpdto;
 
 
-import com.google.common.base.Strings;
+public class UmpCouponRepayDto extends UmpBaseDto {
 
-public class UmpCouponRepayDto extends UmpBaseDto{
+    private long couponRepayId;
 
-    private long couponModelId;
+    private long interest;
 
-    private long amount;
+    private long fee;
 
-    private String payAccountId;
+    private boolean isNormalRepay;
 
     public UmpCouponRepayDto() {
     }
 
-    public UmpCouponRepayDto(String loginName, String payUserId, long couponModelId, long amount, String payAccountId) {
+    public UmpCouponRepayDto(String loginName, String payUserId, long couponRepayId, long interest, long fee, boolean isNormalRepay) {
         super(loginName, payUserId);
-        this.couponModelId = couponModelId;
-        this.amount = amount;
-        this.payAccountId = payAccountId;
+        this.couponRepayId = couponRepayId;
+        this.interest = interest;
+        this.fee = fee;
+        this.isNormalRepay = isNormalRepay;
     }
 
-    public long getCouponModelId() {
-        return couponModelId;
+    public long getCouponRepayId() {
+        return couponRepayId;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getInterest() {
+        return interest;
     }
 
-    public String getPayAccountId() {
-        return payAccountId;
+    public long getFee() {
+        return fee;
+    }
+
+    public boolean getIsNormalRepay() {
+        return isNormalRepay;
     }
 
     @Override
     public boolean isValid() {
         return super.isValid()
-                && couponModelId > 0
-                && amount > 0
-                && !Strings.isNullOrEmpty(payAccountId);
+                && couponRepayId > 0
+                && interest > 0
+                && fee >= 0;
     }
-
 }

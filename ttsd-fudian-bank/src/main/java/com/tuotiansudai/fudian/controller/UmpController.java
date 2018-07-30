@@ -2,13 +2,19 @@ package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
-import com.tuotiansudai.fudian.ump.asyn.request.*;
+import com.tuotiansudai.fudian.ump.asyn.request.CustWithdrawalsRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.MerRechargePersonRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.ProjectTransferRequestModel;
+import com.tuotiansudai.fudian.ump.asyn.request.PtpMerBindCardRequestModel;
 import com.tuotiansudai.fudian.ump.sync.request.*;
 import com.tuotiansudai.fudian.ump.sync.response.ProjectAccountSearchResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.PtpMerQueryResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferSearchResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.UserSearchResponseModel;
-import com.tuotiansudai.fudian.umpdto.*;
+import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
+import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
+import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
+import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
 import com.tuotiansudai.fudian.umpservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,39 +38,55 @@ public class UmpController {
 
     private final UmpLoanRepayService umpLoanRepayService;
 
-    @Autowired
-    private UmpSynQueryService umpSynQueryService;
+    private final UmpSynQueryService umpSynQueryService;
 
 
     @Autowired
-    public UmpController(UmpRechargeService umpRechargeService, UmpWithdrawService umpWithdrawService,
-                         UmpBindCardService umpBindCardService, UmpLoanRepayService umpLoanRepayService){
+    public UmpController(UmpRechargeService umpRechargeService,
+                         UmpWithdrawService umpWithdrawService,
+                         UmpBindCardService umpBindCardService,
+                         UmpLoanRepayService umpLoanRepayService,
+                         UmpSynQueryService umpSynQueryService) {
+
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
+        this.umpSynQueryService = umpSynQueryService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> bindCard(@RequestBody UmpBindCardDto dto){
+    public ResponseEntity<UmpAsyncMessage> bindCard(@RequestBody UmpBindCardDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         PtpMerBindCardRequestModel model = umpBindCardService.bindCard(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> recharge(@RequestBody UmpRechargeDto dto){
+    public ResponseEntity<UmpAsyncMessage> recharge(@RequestBody UmpRechargeDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         MerRechargePersonRequestModel model = umpRechargeService.recharge(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> withdraw(@RequestBody UmpWithdrawDto dto){
+    public ResponseEntity<UmpAsyncMessage> withdraw(@RequestBody UmpWithdrawDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         CustWithdrawalsRequestModel model = umpWithdrawService.withdraw(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
 
     @RequestMapping(value = "/loan-repay", method = RequestMethod.POST)
-    public ResponseEntity<UmpAsyncMessage> loanRepay(@RequestBody UmpLoanRepayDto dto){
+    public ResponseEntity<UmpAsyncMessage> loanRepay(@RequestBody UmpLoanRepayDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
     }
@@ -76,6 +97,7 @@ public class UmpController {
         }
         return new UmpAsyncMessage(true, model.getRequestUrl(), model.getField(), null);
     }
+
     @RequestMapping(path = "/user/{payUserId}")
     @ResponseBody
     public Map<String, String> getRealTimeUserStatus(@PathVariable String payUserId) {

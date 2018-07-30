@@ -11,6 +11,8 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
+    List<AccountModel> findByLoginNames(@Param(value = "loginNames") List<String> loginNames);
+
     AccountModel lockByLoginName(String loginName);
 
     void updateBalanceAndFreeze(@Param(value = "loginName") String loginName,
