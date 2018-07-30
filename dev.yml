@@ -59,6 +59,7 @@ pay-wrapper:
   ports:
     - "20004:8080"
   volumes:
+    - /workspace/deploy-config/ttsd-pay-wrapper/:/workspace/deploy-config/ttsd-pay-wrapper
     - ./ttsd-fudian-bank/build/libs:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
