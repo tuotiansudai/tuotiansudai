@@ -33,7 +33,7 @@ public class ConsoleRechargeService {
         index = index < 1 ? 1 : index;
         int count = 0;
         List<BankRechargePaginationView> views = null;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             count = rechargeMapper.findRechargeCount(rechargeId, mobile, source, status, channel, startTime, endTime);
             views = rechargeMapper.findRechargePagination(rechargeId, mobile, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
         } else {
@@ -49,8 +49,9 @@ public class ConsoleRechargeService {
                         view.getStatus().name(),
                         view.getCreatedTime(),
                         view.getLoginName(),
-                        view.getMobile(),
                         view.getUserName(),
+                        view.getUmpUserName(),
+                        view.getMobile(),
                         view.getIsStaff(),
                         AmountConverter.convertCentToString(view.getAmount()),
                         view.getPayType(),
@@ -67,7 +68,7 @@ public class ConsoleRechargeService {
             String channel,
             Date startTime,
             Date endTime) {
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             return rechargeMapper.findSumRechargeAmount(rechargeId, mobile, source, status, channel, startTime, endTime);
         } else {
             return bankRechargeMapper.findSumRechargeAmount(role, rechargeId, mobile, source, status, channel, startTime, endTime);

@@ -109,7 +109,11 @@
                 <tr>
                     <td>${(userBillModel.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userBillModel.id?string('0')}</td>
-                    <td>${userBillModel.loginName!''}</td>
+                    <#if role?? && role == 'UMP_INVESTOR'>
+                        <td>${userBillModel.umpUserName!''}</td>
+                    <#else>
+                        <td>${userBillModel.userName!''}</td>
+                    </#if>
                     <td>${userBillModel.userName!}</td>
                     <td>${userBillModel.mobile!}</td>
                     <td>${userBillModel.operationType.getDescription()}</td>

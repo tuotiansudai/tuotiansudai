@@ -33,6 +33,8 @@ public class WithdrawPaginationView implements Serializable {
 
     private Date updatedTime;
 
+    private String umpUserName;
+
     public long getId() {
         return id;
     }
@@ -135,5 +137,13 @@ public class WithdrawPaginationView implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
     }
 }

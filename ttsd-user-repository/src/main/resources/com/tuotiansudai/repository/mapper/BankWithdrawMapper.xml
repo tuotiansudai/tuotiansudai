@@ -32,6 +32,7 @@
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="ump_user_name" property="umpUserName"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="map" useGeneratedKeys="true" keyProperty="id">
@@ -143,6 +144,7 @@
     <select id="findWithdrawPagination" parameterType="map" resultMap="bankWithdrawViewResultMap">
         select
         `user`.user_name as user_name,
+        `user`.ump_user_name as ump_user_name,
         `user`.mobile as mobile,
         ifnull((select 1 from user_role where user_role.login_name = bank_withdraw.login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), 0) as is_staff,
         bank_withdraw.*

@@ -52,7 +52,11 @@
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
-                    <td>${userAccount.userName!''}</td>
+                    <#if role?? && role == 'UMP_INVESTOR'>
+                        <td>${userAccount.umpUserName!''}</td>
+                    <#else>
+                        <td>${userAccount.userName!''}</td>
+                    </#if>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>
                     <td>${(userAccount.lastBillTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>

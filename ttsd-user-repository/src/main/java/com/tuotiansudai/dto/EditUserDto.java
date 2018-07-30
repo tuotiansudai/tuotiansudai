@@ -33,7 +33,12 @@ public class EditUserDto implements Serializable {
     private String autoInvestStatus;
 
     private String bankCardNumberInvestor;
+
     private String bankCardNumberLoaner;
+
+    private String umpUserName;
+
+    private String umpIdentityNumber;
 
     public EditUserDto(UserModel userModel, List<Role> roles, boolean autoInvestPlanEnabled) {
         this.loginName = userModel.getLoginName();
@@ -44,6 +49,8 @@ public class EditUserDto implements Serializable {
         if (roles != null) {
             this.roles = roles;
         }
+        this.umpIdentityNumber=userModel.getUmpIdentityNumber();
+        this.umpUserName=userModel.getUmpUserName();
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
         this.autoInvestStatus = autoInvestPlanEnabled ? "1" : "0";
@@ -154,5 +161,21 @@ public class EditUserDto implements Serializable {
 
     public void setBankCardNumberLoaner(String bankCardNumberLoaner) {
         this.bankCardNumberLoaner = bankCardNumberLoaner;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
+    }
+
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
+    }
+
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 }

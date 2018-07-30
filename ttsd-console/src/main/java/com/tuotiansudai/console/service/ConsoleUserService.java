@@ -192,7 +192,7 @@ public class ConsoleUserService {
     public List<UserItemDataDto> findUsersAccountBalance(Role role, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         List<UserView> userViews = null;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         } else {
@@ -209,7 +209,7 @@ public class ConsoleUserService {
 
     public long findUsersAccountBalanceCount(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceCount(role, mobile, balance.get(0), balance.get(1));
@@ -217,7 +217,7 @@ public class ConsoleUserService {
 
     public long findUsersAccountBalanceSum(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceSum(role, mobile, balance.get(0), balance.get(1));

@@ -114,7 +114,11 @@
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                             </#if>
                         </td>
-                        <td>${withdrawItem.userName}</td>
+                        <#if role?? && role == 'UMP_INVESTOR'>
+                            <td>${withdrawItem.umpUserName!''}</td>
+                        <#else>
+                            <td>${withdrawItem.userName!''}</td>
+                        </#if>
                         <td>${withdrawItem.mobile!}</td>
                         <td>${withdrawItem.amount}</td>
                         <td>${withdrawItem.fee}</td>
