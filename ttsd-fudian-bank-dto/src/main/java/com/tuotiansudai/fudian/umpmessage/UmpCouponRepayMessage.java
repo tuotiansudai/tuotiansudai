@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.umpmessage;
 
-import com.tuotiansudai.fudian.message.BankBaseMessage;
-
-public class UmpCouponRepayMessage extends BankBaseMessage {
+public class UmpCouponRepayMessage {
 
     private String loginName;
 
