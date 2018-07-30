@@ -29,10 +29,12 @@ public class RechargePaginationItemDataDto implements Serializable {
 
     private String channel;
 
+    private String umpUserName;
+
     public RechargePaginationItemDataDto() {
     }
 
-    public RechargePaginationItemDataDto(long rechargeId, String status, Date createdTime, String loginName, String userName, String mobile, String isStaff, String amount, String payType, Source source, String channel) {
+    public RechargePaginationItemDataDto(long rechargeId, String status, Date createdTime, String loginName, String userName, String umpUsername,String mobile, String isStaff, String amount, String payType, Source source, String channel) {
         this.rechargeId = rechargeId;
         this.status = status;
         this.createdTime = createdTime;
@@ -44,6 +46,7 @@ public class RechargePaginationItemDataDto implements Serializable {
         this.isFastPay = "FAST_PAY".equals(payType);
         this.source = source;
         this.channel = channel;
+        this.umpUserName=umpUsername;
     }
 
     public long getRechargeId() {
@@ -132,5 +135,13 @@ public class RechargePaginationItemDataDto implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
     }
 }

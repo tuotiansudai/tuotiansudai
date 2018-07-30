@@ -24,6 +24,8 @@
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
         <result column="fast_pay" property="fastPay"/>
+        <result column="ump_user_name" property="umpUserName"/>
+        <result column="ump_identity_number" property="umpIdentityNumber"/>
     </resultMap>
 
     <resultMap id="userMicroModelView" type="com.tuotiansudai.console.repository.model.UserMicroModelView">
@@ -67,6 +69,8 @@
 
     <select id="findAllUser" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        u.ump_user_name as ump_user_name,
+        u.ump_identity_number as ump_identity_number,
         u.id as id,
         u.login_name as login_name,
         u.mobile as mobile,
@@ -258,6 +262,8 @@
         user.status as status,
         user.user_name as user_name,
         user.identity_number as identity_number,
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         (select mobile from user referrer where referrer.login_name = user.referrer) AS referrer_mobile
         FROM user
         <where>
@@ -280,6 +286,8 @@
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         user.id as id,
         user.login_name as login_name,
         user.mobile as mobile,
@@ -318,6 +326,8 @@
 
     <select id="findUsersAccountBalanceUMP" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         user.id as id,
         user.login_name as login_name,
         user.mobile as mobile,

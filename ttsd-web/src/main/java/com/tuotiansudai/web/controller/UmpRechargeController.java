@@ -59,7 +59,7 @@ public class UmpRechargeController {
 
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
         if (isBindCard) {
-            modelAndView.addObject("userName", userModel.getUserName());
+            modelAndView.addObject("userName", userModel.getUmpUserName());
             modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
             modelAndView.addObject("bankCode", bankCard.getBankCode());
             modelAndView.addObject("bank", BankCardUtil.getBankName(bankCard.getBankCode()));
