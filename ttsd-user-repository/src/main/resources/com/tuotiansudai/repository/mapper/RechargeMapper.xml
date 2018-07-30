@@ -25,6 +25,7 @@
         <result column="channel" property="channel"/>
         <result column="created_time" property="createdTime"/>
         <result column="user_name" property="userName"/>
+        <result column="ump_user_name" property="umpUserName"/>
         <result column="mobile" property="mobile"/>
         <result column="is_staff" property="isStaff"/>
     </resultMap>
@@ -47,7 +48,7 @@
     </select>
 
     <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultView">
-        select r.*, u.user_name, u.mobile,
+        select r.*, u.user_name, u.mobile,u.ump_user_name,
         IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role in ('SD_STAFF',
         'ZC_STAFF')),0) as is_staff
         from recharge r

@@ -31,6 +31,7 @@
         <result column="withdraw_source" property="source"/>
         <result column="withdraw_status" property="status"/>
         <result column="withdraw_created_time" property="createdTime"/>
+        <result column="ump_user_name" property="umpUserName"/>
     </resultMap>
 
     <sql id="columns">
@@ -79,6 +80,7 @@
         select <include refid="columns"></include>,
         u.user_name,
         u.mobile,
+        u.ump_user_name,
         IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role in ('SD_STAFF',
         'ZC_STAFF')),0) as is_staff
         from withdraw

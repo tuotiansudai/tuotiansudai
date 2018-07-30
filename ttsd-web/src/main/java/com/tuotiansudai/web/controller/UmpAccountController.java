@@ -58,7 +58,7 @@ public class UmpAccountController {
         ModelAndView modelAndView = new ModelAndView("/ump-account");
         UserFundView userFundView = userFundMapper.findUmpByLoginName(loginName);
 
-        modelAndView.addObject("userName", userService.findByMobile(loginName).getUserName());
+        modelAndView.addObject("userName", userService.findByMobile(loginName).getUmpUserName());
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         modelAndView.addObject("bankCard", bankCardModel == null ? null : bankCardModel.getCardNumber());
         modelAndView.addObject("balance", userFundView.getBalance()); //余额

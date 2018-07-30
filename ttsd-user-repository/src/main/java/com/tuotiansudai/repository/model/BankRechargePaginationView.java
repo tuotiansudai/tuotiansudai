@@ -6,6 +6,8 @@ public class BankRechargePaginationView extends BankRechargeModel implements Ser
 
     private String userName;
 
+    private String umpUserName;
+
     private String mobile;
 
     private String isStaff;
@@ -40,5 +42,13 @@ public class BankRechargePaginationView extends BankRechargeModel implements Ser
 
     public boolean isStaff(){
         return "1".equals(isStaff);
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
     }
 }
