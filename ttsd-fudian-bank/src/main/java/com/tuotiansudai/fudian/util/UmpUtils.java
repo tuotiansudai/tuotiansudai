@@ -49,6 +49,9 @@ public class UmpUtils {
 
     public <T extends BaseSyncRequestModel> void sign(T model) {
         try {
+
+            logger.info(MessageFormat.format("Ump bind card asdadsasadsa{0}  : {1} ", model.toString(), model.generatePayRequestData().toString()));
+
             ReqData reqData = payGateWrapper.makeReqDataByPost(model.generatePayRequestData());
             model.setSign(reqData.getSign());
             model.setRequestUrl(reqData.getUrl());
