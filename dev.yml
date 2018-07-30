@@ -16,7 +16,7 @@ web:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20002:8080"
   volumes:
@@ -35,7 +35,7 @@ console:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20003:8080"
   volumes:
@@ -55,7 +55,7 @@ pay-wrapper:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20004:8080"
   volumes:
@@ -82,7 +82,7 @@ mobile-api:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
     - "spring.profiles.active=QA"
   ports:
     - "20006:8080"
@@ -102,7 +102,7 @@ activity:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20007:8080"
   volumes:
@@ -130,7 +130,7 @@ ask:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20009:8080"
   volumes:
@@ -147,7 +147,7 @@ point:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20018:8080"
   volumes:
@@ -163,7 +163,7 @@ activity-console:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20019:8080"
   volumes:
@@ -186,7 +186,7 @@ anxin-wrapper:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20021:8080"
   volumes:
