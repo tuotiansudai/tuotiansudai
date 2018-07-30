@@ -101,9 +101,9 @@
                 </a>
             </li>
             </#if>
-            
+
         </ul>
-        <p class="invest-contract-link" data-url="${invest.contractUrl}">
+        <p class="invest-contract-link liandong-tip" data-url="${invest.contractUrl}">
             备注：此投资项目回款将发放至联动优势资金存管账号，查看余额和提现请登录pc端拓天速贷进行操作。
             联动优势不支持转让，没有转让按键
         </p>
