@@ -1,0 +1,1 @@
+require("activityStyle/fudian_bank_2018.scss");
