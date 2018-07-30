@@ -26,7 +26,23 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">姓名：</label>
+            <label class="col-sm-2 control-label">姓名(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.userName!}</p>
+                <input type="hidden" name="userName" value="${user.umpserName!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.identityNumber!}</p>
+                <input type="hidden" name="identityNumber" value="${user.umpIdentityNumber!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">姓名(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.userName!}</p>
@@ -34,7 +50,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">身份证：</label>
+            <label class="col-sm-2 control-label">身份证(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.identityNumber!}</p>

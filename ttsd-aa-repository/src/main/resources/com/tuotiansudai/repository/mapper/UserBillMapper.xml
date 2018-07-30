@@ -20,6 +20,7 @@
 
     <resultMap id="userBillResultView" type="UserBillPaginationView" extends="userBillResultMap">
         <result column="user_name" property="userName"/>
+        <result column="ump_user_name" property="umpUserName"/>
         <result column="mobile" property="mobile"/>
         <result column="is_staff" property="isStaff"/>
     </resultMap>
@@ -81,6 +82,7 @@
         select ub.*,
         u.user_name,
         u.mobile,
+        u.ump_user_name,
         IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role in ('SD_STAFF',
         'ZC_STAFF')),0) as is_staff
         from user_bill ub

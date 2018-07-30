@@ -111,7 +111,11 @@
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                             </#if>
                         </td>
-                        <td>${rechargeItem.userName!}</td>
+                        <#if role?? && role == 'UMP_INVESTOR'>
+                            <td>${rechargeItem.umpUserName!''}</td>
+                        <#else>
+                            <td>${rechargeItem.userName!''}</td>
+                        </#if>
                         <td>${rechargeItem.mobile!}</td>
                         <td>${rechargeItem.amount!}</td>
                         <td><#if rechargeItem.fastPay>是<#else>否</#if></td>

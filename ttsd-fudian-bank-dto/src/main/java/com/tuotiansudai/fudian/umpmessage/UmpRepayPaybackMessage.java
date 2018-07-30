@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.umpmessage;
 
-import com.tuotiansudai.fudian.message.BankBaseMessage;
-
-public class UmpRepayPaybackMessage extends BankBaseMessage {
+public class UmpRepayPaybackMessage {
 
     private long loanId;
 

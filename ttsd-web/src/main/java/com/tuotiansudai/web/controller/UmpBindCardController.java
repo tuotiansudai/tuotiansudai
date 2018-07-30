@@ -47,7 +47,7 @@ public class UmpBindCardController {
     public ModelAndView bindBankCard() {
         ModelAndView view = new ModelAndView("/ump-bind-card");
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-        view.addObject("userName", userModel.getUserName());
+        view.addObject("userName", userModel.getUmpUserName());
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
         view.addObject("bankList", bankService.findUmpBankList(0L, 0L));
         return view;
@@ -64,7 +64,7 @@ public class UmpBindCardController {
     @RequestMapping(value = "/replace", method = RequestMethod.GET)
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/ump-replace-card");
-        view.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()).getUserName());
+        view.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()).getUmpUserName());
 
         BankCardModel bankCardModel = umpBindCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         if (bankCardModel != null && bankCardModel.isFastPayOn()) {

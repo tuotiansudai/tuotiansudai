@@ -53,7 +53,7 @@ public class UmpBindCardService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         BankCardModel model = new BankCardModel(IdGenerator.generate(), dto);
         bankCardMapper.create(model);
-        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), false);
+        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUmpUserName(), userModel.getUmpIdentityNumber(), dto.getCardNumber(), false);
     }
 
     public UmpAsyncMessage replaceBankCard(UmpBindCardRequestDto dto) {
@@ -62,7 +62,7 @@ public class UmpBindCardService {
         bankCardMapper.create(model);
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
-        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUserName(), userModel.getIdentityNumber(), dto.getCardNumber(), true);
+        return bankWrapperClient.umpBindCard(dto.getLoginName(), accountModel.getPayUserId(), model.getId(), userModel.getUmpUserName(), userModel.getUmpIdentityNumber(), dto.getCardNumber(), true);
     }
 
     @Transactional

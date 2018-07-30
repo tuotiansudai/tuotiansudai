@@ -32,6 +32,8 @@ public class UserItemDataDto implements Serializable {
     private String city;
     private String balance;
     private Date lastBillTime;
+    private String umpUserName;
+    private String umpIdentityNumber;
 
     public String getLoginName() {
         return loginName;
@@ -233,6 +235,24 @@ public class UserItemDataDto implements Serializable {
         this.staff = userView.isStaff();
         this.bankCard = userView.isBindBankCard();
         this.fastPay = userView.isFastPay();
+        this.umpUserName=userView.getUmpUserName();
+        this.umpIdentityNumber=userView.getUmpIdentityNumber();
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
+    }
+
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
+    }
+
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 }
 
