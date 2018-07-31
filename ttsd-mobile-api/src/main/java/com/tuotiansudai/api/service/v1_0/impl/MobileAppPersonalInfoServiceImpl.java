@@ -1,121 +1,112 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.PersonalInfoRequestDto;
 import com.tuotiansudai.api.dto.v1_0.PersonalInfoResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BankAccountService;
-import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    private final UserBankCardMapper userBankCardMapper;
+
+    private final BankAccountService bankAccountService;
+
+    private final InvestMapper investMapper;
+
+    private final AnxinSignPropertyMapper anxinSignPropertyMapper;
+
+    private final UserCouponMapper userCouponMapper;
+
+    private final RiskEstimateMapper riskEstimateMapper;
+
+    private final BankMapper bankMapper;
+
+    private final BankRechargeMapper bankRechargeMapper;
+
+    private final AccountMapper accountMapper;
 
     @Autowired
-    private UserBankCardMapper userBankCardMapper;
-
-    @Autowired
-    private BankAccountService bankAccountService;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private AnxinSignPropertyMapper anxinSignPropertyMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private RiskEstimateMapper riskEstimateMapper;
-
-    @Override
-    public BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
-        BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto<>();
-        String loginName = personalInfoRequestDto.getUserName();
-
-        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
-
-        if (userModel == null) {
-            dto.setCode(ReturnMessage.USER_ID_IS_NULL.getCode());
-            dto.setMessage(ReturnMessage.USER_ID_IS_NULL.getMsg());
-        } else {
-            UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
-            BankAccountModel account = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
-            AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, userBankCardModel, account, anxinProp);
-
-            dto.setData(personalInfoDataDto);
-            dto.setCode(ReturnMessage.SUCCESS.getCode());
-            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        }
-        return dto;
+    public MobileAppPersonalInfoServiceImpl(UserMapper userMapper, UserBankCardMapper userBankCardMapper, BankAccountService bankAccountService, InvestMapper investMapper, AnxinSignPropertyMapper anxinSignPropertyMapper, UserCouponMapper userCouponMapper, RiskEstimateMapper riskEstimateMapper, BankMapper bankMapper, BankRechargeMapper bankRechargeMapper, AccountMapper accountMapper) {
+        this.userMapper = userMapper;
+        this.userBankCardMapper = userBankCardMapper;
+        this.bankAccountService = bankAccountService;
+        this.investMapper = investMapper;
+        this.anxinSignPropertyMapper = anxinSignPropertyMapper;
+        this.userCouponMapper = userCouponMapper;
+        this.riskEstimateMapper = riskEstimateMapper;
+        this.bankMapper = bankMapper;
+        this.bankRechargeMapper = bankRechargeMapper;
+        this.accountMapper = accountMapper;
     }
 
-    private PersonalInfoResponseDataDto generatePersonalInfoData(UserModel user, UserBankCardModel bankCard, BankAccountModel account, AnxinSignPropertyModel anxinProp) {
+    @Override
+    public BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(String loginName) {
+        BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto<>();
+
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
+        BankAccountModel account = bankAccountService.findBankAccount(loginName, Role.INVESTOR);
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
         PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
-        personalInfoDataDto.setUserId(user.getLoginName());
-        personalInfoDataDto.setUserName(user.getMobile());
-        personalInfoDataDto.setPhoneNum(user.getMobile());
-        personalInfoDataDto.setEmail(user.getEmail());
-        if (StringUtils.isNotEmpty(user.getProvince())) {
-            personalInfoDataDto.setDistrictCode(DistrictUtil.convertNameToCode(user.getProvince()));
-        }
+
+        personalInfoDataDto.setUserId(userModel.getLoginName());
+        personalInfoDataDto.setUserName(userModel.getMobile());
+        personalInfoDataDto.setPhoneNum(userModel.getMobile());
+        personalInfoDataDto.setEmail(userModel.getEmail());
+        personalInfoDataDto.setDistrictCode(DistrictUtil.convertNameToCode(userModel.getProvince()));
+        personalInfoDataDto.setHasUmpAccount(accountMapper.findByLoginName(userModel.getLoginName()) != null);
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);
-            personalInfoDataDto.setRealName(user.getUserName());
-            personalInfoDataDto.setIdCard(user.getIdentityNumber());
+            personalInfoDataDto.setRealName(userModel.getUserName());
+            personalInfoDataDto.setIdCard(userModel.getIdentityNumber());
             personalInfoDataDto.setAutoInvest(account.isAutoInvest());
-        } else {
-            personalInfoDataDto.setCertificationFlag(false);
-            personalInfoDataDto.setRealName("");
-            personalInfoDataDto.setIdCard("");
-            personalInfoDataDto.setAutoInvest(false);
         }
-        if (bankCard != null) {
+        if (userBankCardModel != null) {
             personalInfoDataDto.setIsBoundBankCard(true);
-            personalInfoDataDto.setBankCardNo(CommonUtils.encryptBankCardNo(bankCard.getCardNumber()));
-            personalInfoDataDto.setBankId(bankCard.getBankCode());
-            personalInfoDataDto.setFastPaymentEnable(BankCardUtil.canEnableFastPay(bankCard.getBankCode()));
-            personalInfoDataDto.setBankName(BankCardUtil.getBankName(bankCard.getBankCode()));
-        } else {
-            personalInfoDataDto.setIsBoundBankCard(false);
-            personalInfoDataDto.setBankCardNo("");
-            personalInfoDataDto.setBankId("");
-            personalInfoDataDto.setIsFastPayment(false);
-            personalInfoDataDto.setFastPaymentEnable(false);
-            personalInfoDataDto.setBankName("");
+            personalInfoDataDto.setBankCardNo(CommonUtils.encryptBankCardNo(userBankCardModel.getCardNumber()));
+            personalInfoDataDto.setBankId(userBankCardModel.getBankCode());
+            personalInfoDataDto.setFastPaymentEnable(true);
+            personalInfoDataDto.setBankName(userBankCardModel.getBank());
+            BankModel bankModel = bankMapper.findByBankCode(userBankCardModel.getBankCode());
+            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+            personalInfoDataDto.setSingleAmount(AmountConverter.convertCentToString(bankModel.getSingleAmount()));
+            personalInfoDataDto.setSingleDayAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
+            personalInfoDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));
         }
-
         if (anxinProp != null) {
             personalInfoDataDto.setAnxinUser(StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));
             personalInfoDataDto.setSkipAuth(anxinProp.isSkipAuth());
             personalInfoDataDto.setHasAuthed(StringUtils.isNotEmpty(anxinProp.getProjectCode()));
-        } else {
-            personalInfoDataDto.setAnxinUser(false);
-            personalInfoDataDto.setSkipAuth(false);
-            personalInfoDataDto.setHasAuthed(false);
         }
 
-        personalInfoDataDto.setIsExperienceEnable(CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(user.getLoginName())));
-        personalInfoDataDto.setIsNewbieEnable(investMapper.sumSuccessInvestCountByLoginName(user.getLoginName()) == 0);
-        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(user.getLoginName());
+        personalInfoDataDto.setIsExperienceEnable(CollectionUtils.isNotEmpty(userCouponMapper.findUsedExperienceByLoginName(userModel.getLoginName())));
+        personalInfoDataDto.setIsNewbieEnable(investMapper.sumSuccessInvestCountByLoginName(userModel.getLoginName()) == 0);
+        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(userModel.getLoginName());
         personalInfoDataDto.setRiskEstimate(riskEstimateModel != null ? riskEstimateModel.getEstimate().getType() : "");
         personalInfoDataDto.setRiskEstimateDesc(riskEstimateModel != null ? riskEstimateModel.getEstimate().getDescription() : "");
-        return personalInfoDataDto;
+
+        dto.setData(personalInfoDataDto);
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
     }
 }

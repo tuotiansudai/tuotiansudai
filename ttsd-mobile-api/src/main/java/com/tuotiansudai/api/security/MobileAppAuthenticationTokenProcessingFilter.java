@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 @Component
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
 
-    private final static String refreshTokenUrl = "/refreshToken-token";
+    private final static String refreshTokenUrl = "/refresh-token";
 
     private final SignInClient signInClient = SignInClient.getInstance();
 

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -26,7 +27,7 @@ public class MobileAppNoPasswordInvestControllerTest extends ControllerTestBase 
 
     @Test
     public void shouldGetNoPasswordInvestDataIsOk() throws Exception {
-        when(service.getNoPasswordInvestData(any(BaseParamDto.class))).thenReturn(successResponseDto);
+        when(service.getNoPasswordInvestData(anyString())).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/no-password-invest",
                 new BaseParamDto());
     }

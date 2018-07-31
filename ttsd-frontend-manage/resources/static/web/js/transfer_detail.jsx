@@ -19,8 +19,7 @@ let isInvestor = 'INVESTOR' === $transferDetailCon.data('user-role');
 let isLoaner = 'LOANER' === $transferDetailCon.data('loaner-role');
 let isBankCard = $transferDetailCon.data('bankcard');
 
-let $turnToLoanerBtn = $('.btn-turn-Lender');
-let $turnToLenderDOM = $('#turnLenderDOM');//切换成投资人
+let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -112,7 +111,6 @@ function submitData() {
                         layer.closeAll();
                     },
                     btn2: function() {
-
                         if ($transferForm.attr('action') === '/transfer/purchase') {
                             var accountAmount = parseInt((userBalance * 100).toFixed(0)) || 0;
                             if (parseInt((transferAmount * 100).toFixed(0)) > accountAmount) {
@@ -155,7 +153,7 @@ function submitData() {
             area: ['490px', '220px'],
             shadeClose: false,
             closeBtn:0,
-            content: $turnToLenderDOM
+            content: $turnToInvestorDOM
         });
         return false;
     }
@@ -176,7 +174,6 @@ function submitData() {
         });
         return false;
     }
-   
 }
 
 $questionList.find('dl dd').hide();

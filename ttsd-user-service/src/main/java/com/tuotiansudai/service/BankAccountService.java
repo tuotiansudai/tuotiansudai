@@ -72,8 +72,9 @@ public class BankAccountService {
         if (bankAccountModel != null) {
             return new BankAsyncMessage("已实名认证");
         }
+
         UserModel userModel = userMapper.findByLoginName(loginName);
-        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), deviceId, UserOpType.REGISTER_LOANER, null);
+        userOpLogService.sendUserOpLogMQ(loginName, ip, Source.WEB.name(), deviceId, UserOpType.REGISTER, null);
         return bankWrapperClient.registerLoaner(Source.WEB, loginName, userModel.getMobile(), token, userModel.getUserName(), userModel.getIdentityNumber());
     }
 
