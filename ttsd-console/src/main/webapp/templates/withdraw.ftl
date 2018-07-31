@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="control-label">账户类型: </label>&nbsp;&nbsp;
                 <input type="radio" name="role" value="UMP_INVESTOR"
-                       <#if role?? && role == 'INVESTOR'>checked="checked"</#if>
+                       <#if role?? && role == 'UMP_INVESTOR'>checked="checked"</#if>
                 />联动优势 &nbsp;&nbsp;
                 <input type="radio" name="role" value="LOANER"
                        <#if role?? && role=='LOANER'>checked="checked"</#if>

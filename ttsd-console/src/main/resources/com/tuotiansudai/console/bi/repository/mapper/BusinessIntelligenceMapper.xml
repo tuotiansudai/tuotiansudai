@@ -387,8 +387,7 @@
             ON ur.login_name = us.login_name
             AND ur.role NOT LIKE '%UMP_LOANER%'
         </if>
-        WHERE
-        us.user_name IS NOT NULL
+        WHERE 1=1
         <if test="province != null and province !=''">
             AND province = #{province}
         </if>
@@ -415,7 +414,6 @@
                 ON ur.login_name = temp_user_1.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE temp_user_1.user_name IS NOT NULL
             GROUP BY temp_user_1.province
             ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1)
         </if>
@@ -457,8 +455,7 @@
                 ON ur.login_name = us.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE
-            us.user_name IS NOT NULL
+            WHERE 1=1
             AND province NOT IN (SELECT `province` FROM
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_re_2.amount / 100), 2) AS `temp_amount_2`
@@ -480,7 +477,6 @@
                 ON ur.login_name = temp_user_2.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE temp_user_2.user_name IS NOT NULL
             GROUP BY temp_user_2.province
             ORDER BY `temp_amount_2` DESC LIMIT 5) AS temp_2)
             GROUP BY `group`, `name`
@@ -522,8 +518,7 @@
             ON ur.login_name = us.login_name
             AND ur.role NOT LIKE '%UMP_LOANER%'
         </if>
-        WHERE
-        us.user_name IS NOT NULL
+        WHERE 1=1
         <if test="province != null and province !=''">
             AND province = #{province}
         </if>
@@ -550,7 +545,7 @@
                 ON ur.login_name = temp_user_1.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE temp_user_1.user_name IS NOT NULL
+
             GROUP BY temp_user_1.province
             ORDER BY `temp_amount_1` DESC LIMIT 5) AS temp_1)
         </if>
@@ -592,8 +587,7 @@
                 ON ur.login_name = us.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE
-            us.user_name IS NOT NULL
+            WHERE 1=1
             AND province NOT IN (SELECT `province` FROM
             (SELECT temp_user_2.province,
             ROUND(SUM(temp_w_2.amount / 100), 2) AS `temp_amount_2`
@@ -615,7 +609,7 @@
                 ON ur.login_name = temp_user_2.login_name
                 AND ur.role NOT LIKE '%UMP_LOANER%'
             </if>
-            WHERE temp_user_2.user_name IS NOT NULL
+
             GROUP BY temp_user_2.province
             ORDER BY `temp_amount_2` DESC LIMIT 5) AS temp_2)
             GROUP BY `group`, `name`
