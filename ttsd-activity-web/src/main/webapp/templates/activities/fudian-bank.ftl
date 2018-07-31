@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.fudian_bank_2018}" pageJavascript="${js.fudian_bank_2018}" activeNav="" activeLeftNav="" title='富滇银行' keywords="拓天速贷,答题赢加薪,邀请好友,返现奖励" description='拓天速贷答题赢加"薪"活动,用户每日答题,投资可获得年化0.2%-0.6%返现奖励,完成答题赠送最高0.5%加息券,分享答题、邀请好友注册、投资还可增加年化返现,返现+加息高至2%.'>
+<@global.main pageCss="${css.fudian_bank_2018}" pageJavascript="${js.fudian_bank_2018}" activeNav="" activeLeftNav="" title='拓天速贷_携手富滇银行资金存管系统正式上线_拓天速贷' keywords="拓天速贷,银行存管,富滇银行,资金存管,P2P银行存管" description='拓天速贷与富滇银行合作资金存管系统正式上线,用户资金流通操作全部由银行存管系统进行,拓天速贷为投资用户提供安全、透明、有保障的互联网金融服务.'>
 <div class="fudian-banner">
     <div class="production">
         <p>
