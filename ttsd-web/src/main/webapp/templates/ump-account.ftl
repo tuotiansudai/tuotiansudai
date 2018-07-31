@@ -91,7 +91,7 @@
         <div class="money-box recharge-cash">
 
         <p><span class="icon-small icon-recharge"></span><span>累计充值(元)：</span><span class="money">${rechargeAmount} </span></p>
-        <p><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span class="money">${withdrawAmount} </span></p>
+        <p class="cash-section"><span class="icon-small icon-cash"></span><span>累计提现(元)：<span><span class="money">${withdrawAmount} </span></p>
 
         </div>
 

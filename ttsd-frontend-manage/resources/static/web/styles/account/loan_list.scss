@@ -299,7 +299,7 @@
         position: absolute;
         width: 100px;
         height: 20px;
-        left: 0;
+        left: 5px;
         top: 50%;
         margin-top: -10px;
         &.loan-icon-list{
@@ -314,8 +314,9 @@
         }
         .fudian-icon {
           float: left;
-          width: 30px;
-          height: 16px;
+          width: 20px;
+          height: 15px;
+          margin-right: 3px;
           text-align: center;
           line-height: 16px;
           color: #ff7200;
@@ -323,8 +324,9 @@
         }
         .liandong-icon {
           float: left;
-          width: 30px;
-          height: 16px;
+          width: 20px;
+          height: 15px;
+          margin-right: 3px;
           text-align: center;
           line-height: 16px;
           color: #ff7200;

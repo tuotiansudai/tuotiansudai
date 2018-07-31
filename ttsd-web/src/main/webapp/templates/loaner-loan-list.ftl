@@ -46,7 +46,16 @@
             var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if item.bankPlatForm{ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if item.bankPlatForm{ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+
+            </td>
             <td><%=item.recheckTime%></td>
             <td class="tr"><%=item.loanAmount%> 元</td>
             <td class="tr"><%=item.unpaidAmount%> 元</td>
@@ -78,7 +87,15 @@
         var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if item.bankPlatForm{ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if item.bankPlatForm{ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+            </td>
             <td><%=item.recheckTime%></td>
             <td><%=item.expectedRepayAmount%> 元</td>
             <td><%=item.actualRepayAmount%> 元</td>
@@ -109,7 +126,15 @@
         var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if item.bankPlatForm{ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if item.bankPlatForm{ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+            </td>
             <td><%=item.loanAmount%>元</td>
             <td><%=item.recheckTime%></td>
         </tr>

@@ -92,7 +92,7 @@ $CK1:#ffac2a;
     .info-title {
       font-weight: bold;
       display: inline-block;
-      width: 70px;
+      width: 76px;
       text-align: right;
       margin-right: 20px;
       color: #000;
@@ -515,6 +515,9 @@ $CK1:#ffac2a;
     margin-bottom: 0;
     &.cash-p {
       margin-left: 60px;
+    }
+    &.cash-section {
+      margin-left: 70px;
     }
     .icon-small {
       width: 18px;
