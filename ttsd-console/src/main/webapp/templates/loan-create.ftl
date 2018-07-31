@@ -27,12 +27,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款人姓名: </label>
+                    <label class="col-sm-2 control-label">借款人用户名: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="代理用户不能为空">
+                               errormsg="代借款人用户名不能为空">
                     </div>
                 </div>
 

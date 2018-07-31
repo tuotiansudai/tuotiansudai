@@ -69,8 +69,8 @@
                         <select class="form-control" name="role">
                             <option value="INVESTOR">银行出借人</option>
                             <option value="LOANER">银行借款人</option>
-                            <option value="UMP_LOANER">联动代理人</option>
-                            <option value="UN_UMP_LOANER">联动非代理人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
@@ -106,8 +106,8 @@
                         <select class="form-control" name="role">
                             <option value="INVESTOR">银行出借人</option>
                             <option value="LOANER">银行借款人</option>
-                            <option value="UMP_LOANER">联动代理人</option>
-                            <option value="UN_UMP_LOANER">联动非代理人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -138,8 +138,8 @@
                         <select class="form-control" name="role">
                             <option value="INVESTOR">银行出借人</option>
                             <option value="LOANER">银行借款人</option>
-                            <option value="UMP_LOANER">联动代理人</option>
-                            <option value="UN_UMP_LOANER">联动非代理人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
