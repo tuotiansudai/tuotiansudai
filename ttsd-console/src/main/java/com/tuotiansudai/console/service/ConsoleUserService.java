@@ -137,9 +137,9 @@ public class ConsoleUserService {
             editUserDto.setReferrerStaff(true);
         }
         Map<Role,String> bankCardMap=getUserBankCardNumberByLoginName(loginName);
-        editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.INVESTOR));
-        editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.BANK_LOANER));
-        editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.BANK_INVESTOR));
+        editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.UMP_INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.LOANER));
+        editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.INVESTOR));
         return editUserDto;
     }
 
@@ -181,7 +181,7 @@ public class ConsoleUserService {
     public List<UserItemDataDto> findUsersAccountBalance(Role role, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
         List<UserView> userViews = null;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
                     index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
         } else {
@@ -198,7 +198,7 @@ public class ConsoleUserService {
 
     public long findUsersAccountBalanceCount(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceCount(role, mobile, balance.get(0), balance.get(1));
@@ -206,7 +206,7 @@ public class ConsoleUserService {
 
     public long findUsersAccountBalanceSum(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
         }
         return userMapperConsole.findUsersAccountBalanceSum(role, mobile, balance.get(0), balance.get(1));
@@ -484,18 +484,13 @@ public class ConsoleUserService {
 
     public Map<Role, String> getUserBankCardNumberByLoginName(String loginName) {
         Map<Role, String> bankCardMap = new HashMap<>();
-
         List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
-        String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> {
-            return Role.BANK_INVESTOR.equals(userItem.getRoleType());
-        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
-        String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> {
-            return Role.BANK_LOANER.equals(userItem.getRoleType());
-        }).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
-
-        bankCardMap.put(Role.INVESTOR, bankCardMapper.findPassedBankCardNumberByLoginName(loginName));
-        bankCardMap.put(Role.BANK_INVESTOR, bankCardNumberInvestor);
-        bankCardMap.put(Role.BANK_LOANER, bankCardNumberLoaner);
+        String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> Role.INVESTOR.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> Role.LOANER.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
+        bankCardMap.put(Role.UMP_INVESTOR, bankCardModel == null ? null : bankCardModel.getCardNumber());
+        bankCardMap.put(Role.INVESTOR, bankCardNumberInvestor);
+        bankCardMap.put(Role.LOANER, bankCardNumberLoaner);
         return bankCardMap;
     }
 

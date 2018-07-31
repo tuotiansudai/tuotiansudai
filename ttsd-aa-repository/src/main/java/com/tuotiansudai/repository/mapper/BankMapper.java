@@ -16,5 +16,8 @@ public interface BankMapper {
     List<BankModel> findBankList(@Param(value = "singleAmount") Long singleAmount,
                                  @Param(value = "singleDayAmount") Long singleDayAmount);
 
+    List<BankModel> findUmpBankList(@Param(value = "singleAmount") Long singleAmount,
+                                    @Param(value = "singleDayAmount") Long singleDayAmount);
+
     BankModel findByBankCode(@Param(value = "bankCode") String bankCode);
 }

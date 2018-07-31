@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanRepayMessage;
+import com.tuotiansudai.fudian.umpmessage.UmpLoanRepayMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
+import com.tuotiansudai.message.UmpAmountTransferMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -61,7 +63,7 @@ public class LoanRepaySuccessService {
             logger.info("[Normal Loan Repay Success] last loan repay, update loan status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
         }
 
-        // update agent user bill
+        // update loaner user bill
         BankUserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? BankUserBillBusinessType.OVERDUE_REPAY : BankUserBillBusinessType.NORMAL_REPAY;
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer,
                 Lists.newArrayList(new AmountTransferMessage(currentLoanRepay.getId(),
@@ -70,7 +72,7 @@ public class LoanRepaySuccessService {
                         currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        BankUserBillOperationType.OUT,
+                        BillOperationType.OUT,
                         businessType)));
         logger.info("[Normal Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
@@ -116,8 +118,84 @@ public class LoanRepaySuccessService {
                         currentLoanRepay.getRepayAmount(),
                         bankLoanRepayMessage.getBankOrderNo(),
                         bankLoanRepayMessage.getBankOrderDate(),
-                        BankUserBillOperationType.OUT,
+                        BillOperationType.OUT,
                         BankUserBillBusinessType.ADVANCE_REPAY)));
         logger.info("[Advanced Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void processUmpNormalLoanRepaySuccess(UmpLoanRepayMessage umpLoanRepayMessage) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(umpLoanRepayMessage.getLoanRepayId());
+
+        if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
+            logger.error("[UMP Normal Loan Repay Success] loan: {}, loan repay: {},  status is {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getStatus());
+            return;
+        }
+
+        LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
+        // update current loan repay status
+        currentLoanRepay.setStatus(RepayStatus.COMPLETE);
+        loanRepayMapper.update(currentLoanRepay);
+        logger.info("[UMP Normal Loan Repay Success] update loan repay status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
+
+        LoanRepayModel lastLoanRepay = loanRepayMapper.findLastLoanRepay(loanModel.getId());
+        if (lastLoanRepay.getId() == currentLoanRepay.getId()) {
+            loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
+            logger.info("[UMP Normal Loan Repay Success] last loan repay, update loan status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
+        }
+
+        // update loaner user bill
+        UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
+        mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer,
+                Lists.newArrayList(new UmpAmountTransferMessage(
+                        UmpTransferType.TRANSFER_OUT_BALANCE,
+                        umpLoanRepayMessage.getLoginName(),
+                        umpLoanRepayMessage.getLoanRepayId(),
+                        umpLoanRepayMessage.getAmount(),
+                        businessType)));
+
+        logger.info("[UMP Normal Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void processUmpAdvancedLoanRepaySuccess(UmpLoanRepayMessage umpLoanRepayMessage) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(umpLoanRepayMessage.getLoanRepayId());
+
+        if (currentLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
+            logger.error("[UMP Advanced Loan Repay Success] loan: {}, loan repay: {},  status is {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getStatus());
+            return;
+        }
+
+        LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+
+        // update other loan repay status
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getStatus() != RepayStatus.COMPLETE) {
+                loanRepayModel.setActualRepayDate(currentLoanRepay.getActualRepayDate());
+                loanRepayModel.setStatus(RepayStatus.COMPLETE);
+                loanRepayMapper.update(loanRepayModel);
+            }
+        }
+        logger.info("[UMP Advanced Loan Repay Success] update all loan repay status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
+
+        loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
+        logger.info("[UMP Advanced Loan Repay Success] update loan status COMPLETE, loan: {}, loan repay: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId());
+
+        List<TransferApplicationModel> transferringApplications = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanModel.getId());
+        transferringApplications.forEach(transferringApplication -> {
+            transferringApplication.setStatus(TransferStatus.CANCEL);
+            transferApplicationMapper.update(transferringApplication);
+        });
+
+        // update agent user bill
+        mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer,
+                Lists.newArrayList(new UmpAmountTransferMessage(
+                        UmpTransferType.TRANSFER_OUT_BALANCE,
+                        loanModel.getAgentLoginName(),
+                        currentLoanRepay.getId(),
+                        currentLoanRepay.getRepayAmount(),
+                        UserBillBusinessType.ADVANCE_REPAY)));
+        logger.info("[UMP Advanced Loan Repay Success] update user bill, loan: {}, loan repay: {}, amount: {}", currentLoanRepay.getLoanId(), currentLoanRepay.getId(), currentLoanRepay.getRepayAmount());
     }
 }

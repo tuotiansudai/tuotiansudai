@@ -26,7 +26,23 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">姓名：</label>
+            <label class="col-sm-2 control-label">姓名(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.umpUserName!}</p>
+                <input type="hidden" name="umpUserName" value="${user.umpUserName!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.umpIdentityNumber!}</p>
+                <input type="hidden" name="umpIdentityNumber" value="${user.umpIdentityNumber!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">姓名(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.userName!}</p>
@@ -34,7 +50,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">身份证：</label>
+            <label class="col-sm-2 control-label">身份证(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.identityNumber!}</p>
@@ -77,7 +93,7 @@
 
             <div class="col-sm-3">
                 <#if editRole>
-                    <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
+                    <input name="mobile" readonly="readonly" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
                 <#else>
                     <p class="form-control-static">${(user.mobile)!}</p>
                 </#if>
@@ -144,7 +160,7 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
                                           <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          <#if !editRole || roleItem.name()=='INVESTOR'|| roleItem.name()=='LOANER' || roleItem.name()=='BANK_INVESTOR' || roleItem.name()=='BANK_LOANER'>onclick="return false"</#if>
+                                          <#if !editRole || roleItem.name()=='INVESTOR'|| roleItem.name()=='LOANER'>onclick="return false"</#if>
                                           value="${roleItem.name()}">${roleItem.getDescription()}
                             </label>
                         </div>

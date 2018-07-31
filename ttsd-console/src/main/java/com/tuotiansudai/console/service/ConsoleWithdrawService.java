@@ -35,7 +35,7 @@ public class ConsoleWithdrawService {
         index = index < 1 ? 1 : index;
         List<WithdrawPaginationView> views = null;
         long count = 0;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
             views = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * 10, 10, startTime, endTime);
 
@@ -46,6 +46,7 @@ public class ConsoleWithdrawService {
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = views.stream().map(item -> new WithdrawPaginationItemDataDto(item.getId(),
                 item.getLoginName(),
                 item.getMobile(),
+                item.getUmpUserName(),
                 item.getUserName(),
                 AmountConverter.convertCentToString(item.getAmount()),
                 AmountConverter.convertCentToString(item.getFee()),

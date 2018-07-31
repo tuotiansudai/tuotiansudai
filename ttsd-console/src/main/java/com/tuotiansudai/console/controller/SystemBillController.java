@@ -1,12 +1,11 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.SystemBillService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.SystemBillPaginationItemDataDto;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,14 +25,15 @@ public class SystemBillController {
     private SystemBillService systemBillService;
 
     @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
-    public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
+    public ModelAndView getSystemBillList(@RequestParam(value = "isBankPlatform", defaultValue = "true") Boolean isBankPlatform,
+                                          @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                          @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
+                                          @RequestParam(value = "operationType", required = false) BillOperationType operationType,
                                           @RequestParam(value = "businessType", required = false) SystemBillBusinessType businessType,
                                           @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/system-bill");
-        BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(
+        BaseDto<BasePaginationDataDto<SystemBillPaginationItemDataDto>> baseDto = systemBillService.findSystemBillPagination(isBankPlatform,
                 startTime,
                 endTime,
                 operationType,
@@ -41,16 +41,16 @@ public class SystemBillController {
                 index,
                 pageSize);
 
-        long sumIncome = systemBillService.findSumSystemIncome(
+        long sumIncome = systemBillService.findSumSystemBill(isBankPlatform,
                 startTime,
                 endTime,
-                operationType,
+                BillOperationType.IN,
                 businessType);
 
-        long sumExpend = systemBillService.findSumSystemExpend(
+        long sumExpend = systemBillService.findSumSystemBill(isBankPlatform,
                 startTime,
                 endTime,
-                operationType,
+                BillOperationType.OUT,
                 businessType);
 
         long sumWin = sumIncome - sumExpend;
@@ -59,14 +59,15 @@ public class SystemBillController {
         modelAndView.addObject("sumIncome", sumIncome);
         modelAndView.addObject("sumExpend", sumExpend);
         modelAndView.addObject("sumWin", sumWin);
-        modelAndView.addObject("systemBillOperationTypeList", Lists.newArrayList(SystemBillOperationType.values()));
-        modelAndView.addObject("systemBillBusinessTypeList", Lists.newArrayList(SystemBillBusinessType.values()));
+        modelAndView.addObject("systemBillOperationTypeList", BillOperationType.values());
+        modelAndView.addObject("systemBillBusinessTypeList", SystemBillBusinessType.values());
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("businessType", businessType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("isBankPlatform", isBankPlatform);
         return modelAndView;
     }
 }

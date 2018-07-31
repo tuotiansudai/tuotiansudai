@@ -27,10 +27,12 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     private String isStaff;
 
+    private String umpUserName;
+
     public WithdrawPaginationItemDataDto() {
     }
 
-    public WithdrawPaginationItemDataDto(long withdrawId, String loginName, String mobile, String userName, String amount, String fee, Source source, String status, Date createdTime, String isStaff) {
+    public WithdrawPaginationItemDataDto(long withdrawId, String loginName, String mobile,String umpUserName,String userName, String amount, String fee, Source source, String status, Date createdTime, String isStaff) {
         this.withdrawId = withdrawId;
         this.loginName = loginName;
         this.mobile = mobile;
@@ -41,6 +43,7 @@ public class WithdrawPaginationItemDataDto implements Serializable {
         this.status = status;
         this.createdTime = createdTime;
         this.isStaff = isStaff;
+        this.umpUserName=umpUserName;
     }
 
     public long getWithdrawId() {
@@ -81,5 +84,9 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     public String getIsStaff() {
         return isStaff;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
     }
 }

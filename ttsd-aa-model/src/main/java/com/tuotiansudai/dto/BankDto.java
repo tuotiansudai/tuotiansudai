@@ -37,9 +37,12 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     private Date updatedTime;
 
-    public BankDto(){
+    private boolean isBank;
+
+    public BankDto() {
     }
-    public BankDto(BankModel bankModel){
+
+    public BankDto(BankModel bankModel) {
         this.id = bankModel.getId();
         this.name = bankModel.getName();
         this.seq = bankModel.getSeq();
@@ -135,5 +138,13 @@ public class BankDto extends BaseDataDto implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public boolean getIsBank() {
+        return isBank;
+    }
+
+    public void setIsBank(boolean isBank) {
+        this.isBank = isBank;
     }
 }

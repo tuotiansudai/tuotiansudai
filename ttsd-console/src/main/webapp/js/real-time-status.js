@@ -1,6 +1,6 @@
 require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], function ($) {
 
-    $('#tradeType').selectpicker();
+    $('.selectpicker').selectpicker();
     $('#orderDate').datetimepicker({
         format: 'YYYY-MM-DD',
         maxDate: 'now',
@@ -9,20 +9,21 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
 
     $('.btnSearch').click(function(){
         var type = $('select[name="type"]').val();
-
+        var role=$("input[name='role']:checked").val();
         if (type === 'user') {
-            location.href = "/finance-manage/real-time-status/user?loginNameOrMobile=" + $('input[name="loginNameOrMobile"]').val();
+            location.href = "/finance-manage/real-time-status/user?loginNameOrMobile=" + $('input[name="loginNameOrMobile"]').val()+"&role="+role;
         }
 
         if (type === 'loan') {
-            location.href = "/finance-manage/real-time-status/loan?loanId=" + $('input[name="loanId"]').val();
+            location.href = "/finance-manage/real-time-status/loan?loanId=" + $('input[name="loanId"]').val()+"&role="+role;
         }
 
         if (type === 'trade') {
-            location.href = "/finance-manage/real-time-status/trade?orderNo={orderNo}&orderDate={orderDate}&queryTradeType={queryTradeType}"
+            location.href = "/finance-manage/real-time-status/trade?orderNo={orderNo}&orderDate={orderDate}&queryTradeType={queryTradeType}&role={role}"
                 .replace("{orderNo}", $('input[name="orderNo"]').val())
                 .replace("{orderDate}", $('input[name="orderDate"]').val())
-                .replace("{queryTradeType}", $('select[name="queryTradeType"]').val());
+                .replace("{queryTradeType}", $('select[name="queryTradeType"]').val())
+                .replace("{role}", role);
         }
         return false;
     });
@@ -45,6 +46,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
 
         if (selected === 'trade') {
             $("div.transfer").show();
+            $("#queryTradeType").show();
         }
     });
 });

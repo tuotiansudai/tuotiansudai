@@ -11,7 +11,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.fudian.download.*;
 import com.tuotiansudai.fudian.message.BankQueryDownloadFilesMessage;
@@ -120,14 +120,14 @@ public class QueryDownloadFilesMessageConsumer implements MessageConsumer {
         Map<String, ReconciliationModel> queryMap = dtos.stream().collect(Collectors.toMap(RechargeDownloadDto::getOrderNo, dto -> {
             ReconciliationModel model = new ReconciliationModel(dto.getOrderNo(), AmountConverter.convertStringToCent(dto.getReceivedAmount()));
             if ("0".equals(dto.getStatus())) {
-                model.setStatus(BankRechargeStatus.WAIT_PAY.name());
+                model.setStatus(RechargeStatus.WAIT_PAY.name());
             }
             if ("1".equals(dto.getStatus())) {
-                model.setStatus(BankRechargeStatus.SUCCESS.name());
+                model.setStatus(RechargeStatus.SUCCESS.name());
                 model.setBillCount(1);
             }
             if (Lists.newArrayList("2", "3").contains(dto.getStatus())) {
-                model.setStatus(BankRechargeStatus.FAIL.name());
+                model.setStatus(RechargeStatus.FAIL.name());
             }
             return model;
         }));

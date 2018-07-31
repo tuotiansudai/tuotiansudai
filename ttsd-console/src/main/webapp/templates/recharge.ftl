@@ -10,14 +10,14 @@
     <form action="" class="form-inline query-build">
         <div class="form-group">
             <label class="control-label">账户类型: </label>&nbsp;&nbsp;
-            <input type="radio" name="role" value="INVESTOR"
-                   <#if role?? && role == 'INVESTOR'>checked="checked"</#if>
+            <input type="radio" name="role" value="UMP_INVESTOR"
+                   <#if role?? && role == 'UMP_INVESTOR'>checked="checked"</#if>
             />联动优势 &nbsp;&nbsp;
-            <input type="radio" name="role" value="BANK_LOANER"
-                   <#if role?? && role=='BANK_LOANER'>checked="checked"</#if>
+            <input type="radio" name="role" value="LOANER"
+                   <#if role?? && role=='LOANER'>checked="checked"</#if>
             />富滇银行-借款人 &nbsp;&nbsp;
-            <input type="radio" name="role" value="BANK_INVESTOR"
-                   <#if role?? && role=='BANK_INVESTOR'>checked="checked"</#if>
+            <input type="radio" name="role" value="INVESTOR"
+                   <#if role?? && role=='INVESTOR'>checked="checked"</#if>
             />富滇银行-出借人 &nbsp;&nbsp;
 
         </div>
@@ -111,7 +111,11 @@
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                             </#if>
                         </td>
-                        <td>${rechargeItem.userName!}</td>
+                        <#if role?? && role == 'UMP_INVESTOR'>
+                            <td>${rechargeItem.umpUserName!''}</td>
+                        <#else>
+                            <td>${rechargeItem.userName!''}</td>
+                        </#if>
                         <td>${rechargeItem.mobile!}</td>
                         <td>${rechargeItem.amount!}</td>
                         <td><#if rechargeItem.fastPay>是<#else>否</#if></td>

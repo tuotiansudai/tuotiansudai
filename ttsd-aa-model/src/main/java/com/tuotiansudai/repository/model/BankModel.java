@@ -30,6 +30,8 @@ public class BankModel implements Serializable {
 
     private Date updatedTime;
 
+    private boolean isBank;
+
     public BankModel() {
     }
 
@@ -134,4 +136,13 @@ public class BankModel implements Serializable {
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
+
+    public boolean getIsBank() {
+        return isBank;
+    }
+
+    public void setIsBank(boolean isBank) {
+        this.isBank = isBank;
+    }
+
 }

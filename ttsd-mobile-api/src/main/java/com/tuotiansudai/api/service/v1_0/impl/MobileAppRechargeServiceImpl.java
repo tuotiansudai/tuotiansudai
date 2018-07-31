@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeService;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.enums.BankRechargeStatus;
 import com.tuotiansudai.fudian.dto.RechargePayType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.mapper.BankMapper;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
@@ -63,7 +63,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     }
 
     private long getLeftRechargeAmount(String mobile, BankModel bankModel) {
-        long rechargeAmount = rechargeMapper.findSumRechargeAmount(Role.INVESTOR,null, mobile, null, BankRechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+        long rechargeAmount = rechargeMapper.findSumRechargeAmount(Role.INVESTOR,null, mobile, null, RechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
         return bankModel.getSingleDayAmount() - rechargeAmount;
     }
 

@@ -22,6 +22,8 @@ class User(db.Model):
     email = db.Column(db.String(100))
     user_name = db.Column(db.String(50))
     identity_number = db.Column(db.String(18))
+    ump_user_name = db.Column(db.String(50))
+    ump_identity_number = db.Column(db.String(18))
     register_time = db.Column(db.DateTime(timezone=True), nullable=False)
     last_modified_time = db.Column(db.DateTime(timezone=True))
     last_modified_user = db.Column(db.String(25))

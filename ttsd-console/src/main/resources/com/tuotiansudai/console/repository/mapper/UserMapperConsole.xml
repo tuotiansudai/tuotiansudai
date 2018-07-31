@@ -24,6 +24,8 @@
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
         <result column="fast_pay" property="fastPay"/>
+        <result column="ump_user_name" property="umpUserName"/>
+        <result column="ump_identity_number" property="umpIdentityNumber"/>
     </resultMap>
 
     <resultMap id="userMicroModelView" type="com.tuotiansudai.console.repository.model.UserMicroModelView">
@@ -67,6 +69,8 @@
 
     <select id="findAllUser" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        u.ump_user_name as ump_user_name,
+        u.ump_identity_number as ump_identity_number,
         u.id as id,
         u.login_name as login_name,
         u.mobile as mobile,
@@ -111,7 +115,7 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
-        left join bank_account a on u.login_name = a.login_name and a.role_type = 'INVESTOR'
+
         <where>
             <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
@@ -258,6 +262,8 @@
         user.status as status,
         user.user_name as user_name,
         user.identity_number as identity_number,
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         (select mobile from user referrer where referrer.login_name = user.referrer) AS referrer_mobile
         FROM user
         <where>
@@ -280,6 +286,8 @@
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         user.id as id,
         user.login_name as login_name,
         user.mobile as mobile,
@@ -318,6 +326,8 @@
 
     <select id="findUsersAccountBalanceUMP" parameterType="map" resultMap="userViewResultMap">
         SELECT
+        user.user_name as user_name,
+        user.identity_number as identity_number,
         user.id as id,
         user.login_name as login_name,
         user.mobile as mobile,
@@ -335,7 +345,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -379,7 +389,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -417,7 +427,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>

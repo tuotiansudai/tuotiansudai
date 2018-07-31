@@ -3,6 +3,16 @@
 
 <div class="col-md-10">
     <form action="" method="get" class="form-inline query-build">
+        <div class="login-name form-group" <#if type?? && type != 'user'>style="display: none"</#if>>
+            <label class="control-label">账户类型: </label>&nbsp;&nbsp;
+            <input type="radio" name="role" value="LOANER"
+                   <#if role?? && role=='LOANER'>checked="checked"</#if>
+            />富滇银行-借款人 &nbsp;&nbsp;
+            <input type="radio" name="role" value="INVESTOR"
+                   <#if !role?? || role=='INVESTOR'>checked="checked"</#if>
+            />富滇银行-出借人 &nbsp;&nbsp;
+        </div>
+        <br/>
         <div class="form-group">
             <label for="type">查询类型</label>
             <select class="selectpicker" id="type" name="type">
@@ -25,7 +35,7 @@
 
         <div class="transfer form-group" <#if !(type??) || type != 'trade'>style="display: none"</#if>>
             <label for="queryTradeType">交易类型</label>
-            <select class="selectpicker" id="queryTradeType" name="queryTradeType">
+            <select  id="queryTradeType" name="queryTradeType" class="selectpicker">
                 <option value="RECHARGE" <#if !(queryTradeType??) || queryTradeType=='RECHARGE'>selected</#if>>充值</option>
                 <option value="WITHDRAW" <#if queryTradeType?? && queryTradeType=='WITHDRAW'>selected</#if>>提现</option>
                 <option value="LOAN_INVEST" <#if queryTradeType?? && queryTradeType=='LOAN_INVEST'>selected</#if>>投标</option>

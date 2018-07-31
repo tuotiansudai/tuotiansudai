@@ -50,6 +50,9 @@
         <li class="top-distance"><a href="/m/personal-info">个人资料<i class="iconRight"></i></a></li>
         <li class="top-distance"><a href="/m/settings">设置<i class="iconRight"></i></a></li>
     </ul>
+    <@global.role hasRole="'UMP_INVESTOR'">
+    <p class="liandong-tip"> 提示：查看联动优势存管账号资金余额，请登录pc端拓天速贷</p>
+    </@global.role>
 </div>
 
 </@global.main>

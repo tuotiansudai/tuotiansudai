@@ -10,6 +10,8 @@ public class UserBillPaginationView extends UserBillModel implements Serializabl
 
     private String isStaff;
 
+    private String umpUserName;
+
     public UserBillPaginationView() {
         super();
     }
@@ -36,5 +38,13 @@ public class UserBillPaginationView extends UserBillModel implements Serializabl
 
     public boolean isStaff() {
         return "1".equals(isStaff);
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
     }
 }

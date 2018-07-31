@@ -53,7 +53,7 @@
             <td>
                 <%=item.nextRepayDate?item.nextRepayDate:'--'%>
             </td>
-            <td><a class="show-loan-repay" data-url='/loaner/loan/<%=item.loanId%>/repay-data'>还款计划</a> |
+            <td><a class="show-loan-repay" data-url='/loaner/loan/<%=item.loanId%>/repay-data' data-isbank="<%=item.bankPlatForm%>">还款计划</a> |
                 <a href="https://www.anxinsign.com/" target="_blank">合同</a>
             </td>
         </tr>
