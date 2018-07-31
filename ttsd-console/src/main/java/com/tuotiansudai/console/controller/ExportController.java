@@ -350,7 +350,7 @@ public class ExportController {
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         List<List<String>> userFundsData = null;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             userFundsData = exportService.buildUserFundsUMP(consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize));
         } else {
             userFundsData = exportService.buildUserFunds(consoleUserBillService.findUserFunds(role, businessType, operationType, mobile, startTime, endTime, index, pageSize));
