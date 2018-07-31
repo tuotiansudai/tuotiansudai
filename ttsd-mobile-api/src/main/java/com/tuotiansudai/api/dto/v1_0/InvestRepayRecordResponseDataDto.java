@@ -54,6 +54,9 @@ public class InvestRepayRecordResponseDataDto {
     @ApiModelProperty(value = "产品线", example = "360天")
     private String loanType;
 
+    @ApiModelProperty(value = "是否是富滇银行标的", example = "true")
+    private boolean isBankPlatForm;
+
     public InvestRepayRecordResponseDataDto() {
     }
 
@@ -83,6 +86,7 @@ public class InvestRepayRecordResponseDataDto {
             this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest() + investRepay.getDefaultInterest() - investRepay.getExpectedFee());
         }
         this.loanType = loan.getProductType() != null ? loan.getProductType().name() : "";
+        this.isBankPlatForm = loan.getIsBankPlatform();
     }
 
     public String getLoanId() {
@@ -171,5 +175,13 @@ public class InvestRepayRecordResponseDataDto {
 
     public void setLoanType(String loanType) {
         this.loanType = loanType;
+    }
+
+    public boolean isBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setBankPlatForm(boolean bankPlatForm) {
+        isBankPlatForm = bankPlatForm;
     }
 }

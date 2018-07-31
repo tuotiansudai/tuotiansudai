@@ -16,7 +16,7 @@ public class BankRechargeModel {
 
     private long fee;
 
-    private String PayType;
+    private String payType;
 
     private String bankOrderNo;
 
@@ -43,7 +43,7 @@ public class BankRechargeModel {
         this.fee = 0;
         this.source = source;
         this.channel = channel;
-        this.PayType = payType;
+        this.payType = payType;
         this.status = RechargeStatus.WAIT_PAY;
     }
 
@@ -80,11 +80,11 @@ public class BankRechargeModel {
     }
 
     public String getPayType() {
-        return PayType;
+        return payType;
     }
 
     public void setPayType(String payType) {
-        PayType = payType;
+        this.payType = payType;
     }
 
     public String getBankOrderNo() {

@@ -58,7 +58,7 @@ public class BankBindCardService {
         UserBankCardModel userBankCardModel = this.findBankCard(loginName, role);
 
         if (userBankCardModel != null) {
-            return new BankAsyncMessage();
+            return new BankAsyncMessage(null, null, false, "已绑定银行卡");
         }
 
         // 发送用户行为日志 MQ消息

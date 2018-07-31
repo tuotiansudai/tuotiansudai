@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeListService;
 import com.tuotiansudai.api.util.PageValidUtils;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.BankRechargeMapper;
 import com.tuotiansudai.repository.model.BankRechargeModel;
 import com.tuotiansudai.repository.model.BankRechargePaginationView;
@@ -32,8 +33,8 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
         }
         Integer offset = (index - 1) * pageSize;
 
-        List<BankRechargePaginationView> rechargeModels = rechargeMapper.findRechargePagination(null,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);
-        int count = rechargeMapper.findRechargeCount(null,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null);
+        List<BankRechargePaginationView> rechargeModels = rechargeMapper.findRechargePagination(Role.INVESTOR,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, offset, pageSize, null, null);
+        int count = rechargeMapper.findRechargeCount(Role.INVESTOR,null, requestDto.getBaseParam().getPhoneNum(), null, null, null, null, null);
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if (rechargeModels != null) {

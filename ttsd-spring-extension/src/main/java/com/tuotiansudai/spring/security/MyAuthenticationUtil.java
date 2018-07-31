@@ -67,9 +67,9 @@ public class MyAuthenticationUtil {
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        HashSet<String> authorities = Sets.newHashSet(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        HashSet<String> authorities = authentication != null ? Sets.newHashSet(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())) : Sets.newHashSet();
         HashSet<String> roles = Sets.newHashSet(signInResult.getUserInfo().getRoles());
-        boolean isSame = CollectionUtils.isNotEmpty(authentication.getAuthorities()) && Sets.difference(authorities, roles).isEmpty() && Sets.difference(roles, authorities).isEmpty();
+        boolean isSame = CollectionUtils.isNotEmpty(authorities) && Sets.difference(authorities, roles).isEmpty() && Sets.difference(roles, authorities).isEmpty();
 
         if (isSame) {
             return;

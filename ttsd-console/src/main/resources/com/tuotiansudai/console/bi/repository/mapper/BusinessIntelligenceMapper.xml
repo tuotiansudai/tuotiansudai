@@ -1437,8 +1437,8 @@
                 select date_format(now(),'%Y')-if(length(u.identity_number)=18,substring(u.identity_number,7,4),1900+substring(u.identity_number,7,2)) as age
                 from user u
                 where
-                    u.identity_number is not null
-                    and length(u.identity_number) in (15,18)
+                    (u.identity_number is not null OR u.ump_identity_number is NOT NULL )
+
                     and u.register_time between #{startTime} and #{endTime}
                     <if test="province != null and province !=''">
                         and u.province=#{province}

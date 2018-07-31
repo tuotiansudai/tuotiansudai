@@ -18,10 +18,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean certificationFlag;
 
     @ApiModelProperty(value = "真实姓名", example = "王拓天")
-    private String realName;
+    private String realName = "";
 
     @ApiModelProperty(value = "身份证", example = "37XXXXXXXXXXXXXXXX")
-    private String idCard;
+    private String idCard = "";
 
     @ApiModelProperty(value = "绑卡状态", example = "true")
     private boolean isBoundBankCard;
@@ -30,10 +30,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean isFastPayment;
 
     @ApiModelProperty(value = "银行卡号", example = "6222****1134")
-    private String bankCardNo;
+    private String bankCardNo = "";
 
     @ApiModelProperty(value = "银行", example = "ICBC")
-    private String bankId;
+    private String bankId = "";
 
     @ApiModelProperty(value = "支持快捷支付状态", example = "true")
     private boolean fastPaymentEnable;
@@ -48,7 +48,16 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private boolean autoInvest;
 
     @ApiModelProperty(value = "银行名称", example = "中国工商银行")
-    private String bankName;
+    private String bankName = "";
+
+    @ApiModelProperty(value = "银行卡单笔限额", example = "100")
+    private String singleAmount;
+
+    @ApiModelProperty(value = "银行卡单日限额", example = "100")
+    private String singleDayAmount;
+
+    @ApiModelProperty(value = "当日剩余充值金额", example = "100")
+    private String rechargeLeftAmount;
 
     @ApiModelProperty(value = "安心签状态", example = "true")
     private boolean anxinUser;
@@ -71,6 +80,8 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资偏好说明", example = "进取型")
     private String riskEstimateDesc;
 
+    @ApiModelProperty(value = "是否有联动优势账号", example = "true")
+    private boolean hasUmpAccount;
 
     public boolean getCertificationFlag() {
         return certificationFlag;
@@ -192,6 +203,30 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.bankName = bankName;
     }
 
+    public String getSingleAmount() {
+        return singleAmount;
+    }
+
+    public void setSingleAmount(String singleAmount) {
+        this.singleAmount = singleAmount;
+    }
+
+    public String getSingleDayAmount() {
+        return singleDayAmount;
+    }
+
+    public void setSingleDayAmount(String singleDayAmount) {
+        this.singleDayAmount = singleDayAmount;
+    }
+
+    public String getRechargeLeftAmount() {
+        return rechargeLeftAmount;
+    }
+
+    public void setRechargeLeftAmount(String rechargeLeftAmount) {
+        this.rechargeLeftAmount = rechargeLeftAmount;
+    }
+
     public boolean isExperienceEnable() {
         return isExperienceEnable;
     }
@@ -246,5 +281,13 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setRiskEstimateDesc(String riskEstimateDesc) {
         this.riskEstimateDesc = riskEstimateDesc;
+    }
+
+    public boolean isHasUmpAccount() {
+        return hasUmpAccount;
+    }
+
+    public void setHasUmpAccount(boolean hasUmpAccount) {
+        this.hasUmpAccount = hasUmpAccount;
     }
 }
