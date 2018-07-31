@@ -4,6 +4,7 @@ html {
 }
 body {
   font-size: 12px;
+  background: #000;
 }
 .fudian-page {
   width: 1100px;
@@ -124,7 +125,7 @@ body {
   .select-reason-list {
     margin-top: 20px;
     .reason-item {
-      width: 314px;
+      width: 204px;
       float: left;
       .title {
         width: 144px;
@@ -144,14 +145,14 @@ body {
         }
       }
       &.reason-two {
-        margin-left: 10px;
+        margin-left: 230px;
         .title {
           background: url("../images/fudianBank/reason2.png") no-repeat top center;
           background-size: 100%;
         }
       }
       &.reason-three {
-        margin-left: 10px;
+        margin-left: 230px;
        .title {
          width: 168px;
          height: 134px;
@@ -213,13 +214,13 @@ body {
     background-size: 100%;
     .production {
       position: absolute;
-      bottom: 1.14rem;
+      bottom: 0.6rem;
       width: 6.34rem;
       left: 50%;
       margin-left: -3.17rem;
       p {
         font-size: 0.24rem;
-        line-height: 0.34rem;
+        line-height: 0.38rem;
         text-align:left;
         .pcStyle {
           display: inline;
@@ -266,11 +267,11 @@ body {
           width: 2.48rem;
           .title {
             width: 100%;
-            height: 1.09rem;
+            height: 1.3rem;
           }
           .font {
             margin-top: 0.14rem;
-            line-height: 0.3rem;
+            line-height: 0.32rem;
             font-size: 0.24rem;
           }
         }
@@ -279,7 +280,7 @@ body {
   }
   .fudian-part-three {
     padding-top: 0.55rem;
-    height: 12.89rem;
+    height: 13.06rem;
     background: url("../images/fudianBank/part_three_bg_m.png") no-repeat top center;
     background-size: 100%;
     .part-two-title {
@@ -295,18 +296,19 @@ body {
         float: none;
         margin: 0 auto;
         .title {
-          width: 1.68rem;
-          height: 1.17rem;
+          width: 1.44rem;
+          height: 1.35rem;
         }
         .font {
           margin-top: 0.25rem;
-          line-height: 0.3rem;
+          line-height: 0.34rem;
           text-align: left;
+          font-size: 12px;
         }
         &.reason-one {
           .title {
             background: url("../images/fudianBank/reason1.png") no-repeat top center;
-            background-size: contain;
+            background-size: 100%;
           }
         }
         &.reason-two {
@@ -314,7 +316,7 @@ body {
           margin-left: auto;
           .title {
             background: url("../images/fudianBank/reason2.png") no-repeat top center;
-            background-size: contain;
+            background-size: 100%;
           }
         }
         &.reason-three {
@@ -322,9 +324,9 @@ body {
           margin-left: auto;
           .title {
             width: 1.68rem;
-            height: 1.17rem;
+            height: 1.34rem;
             background: url("../images/fudianBank/reason3.png") no-repeat top center;
-            background-size: contain;
+            background-size: 100%;
           }
         }
 
