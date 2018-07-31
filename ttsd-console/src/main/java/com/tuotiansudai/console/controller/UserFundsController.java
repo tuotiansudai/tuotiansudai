@@ -39,7 +39,7 @@ public class UserFundsController {
         ModelAndView modelAndView = new ModelAndView("/user-funds");
         List<? extends Object> userBillModels = null;
         long userFundsCount = 0;
-        if (role == Role.INVESTOR) {
+        if (role == Role.UMP_INVESTOR) {
             userBillModels = consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
             userFundsCount = consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
         } else {
