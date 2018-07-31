@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
-import com.tuotiansudai.enums.BankRechargeStatus;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -42,8 +42,10 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     private final BankRechargeMapper bankRechargeMapper;
 
+    private final AccountMapper accountMapper;
+
     @Autowired
-    public MobileAppPersonalInfoServiceImpl(UserMapper userMapper, UserBankCardMapper userBankCardMapper, BankAccountService bankAccountService, InvestMapper investMapper, AnxinSignPropertyMapper anxinSignPropertyMapper, UserCouponMapper userCouponMapper, RiskEstimateMapper riskEstimateMapper, BankMapper bankMapper, BankRechargeMapper bankRechargeMapper) {
+    public MobileAppPersonalInfoServiceImpl(UserMapper userMapper, UserBankCardMapper userBankCardMapper, BankAccountService bankAccountService, InvestMapper investMapper, AnxinSignPropertyMapper anxinSignPropertyMapper, UserCouponMapper userCouponMapper, RiskEstimateMapper riskEstimateMapper, BankMapper bankMapper, BankRechargeMapper bankRechargeMapper, AccountMapper accountMapper) {
         this.userMapper = userMapper;
         this.userBankCardMapper = userBankCardMapper;
         this.bankAccountService = bankAccountService;
@@ -53,6 +55,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         this.riskEstimateMapper = riskEstimateMapper;
         this.bankMapper = bankMapper;
         this.bankRechargeMapper = bankRechargeMapper;
+        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         personalInfoDataDto.setPhoneNum(userModel.getMobile());
         personalInfoDataDto.setEmail(userModel.getEmail());
         personalInfoDataDto.setDistrictCode(DistrictUtil.convertNameToCode(userModel.getProvince()));
+        personalInfoDataDto.setHasUmpAccount(accountMapper.findByLoginName(userModel.getLoginName()) != null);
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);
             personalInfoDataDto.setRealName(userModel.getUserName());
@@ -83,7 +87,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setFastPaymentEnable(true);
             personalInfoDataDto.setBankName(userBankCardModel.getBank());
             BankModel bankModel = bankMapper.findByBankCode(userBankCardModel.getBankCode());
-            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, null, userModel.getMobile(), null, BankRechargeStatus.SUCCESS, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+            long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
             personalInfoDataDto.setSingleAmount(AmountConverter.convertCentToString(bankModel.getSingleAmount()));
             personalInfoDataDto.setSingleDayAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
             personalInfoDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));

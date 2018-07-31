@@ -80,6 +80,8 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资偏好说明", example = "进取型")
     private String riskEstimateDesc;
 
+    @ApiModelProperty(value = "是否有联动优势账号", example = "true")
+    private boolean hasUmpAccount;
 
     public boolean getCertificationFlag() {
         return certificationFlag;
@@ -279,5 +281,13 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setRiskEstimateDesc(String riskEstimateDesc) {
         this.riskEstimateDesc = riskEstimateDesc;
+    }
+
+    public boolean isHasUmpAccount() {
+        return hasUmpAccount;
+    }
+
+    public void setHasUmpAccount(boolean hasUmpAccount) {
+        this.hasUmpAccount = hasUmpAccount;
     }
 }
