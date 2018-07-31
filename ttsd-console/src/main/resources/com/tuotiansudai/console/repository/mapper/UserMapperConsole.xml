@@ -115,7 +115,7 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
-        left join bank_account a on u.login_name = a.login_name and a.role_type = 'INVESTOR'
+
         <where>
             <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
@@ -345,7 +345,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -389,7 +389,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
@@ -427,7 +427,7 @@
         JOIN `account`
         ON `user`.`login_name` = `account`.`login_name`
         WHERE NOT EXISTS (SELECT 1 FROM `user_role` WHERE `user`.`login_name` = `user_role`.`login_name` AND
-        `user_role`.`role` = 'LOANER')
+        `user_role`.`role` = 'UMP_LOANER')
         <if test="mobile != null and mobile != '' ">
             AND `user`.`mobile` = #{mobile}
         </if>
