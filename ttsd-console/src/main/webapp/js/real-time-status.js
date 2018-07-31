@@ -1,6 +1,6 @@
 require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], function ($) {
 
-    $('#tradeType').selectpicker();
+    $('.selectpicker').selectpicker();
     $('#orderDate').datetimepicker({
         format: 'YYYY-MM-DD',
         maxDate: 'now',
@@ -46,6 +46,7 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
 
         if (selected === 'trade') {
             $("div.transfer").show();
+            $("#queryTradeType").show();
         }
     });
 });

@@ -35,7 +35,7 @@
 
         <div class="transfer form-group" <#if !(type??) || type != 'trade'>style="display: none"</#if>>
             <label for="queryTradeType">交易类型</label>
-            <select class="selectpicker" id="queryTradeType" name="queryTradeType">
+            <select  id="queryTradeType" name="queryTradeType" class="selectpicker">
                 <option value="RECHARGE" <#if !(queryTradeType??) || queryTradeType=='RECHARGE'>selected</#if>>充值</option>
                 <option value="WITHDRAW" <#if queryTradeType?? && queryTradeType=='WITHDRAW'>selected</#if>>提现</option>
                 <option value="LOAN_INVEST" <#if queryTradeType?? && queryTradeType=='LOAN_INVEST'>selected</#if>>投标</option>
