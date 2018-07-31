@@ -29,16 +29,16 @@
             <label class="col-sm-2 control-label">姓名(联动优势)：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.userName!}</p>
-                <input type="hidden" name="userName" value="${user.umpserName!}"/>
+                <p class="form-control-static">${user.umpUserName!}</p>
+                <input type="hidden" name="umpUserName" value="${user.umpUserName!}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">身份证(联动优势)：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.identityNumber!}</p>
-                <input type="hidden" name="identityNumber" value="${user.umpIdentityNumber!}"/>
+                <p class="form-control-static">${user.umpIdentityNumber!}</p>
+                <input type="hidden" name="umpIdentityNumber" value="${user.umpIdentityNumber!}"/>
             </div>
         </div>
         <div class="form-group">
@@ -93,7 +93,7 @@
 
             <div class="col-sm-3">
                 <#if editRole>
-                    <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
+                    <input name="mobile" readonly="readonly" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
                 <#else>
                     <p class="form-control-static">${(user.mobile)!}</p>
                 </#if>
