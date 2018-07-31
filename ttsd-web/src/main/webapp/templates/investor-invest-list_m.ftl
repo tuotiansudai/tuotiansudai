@@ -44,16 +44,12 @@
         </div>
         <dl class="bottom clearfix">
             <dt class="investor-name">{{value.loanName}}
-                {{if value.achievements.length}}
-                {{each value.achievements as achiveItem achiveIndex}}
-                {{if achiveItem == 'FIRST_INVEST'}}
-                <i class="icon-sign">富</i>
+                {{if value.bankPlatform}}
+                    <i class="icon-sign">富</i>
+                {{else}}
+                    <i class="icon-sign">联</i>
                 {{/if}}
-                {{if achiveItem == 'LIANDONG'}}
-                <i class="icon-sign">联</i>
-                {{/if}}</dt>
-            {{/each}}
-            {{/if}}
+            </dt>
             <dd>
 
                 {{if value.transferStatus == 'TRANSFERABLE'}} <i class="icon-sign">可转让</i>{{else if value.transferStatus == 'TRANSFERRING'}}<i class="icon-sign">转让中</i>{{else if value.transferStatus == 'SUCCESS'}}<i class="icon-sign">已转让</i>{{/if}} {{if value.usedRedEnvelope}}<i class="icon-sign">红包</i> {{/if}}{{if value.usedCoupon}}<i class="icon-sign">券</i>{{/if}}
