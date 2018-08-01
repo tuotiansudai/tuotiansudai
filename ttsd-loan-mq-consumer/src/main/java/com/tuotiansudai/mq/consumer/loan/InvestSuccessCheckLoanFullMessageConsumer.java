@@ -6,8 +6,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
+import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
+import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -18,13 +19,11 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -42,6 +41,9 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
     private final InvestMapper investMapper;
 
     private final Gson gson  = new GsonBuilder().create();
+
+    @Autowired
+    private JobManager jobManager;
 
     @Autowired
     public InvestSuccessCheckLoanFullMessageConsumer(UserMapper userMapper, BankAccountMapper bankAccountMapper, LoanMapper loanMapper, InvestMapper investMapper) {
@@ -78,22 +80,9 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
                 loanMapper.updateRaisingCompleteTime(loanModel.getId());
                 UserModel agentUser = userMapper.findByLoginName(loanModel.getAgentLoginName());
                 BankAccountModel agentAccount = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
+                //如果没有手动放款，设置一个延迟任务
+                DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanModel.getId());
 
-                BankBaseMessage loanFullMessage = bankWrapperClient.loanFull(agentUser.getLoginName(),
-                        agentUser.getMobile(),
-                        agentAccount.getBankUserName(),
-                        agentAccount.getBankAccountNo(),
-                        loanModel.getId(),
-                        loanModel.getLoanTxNo(),
-                        loanModel.getBankOrderNo(),
-                        loanModel.getBankOrderDate(),
-                        new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
-                        null,
-                        new DateTime().plusMinutes(1).getMillis());
-
-                if (!loanFullMessage.isStatus()) {
-                    throw new RuntimeException(MessageFormat.format("[MQ] request loan full is failure, message: {0}", message));
-                }
             }
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] message is invalid: {}", message);
@@ -101,4 +90,5 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
 
         logger.info("[MQ] consume message success.");
     }
+
 }

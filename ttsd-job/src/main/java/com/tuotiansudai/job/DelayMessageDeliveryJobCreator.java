@@ -16,6 +16,8 @@ public class DelayMessageDeliveryJobCreator {
 
     private final static int ANXIN_CONTRACT_QUERY_DELAY_SECONDS = 60 * 10;
 
+    private final static int AUTO_LOAN_OUT_DELAY_SECONDS = 30 * 60;
+
     public static void createAnxinContractQueryDelayJob(JobManager jobManager, long businessId, String anxinContractType) {
         try {
             AnxinContractMessage message = new AnxinContractMessage(businessId, anxinContractType);
@@ -69,5 +71,9 @@ public class DelayMessageDeliveryJobCreator {
         } catch (SchedulerException e) {
             logger.error("create DelayMessageDeliveryJob failed", e);
         }
+    }
+    public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
+        String messageBody = String.valueOf(loanId);
+        create(jobManager, AUTO_LOAN_OUT_DELAY_SECONDS, MessageQueue.LoanFullDelay, messageBody, String.valueOf(loanId), true);
     }
 }
