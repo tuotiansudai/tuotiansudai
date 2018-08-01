@@ -30,8 +30,6 @@ public class WithdrawController {
 
     private final BankBindCardService bankBindCardService;
 
-    private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.withdraw.fee"));
-
     @Autowired
     public WithdrawController(BankWithdrawService bankWithdrawService, BankAccountService bankAccountService, BankBindCardService bankBindCardService) {
         this.bankWithdrawService = bankWithdrawService;
@@ -51,7 +49,6 @@ public class WithdrawController {
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
-        modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         return modelAndView;
     }
 
@@ -59,7 +56,7 @@ public class WithdrawController {
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BankAsyncMessage bankAsyncData = bankWithdrawService.withdraw(withdrawDto.getSource(),
                 LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(),
-                AmountConverter.convertStringToCent(withdrawDto.getAmount()), withdrawFee, LoginUserInfo.getBankRole());
+                AmountConverter.convertStringToCent(withdrawDto.getAmount()), LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

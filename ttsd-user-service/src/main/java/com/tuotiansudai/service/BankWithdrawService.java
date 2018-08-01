@@ -14,6 +14,7 @@ import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
+import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.BankWithdrawModel;
@@ -44,21 +45,35 @@ public class BankWithdrawService {
 
     private final WeChatUserMapper weChatUserMapper;
 
+    private final UserBankCardMapper userBankCardMapper;
+
     private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.withdraw.fee"));
 
+    private long fudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.fudian.withdraw.fee"));
+
+    private long maxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.max.withdraw.fee"));
+
+    private static final String FUDIAN_BANK_CODE = "313";
+
+    private static final long WITHDRAW_AMOUNT = 5000000L;
+
     @Autowired
-    public BankWithdrawService(BankWithdrawMapper bankWithdrawMapper, BankAccountMapper bankAccountMapper, WeChatUserMapper weChatUserMapper, MQWrapperClient mqWrapperClient) {
+    public BankWithdrawService(BankWithdrawMapper bankWithdrawMapper, BankAccountMapper bankAccountMapper, WeChatUserMapper weChatUserMapper, MQWrapperClient mqWrapperClient, UserBankCardMapper userBankCardMapper) {
         this.bankWrapperClient = new BankWrapperClient();
         this.bankWithdrawMapper = bankWithdrawMapper;
         this.bankAccountMapper = bankAccountMapper;
         this.weChatUserMapper = weChatUserMapper;
         this.mqWrapperClient = mqWrapperClient;
+        this.userBankCardMapper = userBankCardMapper;
     }
 
-    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, long fee, Role role) {
+    public BankAsyncMessage withdraw(Source source, String loginName, String mobile, long amount, Role role) {
         if (role == null){
             return new BankAsyncMessage("提现失败");
         }
+        String cardCode = userBankCardMapper.findByLoginNameAndRole(loginName, role).getBankCode();
+
+        long fee = FUDIAN_BANK_CODE.equals(cardCode) ? fudianWithdrawFee : amount > WITHDRAW_AMOUNT ? maxWithdrawFee : withdrawFee;
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
@@ -70,7 +85,7 @@ public class BankWithdrawService {
         }
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
-        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, withdrawFee, optional.map(WeChatUserModel::getOpenid).orElse(null));
+        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, fee, optional.map(WeChatUserModel::getOpenid).orElse(null));
     }
 
     @Transactional
