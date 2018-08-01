@@ -8,8 +8,14 @@ let $withdraw = $('.withdraw'),
     errorElement = $('.error', $withdraw),
     actualAmountElement = $('.actual-amount', $withdraw),
     withdrawFeeElement = $('.withdraw-fee', $withdraw);
-
 amountInputElement.autoNumeric("init");
+let isFudianBank = withdrawFeeElement.data('bankcode');
+if(isFudianBank === 313){
+    withdrawFeeElement.html('1.00');
+}else {
+        moneyCheck()
+}
+
 
 var u = navigator.userAgent;
 var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
@@ -21,6 +27,7 @@ if (isInWeChat && isIos) {
 amountInputElement.keyup(function () {
     let amount = parseFloat(amountInputElement.autoNumeric("get")),
         withdrawFee = parseFloat(withdrawFeeElement.html());
+    moneyCheck()
     if (isNaN(amount) || amount <= withdrawFee) {
         submitElement.prop('disabled', true);
         errorElement.show();
@@ -60,3 +67,11 @@ submitElement.click(function () {
     //     return false;
     // }
 });
+function moneyCheck() {
+    let amount = parseFloat(amountInputElement.autoNumeric("get"));
+    if(amount<=50000){
+        withdrawFeeElement.html('1.50');
+    }else {
+        withdrawFeeElement.html('5.00');
+    }
+}
