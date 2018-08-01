@@ -47,10 +47,10 @@
         %>
         <tr>
             <td>
-                <%if item.bankPlatForm{ %>
+                <%if (item.bankPlatForm){ %>
                 <i class="fudian-icon">富</i>
                 <%}%>
-                <%if item.bankPlatForm{ %>
+                <%if (!item.bankPlatForm){ %>
                 <i class="liandong-icon">联</i>
                 <%}%>
                 <%=item.loanName%>
@@ -88,10 +88,10 @@
         %>
         <tr>
             <td>
-                <%if item.bankPlatForm{ %>
+                <%if (item.bankPlatForm){ %>
                 <i class="fudian-icon">富</i>
                 <%}%>
-                <%if item.bankPlatForm{ %>
+                <%if (!item.bankPlatForm){ %>
                 <i class="liandong-icon">联</i>
                 <%}%>
                 <%=item.loanName%>
@@ -127,10 +127,10 @@
         %>
         <tr>
             <td>
-                <%if item.bankPlatForm{ %>
+                <%if (item.bankPlatForm){ %>
                 <i class="fudian-icon">富</i>
                 <%}%>
-                <%if item.bankPlatForm{ %>
+                <%if (!item.bankPlatForm){ %>
                 <i class="liandong-icon">联</i>
                 <%}%>
                 <%=item.loanName%>

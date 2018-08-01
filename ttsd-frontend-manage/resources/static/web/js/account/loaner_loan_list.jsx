@@ -78,14 +78,12 @@ function loadLoanData(currentPage) {
             $('.loan-list-content .loan-list').html(html);
 
             $('.loan-list .show-loan-repay').click(function () {
-
+                var isBank = $(this).data('isbank');
                 commonFun.useAjax({
                     url: $(this).data('url'),
                     type: 'GET',
                     contentType: 'application/json; charset=UTF-8'
                 },function(response) {
-
-                    var isBank = $(this).data('isbank');
                     var data = response.data;
                     data.csrfToken = $("meta[name='_csrf']").attr("content");
                     if (data.status) {
