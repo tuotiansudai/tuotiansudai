@@ -20,7 +20,7 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 let referrerValidBool=true;
-
+$('body').width(window.screen.width)
 if ($(document).width() <= 1024) {
     commonFun.calculationRem(document,window);
     if(urlObj.params.source == 'app'){
