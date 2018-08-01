@@ -212,7 +212,7 @@ body {
   }
   .fudian-banner {
     position: relative;
-    height: 13rem;
+    height: 13.4rem;
     background: url("../images/fudianBank/fudian_bank_m.png") no-repeat top center;
     background-size: cover;
     .production {
@@ -222,7 +222,7 @@ body {
       left: 50%;
       margin-left: -3.17rem;
       p {
-        font-size: 0.24rem;
+        font-size: 0.26rem;
         line-height: 0.38rem;
         text-align:left;
         .pcStyle {
@@ -267,7 +267,7 @@ body {
         }
 
         .advantage {
-          width: 2.48rem;
+          width: 2.8rem;
           .title {
             width: 100%;
             height: 1.3rem;
@@ -275,7 +275,7 @@ body {
           .font {
             margin-top: 0.14rem;
             line-height: 0.32rem;
-            font-size: 0.24rem;
+            font-size: 0.26rem;
           }
         }
       }
@@ -299,14 +299,14 @@ body {
         float: none;
         margin: 0 auto;
         .title {
-          width: 1.44rem;
-          height: 1.35rem;
+          width: 1.7rem;
+          height: 1.58rem;
         }
         .font {
           margin-top: 0.25rem;
           line-height: 0.34rem;
           text-align: left;
-          font-size: 0.2rem;
+          font-size: 0.26rem;
         }
         &.reason-one {
           .title {
@@ -315,7 +315,7 @@ body {
           }
         }
         &.reason-two {
-          margin-top: 0.5rem;
+          margin-top: 0.4rem;
           margin-left: auto;
           .title {
             background: url("../images/fudianBank/reason2.png") no-repeat top center;
@@ -324,11 +324,11 @@ body {
         }
         &.reason-three {
           width: 4.94rem;
-          margin-top: 0.78rem;
+          margin-top: 0.5rem;
           margin-left: auto;
           .title {
-            width: 1.68rem;
-            height: 1.34rem;
+            width: 1.85rem;
+            height: 1.5rem;
             background: url("../images/fudianBank/reason3.png") no-repeat top center;
             background-size: 100%;
           }
@@ -350,9 +350,9 @@ body {
     }
     .part-four-font {
       margin-top: 0.5rem;
-      line-height: 0.3rem;
+      line-height: 0.34rem;
       margin-bottom: 0.65rem;
-      font-size: 0.24rem;
+      font-size: 0.26rem;
       .wapStyle {
         display: block;
       }
