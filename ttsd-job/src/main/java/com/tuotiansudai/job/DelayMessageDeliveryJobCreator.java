@@ -72,6 +72,7 @@ public class DelayMessageDeliveryJobCreator {
             logger.error("create DelayMessageDeliveryJob failed", e);
         }
     }
+
     public static void createAutoLoanOutDelayJob(JobManager jobManager, long loanId) {
         String messageBody = String.valueOf(loanId);
         create(jobManager, AUTO_LOAN_OUT_DELAY_SECONDS, MessageQueue.LoanFullDelay, messageBody, String.valueOf(loanId), true);

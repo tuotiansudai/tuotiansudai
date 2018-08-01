@@ -1,15 +1,8 @@
 package com.tuotiansudai.mq.consumer.loan;
 
-import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.BankWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankBaseMessage;
-import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -19,9 +12,6 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.GenerateRepayService;
-import com.tuotiansudai.service.LoanFullService;
-import com.tuotiansudai.service.ReferrerRewardService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +46,7 @@ public class LoanFullDelayMessageConsumer implements MessageConsumer {
             long loanId = Long.parseLong(message);
             logger.info("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
             LoanModel loanModel = loanMapper.findById(loanId);
-            if (LoanStatus.RECHECK.equals(loanModel.getStatus()) && loanModel.getRaisingCompleteTime() == null) {
+            if (LoanStatus.RECHECK.equals(loanModel.getStatus())) {
                 UserModel agentUser = userMapper.findByLoginName(loanModel.getAgentLoginName());
                 BankAccountModel agentAccount = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
                 BankBaseMessage loanFullMessage = bankWrapperClient.loanFull(agentUser.getLoginName(),
@@ -72,7 +62,7 @@ public class LoanFullDelayMessageConsumer implements MessageConsumer {
                         new DateTime().plusMinutes(1).getMillis());
 
                 if (!loanFullMessage.isStatus()) {
-                    throw new RuntimeException(MessageFormat.format("[MQ] request loan full is failure, message: {0}", message));
+                    throw new RuntimeException(MessageFormat.format("[MQ] request loan full is failure, message: {0},returnMsg:{}", message, loanFullMessage.getMessage()));
                 }
             }
 

@@ -40,7 +40,7 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
 
     private final InvestMapper investMapper;
 
-    private final Gson gson  = new GsonBuilder().create();
+    private final Gson gson = new GsonBuilder().create();
 
     @Autowired
     private JobManager jobManager;
@@ -78,11 +78,8 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
 
             if (sumInvestAmount + investModel.getAmount() == loanModel.getLoanAmount()) {
                 loanMapper.updateRaisingCompleteTime(loanModel.getId());
-                UserModel agentUser = userMapper.findByLoginName(loanModel.getAgentLoginName());
-                BankAccountModel agentAccount = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
-                //如果没有手动放款，设置一个延迟任务
+                //设置一个延迟任务;
                 DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanModel.getId());
-
             }
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] message is invalid: {}", message);
