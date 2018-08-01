@@ -30,7 +30,7 @@ let $investForm = $('#investForm');
 let $investSubmit=$('#investSubmit');
 let $isAuthenticationRequired=$('#isAuthenticationRequired');
 
-let isInvestor = 'INVESTOR' === $loanDetailContent.data('user-role');
+let isInvestor = 'UMP_INVESTOR' === $loanDetailContent.data('user-role');
 let isAuthentication = 'USER' === $loanDetailContent.data('authentication');
 let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 

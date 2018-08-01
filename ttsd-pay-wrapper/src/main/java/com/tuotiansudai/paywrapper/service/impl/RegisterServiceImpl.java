@@ -78,8 +78,8 @@ public class RegisterServiceImpl implements RegisterService {
                 }
 
                 List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(dto.getLoginName());
-                if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.INVESTOR)) {
-                    userRoleMapper.create(Lists.newArrayList(new UserRoleModel(dto.getLoginName(), Role.INVESTOR)));
+                if (userRoleModels.stream().noneMatch(userRoleModel -> userRoleModel.getRole() == Role.UMP_INVESTOR)) {
+                    userRoleMapper.create(Lists.newArrayList(new UserRoleModel(dto.getLoginName(), Role.UMP_INVESTOR)));
                 }
                 mqWrapperClient.sendMessage(MessageQueue.AccountRegistered_CompletePointTask, dto.getLoginName());
             }

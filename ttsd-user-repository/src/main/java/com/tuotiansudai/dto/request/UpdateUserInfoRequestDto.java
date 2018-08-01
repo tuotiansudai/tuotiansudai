@@ -14,13 +14,13 @@ public class UpdateUserInfoRequestDto implements Serializable {
     private String mobile;
     private String email;
     @JsonProperty("user_name")
-    private String userName;
+    private String umpUserName;
     private String password;
     private String referrer;
     private String channel;
     private Source source;
     @JsonProperty("identity_number")
-    private String identityNumber;
+    private String umpIdentityNumber;
     @JsonProperty("last_modified_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedTime;
@@ -56,12 +56,20 @@ public class UpdateUserInfoRequestDto implements Serializable {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUmpUserName() {
+        return umpUserName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
+    }
+
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
+    }
+
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 
     public String getPassword() {
@@ -94,14 +102,6 @@ public class UpdateUserInfoRequestDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public String getIdentityNumber() {
-        return identityNumber;
-    }
-
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
     }
 
     public Date getLastModifiedTime() {

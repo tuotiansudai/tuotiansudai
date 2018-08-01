@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
-     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
+     data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'UMP_INVESTOR'">UMP_INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
             <div class="news-share bg-w">
@@ -293,7 +293,7 @@
                                     <#if loan.loanStatus == "RAISING">马上投资</#if>
                                 </button>
                             </dd>
-                            <@global.role hasRole="'INVESTOR'">
+                            <@global.role hasRole="'UMP_INVESTOR'">
                                 <#if !loan.investor.noPasswordInvest>
                                     <dd>
                                         <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
@@ -306,7 +306,7 @@
 
                             <input type="hidden" value="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
-                            <@global.role hasRole="'INVESTOR'">
+                            <@global.role hasRole="'UMP_INVESTOR'">
                             <#if !loan.investor.anxinUser>
                             <dd class="skip-group">
 

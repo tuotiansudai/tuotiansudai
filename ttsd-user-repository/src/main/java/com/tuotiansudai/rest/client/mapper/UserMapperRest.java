@@ -74,8 +74,8 @@ public class UserMapperRest implements UserMapper {
     @Override
     public void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber) {
         UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
-        updateDto.setUserName(userName);
-        updateDto.setIdentityNumber(identityNumber);
+        updateDto.setUmpUserName(userName);
+        updateDto.setUmpIdentityNumber(identityNumber);
         userRestClient.update(updateDto);
     }
 
