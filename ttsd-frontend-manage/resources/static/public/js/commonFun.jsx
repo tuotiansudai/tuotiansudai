@@ -308,7 +308,7 @@ function scrollUp(domName, length) {
     }
 
 }
-//活动状态,精确到前八位如2018-01-01 如果活动时间精确到时分秒，则此方法不能用
+//活动状态
 function activityStatus(dom) {
     //日期格式化
     Date.prototype.Format = function (fmt) { //author: meizz
@@ -327,22 +327,25 @@ function activityStatus(dom) {
         return fmt;
     }
 
-    let startTime = Number(dom.data('starttime').substring(0, 10).replace(/-/gi, '')),
-        endTime = Number(dom.data('endtime').substring(0, 10).replace(/-/gi, '')),
-        currentTime = Number(new Date().Format("yyyyMMdd"));
+    let startTime = dom.data('starttime');
+    let overTime = dom.data('overtime');
+    let activityTime = new Date(startTime.replace(/-/g, "/")).getTime(); // 活动开始时间
+    let activityOverTime = new Date(overTime.replace(/-/g, "/")).getTime();  // 活动结束时间
+    let currentTime = new Date().getTime();
 
-    if (currentTime < startTime) {
+    if (currentTime < activityTime) {
         //活动未开始
         return 'activity-noStarted';
     }
-    else if (currentTime > endTime) {
+    else if (currentTime > activityOverTime) {
         //活动已经结束
        return 'activity-end'
 
-    }  else if(currentTime>=startTime && currentTime<=endTime){
+    }  else if(currentTime>=activityTime && currentTime<=activityOverTime){
         //活动中
         return 'activity-ing';
     }
+
 };
 
 // rem
@@ -401,7 +404,41 @@ function toDownloadApp() {
     }
 
 }
-
+// 距离一个结束时间的倒计时，传参是这种格式countTimePop($('.time'),'2018-06-06 18:33:50')
+function countTimePop(dom,time) {
+    var timer;
+    time = time.replace(/-/g,'/');
+    let end = new Date(time).getTime();
+    let now = new Date().getTime();
+    let leftTime = (end-now)/1000;
+    timerCount();
+    timer = setInterval(() => {
+        timerCount();
+    },1000);
+    function timerCount() {
+        let h,m,s;
+        if (leftTime > 0) {
+            if (leftTime <= 0) {
+                clearInterval(timer);
+                return;
+            }
+            h = Math.floor(leftTime/60/60);
+            m = Math.floor(leftTime/60%60);
+            s = Math.floor(leftTime%60);
+            h = h < '10' ? '0' + h : h + '';
+            m = m < '10' ? '0' + m : m + '';
+            s = s < '10' ? '0' + s : s + '';
+            --leftTime;
+        }
+        else {
+            clearInterval(timer);
+            h='00';
+            m='00';
+            s='00';
+        }
+        dom.text(h+':'+m+':'+s);
+    }
+}
 function Cycle(options) {
     this.id = options.id;
     this.width = options.width;
@@ -465,6 +502,7 @@ exports.calculationRem = calculationRem;
 exports.phoneModal = phoneModal;
 exports.Cycle = Cycle;
 exports.toDownloadApp = toDownloadApp;
+exports.countTimePop = countTimePop;
 
 
 

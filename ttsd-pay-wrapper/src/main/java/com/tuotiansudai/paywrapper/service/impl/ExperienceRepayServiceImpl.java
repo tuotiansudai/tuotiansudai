@@ -1,9 +1,12 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -24,6 +27,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +69,9 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public boolean repay(long investId) {
@@ -180,6 +188,9 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
                 investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE,
+                Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()),
+                Lists.newArrayList(AmountConverter.convertCentToString(investRepayModel.getRepayAmount()))));
 
         String detail = MessageFormat.format(SystemBillDetailTemplate.EXPERIENCE_INTEREST_DETAIL_TEMPLATE.getTemplate(),
                 investModel.getLoginName(), String.valueOf(investRepayModel.getRepayAmount()));

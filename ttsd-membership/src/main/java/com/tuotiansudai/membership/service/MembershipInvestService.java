@@ -2,6 +2,7 @@ package com.tuotiansudai.membership.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.membership.repository.mapper.MembershipExperienceBillMapper;
@@ -15,6 +16,7 @@ import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +44,17 @@ public class MembershipInvestService {
 
     private final MQWrapperClient mqWrapperClient;
 
+    private final UserMapper userMapper;
+
     @Autowired
-    public MembershipInvestService(MembershipExperienceBillMapper membershipExperienceBillMapper, BankAccountMapper bankAccountMapper, UserMembershipMapper userMembershipMapper, MembershipMapper membershipMapper, UserMembershipEvaluator userMembershipEvaluator, MQWrapperClient mqWrapperClient) {
+    public MembershipInvestService(MembershipExperienceBillMapper membershipExperienceBillMapper, BankAccountMapper bankAccountMapper, UserMembershipMapper userMembershipMapper, MembershipMapper membershipMapper, UserMembershipEvaluator userMembershipEvaluator, MQWrapperClient mqWrapperClient, UserMapper userMapper) {
         this.membershipExperienceBillMapper = membershipExperienceBillMapper;
         this.bankAccountMapper = bankAccountMapper;
         this.userMembershipMapper = userMembershipMapper;
         this.membershipMapper = membershipMapper;
         this.userMembershipEvaluator = userMembershipEvaluator;
         this.mqWrapperClient = mqWrapperClient;
+        this.userMapper = userMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -62,7 +67,6 @@ public class MembershipInvestService {
             logger.warn("membership point has been processed already, won't do it again. message: {}", bankLoanInvestMessage);
             return;
         }
-
 
         long investMembershipPoint = amount / 100;
         bankAccountMapper.updateMembershipPoint(loginName, investMembershipPoint);
@@ -99,6 +103,7 @@ public class MembershipInvestService {
                     null
             ));
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(loginName), PushSource.ALL, PushType.MEMBERSHIP_UPGRADE, title, AppUrl.MESSAGE_CENTER_LIST));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_MEMBERSHIP_UPGRADE_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(loginName).getMobile()), Lists.newArrayList(String.valueOf(level), String.valueOf(level))));
         } catch (Exception ex) {
             logger.error(ex.getLocalizedMessage(), ex);
         }

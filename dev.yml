@@ -25,7 +25,7 @@ web:
     - /var/log/tuotian/web:/var/log/tomcat
   links:
     - "pay-wrapper"
-    - "sms-wrapper"
+    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "anxin-wrapper"
@@ -44,7 +44,7 @@ console:
     - /var/log/tuotian/console:/var/log/tomcat
   links:
     - "pay-wrapper"
-    - "sms-wrapper"
+    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "ask-rest-service"
@@ -64,19 +64,6 @@ pay-wrapper:
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
 
-sms-wrapper:
-  image: "andreptb/tomcat:8-jdk8"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
-  ports:
-    - "20005:8080"
-  volumes:
-    - ./ttsd-sms-wrapper/war:/usr/local/tomcat/webapps
-    - /var/log/tuotian/sms-wrapper:/usr/local/tomcat/logs
-    - /var/log/tuotian/sms-wrapper:/var/log/tomcat
-
 mobile-api:
   image: "andreptb/tomcat:8-jdk8"
   environment:
@@ -93,7 +80,7 @@ mobile-api:
   links:
     - "static-server"
     - "pay-wrapper"
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
     - "anxin-wrapper"
 
@@ -195,7 +182,7 @@ anxin-wrapper:
     - /var/log/tuotian/anxin-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 nginx-server_console:
@@ -219,7 +206,7 @@ worker-all:
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 auditLog-mq-consumer:
@@ -247,7 +234,7 @@ loan-mq-consumer:
   command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
   links:
     - "pay-wrapper"
-    - "sms-wrapper"
+    - "redis-server"
     - "anxin-wrapper"
     - "user-rest-service"
 
@@ -262,7 +249,7 @@ message-mq-consumer:
     - /var/log/tuotian/ttsd-message-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-message-mq-consumer/bin/ttsd-message-mq-consumer"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 email-mq-consumer:
@@ -289,7 +276,7 @@ point-mq-consumer:
     - /var/log/tuotian/ttsd-point-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 activity-mq-consumer:
@@ -303,7 +290,7 @@ activity-mq-consumer:
     - /var/log/tuotian/ttsd-activity-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-activity-mq-consumer/bin/ttsd-activity-mq-consumer"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
     - "pay-wrapper"
 
@@ -318,7 +305,7 @@ user-mq-consumer:
     - /var/log/tuotian/ttsd-user-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-user-mq-consumer/bin/ttsd-user-mq-consumer"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 amount-mq-consumer:
@@ -334,6 +321,19 @@ amount-mq-consumer:
   links:
     - "user-rest-service"
 
+sms-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-sms-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-sms-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-sms-mq-consumer/bin/ttsd-sms-mq-consumer"
+  links:
+    - "redis-server"
+
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
   environment:
@@ -348,7 +348,7 @@ ask-rest-service:
 
   command: bash -c "/opt/worker/ttsd-ask-rest/bin/ttsd-ask-rest"
   links:
-    - "sms-wrapper"
+    - "redis-server"
     - "user-rest-service"
 
 worker-monitor:
@@ -362,4 +362,4 @@ worker-monitor:
     - /var/log/tuotian/worker-monitor:/var/log/job-worker
   command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
   links:
-    - "sms-wrapper"
+    - "redis-server"

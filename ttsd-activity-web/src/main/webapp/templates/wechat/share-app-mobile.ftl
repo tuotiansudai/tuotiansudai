@@ -9,13 +9,13 @@
         <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
             <div class="login-con">
                 <ul>
-                    <li><input id="mobile" class="width100 height100 borderRadius mobileIcon" placeholder="输入手机号码"
+                    <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
                                name="mobile"
                                maxlength="11" type="text" autocomplete="off" validate></li>
-                    <li><input class="width100 height100 borderRadius passwordIcon" placeholder="密码" maxlength="20"
+                    <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
                                type="password" name="password" autocomplete="off" validate></li>
-                    <li>
-                        <input class="borderRadius height100 captchaIcon" id="input_img_captcha" placeholder="图形验证码"
+                    <li><span class="captchaIcon icons borderRadiusLeft"></span>
+                        <input class="borderRadiusRight height100" id="input_img_captcha" placeholder="图形验证码"
                                name="appCaptcha"
                                type="text" maxlength="5" validate>
                         <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
@@ -23,7 +23,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="activityReferrer" id="activityReferrer"
                            value="<#if activityReferrerMobile??>${activityReferrerMobile!}</#if>">
-                    <li class="captcha-li"><input id="smsCaptcha" class="height100 borderRadius smsIcon"
+                    <li class="captcha-li"><span class="smsIcon icons borderRadiusLeft"></span><input id="smsCaptcha" class="height100 borderRadiusRight"
                                                   placeholder="手机验证码"
                                                   name="captcha" type="text" maxlength="6" validate>
                         <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
@@ -37,7 +37,7 @@
                     <li class="recommend" id="recommendLabelExist" style="display: none"><span>推荐人：<em
                             id="referMobile"></em></span>
                     </li>
-                    <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
+                    <li class="recomender-iphone"><input class="borderRadiusRight width100 height100" type="text"
                                                          name="referrer"
                                                          maxlength="11" placeholder="推荐人手机号" validate></li>
                     <li class="agreement-li">
@@ -293,7 +293,7 @@
                     <p>1.活动时间：2018年6月1日起，本活动仅针对活动开始后注册的新用户；</p>
                     <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
                     <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
-                    <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端“我的”中查看；</p>
+                    <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端"我的"中查看；</p>
                     <p>5.用户每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选，使用红包金额将于所投债权放款后返至您的账户；</p>
                     <p>6.投资时产生的提现费用及手续费由用户自理；</p>
                     <p>7.每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>

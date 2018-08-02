@@ -265,3 +265,6 @@ $('.apply-btn').click(function () {
     loadLoanData();
     $(".date-filter .select-item").removeClass("current");
 });
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));

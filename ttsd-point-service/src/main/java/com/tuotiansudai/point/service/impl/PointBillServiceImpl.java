@@ -1,8 +1,12 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.dto.SmsNotifyDto;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.dto.UserPointItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -60,6 +64,9 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
@@ -77,6 +84,11 @@ public class PointBillServiceImpl implements PointBillService {
         long sudaiPoint = point - channelPoint;
         pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note, userModel.getMobile(), userModel.getUserName()));
         userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
+
+        if (Lists.newArrayList(PointBusinessType.POINT_LOTTERY, PointBusinessType.EXCHANGE).contains(businessType)){
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_USE_POINT_NOTIFY_TEMPLATE, Lists.newArrayList(userModel.getMobile()), Lists.newArrayList(String.valueOf(-point), String.valueOf(userPointModel.getPoint() + point))));
+        }
+
     }
 
     private long calculateChannelPoint(UserPointModel userPointModel, long point, PointBusinessType businessType) {

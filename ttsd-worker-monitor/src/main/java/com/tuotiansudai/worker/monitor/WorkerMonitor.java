@@ -1,9 +1,7 @@
 package com.tuotiansudai.worker.monitor;
 
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
-import com.tuotiansudai.etcd.ETCDConfigReader;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.worker.monitor.config.MonitorConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +25,25 @@ public class WorkerMonitor {
     private final Set<String> missingWorkers = new HashSet<>();
 
     private final Timer healthCheckTimer;
-    private final SmsWrapperClient smsWrapperClient;
     private final StringRedisTemplate redisTemplate;
     private final MonitorConfig monitorConfig;
     private final JavaMailSender mailSender;
+    private final MQWrapperClient mqWrapperClient;
 
     public static void setHealthReportRedisKey(String healthReportRedisKey) {
         HEALTH_REPORT_REDIS_KEY = healthReportRedisKey;
     }
 
     @Autowired
-    public WorkerMonitor(SmsWrapperClient smsWrapperClient,
-                         StringRedisTemplate redisTemplate,
+    public WorkerMonitor(StringRedisTemplate redisTemplate,
                          MonitorConfig monitorConfig,
-                         JavaMailSender mailSender) {
+                         JavaMailSender mailSender,
+                         MQWrapperClient mqWrapperClient) {
         this.healthCheckTimer = new Timer();
-        this.smsWrapperClient = smsWrapperClient;
         this.redisTemplate = redisTemplate;
         this.monitorConfig = monitorConfig;
         this.mailSender = mailSender;
+        this.mqWrapperClient = mqWrapperClient;
     }
 
     void start() {
@@ -136,9 +134,8 @@ public class WorkerMonitor {
     private void sendNotification(String smsText, String emailText) {
         if (monitorConfig.isSmsNotifyEnabled()) {
             logger.info("[monitor] send sms {}", smsText);
-            SmsFatalNotifyDto dto = new SmsFatalNotifyDto(smsText);
             try {
-                smsWrapperClient.sendFatalNotify(dto);
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, smsText);
             } catch (Exception e) {
                 logger.error("[monitor] send sms {} failed", smsText, e);
             }

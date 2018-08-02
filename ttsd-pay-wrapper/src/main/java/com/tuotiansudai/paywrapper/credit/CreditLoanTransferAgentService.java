@@ -2,8 +2,6 @@ package com.tuotiansudai.paywrapper.credit;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -60,8 +58,6 @@ public class CreditLoanTransferAgentService {
     private MQWrapperClient mqWrapperClient;
     @Autowired
     private AccountMapper accountMapper;
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Value(value = "${credit.loan.agent}")
     private String creditLoanAgent;
@@ -163,8 +159,7 @@ public class CreditLoanTransferAgentService {
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 
     private boolean checkStatus(String orderId) {

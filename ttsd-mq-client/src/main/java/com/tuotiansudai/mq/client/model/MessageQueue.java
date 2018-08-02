@@ -13,7 +13,7 @@ public enum MessageQueue {
     3. 长度不超过256个字符。
     */
     UserRegistered_CompletePointTask("UserRegistered-CompletePointTask"),
-    CouponAssigning("CouponAssigning"),
+    Coupon_Assigning("Coupon-Assigning"),
     CouponSmsAssignNotify("CouponSmsAssignNotify"),
     CouponSmsExpiredNotify("CouponSmsExpiredNotify"),
     ExperienceAssigning("ExperienceAssigning"),
@@ -34,6 +34,8 @@ public enum MessageQueue {
     WeChatMessageNotify("WeChatMessageNotify"),
     SystemBill("SystemBill"),
     AmountTransfer("AmountTransfer"),
+    SmsNotify("SmsNotify"),
+    SmsFatalNotify("SmsFatalNotify"),
 
     //ump queues
     UmpRecharge_Success("UmpRecharge-Success"),
@@ -75,12 +77,14 @@ public enum MessageQueue {
     LoanFull_Success("LoanFull-Success"),
     LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanFull_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
+    LoanFull_SmsInvestor("LoanFull-SmsInvestor"),
     LoanFullDelay("LoanFull-Delay"),
 
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
 
-    QueryDownloadFiles("QueryDownloadFiles");
+    QueryDownloadFiles("QueryDownloadFiles"),
+    ;
 
     private final String queueName;
 

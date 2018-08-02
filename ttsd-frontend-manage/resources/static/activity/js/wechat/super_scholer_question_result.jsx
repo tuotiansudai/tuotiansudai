@@ -20,22 +20,31 @@ var $shareActivity = $('.share-activity'),
     $inviteFriend = $('.invite-friend');
 
 $shareActivity.on('click',function () {
-    $('#inviteBox').hide();
-    $('#shareBox').show();
 
+    location.href = '/activity/super-scholar/view/result?shareType=activityHome';
 
 });
 
 $inviteFriend.on('click',function () {
-    $('#shareBox').hide();
-    $('#inviteBox').show();
+    location.href = '/activity/super-scholar/view/result?shareType=activityRegister';
 
 });
+if (shareType === 'activityHome'){
+    $('#inviteBox').hide();
+    $('#shareBox').show();
+}
+if(shareType === 'activityRegister'){
+    $('#shareBox').hide();
+    $('#inviteBox').show();
+}
+
+
+
 $('.share-tip-btn').on('click',function () {
-    location.href = '/activity/super-scholar/view/result?shareType=activityHome';
+    $('#shareBox').hide();
 })
 $('.invite-tip-btn').on('click',function () {
-    location.href = '/activity/super-scholar/view/result?shareType=activityRegister';
+    $('#inviteBox').hide();
 })
 
 var link = webServer + '/activity/super-scholar?come=wechat';
@@ -43,15 +52,15 @@ var titleShare = '我在拓天速贷答题赢加薪，邀请你来测一测学�
 var descShare = '你是学霸还是学渣？答题见分晓！';
 let mobileStr = mobile.substring(0,3)+'****'+mobile.substring(7,11);
 
-if (shareType === 'activityHome'){
-    link = webServer + '/activity/super-scholar?come=wechat';
-    titleShare = '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数';
-    descShare = '你是学霸还是学渣？答题见分晓！';
-
-}else{
+if (shareType === 'activityRegister'){
     link = webServer + '/activity/super-scholar/share/register?referrerMobile=' + mobile + '&come=wechat';
     titleShare = '明明可以自己偷偷赚钱，但我还是想叫上你';
     descShare = '友谊的小船变巨轮，'+mobileStr+'送您6888元体验金，邀您一起来赚钱';
+
+}else{
+    link = webServer + '/activity/super-scholar?come=wechat';
+    titleShare = '我在拓天速贷答题赢加薪，邀请你来测一测学霸指数';
+    descShare = '你是学霸还是学渣？答题见分晓！';
 }
 
 wx.ready(function () {

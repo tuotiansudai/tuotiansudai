@@ -3,9 +3,9 @@ package com.tuotiansudai.scheduler.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -37,7 +37,7 @@ public class JobMonitorService {
     private ExecutionLogMapper executionLogMapper;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
+    private MQWrapperClient mqWrapperClient;
 
     public JobMonitorService() {
         ignoredJobClasses = Lists.newArrayList();
@@ -109,7 +109,7 @@ public class JobMonitorService {
 
     private void sendSmsFatalNotify(String errMsg) {
         logger.info("sent job fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("Job执行错误。详细信息：{0}", errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("Job执行错误。详细信息：{0}", errMsg));
+
     }
 }

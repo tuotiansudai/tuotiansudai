@@ -12,7 +12,8 @@ public enum MessageTopic {
 
     LoanFullSuccess("LoanFullSuccess",
             MessageQueue.LoanFull_Success,
-            MessageQueue.LoanFull_GenerateAnXinContract),
+            MessageQueue.LoanFull_GenerateAnXinContract,
+            MessageQueue.LoanFull_SmsInvestor),
 
     BindBankCard("BindBandCard",
             MessageQueue.BindBankCard_Success,

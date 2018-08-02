@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tuotiansudai.sms.repository.mapper.JianZhouSmsHistoryMapper">
+
+    <resultMap id="jianZhouSmsHistoryModel" type="JianZhouSmsHistoryModel">
+        <id property="id" column="id"/>
+        <result property="mobile" column="mobile"/>
+        <result property="content" column="content"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="isVoice" column="is_voice"/>
+        <result property="response" column="response"/>
+    </resultMap>
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="JianZhouSmsHistoryModel">
+        insert into jz_sms_history (mobile, content, is_voice, send_time)
+        values (#{mobile}, #{content}, #{is_voice}, now())
+    </insert>
+
+    <update id="update" parameterType="JianZhouSmsHistoryModel">
+        update jz_sms_history set
+        response = #{response}
+        where id = #{id}
+    </update>
+
+</mapper>

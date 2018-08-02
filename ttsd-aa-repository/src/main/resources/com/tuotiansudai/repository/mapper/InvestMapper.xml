@@ -173,6 +173,10 @@
         limit #{index}, #{pageSize}
     </select>
 
+    <select id="findTransfeeInvestByTransfer" parameterType="map" resultMap="investResultMap">
+        select * from invest where transfer_invest_id in (select id from invest where login_name = #{transfer})
+    </select>
+
     <select id="findCountByLoginName" parameterType="map" resultType="long">
         select count(1)
         from invest
@@ -1222,6 +1226,14 @@
         AND loan.id!='1'
         AND (loan_details.activity_desc IS NULL OR loan_details.activity_desc !='0元购')
         AND invest.trading_time BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="findInvestorMobileByLoanId" parameterType="map" resultType="string">
+        SELECT distinct user.mobile from invest join user on invest.login_name = user.login_name
+        join loan on invest.loan_id = loan.id
+        where loan.id = #{loanId}
+        AND invest.status = 'SUCCESS'
+        AND invest.transfer_invest_id IS NULL
     </select>
 
 </mapper>

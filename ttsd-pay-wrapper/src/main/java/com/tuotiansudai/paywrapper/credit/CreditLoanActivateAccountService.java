@@ -4,11 +4,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -64,8 +62,6 @@ public class CreditLoanActivateAccountService {
 
     private final PayAsyncClient payAsyncClient;
 
-    private final SmsWrapperClient smsWrapperClient;
-
     private final MQWrapperClient mqWrapperClient;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -75,13 +71,11 @@ public class CreditLoanActivateAccountService {
                                             UserMapper userMapper,
                                             PaySyncClient paySyncClient,
                                             PayAsyncClient payAsyncClient,
-                                            SmsWrapperClient smsWrapperClient,
                                             MQWrapperClient mqWrapperClient) {
         this.accountMapper = accountMapper;
         this.userMapper = userMapper;
         this.paySyncClient = paySyncClient;
         this.payAsyncClient = payAsyncClient;
-        this.smsWrapperClient = smsWrapperClient;
         this.mqWrapperClient = mqWrapperClient;
     }
 
@@ -239,8 +233,7 @@ public class CreditLoanActivateAccountService {
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 
     private boolean checkActivateAccountStatus(String mobile) {

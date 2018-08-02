@@ -12,10 +12,13 @@ import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.GenerateContractErrorNotifyDto;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.enums.JianZhouSmsTemplate;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -30,7 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.LOAN_CONTRACT_IN_CREATING_KEY;
 import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.TRANSFER_CONTRACT_IN_CREATING_KEY;
@@ -49,9 +55,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     @Autowired
-    private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -65,6 +68,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Autowired
     private ContractService contractService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
@@ -368,7 +374,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         if (!processResult) {
             logger.error("[安心签]: create contract error. loanId:" + String.valueOf(loanId));
-            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, loanId));
+            this.sendSms(String.valueOf(loanId));
             return new BaseDto<>(new AnxinDataDto(false, MessageFormat.format("标的{0}安心签合同创建失败", String.valueOf(loanId))));
         }
 
@@ -413,7 +419,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             anxinDataDto.setStatus(isSuccess(tx3202ResVO));
         } catch (PKIException e) {
-            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
+            sendSms(String.valueOf(transferApplicationId));
             anxinDataDto.setStatus(false);
             anxinDataDto.setMessage(e.getLocalizedMessage());
             logger.error(MessageFormat.format("[安心签] create transfer contract error, transferId:{0}", transferApplicationId), e);
@@ -424,7 +430,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         if (!anxinDataDto.getStatus()) {
             logger.error("[安心签]: create transfer contract error, ready send sms. transferId:" + transferApplicationId);
-            smsWrapperClient.sendGenerateContractErrorNotify(new GenerateContractErrorNotifyDto(mobileList, transferApplicationId));
+            sendSms(String.valueOf(transferApplicationId));
         }
         return baseDto;
     }
@@ -602,5 +608,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean result = this.queryContract(anxinQueryContractDto.getBusinessId(), Lists.newArrayList(batchNo.split(",")), anxinQueryContractDto.getAnxinContractType());
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
+    }
+
+    private void sendSms(String params){
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }

@@ -95,14 +95,6 @@ class Deployment(object):
         self.migrate()
         self.init_docker(('pay-wrapper',))
 
-    def only_sms(self):
-        self.clean()
-        self.config_file()
-        self.clean_class(('ttsd-sms-wrapper',))
-        self.mk_war(('ttsd-sms-wrapper',))
-        self.migrate()
-        self.init_docker(('sms-wrapper',))
-
     def only_worker(self):
         self.clean()
         self.config_file()
@@ -114,7 +106,9 @@ class Deployment(object):
                           'ttsd-user-mq-consumer',
                           'ttsd-auditLog-mq-consumer',
                           'ttsd-email-mq-consumer',
+                          'ttsd-sms-mq-consumer',
                           'ttsd-amount-mq-consumer'))
+
         self.mk_worker_zip()
         self.init_docker(('worker-all', 'auditLog-mq-consumer',
                           'loan-mq-consumer',
@@ -123,7 +117,8 @@ class Deployment(object):
                           'point-mq-consumer',
                           'activity-mq-consumer',
                           'user-mq-consumer',
-                          'amount-mq-consumer',))
+                          'amount-mq-consumer',
+                          'sms-mq-consumer',))
 
     def only_sign_in(self):
         self.mk_war(('sign_in',))
@@ -200,6 +195,8 @@ class Deployment(object):
         sh('cd ./ttsd-email-mq-consumer/build/distributions && unzip \*.zip')
         sh('cd ./ttsd-amount-mq-consumer && {0} distZip'.format(self._gradle))
         sh('cd ./ttsd-amount-mq-consumer/build/distributions && unzip \*.zip')
+        sh('cd ./ttsd-sms-mq-consumer && {0} distZip'.format(self._gradle))
+        sh('cd ./ttsd-sms-mq-consumer/build/distributions && unzip \*.zip')
 
     def build_rest_service(self):
         print "Making rest services build..."

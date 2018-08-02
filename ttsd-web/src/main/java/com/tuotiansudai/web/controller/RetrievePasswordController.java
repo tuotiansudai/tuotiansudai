@@ -46,7 +46,7 @@ public class RetrievePasswordController {
         return new ModelAndView("redirect:/mobile-retrieve-password");
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();

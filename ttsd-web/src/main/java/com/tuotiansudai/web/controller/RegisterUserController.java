@@ -109,7 +109,7 @@ public class RegisterUserController {
         return isRegisterSuccess;
     }
 
-    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -118,7 +118,7 @@ public class RegisterUserController {
 
     }
 
-    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsRegister(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -128,7 +128,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/user/login-name/{loginName}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/login-name/{loginName}/is-exist", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -139,7 +139,7 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/user/referrer/{loginNameOrMobile}/is-exist", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/referrer/{loginNameOrMobile}/is-exist", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameOrMobileIsExist(@PathVariable String loginNameOrMobile) {
         BaseDataDto dataDto = new BaseDataDto();

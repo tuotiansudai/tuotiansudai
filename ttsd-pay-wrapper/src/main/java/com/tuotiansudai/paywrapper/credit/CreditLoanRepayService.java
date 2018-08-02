@@ -3,11 +3,9 @@ package com.tuotiansudai.paywrapper.credit;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.message.AmountTransferMessage;
@@ -67,16 +65,13 @@ public class CreditLoanRepayService {
 
     private final PaySyncClient paySyncClient;
 
-    private final SmsWrapperClient smsWrapperClient;
-
     @Autowired
-    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, MQWrapperClient mqWrapperClient, PaySyncClient paySyncClient, SmsWrapperClient smsWrapperClient) {
+    public CreditLoanRepayService(UserMapper userMapper, AccountMapper accountMapper, PayAsyncClient payAsyncClient, MQWrapperClient mqWrapperClient, PaySyncClient paySyncClient) {
         this.userMapper = userMapper;
         this.accountMapper = accountMapper;
         this.payAsyncClient = payAsyncClient;
         this.mqWrapperClient = mqWrapperClient;
         this.paySyncClient = paySyncClient;
-        this.smsWrapperClient = smsWrapperClient;
     }
 
     @Transactional
@@ -292,7 +287,6 @@ public class CreditLoanRepayService {
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 }

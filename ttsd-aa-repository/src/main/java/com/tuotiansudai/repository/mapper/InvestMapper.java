@@ -336,4 +336,8 @@ public interface InvestMapper {
     long sumAmountActivityDoubleElevenByLoginName(@Param(value = "loginName") String loginName,
                                                   @Param(value = "startTime") Date startTime,
                                                   @Param(value="endTime") Date endTime);
+
+    List<String> findInvestorMobileByLoanId(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
 }
