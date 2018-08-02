@@ -1,0 +1,439 @@
+$yellow:#ffe8b6;
+html {
+  font-size: 100px;
+}
+body {
+  font-size: 12px;
+  background: #000;
+}
+.fudian-page {
+  width: 1100px;
+  margin: 0 auto;
+}
+.main-frame {
+  width: 100%;
+  margin: 0 auto;
+}
+.textRight {
+  text-align: right;
+}
+.textLeft {
+  text-align: left;
+}
+.arrow-down {
+  position: absolute;
+  width: 34px;
+  height: 40px;
+  background: url("../images/fudianBank/down.png") no-repeat top center;
+  bottom: 36px;
+  left: 50%;
+  margin-left: -17px;
+}
+.fudian-banner {
+  position: relative;
+  height: 1453px;
+  background: url("../images/fudianBank/fudian_banner_top.png") no-repeat top center;
+  .production {
+    position: absolute;
+    bottom: 114px;
+    width: 100%;
+    p {
+      color: $yellow;
+      font-size: 18px;
+      line-height: 38px;
+      text-align: center;
+      .pcStyle {
+        display: block;
+      }
+    }
+  }
+}
+.fudian-part-two {
+  position: relative;
+  height: 796px;
+  background: url("../images/fudianBank/fudian_bg_two.png") no-repeat top center;
+  padding-top: 120px;
+  box-sizing: border-box;
+  .fudian-page {
+    .advantage-font {
+      margin: 0 auto;
+      width: 563px;
+      height: 47px;
+      background: url("../images/fudianBank/bank_good_title.png") no-repeat top center;
+      background-size: contain;
+    }
+    .advantage-list {
+      position: relative;
+      .icon-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 272px;
+        height: 272px;
+        margin-left: -136px;
+        margin-top: -136px;
+        background: url("../images/fudianBank/center_icon.png") no-repeat top center;
+        background-size: 100%;
+      }
+      .list-item {
+        margin-top: 60px;
+      }
+      .advantage {
+        width: 373px;
+        .title {
+          width: 100%;
+          height: 109px;
+          &.left-top {
+            background: url("../images/fudianBank/left_top.png") no-repeat top right;
+            background-size: contain;
+            float: right;
+          }
+          &.right-top {
+            background: url("../images/fudianBank/right_top.png") no-repeat top left;
+            background-size: contain;
+          }
+          &.left-bot {
+            background: url("../images/fudianBank/left_bot.png") no-repeat top right;
+            background-size: contain;
+          }
+          &.right-bot {
+            background: url("../images/fudianBank/right_bot.png") no-repeat top left;
+            background-size: contain;
+          }
+        }
+        .font {
+          margin-top: 14px;
+          color: $yellow;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+.fudian-part-three {
+  position: relative;
+  padding-top: 125px;
+  box-sizing: border-box;
+  height: 778px;
+  background: url("../images/fudianBank/part_three_bg.png") no-repeat top center;
+  .part-two-title {
+    width: 446px;
+    height: 126px;
+    margin: 0 auto;
+    background: url("../images/fudianBank/part_two_title.png") no-repeat top center;
+    background-size: contain;
+  }
+  .select-reason-list {
+    margin-top: 20px;
+    .reason-item {
+      width: 307px;
+      float: left;
+      .title {
+        width: 144px;
+        height: 135px;
+        margin: 0 auto;
+      }
+      .font {
+        margin-top: 25px;
+        line-height: 30px;
+        color: $yellow;
+        text-align: center;
+        font-size: 18px;
+      }
+      &.reason-one {
+        .title {
+          background: url("../images/fudianBank/reason1.png") no-repeat top center;
+          background-size: 100%;
+        }
+      }
+      &.reason-two {
+        margin-left: 80px;
+        .title {
+          background: url("../images/fudianBank/reason2.png") no-repeat top center;
+          background-size: 100%;
+        }
+      }
+      &.reason-three {
+        margin-left: 72px;
+        width: 330px;
+       .title {
+         width: 168px;
+         height: 134px;
+         background: url("../images/fudianBank/reason3.png") no-repeat top center;
+         background-size: 100%;
+       }
+      }
+
+    }
+  }
+}
+.fudian-part-four {
+  height: 907px;
+  padding-top: 120px;
+  box-sizing: border-box;
+  background: url("../images/fudianBank/part_four_bg.png") no-repeat top center;
+  .part-four-title {
+    margin: 0 auto;
+    width: 527px;
+    height: 47px;
+    background: url("../images/fudianBank/part_four_title.png") no-repeat top left;
+    background-size: contain;
+  }
+  .part-four-font {
+    margin-top: 50px;
+    color: $yellow;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 65px;
+    font-size: 18px;
+  }
+  .fudian-mode {
+    margin: 0 auto;
+    width: 1022px;
+    height: 417px;
+    background: url("../images/fudianBank/fudian_mode.png") no-repeat top left;
+    background-size: contain;
+  }
+}
+
+@media screen and(max-width: 1024px){
+  .fudian-page {
+    width: 6.35rem;
+  }
+  .arrow-down {
+    position: absolute;
+    width: 0.34rem;
+    height: 0.4rem;
+    background: url("../images/fudianBank/down.png") no-repeat top center;
+    bottom: 0.36rem;
+    left: 50%;
+    margin-left: -0.17rem;
+    background-size: contain;
+  }
+  .fudian-banner {
+    position: relative;
+    height: 13.4rem;
+    background: url("../images/fudianBank/fudian_bank_m.png") no-repeat top center;
+    background-size: cover;
+    .production {
+      position: absolute;
+      bottom: 0.7rem;
+      width: 6.34rem;
+      left: 50%;
+      margin-left: -3.17rem;
+      p {
+        font-size: 0.26rem;
+        line-height: 0.38rem;
+        text-align:left;
+        .pcStyle {
+          display: inline;
+        }
+      }
+    }
+  }
+  .fudian-part-two {
+    height: 9.4rem;
+    background: url("../images/fudianBank/fudian_part_two_bg.png") no-repeat top center;
+    padding-top: 0.5rem;
+    box-sizing: border-box;
+    background-size: cover;
+    .fudian-page {
+      .advantage-font {
+        width: 4.22rem;
+        height: 0.35rem;
+        background: url("../images/fudianBank/part_two_title_m.png") no-repeat top center;
+        background-size: 100%;
+      }
+      .advantage-list {
+        position: relative;
+        .icon-center {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 2.08rem;
+          height: 2.08rem;
+          margin-left: -1.04rem;
+          margin-top: -1.04rem;
+          background-size: contain;
+        }
+        .list-item {
+          margin-top: 0;
+        }
+        .top-list {
+          margin-top: 0.7rem;
+        }
+        .bot-list {
+          margin-top: 1.9rem;
+        }
+
+        .advantage {
+          width: 2.8rem;
+          .title {
+            width: 100%;
+            height: 1.3rem;
+          }
+          .font {
+            margin-top: 0.14rem;
+            line-height: 0.32rem;
+            font-size: 0.26rem;
+          }
+        }
+      }
+    }
+  }
+  .fudian-part-three {
+    padding-top: 0.4rem;
+    height: 14rem;
+    background: url("../images/fudianBank/part_three_bg_m.png") no-repeat top center;
+    background-size: cover;
+    .part-two-title {
+      width: 3.59rem;
+      height: 1.16rem;
+      background: url("../images/fudianBank/part_three_title_m.png") no-repeat top center;
+      background-size: contain;
+    }
+    .select-reason-list {
+      margin-top: -0.1rem;
+      .reason-item {
+        width: 4.94rem;
+        float: none;
+        margin: 0 auto;
+        .title {
+          width: 1.7rem;
+          height: 1.58rem;
+        }
+        .font {
+          margin-top: 0.25rem;
+          line-height: 0.34rem;
+          text-align: left;
+          font-size: 0.26rem;
+        }
+        &.reason-one {
+          .title {
+            background: url("../images/fudianBank/reason1.png") no-repeat top center;
+            background-size: 100%;
+          }
+        }
+        &.reason-two {
+          margin-top: 0.4rem;
+          margin-left: auto;
+          .title {
+            background: url("../images/fudianBank/reason2.png") no-repeat top center;
+            background-size: 100%;
+          }
+        }
+        &.reason-three {
+          width: 4.94rem;
+          margin-top: 0.5rem;
+          margin-left: auto;
+          .title {
+            width: 1.85rem;
+            height: 1.5rem;
+            background: url("../images/fudianBank/reason3.png") no-repeat top center;
+            background-size: 100%;
+          }
+        }
+
+      }
+    }
+  }
+  .fudian-part-four {
+    height: 7.54rem;
+    padding-top: 0.76rem;
+    background: url("../images/fudianBank/part_four_bg_m.png") no-repeat top center;
+    background-size: 100%;
+    .part-four-title {
+      width: 3.94rem;
+      height: 0.36rem;
+      background: url("../images/fudianBank/part_four_title_m.png") no-repeat top left;
+      background-size: contain;
+    }
+    .part-four-font {
+      margin-top: 0.5rem;
+      line-height: 0.34rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.26rem;
+      .wapStyle {
+        display: block;
+      }
+    }
+    .fudian-mode {
+      margin: 0 auto;
+      width: 6.33rem;
+      height: 3.14rem;
+      background: url("../images/fudianBank/fudian_mode_m.png") no-repeat top left;
+      background-size: contain;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
