@@ -55,7 +55,11 @@ function testAmount() {
         $serviceCharge.html('5.00');
     }
     if($amount.val()==''){
-        $serviceCharge.html('0.00');
+        if(isFudianBank === 466){
+            $serviceCharge.html('1.00');
+        }else {
+            $serviceCharge.html('1.50');
+        }
     }
 }
 $amount.on('keyup', function (event) {
