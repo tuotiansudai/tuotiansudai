@@ -47,11 +47,11 @@ public class BankWithdrawService {
 
     private final UserBankCardMapper userBankCardMapper;
 
-    private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.withdraw.fee"));
+    private long bankWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.withdraw.fee"));
 
-    private long fudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.fudian.withdraw.fee"));
+    private long bankFudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.fudian.withdraw.fee"));
 
-    private long maxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.max.withdraw.fee"));
+    private long bankMaxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.max.withdraw.fee"));
 
     private static final String FUDIAN_BANK_CODE = "466";
 
@@ -73,7 +73,7 @@ public class BankWithdrawService {
         }
         String cardCode = userBankCardMapper.findByLoginNameAndRole(loginName, role).getBankCode();
 
-        long fee = FUDIAN_BANK_CODE.equals(cardCode) ? fudianWithdrawFee : amount > WITHDRAW_AMOUNT ? maxWithdrawFee : withdrawFee;
+        long fee = FUDIAN_BANK_CODE.equals(cardCode) ? bankFudianWithdrawFee : amount > WITHDRAW_AMOUNT ? bankMaxWithdrawFee : bankWithdrawFee;
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
         BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
