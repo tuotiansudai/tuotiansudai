@@ -47,13 +47,13 @@ public class BankWithdrawService {
 
     private final UserBankCardMapper userBankCardMapper;
 
-    private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.withdraw.fee"));
+    private long withdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.withdraw.fee"));
 
-    private long fudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.fudian.withdraw.fee"));
+    private long fudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.fudian.withdraw.fee"));
 
-    private long maxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("pay.max.withdraw.fee"));
+    private long maxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.max.withdraw.fee"));
 
-    private static final String FUDIAN_BANK_CODE = "313";
+    private static final String FUDIAN_BANK_CODE = "466";
 
     private static final long WITHDRAW_AMOUNT = 5000000L;
 
