@@ -43,6 +43,10 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private Source lastLoginSource;
 
+    private String userName;
+
+    private String identityNumber;
+
     public long getId() {
         return id;
     }
@@ -193,6 +197,22 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     public void setLastLoginSource(Source lastLoginSource) {
         this.lastLoginSource = lastLoginSource;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 
     @Override
