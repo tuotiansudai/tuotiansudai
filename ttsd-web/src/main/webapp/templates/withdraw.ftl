@@ -8,10 +8,10 @@
             <span style="padding-left: 15px;">可提现额度：<i class="color-note">${balance}</i>元</span><br/>
             <span class="pad-l-15">提现金额：</span>
             <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00" style="margin-left: 10px;"> 元
-            <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
+            <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于<em id="cash">元</em></span>
 
             <div class="calculate">
-                提现费用：<em class="withdraw-fee">${withdrawFee}</em> 元（每笔） <br/>
+                提现费用：<em class="withdraw-fee" data-bankCode="${bankCard.bankCode}" >${withdrawFee}</em> 元（每笔） <br/>
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
