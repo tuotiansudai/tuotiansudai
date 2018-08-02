@@ -5,23 +5,19 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
-import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WeChatMessageType;
 import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
-import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
-import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
-import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanerDetailsMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +34,6 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
 
     private final UserMapper userMapper;
 
-    private final BankAccountMapper bankAccountMapper;
-
     private final LoanMapper loanMapper;
 
     private final InvestMapper investMapper;
@@ -53,12 +47,8 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
     private List<String> loanRaisingCompleteNotifyMobileList;
 
     @Autowired
-    private JobManager jobManager;
-
-    @Autowired
-    public InvestSuccessCheckLoanFullMessageConsumer(UserMapper userMapper, BankAccountMapper bankAccountMapper, LoanMapper loanMapper, InvestMapper investMapper) {
+    public InvestSuccessCheckLoanFullMessageConsumer(UserMapper userMapper, LoanMapper loanMapper, InvestMapper investMapper) {
         this.userMapper = userMapper;
-        this.bankAccountMapper = bankAccountMapper;
         this.loanMapper = loanMapper;
         this.investMapper = investMapper;
     }
@@ -88,8 +78,6 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
 
             if (sumInvestAmount + investModel.getAmount() == loanModel.getLoanAmount()) {
                 loanMapper.updateRaisingCompleteTime(loanModel.getId());
-                //设置一个延迟任务;
-                DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanModel.getId());
                 //短信通知
                 sendLoanRaisingCompleteNotify(loanModel);
             }

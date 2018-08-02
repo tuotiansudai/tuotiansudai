@@ -78,13 +78,11 @@ public enum MessageQueue {
     LoanFull_RewardReferrer("LoanOutSuccess-RewardReferrer"),
     LoanFull_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     LoanFull_SmsInvestor("LoanFull-SmsInvestor"),
-    LoanFullDelay("LoanFull-Delay"),
 
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
 
-    QueryDownloadFiles("QueryDownloadFiles"),
-    ;
+    QueryDownloadFiles("QueryDownloadFiles"),;
 
     private final String queueName;
 
