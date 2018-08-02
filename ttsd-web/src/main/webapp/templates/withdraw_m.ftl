@@ -22,7 +22,7 @@
 
         <div class="user-money">
             <p>账户可提取现金:<span id="cash_money">${balance!}</span>元</p>
-            <p>单笔手续费收取<em id="service_charge">${withdrawFee!}</em>元</p>
+            <p>单笔手续费收取<em id="service_charge" data-bankCode="${bankCard.bankCode}"></em>元</p>
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn-wap-normal" id="toCash" disabled>确认提交</button>

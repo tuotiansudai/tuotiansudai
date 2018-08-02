@@ -10,9 +10,11 @@ let $withdraw = $('.withdraw'),
     withdrawFeeElement = $('.withdraw-fee', $withdraw);
 amountInputElement.autoNumeric("init");
 let isFudianBank = withdrawFeeElement.data('bankcode');
-if(isFudianBank === 313){
+if(isFudianBank === 466){
     withdrawFeeElement.html('1.00');
+    $('#cash').html('1.00')
 }else {
+    $('#cash').html('1.50')
         moneyCheck()
 }
 
@@ -28,6 +30,9 @@ amountInputElement.keyup(function () {
     let amount = parseFloat(amountInputElement.autoNumeric("get")),
         withdrawFee = parseFloat(withdrawFeeElement.html());
     moneyCheck()
+    if(amountInputElement.val()==''){
+        $('#cash').html('0.00')
+    }
     if (isNaN(amount) || amount <= withdrawFee) {
         submitElement.prop('disabled', true);
         errorElement.show();
@@ -69,9 +74,14 @@ submitElement.click(function () {
 });
 function moneyCheck() {
     let amount = parseFloat(amountInputElement.autoNumeric("get"));
+
     if(amount<=50000){
         withdrawFeeElement.html('1.50');
     }else {
         withdrawFeeElement.html('5.00');
+    }
+    if(amountInputElement.val()==''){
+
+        withdrawFeeElement.html('0.00')
     }
 }

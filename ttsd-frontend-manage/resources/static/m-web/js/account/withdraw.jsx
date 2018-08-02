@@ -11,11 +11,19 @@ let amount = $amount.val(),
     cashMoney = $cashMoney.text(),
     serviceCharge = $serviceCharge.text();
 
-// //格式化钱
+
 $amount.autoNumeric('init');
+let isFudianBank = $serviceCharge.data('bankcode');
+if(isFudianBank === 466){
+    $serviceCharge.html('1.00');
+}else {
+
+   moneyCheck()
+}
+// //格式化钱
+
 $cashMoney.autoNumeric('init');
 $serviceCharge.autoNumeric('init');
-
 function getAmount(name) {
     var amount = parseFloat(name.autoNumeric("get"));
     return amount;
@@ -41,6 +49,14 @@ function testAmount() {
     } else {
         $toCashBtn.prop('disabled', true).text('确认提交');
     }
+    if(amount<=50000&&amount>1.5){
+        $serviceCharge.html('1.50');
+    }else if(amount>50000){
+        $serviceCharge.html('5.00');
+    }
+    if($amount.val()==''){
+        $serviceCharge.html('0.00');
+    }
 }
 $amount.on('keyup', function (event) {
     testAmount();
@@ -57,3 +73,15 @@ $toCashBtn.on('click', function (e) {
     $cashForm.submit();
 
 })
+
+function moneyCheck() {
+    let amount = $amount.val();
+    if($amount.val()==''){
+        $serviceCharge.html('0.00');
+    }
+    if(amount<=50000){
+        $serviceCharge.html('1.50');
+    }else {
+        $serviceCharge.html('5.00');
+    }
+}
