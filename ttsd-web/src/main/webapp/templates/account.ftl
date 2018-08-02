@@ -25,7 +25,7 @@
         </div>
         <@global.role hasRole="'UMP_INVESTOR'">
             <div class="fr">
-                <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn"
+                <div class="safety-notification"><a href="/ump/account" target="_blank" class="tip-title">联动优势资金账号</a><i id="noticeBtn"
                                                                                                          class="fa fa-question-circle"
                                                                                                          aria-hidden="true"></i>
                     <div class="notice-tips extra-rate-popup" style="display: none">
