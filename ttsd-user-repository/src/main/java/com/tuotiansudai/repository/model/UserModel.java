@@ -15,9 +15,9 @@ public class UserModel implements UserRegisterInfo, Serializable {
 
     private String mobile;
 
-    private String userName;
+    private String umpUserName;
 
-    private String identityNumber;
+    private String umpIdentityNumber;
 
     private Date registerTime = new Date();
 
@@ -83,20 +83,20 @@ public class UserModel implements UserRegisterInfo, Serializable {
         this.mobile = mobile;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUmpUserName() {
+        return umpUserName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
     }
 
-    public String getIdentityNumber() {
-        return identityNumber;
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
     }
 
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 
     public Date getRegisterTime() {

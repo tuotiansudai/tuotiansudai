@@ -57,8 +57,8 @@ public class PersonalInfoController {
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
 
         if (accountModel != null) {
-            mv.addObject("userName", userModel.getUserName());
-            mv.addObject("identityNumber", userModel.getIdentityNumber());
+            mv.addObject("userName", userModel.getUmpUserName());
+            mv.addObject("identityNumber", userModel.getUmpIdentityNumber());
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
             if (bankCard != null) {
                 mv.addObject("bankCard", bankCard.getCardNumber());
