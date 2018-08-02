@@ -26,6 +26,7 @@ import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,10 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.LOAN_CONTRACT_IN_CREATING_KEY;
 import static com.tuotiansudai.constants.AnxinContractCreateRedisKey.TRANSFER_CONTRACT_IN_CREATING_KEY;
@@ -332,7 +330,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {
+    public BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto) {
+        long loanId=anxinLoanSuccessDto.getLoanId();
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
 
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
@@ -355,7 +354,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel,anxinLoanSuccessDto.getFullTime());
             if (createContractVO == null) {
                 continue;
             }
@@ -502,7 +501,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
+    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel,String fullTime) {
         CreateContractVO createContractVO = new CreateContractVO();
         Map<String, String> dataModel = new HashMap<>();
 
@@ -525,7 +524,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(),fullTime);
         dataModel.put("agentMobile", investMap.get("agentMobile"));
         dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
         dataModel.put("investorMobile", investMap.get("investorMobile"));
@@ -543,6 +542,26 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("endTime2", investMap.get("endTime"));
         dataModel.put("orderId", String.valueOf(investId));
         dataModel.put("pledge", investMap.get("pledge"));
+        //
+
+
+        //新增
+        dataModel.put("loanName", investMap.get("loanName"));
+        dataModel.put("amountUpper", investMap.get("amountUpper"));
+        dataModel.put("amount", investMap.get("amountUpper"));
+        dataModel.put("totalRate", investMap.get("totalRate"));
+        dataModel.put("amountUpper", investMap.get("amountUpper"));
+
+        dataModel.put("endTimeYear", investMap.get("endTime"));
+        dataModel.put("endTimeMonth", investMap.get("endTimeMonth"));
+        dataModel.put("endTimeDay", investMap.get("endTimeDay"));
+        dataModel.put("fullTimeYear", investMap.get("fullTimeYear"));
+        dataModel.put("fullTimeMonth", investMap.get("fullTimeMonth"));
+        dataModel.put("fullTimeDay", investMap.get("fullTimeDay"));
+        dataModel.put("recheckTimeYear", investMap.get("recheckTimeYear"));
+        dataModel.put("recheckTimeMonth", investMap.get("recheckTimeMonth"));
+        dataModel.put("recheckTimeDay", investMap.get("recheckTimeDay"));
+        //
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();

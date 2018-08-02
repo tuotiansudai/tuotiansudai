@@ -17,12 +17,13 @@ public class BankLoanFullDto extends BankBaseDto {
 
     private String checkerLoginName;
 
-    private long triggerTime;
+
+    private String fullTime;
 
     public BankLoanFullDto() {
     }
 
-    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, long triggerTime) {
+    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.loanId = loanId;
         this.loanTxNo = loanTxNo;
@@ -30,7 +31,7 @@ public class BankLoanFullDto extends BankBaseDto {
         this.loanOrderDate = loanOrderDate;
         this.expectRepayTime = expectRepayTime;
         this.checkerLoginName = checkerLoginName;
-        this.triggerTime = triggerTime;
+        this.fullTime = fullTime;
     }
 
     public long getLoanId() {
@@ -57,15 +58,15 @@ public class BankLoanFullDto extends BankBaseDto {
         return checkerLoginName;
     }
 
-    public long getTriggerTime() {
-        return triggerTime;
+    public String getFullTime() {
+        return fullTime;
     }
 
     @Override
     public boolean isValid() {
         return super.isValid()
                 && loanId > 0
-                && triggerTime >= 0
+                && !Strings.isNullOrEmpty(fullTime)
                 && !Strings.isNullOrEmpty(loanTxNo)
                 && !Strings.isNullOrEmpty(loanOrderNo)
                 && !Strings.isNullOrEmpty(loanOrderDate)
@@ -76,4 +77,6 @@ public class BankLoanFullDto extends BankBaseDto {
     public String toString() {
         return new GsonBuilder().create().toJson(this);
     }
+
+
 }

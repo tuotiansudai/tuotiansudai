@@ -6,6 +6,7 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -15,7 +16,9 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -196,7 +199,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
+    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId,String fullTime) {
         Map<String, String> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
@@ -207,9 +210,9 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-        dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
+
         dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+
         dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
         dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
         dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
@@ -224,6 +227,37 @@ public class ContractServiceImpl implements ContractService {
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
             dataModel.put("pledge", "车辆");
         }
+        //
+        dataModel.put("loanType", loanModel.getType().getName());
+        dataModel.put("periods", loanModel.getPeriods() + "");
+        dataModel.put("amountUpper", AmountConverter.getRMBStr(investModel.getAmount()).replace("元",""));
+        dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
+
+        dataModel.put("loanName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
+
+        DateTime endTimeDate=new DateTime(loanModel.getDeadline());
+        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
+        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
+        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
+        if(StringUtils.isNullOrEmpty(fullTime)){
+            DateTime fullTimeDate=new DateTime(loanModel.getRecheckTime());
+            dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+        }else{
+            DateTime fullTimeDate = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime);
+            dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+        }
+
         return dataModel;
     }
 
@@ -233,7 +267,7 @@ public class ContractServiceImpl implements ContractService {
         Map<String, String> dataMap;
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
             pdfTemplate = LOAN_CONTRACT_TEMPLATE;
-            dataMap = collectInvestorContractModel(loginName, OrderId, investId);
+            dataMap = collectInvestorContractModel(loginName, OrderId, investId,null);
         } else {
             pdfTemplate = TRANSFER_CONTRACT_TEMPLaTE;
             dataMap = collectTransferContractModel(OrderId);
