@@ -13,13 +13,13 @@ public class UpdateUserInfoRequestDto implements Serializable {
     private final String loginName;
     private String mobile;
     private String email;
-    @JsonProperty("user_name")
+    @JsonProperty("ump_user_name")
     private String umpUserName;
     private String password;
     private String referrer;
     private String channel;
     private Source source;
-    @JsonProperty("identity_number")
+    @JsonProperty("ump_identity_number")
     private String umpIdentityNumber;
     @JsonProperty("last_modified_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
