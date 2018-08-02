@@ -46,4 +46,6 @@ public interface InvestService {
                                                                           LoanStatus loanStatus);
 
     InvestorInvestDetailDto getInvestDetailById(long investId);
+
+    boolean isUserContractNo(String loginName, String contractNo);
 }

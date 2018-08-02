@@ -3,9 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.TransferType;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -58,8 +56,6 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     private AccountMapper accountMapper;
     @Autowired
     private PayAsyncClient payAsyncClient;
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
     @Autowired
     private HuiZuRepayNotifyRequestMapper huiZuRepayNotifyRequestMapper;
     @Value("${common.environment}")
@@ -291,8 +287,7 @@ public class HuizuRepayServiceImpl implements HuiZuRepayService {
     }
 
     private void sendFatalNotify(String message) {
-        SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
-        smsWrapperClient.sendFatalNotify(fatalNotifyDto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, message);
     }
 
     private boolean updateHuiZuNotifyRequestNotifyRequestStatus(HuiZuRepayNotifyRequestModel model) {

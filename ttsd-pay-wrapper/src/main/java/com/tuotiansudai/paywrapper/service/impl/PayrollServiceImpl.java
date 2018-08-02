@@ -1,10 +1,10 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
@@ -57,9 +57,6 @@ public class PayrollServiceImpl implements PayrollService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -209,8 +206,7 @@ public class PayrollServiceImpl implements PayrollService {
 
     private void sendSmsErrNotify(String errMsg) {
         logger.info("sent payroll fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(String.format("%s, %s", environment, errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, String.format("%s, %s", environment, errMsg));
     }
 
     private void sendUserMessage(PayrollModel payrollModel, PayrollDetailModel payrollDetailModel) {
@@ -219,5 +215,8 @@ public class PayrollServiceImpl implements PayrollService {
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.PAYROLL_HAS_BEEN_TRANSFERRED,
                 Collections.singletonList(payrollDetailModel.getLoginName()),
                 title, message, null));
+
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_PAYROLL_TEMPLATE, Lists.newArrayList(payrollDetailModel.getMobile()), Lists.newArrayList(payrollModel.getTitle())));
     }
+
 }

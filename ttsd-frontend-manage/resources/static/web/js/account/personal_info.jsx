@@ -596,6 +596,10 @@ require.ensure([],function(){
         layer.closeAll();
     });
 
+let metaViewPort = $('meta[name=viewport]');//
+metaViewPort.remove()
+$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
+
 
 },'changeRole')
 

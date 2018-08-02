@@ -1,7 +1,6 @@
 include "ttsd-service",
         "ttsd-web",
         "ttsd-console",
-        "ttsd-sms-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
         'ttsd-membership',
@@ -29,3 +28,4 @@ include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
 include 'ttsd-fudian-bank', "ttsd-fudian-bank-dto"
+include 'ttsd-sms-mq-consumer'

@@ -12,6 +12,16 @@ public class BaseResponse<T> {
     public BaseResponse() {
     }
 
+    public BaseResponse(String message) {
+        this.message = message;
+    }
+
+
+    public BaseResponse(T data) {
+        this.status = true;
+        this.data = data;
+    }
+
     public BaseResponse(boolean status) {
         this.status = status;
     }

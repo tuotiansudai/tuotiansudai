@@ -3,9 +3,7 @@ let commonFun = require('publicJs/commonFun');
 let urlObj = globalFun.parseURL(location.href);
 let shareMobile = urlObj.params.mobileShare;
 require('swiper/dist/css/swiper.css')
-if ($(document).width() <= 1024) {
-    commonFun.calculationRem(document,window);
-}
+
 if(!shareMobile){
     shareMobile = $('#registerName').val();
 }

@@ -4,6 +4,18 @@ html {
 body {
 	font-size: 12px;
 }
+input[type="checkbox"]{
+	margin-right: 0;
+}
+li {
+	-webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+.borderRadiusLeft {
+	border-radius: 3px 0px 0 3px;
+}
+.borderRadiusRight {
+	border-radius: 0 3px 3px 0;
+}
 .main-frame {
 	width: 100%;
 }
@@ -52,6 +64,9 @@ p {
 }
 
 @media screen and (max-width: 1024px){
+	.my-page-width {
+		width: 7.5rem;
+	}
 	.gold-btn {
 		display: inline-block;
 		background: url("../../images/landingpage/button_bg.png") no-repeat center center;
@@ -174,6 +189,7 @@ p {
           padding-top: 0.35rem;
           padding-bottom: 0.35rem;
           line-height: 0.6rem;
+			font-size: 0.3rem;
           span {
             font-size: 0.4rem;
           }
@@ -229,6 +245,7 @@ p {
 			width: 7.5rem;
 			position: static;
 			font-size: 0.37rem;
+			margin:0 auto;
 			.refer-person-info {
 				text-align: center;
 				color: #fff0b5;
@@ -279,6 +296,34 @@ p {
 						height: 0.96rem;
 						margin-bottom: 0.6rem;
 						clear: both;
+						&.submit-li {
+							margin-top: 0.4rem;
+							input {
+								width: 100%;
+							}
+						}
+						.icons {
+							display: block;
+							float: left;
+							width: 1.1rem;
+							height: 100%;
+							&.mobileIcon {
+								background:#fff url("../../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
+								background-size: 50%;
+							}
+							&.passwordIcon {
+								background:#fff url("../../images/landingpage/password_icon.png") no-repeat 0.3rem center;
+								background-size: 50%;
+							}
+							&.captchaIcon {
+								background:#fff url("../../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
+								background-size: 50%;
+							}
+							&.smsIcon {
+								background:#fff url("../../images/landingpage/email_icon.png") no-repeat 0.3rem center;
+								background-size: 50%;
+							}
+						}
 						&.captcha-li {
 							position: relative;
 							margin-bottom: 0.4rem;
@@ -297,7 +342,7 @@ p {
 							height: 0.6rem;
 							margin-bottom: 5px;
 							font-size: 0.3rem;
-							margin-left: -0.5rem;
+							margin-left: -0.3rem;
 							a {
 								color: #3a84cf;
 								vertical-align: middle;
@@ -305,6 +350,7 @@ p {
 							}
 							#agreementLable {
 								display: inline-block;
+								margin-left: 0.3rem;
 							}
 							.agreement-check {
 								visibility: hidden;
@@ -360,28 +406,16 @@ p {
 						input{
 							border: 0;
 							color: #959794;
-							text-indent: 1.04rem;
+							text-indent: 0;
 							font-size: 0.28rem;
-                          &.mobileIcon {
-                            background:#fff url("../../images/landingpage/iphone_icon.png") no-repeat 0.3rem center;
-							  background-size: 8%;
-                          }
-                          &.passwordIcon {
-                            background:#fff url("../../images/landingpage/password_icon.png") no-repeat 0.3rem center;
-							  background-size: 8%;
-                          }
-                          &.captchaIcon {
-                            background:#fff url("../../images/landingpage/captcha_icon.png") no-repeat 0.3rem center;
-							  background-size: 13%;
-                          }
-                          &.smsIcon {
-							  width: 4.3rem;
-                            background:#fff url("../../images/landingpage/email_icon.png") no-repeat 0.3rem center;
-							  background-size: 13%;
-                          }
+							float: left;
+							width: 5.8rem;
 						}
 						#input_img_captcha {
-							width: 4.3rem;
+							width: 3.2rem;
+						}
+						#smsCaptcha {
+							width: 3.2rem;
 						}
 						.image-captcha {
 							display: inline-block;
@@ -403,7 +437,7 @@ p {
 							width: 2.1rem;
 							vertical-align: middle;
 							display: inline-block;
-							background: #fce9a0;
+							background: url("../../images/landingpage/get_captcha_sms_bg.png") repeat-x;
 							color: #d0282e;
 							text-align: center;
 							line-height: 0.8rem;
@@ -461,13 +495,18 @@ p {
 					margin: 0 auto;
 					width: 7.5rem;
 					height: 3.9rem;
+					position: relative;
+					z-index: 2;
 					.swiper-container {
 						width: 7.5rem;
 						height: 3.9rem;
 						margin: 0 auto;
+						z-index: 2;
 						.swiper-wrapper {
+							z-index: 2;
 							.swiper-slide{
 								width: 5.96rem;
+								z-index: 2;
 								.get-btn {
 									position: absolute;
 									bottom: 0.6rem;
@@ -690,7 +729,11 @@ p {
 	}
 
 }
-
+@media screen and (max-width: 1024px) {
+	html {
+		font-size: 136.53px;
+	}
+}
 @media screen and (max-width: 768px) {
 	html {
 		font-size: 102.4px;

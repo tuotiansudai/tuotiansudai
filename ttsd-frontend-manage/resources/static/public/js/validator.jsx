@@ -250,7 +250,7 @@ var strategies = {
             that=this,
             _arguments=arguments;
         commonFun.useAjax({
-            type:'GET',
+            type:'POST',
             async: false,
             url:'/register/user/mobile/'+this.value+'/is-exist'
         },function(response) {

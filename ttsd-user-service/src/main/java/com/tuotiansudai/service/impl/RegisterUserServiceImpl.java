@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.dto.request.RegisterRequestDto;
 import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.*;
@@ -57,6 +58,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         userMembershipMapper.create(userMembershipModel);
 
         this.sendMessage(userModel);
+
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
 
         return userModel;
     }

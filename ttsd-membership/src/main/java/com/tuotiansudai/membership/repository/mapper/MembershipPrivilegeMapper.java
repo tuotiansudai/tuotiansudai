@@ -1,5 +1,6 @@
 package com.tuotiansudai.membership.repository.mapper;
 
+import com.tuotiansudai.membership.repository.model.MembershipPrivilegeExpiredUsersView;
 import com.tuotiansudai.membership.repository.model.MembershipPrivilegeModel;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
@@ -19,6 +20,6 @@ public interface MembershipPrivilegeMapper {
     MembershipPrivilegeModel findValidPrivilegeModelByLoginName(@Param(value = "loginName") String loginName,
                                                                 @Param(value = "currentDate") Date currentDate);
 
-    List<String> findMembershipPrivilegeExpiredUsers();
+    List<MembershipPrivilegeExpiredUsersView> findMembershipPrivilegeExpiredUsers();
 
 }

@@ -19,8 +19,6 @@ let $registerSubmit=$('input[type="submit"]',$(registerForm));
 let $voiceCaptcha = $('#voice_captcha');
 let $voiceBtn = $('#voice_btn',$voiceCaptcha);
 let referrerValidBool=true;
-
- commonFun.calculationRem(document, window)
 $('#fuliList').find('.swiper-slide').each(function (index,item) {
     let  _self = $(this);
     let imgUrl = require('../../images/landingpage/fuli'+(index+1)+'.png');
@@ -32,7 +30,7 @@ $('#fuliList').find('.swiper-slide').each(function (index,item) {
 var mySwiper = new Swiper ('#fuliList', {
     direction: 'horizontal',
     loop: true,
-    autoplay:5000,
+    autoplay:3000,
     autoplayDisableOnInteraction:false,
     slidesPerView: 'auto',
     centeredSlides:true,
@@ -222,7 +220,7 @@ validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,
         return '';
     }
     commonFun.useAjax({
-        type:'GET',
+        type:'POST',
         async: false,
         url:'/register/user/referrer/'+this.value+'/is-exist'
     },function(response) {

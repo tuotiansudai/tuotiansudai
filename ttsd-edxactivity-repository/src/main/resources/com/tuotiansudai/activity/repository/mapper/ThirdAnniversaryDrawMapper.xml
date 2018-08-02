@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.activity.repository.mapper.ThirdAnniversaryDrawMapper">
+
+    <resultMap id="thirdAnniversaryResultMap" type="com.tuotiansudai.activity.repository.model.ThirdAnniversaryDrawModel">
+        <result column="login_name" property="loginName"/>
+        <result column="team_name" property="teamName"/>
+        <result column="team_count" property="teamCount"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="java.util.List">
+        INSERT INTO third_anniversary_draw(login_name, team_name, team_count, created_time)
+        VALUES 
+        <foreach collection="list" item="item" separator=",">
+            (#{item.loginName},#{item.teamName}, #{item.teamCount}, now())
+        </foreach>
+        ON DUPLICATE KEY UPDATE team_count = team_count + 1
+    </insert>
+
+    <select id="countDrawByLoginName" parameterType="map" resultType="int">
+        SELECT ifnull(sum(team_count), 0) from third_anniversary_draw where login_name=#{loginName}
+    </select>
+
+    <select id="findByLoginName" parameterType="map" resultMap="thirdAnniversaryResultMap">
+        SELECT * from third_anniversary_draw where login_name=#{loginName}
+    </select>
+
+    <select id="findLoginNameByCollectTopFour" parameterType="java.util.List" resultType="string">
+        SELECT login_name from third_anniversary_draw
+        where team_name in
+        <foreach collection="list" item="item" open="(" separator=","  close=")">
+            #{item}
+        </foreach>
+        group by login_name HAVING count(*)=4
+    </select>
+
+</mapper>
