@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class MybatisFudianConfig {
 
     @Primary
-    @Bean(name = "fudianDataSource")
+    @Bean(name = "fudianDataSource", destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.datasource.fudian")
     public DataSource fudianDataSource(){
         return DataSourceBuilder.create().build();
