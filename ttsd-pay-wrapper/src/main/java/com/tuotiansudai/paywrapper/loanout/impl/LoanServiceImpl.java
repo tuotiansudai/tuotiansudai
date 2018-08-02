@@ -4,12 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -92,9 +90,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private UMPayRealTimeStatusService umPayRealTimeStatusService;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -488,8 +483,8 @@ public class LoanServiceImpl implements LoanService {
     private void fatalLog(long loanId, String errorMessage, Throwable e) {
         String errMsg = MessageFormat.format("loanId({0}), {1}", String.valueOf(loanId), errorMessage);
         logger.error(errMsg, e);
-        smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("放款错误。详细信息：{0}",
-                MessageFormat.format("{0},{1}", environment, errMsg))));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("放款错误。详细信息：{0}",
+                MessageFormat.format("{0},{1}", environment, errMsg)));
     }
 
     private void sendMessage(long loanId) {

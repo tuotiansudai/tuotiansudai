@@ -239,9 +239,9 @@ public class RepayServiceImpl implements RepayService {
         boolean isRepayingLoanRepayExist = loanRepayModels.stream().anyMatch(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.REPAYING);
 
         dataDto.setLoanId(loanId);
-        if (loanModel.getIsBankPlatform()){
+        if (loanModel.getIsBankPlatform()) {
             dataDto.setLoanerBalance(AmountConverter.convertCentToString(bankAccountMapper.findByLoginNameAndRole(loginName, Role.LOANER).getBalance()));
-        }else {
+        } else {
             dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
         }
 
@@ -371,7 +371,6 @@ public class RepayServiceImpl implements RepayService {
                     break;
             }
         }
-
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), investModel.getCreatedTime());
         dataDto.setLevelMessage(membershipMessage.get(membershipModel.getLevel()));
         return baseDto;

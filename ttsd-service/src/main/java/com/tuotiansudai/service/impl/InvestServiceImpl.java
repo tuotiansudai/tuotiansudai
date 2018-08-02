@@ -453,6 +453,16 @@ public class InvestServiceImpl implements InvestService {
         return userInvestDetail(investModel);
     }
 
+    @Override
+    public boolean isUserContractNo(String loginName, String contractNo) {
+        List<InvestModel> investorModels = investMapper.findPaginationByLoginName(loginName, 0, Integer.MAX_VALUE);
+        List<InvestModel> transferModels = investMapper.findTransfeeInvestByTransfer(loginName);
+        List<InvestModel> models = new ArrayList<>();
+        models.addAll(investorModels);
+        models.addAll(transferModels);
+        return models.stream().filter(model -> model.getContractNo() != null).anyMatch(investModel -> investModel.getContractNo().equals(contractNo));
+    }
+
     private List<UserInvestRecordDataDto> convertResponseData(LoanStatus loanStatus, List<InvestModel> investModels) {
         List<UserInvestRecordDataDto> list = Lists.newArrayList();
 

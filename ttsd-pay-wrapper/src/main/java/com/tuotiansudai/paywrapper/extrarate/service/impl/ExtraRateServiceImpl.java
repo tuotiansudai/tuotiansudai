@@ -3,11 +3,9 @@ package com.tuotiansudai.paywrapper.extrarate.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.sms.SmsFatalNotifyDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -16,8 +14,6 @@ import com.tuotiansudai.paywrapper.extrarate.service.ExtraRateService;
 import com.tuotiansudai.paywrapper.extrarate.service.InvestRateService;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ExtraRateTransferMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
-import com.tuotiansudai.paywrapper.repository.model.NotifyProcessStatus;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.TransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.TransferRequestModel;
@@ -68,9 +64,6 @@ public class ExtraRateServiceImpl implements ExtraRateService {
 
     @Autowired
     private InvestRateService investRateService;
-
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -244,9 +237,7 @@ public class ExtraRateServiceImpl implements ExtraRateService {
     }
 
     private void sendSmsErrNotify(String errMsg) {
-        logger.info("sent invest fatal sms message");
-        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("阶梯加息还款业务错误。详细信息：{0}", errMsg));
-        smsWrapperClient.sendFatalNotify(dto);
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("阶梯加息还款业务错误。详细信息：{0}", errMsg));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.membership.service;
 
 import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
+import com.tuotiansudai.membership.repository.mapper.MembershipPrivilegeMapper;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
@@ -24,6 +25,9 @@ public class UserMembershipEvaluator {
     @Autowired
     private UserMembershipMapper userMembershipMapper;
 
+    @Autowired
+    private MembershipPrivilegeMapper membershipPrivilegeMapper;
+
     public MembershipModel evaluateUpgradeLevel(String loginName) {
         List<UserMembershipModel> userMembershipModels = userMembershipMapper.findByLoginName(loginName);
 
@@ -34,6 +38,10 @@ public class UserMembershipEvaluator {
     }
 
     public MembershipModel evaluate(String loginName) {
+        if(membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date()) != null){
+            return membershipMapper.findByLevel(5);
+        }
+
         UserMembershipModel userMembershipModel = this.evaluateUserMembership(loginName, new Date());
         if (userMembershipModel == null) {
             return null;
@@ -42,6 +50,10 @@ public class UserMembershipEvaluator {
     }
 
     public MembershipModel evaluateSpecifiedDate(String loginName, Date date) {
+        if(membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, date) != null){
+            return membershipMapper.findByLevel(5);
+        }
+
         UserMembershipModel userMembershipModel = this.evaluateUserMembership(loginName, date);
         if (userMembershipModel == null) {
             return null;

@@ -117,6 +117,7 @@
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
         <intercept-url pattern="/ump/**" access="hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')"/>
+        <intercept-url pattern="/contract/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <!--PC rules end-->
 
         <!--M rules start-->

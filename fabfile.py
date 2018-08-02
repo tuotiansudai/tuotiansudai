@@ -17,7 +17,6 @@ env.roledefs = {
     'worker': ['changchun'],
     'static': ['guangzhou'],
     'redis': ['chengdu'],
-    'sms': ['shenzhen'],
     'console': ['shenzhen'],
     'api': ['hongkong', 'macau'],
     'cms': ['wuhan'],
@@ -62,6 +61,7 @@ def mk_mq_consumer():
     local('cd ./ttsd-amount-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-auditLog-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
     local('cd ./ttsd-email-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
+    local('cd ./ttsd-sms-mq-consumer && /opt/gradle/latest/bin/gradle distZip')
 
 
 def mk_rest_service():
@@ -110,15 +110,6 @@ def deploy_static():
         sudo('service nginx restart')
 
 
-@roles('sms')
-def deploy_sms():
-    upload_project(local_dir='./ttsd-sms-wrapper/war/ROOT.war', remote_dir='/workspace/sms')
-    with cd('/workspace'):
-        sudo('/usr/local/bin/docker-compose -f sms.yml -p ttsd stop')
-        sudo('/usr/local/bin/docker-compose -f sms.yml -p ttsd rm -f')
-        sudo('/usr/local/bin/docker-compose -f sms.yml -p ttsd up -d')
-
-
 @roles('console')
 def deploy_console():
     upload_project(local_dir='./ttsd-console/war/ROOT.war', remote_dir='/workspace/console')
@@ -150,6 +141,7 @@ def deploy_worker():
     put(local_path='./ttsd-auditLog-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-amount-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
+    put(local_path='./ttsd-sms-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
     sudo('supervisorctl stop all')
@@ -166,6 +158,7 @@ def deploy_worker():
         sudo('rm -rf ttsd-auditLog-mq-consumer/')
         sudo('rm -rf ttsd-email-mq-consumer/')
         sudo('rm -rf ttsd-amount-mq-consumer/')
+        sudo('rm -rf ttsd-sms-mq-consumer/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
         sudo('supervisorctl start all')
@@ -278,7 +271,6 @@ def pre_deploy(skip_package, target=None):
 def deploy_all():
     execute(deploy_sign_in)
     execute(deploy_static)
-    execute(deploy_sms)
     execute(deploy_console)
     execute(deploy_pay)
     execute(deploy_worker)
@@ -338,12 +330,6 @@ def api(skip_package):
     execute(deploy_api)
 
 
-def sms(skip_package):
-    pre_deploy(skip_package, ('ttsd-sms-wrapper',))
-    mk_war(('ttsd-sms-wrapper',))
-    execute(deploy_sms)
-
-
 def worker(skip_package):
     pre_deploy(skip_package, ('ttsd-job-worker',
                               'ttsd-loan-mq-consumer',
@@ -353,7 +339,8 @@ def worker(skip_package):
                               'ttsd-user-mq-consumer',
                               'ttsd-auditLog-mq-consumer',
                               'ttsd-email-mq-consumer',
-                              'ttsd-amount-mq-consumer'))
+                              'ttsd-amount-mq-consumer',
+                              'ttsd-sms-mq-consumer'))
     mk_worker_zip()
     mk_mq_consumer()
     execute(deploy_worker)

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.luxury.LuxuryStageRepayService;
 import org.apache.log4j.Logger;
@@ -32,5 +33,15 @@ public class LuxuryStageRepayController {
                                          @PathVariable String mobile,
                                          @PathVariable long amount) {
         return luxuryStageRepayService.repay(luxuryOrderId, period, mobile, amount);
+    }
+
+    @RequestMapping(value = "/no-password-repay/{luxuryOrderId}/period/{period}/mobile/{mobile}/amount/{amount}/auto-repay/{autoRepay}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> creditLoanRepayNoPwd(@PathVariable long luxuryOrderId,
+                                                    @PathVariable int period,
+                                                    @PathVariable String mobile,
+                                                    @PathVariable long amount,
+                                                    @PathVariable boolean autoRepay) {
+        return luxuryStageRepayService.noPasswordRepay(luxuryOrderId, period, mobile, amount, autoRepay);
     }
 }

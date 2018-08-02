@@ -94,7 +94,7 @@ public class LuxuryStageRepayServiceTest {
         assertThat(dto.getData().getMessage(), is("用户未开通支付账户"));
 
         when(accountMapper.findByMobile(mobile)).thenReturn(new AccountModel());
-        when(redisWrapperClient.exists(MessageFormat.format("luxury:stage:repay:expired:{0}", String.valueOf(luxuryOrderId)))).thenReturn(true);
+        when(redisWrapperClient.exists(MessageFormat.format("luxury:stage:repay:expired:{0}:{1}", String.valueOf(luxuryOrderId), String.valueOf(period)))).thenReturn(true);
 
         dto = this.luxuryStageRepayService.repay(luxuryOrderId, period, mobile, 1);
         assertFalse(dto.getData().getStatus());
@@ -136,7 +136,7 @@ public class LuxuryStageRepayServiceTest {
         verify(this.payAsyncClient, times(1))
                 .generateFormData(eq(LuxuryStageRepayProjectTransferMapper.class), requestModelCaptor.capture());
 
-        assertThat(expiredKeyCaptor.getAllValues().get(0), is(MessageFormat.format("luxury:stage:repay:expired:{0}", String.valueOf(luxuryOrderId))));
+        assertThat(expiredKeyCaptor.getAllValues().get(0), is(MessageFormat.format("luxury:stage:repay:expired:{0}:{1}", String.valueOf(luxuryOrderId), String.valueOf(period))));
         assertThat(expiredValueCaptor.getAllValues().get(0), is(30 * 60));
         assertThat(expiredStatusCaptor.getAllValues().get(0), is(SyncRequestStatus.SENT.name()));
 

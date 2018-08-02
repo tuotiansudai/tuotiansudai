@@ -25,7 +25,7 @@ function forgetPassword() {
             that=this,
             _arguments=arguments;
        commonFun.useAjax({
-            type:'GET',
+            type:'POST',
             async: false,
             url:'/mobile-retrieve-password/mobile/'+this.value+'/is-exist?random=' + new Date().getTime()
         },function(response) {
@@ -109,7 +109,7 @@ function inputPassword() {
         let password=inputPasswordForm.password.value;
         let thisValue=event.target.value;
         if(password!=thisValue) {
-            errorDom.text('2次输入的密码不一致');
+            errorDom.text('2次输入的密码不一致').css('visibility','visible');
             $(this).addClass('error');
         }
         else {
