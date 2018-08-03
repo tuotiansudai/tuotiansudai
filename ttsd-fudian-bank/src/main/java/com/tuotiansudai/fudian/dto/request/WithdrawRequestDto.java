@@ -12,7 +12,7 @@ public class WithdrawRequestDto extends NotifyRequestDto {
     public WithdrawRequestDto(Source source, BankWithdrawDto bankWithdrawDto) {
         super(source, bankWithdrawDto.getLoginName(), bankWithdrawDto.getMobile(), bankWithdrawDto.getBankUserName(), bankWithdrawDto.getBankAccountNo());
         this.amount = AmountUtils.toYuan(bankWithdrawDto.getAmount());
-        this.fee = AmountUtils.toYuan(bankWithdrawDto.getFee());
+        this.fee = bankWithdrawDto.getIsFudianBank() ? "1.00" : bankWithdrawDto.getAmount() > 5000000 ? "5.00" : "1.50";
     }
 
     public String getAmount() {

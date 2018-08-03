@@ -36,13 +36,13 @@
     </resultMap>
 
     <insert id="createInvestor" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
-        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'INVESTOR')
+        insert into bank_withdraw (login_name, amount, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{source}, #{status}, now(), now(), 'INVESTOR')
     </insert>
 
     <insert id="createLoaner" parameterType="map" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_withdraw (login_name, amount, fee, source, status, created_time, updated_time, role_type)
-        value(#{loginName}, #{amount}, #{fee}, #{source}, #{status}, now(), now(), 'LOANER')
+        insert into bank_withdraw (login_name, amount, source, status, created_time, updated_time, role_type)
+        value(#{loginName}, #{amount}, #{source}, #{status}, now(), now(), 'LOANER')
     </insert>
 
     <select id="findById" parameterType="long" resultMap="bankWithdrawResultMap">
@@ -181,6 +181,7 @@
         update bank_withdraw set
         bank_order_no = #{bankOrderNo},
         bank_order_date = #{bankOrderDate},
+        fee = #{fee},
         status = #{status},
         updated_time = now()
         where id = #{id}

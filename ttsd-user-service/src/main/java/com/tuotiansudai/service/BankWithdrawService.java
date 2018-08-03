@@ -47,15 +47,7 @@ public class BankWithdrawService {
 
     private final UserBankCardMapper userBankCardMapper;
 
-    private long bankWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.withdraw.fee"));
-
-    private long bankFudianWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.fudian.withdraw.fee"));
-
-    private long bankMaxWithdrawFee = Long.parseLong(ETCDConfigReader.getReader().getValue("bank.max.withdraw.fee"));
-
     private static final String FUDIAN_BANK_CODE = "466";
-
-    private static final long WITHDRAW_AMOUNT = 5000000L;
 
     @Autowired
     public BankWithdrawService(BankWithdrawMapper bankWithdrawMapper, BankAccountMapper bankAccountMapper, WeChatUserMapper weChatUserMapper, MQWrapperClient mqWrapperClient, UserBankCardMapper userBankCardMapper) {
@@ -73,10 +65,8 @@ public class BankWithdrawService {
         }
         String cardCode = userBankCardMapper.findByLoginNameAndRole(loginName, role).getBankCode();
 
-        long fee = FUDIAN_BANK_CODE.equals(cardCode) ? bankFudianWithdrawFee : amount > WITHDRAW_AMOUNT ? bankMaxWithdrawFee : bankWithdrawFee;
-
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
-        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, fee, source);
+        BankWithdrawModel bankWithdrawModel = new BankWithdrawModel(loginName, amount, source);
 
         if (role == Role.LOANER){
             bankWithdrawMapper.createLoaner(bankWithdrawModel);
@@ -85,7 +75,7 @@ public class BankWithdrawService {
         }
 
         Optional<WeChatUserModel> optional = weChatUserMapper.findByLoginName(loginName).stream().filter(WeChatUserModel::isBound).findFirst();
-        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, fee, optional.map(WeChatUserModel::getOpenid).orElse(null));
+        return bankWrapperClient.withdraw(bankWithdrawModel.getId(), source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), amount, FUDIAN_BANK_CODE.equals(cardCode), optional.map(WeChatUserModel::getOpenid).orElse(null));
     }
 
     @Transactional
@@ -98,6 +88,7 @@ public class BankWithdrawService {
 
         bankWithdrawModel.setBankOrderNo(bankWithdrawMessage.getBankOrderNo());
         bankWithdrawModel.setBankOrderDate(bankWithdrawMessage.getBankOrderDate());
+        bankWithdrawModel.setFee(bankWithdrawMessage.getFee());
         bankWithdrawModel.setStatus(bankWithdrawMessage.isStatus() ? WithdrawStatus.SUCCESS : WithdrawStatus.FAIL);
         bankWithdrawMapper.update(bankWithdrawModel);
 
