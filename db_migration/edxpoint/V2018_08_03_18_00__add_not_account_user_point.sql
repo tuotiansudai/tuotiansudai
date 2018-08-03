@@ -1,2 +1,9 @@
-insert ignore into user_point(login_name, point, updated_time)
-select login_name, '0' as 'point', now() as 'updated_time' from aa.user where not exists(select 1 from aa.account where login_name = aa.user.login_name)
+INSERT ignore into user_point(login_name, point, updated_time)
+SELECT
+  aa.user.login_name,
+  '0'   AS 'point',
+  now() AS 'updated_time'
+FROM aa.user
+WHERE NOT exists(SELECT 1
+                 FROM user_point
+                 WHERE login_name = aa.user.login_name);

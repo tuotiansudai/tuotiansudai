@@ -18,6 +18,7 @@ import com.tuotiansudai.fudian.mapper.fudian.SelectMapper;
 import com.tuotiansudai.fudian.mapper.fudian.UpdateMapper;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
+import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import org.redisson.api.RLock;
@@ -98,7 +99,7 @@ public class WithdrawService implements ReturnCallbackInterface, NotifyCallbackI
                 bankWithdrawDto.getBankUserName(),
                 bankWithdrawDto.getBankAccountNo(),
                 bankWithdrawDto.getAmount(),
-                bankWithdrawDto.getFee(),
+                AmountUtils.toCent(dto.getFee()),
                 dto.getOrderNo(),
                 dto.getOrderDate());
 

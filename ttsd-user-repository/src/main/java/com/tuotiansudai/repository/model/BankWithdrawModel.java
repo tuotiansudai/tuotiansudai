@@ -33,10 +33,9 @@ public class BankWithdrawModel implements Serializable {
     public BankWithdrawModel() {
     }
 
-    public BankWithdrawModel(String loginName, long amount, long fee, Source source) {
+    public BankWithdrawModel(String loginName, long amount, Source source) {
         this.loginName = loginName;
         this.amount = amount;
-        this.fee = fee;
         this.status = WithdrawStatus.WAIT_PAY;
         this.source = source;
     }
