@@ -199,56 +199,35 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId,String fullTime) {
+    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId, String fullTime) {
         Map<String, String> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = investMapper.findById(investId);
-        dataModel.put("agentMobile", agentModel.getMobile());
-        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-
-        dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
-
-        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
-        dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
-        dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
-        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-        dataModel.put("recheckTime", loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
-                simpleDateFormat.format(investModel.getTradingTime()) : simpleDateFormat.format(loanModel.getRecheckTime()));
-        dataModel.put("endTime", simpleDateFormat.format(loanModel.getDeadline()));
-        dataModel.put("investId", String.valueOf(investId));
-        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-            dataModel.put("pledge", "房屋");
-        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-            dataModel.put("pledge", "车辆");
-        }
         //
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
+        dataModel.put("investorIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("loanName", loanModel.getName());
         dataModel.put("loanType", loanModel.getType().getName());
         dataModel.put("periods", loanModel.getPeriods() + "");
-        dataModel.put("amountUpper", AmountConverter.getRMBStr(investModel.getAmount()).replace("元",""));
+        dataModel.put("amountUpper", AmountConverter.getRMBStr(investModel.getAmount()));
         dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
-
-        dataModel.put("loanName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
-
-        DateTime endTimeDate=new DateTime(loanModel.getDeadline());
+        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
         dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
         dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
         dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
-        if(StringUtils.isNullOrEmpty(fullTime)){
-            DateTime fullTimeDate=new DateTime(loanModel.getRecheckTime());
+        if (StringUtils.isNullOrEmpty(fullTime)) {
+            DateTime fullTimeDate = new DateTime(loanModel.getRecheckTime());
             dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
             dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
-        }else{
+        } else {
             DateTime fullTimeDate = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime);
             dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
@@ -257,7 +236,6 @@ public class ContractServiceImpl implements ContractService {
             dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         }
-
         return dataModel;
     }
 
@@ -267,7 +245,7 @@ public class ContractServiceImpl implements ContractService {
         Map<String, String> dataMap;
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
             pdfTemplate = LOAN_CONTRACT_TEMPLATE;
-            dataMap = collectInvestorContractModel(loginName, OrderId, investId,null);
+            dataMap = collectInvestorContractModel(loginName, OrderId, investId, null);
         } else {
             pdfTemplate = TRANSFER_CONTRACT_TEMPLaTE;
             dataMap = collectTransferContractModel(OrderId);
@@ -294,24 +272,13 @@ public class ContractServiceImpl implements ContractService {
 
     private AcroFields fillPdfTemplate(AnxinContractType contractType, AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
         if (contractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-            fields.setField("agentUserName", userMapper.findByLoginNameOrMobile(dataMap.get("agentMobile")).getUserName());
-            fields.setField("agentMobile", dataMap.get("agentMobile"));
-            fields.setField("agentIdentityNumber", dataMap.get("agentIdentityNumber"));
-            fields.setField("investorUserName", userMapper.findByLoginNameOrMobile(dataMap.get("investorMobile")).getUserName());
-            fields.setField("investorMobile", dataMap.get("investorMobile"));
-            fields.setField("investorIdentityNumber", dataMap.get("investorIdentityNumber"));
-            fields.setField("loanerUserName", dataMap.get("loanerUserName"));
-            fields.setField("loanerIdentityNumber", dataMap.get("loanerIdentityNumber"));
-            fields.setField("loanAmount1", dataMap.get("loanAmount"));
-            fields.setField("loanAmount2", dataMap.get("investAmount"));
-            fields.setField("periods1", dataMap.get("agentPeriods"));
-            fields.setField("periods2", dataMap.get("leftPeriods"));
-            fields.setField("totalRate", dataMap.get("totalRate"));
-            fields.setField("recheckTime1", dataMap.get("recheckTime"));
-            fields.setField("recheckTime2", dataMap.get("recheckTime"));
-            fields.setField("endTime1", dataMap.get("endTime"));
-            fields.setField("endTime2", dataMap.get("endTime"));
-            fields.setField("pledge", dataMap.get("pledge"));
+            dataMap.forEach((key,value)->{
+                try {
+                    fields.setField(key,value);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } else {
             fields.setField("transferUserName", userMapper.findByLoginNameOrMobile(dataMap.get("transferMobile")).getUserName());
             fields.setField("transferMobile", dataMap.get("transferMobile"));

@@ -85,11 +85,7 @@ public class ContractController {
 
     @RequestMapping(value = "/invest/contractNo/{contractNo}", method = RequestMethod.GET)
     public void findContract(@PathVariable String contractNo, HttpServletResponse response) {
-        String loginName = LoginUserInfo.getLoginName();
 
-        if (Strings.isNullOrEmpty(loginName) || !investService.isUserContractNo(loginName, contractNo)) {
-            return;
-        }
 
         byte[] pdf = anxinWrapperClient.printAnxinContract(contractNo);
         try {

@@ -140,7 +140,7 @@ public class LoanListController {
                 baseDataDto.setMessage("该标的无可生成的合同!");
                 return baseDto;
             }
-            mqWrapperClient.sendMessage(MessageQueue.LoanFull_GenerateAnXinContract, new BankLoanFullMessage(businessId, null, null, null, null));
+            mqWrapperClient.sendMessage(MessageQueue.LoanFull_GenerateAnXinContract, new BankLoanFullMessage(businessId, null, null, null, null,null));
         }
 
         if (anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {

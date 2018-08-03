@@ -525,42 +525,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
 
         Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(),fullTime);
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
-        dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
-        //
 
-
-        //新增
-        dataModel.put("loanName", investMap.get("loanName"));
-        dataModel.put("amountUpper", investMap.get("amountUpper"));
-        dataModel.put("amount", investMap.get("amountUpper"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("amountUpper", investMap.get("amountUpper"));
-
-        dataModel.put("endTimeYear", investMap.get("endTime"));
-        dataModel.put("endTimeMonth", investMap.get("endTimeMonth"));
-        dataModel.put("endTimeDay", investMap.get("endTimeDay"));
-        dataModel.put("fullTimeYear", investMap.get("fullTimeYear"));
-        dataModel.put("fullTimeMonth", investMap.get("fullTimeMonth"));
-        dataModel.put("fullTimeDay", investMap.get("fullTimeDay"));
-        dataModel.put("recheckTimeYear", investMap.get("recheckTimeYear"));
-        dataModel.put("recheckTimeMonth", investMap.get("recheckTimeMonth"));
-        dataModel.put("recheckTimeDay", investMap.get("recheckTimeDay"));
         //
         createContractVO.setInvestmentInfo(dataModel);
 
