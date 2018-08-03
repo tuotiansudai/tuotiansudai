@@ -2,17 +2,15 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.service.BankAccountService;
-import com.tuotiansudai.service.BankWithdrawService;
 import com.tuotiansudai.service.BankBindCardService;
+import com.tuotiansudai.service.BankWithdrawService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +28,6 @@ public class WithdrawController {
     private final BankAccountService bankAccountService;
 
     private final BankBindCardService bankBindCardService;
-
-    @Value("${bank.withdraw.fee}")
-    private long withdrawFee;
 
     @Autowired
     public WithdrawController(BankWithdrawService bankWithdrawService, BankAccountService bankAccountService, BankBindCardService bankBindCardService) {
@@ -53,7 +48,6 @@ public class WithdrawController {
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
-        modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         return modelAndView;
     }
 
