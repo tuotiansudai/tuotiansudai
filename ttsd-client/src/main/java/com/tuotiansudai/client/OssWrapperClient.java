@@ -113,6 +113,8 @@ public class OssWrapperClient {
             imageWriter.setOutput(ios);
             JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
             jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+            Graphics graphics = image.createGraphics();
+            graphics.drawImage(srcTarget, 0, 0, width, height, null);
 
             if (!water) {
                 jpegParams.setCompressionQuality(1.0f);
@@ -122,8 +124,6 @@ public class OssWrapperClient {
             }
 
             //水印文件
-            Graphics graphics = image.createGraphics();
-            graphics.drawImage(srcTarget, 0, 0, width, height, null);
             Image waterImage = ImageIO.read(this.resourceLoader.getResource("classpath:watermark.png").getFile());
             graphics.drawImage(waterImage, 0, 0, width, height, null);
             //水印文件结束
