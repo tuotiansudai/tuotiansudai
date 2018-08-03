@@ -108,7 +108,7 @@ function submitData() {
 
                     if ($transferForm.attr('action') === '/transfer/purchase') {
 
-                        var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                        var isInvestor = 'UMP_INVESTOR' === $transferDetail.data('user-role');
                         if (!isInvestor) {
                             location.href = '/login?redirect=' + encodeURIComponent(location.href);
                             return false;

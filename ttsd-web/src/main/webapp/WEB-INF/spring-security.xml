@@ -74,8 +74,8 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/logout/" access="not isAnonymous()"/>
 
-        <intercept-url pattern="/register/account/success" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/register/account/" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/register/account/success" access="hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')"/>
+        <intercept-url pattern="/register/account/" access="hasAuthority('USER') and not hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')"/>
 
         <!--menus-->
         <!--PC rules start-->
@@ -83,7 +83,7 @@
         <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/investor/invest-list" access="hasAnyAuthority('USER', 'INVESTOR')"/>
         <intercept-url pattern="/investor/invest-list-data" access="hasAnyAuthority('USER', 'INVESTOR')"/>
-        <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
+        <intercept-url pattern="/transferrer/**" access="hasAnyAuthority('USER', 'UMP_INVESTOR')"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/message/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/sign-in" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
