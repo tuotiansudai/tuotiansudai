@@ -312,26 +312,7 @@
           background: url("../../images/sign/icon_result.png") no-repeat;
           background-position: 0px 0px;
         }
-        .fudian-icon {
-          float: left;
-          width: 20px;
-          height: 15px;
-          margin-right: 3px;
-          text-align: center;
-          line-height: 16px;
-          color: #ff7200;
-          border: 1px solid #ff7200;
-        }
-        .liandong-icon {
-          float: left;
-          width: 20px;
-          height: 15px;
-          margin-right: 3px;
-          text-align: center;
-          line-height: 16px;
-          color: #ff7200;
-          border: 1px solid #ff7200;
-        }
+
         .coupon-icon {
           float: left;
           width: 20px;
@@ -550,4 +531,23 @@
   }
 }
 
-
+.fudian-icon {
+  float: left;
+  width: 20px;
+  height: 15px;
+  margin-right: 3px;
+  text-align: center;
+  line-height: 16px;
+  color: #ff7200;
+  border: 1px solid #ff7200;
+}
+.liandong-icon {
+  float: left;
+  width: 20px;
+  height: 15px;
+  margin-right: 3px;
+  text-align: center;
+  line-height: 16px;
+  color: #ff7200;
+  border: 1px solid #ff7200;
+}
