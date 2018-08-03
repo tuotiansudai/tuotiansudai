@@ -9,10 +9,6 @@ body {
 p {
   margin: 0;
 }
-.safety-page {
-  width: 1200px;
-  margin: 0 auto;
-}
 .main-frame {
   width: 100%;
   margin: 0 auto;
@@ -22,6 +18,10 @@ p {
 }
 .textLeft {
   text-align: left;
+}
+.safety-page {
+  width: 1200px;
+  margin: 0 auto;
 }
 .safety-banner {
   height: 756px;
@@ -128,7 +128,7 @@ p {
   }
 }
 .evaluating-reason {
-
+  padding-bottom: 210px;
   .title {
     width: 670px;
     height: 173px;
@@ -153,8 +153,9 @@ p {
       line-height: 40px;
     }
     .icon-list {
+      margin-top: 65px;
       ul {
-        margin-left: -154px;
+        margin-left: -44px;
         li {
           float: left;
           margin-left: 154px;
@@ -162,13 +163,26 @@ p {
             &.fanghu {
               width: 59px;
               height: 75px;
+              background: url("../images/information-safety/icon_baohu.png") no-repeat top center;
+              background-size: contain;
             }
             &.safe {
               width: 68px;
               height: 79px;
+              background: url("../images/information-safety/information_safe.png") no-repeat top center;
+              background-size: contain;
             }
             &.manage {
-
+              width: 83px;
+              height: 72px;
+              background: url("../images/information-safety/system_manage.png") no-repeat top center;
+              background-size: contain;
+            }
+            &.baozhnag {
+              width: 73px;
+              height: 79px;
+              background: url("../images/information-safety/baozhang.png") no-repeat top center;
+              background-size: contain;
             }
           }
           p {
@@ -181,6 +195,184 @@ p {
   }
 }
 
+@media screen and (max-width: 1024px){
+  .safety-banner {
+    height: 3.6rem;
+    background: url("../images/information-safety/wap_banner.png") no-repeat top center;
+    background-size: contain;
+  }
+  .three-test {
+    width: 6.3rem;
+    height: auto;
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    background: none;
+    .three-test-font {
+      p {
+        color: #fff;
+        font-size: 0.24rem;
+        line-height: 0.38rem;
+      }
+    }
+    .technology-encryption {
+      margin: 0 auto;
+      margin-top: 0.4rem;
+      width: 6.3rem;
+      height: 3.11rem;
+      background: url("../images/information-safety/part_one_content_wap.png") no-repeat top center;
+      background-size: contain;
+      padding-top: 0.72rem;
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
+      box-sizing: border-box;
+      .icon-item {
+        text-align: center;
+        &.Ali-cloud {
+          width: 1.24rem;
+          margin-left: 0;
+        }
+        &.ssl {
+          width: 1rem;
+        }
+        &.djcp {
+          width: 1.5rem;
+        }
+        .img {
+          height: 0.83rem;
+        }
+        p {
+          font-size: 0.24rem;
+          margin-top: 0;
+          line-height: 0.28rem;
+        }
+        .ali-icon {
+          width: 0.91rem;
+          height: 0.83rem;
+          background: url("../images/information-safety/icon_ali.png") no-repeat top center;
+          background-size: contain;
+        }
+        .djcp-icon {
+          width: 0.84rem;
+          height: 0.86rem;
+          background: url("../images/information-safety/DJCP.png") no-repeat top center;
+          background-size: contain;
+        }
+        .ssl-icon {
+          width: 0.81rem;
+          height: 0.87rem;
+          background: url("../images/information-safety/icon_ssl.png") no-repeat top center;
+          background-size: contain;
+        }
+      }
+
+
+      .ssl {
+        margin: 0 auto;
+      }
+    }
+  }
+  .advanced-certification {
+    width: 6.3rem;
+    margin-top: 0.9rem;
+    .title {
+      width: 4.68rem;
+      height: 1.1rem;
+      background: url("../images/information-safety/part_two_title_wap.png") no-repeat top center;
+      background-size: contain;
+    }
+    .content {
+      margin: 0 auto;
+      width: 6.36rem;
+      height: 10.7rem;
+      margin-top: 0.45rem;
+      background: url("../images/information-safety/part_two_bg_wap.png") no-repeat top center;
+      background-size: contain;
+      padding-top: 0.6rem;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+      .right-content {
+        width: 100%;
+        float: none;
+        p {
+          font-size: 0.24rem;
+          line-height: 0.36rem;
+          &.seconed-p {
+            margin-top: 0.4rem;
+          }
+        }
+      }
+
+    }
+  }
+  .evaluating-reason {
+    padding-bottom: 1.3rem;
+    .title {
+      width: 4.68rem;
+      height: 1.15rem;
+      background: url("../images/information-safety/part_three_title_wap.png") no-repeat top center;
+      background-size: contain;
+    }
+    .content {
+      margin-top: 0.85rem;
+      width: 6.35rem;
+      height: 7.32rem;
+      padding-top: 0.5rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      background: url("../images/information-safety/part_three_bg_wap.png") no-repeat top center;
+      background-size: cover;
+      p {
+        color: #fff;
+        font-size: 0.24rem;
+        line-height: 0.4rem;
+      }
+      .icon-list {
+        margin-top: 0.7rem;
+        ul {
+          margin-left: -0.5rem;
+          li {
+            float: left;
+            margin-left: 0.5rem;
+            text-align: center;
+            .img {
+              display: inline-block;
+              &.fanghu {
+                width: 0.59rem;
+                height: 0.75rem;
+                background: url("../images/information-safety/icon_baohu.png") no-repeat top center;
+                background-size: contain;
+              }
+              &.safe {
+                width: 0.68rem;
+                height: 0.75rem;
+                background: url("../images/information-safety/information_safe.png") no-repeat top center;
+                background-size: contain;
+              }
+              &.manage {
+                width: 0.83rem;
+                height: 0.75rem;
+                background: url("../images/information-safety/system_manage.png") no-repeat top center;
+                background-size: contain;
+              }
+              &.baozhnag {
+                width: 0.73rem;
+                height: 0.79rem;
+                background: url("../images/information-safety/baozhang.png") no-repeat top center;
+                background-size: contain;
+              }
+            }
+            p {
+              color: #fff;
+              font-size: 0.2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 102.4px;

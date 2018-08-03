@@ -17,7 +17,7 @@
 
         <div class="djcp icon-item fr">
             <div class="img djcp-icon"></div>
-            <p>SSL加密技术保护</p>
+            <p>信息安全等级保护三级测评</p>
         </div>
         <div class="ssl icon-item">
             <div class="img ssl-icon"></div>
@@ -67,7 +67,7 @@
                     <p>系统管理</p>
                 </li>
                 <li>
-                    <div class="img"></div>
+                    <div class="img baozhnag"></div>
                     <p>应急保障</p>
                 </li>
             </ul>
