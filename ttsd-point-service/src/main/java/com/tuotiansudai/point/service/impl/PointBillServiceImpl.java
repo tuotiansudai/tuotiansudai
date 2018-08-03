@@ -97,7 +97,7 @@ public class PointBillServiceImpl implements PointBillService {
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
         long sudaiPoint = point - channelPoint;
-        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note, userModel.getMobile(), userModel.getUserName()));
+        pointBillMapper.create(new PointBillModel(loginName, orderId, sudaiPoint, channelPoint, businessType, note, userModel.getMobile(), userModel.getUmpUserName()));
         userPointMapper.increasePoint(loginName, sudaiPoint, channelPoint, new Date());
 
         if (Lists.newArrayList(PointBusinessType.POINT_LOTTERY, PointBusinessType.EXCHANGE).contains(businessType)){
