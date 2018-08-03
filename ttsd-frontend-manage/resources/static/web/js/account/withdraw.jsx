@@ -9,15 +9,8 @@ let $withdraw = $('.withdraw'),
     actualAmountElement = $('.actual-amount', $withdraw),
     withdrawFeeElement = $('.withdraw-fee', $withdraw);
 amountInputElement.autoNumeric("init");
-let isFudianBank = withdrawFeeElement.data('bankcode');
-if(isFudianBank === 466){
-    withdrawFeeElement.html('1.00');
-    $('#cash').html('1.00')
-}else {
-    $('#cash').html('1.50')
-        moneyCheck()
-}
-
+let isFudianBank = withdrawFeeElement.data('fudianbank');
+moneyCheck(isFudianBank)
 
 var u = navigator.userAgent;
 var isInWeChat = /(micromessenger|webbrowser)/.test(u.toLocaleLowerCase());
@@ -29,9 +22,9 @@ if (isInWeChat && isIos) {
 amountInputElement.keyup(function () {
     let amount = parseFloat(amountInputElement.autoNumeric("get")),
         withdrawFee = parseFloat(withdrawFeeElement.html());
-    moneyCheck()
+    moneyCheck(isFudianBank);
     if(amountInputElement.val()==''){
-        if(isFudianBank === 466){
+        if(isFudianBank){
             withdrawFeeElement.html('1.00');
             $('#cash').html('1.00')
         }else {
@@ -82,16 +75,16 @@ let metaViewPort = $('meta[name=viewport]');//
 metaViewPort.remove()
 $('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
 
-function moneyCheck() {
+function moneyCheck(isFudianBank) {
     let amount = parseFloat(amountInputElement.autoNumeric("get"));
 
-    if(amount<=50000){
-        withdrawFeeElement.html('1.50');
-    }else {
-        withdrawFeeElement.html('5.00');
-    }
-    if(amountInputElement.val()==''){
-
-        withdrawFeeElement.html('1.50')
+    if (isFudianBank){
+        withdrawFeeElement.html('1.00');
+    }else{
+        if(isNaN(amount) || amount<=50000){
+            withdrawFeeElement.html('1.50');
+        }else {
+            withdrawFeeElement.html('5.00');
+        }
     }
 }

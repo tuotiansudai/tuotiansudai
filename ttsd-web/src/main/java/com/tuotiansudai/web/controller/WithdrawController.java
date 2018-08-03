@@ -47,6 +47,7 @@ public class WithdrawController {
         long balance = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role).getBalance();
         ModelAndView modelAndView = new ModelAndView("/withdraw");
         modelAndView.addObject("bankCard", bankCard);
+        modelAndView.addObject("isFudianBank", bankCard.getBankCode().equals("466"));
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         return modelAndView;
     }

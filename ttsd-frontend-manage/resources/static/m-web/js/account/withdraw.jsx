@@ -13,13 +13,8 @@ let amount = $amount.val(),
 
 
 $amount.autoNumeric('init');
-let isFudianBank = $serviceCharge.data('bankcode');
-if(isFudianBank === 466){
-    $serviceCharge.html('1.00');
-}else {
-
-   moneyCheck()
-}
+let isFudianBank = $serviceCharge.data('fudianbank');
+moneyCheck(isFudianBank);
 // //格式化钱
 
 $cashMoney.autoNumeric('init');
@@ -49,18 +44,7 @@ function testAmount() {
     } else {
         $toCashBtn.prop('disabled', true).text('确认提交');
     }
-    if(amount<=50000&&amount>1.5){
-        $serviceCharge.html('1.50');
-    }else if(amount>50000){
-        $serviceCharge.html('5.00');
-    }
-    if($amount.val()==''){
-        if(isFudianBank === 466){
-            $serviceCharge.html('1.00');
-        }else {
-            $serviceCharge.html('1.50');
-        }
-    }
+    moneyCheck(isFudianBank);
 }
 $amount.on('keyup', function (event) {
     testAmount();
@@ -78,14 +62,16 @@ $toCashBtn.on('click', function (e) {
 
 })
 
-function moneyCheck() {
-    let amount = $amount.val();
-    if($amount.val()==''){
-        $serviceCharge.html('0.00');
-    }
-    if(amount<=50000){
-        $serviceCharge.html('1.50');
-    }else {
-        $serviceCharge.html('5.00');
+function moneyCheck(isFudianBank) {
+    let amount = getAmount($amount);
+
+    if(isFudianBank){
+        $serviceCharge.html('1.00');
+    }else{
+        if(isNaN(amount) || amount<=50000){
+            $serviceCharge.html('1.50');
+        }else {
+            $serviceCharge.html('5.00');
+        }  
     }
 }
