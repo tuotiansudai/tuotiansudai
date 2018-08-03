@@ -17,7 +17,7 @@
         </li>
         <li>
             <label for="perCard">银行卡</label>
-            <span>
+            <span class="card-width">
                 <#if bankCard??>
                     <input type="text" id="perCard" value="${bankCard.cardNumber}(尾号${bankCard.cardNumber[(bankCard.cardNumber?length - 4)..]})" readonly unselectable="on" onfocus="this.blur()">
                 <#else>
