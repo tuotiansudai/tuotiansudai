@@ -114,6 +114,7 @@
             <if test="income != null">
                 and risk_estimate.income = #{income}
             </if>
+            and income IS NOT NULL
         </where>
         order by risk_estimate.updated_time desc
         limit #{offset}, 10
