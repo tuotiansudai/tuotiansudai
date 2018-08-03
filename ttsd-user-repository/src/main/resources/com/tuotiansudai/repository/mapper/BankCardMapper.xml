@@ -38,4 +38,35 @@
         select * from bank_card where login_name = #{loginName} and status = 'APPLY' and is_fast_pay_on = true
     </select>
 
+    <select id="findCountReplaceBankCardByLoginName" parameterType="map" resultType="int">
+        select count(1) from (select * from bank_card
+        where status != 'UNCHECKED' and status != 'FAILED'
+        <if test="loginName != null and loginName != ''">
+            and login_name = #{loginName}
+        </if>
+        group by login_name having count(1) > 1) t
+    </select>
+
+    <select id="findReplaceBankCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
+        select * from (
+        select * from bank_card
+        where status != 'UNCHECKED' and status != 'FAILED'
+        <if test="loginName != null and loginName != ''">
+            and login_name = #{loginName}
+        </if>
+        order by created_time desc) t
+        group by login_name having count(1) > 1 order by created_time desc limit #{index},#{pageSize}
+    </select>
+
+    <select id="findReplaceBeforeCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
+        SELECT
+        *
+        FROM
+        bank_card
+        WHERE
+        status = 'REMOVED'
+        AND login_name = #{loginName}
+        ORDER BY created_time DESC limit 1
+    </select>
+
 </mapper>

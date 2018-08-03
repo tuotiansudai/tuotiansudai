@@ -28,15 +28,15 @@
               (select balance from bank_account where login_name = #{loginName} and role_type = #{roleType}) as balance,
 
               (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
-              from invest_repay join invest on invest_repay.invest_id= invest.id
-              where invest.loan_id != 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_total_interest,
+              from invest_repay join invest on invest_repay.invest_id= invest.id join loan on invest.loan_id = loan.id
+              where invest.loan_id != 1 and loan.is_bank_platform = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_total_interest,
 
               (select ifnull(sum(actual_interest), 0) - ifnull(sum(actual_fee), 0)
               from coupon_repay
               where is_transferred is false and login_name = #{loginName} and status = 'COMPLETE') as actual_coupon_interest,
 
               (select ifnull(sum(invest_extra_rate.actual_interest), 0) - ifnull(sum(invest_extra_rate.actual_fee), 0)
-              from invest_extra_rate where login_name = #{loginName} and is_transfer is false)
+              from invest_extra_rate join loan on invest_extra_rate.loan_id = loan.id where login_name = #{loginName} and loan.is_bank_platform = 1 and is_transfer is false)
                +
               (select ifnull(sum(amount), 0)
               from bank_user_bill
@@ -50,24 +50,24 @@
               where user_coupon.login_name = #{loginName} and user_coupon.status = 'SUCCESS' and coupon.coupon_type = 'RED_ENVELOPE') as red_envelope_amount,
 
               (select ifnull(sum(invest_repay.corpus), 0)
-              from invest_repay join invest on invest_repay.invest_id = invest.id
-              where invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_total_corpus,
+              from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+              where invest.login_name = #{loginName} and loan.is_bank_platform = 1 and invest_repay.status = 'REPAYING') as expected_total_corpus,
 
               (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
-              from invest_repay join invest on invest_repay.invest_id = invest.id
-              where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status= 'REPAYING') as expected_total_interest,
+              from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+              where invest.loan_id != 1 and loan.is_bank_platform = 1 and login_name = #{loginName} and invest_repay.status= 'REPAYING') as expected_total_interest,
 
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
               from coupon_repay
               where login_name = #{loginName} and status = 'REPAYING') as expected_coupon_interest,
 
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
-              from invest_extra_rate
-              where login_name = #{loginName} and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
+              from invest_extra_rate join loan on invest_extra_rate.loan_id = loan.id
+              where login_name = #{loginName} and loan.is_bank_platform = 1 and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
 
               (select count(1)
-              from invest_repay join invest on invest_repay.invest_id = invest.id
-              where invest.login_name = #{loginName}
+              from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+              where invest.login_name = #{loginName} and loan.is_bank_platform = 1
               and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
               and invest.transfer_status != 'SUCCESS'
               and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
@@ -78,10 +78,10 @@
               where business_type='EXPERIENCE_INTEREST' and login_name = #{loginName}) as actual_experience_interest,
 
               (select ifnull(sum(invest_repay.expected_interest), 0)
-              from invest_repay join invest on invest_repay.invest_id= invest.id
-              where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
+              from invest_repay join invest on invest_repay.invest_id= invest.id join loan on invest.loan_id = loan.id
+              where invest.loan_id = 1 and loan.is_bank_platform = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
 
-             (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
+             (select ifnull(sum(amount), 0) from invest join loan on invest.loan_id = loan.id where invest.login_name = #{loginName} and loan.is_bank_platform = 1 and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
         from dual;
     </select>
 
@@ -90,15 +90,15 @@
         (select balance from account where login_name = #{loginName}) as balance,
 
         (select ifnull(sum(invest_repay.actual_interest), 0) - ifnull(sum(invest_repay.actual_fee), 0)
-        from invest_repay join invest on invest_repay.invest_id= invest.id
-        where invest.loan_id != 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_total_interest,
+        from invest_repay join invest on invest_repay.invest_id= invest.id join loan on invest.loan_id = loan.id
+        where invest.loan_id != 1 and loan.is_bank_platform = 0 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'COMPLETE') as actual_total_interest,
 
         (select ifnull(sum(actual_interest), 0) - ifnull(sum(actual_fee), 0)
         from coupon_repay
         where is_transferred is false and login_name = #{loginName} and status = 'COMPLETE') as actual_coupon_interest,
 
         (select ifnull(sum(invest_extra_rate.actual_interest), 0) - ifnull(sum(invest_extra_rate.actual_fee), 0)
-        from invest_extra_rate where login_name = #{loginName} and is_transfer is false)
+        from invest_extra_rate join loan on invest_extra_rate.loan_id = loan.id where login_name = #{loginName} and loan.is_bank_platform = 0 and is_transfer is false)
         +
         (select ifnull(sum(amount), 0)
         from user_bill
@@ -112,31 +112,31 @@
         where user_coupon.login_name = #{loginName} and user_coupon.status = 'SUCCESS' and coupon.coupon_type = 'RED_ENVELOPE') as red_envelope_amount,
 
         (select ifnull(sum(invest_repay.corpus), 0)
-        from invest_repay join invest on invest_repay.invest_id = invest.id
-        where invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_total_corpus,
+        from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName} and loan.is_bank_platform = 0 and invest_repay.status = 'REPAYING') as expected_total_corpus,
 
         (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
-        from invest_repay join invest on invest_repay.invest_id = invest.id
-        where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status= 'REPAYING') as expected_total_interest,
+        from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+        where invest.loan_id != 1 and loan.is_bank_platform = 0  and login_name = #{loginName} and invest_repay.status= 'REPAYING') as expected_total_interest,
 
         (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
         from coupon_repay
         where login_name = #{loginName} and status = 'REPAYING') as expected_coupon_interest,
 
         (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
-        from invest_extra_rate
-        where login_name = #{loginName} and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
+        from invest_extra_rate join loan on invest_extra_rate.loan_id = loan.id
+        where login_name = #{loginName} and loan.is_bank_platform = 0 and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
 
         (select ifnull(sum(invest.amount), 0)
         from invest join loan on invest.loan_id = loan.id
-        where invest.login_name = #{loginName} and loan.id != 1 and invest.status = 'SUCCESS' and loan.status in ('RAISING', 'RECHECK')) as invest_froze_amount,
+        where invest.login_name = #{loginName} and loan.is_bank_platform = 0 and loan.id != 1 and invest.status = 'SUCCESS' and loan.status in ('RAISING', 'RECHECK')) as invest_froze_amount,
 
         (select ifnull(sum(amount), 0)
         from withdraw where login_name = #{loginName} and status = 'APPLY_SUCCESS') as withdraw_froze_amount,
 
         (select count(1)
-        from invest_repay join invest on invest_repay.invest_id = invest.id
-        where invest.login_name = #{loginName}
+        from invest_repay join invest on invest_repay.invest_id = invest.id join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName} and loan.is_bank_platform = 0
         and EXISTS (select 1 from loan l where l.id = invest.loan_id and l.product_type != 'EXPERIENCE')
         and invest.transfer_status != 'SUCCESS'
         and((invest_repay.status = 'REPAYING' and date_format(invest_repay.repay_date, '%Y-%m-%d') between date_format(now(), '%Y-%m-01') and LAST_DAY(now()))
@@ -147,10 +147,10 @@
         where business_type='EXPERIENCE_INTEREST' and login_name = #{loginName}) as actual_experience_interest,
 
         (select ifnull(sum(invest_repay.expected_interest), 0)
-        from invest_repay join invest on invest_repay.invest_id= invest.id
-        where invest.loan_id = 1 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
+        from invest_repay join invest on invest_repay.invest_id= invest.id join loan on invest.loan_id = loan.id
+        where invest.loan_id = 1 and loan.is_bank_platform = 0 and invest_repay.is_transferred is false and invest.login_name = #{loginName} and invest_repay.status = 'REPAYING') as expected_experience_interest,
 
-        (select ifnull(sum(amount), 0) from invest where invest.login_name = #{loginName} and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
+        (select ifnull(sum(amount), 0) from invest join loan on invest.loan_id = loan.id where invest.login_name = #{loginName} and loan.is_bank_platform = 0 and invest.status = 'SUCCESS' and loan_id !=1 and transfer_invest_id is null) as invest_amount
         from dual;
     </select>
 

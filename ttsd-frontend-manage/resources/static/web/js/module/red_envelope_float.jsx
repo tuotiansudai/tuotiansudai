@@ -232,7 +232,7 @@ require.ensure([],function() {
             }
             if (!errorMsg) {
                 //提交表单
-                let type=$feedbackConatiner.find('.type-list dt').data('type');
+                let type=$feedbackConatiner.find('.type-list dt').attr('data-type');
                 let feedSubmit=$(feedForm).find(':submit');
                 feedForm.type.value = type;
                 commonFun.useAjax({

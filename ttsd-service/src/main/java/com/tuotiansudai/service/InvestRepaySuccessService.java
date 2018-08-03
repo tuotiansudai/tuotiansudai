@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanCallbackMessage;
 import com.tuotiansudai.fudian.umpmessage.UmpCouponRepayMessage;
@@ -12,6 +13,7 @@ import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +46,10 @@ public class InvestRepaySuccessService {
 
     private final MQWrapperClient mqWrapperClient;
 
+    private final UserMapper userMapper;
+
     @Autowired
-    public InvestRepaySuccessService(LoanMapper loanMapper, MQWrapperClient mqWrapperClient, LoanRepayMapper loanRepayMapper, InvestMapper investMapper, InvestRepayMapper investRepayMapper, CouponMapper couponMapper, CouponRepayMapper couponRepayMapper, InvestExtraRateMapper investExtraRateMapper) {
+    public InvestRepaySuccessService(LoanMapper loanMapper, MQWrapperClient mqWrapperClient, LoanRepayMapper loanRepayMapper, InvestMapper investMapper, InvestRepayMapper investRepayMapper, CouponMapper couponMapper, CouponRepayMapper couponRepayMapper, InvestExtraRateMapper investExtraRateMapper, UserMapper userMapper) {
         this.loanMapper = loanMapper;
         this.mqWrapperClient = mqWrapperClient;
         this.loanRepayMapper = loanRepayMapper;
@@ -54,6 +58,7 @@ public class InvestRepaySuccessService {
         this.couponMapper = couponMapper;
         this.couponRepayMapper = couponRepayMapper;
         this.investExtraRateMapper = investExtraRateMapper;
+        this.userMapper = userMapper;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -194,6 +199,7 @@ public class InvestRepaySuccessService {
                     Lists.newArrayList(investModel.getLoginName()), title, content, bankLoanCallbackMessage.getInvestRepayId()));
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title, AppUrl.MESSAGE_CENTER_LIST));
             mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.ADVANCE_REPAY_SUCCESS, bankLoanCallbackMessage.getInvestRepayId()));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()), Lists.newArrayList(loanModel.getName())));
         } catch (Exception ignore) {
         }
     }
@@ -303,6 +309,7 @@ public class InvestRepaySuccessService {
                     Lists.newArrayList(investModel.getLoginName()), title, content, umpRepayPaybackMessage.getInvestRepayId()));
             mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(investModel.getLoginName()), PushSource.ALL, PushType.ADVANCED_REPAY, title, AppUrl.MESSAGE_CENTER_LIST));
             mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.ADVANCE_REPAY_SUCCESS, umpRepayPaybackMessage.getInvestRepayId()));
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_ADVANCED_REPAY_TEMPLATE, Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()), Lists.newArrayList(loanModel.getName())));
         } catch (Exception ignore) {
         }
     }

@@ -59,8 +59,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         this.sendMessage(userModel);
 
-        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
-
         return userModel;
     }
 
