@@ -15,7 +15,7 @@ public class Test3211 {
         head.setTxTime("20160102235959");
 
         tx3211ReqVO.setHead(head);
-        tx3211ReqVO.setBatchNo("a1d58b4bd234458fb7c2c1da1f0cee8f");
+        tx3211ReqVO.setBatchNo("B135");
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);

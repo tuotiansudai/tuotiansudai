@@ -74,6 +74,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
 
+    private static final String LOAN_CONTRACT_INVESTOR_SIGN_NEXT = "inverstorName";
+
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";

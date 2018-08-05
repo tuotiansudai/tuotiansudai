@@ -1,5 +1,6 @@
 package com.tuotiansudai.cfca.contract.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.AcroFields;
@@ -208,34 +209,30 @@ public class ContractServiceImpl implements ContractService {
         //
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-        dataModel.put("investorIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("loanName", loanModel.getName());
-        dataModel.put("loanType", loanModel.getType().getName());
-        dataModel.put("periods", loanModel.getPeriods() + "");
         dataModel.put("amountUpper", AmountConverter.getRMBStr(investModel.getAmount()));
         dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
-        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
-        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
-        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
-        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
-        if (StringUtils.isNullOrEmpty(fullTime)) {
-            DateTime fullTimeDate = new DateTime(loanModel.getRecheckTime());
-            dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
-            dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
-            dataModel.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
-            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
-            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
-            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+        //根据标的类型判断借款开始时间
+        if (LoanType.INVEST_INTEREST_MONTHLY_REPAY.equals(loanModel.getType()) || LoanType.INVEST_INTEREST_LUMP_SUM_REPAY.equals(loanModel.getType())) {
+            DateTime recheckTimeYear=new DateTime(investModel.getCreatedTime());
+            dataModel.put("recheckTimeYear", String.valueOf(recheckTimeYear.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
         } else {
-            DateTime fullTimeDate = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime);
-            dataModel.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
-            dataModel.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
-            dataModel.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+            DateTime fullTimeDate = Strings.isNullOrEmpty(fullTime)?DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime):new DateTime(loanModel.getRecheckTime());
             dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         }
+        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
+        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
+        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
+        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
+        dataModel.put("periods", loanModel.getPeriods() + "");
+        dataModel.put("loanType", loanModel.getType().getName());
+        dataModel.put("investorName", investorModel.getUserName());
         return dataModel;
     }
 

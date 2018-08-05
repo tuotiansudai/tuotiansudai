@@ -24,17 +24,13 @@ public class Test3202 {
         List<CreateContractVO> createContractlist = new ArrayList<CreateContractVO>();
 
         CreateContractVO createContract = new CreateContractVO();
-        createContract.setTemplateId("JK_1754");
+        createContract.setTemplateId("JK_1742");
+        createContract.setIsSign(1);
 
         Map<String, String> fieldMap = new HashMap<String, String>();
-        fieldMap.put("investorName", "投资人");
-        fieldMap.put("investorName2", "投资人");
         fieldMap.put("investorIdentityNumber", "370786199111050610");
-        fieldMap.put("loanerUserName", "借款人");
-        fieldMap.put("investorIdentityNumber", "370786199111050610");
+        fieldMap.put("loanerIdentityNumber", "370786199111050610");
         fieldMap.put("loanName", "测试项目");
-        fieldMap.put("loanType", "先息后款");
-        fieldMap.put("periods", "12");
         fieldMap.put("amountUpper", AmountConverter.getRMBStr(900050));
         fieldMap.put("amount", "9000.5");
         fieldMap.put("totalRate", "11%");
@@ -43,13 +39,12 @@ public class Test3202 {
         fieldMap.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
         fieldMap.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
         DateTime fullTimeDate = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2018-08-03 11:50:55");
-        fieldMap.put("fullTimeYear", String.valueOf(fullTimeDate.getYear()));
-        fieldMap.put("fullTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
-        fieldMap.put("fullTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         fieldMap.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
         fieldMap.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
         fieldMap.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
-
+        fieldMap.put("periods", "12");
+        fieldMap.put("loanType", "先息后款");
+        fieldMap.put("investorName", "投资人");
 
         createContract.setInvestmentInfo(fieldMap);
 
@@ -70,12 +65,10 @@ public class Test3202 {
         investorSignInfo.setIsProxySign(1);
 
         createContract.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContract.setTemplateId("JK_1754");
-
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B128");
+        tx3202ReqVO.setBatchNo("B135");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
