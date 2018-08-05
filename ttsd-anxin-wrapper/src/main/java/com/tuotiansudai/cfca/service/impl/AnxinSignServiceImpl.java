@@ -333,7 +333,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Override
     public BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto) {
-        long loanId=anxinLoanSuccessDto.getLoanId();
+        long loanId = anxinLoanSuccessDto.getLoanId();
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
 
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
@@ -356,7 +356,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel,anxinLoanSuccessDto.getFullTime());
+            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel, anxinLoanSuccessDto.getFullTime());
             if (createContractVO == null) {
                 continue;
             }
@@ -503,9 +503,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel,String fullTime) {
+    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel, String fullTime) {
         CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
 
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -526,7 +525,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(),fullTime);
+        Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(), fullTime);
 
         //
         createContractVO.setInvestmentInfo(dataModel);
@@ -596,7 +595,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 
-    private void sendSms(String params){
+    private void sendSms(String params) {
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }
