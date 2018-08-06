@@ -248,10 +248,6 @@ for(let i=0,len=reInputs.length; i<len;i++) {
        if(e.currentTarget.id =='mobileInput'){
            $('.errorMessage').hide();
        }
-       if(e.currentTarget.id =='referrerInput' ){
-           $('.error-register').hide();
-       }
-
 
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
@@ -329,6 +325,8 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         $(tipText).show();
     })
 }
+
+
 
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会
