@@ -16,7 +16,7 @@
                     <input validate type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11"
                            value="${(originalFormData.mobile)!}"/>
                     <div class="mobileInputText" style="display:none;">请输入11位手机号码</div>
-                    <div class="errorMessage" style="display:none;">error</div>
+                    <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                 </li>
                 <li>
                     <i class="icon-password"></i>
@@ -42,7 +42,7 @@
                 <li class="">
                     <i class="icon-referrer"></i>
                     <input validate type="text" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
-                    <div class="errorMessage" style="display:none;">error</div>
+                    <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>

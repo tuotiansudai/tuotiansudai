@@ -112,6 +112,15 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        boolean registerMobileExist = userService.mobileIsExist(registerUserDto.getMobile());
+        if (registerMobileExist){
+            redirectAttributes.addFlashAttribute("registerMobileError", "手机号已存在");
+        }
+        boolean referrerMobileExist = !Strings.isNullOrEmpty(registerUserDto.getReferrer()) && userService.mobileIsExist(registerUserDto.getReferrer());
+        if (!referrerMobileExist){
+            redirectAttributes.addFlashAttribute("referrerMobileError", "推荐人手机号不存在");
+        }
+
         boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
 
         if (!isRegisterSuccess) {
@@ -128,8 +137,16 @@ public class RegisterUserController {
     @RequestMapping(path = "/user/m", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
         Map<String, Object> result = new HashMap<>();
+        boolean registerMobileExist = userService.mobileIsExist(registerUserDto.getMobile());
+        if (registerMobileExist){
+            result.put("registerMobileError", "手机号已存在");
+        }
+        boolean referrerMobileExist = !Strings.isNullOrEmpty(registerUserDto.getReferrer()) && userService.mobileIsExist(registerUserDto.getReferrer());
+        if (!referrerMobileExist){
+            result.put("referrerMobileError", "推荐人手机号不存在");
+        }
+        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
         result.put("success", isRegisterSuccess);
         return result;
     }
