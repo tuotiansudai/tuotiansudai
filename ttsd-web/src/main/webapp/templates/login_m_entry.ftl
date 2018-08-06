@@ -13,7 +13,7 @@
 
     <div id="EntryPointForm">
         <form id="EntryPointFormPageOne" class="form-login">
-        <input validate type="text" name="mobile" value="${mobile!}" autocomplete="off" placeholder="请输入手机号" maxlength="11" class="telephoneInput"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+        <input validate type="text" name="mobile" id="mobileInput" value="${mobile!}" autocomplete="off" placeholder="请输入手机号" maxlength="11" class="telephoneInput"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
 
         <div class="close_btn" id="close_btn"></div>
 

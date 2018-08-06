@@ -112,7 +112,18 @@ let contentInput = (id, content, length) => {
             if (!!length) {
                 if (e.currentTarget.value.length === length) {
                     telephoneNum = e.currentTarget.value;
-                    $('.step_one').attr("disabled", false);
+                    if(e.currentTarget.id =='mobileInput' ){
+
+                        if($('.captchaPageOne').val().length <5){
+                            $('.step_one').attr("disabled", true);
+                        }else {
+                            $('.step_one').attr("disabled", false);
+                        }
+                    }else {
+                        $('.step_one').attr("disabled", false);
+                    }
+
+
                 } else {
                     $('.step_one').attr("disabled", true);
                 }
