@@ -13,7 +13,7 @@
             <ul class="reg-list tl register-step-one register-icon-list">
                 <li>
                     <i class="icon-mobile"></i>
-                    <input validate type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11"
+                    <input validate type="text" name="mobile" id="mobileInput" class="mobile" placeholder="请输入手机号" maxlength="11"
                            value="${(originalFormData.mobile)!}"/>
                     <div class="mobileInputText" style="display:none;">请输入11位手机号码</div>
                     <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
@@ -41,7 +41,7 @@
                 <li class="referrer-open"> <i class="icon-arrow-bottom"></i>请输入推荐人（此项选填）</li>
                 <li class="">
                     <i class="icon-referrer"></i>
-                    <input validate type="text" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input validate type="text" id="referrerInput" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
                     <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
                 </li>
                 <li class="agree-last">

@@ -244,9 +244,15 @@ for(let i=0,len=reInputs.length; i<len;i++) {
 }
 
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i], "keyup", function() {
-        $('.errorMessage').hide();
-        $('.error-register').hide();
+    globalFun.addEventHandler(reInputs[i], "keyup", function(e) {
+       if(e.currentTarget.id =='mobileInput'){
+           $('.errorMessage').hide();
+       }
+       if(e.currentTarget.id =='referrerInput' ){
+           $('.error-register').hide();
+       }
+
+
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         if (tipName === '.mobile') {
@@ -351,13 +357,13 @@ function isDisabledButton() {
 registerForm.onsubmit = function(event) {
     event.preventDefault();
 
-    // if($referrer.hasClass('error')) {
-    //     $referrerOpen.trigger('click');
-    //     return false;
-    // }
-    // else {
+    if($referrer.hasClass('error')) {
+        $referrerOpen.trigger('click');
+        return false;
+    }
+    else {
         registerForm.submit();
-    // }
+    }
 };
 
 //  图形验证码刷新
