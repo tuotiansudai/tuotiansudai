@@ -42,7 +42,7 @@
                 <li class="">
                     <i class="icon-referrer"></i>
                     <input validate type="text" id="referrerInput" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
-                    <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
+                    <#if referrerMobileError??><div class="errorMessage referferError">${referrerMobileError}</div> </#if>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
