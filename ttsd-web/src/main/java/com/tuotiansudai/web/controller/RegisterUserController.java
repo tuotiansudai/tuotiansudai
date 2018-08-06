@@ -94,7 +94,7 @@ public class RegisterUserController {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             logger.info("[APP SHARE ANDROID] :" + message);
-            baseDataDto = new BaseDataDto(false, message);
+            baseDataDto = new BaseDataDto(false);
             baseDto.setData(baseDataDto);
             return baseDto;
         }
@@ -134,7 +134,7 @@ public class RegisterUserController {
         }
 
         String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
-        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
+        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : Strings.isNullOrEmpty(registerUserDto.getRedirectToError()) ? "/register/user" : registerUserDto.getRedirectToError());
         logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
         return new ModelAndView(url);
     }
