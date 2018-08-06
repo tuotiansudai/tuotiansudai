@@ -17,6 +17,7 @@ let agreementValid=true,
 let $captchaSubmit=$('.image-captcha-confirm'),
     $voiceCaptcha = $('#voice_captcha_code');
 
+// $('#mobileInput').val('1')
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
@@ -97,37 +98,7 @@ require.ensure(['publicJs/my_fetch_captcha'], function(require){
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 
-//推荐人是否存在
-validator.newStrategy(registerForm.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
-    var getResult='',
-        that=this,
-        _arguments=arguments;
-    //只验证推荐人是否存在，不验证是否为空
-    if(this.value=='') {
-        referrerValidBool=true;
-        getResult='';
-        ValidatorObj.isHaveError.no.apply(that,_arguments);
-        return '';
-    }
-    commonFun.useAjax({
-        type:'POST',
-        async: false,
-        url:'/register/user/referrer/'+this.value+'/is-exist'
-    },function(response) {
-        if(response.data.status) {
-            // 如果为true说明推荐人存在
-            referrerValidBool=true;
-            getResult='';
-            ValidatorObj.isHaveError.no.apply(that,_arguments);
-        }
-        else {
-            referrerValidBool=false;
-            getResult=errorMsg;
-            ValidatorObj.isHaveError.yes.apply(that,_arguments);
-        }
-    });
-    return getResult;
-});
+
 
 //验证图形验证码
 
@@ -226,9 +197,6 @@ validator.add(registerForm.mobile, [{
 }, {
     strategy: 'isMobile',
     errorMsg: '手机号格式不正确'
-},{
-    strategy: 'isMobileExist',
-    errorMsg: '手机号已经存在'
 }],true);
 validator.add(registerForm.password, [{
     strategy: 'isNonEmpty',
@@ -255,10 +223,6 @@ validator.add(registerForm.captcha, [{
     errorMsg: '验证码不正确'
 }],true);
 
-validator.add(registerForm.referrer, [{
-    strategy: 'isReferrerExist',
-    errorMsg: '推荐人不存在'
-}],true);
 
 
 let reInputs=$(registerForm).find('input[validate]');
@@ -280,8 +244,15 @@ for(let i=0,len=reInputs.length; i<len;i++) {
     })
 }
 
+$('#referrerInput').on('keyup',function () {
+    $('.referferError').hide();
+})
 for(let i=0,len=reInputs.length; i<len;i++) {
-    globalFun.addEventHandler(reInputs[i], "keyup", function() {
+    globalFun.addEventHandler(reInputs[i], "keyup", function(e) {
+       if(e.currentTarget.id =='mobileInput'){
+           $('.errorMessage').hide();
+       }
+
         let tipName = '.' + $(this).attr('name');
         let tipText = '.' + $(this).attr('name') + 'InputText';
         if (tipName === '.mobile') {
@@ -324,10 +295,10 @@ for(let i=0,len=reInputs.length; i<len;i++) {
             }
             isDisabledButton();
         }
-        else if (tipName === '.referrer') {
-            validator.start(this);
-            isDisabledButton();
-        }
+        // else if (tipName === '.referrer') {
+        //     validator.start(this);
+        //     isDisabledButton();
+        // }
     })
 }
 
@@ -358,6 +329,8 @@ for(let i=0,len=reInputs.length; i<len;i++) {
         $(tipText).show();
     })
 }
+
+
 
 //用来判断获取验证码和立即注册按钮 是否可点击
 //表单验证通过会

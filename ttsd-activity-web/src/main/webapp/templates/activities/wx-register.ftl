@@ -20,12 +20,14 @@
                                     <form class="register-user-form" action="/register/user" method="post"
                                           autocomplete="off" novalidate="novalidate" id="registerUserForm">
                                         <input type="hidden" name="source" value="WE_CHAT">
+                                        <input type="hidden" name="redirectToError" value="/activity/wx-register"/>
                                         <ul class="reg-list tl register-step-one">
                                             <li>
                                                 <label for="" class="reg-title">手机号:</label>
                                                 <input validate type="text" id="mobile" name="mobile"
                                                        class="mobile long" placeholder="手机号"
                                                        maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                               <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                                             </li>
                                             <li>
                                                 <label for="" class="reg-title">密码:</label>
@@ -61,6 +63,7 @@
                                                 <input validate type="text" id="referrer" name="referrer"
                                                        placeholder="推荐人手机号（此项选填）"
                                                        maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                                <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
                                             </li>
                                             <li class="agree-last">
                                                 <input type="hidden" name="agreement" id="agreementInput"
