@@ -2,13 +2,15 @@ let ValidatorObj = require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
 let isVoice = false;
 let formLogin = globalFun.$('#formLogin');
-
+let EntryPointFormPageOne = globalFun.$('#EntryPointFormPageOne');
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formLogin));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let loginSubmit = $('button[type="submit"]', $(formLogin));
 let telephoneNum = '';
+
+let imageCaptchaPageOne = globalFun.$('#imageCaptchaPageOne');
 
 (function (doc, win) {
     let docEl = doc.documentElement,
@@ -50,6 +52,12 @@ let entryEv = () => {
     $('.login_container').hide();
 };
 
+commonFun.refreshCaptcha(imageCaptchaPageOne, '/login/captcha');
+//刷新验证码
+$('#imageCaptchaPageOne').on('click', function () {
+    commonFun.refreshCaptcha(this, '/login/captcha');
+    $('.captchaPageOne').val('');
+});
 let loginEv = () => {
     $('.entry_container').hide();
     $('.login_container').show();
@@ -132,16 +140,27 @@ let clearInputTwoVal = (id) => {
 };
 
 let stepOneEv = () => {
-    $('.step_one').on('click', () => {
+    $('.step_one').on('click', (e) => {
+        e.preventDefault();
         if (!/(^1[0-9]{10}$)/.test(telephoneNum)) { // 入口手机号码校验
             layer.msg('手机号格式不正确');
             return;
         }
+        if($('.captchaPageOne').val()!==''){
+            layer.msg('验证码不能为空');
+            return;
+        }
+        if($('.captchaPageOne').val().length <5){
+            layer.msg('验证码为5位数');
+            return;
+        }
+        var captcha = $('#captchaPageOneInput').val();
+
         localStorage.setItem('login_telephone', telephoneNum);
         commonFun.useAjax({
             type: 'POST',
             async: false,
-            url: '/register/user/mobile/' + telephoneNum + '/is-exist'
+            url: '/register/user/mobile/' + telephoneNum + '/is-exist?captcha='+captcha
         }, function (response) {
             if (response.data.status) {
                 pushHistory('#login'); // 登录
@@ -192,6 +211,9 @@ $('#imageCaptcha').on('click', function () {
     formLogin.captcha.value = '';
 });
 
+
+
+
 validator.add(formLogin.password, [{
     strategy: 'isNonEmpty',
     errorMsg: '密码不能为空'
@@ -201,6 +223,14 @@ validator.add(formLogin.password, [{
 }]);
 
 validator.add(formLogin.captcha, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '验证码不能为空'
+}, {
+    strategy: 'isNumber:5',
+    errorMsg: '验证码必须为5位数字'
+}]);
+
+validator.add(EntryPointFormPageOne.captchaPageOne, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
 }, {
@@ -221,6 +251,22 @@ Array.prototype.forEach.call(loginInputs, function (el) {
         });
         let isAllValid = hasValid.length == loginInputs.length;
         $('button', $(formLogin)).prop('disabled', !isAllValid);
+    })
+});
+
+let loginInputsPageOne = $(EntryPointFormPageOne).find('input[validate]');
+Array.prototype.forEach.call(loginInputsPageOne, function (el) {
+    globalFun.addEventHandler(el, 'keyup', function () {
+        $errorBox.text('');
+        let errorMsg = validator.start(this);
+        if (errorMsg) {
+            $errorBox.text(errorMsg);
+        }
+        let hasValid = loginInputsPageOne.filter(function (key, option) {
+            return $(option).hasClass('valid');
+        });
+        let isAllValid = hasValid.length == loginInputsPageOne.length;
+        $('button', $(loginInputsPageOne)).prop('disabled', !isAllValid);
     })
 });
 
