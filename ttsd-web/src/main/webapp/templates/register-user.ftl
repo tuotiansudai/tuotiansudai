@@ -13,8 +13,8 @@
             <ul class="reg-list tl register-step-one register-icon-list">
                 <li>
                     <i class="icon-mobile"></i>
-                    <input validate type="text" name="mobile" id="mobileInput" class="mobile" placeholder="请输入手机号" maxlength="11"
-                           value="${(originalFormData.mobile)!}"/>
+                    <input validate type="text" name="mobile"  id="mobileInput" class="mobile" placeholder="请输入手机号" maxlength="11"
+                           />
                     <div class="mobileInputText" style="display:none;">请输入11位手机号码</div>
                     <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                 </li>
