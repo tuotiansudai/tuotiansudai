@@ -7,7 +7,6 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.mysql.jdbc.StringUtils;
 import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -216,12 +215,12 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
         //根据标的类型判断借款开始时间
         if (LoanType.INVEST_INTEREST_MONTHLY_REPAY.equals(loanModel.getType()) || LoanType.INVEST_INTEREST_LUMP_SUM_REPAY.equals(loanModel.getType())) {
-            DateTime recheckTimeYear=new DateTime(investModel.getCreatedTime());
+            DateTime recheckTimeYear = new DateTime(investModel.getCreatedTime());
             dataModel.put("recheckTimeYear", String.valueOf(recheckTimeYear.getYear()));
             dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
         } else {
-            DateTime fullTimeDate = Strings.isNullOrEmpty(fullTime)?DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime):new DateTime(loanModel.getRecheckTime());
+            DateTime fullTimeDate = Strings.isNullOrEmpty(fullTime) ? DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime) : new DateTime(loanModel.getRecheckTime());
             dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
@@ -269,9 +268,9 @@ public class ContractServiceImpl implements ContractService {
 
     private AcroFields fillPdfTemplate(AnxinContractType contractType, AcroFields fields, Map<String, String> dataMap) throws IOException, DocumentException {
         if (contractType.equals(AnxinContractType.LOAN_CONTRACT)) {
-            dataMap.forEach((key,value)->{
+            dataMap.forEach((key, value) -> {
                 try {
-                    fields.setField(key,value);
+                    fields.setField(key, value);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
