@@ -63,7 +63,7 @@
                                                 <input validate type="text" id="referrer" name="referrer"
                                                        placeholder="推荐人手机号（此项选填）"
                                                        maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
-                                                <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
+                                                <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
                                             </li>
                                             <li class="agree-last">
                                                 <input type="hidden" name="agreement" id="agreementInput"
