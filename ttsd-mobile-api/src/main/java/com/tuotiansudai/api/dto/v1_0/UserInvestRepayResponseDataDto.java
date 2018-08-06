@@ -73,6 +73,9 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "CFCA合同", example = "/contract/invest/contractNo/JK20170822000085681")
     private String contractLocation;
 
+    @ApiModelProperty(value = "是否是富滇银行标的", example = "true")
+    private boolean isBankPlatForm;
+
     public UserInvestRepayResponseDataDto(LoanModel loanModel, TransferApplicationModel transferApplicationModel) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.loanId = String.valueOf(transferApplicationModel.getLoanId());
@@ -86,6 +89,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.investAmount = AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount());
         this.investTime = simpleDateFormat.format(transferApplicationModel.getTransferTime());
         this.recheckTime = simpleDateFormat.format(loanModel.getRecheckTime());
+        this.isBankPlatForm = loanModel.getIsBankPlatform();
     }
 
     public UserInvestRepayResponseDataDto(LoanModel loanModel, InvestModel investModel){
@@ -101,6 +105,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
         this.investId = String.valueOf(investModel.getId());
         this.investAmount = AmountConverter.convertCentToString(investModel.getAmount());
         this.investTime = sdf.format(investModel.getInvestTime());
+        this.isBankPlatForm = loanModel.getIsBankPlatform();
     }
 
 
@@ -262,5 +267,13 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
 
     public void setContractLocation(String contractLocation) {
         this.contractLocation = contractLocation;
+    }
+
+    public boolean isBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setBankPlatForm(boolean bankPlatForm) {
+        isBankPlatForm = bankPlatForm;
     }
 }
