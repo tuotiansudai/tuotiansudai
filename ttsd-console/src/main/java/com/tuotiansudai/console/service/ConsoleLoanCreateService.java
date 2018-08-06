@@ -404,7 +404,7 @@ public class ConsoleLoanCreateService {
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
-            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
+            return new BaseDto<>(new BaseDataDto(false, "借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
