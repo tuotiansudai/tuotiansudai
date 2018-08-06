@@ -67,7 +67,7 @@
                     <p>系统管理</p>
                 </li>
                 <li>
-                    <div class="img baozhnag"></div>
+                    <div class="img baozhang"></div>
                     <p>应急保障</p>
                 </li>
             </ul>
