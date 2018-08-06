@@ -33,7 +33,7 @@ public class Test3202 {
         fieldMap.put("loanName", "测试项目");
         fieldMap.put("amountUpper", AmountConverter.getRMBStr(900050));
         fieldMap.put("amount", "9000.5");
-        fieldMap.put("totalRate", "11%");
+        fieldMap.put("totalRate", "11");
         DateTime endTimeDate = new DateTime(new Date());
         fieldMap.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
         fieldMap.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
@@ -43,7 +43,7 @@ public class Test3202 {
         fieldMap.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
         fieldMap.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         fieldMap.put("periods", "12");
-        fieldMap.put("loanType", "先息后款");
+        fieldMap.put("loanType", "先付收益后还投资本金，按天计息，放款后生息");
         fieldMap.put("investorName", "投资人");
 
         createContract.setInvestmentInfo(fieldMap);
@@ -68,7 +68,7 @@ public class Test3202 {
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B135");
+        tx3202ReqVO.setBatchNo("B138");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
