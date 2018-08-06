@@ -25,7 +25,7 @@
 
         <span class="invite-mobile closed">邀请人手机号码(可不填写)<i></i></span>
         <input validate type="text" name="referrer" maxlength="25" class="referrer closed" placeholder="邀请人手机号码">
-        <#--<div class="error-box"></div>-->
+       <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
 
         <button type="submit" class="btn-wap-normal next-step" disabled>注册</button>
         <span class="show-agreement">点击“注册”即视为您同意《拓天速贷服务协议》</span>
