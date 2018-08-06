@@ -35,7 +35,7 @@
         {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
         <#--{"title":"我的财豆", "url":"${webServer}/point", "role":"'USER', 'INVESTOR', 'LOANER'"},-->
-        {"title":"个人资料", "url":"${webServer}/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        {"title":"个人资料", "url":"${webServer}/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"}
         <#--{"title":"自动投标", "url":"${webServer}/auto-invest", "role":"'USER', 'INVESTOR'"},-->
         <#--{"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},-->
         <#--{"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}-->
