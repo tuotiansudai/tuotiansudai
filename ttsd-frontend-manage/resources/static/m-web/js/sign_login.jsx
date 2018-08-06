@@ -175,11 +175,14 @@ let stepOneEv = () => {
         }, function (response) {
             if(response.success){
                 if (response.data.status) {
+                    commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
                     pushHistory('#login'); // 登录
                     hashFun();
                 }
                 else {
+                    commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
                     location.href = '/m/register/user'; // 注册
+
                 }
             }else {
                 layer.msg('验证码错误');
@@ -229,7 +232,7 @@ clearInputTwoVal('.password_container');
 
 seePassword();
 
-commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+
 //刷新验证码
 $('#imageCaptcha').on('click', function () {
     commonFun.refreshCaptcha(this, '/login/captcha');
