@@ -179,14 +179,14 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
+    public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile, @RequestParam(value = "captcha") String captcha, HttpServletRequest httpServletRequest) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(userService.mobileIsExist(mobile));
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
-
+        HttpSession session = httpServletRequest.getSession(false);
+        boolean result = this.captchaHelper.captchaVerify(captcha, session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
+        dataDto.setStatus(!result || userService.mobileIsExist(mobile));
         return baseDto;
-
     }
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.POST)
