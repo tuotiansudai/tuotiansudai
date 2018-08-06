@@ -100,7 +100,7 @@ let pushHistory = (url) => {
 };
 
 let contentInput = (id, content, length) => {
-    $(id).find('input').on('keyup', (e) => {
+    $(id).find('input').not('#captchaPageOneInput').on('keyup', (e) => {
         if (!e.currentTarget.value) {
             $(id).find('.close_btn').hide();
             $(id).find(content).html('');
@@ -143,10 +143,12 @@ let stepOneEv = () => {
     $('.step_one').on('click', (e) => {
         e.preventDefault();
         if (!/(^1[0-9]{10}$)/.test(telephoneNum)) { // 入口手机号码校验
+            alert(99)
+            console.log(telephoneNum)
             layer.msg('手机号格式不正确');
             return;
         }
-        if($('.captchaPageOne').val()!==''){
+        if($('.captchaPageOne').val()==''){
             layer.msg('验证码不能为空');
             return;
         }
@@ -187,8 +189,17 @@ let seePassword = () => {
     })
 };
 
+$('#captchaPageOneInput').on('keyup', (e) => {
+            if ($('#captchaPageOneInput').val().length === 5&&/(^1[0-9]{10}$)/.test(telephoneNum)) {
+                console.log($('#captchaPageOneInput').val())
+                $('.step_one').attr('disabled',false);
+            } else {
+                $('.step_one').attr('disabled',true);
+            }
+})
 // 登录注册第一步入口
 contentInput('#EntryPointForm', '.show-mobile-entry', 11);
+
 clearInputOneVal('#EntryPointForm', '.show-mobile-entry', '.step_one');
 stepOneEv();
 
@@ -254,21 +265,6 @@ Array.prototype.forEach.call(loginInputs, function (el) {
     })
 });
 
-let loginInputsPageOne = $(EntryPointFormPageOne).find('input[validate]');
-Array.prototype.forEach.call(loginInputsPageOne, function (el) {
-    globalFun.addEventHandler(el, 'keyup', function () {
-        $errorBox.text('');
-        let errorMsg = validator.start(this);
-        if (errorMsg) {
-            $errorBox.text(errorMsg);
-        }
-        let hasValid = loginInputsPageOne.filter(function (key, option) {
-            return $(option).hasClass('valid');
-        });
-        let isAllValid = hasValid.length == loginInputsPageOne.length;
-        $('button', $(loginInputsPageOne)).prop('disabled', !isAllValid);
-    })
-});
 
 //提交表单前验证表单函数
 let validateLogin = function () {
