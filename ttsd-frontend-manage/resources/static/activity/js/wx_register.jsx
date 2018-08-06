@@ -189,6 +189,7 @@ let reInputs = $(registerForm).find('input[validate]');
 
 for (let i = 0, len = reInputs.length; i < len; i++) {
     globalFun.addEventHandler(reInputs[i], "keyup", "focusout", function () {
+        $('.errorMessage').hide();
         let errorMsg = validator.start(this);
         isDisabledButton();
     })

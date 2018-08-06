@@ -16,7 +16,7 @@
                                 <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
                                            name="mobile"
                                            maxlength="11" type="text" autocomplete="off" validate>
-                                    <div class="errorMessage">error</div>
+                                   <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                                 </li>
                                 <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
                                            type="password" name="password" id="passwordInput" autocomplete="off" validate></li>
@@ -48,7 +48,7 @@
                                 <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
                                                                      name="referrer"
                                                                      maxlength="11" placeholder="推荐人手机号" validate>
-                                    <div class="errorMessage">error</div>
+                                    <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                                 </li>
                                 <li class="agreement-li">
                                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
