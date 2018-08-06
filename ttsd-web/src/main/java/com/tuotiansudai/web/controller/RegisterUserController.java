@@ -94,10 +94,17 @@ public class RegisterUserController {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             logger.info("[APP SHARE ANDROID] :" + message);
-            baseDataDto = new BaseDataDto(false, message);
+            baseDataDto = new BaseDataDto(false);
             baseDto.setData(baseDataDto);
             return baseDto;
         }
+
+        if (userService.mobileIsExist(requestDto.getMobile())){
+            baseDataDto = new BaseDataDto(false, "手机号已存在");
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+
         requestDto.setChannel((String) request.getSession().getAttribute("channel"));
         baseDataDto = prepareService.register(requestDto);
         if (baseDataDto.getStatus()) {
@@ -112,12 +119,10 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean registerMobileExist = userService.mobileIsExist(registerUserDto.getMobile());
-        if (registerMobileExist){
+        if (userService.mobileIsExist(registerUserDto.getMobile())){
             redirectAttributes.addFlashAttribute("registerMobileError", "手机号已存在");
         }
-        boolean referrerMobileExist = !Strings.isNullOrEmpty(registerUserDto.getReferrer()) && userService.mobileIsExist(registerUserDto.getReferrer());
-        if (!referrerMobileExist){
+        if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())) {
             redirectAttributes.addFlashAttribute("referrerMobileError", "推荐人手机号不存在");
         }
 
@@ -129,7 +134,7 @@ public class RegisterUserController {
         }
 
         String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
-        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
+        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : Strings.isNullOrEmpty(registerUserDto.getRedirectToError()) ? "/register/user" : registerUserDto.getRedirectToError());
         logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
         return new ModelAndView(url);
     }
@@ -138,12 +143,10 @@ public class RegisterUserController {
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
-        boolean registerMobileExist = userService.mobileIsExist(registerUserDto.getMobile());
-        if (registerMobileExist){
+        if (userService.mobileIsExist(registerUserDto.getMobile())){
             result.put("registerMobileError", "手机号已存在");
         }
-        boolean referrerMobileExist = !Strings.isNullOrEmpty(registerUserDto.getReferrer()) && userService.mobileIsExist(registerUserDto.getReferrer());
-        if (!referrerMobileExist){
+        if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())){
             result.put("referrerMobileError", "推荐人手机号不存在");
         }
         boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));

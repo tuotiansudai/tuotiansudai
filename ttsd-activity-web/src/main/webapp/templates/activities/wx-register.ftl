@@ -20,6 +20,7 @@
                                     <form class="register-user-form" action="/register/user" method="post"
                                           autocomplete="off" novalidate="novalidate" id="registerUserForm">
                                         <input type="hidden" name="source" value="WE_CHAT">
+                                        <input type="hidden" name="redirectToError" value="/activity/wx-register"/>
                                         <ul class="reg-list tl register-step-one">
                                             <li>
                                                 <label for="" class="reg-title">手机号:</label>

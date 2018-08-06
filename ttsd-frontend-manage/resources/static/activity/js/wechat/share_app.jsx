@@ -298,7 +298,7 @@ registerForm.onsubmit = function(event) {
         if (data.data.status) {
             location.href = '/activity/app-share/success?referrerMobile=' + location.href.split('referrerMobile=')[1]+'&mobileShare='+registerForm.mobile.value;
         } else {
-            layer.msg('请求失败，请重试！');
+            layer.msg( data.data.message == null ? '请求失败，请重试！' : data.data.message);
         }
     });
 }
