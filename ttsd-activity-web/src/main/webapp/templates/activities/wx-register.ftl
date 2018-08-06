@@ -26,6 +26,7 @@
                                                 <input validate type="text" id="mobile" name="mobile"
                                                        class="mobile long" placeholder="手机号"
                                                        maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                                <div class="errorMessage">手机号已存在</div>
                                             </li>
                                             <li>
                                                 <label for="" class="reg-title">密码:</label>
@@ -61,6 +62,7 @@
                                                 <input validate type="text" id="referrer" name="referrer"
                                                        placeholder="推荐人手机号（此项选填）"
                                                        maxlength="11" value="" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                                                <div class="errorMessage">推荐人不存在</div>
                                             </li>
                                             <li class="agree-last">
                                                 <input type="hidden" name="agreement" id="agreementInput"
