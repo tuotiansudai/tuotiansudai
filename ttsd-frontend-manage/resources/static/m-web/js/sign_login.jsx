@@ -172,6 +172,7 @@ let stepOneEv = () => {
                 }
             }else {
                 layer.msg('验证码错误');
+                commonFun.refreshCaptcha(imageCaptchaPageOne, '/login/captcha');
             }
 
         });
