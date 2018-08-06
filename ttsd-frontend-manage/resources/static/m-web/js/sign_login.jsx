@@ -143,8 +143,6 @@ let stepOneEv = () => {
     $('.step_one').on('click', (e) => {
         e.preventDefault();
         if (!/(^1[0-9]{10}$)/.test(telephoneNum)) { // 入口手机号码校验
-            alert(99)
-            console.log(telephoneNum)
             layer.msg('手机号格式不正确');
             return;
         }
@@ -164,13 +162,18 @@ let stepOneEv = () => {
             async: false,
             url: '/register/user/mobile/' + telephoneNum + '/is-exist?captcha='+captcha
         }, function (response) {
-            if (response.data.status) {
-                pushHistory('#login'); // 登录
-                hashFun();
+            if(response.success){
+                if (response.data.status) {
+                    pushHistory('#login'); // 登录
+                    hashFun();
+                }
+                else {
+                    location.href = '/m/register/user'; // 注册
+                }
+            }else {
+                layer.msg('验证码错误');
             }
-            else {
-                location.href = '/m/register/user'; // 注册
-            }
+
         });
     })
 };
@@ -191,7 +194,6 @@ let seePassword = () => {
 
 $('#captchaPageOneInput').on('keyup', (e) => {
             if ($('#captchaPageOneInput').val().length === 5&&/(^1[0-9]{10}$)/.test(telephoneNum)) {
-                console.log($('#captchaPageOneInput').val())
                 $('.step_one').attr('disabled',false);
             } else {
                 $('.step_one').attr('disabled',true);
