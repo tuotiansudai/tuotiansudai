@@ -264,7 +264,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
 
             if (!Environment.isProduction(environment)){
-                anxinProp.setProjectCode(projectCode);
+                anxinProp.setProjectCode("1");
                 anxinProp.setSkipAuth(skipAuth);
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
