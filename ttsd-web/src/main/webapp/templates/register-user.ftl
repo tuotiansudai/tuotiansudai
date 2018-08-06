@@ -55,7 +55,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <#if success?? && success == false>
-                    <div class="error">注册失败，请检查您提交的信息是否正确！</div>
+                    <div class="error-register">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
                 <div class="error-box"></div>
                 <input type="submit" class="register-user btn-success" value="立即注册" disabled />
