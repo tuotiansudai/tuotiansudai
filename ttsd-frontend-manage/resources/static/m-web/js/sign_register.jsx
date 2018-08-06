@@ -356,6 +356,8 @@ $('#submitBtn').on('click',function (event) {
     },function(response) {
         if(response.success) {
           location.href = '/m/register/success'
+        }else {
+            layer.msg(response.referrerMobileError)
         }
     });
 });
