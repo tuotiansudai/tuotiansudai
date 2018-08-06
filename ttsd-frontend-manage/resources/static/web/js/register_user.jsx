@@ -17,7 +17,7 @@ let agreementValid=true,
 let $captchaSubmit=$('.image-captcha-confirm'),
     $voiceCaptcha = $('#voice_captcha_code');
 
-// $('#mobileInput').val('1')
+ $('.error-register').hide();
 require.ensure(['publicJs/placeholder'], function(require){
     require('publicJs/placeholder');
     $('input[type="text"],input[type="password"]',$(registerForm)).placeholder();
