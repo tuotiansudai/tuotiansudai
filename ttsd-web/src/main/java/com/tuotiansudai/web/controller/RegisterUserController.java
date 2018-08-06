@@ -185,7 +185,8 @@ public class RegisterUserController {
         baseDto.setData(dataDto);
         HttpSession session = httpServletRequest.getSession(false);
         boolean result = this.captchaHelper.captchaVerify(captcha, session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
-        dataDto.setStatus(!result || userService.mobileIsExist(mobile));
+        baseDto.setSuccess(result);
+        dataDto.setStatus(userService.mobileIsExist(mobile));
         return baseDto;
     }
 
