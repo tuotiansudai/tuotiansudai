@@ -30,9 +30,9 @@ public class Test3202 {
         Map<String, String> fieldMap = new HashMap<String, String>();
         fieldMap.put("investorIdentityNumber", "370786199111050610");
         fieldMap.put("loanerIdentityNumber", "370786199111050610");
-        fieldMap.put("loanName", "测试项目");
-        fieldMap.put("amountUpper", AmountConverter.getRMBStr(900050));
-        fieldMap.put("amount", "9000.5");
+        fieldMap.put("loanName", "房产抵押借款17015");
+        fieldMap.put("amountUpper", AmountConverter.getRMBStr(900000).replace("元",""));
+        fieldMap.put("amount", "9000");
         fieldMap.put("totalRate", "11");
         DateTime endTimeDate = new DateTime(new Date());
         fieldMap.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
@@ -44,7 +44,7 @@ public class Test3202 {
         fieldMap.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         fieldMap.put("periods", "12");
         fieldMap.put("loanType", "先付收益后还投资本金，按天计息，放款后生息");
-        fieldMap.put("investorName", "投资人");
+        fieldMap.put("investorName", "高兴费");
 
         createContract.setInvestmentInfo(fieldMap);
 
@@ -68,7 +68,7 @@ public class Test3202 {
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B138");
+        tx3202ReqVO.setBatchNo("B141");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();

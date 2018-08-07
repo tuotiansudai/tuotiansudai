@@ -210,7 +210,9 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
         dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("loanName", loanModel.getName());
-        dataModel.put("amountUpper", AmountConverter.getRMBStr(investModel.getAmount()));
+        String amountUpper=AmountConverter.getRMBStr(investModel.getAmount());
+        amountUpper=amountUpper.endsWith("元")?amountUpper.replace("元",""):amountUpper;
+        dataModel.put("amountUpper", amountUpper);
         dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
         //根据标的类型判断借款开始时间
