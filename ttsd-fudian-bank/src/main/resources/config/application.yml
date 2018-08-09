@@ -37,14 +37,14 @@ spring:
     template-loader-path: classpath:/templates
     
 bank:
-  merchant: M02608959047521001
-  merchantUserName: MU02608959047731001
-  merchantAccountNo: MA02608959047771001
+  merchant: M02689149095591001
+  merchantUserName: MU02689149095771001
+  merchantAccountNo: MA02689149095851001
   pfx-password: 123456
   pfx-path: classpath:cfca/p2p.pfx
   cer-path: classpath:cfca/bank.cer
   crl-path: classpath:cfca/bank.crl
-  bank-url: http://116.62.202.105:56502
+  bank-url: https://ebank.richdian.com:8443/
   web-callback-return-url: ${web.server}/callback/return-url
   m-callback-return-url: ${web.server}/m/callback/return-url
   mobile-callback-return-url: ${mobile.server}/callback/return-url
