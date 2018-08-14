@@ -104,7 +104,7 @@
                         <#if repayList??>
                             <#list repayList as repay>
                             <tr>
-                                <td><a href="/loan/${repay.loan.id?string('0')}">${repay.loan.name!}</a></td>
+                                <td><a <#if repay.loan.id ==1>href="/loan/${repay.loan.id?string('0')}" class="no-pointer" </#if> >${repay.loan.name!}</a></td>
                                 <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} %</td>
                                 <td>${(repay.loan.duration?string('0'))!}天</td>
                                 <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
@@ -157,8 +157,8 @@
                             <td>
                                 <i <#if actualInvestRepayItem.birthdayCoupon>class="birth-icon"
                                    data-benefit="${actualInvestRepayItem.birthdayBenefit}"</#if>></i>
-                                <a href="/loan/${actualInvestRepayItem.loan.id?c}"
-                                   class="month-title">${actualInvestRepayItem.loan.name!}</a>
+                                <a <#if actualInvestRepayItem.loan.id !=1>href="/loan/${actualInvestRepayItem.loan.id?c}"</#if>
+                                   class="month-title <#if actualInvestRepayItem.loan.id ==1>no-pointer</#if>">${actualInvestRepayItem.loan.name!}</a>
                             </td>
                             <td>${(((actualInvestRepayItem.loan.activityRate+actualInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}
                                 %
@@ -201,8 +201,8 @@
                             <td>
                                 <i <#if expectedInvestRepayItem.birthdayCoupon>class="birth-icon"
                                    data-benefit="${expectedInvestRepayItem.birthdayBenefit}"</#if>></i>
-                                <a href="/loan/${expectedInvestRepayItem.loan.id?c}"
-                                   class="month-title">${expectedInvestRepayItem.loan.name!}</a>
+                                <a <#if expectedInvestRepayItem.loan.id !=1> href="/loan/${expectedInvestRepayItem.loan.id?c}"</#if>
+                                   class="month-title <#if expectedInvestRepayItem.loan.id ==1>no-pointer</#if>">${expectedInvestRepayItem.loan.name!}</a>
                             </td>
                             <td>${(((expectedInvestRepayItem.loan.activityRate+expectedInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}
                                 %
@@ -254,8 +254,8 @@
                                        data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
                                 </#if>
 
-                                <a href="/loan/${latestInvest.loanId?string('0')}"
-                                   class="trade-detail">${latestInvest.loanName!}</a>
+                                <a <#if latestInvest.loanId !=1> href="/loan/${latestInvest.loanId?string('0')}"</#if>
+                                   class="trade-detail <#if latestInvest.loanId ==1>no-pointer</#if>">${latestInvest.loanName!}</a>
                             </td>
                             <td>投资成功</td>
                             <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
