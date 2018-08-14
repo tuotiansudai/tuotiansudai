@@ -4,6 +4,7 @@ require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 require('publicJs/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
+require('webJs/plugins/autoNumeric');
 
 //初始化页面
 var today = moment().format('YYYY-MM-DD'); // 今天
@@ -15,6 +16,7 @@ var dataPickerElement = $('#date-picker'),
     paginationElement = $('.pagination');
 
 dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+$('.money').autoNumeric("init");
 
 var changeDatePicker = function () {
     var duration = $(".date-filter .select-item.current").data('day');
