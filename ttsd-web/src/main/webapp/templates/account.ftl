@@ -157,13 +157,8 @@
                             <td>
                                 <i <#if actualInvestRepayItem.birthdayCoupon>class="birth-icon"
                                    data-benefit="${actualInvestRepayItem.birthdayBenefit}"</#if>></i>
-                            <#if latestInvest.productType != 'EXPERIENCE'>
                                 <a href="/loan/${actualInvestRepayItem.loan.id?c}"
                                    class="month-title">${actualInvestRepayItem.loan.name!}</a>
-                            <#else>
-                                 <a class="month-title">${actualInvestRepayItem.loan.name!}</a>
-                            </#if>
-
                             </td>
                             <td>${(((actualInvestRepayItem.loan.activityRate+actualInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}
                                 %
@@ -206,13 +201,8 @@
                             <td>
                                 <i <#if expectedInvestRepayItem.birthdayCoupon>class="birth-icon"
                                    data-benefit="${expectedInvestRepayItem.birthdayBenefit}"</#if>></i>
-                            <#if latestInvest.productType != 'EXPERIENCE'>
                                 <a href="/loan/${expectedInvestRepayItem.loan.id?c}"
                                    class="month-title">${expectedInvestRepayItem.loan.name!}</a>
-                            <#else>
-                                <a class="month-title">${expectedInvestRepayItem.loan.name!}</a>
-                            </#if>
-
                             </td>
                             <td>${(((expectedInvestRepayItem.loan.activityRate+expectedInvestRepayItem.loan.baseRate)*100)?string('0.00'))!}
                                 %
@@ -263,14 +253,9 @@
                                     <i <#if latestInvest.birthdayCoupon>class="birth-icon"
                                        data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
                                 </#if>
-                                <#if latestInvest.productType != 'EXPERIENCE'>
-                                    <a class="trade-detail">${latestInvest.loanName!}</a>
-                                <#else>
-                                 <a href="/loan/${latestInvest.loanId?string('0')}"
-                                    class="trade-detail">${latestInvest.loanName!}</a>
-                                </#if>
 
-
+                                <a href="/loan/${latestInvest.loanId?string('0')}"
+                                   class="trade-detail">${latestInvest.loanName!}</a>
                             </td>
                             <td>投资成功</td>
                             <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
