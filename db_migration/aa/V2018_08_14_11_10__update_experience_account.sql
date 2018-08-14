@@ -7,6 +7,12 @@ SET
 WHERE
     ec.login_name=c.login_name;
 
+UPDATE  invest
+SET
+  status='FAIL'
+WHERE
+  id  IN (select s1.invest_id from (SELECT ir.invest_id FROM  invest_repay ir  JOIN invest i ON ir.invest_id = i.id AND i.loan_id = 1 WHERE ir.status='REPAYING') as s1);
+
 DELETE FROM   invest_repay 
 WHERE
    id IN (select s.id from (SELECT ir.id FROM  invest_repay ir  JOIN invest i ON ir.invest_id = i.id AND i.loan_id = 1 WHERE ir.status='REPAYING') as s);
