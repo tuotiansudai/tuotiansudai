@@ -128,12 +128,12 @@ function inputPassword() {
         errorMsg: '密码为6位至20位，不能全是数字'
     }]);
 
-    let passInputs=$(inputPasswordForm).find('input:visible');
+    let passInputs=$(inputPasswordForm).find('input[type="password"]');
     Array.prototype.forEach.call(passInputs,function(el) {
         el.addEventListener("blur", function(event) {
             event.preventDefault();
             let errorMsg = validatorPass.start(this);
-            if(errorMsg) {
+            if($('.error-box').html()) {
                 errorDom.text(errorMsg).css('visibility','visible');
             }
             else {
@@ -152,7 +152,7 @@ function inputPassword() {
                 break;
             }
         }
-        if (!errorMsg) {
+        if (!$('.error-box').html()) {
             inputPasswordForm.submit();
         }
     }

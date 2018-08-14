@@ -397,14 +397,14 @@ public class ConsoleLoanCreateService {
         if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
-
-        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
-            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+        //放开了四个标的类型，原有的判断没有意义
+        if (loanCreateRequestDto.getLoan().getLoanType() == null) {
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不为空"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
-            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
+            return new BaseDto<>(new BaseDataDto(false, "借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {

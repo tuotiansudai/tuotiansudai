@@ -28,7 +28,7 @@
             可校验性
         </span>
         </div>
-        <@global.role hasRole="'INVESTOR'">
+        <@global.role hasRole="'INVESTOR', 'LOANER'">
             <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
         </@global.role>
         <button type="button" class="btn-wap-normal next-step" id="authentication_identity"

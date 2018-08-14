@@ -106,6 +106,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
 
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Value("${default.mobile.captcha}")
+    private String defaultMobileCaptha;
+
     private static final String BATCH_NO_IS_INVALID = "该标的已经超过7天，无法再次［查询合同结果并更新合同编号］";
 
     private static final String AGENT_IS_NOT_SIGN = "代理人/借款人 未授权安心签";
@@ -251,12 +257,20 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 logger.error("user has not create anxin account yet. loginName: " + loginName);
                 return failBaseDto("用户还未开通安心签账户");
             }
-
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
             String anxinUserId = anxinProp.getAnxinUserId();
 
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
+
+            if (!Environment.isProduction(environment)){
+                anxinProp.setProjectCode("1");
+                anxinProp.setSkipAuth(skipAuth);
+                anxinProp.setAuthTime(new Date());
+                anxinProp.setAuthIp(ip);
+                anxinSignPropertyMapper.update(anxinProp);
+                return new BaseDto<>(true, new AnxinDataDto(true, skipAuth ? "skipAuth" : ""));
+            }
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.warn("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);

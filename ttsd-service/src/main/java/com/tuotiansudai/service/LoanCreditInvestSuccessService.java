@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanCreditInvestMessage;
 import com.tuotiansudai.message.*;
@@ -11,6 +12,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -35,12 +37,15 @@ public class LoanCreditInvestSuccessService {
 
     private final InvestRepayMapper investRepayMapper;
 
+    private final UserMapper userMapper;
+
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper) {
+    public LoanCreditInvestSuccessService(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, UserMapper userMapper, MQWrapperClient mqWrapperClient, InvestRepayMapper investRepayMapper) {
         this.investMapper = investMapper;
         this.transferApplicationMapper = transferApplicationMapper;
+        this.userMapper = userMapper;
         this.mqWrapperClient = mqWrapperClient;
         this.investRepayMapper = investRepayMapper;
     }
@@ -189,6 +194,9 @@ public class LoanCreditInvestSuccessService {
 
             // 安心签
             mqWrapperClient.sendMessage(MessageQueue.TransferAnxinContract, new AnxinContractMessage(transferApplicationModel.getId(), AnxinContractType.TRANSFER_CONTRACT.name()));
+
+            String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
 
         } catch (Exception e) {
             logger.error("loanCreditInvest success message notify send fail", e);

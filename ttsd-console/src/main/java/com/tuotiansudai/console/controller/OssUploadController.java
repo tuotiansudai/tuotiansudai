@@ -107,7 +107,7 @@ public class OssUploadController {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
             }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
-            logger.info(MessageFormat.format("[OSS UPLOAD] originalName: {0}, absoluteUrl: {}, relativeUrl: {}", originalName, absoluteUrl, relativeUrl));
+            logger.info(MessageFormat.format("[OSS UPLOAD] originalName: {0}, absoluteUrl: {1}, relativeUrl: {2}", originalName, absoluteUrl, relativeUrl));
             return new JSONObject(Maps.newHashMap(ImmutableMap.builder()
                     .put("original", originalName)
                     .put("url", relativeUrl)

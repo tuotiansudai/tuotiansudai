@@ -142,9 +142,9 @@ public class BankWrapperClient {
                 new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, rechargeId, amount, RechargePayType.valueOf(payType)));
     }
 
-    public BankAsyncMessage withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
+    public BankAsyncMessage withdraw(long withdrawId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, boolean isFudianBank, String openId) {
         return asyncExecute(MessageFormat.format("/withdraw/source/{0}", source.name().toLowerCase()),
-                new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, fee, openId));
+                new BankWithdrawDto(withdrawId, loginName, mobile, bankUserName, bankAccountNo, amount, isFudianBank, openId));
     }
 
     public BankAsyncMessage invest(long investId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String loanTxNo, long loanId, String loanName) {

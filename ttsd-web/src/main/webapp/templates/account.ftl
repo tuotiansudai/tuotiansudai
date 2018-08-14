@@ -25,14 +25,14 @@
         </div>
         <@global.role hasRole="'UMP_INVESTOR'">
             <div class="fr">
-                <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn"
+                <div class="safety-notification"><a href="/ump/account" target="_blank" class="tip-title">联动优势资金账号</a><i id="noticeBtn"
                                                                                                          class="fa fa-question-circle"
                                                                                                          aria-hidden="true"></i>
                     <div class="notice-tips extra-rate-popup" style="display: none">
-                        1.当前内容为富滇银行存管账号的资金信息;<br/>
-                        2.应国家相关监管要求，拓天速贷已开通富滇银行存管服务;<br/>
+                        1.应国家相关监管要求，拓天速贷已开通富滇银行存管服务;<br/>
+                        2.当前内容为富滇银行存管账号的资金信息;<br/>
                         3.想要查看老版的资金信息请点击<strong>「联动优势资金账号」</strong>;<br/>
-                        4.联动优势托管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。
+                        4.联动优势存管账号余额和待收回款的资金不能再次投资，需要您提现至银行卡，然后充值到富滇银行存管账号后，才能参加新的投资项目。
                     </div>
                 </div>
             </div>
@@ -58,22 +58,22 @@
             <ul class="detail-list">
                 <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
                 <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
-                <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
-                <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
-                <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
+                <li>已收推荐奖励：<span>0.00</span>元</li>
+                <li>已收优惠券奖励：<span>0.00</span>元</li>
+                <li>已收体验金奖励：<span>0.00</span>元</li>
             </ul>
         </div>
 
         <div class="column-box bg-w clearfix amount-sum ">
             <h3>
-                <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元
+                <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest)/100)?string('0.00'))!}</span>元
                 <i class="icon-has-con"></i></h3>
             <ul class="detail-list">
                 <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
                 <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
                 <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
-                <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
-                <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
+                <li>待收优惠券奖励：<span>0.00</span>元</li>
+                <li>待收体验金收益：<span>0.00</span>元</li>
             </ul>
         </div>
     </@global.role>

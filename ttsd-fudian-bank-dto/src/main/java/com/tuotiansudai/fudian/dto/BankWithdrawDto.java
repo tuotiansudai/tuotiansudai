@@ -8,16 +8,16 @@ public class BankWithdrawDto extends BankBaseDto {
 
     private long amount;
 
-    private long fee;
+    private boolean isFudianBank;
 
     public BankWithdrawDto() {
     }
 
-    public BankWithdrawDto(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, long fee, String openId) {
+    public BankWithdrawDto(long withdrawId, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, boolean isFudianBank, String openId) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.withdrawId = withdrawId;
         this.amount = amount;
-        this.fee = fee;
+        this.isFudianBank = isFudianBank;
     }
 
     public long getWithdrawId() {
@@ -28,16 +28,15 @@ public class BankWithdrawDto extends BankBaseDto {
         return amount;
     }
 
-    public long getFee() {
-        return fee;
+    public boolean getIsFudianBank() {
+        return isFudianBank;
     }
 
     @Override
     public boolean isValid() {
         return super.isValid()
                 && withdrawId > 0
-                && amount > fee
-                && fee > 0;
+                && amount > 150;
     }
 
     @Override

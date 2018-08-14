@@ -3,7 +3,7 @@ CREATE TABLE `aa`.`bank_withdraw` (
   `login_name`      VARCHAR(25)     NOT NULL,
   `role_type`       VARCHAR(20)     NOT NULL,
   `amount`          BIGINT UNSIGNED NOT NULL,
-  `fee`             BIGINT UNSIGNED NOT NULL,
+  `fee`             BIGINT UNSIGNED,
   `source`          VARCHAR(20)     NOT NULL,
   `bank_order_no`   VARCHAR(20),
   `bank_order_date` VARCHAR(8),

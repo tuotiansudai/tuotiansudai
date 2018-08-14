@@ -18,6 +18,6 @@ insert into bank(name,bank_code,image_url,single_amount,single_day_amount,create
 insert into bank(name,bank_code,image_url,single_amount,single_day_amount,created_by,created_time,is_bank) values('兴业银行', '309', '/images/bank/309.jpg', 5000000, 5000000, 'sidneygao', now(), 1);
 insert into bank(name,bank_code,image_url,single_amount,single_day_amount,created_by,created_time,is_bank) values('浦东发展银行', '310', '/images/bank/310.jpg', 5000000, 5000000, 'sidneygao', now(), 1);
 insert into bank(name,bank_code,image_url,single_amount,single_day_amount,created_by,created_time,is_bank) values('恒丰银行', '311', '/images/bank/311.jpg', 5000000, 5000000, 'sidneygao', now(), 1);
-insert into bank(name,bank_code,image_url,single_amount,single_day_amount,created_by,created_time,is_bank) values('富滇银行', '313', '/images/bank/313.jpg', 5000000, 5000000, 'sidneygao', now(), 1);
+insert into bank(name,bank_code,image_url,single_amount,single_day_amount,created_by,created_time,is_bank) values('富滇银行', '466', '/images/bank/466.jpg', 5000000, 5000000, 'sidneygao', now(), 1);
 
 COMMIT;

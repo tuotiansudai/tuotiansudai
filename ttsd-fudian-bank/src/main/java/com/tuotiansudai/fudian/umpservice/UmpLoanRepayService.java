@@ -194,8 +194,8 @@ public class UmpLoanRepayService {
                                     umpInvestRepayDto.getInvestRepayId(),
                                     umpInvestRepayDto.getCorpus(),
                                     umpInvestRepayDto.getInterest(),
-                                    umpInvestRepayDto.getDefaultFee(),
                                     umpInvestRepayDto.getFee(),
+                                    umpInvestRepayDto.getDefaultFee(),
                                     umpInvestRepayDto.getIsNormalRepay()));
 
                             continue;
@@ -265,8 +265,8 @@ public class UmpLoanRepayService {
                     umpInvestRepayDto.getInvestRepayId(),
                     umpInvestRepayDto.getCorpus(),
                     umpInvestRepayDto.getInterest(),
-                    umpInvestRepayDto.getDefaultFee(),
                     umpInvestRepayDto.getFee(),
+                    umpInvestRepayDto.getDefaultFee(),
                     umpInvestRepayDto.getIsNormalRepay()));
         }
 

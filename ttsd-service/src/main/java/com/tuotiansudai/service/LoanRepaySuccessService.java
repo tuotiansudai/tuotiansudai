@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanRepayMessage;
 import com.tuotiansudai.fudian.umpmessage.UmpLoanRepayMessage;
@@ -12,6 +13,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,13 +32,16 @@ public class LoanRepaySuccessService {
 
     private final TransferApplicationMapper transferApplicationMapper;
 
+    private final UserMapper userMapper;
+
     private final MQWrapperClient mqWrapperClient;
 
     @Autowired
-    public LoanRepaySuccessService(LoanMapper loanMapper, TransferApplicationMapper transferApplicationMapper, LoanRepayMapper loanRepayMapper, MQWrapperClient mqWrapperClient) {
+    public LoanRepaySuccessService(LoanMapper loanMapper, TransferApplicationMapper transferApplicationMapper, LoanRepayMapper loanRepayMapper, UserMapper userMapper, MQWrapperClient mqWrapperClient) {
         this.loanMapper = loanMapper;
         this.loanRepayMapper = loanRepayMapper;
         this.transferApplicationMapper = transferApplicationMapper;
+        this.userMapper = userMapper;
         this.mqWrapperClient = mqWrapperClient;
     }
 
@@ -108,6 +113,8 @@ public class LoanRepaySuccessService {
         transferringApplications.forEach(transferringApplication -> {
             transferringApplication.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferringApplication);
+            String mobile = userMapper.findByLoginName(transferringApplication.getLoginName()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferringApplication.getName())));
         });
 
         // update agent user bill
@@ -186,6 +193,8 @@ public class LoanRepaySuccessService {
         transferringApplications.forEach(transferringApplication -> {
             transferringApplication.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferringApplication);
+            String mobile = userMapper.findByLoginName(transferringApplication.getLoginName()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferringApplication.getName())));
         });
 
         // update agent user bill
