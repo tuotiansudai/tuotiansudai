@@ -346,7 +346,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {
+    public BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto) {
+        long loanId = anxinLoanSuccessDto.getLoanId();
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
 
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
@@ -369,7 +370,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel, anxinLoanSuccessDto.getFullTime());
             if (createContractVO == null) {
                 continue;
             }
@@ -516,9 +517,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
+    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel, String fullTime) {
         CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
 
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -539,24 +539,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
-        dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
+        Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(), fullTime);
+
+        //
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -624,7 +609,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 
-    private void sendSms(String params){
+    private void sendSms(String params) {
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }

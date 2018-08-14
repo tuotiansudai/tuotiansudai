@@ -23,7 +23,7 @@ public class AnxinCreateContractBatchRequestModel implements Serializable{
     public AnxinCreateContractBatchRequestModel(long businessId, Tx3202ReqVO tx3202ReqVO, CreateContractVO createContractVO) {
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         this.businessId = businessId;
-        this.orderId = Long.parseLong(createContractVO.getInvestmentInfo().get("orderId"));
+        this.orderId =createContractVO.getInvestmentInfo().get("orderId")==null?0: Long.parseLong(createContractVO.getInvestmentInfo().get("orderId"));
         this.txTime = tx3202ReqVO.getHead().getTxTime();
         this.batchNo = tx3202ReqVO.getBatchNo();
         this.templateId = createContractVO.getTemplateId();

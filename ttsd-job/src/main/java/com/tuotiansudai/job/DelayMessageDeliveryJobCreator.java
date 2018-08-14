@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DelayMessageDeliveryJobCreator {

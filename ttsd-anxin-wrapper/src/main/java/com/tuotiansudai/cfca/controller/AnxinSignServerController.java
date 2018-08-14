@@ -29,8 +29,8 @@ public class AnxinSignServerController {
 
     @ResponseBody
     @RequestMapping(value = "/create-loan-contract", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> createLoanContracts(@Valid @RequestBody long loanId) {
-        return anxinSignService.createLoanContracts(loanId);
+    public BaseDto<AnxinDataDto> createLoanContracts(@Valid @RequestBody AnxinLoanSuccessDto anxinLoanSuccessDto) {
+        return anxinSignService.createLoanContracts(anxinLoanSuccessDto);
     }
 
     @ResponseBody
