@@ -52,8 +52,8 @@
             <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
         </@global.role>
         <@global.role hasRole="'LOANER'">
-            <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">放款</span>
-            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">还款</span>
+            <span class="select-item" data-status="LOAN_SUCCESS">放款</span>
+            <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY,OVERDUE_REPAY">还款</span>
         </@global.role>
     </div>
 
