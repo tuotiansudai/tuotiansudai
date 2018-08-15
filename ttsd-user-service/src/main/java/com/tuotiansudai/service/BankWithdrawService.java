@@ -6,6 +6,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankQueryUserMessage;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.message.AmountTransferMessage;
 import com.tuotiansudai.message.EventMessage;
@@ -131,5 +132,14 @@ public class BankWithdrawService {
 
     public long sumSuccessWithdrawByLoginName(String loginName, Role role) {
         return bankWithdrawMapper.sumSuccessWithdrawByLoginNameAndRole(loginName, role);
+    }
+
+    public long withdrawBalance(String loginName, Role role){
+        if (role == null){
+            return 0;
+        }
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
+        BankQueryUserMessage message = bankWrapperClient.queryUser(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+        return message.getWithdrawBalance();
     }
 }
