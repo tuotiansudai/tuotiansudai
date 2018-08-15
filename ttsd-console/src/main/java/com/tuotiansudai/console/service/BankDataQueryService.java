@@ -67,6 +67,9 @@ public class BankDataQueryService {
     }
 
     public BankQueryTradeMessage getTradeStatus(String bankOrderNo, Date bankOrderDate, QueryTradeType queryTradeType) {
+        if(StringUtils.isEmpty(bankOrderNo) || StringUtils.isEmpty(bankOrderDate)|| StringUtils.isEmpty(queryTradeType)){
+            return new BankQueryTradeMessage(false, "查询参数不能为空");
+        }
         return bankWrapperClient.queryTrade(bankOrderNo, new DateTime(bankOrderDate).toString("yyyyMMdd"), queryTradeType);
     }
 
