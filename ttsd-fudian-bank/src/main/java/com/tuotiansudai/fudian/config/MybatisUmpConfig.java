@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.tuotiansudai.fudian.mapper.ump", sqlSessionTemplateRef = "umpSqlSessionTemplate")
 public class MybatisUmpConfig {
 
-    @Bean(name = "umpDataSource")
+    @Bean(name = "umpDataSource",destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.datasource.ump")
     public DataSource umpDataSource(){
         return DataSourceBuilder.create().build();
