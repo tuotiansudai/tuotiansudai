@@ -49,5 +49,16 @@ for(var i = 0;i<registerList.length;i++){
         '    <p class="single-answer">答：registerList[i].answer</p>\n' +
         '    </li>';
 }
+ $('#registerList').html(registerStr);
+var accountStr = '';
+var accountList = helper.helperCenterData.registerBar.account;
+for(var i = 0;i<accountList.length;i++){
+    accountStr+='<li class="problem-single-item">\n' +
+        '\n' +
+        '    <p class="single-title">'+(i+1)+'、'+accountList[i].title+'</p>\n' +
+        '\n' +
+        '    <p class="single-answer">答：accountList[i].answer</p>\n' +
+        '    </li>';
+}
 
-$('#registerList').html(registerStr);
+$('#accountList').html(accountStr);
