@@ -7,7 +7,7 @@
 
      <div class="safety-status-box closed tc">
         <span class="status-text">安心签电子签章服务</span>
-        <@global.role hasRole="'INVESTOR'">
+        <@global.role hasRole="'INVESTOR', 'LOANER'">
             <button class="btn-normal btn-open" id="openSafetySigned">立即开启</button>
         </@global.role>
          <a href="/register/account" class="btn-normal btn-open" style="width: 70px; <@global.role hasRole="'INVESTOR', 'LOANER'">display: none</@global.role>">立即开启</a>
