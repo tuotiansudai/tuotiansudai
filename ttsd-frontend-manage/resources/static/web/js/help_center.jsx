@@ -1,7 +1,10 @@
 require('webStyle/help_center.scss');
 require('webJsModule/touch_menu');
+var helper = require('webJs/help_center_data.jsx')
 let helpCenterImgBarUrl = require('webImages/helpcenter/help-center.png');
 let $helpCenter = $("#helpCenter");
+var tpl = require('art-template/dist/template');
+
 
 $helpCenter.find("img.help-center-bar").attr("src", helpCenterImgBarUrl);
 
@@ -34,3 +37,17 @@ $problem.on('click', '.single-title', function (event) {
 
 $('.problem-title-item span:eq(' + page + ')').trigger('click');
 $('.list-group:eq(' + page + ')').find('.problem-single-item:eq(' + index + ') .single-title').trigger('click');
+
+var registerStr = '';
+
+var registerList = helper.helperCenterData.registerBar.register;
+for(var i = 0;i<registerList.length;i++){
+    registerStr+='<li class="problem-single-item">\n' +
+        '\n' +
+        '    <p class="single-title">'+(i+1)+'、'+registerList[i].title+'</p>\n' +
+        '\n' +
+        '    <p class="single-answer">答：registerList[i].answer</p>\n' +
+        '    </li>';
+}
+
+$('#registerList').html(registerStr);

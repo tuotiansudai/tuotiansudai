@@ -11,45 +11,45 @@
             <span>认证</span>
         </div>
         <div class="problem-content-item">
-            <ul class="list-group active">
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
+            <ul class="list-group active" id="registerList">
 
-                    <p class="single-title">1、如何成为拓天速贷的注册用户？</p>
+                <#--<li class="problem-single-item">-->
 
-                    <p class="single-answer">答：（1）进入拓天速贷官网首页，点击右上角“注册”；<br/>（2）根据提示信息，填写您的手机号、密码、验证码等信息，点击“立即注册”。</p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
+                    <#--<p class="single-title">1、如何成为拓天速贷的注册用户？</p>-->
 
-                    <p class="single-title">2、如何在拓天速贷设置密码更安全？</p>
+                    <#--<p class="single-answer">答：（1）进入拓天速贷官网首页，点击右上角“注册”；<br/>（2）根据提示信息，填写您的手机号、密码、验证码等信息，点击“立即注册”。</p>-->
+                <#--</li>-->
+                <#--<li class="problem-single-item">-->
+                    <#--<i class="fa fa-angle-down"></i>-->
 
-                    <p class="single-answer">答：使用较长、字母+数字组合的设置来提高密码的强度，不要用生日、电话号码、名字缩写等容易被别人猜中的信息作为密码；且不要告知他人您的密码。</p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
+                    <#--<p class="single-title">2、如何在拓天速贷设置密码更安全？</p>-->
 
-                    <p class="single-title">3、注册时，为什么收不到短信验证码？</p>
+                    <#--<p class="single-answer">答：使用较长、字母+数字组合的设置来提高密码的强度，不要用生日、电话号码、名字缩写等容易被别人猜中的信息作为密码；且不要告知他人您的密码。</p>-->
+                <#--</li>-->
+                <#--<li class="problem-single-item">-->
+                    <#--<i class="fa fa-angle-down"></i>-->
 
-                    <p class="single-answer">答：注册时，手机收不到短信验证码，请检查以下设置：<br/>①手机号是否输入错误；<br/>②手机信号是否畅通，手机是否欠费停机；<br/>③手机内是否安装短信拦截软件，是否举报投诉过拓天速贷类似的短信（原因：举报投诉过会被列入黑名单，需要重新申请解封）；<br/>④受短信通道及运营商的政策监管影响。目前同一手机号10分钟之内
-                        （联通及电信只能接收到3条平台发出的短信，移动为10条；需查看自己手机是否超出该限制，超出请10分钟后再试。）<br/>如果还是收不到验证码，请致电拓天速贷客服：400-169-1188。
-                    </p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
+                    <#--<p class="single-title">3、注册时，为什么收不到短信验证码？</p>-->
 
-                    <p class="single-title">4、注册时，推荐人这一栏该怎么填？</p>
+                    <#--<p class="single-answer">答：注册时，手机收不到短信验证码，请检查以下设置：<br/>①手机号是否输入错误；<br/>②手机信号是否畅通，手机是否欠费停机；<br/>③手机内是否安装短信拦截软件，是否举报投诉过拓天速贷类似的短信（原因：举报投诉过会被列入黑名单，需要重新申请解封）；<br/>④受短信通道及运营商的政策监管影响。目前同一手机号10分钟之内-->
+                        <#--（联通及电信只能接收到3条平台发出的短信，移动为10条；需查看自己手机是否超出该限制，超出请10分钟后再试。）<br/>如果还是收不到验证码，请致电拓天速贷客服：400-169-1188。-->
+                    <#--</p>-->
+                <#--</li>-->
+                <#--<li class="problem-single-item">-->
+                    <#--<i class="fa fa-angle-down"></i>-->
 
-                    <p class="single-answer">
-                        答：推荐朋友投资时，朋友投资金额的年化1%现金将作为奖励给予推荐人。推荐人这一栏可作为奖励发放的根据之一。此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</p>
-                </li>
-                <li class="problem-single-item">
-                    <i class="fa fa-angle-down"></i>
+                    <#--<p class="single-title">4、注册时，推荐人这一栏该怎么填？</p>-->
 
-                    <p class="single-title">5、注册时，推荐人忘记填写怎么办？</p>
+                    <#--<p class="single-answer">-->
+                        <#--答：推荐朋友投资时，朋友投资金额的年化1%现金将作为奖励给予推荐人。推荐人这一栏可作为奖励发放的根据之一。此项为选填项，可跳过不填，您也可直接填写推荐人手机号。</p>-->
+                <#--</li>-->
+                <#--<li class="problem-single-item">-->
+                    <#--<i class="fa fa-angle-down"></i>-->
 
-                    <p class="single-answer">答：不能补填（温馨提示：注册步骤请细心填写）</p>
-                </li>
+                    <#--<p class="single-title">5、注册时，推荐人忘记填写怎么办？</p>-->
+
+                    <#--<p class="single-answer">答：不能补填（温馨提示：注册步骤请细心填写）</p>-->
+                <#--</li>-->
             </ul>
             <ul class="list-group">
                 <li class="problem-single-item">
@@ -109,4 +109,17 @@
         </div>
     </div>
 </div>
+
+<#--<script id="getQuestionsTpl" type="text/template">-->
+    <#--{{if register}}-->
+    <#--{{each register as value index}}-->
+    <#--<li class="problem-single-item">-->
+
+    <#--<p class="single-title">1、如何成为拓天速贷的注册用户？</p>-->
+
+    <#--<p class="single-answer">答：（1）进入拓天速贷官网首页，点击右上角“注册”；<br/>（2）根据提示信息，填写您的手机号、密码、验证码等信息，点击“立即注册”。</p>-->
+    <#--</li>-->
+    <#--{{/each}}-->
+    <#--{{/if}}-->
+<#--</script>-->
 </@global.main>
