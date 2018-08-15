@@ -8,16 +8,16 @@ spring:
       password: ${common.jdbc.password}
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
-        maximum-pool-size: 50
-        connection-timeout: 10000
+        maximum-pool-size: 15
+        minimum-idle: 3
     ump:
       jdbc-url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&characterEncoding=UTF-8
       username: ${common.jdbc.username}
       password: ${common.jdbc.password}
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
-        maximum-pool-size: 50
-        connection-timeout: 10000
+        maximum-pool-size: 15
+        minimum-idle: 3
   redis:
     host: ${common.redis.host}
     port: ${common.redis.port}
