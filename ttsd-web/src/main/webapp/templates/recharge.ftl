@@ -53,7 +53,7 @@
                                     <div class="limit-tips"><span>${bankModel.name}
                                         快捷支付限额:单笔${(bankModel.singleAmount/100)}元/单日${(bankModel.singleDayAmount/100)}元</span><i
                                             class="fa fa-question-circle text-b"
-                                            title="限额由资金托管方提供，如有疑问或需要换卡，请联系客服400-169-1188"></i></div>
+                                            title="限额由资金存管方提供，如有疑问，请联系客服400-169-1188"></i></div>
                                 </#if>
                                 <div class="tc pad-m">
                                     <button type="submit" class="btn" disabled="disabled">确认充值</button>
