@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
 import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserFundView;
+import com.tuotiansudai.service.BankWithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,9 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
     @Autowired
     private ExperienceAccountMapper experienceAccountMapper;
 
+    @Autowired
+    private BankWithdrawService bankWithdrawService;
+
     @Override
     public BaseResponseDto<UserFundResponseDataDto> getUserFund(String loginName) {
         UserFundView userFundView = userFundMapper.findByLoginName(loginName, Role.INVESTOR);
@@ -58,6 +62,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
 
         int membershipLevel = evaluate != null ? evaluate.getLevel() : 0;
         long balance = bankAccountModel != null ? bankAccountModel.getBalance() : 0;
+        long withdrawBalance = bankWithdrawService.withdrawBalance(loginName, Role.INVESTOR);
         long point = pointService.getAvailablePoint(loginName);
         long membershipPoint = bankAccountModel != null ? bankAccountModel.getMembershipPoint() : 0;
         long experienceBalance = experienceAccountMapper.getExperienceBalance(loginName);
@@ -66,7 +71,7 @@ public class MobileAppUserFundV2ServiceImpl implements MobileAppUserFundV2Servic
         MembershipPrivilegeModel membershipPrivilegeModel = membershipPrivilegeMapper.findValidPrivilegeModelByLoginName(loginName, new Date());
         Date membershipPrivilegeExpiredDate = membershipPrivilegeModel != null ? membershipPrivilegeModel.getEndTime() : null;
         BaseResponseDto<UserFundResponseDataDto> dto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-        dto.setData(new UserFundResponseDataDto(userFundView, balance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate, membershipPrivilegeExpiredDate, experienceBalance));
+        dto.setData(new UserFundResponseDataDto(userFundView, balance, withdrawBalance, point, membershipLevel, membershipPoint, usableUserCouponCount, membershipExpiredDate, membershipPrivilegeExpiredDate, experienceBalance));
         return dto;
     }
 }

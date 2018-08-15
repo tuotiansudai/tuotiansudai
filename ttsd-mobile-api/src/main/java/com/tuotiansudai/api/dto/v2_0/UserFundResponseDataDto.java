@@ -13,6 +13,9 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "可用余额", example = "1000")
     private long balance; //可用余额(分)
 
+    @ApiModelProperty(value = "可提现余额", example = "1000")
+    private long withdrawBalance; //可用余额(分)
+
     @ApiModelProperty(value = "累计收益=已收投资收益+已收投资奖励(阶梯加息)+已收红包奖励+已收推荐奖励", example = "100")
     private long totalIncome; //累计收益=已收投资收益+已收投资奖励(阶梯加息)+已收红包奖励+已收推荐奖励
 
@@ -89,10 +92,11 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否显示摇钱树", example = "1")
     private int showMoneyTree = 0; //是否显示摇钱树
 
-    public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
+    public UserFundResponseDataDto(UserFundView userFundView, long balance, long withdrawBalance, long point, int membershipLevel,
                                    long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
                                    Date membershipPrivilegeExpiredDate, long experienceBalance) {
         this.balance = balance;
+        this.withdrawBalance = withdrawBalance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
         this.actualTotalCouponInterest = userFundView.getActualCouponInterest() + userFundView.getRedEnvelopeAmount();
@@ -127,6 +131,10 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public long getBalance() {
         return balance;
+    }
+
+    public long getWithdrawBalance() {
+        return withdrawBalance;
     }
 
     public long getTotalIncome() {
