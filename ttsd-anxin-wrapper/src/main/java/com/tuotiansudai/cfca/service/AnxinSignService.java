@@ -2,6 +2,7 @@ package com.tuotiansudai.cfca.service;
 
 
 import com.tuotiansudai.dto.AnxinDataDto;
+import com.tuotiansudai.dto.AnxinLoanSuccessDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinContractType;
@@ -27,7 +28,7 @@ public interface AnxinSignService {
 
     byte[] downContractByContractNo(String contractNo);
 
-    BaseDto<AnxinDataDto> createLoanContracts(long loanId);
+    BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto);
 
     BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId);
 

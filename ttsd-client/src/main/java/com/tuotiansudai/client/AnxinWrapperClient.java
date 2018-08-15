@@ -50,8 +50,8 @@ public class AnxinWrapperClient extends BaseClient {
         this.okHttpClient.setWriteTimeout(300, TimeUnit.SECONDS);
     }
 
-    public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
-        return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
+    public BaseDto<AnxinDataDto> createLoanContract(Object anxinLoanSuccessDto) {
+        return syncExecute(anxinLoanSuccessDto, createLoanContract, "POST");
     }
 
     public BaseDto<AnxinDataDto> createTransferContract(long transferId) {

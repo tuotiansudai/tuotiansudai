@@ -65,10 +65,6 @@ public class LoanFullService implements NotifyCallbackInterface {
 
     @SuppressWarnings(value = "unchecked")
     public BankBaseMessage full(BankLoanFullDto bankLoanFullDto) {
-        if (bankLoanFullDto.getTriggerTime() > System.currentTimeMillis()) {
-            redisTemplate.opsForList().leftPush(BANK_LOAN_FULL_DELAY_QUEUE, bankLoanFullDto.toString());
-            return new BankBaseMessage(true, null);
-        }
 
         LoanFullRequestDto dto = new LoanFullRequestDto(bankLoanFullDto);
 
@@ -82,7 +78,7 @@ public class LoanFullService implements NotifyCallbackInterface {
         insertMapper.insertLoanFull(dto);
 
         String bankLoanFullMessageKey = MessageFormat.format(BANK_LOAN_FULL_MESSAGE_KEY, dto.getOrderDate());
-        BankLoanFullMessage bankLoanFullMessage = new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), bankLoanFullDto.getCheckerLoginName(), dto.getOrderNo(), dto.getOrderDate());
+        BankLoanFullMessage bankLoanFullMessage = new BankLoanFullMessage(bankLoanFullDto.getLoanId(), bankLoanFullDto.getLoanTxNo(), bankLoanFullDto.getCheckerLoginName(), dto.getOrderNo(), dto.getOrderDate(),bankLoanFullDto.getFullTime());
         redisTemplate.<String, String>opsForHash().put(bankLoanFullMessageKey, dto.getOrderNo(), gson.toJson(bankLoanFullMessage));
 
         String responseData = bankClient.send(API_TYPE, dto.getRequestData());
@@ -132,26 +128,4 @@ public class LoanFullService implements NotifyCallbackInterface {
         return responseDto;
     }
 
-    @Scheduled(fixedDelay = 1000 * 60, initialDelay = 1000 * 10, zone = "Asia/Shanghai")
-    public void delaySchedule() {
-        RLock lock = redissonClient.getLock("BANK_LOAN_FULL_DELAY_QUEUE_LOCK");
-
-        if (lock.tryLock()) {
-            try {
-                ListOperations<String, String> listOperations = redisTemplate.opsForList();
-                Long size = listOperations.size(BANK_LOAN_FULL_DELAY_QUEUE);
-                for (long index = 0; index < (size == null ? 0 : size); index++) {
-                    BankLoanFullDto bankLoanFullDto = gson.fromJson(listOperations.index(BANK_LOAN_FULL_DELAY_QUEUE, -1), BankLoanFullDto.class);
-                    if (bankLoanFullDto.getTriggerTime() < System.currentTimeMillis()) {
-                        this.full(bankLoanFullDto);
-                        listOperations.rightPop(BANK_LOAN_FULL_DELAY_QUEUE);
-                    } else {
-                        listOperations.rightPopAndLeftPush(BANK_LOAN_FULL_DELAY_QUEUE, BANK_LOAN_FULL_DELAY_QUEUE);
-                    }
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-    }
 }

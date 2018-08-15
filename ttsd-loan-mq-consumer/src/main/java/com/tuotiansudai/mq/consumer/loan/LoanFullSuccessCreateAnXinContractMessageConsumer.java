@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.tuotiansudai.client.AnxinWrapperClient;
+import com.tuotiansudai.dto.AnxinLoanSuccessDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
@@ -46,7 +47,7 @@ public class LoanFullSuccessCreateAnXinContractMessageConsumer implements Messag
 
         try {
             BankLoanFullMessage bankLoanFullMessage = new GsonBuilder().create().fromJson(message, BankLoanFullMessage.class);
-            BaseDto baseDto = anxinWrapperClient.createLoanContract(bankLoanFullMessage.getLoanId());
+            BaseDto baseDto = anxinWrapperClient.createLoanContract(new AnxinLoanSuccessDto(bankLoanFullMessage.getLoanId(),bankLoanFullMessage.getFullTime()));
             if (!baseDto.isSuccess()) {
                 logger.error("[Loan Full] generate anxin contract failure. loanId:{}", bankLoanFullMessage.getLoanId());
                 return;

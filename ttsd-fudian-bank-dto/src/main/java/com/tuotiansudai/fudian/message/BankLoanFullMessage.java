@@ -12,6 +12,8 @@ public class BankLoanFullMessage extends BankBaseMessage {
 
     private String bankOrderDate;
 
+    private String fullTime;
+
     public BankLoanFullMessage() {
     }
 
@@ -19,13 +21,14 @@ public class BankLoanFullMessage extends BankBaseMessage {
         super(status, message);
     }
 
-    public BankLoanFullMessage(long loanId, String loanTxNo, String checkerLoginName, String bankOrderNo, String bankOrderDate) {
+    public BankLoanFullMessage(long loanId, String loanTxNo, String checkerLoginName, String bankOrderNo, String bankOrderDate,String fullTime) {
         super(true, null);
         this.loanId = loanId;
         this.loanTxNo = loanTxNo;
         this.checkerLoginName = checkerLoginName;
         this.bankOrderNo = bankOrderNo;
         this.bankOrderDate = bankOrderDate;
+        this.fullTime=fullTime;
     }
 
     public long getLoanId() {
@@ -46,5 +49,9 @@ public class BankLoanFullMessage extends BankBaseMessage {
 
     public String getBankOrderDate() {
         return bankOrderDate;
+    }
+
+    public String getFullTime() {
+        return fullTime;
     }
 }

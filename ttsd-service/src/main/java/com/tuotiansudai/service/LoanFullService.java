@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class LoanFullService {
                 loanModel.getBankOrderDate(),
                 new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
                 checkerLoginName,
-                0);
+                new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
     }
 
     @Transactional
@@ -105,7 +106,7 @@ public class LoanFullService {
 
     private void updateLoanStatus(LoanModel loanModel, BankLoanFullMessage bankLoanFullMessage) {
         loanModel.setPeriods(LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType()));
-        loanModel.setRecheckTime(new Date());
+        loanModel.setRecheckTime(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(bankLoanFullMessage.getFullTime()).toDate());
         loanModel.setRecheckLoginName(bankLoanFullMessage.getCheckerLoginName());
         loanModel.setStatus(LoanStatus.REPAYING);
         loanModel.setLoanFullBankOrderNo(bankLoanFullMessage.getBankOrderNo());
