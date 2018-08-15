@@ -217,7 +217,7 @@ public class InvestRepaySuccessService {
         LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), investRepayModel.getPeriod());
 
         investRepayModel.setActualInterest(umpRepayPaybackMessage.getInterest());
-        investRepayModel.setActualFee(umpRepayPaybackMessage.getInterest());
+        investRepayModel.setActualFee(umpRepayPaybackMessage.getFee());
         investRepayModel.setRepayAmount(umpRepayPaybackMessage.getCorpus() + umpRepayPaybackMessage.getInterest() + umpRepayPaybackMessage.getDefaultInterest() - umpRepayPaybackMessage.getFee());
         investRepayModel.setActualRepayDate(loanRepayModel.getActualRepayDate());
         investRepayModel.setStatus(RepayStatus.COMPLETE);
