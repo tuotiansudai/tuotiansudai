@@ -75,7 +75,7 @@ public class BankLoanRepayDto extends BankBaseDto {
                 && bankLoanRepayInvests != null
                 && bankLoanRepayInvests.size() > 0
                 && bankLoanRepayInvests.stream().allMatch(BankLoanRepayInvestDto::isValid)
-                && capital + interest == bankLoanRepayInvests.stream().mapToLong(bankLoanRepayInvest -> bankLoanRepayInvest.getCapital() + bankLoanRepayInvest.getInterest()).sum();
+                && capital + interest == bankLoanRepayInvests.stream().mapToLong(bankLoanRepayInvest -> bankLoanRepayInvest.getCapital() + bankLoanRepayInvest.getInterest() + bankLoanRepayInvest.getDefaultInterest()).sum();
 
     }
 
