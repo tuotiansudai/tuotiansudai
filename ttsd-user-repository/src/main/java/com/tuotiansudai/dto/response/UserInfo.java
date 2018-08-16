@@ -26,6 +26,10 @@ public class UserInfo implements Serializable {
     private String userName;
     @JsonProperty("identity_number")
     private String identityNumber;
+    @JsonProperty("ump_user_name")
+    private String umpUserName;
+    @JsonProperty("ump_identity_number")
+    private String umpIdentityNumber;
     @JsonProperty("register_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -52,6 +56,8 @@ public class UserInfo implements Serializable {
         userModel.setEmail(email);
         userModel.setUserName(userName);
         userModel.setIdentityNumber(identityNumber);
+        userModel.setUmpUserName(umpUserName);
+        userModel.setUmpIdentityNumber(umpIdentityNumber);
         userModel.setRegisterTime(registerTime);
         userModel.setLastModifiedTime(lastModifiedTime);
         userModel.setLastModifiedUser(lastModifiedUser);
@@ -73,6 +79,8 @@ public class UserInfo implements Serializable {
         userInfo.setEmail(userModel.getEmail());
         userInfo.setUserName(userModel.getUserName());
         userInfo.setIdentityNumber(userModel.getIdentityNumber());
+        userInfo.setUmpUserName(userModel.getUmpUserName());
+        userInfo.setUmpIdentityNumber(userModel.getUmpIdentityNumber());
         userInfo.setRegisterTime(userModel.getRegisterTime());
         userInfo.setLastModifiedTime(userModel.getLastModifiedTime());
         userInfo.setLastModifiedUser(userModel.getLastModifiedUser());
@@ -212,5 +220,21 @@ public class UserInfo implements Serializable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
+    }
+
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
+    }
+
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 }
