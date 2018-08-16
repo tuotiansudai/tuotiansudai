@@ -3,7 +3,8 @@ require('webJsModule/touch_menu');
 var helper = require('webJs/help_center_data.jsx')
 let helpCenterImgBarUrl = require('webImages/helpcenter/help-center.png');
 let $helpCenter = $("#helpCenter");
-var tpl = require('art-template/dist/template');
+let tpl = require('art-template/dist/template');
+var sourceKind = globalFun.parseURL(location.href);
 
 
 $helpCenter.find("img.help-center-bar").attr("src", helpCenterImgBarUrl);
@@ -66,9 +67,54 @@ function getData(rootDOM,type,question) {
     for(var i = 0;i<list.length;i++){
         str+='<li class="problem-single-item">\n' +
             '\n' +
-            '    <p class="single-title" data-type="'+type+'" data-question="'+question+'" data-index="'+i+'"><a href="help-content">'+(i+1)+'、'+list[i].title+'</a></p>\n' +
+            '    <p class="single-title" data-type="'+type+'" data-question="'+question+'" data-index="'+i+'"><a href="help-content?type='+type+'&question='+question+'&index='+i+'">'+(i+1)+'、'+list[i].title+'</a></p>\n' +
             '\n' +
             '    </li>';
     }
     rootDOM.html(str);
+}
+
+var $helpContainer = $('#helpContentContainer');
+// var selectedResolvedImg = require('../images/helpcenter/icon_resoved_selected.png');
+// var selectedUnsolveImg = require('../images/helpcenter/icon_unresolve_selected.png');
+
+if($helpContainer.length){
+    var type = sourceKind.params.type;
+    var question = sourceKind.params.question;
+    var indexs = sourceKind.params.index;
+    $('#questionTitle').html(helper.helperCenterData[type][question][indexs].title);
+    $('#helpContent').html(helper.helperCenterData[type][question][indexs].answer);
+    $('#resolvedBtn').on('click',function () {
+        commonFun.useAjax({
+                url: 'XXX',
+                type: 'POST'
+            }, function (res) {
+                if(res.status == true){
+                    $(this).addClass('selected').siblings().removeClass('selected');
+                }else {
+                    layer.msg(res.message)
+                }
+
+            }
+        )
+
+
+    })
+    $('#unsolvedBtn').on('click',function () {
+        commonFun.useAjax({
+                url: 'XXX',
+                type: 'POST'
+            }, function (res) {
+                if(res.status == true){
+                    $(this).addClass('selected').siblings().removeClass('selected');
+
+                }else {
+                    layer.msg(res.message)
+                }
+
+            }
+        )
+
+    })
+
 }
