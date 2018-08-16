@@ -38,27 +38,37 @@ $problem.on('click', '.single-title', function (event) {
 $('.problem-title-item span:eq(' + page + ')').trigger('click');
 $('.list-group:eq(' + page + ')').find('.problem-single-item:eq(' + index + ') .single-title').trigger('click');
 
-var registerStr = '';
+getData($('#registerList'),'registerBar','register');
+getData($('#accountList'),'registerBar','account');
+getData($('#passwordList'),'accountBar','password');
+getData($('#vipList'),'accountBar','vip');
+getData($('#bankAccountList'),'accountBar','bankAccount');
 
-var registerList = helper.helperCenterData.registerBar.register;
-for(var i = 0;i<registerList.length;i++){
-    registerStr+='<li class="problem-single-item">\n' +
-        '\n' +
-        '    <p class="single-title">'+(i+1)+'、'+registerList[i].title+'</p>\n' +
-        '\n' +
-        '    <p class="single-answer">答：registerList[i].answer</p>\n' +
-        '    </li>';
-}
- $('#registerList').html(registerStr);
-var accountStr = '';
-var accountList = helper.helperCenterData.registerBar.account;
-for(var i = 0;i<accountList.length;i++){
-    accountStr+='<li class="problem-single-item">\n' +
-        '\n' +
-        '    <p class="single-title">'+(i+1)+'、'+accountList[i].title+'</p>\n' +
-        '\n' +
-        '    <p class="single-answer">答：accountList[i].answer</p>\n' +
-        '    </li>';
-}
+getData($('#rechargeList'),'moneyBar','recharge');
+getData($('#investList'),'moneyBar','invest');
+getData($('#paymentsList'),'moneyBar','payments');
+getData($('#cashList'),'moneyBar','cash');
+getData($('#fundList'),'moneyBar','found');
 
-$('#accountList').html(accountStr);
+getData($('#mortgageList'),'productBar','mortgage');
+getData($('#transferRightsList'),'productBar','transferRights');
+
+getData($('#otherList'),'otherBar','app');
+
+// passwordList
+var pageType = location.href.split('/')[location.href.split('/').length-1] ? location.href.split('/')[location.href.split('/').length-1]:'';
+
+function getData(rootDOM,type,question) {
+
+    var str = '';
+
+    var list = helper.helperCenterData[type][question];
+    for(var i = 0;i<list.length;i++){
+        str+='<li class="problem-single-item">\n' +
+            '\n' +
+            '    <p class="single-title" data-type="'+type+'" data-question="'+question+'" data-index="'+i+'"><a href="help-content">'+(i+1)+'、'+list[i].title+'</a></p>\n' +
+            '\n' +
+            '    </li>';
+    }
+    rootDOM.html(str);
+}

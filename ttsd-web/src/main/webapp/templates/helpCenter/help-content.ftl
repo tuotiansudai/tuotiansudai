@@ -6,25 +6,7 @@
     </h3>
 
     <div class="problem-list-group">
-        <div class="problem-title-item">
-            <span class="active">充值</span>
-            <span>投资</span>
-            <span>回款</span>
-            <span>提现</span>
-            <span>资金存管</span>
-        </div>
-        <div class="problem-content-item">
-            <ul class="list-group active" id="rechargeList">
-            </ul>
-            <ul class="list-group" id="investList">
-            </ul>
-            <ul class="list-group" id="paymentsList">
-            </ul>
-            <ul class="list-group" id="cashList">
-            </ul>
-            <ul class="list-group" id="fundList">
-            </ul>
-        </div>
+        内容内容
     </div>
 </div>
 </@global.main>

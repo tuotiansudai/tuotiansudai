@@ -25,7 +25,7 @@ public class HelpCenterController {
     @Autowired
     private OperationDataService operationDataService;
 
-    @RequestMapping(path = "/{item:^help-center|account|user|money|product|other$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^help-center|account|user|money|product|help-content|other$}", method = RequestMethod.GET)
     public ModelAndView about(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/helpCenter/" + item);
         modelAndView.addObject("responsive", true);
