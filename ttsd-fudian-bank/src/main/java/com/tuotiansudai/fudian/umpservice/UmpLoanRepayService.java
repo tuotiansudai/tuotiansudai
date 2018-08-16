@@ -155,6 +155,7 @@ public class UmpLoanRepayService {
 
                 if (umpLoanRepayDto.getUmpRepayFeeDto().getFee() > 0) {
                     listOperations.leftPush(UMP_REPAY_FEE_QUEUE, gson.toJson(umpLoanRepayDto.getUmpRepayFeeDto()));
+                    hashOperations.put(UMP_REPAY_FEE_DATA_KEY, String.valueOf(umpLoanRepayDto.getUmpRepayFeeDto().getLoanRepayId()), gson.toJson(umpLoanRepayDto.getUmpRepayFeeDto()));
                 }
 
                 messageQueueClient.sendMessage(MessageQueue.UmpLoanRepay_Success, new UmpLoanRepayMessage(umpLoanRepayDto.getLoanId(), umpLoanRepayDto.getLoanRepayId(), umpLoanRepayDto.getAmount(), umpLoanRepayDto.getLoginName(), umpLoanRepayDto.getIsNormalRepay()));
@@ -412,7 +413,7 @@ public class UmpLoanRepayService {
                             umpUtils.generateResponse(model.getId(), responseBody, responseModel);
                             updateRequestMapper.updateExtraRate(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAILURE, model.getId());
                             insertResponseMapper.insertResponseExtraRate(responseModel);
-                            logger.info("[UMP extra repay] sent coupon repay request, payback data: {}, status: {}", value, responseModel.isSuccess());
+                            logger.info("[UMP extra repay] sent extra repay request, payback data: {}, status: {}", value, responseModel.isSuccess());
                         }
                     } catch (Exception ex) {
                         logger.error(ex.getLocalizedMessage(), ex);
@@ -500,7 +501,7 @@ public class UmpLoanRepayService {
                             umpUtils.generateResponse(model.getId(), responseBody, responseModel);
                             updateRequestMapper.updateProjectTransfer(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAILURE, model.getId());
                             insertResponseMapper.insertProjectTransfer(responseModel);
-                            logger.info("[UMP fee repay] sent coupon repay request, payback data: {}, status: {}", value, responseModel.isSuccess());
+                            logger.info("[UMP fee repay] sent fee repay request, payback data: {}, status: {}", value, responseModel.isSuccess());
                         }
                     } catch (Exception ex) {
                         logger.error(ex.getLocalizedMessage(), ex);
