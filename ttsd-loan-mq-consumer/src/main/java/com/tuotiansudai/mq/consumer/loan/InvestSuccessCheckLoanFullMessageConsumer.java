@@ -17,8 +17,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +24,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
 public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsumer {
     private static Logger logger = LoggerFactory.getLogger(InvestSuccessCheckLoanFullMessageConsumer.class);
-
-    private final UserMapper userMapper;
 
     private final LoanMapper loanMapper;
 
@@ -47,8 +44,7 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
     private List<String> loanRaisingCompleteNotifyMobileList;
 
     @Autowired
-    public InvestSuccessCheckLoanFullMessageConsumer(UserMapper userMapper, LoanMapper loanMapper, InvestMapper investMapper) {
-        this.userMapper = userMapper;
+    public InvestSuccessCheckLoanFullMessageConsumer(LoanMapper loanMapper, InvestMapper investMapper) {
         this.loanMapper = loanMapper;
         this.investMapper = investMapper;
     }
@@ -84,40 +80,40 @@ public class InvestSuccessCheckLoanFullMessageConsumer implements MessageConsume
         } catch (JsonSyntaxException e) {
             logger.error("[MQ] message is invalid: {}", message);
         }
-
         logger.info("[MQ] consume message success.");
     }
 
     private void sendLoanRaisingCompleteNotify(LoanModel loanModel) {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM月dd日");
+        try{
+            SimpleDateFormat sdfDate = new SimpleDateFormat("MM月dd日");
 
-        String loanRaisingStartDate = sdfDate.format(loanModel.getFundraisingStartTime());
+            String loanRaisingStartDate = sdfDate.format(loanModel.getFundraisingStartTime());
 
-        String loanName = loanModel.getName();
+            long loanAmount = loanModel.getLoanAmount();
+            String loanAmountStr; // 单位：万
+            if (loanAmount % 1000000 == 0)
+                loanAmountStr = String.valueOf(loanAmount / 1000000);
+            else
+                loanAmountStr = String.valueOf((double) (loanAmount / 10000) / 100);
 
-        long loanAmount = loanModel.getLoanAmount();
-        String loanAmountStr; // 单位：万
-        if (loanAmount % 1000000 == 0)
-            loanAmountStr = String.valueOf(loanAmount / 1000000);
-        else
-            loanAmountStr = String.valueOf((double) (loanAmount / 10000) / 100);
+            String loanDuration = String.valueOf(loanModel.getDuration());
 
-        String loanDuration = String.valueOf(loanModel.getDuration());
+            String loanerName = loanModel == null ? "" : loanModel.getLoanerUserName();
 
-        String loanerName = loanModel == null ? "" : loanModel.getLoanerUserName();
+            String agentUserName = loanModel.getLoanerUserName() == null ? "" : loanModel.getLoanerUserName();
 
-        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        String agentUserName = agentModel == null ? "" : agentModel.getUserName();
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH点mm分");
+            String loanRaisingCompleteTime = sdfTime.format(new Date());
 
-        SimpleDateFormat sdfTime = new SimpleDateFormat("HH点mm分");
-        String loanRaisingCompleteTime = sdfTime.format(loanModel.getRaisingCompleteTime());
+            logger.info("will send loan raising complete notify, loanId:" + loanModel.getId());
 
-        logger.info("will send loan raising complete notify, loanId:" + loanModel.getId());
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
+                    Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
 
-        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
-                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
-
-        mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanModel.getId()));
+            mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanModel.getId()));
+        }catch (Exception e){
+            logger.error("MessageQueue.Invest_CheckLoanFull  send notify error：{}",e.getCause());
+        }
 
     }
 }
