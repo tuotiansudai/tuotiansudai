@@ -363,7 +363,7 @@
         <result column="transferee_loginName" property="transfereeLoginName"></result>
         <result column="loan_id" property="loanId"></result>
         <result column="contract_no" property="contractNo"/>
-        <result column="is_bank_platform" property="isBankPlatform"/>
+        <result column="is_bank_platform" property="isBankPlatForm"/>
     </resultMap>
 
     <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap" useCache="false">
@@ -386,7 +386,7 @@
         ta.login_name as transferrer_loginName,
         i.login_name as transferee_loginName,
         ta.loan_id,
-        l.is_bank_platform as isBankPlatform
+        l.is_bank_platform as isBankPlatForm
         from invest i
         join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
         join loan l on l.id = ta.loan_id
