@@ -75,15 +75,93 @@ function getData(rootDOM,type,question) {
 }
 
 var $helpContainer = $('#helpContentContainer');
-// var selectedResolvedImg = require('../images/helpcenter/icon_resoved_selected.png');
-// var selectedUnsolveImg = require('../images/helpcenter/icon_unresolve_selected.png');
 
 if($helpContainer.length){
     var type = sourceKind.params.type;
     var question = sourceKind.params.question;
     var indexs = sourceKind.params.index;
+    var typeStr = '';
+    var typeHref = '';
+    var questionHref = '';
+    var questionStr = '';
+    $('.left-nav').find('li a').removeClass('active');
+    switch (type) {
+        case 'registerBar':
+            $('.left-nav').find('li').eq(0).find('a').addClass('active');
+            typeStr='注册认证';
+            typeHref= '/help/account';
+            if(question == 'register'){
+                questionHref = '/help/account#11';
+                questionStr = '注册';
+            }else if(question == 'account'){
+                questionHref = '/help/account#21';
+                questionStr = '认证';
+            }
+            break;
+        case 'moneyBar':
+            $('.left-nav').find('li').eq(2).find('a').addClass('active');
+            typeStr='资金相关';
+            typeHref= '/help/money';
+            if(question == 'recharge'){
+                questionHref = '/help/money#11';
+                questionStr = '充值';
+            }else if(question == 'invest'){
+                questionHref = '/help/money#21';
+                questionStr = '投资';
+            }else if(question == 'payments'){
+                questionHref = '/help/money#31';
+                questionStr = '回款';
+            }else if(question == 'cash'){
+                questionHref = '/help/money#41';
+                questionStr = '提现';
+            }else if(question == 'found'){
+                questionHref = '/help/money#51';
+                questionStr = '资金存管';
+            }
+            break;
+        case 'productBar':
+            $('.left-nav').find('li').eq(3).find('a').addClass('active');
+            typeStr='产品类型';
+            typeHref= '/help/product';
+            if(question == 'mortgage'){
+                questionHref = '/help/product#11';
+                questionStr = '抵押贷';
+            }else if(question == 'transferRights'){
+                questionHref = '/help/product#21';
+                questionStr = '债权转让';
+            }
+            break;
+        case 'otherBar':
+            $('.left-nav').find('li').eq(4).find('a').addClass('active');
+            typeStr='其他问题';
+            typeHref= '/help/other';
+            if(question == 'app'){
+                questionHref = '/help/other#11';
+                questionStr = '手机客户端';
+            }
+            break;
+        case 'accountBar':
+            $('.left-nav').find('li').eq(1).find('a').addClass('active');
+            typeStr='账户管理';
+            typeHref= '/help/user';
+            if(question == 'password'){
+                questionHref = '/help/user#11';
+                questionStr = '密码设置';
+            }else if(question == 'vip'){
+                questionHref = '/help/user#21';
+                questionStr = 'VIP会员';
+            }else if(question == 'bankAccount'){
+                questionHref = '/help/user#31';
+                questionStr = '银行卡认证及更换';
+            }
+            break;
+
+    }
+
+    var navStr = '<a href="/help/help-center">帮助中心></a><a href="'+typeHref+'">'+typeStr+'></a><a href="'+questionHref+'">'+questionStr+'></a>'+helper.helperCenterData[type][question][indexs].title;
     $('#questionTitle').html(helper.helperCenterData[type][question][indexs].title);
     $('#helpContent').html(helper.helperCenterData[type][question][indexs].answer);
+   $('#nav').html(navStr);
     $('#resolvedBtn').on('click',function () {
         commonFun.useAjax({
                 url: 'XXX',
