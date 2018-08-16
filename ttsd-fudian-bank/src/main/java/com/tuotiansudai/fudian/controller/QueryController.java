@@ -118,7 +118,6 @@ public class QueryController {
             List<BankQueryLogAccountItemMessage> subItems = responseDto.getContent().getAccountLogList().stream().map(log -> new BankQueryLogAccountItemMessage(
                     log.getAmount(), log.getBalance(), log.getFreezeBalance(), log.getCreateTime(), log.getOrderNo(), log.getOrderDate(), log.getRemark(), log.getToUserName()
             )).collect(Collectors.toList());
-            Collections.reverse(subItems);
             items.addAll(subItems);
         }
         return ResponseEntity.ok(new BankQueryLogAccountMessage(userName, accountNo, new DateTime(queryOrderDateStart).toString("yyyyMMdd"), new DateTime(queryOrderDateEnd).toString("yyyyMMdd"), items));
