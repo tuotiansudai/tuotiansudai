@@ -139,6 +139,9 @@ public class BankWithdrawService {
             return 0;
         }
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, role);
+        if (bankAccountModel == null) {
+            return 0;
+        }
         BankQueryUserMessage message = bankWrapperClient.queryUser(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
         return message.getWithdrawBalance();
     }
