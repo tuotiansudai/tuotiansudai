@@ -94,6 +94,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
+    private static final String DEFAULT_CAPTCHA = "999999";
+
     @Value(value = "${anxin.contract.batch.num}")
     private int batchSize;
 
@@ -263,7 +265,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
 
-            if (!Environment.isProduction(environment)){
+            if (!Environment.isProduction(environment) && DEFAULT_CAPTCHA.equals(captcha)){
                 anxinProp.setProjectCode("1");
                 anxinProp.setSkipAuth(skipAuth);
                 anxinProp.setAuthTime(new Date());
