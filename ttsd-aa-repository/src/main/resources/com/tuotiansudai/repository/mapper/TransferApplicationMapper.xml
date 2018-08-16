@@ -363,6 +363,7 @@
         <result column="transferee_loginName" property="transfereeLoginName"></result>
         <result column="loan_id" property="loanId"></result>
         <result column="contract_no" property="contractNo"/>
+        <result column="is_bank_platform" property="isBankPlatform"/>
     </resultMap>
 
     <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap" useCache="false">
@@ -384,14 +385,16 @@
         ta.transfer_invest_id,
         ta.login_name as transferrer_loginName,
         i.login_name as transferee_loginName,
-        ta.loan_id
+        ta.loan_id,
+        l.is_bank_platform as isBankPlatform
         from invest i
         join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
-        <if test="loanStatus != null">
-            join loan l on l.id = ta.loan_id and l.status = #{loanStatus}
-        </if>
+        join loan l on l.id = ta.loan_id
         <where>
             i.login_name = #{investorLoginName}
+            <if test="loanStatus != null">
+                and l.status = #{loanStatus}
+            </if>
             <if test="startTime != null &amp;&amp; endTime != null">
                 and i.created_time between #{startTime} and #{endTime}
             </if>

@@ -39,6 +39,8 @@ public class TransferInvestDetailView implements Serializable {
 
     private String contractOK;
 
+    private boolean isBankPlatform;
+
     public Integer getId() {
         return id;
     }
@@ -173,4 +175,11 @@ public class TransferInvestDetailView implements Serializable {
         this.contractOK = contractOK;
     }
 
+    public boolean isBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setBankPlatform(boolean bankPlatform) {
+        isBankPlatform = bankPlatform;
+    }
 }
