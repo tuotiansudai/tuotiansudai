@@ -107,6 +107,15 @@
         %>
         <tr>
             <td>
+                <span class="icon-list">
+                    <%if (item.productType != 'EXPERIENCE') {%>
+                                <%if (item.bankPlatForm ){ %>
+                                <i class="fudian-icon">富</i>
+                                <%}else {%>
+                                <i class="liandong-icon">联</i>
+                                <% } %>
+                    <%}%>
+                </span>
                 <a href="/transfer/<%=item.id%>" class="project-name"><%=item.loanName%> </a>
             </td>
             <td><%=item.transferAmountStr%></td>

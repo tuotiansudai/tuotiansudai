@@ -22,6 +22,7 @@ if (isInWeChat && isIos) {
 amountInputElement.keyup(function () {
     let amount = parseFloat(amountInputElement.autoNumeric("get")),
         withdrawFee = parseFloat(withdrawFeeElement.html());
+    console.log(withdrawFee)
     moneyCheck(isFudianBank);
     if(amountInputElement.val()==''){
         if(isFudianBank){
@@ -81,6 +82,7 @@ function moneyCheck(isFudianBank) {
     if (isFudianBank){
         withdrawFeeElement.html('1.00');
     }else{
+        console.log(999)
         if(isNaN(amount) || amount<=50000){
             withdrawFeeElement.html('1.50');
         }else {
