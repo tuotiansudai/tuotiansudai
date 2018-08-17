@@ -18,10 +18,6 @@ import java.util.Date;
 @RequestMapping(path = "/help")
 public class HelpCenterController {
 
-    @Value("${pay.withdraw.fee}")
-    private long withdrawFee;
-
-
     @Autowired
     private OperationDataService operationDataService;
 

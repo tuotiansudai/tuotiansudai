@@ -34,8 +34,11 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     @Autowired
     private BankWithdrawService bankWithdrawService;
 
-    @Value("${pay.withdraw.fee}")
+    @Value("${bank.withdraw.fee}")
     private long withdrawFee;
+
+    @Value("${bank.fudian.withdraw.fee}")
+    private long fudianWithdrawFee;
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -73,12 +76,14 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     public BaseResponseDto<BankAsynResponseDto> generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         long withdrawAmount = AmountConverter.convertStringToCent(String.valueOf(requestDto.getMoney()));
 
-        if (withdrawAmount <= withdrawFee) {
-            return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
-        }
         UserBankCardModel userBankCardModel = userBankCardMapper.findByLoginNameAndRole(requestDto.getBaseParam().getUserId(), Role.INVESTOR);
         if (userBankCardModel == null) {
-            return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
+            return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD);
+        }
+
+        if (("466".equals(userBankCardModel.getBankCode()) && withdrawAmount < fudianWithdrawFee)
+                || (!"466".equals(userBankCardModel.getBankCode()) && withdrawAmount < withdrawFee)) {
+            return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE);
         }
 
         if (userBankCardMapper.findByLoginNameAndRole(requestDto.getBaseParam().getUserId(), Role.INVESTOR) == null) {

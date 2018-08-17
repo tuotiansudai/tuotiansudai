@@ -274,7 +274,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         userCouponMapper.create(userCouponModel);
 
         String mobile = userMapper.findByLoginName(loginName).getMobile();
-        String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
+        String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "%加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
 
         return userCouponModel;
