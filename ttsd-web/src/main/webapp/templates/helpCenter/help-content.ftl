@@ -12,7 +12,7 @@
         </div>
         <div class="solve-wrap">
             <p>这条帮助是否解决了您的问题？<br/>
-                已有 <em id="person">35 </em>人参与投票</p>
+                已有 <em id="person">${voteNumber!} </em>人参与投票</p>
             <a class="solve-btn resolved-btn" href="javascript:;" id="resolvedBtn">已解决</a> <a class="solve-btn unsolved-btn" href="javascript:;" id="unsolvedBtn">未解决</a>
         </div>
     </div>
