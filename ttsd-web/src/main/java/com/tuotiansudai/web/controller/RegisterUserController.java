@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.PrepareUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.security.CaptchaHelper;
@@ -15,10 +16,12 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,11 +44,14 @@ public class RegisterUserController {
 
     private final CaptchaHelper captchaHelper;
 
+    private final PrepareUserService prepareService;
+
     @Autowired
-    public RegisterUserController(UserService userService, SmsCaptchaService smsCaptchaService, CaptchaHelper captchaHelper) {
+    public RegisterUserController(UserService userService, SmsCaptchaService smsCaptchaService, CaptchaHelper captchaHelper, PrepareUserService prepareService) {
         this.userService = userService;
         this.smsCaptchaService = smsCaptchaService;
         this.captchaHelper = captchaHelper;
+        this.prepareService = prepareService;
     }
 
 
@@ -60,6 +66,51 @@ public class RegisterUserController {
         modelAndView.addObject("referrer", userService.getMobile(request.getParameter("referrer")));
         modelAndView.addObject("responsive", true);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/shared-prepare", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> prepareRegister(@Valid @ModelAttribute PrepareRegisterRequestDto requestDto, BindingResult bindingResult, HttpServletResponse response) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.info("[APP SHARE IOS] :" + message);
+            baseDataDto = new BaseDataDto(false, message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+        baseDataDto = prepareService.prepareRegister(requestDto);
+        if (baseDataDto.getStatus()) {
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
+        }
+        baseDto.setData(baseDataDto);
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/user/shared", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> register(@Valid @ModelAttribute RegisterUserDto requestDto, BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto;
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getFieldError().getDefaultMessage();
+            logger.info("[APP SHARE ANDROID] :" + message);
+            baseDataDto = new BaseDataDto(false, message);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+        requestDto.setChannel((String) request.getSession().getAttribute("channel"));
+        baseDataDto = prepareService.register(requestDto);
+        if (baseDataDto.getStatus()) {
+            Cookie cookie = new Cookie("registerMobile", requestDto.getMobile());
+            cookie.setPath("/activity/app-share");
+            response.addCookie(cookie);
+        }
+        baseDto.setData(baseDataDto);
+        return baseDto;
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.POST)
