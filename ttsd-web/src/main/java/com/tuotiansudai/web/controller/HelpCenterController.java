@@ -63,10 +63,10 @@ public class HelpCenterController {
             wrapperDataDto.setData(dataMap);
             return wrapperDataDto;
         }
-        String redisisSolution = redisWrapperClient.hget(redisKey, ip + browserInfo);
+        String redisIsSolution = redisWrapperClient.hget(redisKey, ip + browserInfo);
         if (StringUtils.isNullOrEmpty(isSolution)) {
             dataMap.put("voteNumber", redisWrapperClient.hlen(redisKey) + contentId.hashCode() & 127);
-            dataMap.put("isSolution", redisisSolution == null ? -1 : Integer.valueOf(redisisSolution));
+            dataMap.put("isSolution", redisIsSolution == null ? -1 : Integer.valueOf(redisIsSolution));
             wrapperDataDto.setData(dataMap);
             return wrapperDataDto;
         }
@@ -75,7 +75,9 @@ public class HelpCenterController {
             wrapperDataDto.setStatus(false);
             return wrapperDataDto;
         }
-        if (!StringUtils.isEmptyOrWhitespaceOnly(redisisSolution)) {
+        if (!StringUtils.isEmptyOrWhitespaceOnly(redisIsSolution)) {
+            dataMap.put("voteNumber", redisWrapperClient.hlen(redisKey) + contentId.hashCode() & 127);
+            dataMap.put("isSolution", Integer.valueOf(redisIsSolution));
             wrapperDataDto.setMessage("已经投票");
             wrapperDataDto.setStatus(false);
             return wrapperDataDto;
