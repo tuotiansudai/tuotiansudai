@@ -26,12 +26,9 @@ public class HelpCenterController {
     private OperationDataService operationDataService;
 
     @RequestMapping(path = "/{item:^help-center|account|user|money|product|help-content|other$}", method = RequestMethod.GET)
-    public ModelAndView about(@PathVariable String item, @RequestParam(value = "contentId", required = false) String contentId) {
+    public ModelAndView about(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/helpCenter/" + item);
         modelAndView.addObject("responsive", true);
-        if ("help-content".equals(item)) {
-            modelAndView.addObject("voteNumber", contentId == null ? 0 : redisWrapperClient.hlen(HELP_CENTER_VOTE_KEY + contentId) + contentId.hashCode() & 127);
-        }
         return modelAndView;
     }
 
