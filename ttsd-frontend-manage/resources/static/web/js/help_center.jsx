@@ -16,6 +16,8 @@ let $changeBtn = $('.problem-title-item span'),
     page = location.href.split('#')[1] ? parseInt(location.href.split('#')[1].slice(0, 1)) - 1 : false,
     index = location.href.split('#')[1] ? parseInt(location.href.split('#')[1].slice(1, 2)) - 1 : false;
 
+let $resolvedBtn = $('.resolved-btn');
+let $unsolvedBtn = $('.unsolved-btn');
 //切换类型
 $changeBtn.on('click', function (event) {
     event.preventDefault();
@@ -163,37 +165,47 @@ if($helpContainer.length){
     $('#questionTitle').html(helper.helperCenterData[type][question][indexs].title);
     $('#helpContent').html(helper.helperCenterData[type][question][indexs].answer);
    $('#nav').html(navStr);
-    $('#resolvedBtn').on('click',function () {
-        commonFun.useAjax({
-                url: 'XXX',
-                type: 'POST'
-            }, function (res) {
-                if(res.status == true){
-                    $(this).addClass('selected').siblings().removeClass('selected');
-                }else {
-                    layer.msg(res.message)
-                }
+    $('.solve-btn').on('click',function () {
+        let _self = $(this);
+        let isSolution = -1;
+        let contentId = type+','+question+','+indexs;
+       
+        if(_self.hasClass('resolved-btn')){
+            isSolution = 1;
+        }else if(_self.hasClass('unsolved-btn')){
+            isSolution = 0;
+        }
+        if(_self.hasClass('disabled')||_self.hasClass('selected')){
+            layer.msg('您已参与过投票');
+            return;
+        }
 
-            }
-        )
+        // selectSquare(contentId,isSolution)
 
-
-    })
-    $('#unsolvedBtn').on('click',function () {
-        commonFun.useAjax({
-                url: 'XXX',
-                type: 'POST'
-            }, function (res) {
-                if(res.status == true){
-                    $(this).addClass('selected').siblings().removeClass('selected');
-
-                }else {
-                    layer.msg(res.message)
-                }
-
-            }
-        )
 
     })
 
+
+}
+
+function selectSquare(contentId,isSolution) {
+    commonFun.useAjax({
+            url: '/help/help-content/vote?contentId='+contentId+'&isSolution='+isSolution,
+            type: 'POST'
+        }, function (res) {
+            if(res.status ===true){
+                $('#person').text(res.data.voteNumber);
+                if(res.data.isSolution===1){
+                    $resolvedBtn.addClass('selected');
+                    $unsolvedBtn.addClass('disabled');
+                }else if(res.data.isSolution===0){
+                    $unsolvedBtn.addClass('selected');
+                    $resolvedBtn.addClass('disabled');
+                }
+            }else {
+                layer.msg(res.message)
+            }
+
+        }
+    )
 }
