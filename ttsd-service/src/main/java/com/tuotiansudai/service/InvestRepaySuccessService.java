@@ -393,11 +393,12 @@ public class InvestRepaySuccessService {
         investExtraRateModel.setStatus(RepayStatus.COMPLETE);
         investExtraRateMapper.update(investExtraRateModel);
 
-        mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, new UmpAmountTransferMessage(UmpTransferType.TRANSFER_IN_BALANCE,
+        mqWrapperClient.sendMessage(MessageQueue.UmpAmountTransfer, Lists.newArrayList(
+                new UmpAmountTransferMessage(UmpTransferType.TRANSFER_IN_BALANCE,
                 umpExtraRepayMessage.getLoginName(),
                 umpExtraRepayMessage.getInvestExtraRateId(),
                 amount,
-                UserBillBusinessType.EXTRA_RATE));
+                UserBillBusinessType.EXTRA_RATE)));
 
         mqWrapperClient.sendMessage(MessageQueue.SystemBill, new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT,
                 investExtraRateModel.getId(),
