@@ -60,7 +60,6 @@ getData($('#transferRightsList'),'productBar','transferRights');
 getData($('#otherList'),'otherBar','app');
 
 // passwordList
-var pageType = location.href.split('/')[location.href.split('/').length-1] ? location.href.split('/')[location.href.split('/').length-1]:'';
 
 function getData(rootDOM,type,question) {
 
@@ -87,6 +86,8 @@ if($helpContainer.length){
     var typeHref = '';
     var questionHref = '';
     var questionStr = '';
+    let isSolution = -1;
+    let contentId = type+','+question+','+indexs;
     $('.left-nav').find('li a').removeClass('active');
     switch (type) {
         case 'registerBar':
@@ -167,9 +168,8 @@ if($helpContainer.length){
    $('#nav').html(navStr);
     $('.solve-btn').on('click',function () {
         let _self = $(this);
-        let isSolution = -1;
-        let contentId = type+','+question+','+indexs;
-       
+
+
         if(_self.hasClass('resolved-btn')){
             isSolution = 1;
         }else if(_self.hasClass('unsolved-btn')){
@@ -180,11 +180,11 @@ if($helpContainer.length){
             return;
         }
 
-        // selectSquare(contentId,isSolution)
+        selectSquare(contentId,isSolution)
 
 
     })
-
+    selectSquare(contentId)
 
 }
 
