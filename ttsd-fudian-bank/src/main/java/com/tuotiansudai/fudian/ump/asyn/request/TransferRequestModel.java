@@ -47,10 +47,6 @@ public class TransferRequestModel extends BaseAsyncRequestModel {
         return new TransferRequestModel(orderId, payUserId, amount, AsyncUmPayService.EXTRA_RATE_TRANSFER);
     }
 
-    public static TransferRequestModel experienceInterestRequest(String orderId, String payUserId, String amount) {
-        return new TransferRequestModel(orderId, payUserId, amount, AsyncUmPayService.EXPERIENCE_INTEREST_TRANSFER);
-    }
-
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();

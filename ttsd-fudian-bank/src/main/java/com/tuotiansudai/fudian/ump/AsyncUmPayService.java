@@ -37,10 +37,6 @@ public enum AsyncUmPayService {
      * 个人账户提现
      */
     CUST_WITHDRAWALS("cust_withdrawals", "callback/CUST_WITHDRAWALS", "withdraw_notify"),
-    /**
-     * 体验金还款普通转账
-     */
-    EXPERIENCE_INTEREST_TRANSFER("transfer", "", "experience_repay_notify"),
     ;
 
     private final String serviceName;

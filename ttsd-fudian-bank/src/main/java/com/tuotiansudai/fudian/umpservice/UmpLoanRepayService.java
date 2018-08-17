@@ -392,7 +392,7 @@ public class UmpLoanRepayService {
                             continue;
                         }
 
-                        TransferRequestModel model = TransferRequestModel.newCouponRepayRequest(
+                        TransferRequestModel model = TransferRequestModel.newExtraRateRequest(
                                 MessageFormat.format(ORDER_ID_TEMPLATE, String.valueOf(umpExtraRateRepayDto.getInvestExtraRateId()), String.valueOf(new Date().getTime())),
                                 umpExtraRateRepayDto.getPayUserId(),
                                 String.valueOf(amount));
