@@ -35,7 +35,7 @@
 
                     <#if !isFastPayOn && isBindCard>
                         <div class="turn-on-fast-form pad-s">
-                            <form id="form1" action="/agreement" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                            <form id="form1" action="/agreement" method="post" <@global.role hasRole="'UMP_INVESTOR', 'UMP_LOANER'">target="_blank"</@global.role>>
                                 <p><label>姓名：</label><span>${userName}</span></p>
                                 <p><label>身份证：</label><span>${identityNumber}</span></p>
                                 <p><label>开户行：</label><span>${bank}</span></p>
@@ -54,7 +54,7 @@
 
                     <#if isFastPayOn>
                         <div class="fast-recharge-form">
-                            <form id="form2" action="/recharge" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                            <form id="form2" action="/recharge" method="post" <@global.role hasRole="'UMP_INVESTOR', 'UMP_LOANER'">target="_blank"</@global.role>>
                                 账户可用余额：<i>${balance}</i> 元 <br/>
                                 输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                                 <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
@@ -78,7 +78,7 @@
                 <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
                     <div class="recharge-form">
                         <b class="title">请选择银行：</b>
-                        <form action="/recharge" method="post" <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+                        <form action="/recharge" method="post" <@global.role hasRole="'UMP_INVESTOR', 'UMP_LOANER'">target="_blank"</@global.role>>
                             <ol>
                                 <#list banks as bank>
                                     <li>

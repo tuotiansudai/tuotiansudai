@@ -97,11 +97,11 @@
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/recharge/**" access="not isAnonymous()" method="GET"/>
-        <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
+        <intercept-url pattern="/recharge/**" access="hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')" method="POST"/>
         <intercept-url pattern="/withdraw/**" access="not isAnonymous()" method="GET"/>
         <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/bind-card/**" access="not isAnonymous()" method="GET"/>
-        <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
+        <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('UMP_INVESTOR', 'UMP_LOANER')" method="POST"/>
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('UMP_INVESTOR')"/>
