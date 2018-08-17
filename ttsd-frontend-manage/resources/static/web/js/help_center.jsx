@@ -189,8 +189,14 @@ if($helpContainer.length){
 }
 
 function selectSquare(contentId,isSolution) {
+    let url;
+    if(isSolution!==undefined){
+        url = '/help/help-content/vote?contentId='+contentId+'&isSolution='+isSolution;
+    }else {
+        url = '/help/help-content/vote?contentId='+contentId
+    }
     commonFun.useAjax({
-            url: '/help/help-content/vote?contentId='+contentId+'&isSolution='+isSolution,
+            url: url,
             type: 'POST'
         }, function (res) {
             if(res.status ===true){
