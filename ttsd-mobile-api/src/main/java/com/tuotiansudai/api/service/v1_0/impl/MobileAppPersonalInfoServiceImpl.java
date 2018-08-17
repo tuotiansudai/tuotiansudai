@@ -88,9 +88,9 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setBankName(userBankCardModel.getBank());
             BankModel bankModel = bankMapper.findByBankCode(userBankCardModel.getBankCode());
             long rechargeAmount = bankRechargeMapper.findSumRechargeAmount(null, null, userModel.getMobile(), null, RechargeStatus.SUCCESS, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
-            personalInfoDataDto.setSingleAmount(AmountConverter.convertCentToString(bankModel.getSingleAmount()));
-            personalInfoDataDto.setSingleDayAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
-            personalInfoDataDto.setRechargeLeftAmount(AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));
+            personalInfoDataDto.setSingleAmount(bankModel == null ? "0" : AmountConverter.convertCentToString(bankModel.getSingleAmount()));
+            personalInfoDataDto.setSingleDayAmount(bankModel == null ? "0" : AmountConverter.convertCentToString(bankModel.getSingleDayAmount()));
+            personalInfoDataDto.setRechargeLeftAmount(bankModel == null ? "0" : AmountConverter.convertCentToString(bankModel.getSingleDayAmount() - rechargeAmount));
         }
         if (anxinProp != null) {
             personalInfoDataDto.setAnxinUser(StringUtils.isNotEmpty(anxinProp.getAnxinUserId()));
