@@ -54,7 +54,6 @@ public class RegisterUserController {
         this.prepareService = prepareService;
     }
 
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerRedirect() {
         return new ModelAndView("redirect:/register/user");
@@ -98,10 +97,17 @@ public class RegisterUserController {
         if (bindingResult.hasErrors()) {
             String message = bindingResult.getFieldError().getDefaultMessage();
             logger.info("[APP SHARE ANDROID] :" + message);
-            baseDataDto = new BaseDataDto(false, message);
+            baseDataDto = new BaseDataDto(false);
             baseDto.setData(baseDataDto);
             return baseDto;
         }
+
+        if (userService.mobileIsExist(requestDto.getMobile())){
+            baseDataDto = new BaseDataDto(false, "手机号已存在");
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+
         requestDto.setChannel((String) request.getSession().getAttribute("channel"));
         baseDataDto = prepareService.register(requestDto);
         if (baseDataDto.getStatus()) {
@@ -116,7 +122,17 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
+        boolean isCheckSuccess = true;
+        if (userService.mobileIsExist(registerUserDto.getMobile())){
+            redirectAttributes.addFlashAttribute("registerMobileError", "手机号已存在");
+            isCheckSuccess = false;
+        }
+        if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())) {
+            redirectAttributes.addFlashAttribute("referrerMobileError", "推荐人手机号不存在");
+            isCheckSuccess = false;
+        }
+
+        boolean isRegisterSuccess = isCheckSuccess && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
@@ -124,7 +140,7 @@ public class RegisterUserController {
         }
 
         String successUrl = Strings.isNullOrEmpty(registerUserDto.getRedirectToAfterRegisterSuccess()) ? "/" : registerUserDto.getRedirectToAfterRegisterSuccess();
-        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : "/register/user");
+        String url = MessageFormat.format("redirect:{0}", isRegisterSuccess ? successUrl : Strings.isNullOrEmpty(registerUserDto.getRedirectToError()) ? "/register/user" : registerUserDto.getRedirectToError());
         logger.info(MessageFormat.format("[Register User {0}] controller redirect to {1}", registerUserDto.getMobile(), url));
         return new ModelAndView(url);
     }
@@ -132,8 +148,17 @@ public class RegisterUserController {
     @RequestMapping(path = "/user/m", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
         Map<String, Object> result = new HashMap<>();
+        boolean isCheckSuccess = true;
+        if (userService.mobileIsExist(registerUserDto.getMobile())){
+            result.put("registerMobileError", "手机号已存在");
+            isCheckSuccess = false;
+        }
+        if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())){
+            result.put("referrerMobileError", "推荐人手机号不存在");
+            isCheckSuccess = false;
+        }
+        boolean isRegisterSuccess = isCheckSuccess && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
         result.put("success", isRegisterSuccess);
         return result;
     }
@@ -162,11 +187,15 @@ public class RegisterUserController {
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
+    public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile, @RequestParam(value = "captcha") String captcha, HttpServletRequest httpServletRequest) {
         BaseDataDto dataDto = new BaseDataDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        HttpSession session = httpServletRequest.getSession(false);
+        boolean result = this.captchaHelper.captchaVerify(captcha, session != null ? session.getId() : "", httpServletRequest.getRemoteAddr());
+        baseDto.setSuccess(result);
         dataDto.setStatus(userService.mobileIsExist(mobile));
-        return new BaseDto<>(dataDto);
-
+        return baseDto;
     }
 
     @RequestMapping(value = "/user/mobile/{mobile:^\\d{11}$}/is-register", method = RequestMethod.POST)

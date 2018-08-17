@@ -49,9 +49,6 @@ function forgetPassword() {
     }, {
         strategy: 'isMobile',
         errorMsg: '手机号格式不正确'
-    },{
-        strategy: 'isMobileRetrieveExist',
-        errorMsg: '手机号不存在'
     }],true);
 
     validator.add(retrieveForm.captcha, [{

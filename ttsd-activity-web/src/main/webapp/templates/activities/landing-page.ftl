@@ -15,7 +15,9 @@
                             <ul>
                                 <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
                                            name="mobile"
-                                           maxlength="11" type="text" autocomplete="off" validate></li>
+                                           maxlength="11" type="text" autocomplete="off" validate>
+                                   <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
+                                </li>
                                 <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
                                            type="password" name="password" id="passwordInput" autocomplete="off" validate></li>
                                 <li class="clearfix">
@@ -27,6 +29,7 @@
                                     <span class="img-change height100 nextImg wapStyleNone">换一张</span><br/>
                                 </li>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <input type="hidden" name="redirectToError" value="/activity/landing-page"/>
                                 <li class="captcha-li smsIcon-li">
                                     <span class="smsIcon icons borderRadiusLeft"></span>
                                     <input id="smsCaptcha" class="height100 borderRadiusRight"
@@ -45,7 +48,9 @@
                                 </li>
                                 <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
                                                                      name="referrer"
-                                                                     maxlength="11" placeholder="推荐人手机号" validate></li>
+                                                                     maxlength="11" placeholder="推荐人手机号" validate>
+                                    <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
+                                </li>
                                 <li class="agreement-li">
                                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
                                     >

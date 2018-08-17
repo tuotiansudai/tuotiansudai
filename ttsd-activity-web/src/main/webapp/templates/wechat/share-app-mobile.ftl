@@ -11,7 +11,8 @@
                 <ul>
                     <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
                                name="mobile"
-                               maxlength="11" type="text" autocomplete="off" validate></li>
+                               maxlength="11" type="text" autocomplete="off" validate>
+                    </li>
                     <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
                                type="password" name="password" autocomplete="off" validate></li>
                     <li><span class="captchaIcon icons borderRadiusLeft"></span>
@@ -21,6 +22,7 @@
                         <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
                     </li>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input type="hidden" name="redirectToError" value="/activity/app-share?referrerMobile=${referrerInfo!}"/>
                     <input type="hidden" name="activityReferrer" id="activityReferrer"
                            value="<#if activityReferrerMobile??>${activityReferrerMobile!}</#if>">
                     <li class="captcha-li"><span class="smsIcon icons borderRadiusLeft"></span><input id="smsCaptcha" class="height100 borderRadiusRight"
@@ -39,7 +41,8 @@
                     </li>
                     <li class="recomender-iphone"><input class="borderRadiusRight width100 height100" type="text"
                                                          name="referrer"
-                                                         maxlength="11" placeholder="推荐人手机号" validate></li>
+                                                         maxlength="11" placeholder="推荐人手机号" validate>
+                    </li>
                     <li class="agreement-li">
                         <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
                         >

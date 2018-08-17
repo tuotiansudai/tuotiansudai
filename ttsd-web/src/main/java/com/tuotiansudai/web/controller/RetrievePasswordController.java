@@ -40,7 +40,7 @@ public class RetrievePasswordController {
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)
     public ModelAndView inputPassword(@PathVariable String mobile, @PathVariable String captcha) {
-        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
+        if (userService.mobileIsExist(mobile) && smsCaptchaService.verifyMobileCaptcha(mobile, captcha, SmsCaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
             return new ModelAndView("/input-password").addObject("mobile", mobile).addObject("captcha", captcha);
         }
         return new ModelAndView("redirect:/mobile-retrieve-password");

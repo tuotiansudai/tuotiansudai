@@ -13,9 +13,10 @@
             <ul class="reg-list tl register-step-one register-icon-list">
                 <li>
                     <i class="icon-mobile"></i>
-                    <input validate type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11"
-                           value="${(originalFormData.mobile)!}"/>
+                    <input validate type="text" name="mobile"  id="mobileInput" class="mobile" placeholder="请输入手机号" maxlength="11"
+                           />
                     <div class="mobileInputText" style="display:none;">请输入11位手机号码</div>
+                    <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
                 </li>
                 <li>
                     <i class="icon-password"></i>
@@ -40,7 +41,8 @@
                 <li class="referrer-open"> <i class="icon-arrow-bottom"></i>请输入推荐人（此项选填）</li>
                 <li class="">
                     <i class="icon-referrer"></i>
-                    <input validate type="text" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <input validate type="text" id="referrerInput" name="referrer" maxlength="11" class="referrer" placeholder="请输入手机号" onkeyup="this.value=this.value.replace(/\D/g,'')" value="${(referrer)!(originalFormData.referrer)!}"/>
+                    <#if referrerMobileError??><div class="errorMessage referferError">${referrerMobileError}</div> </#if>
                 </li>
                 <li class="agree-last">
                     <label class="check-label checked" >同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
@@ -53,7 +55,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                 <#if success?? && success == false>
-                    <div class="error">注册失败，请检查您提交的信息是否正确！</div>
+                    <div class="error-register">注册失败，请检查您提交的信息是否正确！</div>
                 </#if>
                 <div class="error-box"></div>
                 <input type="submit" class="register-user btn-success" value="立即注册" disabled />
