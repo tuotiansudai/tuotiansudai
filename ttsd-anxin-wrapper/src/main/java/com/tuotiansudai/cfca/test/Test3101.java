@@ -17,8 +17,8 @@ public class Test3101 {
         head.setTxTime(DateTime.now().toString("yyyyMMddHHmmss"));
 
         ProxySignVO proxySignVO = new ProxySignVO();
-        proxySignVO.setUserId("4027A45BC12E29E9E05311016B0AA19C");
-        proxySignVO.setProjectCode("003");
+        proxySignVO.setUserId("7383BF7E05445019E05311016B0AAE7A");
+        proxySignVO.setProjectCode("222222");
 
         tx3101ReqVO.setHead(head);
         tx3101ReqVO.setProxySign(proxySignVO);
