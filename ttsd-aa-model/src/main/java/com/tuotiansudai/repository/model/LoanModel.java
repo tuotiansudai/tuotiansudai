@@ -150,7 +150,7 @@ public class LoanModel implements Serializable {
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
-        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
     }
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
@@ -176,7 +176,7 @@ public class LoanModel implements Serializable {
         this.originalDuration = baseRequestDto.getOriginalDuration();
         this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
-        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanAmount());
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
         return this;
     }
 

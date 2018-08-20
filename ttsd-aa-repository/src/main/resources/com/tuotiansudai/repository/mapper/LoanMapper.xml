@@ -61,6 +61,7 @@
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
         <result column="is_bank_platform" property="isBankPlatform"/>
+        <result column="loan_fee" property="loanFee"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
