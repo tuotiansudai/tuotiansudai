@@ -15,6 +15,12 @@ public class BankAuthorizationMessage {
 
     private String bankOrderDate;
 
+    private boolean isOpen;
+
+    private long amount;
+
+    private String endTime;
+
     public BankAuthorizationMessage() {
     }
 
@@ -49,5 +55,29 @@ public class BankAuthorizationMessage {
 
     public String getBankOrderDate() {
         return bankOrderDate;
+    }
+
+    public boolean getIsOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

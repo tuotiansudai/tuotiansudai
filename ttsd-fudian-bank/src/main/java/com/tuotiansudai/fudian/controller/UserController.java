@@ -104,22 +104,33 @@ public class UserController extends AsyncRequestController {
         return ResponseEntity.ok(bankAsyncData);
     }
 
-    @RequestMapping(path = "/authorization/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> authorization(@PathVariable Source source, @RequestBody BankBaseDto params) {
-        logger.info("[Fudian] call authorization, params: {}", params);
+    @RequestMapping(path = "/authorization/source/{source}/open", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> authorizationOpen(@PathVariable Source source, @RequestBody BankBaseDto params) {
+        logger.info("[Fudian] call authorization open, params: {}", params);
         if (!params.isValid()) {
-            logger.error("[Fudian] call authorization bad request, data: {}", params);
+            logger.error("[Fudian] call authorization open bad request, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
-
-        AuthorizationRequestDto requestDto = authorizationService.auth(source, params);
-
+        AuthorizationRequestDto requestDto = authorizationService.auth(source, params, true);
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
-
         if (!bankAsyncData.isStatus()) {
-            logger.error("[Fudian] call authorization, request data generation failure, data: {}");
+            logger.error("[Fudian] call authorization open, request data generation failure, data: {}");
         }
+        return ResponseEntity.ok(bankAsyncData);
+    }
 
+    @RequestMapping(path = "/authorization/source/{source}/close", method = RequestMethod.POST)
+    public ResponseEntity<BankAsyncMessage> authorizationClose(@PathVariable Source source, @RequestBody BankBaseDto params) {
+        logger.info("[Fudian] call authorization close, params: {}", params);
+        if (!params.isValid()) {
+            logger.error("[Fudian] call authorization close bad request, data: {}", params);
+            return ResponseEntity.badRequest().build();
+        }
+        AuthorizationRequestDto requestDto = authorizationService.auth(source, params, false);
+        BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.AUTHORIZATION);
+        if (!bankAsyncData.isStatus()) {
+            logger.error("[Fudian] call authorization close, request data generation failure, data: {}");
+        }
         return ResponseEntity.ok(bankAsyncData);
     }
 

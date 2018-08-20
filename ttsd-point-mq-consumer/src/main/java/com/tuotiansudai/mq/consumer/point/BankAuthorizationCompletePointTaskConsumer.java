@@ -42,7 +42,9 @@ public class BankAuthorizationCompletePointTaskConsumer implements MessageConsum
 
         try {
             BankAuthorizationMessage bankAuthorizationMessage = new Gson().fromJson(message, BankAuthorizationMessage.class);
-            pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, bankAuthorizationMessage.getLoginName());
+            if (bankAuthorizationMessage.getIsOpen()){
+                pointTaskService.completeAdvancedTask(PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST, bankAuthorizationMessage.getLoginName());
+            }
 
         } catch (Exception e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);

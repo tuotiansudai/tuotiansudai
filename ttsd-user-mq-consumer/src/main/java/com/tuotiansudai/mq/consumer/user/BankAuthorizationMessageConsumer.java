@@ -43,7 +43,7 @@ public class BankAuthorizationMessageConsumer implements MessageConsumer {
 
         try {
             BankAuthorizationMessage bankAuthorizationMessage = new Gson().fromJson(message, BankAuthorizationMessage.class);
-            bankAccountService.authorizationSuccess(bankAuthorizationMessage);
+            bankAccountService.authorization(bankAuthorizationMessage);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
