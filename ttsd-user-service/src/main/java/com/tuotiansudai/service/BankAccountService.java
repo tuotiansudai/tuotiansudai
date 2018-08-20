@@ -158,17 +158,20 @@ public class BankAccountService {
             logger.error("[MQ] investor bank account is not exist, message: {}", new Gson().toJson(bankAuthorizationMessage));
             return;
         }
-        if (bankAccountModel.isAuthorization()) {
+        boolean isOpen = bankAuthorizationMessage.getIsOpen();
+        if ((isOpen && bankAccountModel.isAuthorization())
+                || (!isOpen && !bankAccountModel.isAuthorization())) {
             return;
         }
-        bankAccountModel.setAutoInvest(true);
-        bankAccountModel.setAuthorization(true);
+
+        bankAccountModel.setAutoInvest(isOpen);
+        bankAccountModel.setAuthorization(isOpen);
+        bankAccountModel.setAuthorizationAmount(bankAuthorizationMessage.getAmount());
+        bankAccountModel.setAuthorizationEndTime(bankAuthorizationMessage.getEndTime());
         bankAccountModel.setBankAuthorizationOrderNo(bankAuthorizationMessage.getBankOrderNo());
         bankAccountModel.setBankAuthorizationOrderDate(bankAuthorizationMessage.getBankOrderDate());
         bankAccountMapper.update(bankAccountModel);
     }
-
-
 
     private void sendMessage(BankRegisterMessage bankRegisterMessage) {
         try {

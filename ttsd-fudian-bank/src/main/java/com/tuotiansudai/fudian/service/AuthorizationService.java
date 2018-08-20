@@ -18,7 +18,6 @@ import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.AmountUtils;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageTopic;
-import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,13 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
 
     private final static String BANK_AUTHORIZATION_MESSAGE_KEY = "BANK_AUTHORIZATION_MESSAGE_{0}";
 
+    private final static String BANK_AUTHORIZATION_ORDER_KEY = "BANK_AUTHORIZATION_ORDER_{0}";
+
     private static final ApiType API_TYPE = ApiType.AUTHORIZATION;
 
     private final SignatureHelper signatureHelper;
 
     private final RedisTemplate<String, String> redisTemplate;
-
-    private final RedissonClient redissonClient;
 
     private final MessageQueueClient messageQueueClient;
 
@@ -52,20 +51,16 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
 
     private final UpdateMapper updateMapper;
 
-    private final QueryUserService queryUserService;
-
     private final Gson gson = new GsonBuilder().create();
 
     @Autowired
-    public AuthorizationService(SignatureHelper signatureHelper, RedisTemplate<String, String> redisTemplate, RedissonClient redissonClient, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper, QueryUserService queryUserService) {
+    public AuthorizationService(SignatureHelper signatureHelper, RedisTemplate<String, String> redisTemplate, MessageQueueClient messageQueueClient, InsertMapper insertMapper, UpdateMapper updateMapper, SelectMapper selectMapper) {
         this.signatureHelper = signatureHelper;
         this.redisTemplate = redisTemplate;
-        this.redissonClient = redissonClient;
         this.messageQueueClient = messageQueueClient;
         this.insertMapper = insertMapper;
         this.updateMapper = updateMapper;
         this.selectMapper = selectMapper;
-        this.queryUserService = queryUserService;
     }
 
     public AuthorizationRequestDto auth(Source source, BankBaseDto bankBaseDto, boolean isOpen) {
@@ -90,7 +85,7 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
         String bankAuthorizationMessageKey = MessageFormat.format(BANK_AUTHORIZATION_MESSAGE_KEY, dto.getOrderDate());
         redisTemplate.<String, String>opsForHash().put(bankAuthorizationMessageKey, dto.getOrderNo(), gson.toJson(bankAuthorizationMessage));
         redisTemplate.expire(bankAuthorizationMessageKey, 7, TimeUnit.DAYS);
-
+        redisTemplate.opsForValue().set(MessageFormat.format(BANK_AUTHORIZATION_ORDER_KEY, dto.getOrderNo()), String.valueOf(isOpen), 7, TimeUnit.DAYS);
         return dto;
     }
 
@@ -136,18 +131,24 @@ public class AuthorizationService implements ReturnCallbackInterface, NotifyCall
     @Override
     @SuppressWarnings(value = "unchecked")
     public Boolean isSuccess(String orderNo) {
+        String isAuthorizationOpen = redisTemplate.opsForValue().get(MessageFormat.format(BANK_AUTHORIZATION_ORDER_KEY, orderNo));
+
+        if (Strings.isNullOrEmpty(isAuthorizationOpen)){
+            return null;
+        }
 
         String responseData = this.selectMapper.selectNotifyResponseData(API_TYPE.name().toLowerCase(), orderNo);
         String queryResponseData = this.selectMapper.selectQueryResponseData(API_TYPE.name().toLowerCase(), orderNo);
 
+        boolean isOpen = Boolean.valueOf(isAuthorizationOpen);
         if (!Strings.isNullOrEmpty(responseData)) {
             ResponseDto<AuthorizationContentDto> responseDto = (ResponseDto<AuthorizationContentDto>) API_TYPE.getParser().parse(responseData);
-            return responseDto.isSuccess() && responseDto.getContent().isOpen();
+            return responseDto.isSuccess() && ((responseDto.getContent().isOpen() && isOpen) || (!responseDto.getContent().isOpen() && !isOpen));
         }
 
         if (!Strings.isNullOrEmpty(queryResponseData)) {
             ResponseDto<QueryUserContentDto> queryResponseDto = (ResponseDto<QueryUserContentDto>) ApiType.QUERY_USER.getParser().parse(queryResponseData);
-            return queryResponseDto.isSuccess() && queryResponseDto.getContent().isAuthorization();
+            return queryResponseDto.isSuccess() && ((queryResponseDto.getContent().isAuthorization() && isOpen) || (!queryResponseDto.getContent().isAuthorization() && !isOpen));
         }
 
         return null;

@@ -1,7 +1,5 @@
 package com.tuotiansudai.fudian.dto.response;
 
-import java.util.Date;
-
 public class AuthorizationContentDto extends PayBaseContentDto {
 
     private String businessType;
@@ -36,7 +34,7 @@ public class AuthorizationContentDto extends PayBaseContentDto {
         return amount;
     }
 
-    public Date getEndTime() {
-        return new Date(Long.parseLong(endTime));
+    public String getEndTime() {
+        return endTime;
     }
 }

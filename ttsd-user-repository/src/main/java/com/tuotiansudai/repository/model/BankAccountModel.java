@@ -18,7 +18,7 @@ public class BankAccountModel implements Serializable {
     private boolean authorization;
     private boolean autoInvest;
     private long authorizationAmount;
-    private Date authorizationEndTime;
+    private String authorizationEndTime;
     private String bankAuthorizationOrderNo;
     private String bankAuthorizationOrderDate;
     private Date createdTime;
@@ -155,11 +155,11 @@ public class BankAccountModel implements Serializable {
         this.authorizationAmount = authorizationAmount;
     }
 
-    public Date getAuthorizationEndTime() {
+    public String getAuthorizationEndTime() {
         return authorizationEndTime;
     }
 
-    public void setAuthorizationEndTime(Date authorizationEndTime) {
+    public void setAuthorizationEndTime(String authorizationEndTime) {
         this.authorizationEndTime = authorizationEndTime;
     }
 }

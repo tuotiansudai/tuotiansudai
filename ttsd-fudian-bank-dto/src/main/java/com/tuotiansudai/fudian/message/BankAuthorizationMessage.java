@@ -1,8 +1,6 @@
 package com.tuotiansudai.fudian.message;
 
 
-import java.util.Date;
-
 public class BankAuthorizationMessage {
 
     private String loginName;
@@ -21,7 +19,7 @@ public class BankAuthorizationMessage {
 
     private long amount;
 
-    private Date endTime;
+    private String endTime;
 
     public BankAuthorizationMessage() {
     }
@@ -75,11 +73,11 @@ public class BankAuthorizationMessage {
         this.amount = amount;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }
