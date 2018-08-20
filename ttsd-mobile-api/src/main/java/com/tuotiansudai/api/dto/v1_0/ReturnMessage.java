@@ -121,7 +121,7 @@ public enum ReturnMessage {
     EXCHANGE_CODE_IS_FAIL("0109", "兑换码兑换失败"),
 
     /******提现******/
-    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070", "提现金额需大于手续费"),
+    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070", "提现金额需大于1.5元"),
 
     TRANSFER_APPLY_IS_FAIL("0073", "债权转让失败"),
 
