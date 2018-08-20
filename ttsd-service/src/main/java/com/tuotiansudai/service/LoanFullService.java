@@ -71,7 +71,7 @@ public class LoanFullService {
                 loanModel.getBankOrderDate(),
                 new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
                 checkerLoginName,
-                new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+                new DateTime().toString("yyyy-MM-dd HH:mm:ss"),loanModel.getLoanFee());
     }
 
     @Transactional

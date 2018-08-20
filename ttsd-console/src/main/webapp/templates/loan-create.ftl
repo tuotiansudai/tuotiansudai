@@ -98,6 +98,16 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">借款手续费（元）: </label>
+
+                    <div class="col-sm-3">
+                        <input name="loanFee" type="text" class="form-control amount"
+                               datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                               errormsg="借款手续费需要正确填写" placeholder="请输入0-预计出借金额之间的数值">
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label">单笔最小投资金额（元）: </label>
 
                     <div class="col-sm-3">

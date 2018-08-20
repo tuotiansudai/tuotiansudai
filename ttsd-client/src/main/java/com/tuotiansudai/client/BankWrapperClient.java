@@ -210,7 +210,7 @@ public class BankWrapperClient {
         return new BankLoanCancelMessage(false, null);
     }
 
-    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime) {
+    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime,long  loanFee) {
         BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, fullTime);
 
         String json = syncExecute("/loan-full", bankLoanFullDto);
