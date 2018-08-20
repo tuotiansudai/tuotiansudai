@@ -37,5 +37,7 @@ public class AmountUtils {
     }
 
 
-
+    public static void main(String[] args) {
+        System.out.println(toYuan(0));
+    }
 }

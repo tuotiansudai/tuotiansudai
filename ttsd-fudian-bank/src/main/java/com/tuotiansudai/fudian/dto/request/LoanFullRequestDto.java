@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.dto.request;
 
 import com.tuotiansudai.fudian.dto.BankLoanFullDto;
+import com.tuotiansudai.fudian.util.AmountUtils;
 
 public class LoanFullRequestDto extends BaseRequestDto {
 
@@ -22,6 +23,7 @@ public class LoanFullRequestDto extends BaseRequestDto {
         this.loanOrderNo = bankLoanFullDto.getLoanOrderNo();
         this.loanOrderDate = bankLoanFullDto.getLoanOrderDate();
         this.expectRepayTime = bankLoanFullDto.getExpectRepayTime();
+        this.loanFee= AmountUtils.toYuan(bankLoanFullDto.getLoanFee());
     }
 
     public String getLoanFee() {

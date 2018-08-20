@@ -34,6 +34,7 @@ public class BankLoanFullDto extends BankBaseDto {
         this.expectRepayTime = expectRepayTime;
         this.checkerLoginName = checkerLoginName;
         this.fullTime = fullTime;
+        this.loanFee=loanFee;
     }
 
     public long getLoanId() {
