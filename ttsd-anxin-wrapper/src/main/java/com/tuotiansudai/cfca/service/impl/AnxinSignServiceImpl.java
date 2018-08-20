@@ -542,7 +542,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
 
         Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(), fullTime);
-
+        dataModel.put("orderId", String.valueOf(investId));
         //
         createContractVO.setInvestmentInfo(dataModel);
 
