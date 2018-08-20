@@ -22,10 +22,22 @@ public class AgreementController {
     @Autowired
     private BankAccountService bankAccountService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView agreement(@Valid @ModelAttribute AuthorizationDto authorizationDto, HttpServletRequest request){
+    @RequestMapping(value = "/open", method = RequestMethod.POST)
+    public ModelAndView open(@Valid @ModelAttribute AuthorizationDto authorizationDto, HttpServletRequest request){
         authorizationDto.setIp(RequestIPParser.parse(request));
-        BankAsyncMessage baseDto = bankAccountService.authorization(
+        BankAsyncMessage baseDto = bankAccountService.authorizationOpen(
+                authorizationDto.getSource(),
+                LoginUserInfo.getLoginName(),
+                LoginUserInfo.getMobile(),
+                authorizationDto.getIp(),
+                authorizationDto.getDeviceId());
+        return new ModelAndView("/pay", "pay", baseDto);
+    }
+
+    @RequestMapping(value = "/close", method = RequestMethod.POST)
+    public ModelAndView close(@Valid @ModelAttribute AuthorizationDto authorizationDto, HttpServletRequest request){
+        authorizationDto.setIp(RequestIPParser.parse(request));
+        BankAsyncMessage baseDto = bankAccountService.authorizationClose(
                 authorizationDto.getSource(),
                 LoginUserInfo.getLoginName(),
                 LoginUserInfo.getMobile(),

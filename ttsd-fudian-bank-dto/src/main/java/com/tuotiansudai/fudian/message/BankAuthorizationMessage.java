@@ -1,6 +1,8 @@
 package com.tuotiansudai.fudian.message;
 
 
+import java.util.Date;
+
 public class BankAuthorizationMessage {
 
     private String loginName;
@@ -14,6 +16,12 @@ public class BankAuthorizationMessage {
     private String bankOrderNo;
 
     private String bankOrderDate;
+
+    private boolean isOpen;
+
+    private long amount;
+
+    private Date endTime;
 
     public BankAuthorizationMessage() {
     }
@@ -49,5 +57,29 @@ public class BankAuthorizationMessage {
 
     public String getBankOrderDate() {
         return bankOrderDate;
+    }
+
+    public boolean getIsOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

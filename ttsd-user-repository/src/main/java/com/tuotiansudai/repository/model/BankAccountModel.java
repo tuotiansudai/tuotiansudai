@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +17,8 @@ public class BankAccountModel implements Serializable {
     private long membershipPoint;
     private boolean authorization;
     private boolean autoInvest;
+    private long authorizationAmount;
+    private Date authorizationEndTime;
     private String bankAuthorizationOrderNo;
     private String bankAuthorizationOrderDate;
     private Date createdTime;
@@ -141,5 +145,21 @@ public class BankAccountModel implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public long getAuthorizationAmount() {
+        return authorizationAmount;
+    }
+
+    public void setAuthorizationAmount(long authorizationAmount) {
+        this.authorizationAmount = authorizationAmount;
+    }
+
+    public Date getAuthorizationEndTime() {
+        return authorizationEndTime;
+    }
+
+    public void setAuthorizationEndTime(Date authorizationEndTime) {
+        this.authorizationEndTime = authorizationEndTime;
     }
 }

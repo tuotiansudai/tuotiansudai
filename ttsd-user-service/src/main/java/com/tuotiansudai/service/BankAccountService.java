@@ -78,14 +78,22 @@ public class BankAccountService {
         return bankWrapperClient.registerLoaner(Source.WEB, loginName, userModel.getMobile(), token, userModel.getUserName(), userModel.getIdentityNumber());
     }
 
-    public BankAsyncMessage authorization(Source source, String loginName, String mobile, String ip, String deviceId) {
+    public BankAsyncMessage authorizationOpen(Source source, String loginName, String mobile, String ip, String deviceId) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
         if (bankAccountModel.isAuthorization()) {
             return new BankAsyncMessage("已开通免密投资");
         }
         userOpLogService.sendUserOpLogMQ(loginName, ip, source.name(), deviceId, UserOpType.INVEST_NO_PASSWORD, null);
 
-        return bankWrapperClient.authorization(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+        return bankWrapperClient.authorizationOpen(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+    }
+
+    public BankAsyncMessage authorizationClose(Source source, String loginName, String mobile, String ip, String deviceId) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
+        if (!bankAccountModel.isAuthorization()) {
+            return new BankAsyncMessage("已关闭免密投资");
+        }
+        return bankWrapperClient.authorizationClose(source, loginName, mobile, bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
     }
 
     public void processBankAccount(BankRegisterMessage bankRegisterMessage){
@@ -144,7 +152,7 @@ public class BankAccountService {
         sendMessage(bankRegisterMessage);
     }
 
-    public void authorizationSuccess(BankAuthorizationMessage bankAuthorizationMessage) {
+    public void authorization(BankAuthorizationMessage bankAuthorizationMessage) {
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(bankAuthorizationMessage.getLoginName(), Role.INVESTOR);
         if (bankAccountModel == null) {
             logger.error("[MQ] investor bank account is not exist, message: {}", new Gson().toJson(bankAuthorizationMessage));
@@ -159,6 +167,8 @@ public class BankAccountService {
         bankAccountModel.setBankAuthorizationOrderDate(bankAuthorizationMessage.getBankOrderDate());
         bankAccountMapper.update(bankAccountModel);
     }
+
+
 
     private void sendMessage(BankRegisterMessage bankRegisterMessage) {
         try {
