@@ -26,6 +26,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -194,7 +195,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("msg1", msg1);
         dataModel.put("msg2", msg2);
         dataModel.put("msg3", msg3);
-
+        dataModel.put("loanType", Arrays.asList(LoanType.INVEST_INTEREST_MONTHLY_REPAY,LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())?"每月还息到期还本":"到期还本付息");
         return dataModel;
     }
 
