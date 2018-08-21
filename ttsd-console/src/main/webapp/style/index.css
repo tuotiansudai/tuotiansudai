@@ -747,3 +747,24 @@ td.td {
     float: left;
     width: 33%;
 }
+
+.pop_layer {
+    display: none;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 0 20px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: rgba(0,0,0,.7);
+    color: #fff;
+    font-size: 20px;
+    z-index: 9999;
+
+
+}
