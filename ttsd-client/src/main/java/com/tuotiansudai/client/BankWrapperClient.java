@@ -11,10 +11,7 @@ import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.*;
-import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
-import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
-import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
-import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
+import com.tuotiansudai.fudian.umpdto.*;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -438,6 +435,20 @@ public class BankWrapperClient {
 
     public UmpAsyncMessage umpLoanRepay(UmpLoanRepayDto dto) {
         return umpAsyncExecute("/ump/loan-repay", dto);
+    }
+
+    public BankBaseMessage umpUpdateMobile(long accountId, String loginName, String mobile, String userName, String identityNumber){
+        String json = syncExecute("/ump/update-mobile", new UmpUpdateMobileDto(accountId, loginName, mobile, userName, identityNumber));
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankBaseMessage();
+        }
+        try {
+            return gson.fromJson(json, BankBaseMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Ump update mobile] parse response error, response: {0}", json), e);
+        }
+        return new BankBaseMessage();
     }
 
     public Boolean isUmpCallbackSuccess(Map<String, String> params) {
