@@ -94,7 +94,15 @@ public class LoanFullService {
                         bankLoanFullMessage.getBankOrderNo(),
                         bankLoanFullMessage.getBankOrderDate(),
                         BillOperationType.IN,
-                        BankUserBillBusinessType.LOAN_SUCCESS))
+                        BankUserBillBusinessType.LOAN_SUCCESS),
+                        new AmountTransferMessage(loanModel.getId(),
+                        loanModel.getAgentLoginName(),
+                        Role.LOANER,
+                        loanModel.getLoanFee(),
+                        bankLoanFullMessage.getBankOrderNo(),
+                        bankLoanFullMessage.getBankOrderDate(),
+                        BillOperationType.OUT,
+                        BankUserBillBusinessType.LOAN_FEE))
         );
         mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
                 new BankSystemBillMessage(BillOperationType.IN,
