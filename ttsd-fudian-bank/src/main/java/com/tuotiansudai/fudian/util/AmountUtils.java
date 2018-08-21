@@ -35,9 +35,4 @@ public class AmountUtils {
         String[] split = yuan.split("\\.");
         return Long.parseLong(split[0]) * 100 + Long.parseLong(split[1]);
     }
-
-
-    public static void main(String[] args) {
-        System.out.println(toYuan(0));
-    }
 }
