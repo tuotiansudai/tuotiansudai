@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         String referrer = prepareUserModel != null ? prepareUserModel.getReferrerMobile() : dto.getReferrer();
         UserModel referrerUserModel = userMapper.findByLoginNameOrMobile(referrer);
         if (!Strings.isNullOrEmpty(referrer) && referrerUserModel == null) {
-            logger.error(MessageFormat.format("[Register User {0}] referrer({1}) is not existed", dto.getMobile(), referrer));
+            logger.warn(MessageFormat.format("[Register User {0}] referrer({1}) is not existed", dto.getMobile(), referrer));
             return false;
         }
 

@@ -119,14 +119,17 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        boolean checkMobile = true;
         if (userService.mobileIsExist(registerUserDto.getMobile())){
             redirectAttributes.addFlashAttribute("registerMobileError", "手机号已存在");
+            checkMobile = false;
         }
         if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())) {
             redirectAttributes.addFlashAttribute("referrerMobileError", "推荐人手机号不存在");
+            checkMobile = false;
         }
 
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
@@ -143,13 +146,16 @@ public class RegisterUserController {
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
+        boolean checkMobile = true;
         if (userService.mobileIsExist(registerUserDto.getMobile())){
             result.put("registerMobileError", "手机号已存在");
+            checkMobile = false;
         }
         if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())){
             result.put("referrerMobileError", "推荐人手机号不存在");
+            checkMobile = false;
         }
-        boolean isRegisterSuccess = registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"));
         result.put("success", isRegisterSuccess);
         return result;
     }
