@@ -437,7 +437,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 }
 
                 if (parseFloat($loanAmount.val()) < parseFloat($loanFee.val())) {
-                    showErrorMessage('借款手续费不得大于预计出借金额', $loanAmount);
+                    showErrorMessage('借款手续费不得大于预计出借金额', $loanFee);
                     return false;
                 }
 
