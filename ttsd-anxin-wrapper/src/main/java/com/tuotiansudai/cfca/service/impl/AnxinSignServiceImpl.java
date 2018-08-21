@@ -493,6 +493,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("msg1", transferMap.get("msg1"));
         dataModel.put("msg2", transferMap.get("msg2"));
         dataModel.put("msg3", transferMap.get("msg3"));
+        dataModel.put("loanType", transferMap.get("loanType"));
 
         createContractVO.setInvestmentInfo(dataModel);
 
