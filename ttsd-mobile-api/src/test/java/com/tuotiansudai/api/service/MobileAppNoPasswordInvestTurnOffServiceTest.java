@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
     @Ignore
     @Test
     public void shouldNoPasswordInvestTurnOffIsOk() {
-        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
+        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111","");
         UserModel userModel = new UserModel();
         userModel.setMobile("13688888888");
         BaseResponseDto baseResponseDto = new BaseResponseDto();

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
     @Test
     public void shouldGetNoPasswordInvestDataIsSuccess(){
-        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111");
+        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111","");
         bankAccountModel.setAutoInvest(true);
         bankAccountModel.setAuthorization(true);
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(bankAccountModel);
