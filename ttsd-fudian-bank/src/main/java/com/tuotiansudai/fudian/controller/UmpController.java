@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.controller;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.fudian.message.UmpAsyncMessage;
 import com.tuotiansudai.fudian.ump.asyn.request.CustWithdrawalsRequestModel;
 import com.tuotiansudai.fudian.ump.asyn.request.MerRechargePersonRequestModel;
@@ -11,10 +12,7 @@ import com.tuotiansudai.fudian.ump.sync.response.ProjectAccountSearchResponseMod
 import com.tuotiansudai.fudian.ump.sync.response.PtpMerQueryResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferSearchResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.UserSearchResponseModel;
-import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
-import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
-import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
-import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
+import com.tuotiansudai.fudian.umpdto.*;
 import com.tuotiansudai.fudian.umpservice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,19 +38,22 @@ public class UmpController {
 
     private final UmpSynQueryService umpSynQueryService;
 
+    private final UmpUpdateMobileService umpUpdateMobileService;
 
     @Autowired
     public UmpController(UmpRechargeService umpRechargeService,
                          UmpWithdrawService umpWithdrawService,
                          UmpBindCardService umpBindCardService,
                          UmpLoanRepayService umpLoanRepayService,
-                         UmpSynQueryService umpSynQueryService) {
+                         UmpSynQueryService umpSynQueryService,
+                         UmpUpdateMobileService umpUpdateMobileService) {
 
         this.umpRechargeService = umpRechargeService;
         this.umpWithdrawService = umpWithdrawService;
         this.umpBindCardService = umpBindCardService;
         this.umpLoanRepayService = umpLoanRepayService;
         this.umpSynQueryService = umpSynQueryService;
+        this.umpUpdateMobileService = umpUpdateMobileService;
     }
 
     @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
@@ -89,6 +90,14 @@ public class UmpController {
         }
         ProjectTransferRequestModel model = umpLoanRepayService.loanRepay(dto);
         return ResponseEntity.ok(generateAsyncRequestData(model));
+    }
+
+    @RequestMapping(value = "/update-mobile", method = RequestMethod.POST)
+    public ResponseEntity<BankBaseMessage> loanRepay(@RequestBody UmpUpdateMobileDto dto) {
+        if (!dto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(umpUpdateMobileService.updateMobile(dto));
     }
 
     private UmpAsyncMessage generateAsyncRequestData(BaseSyncRequestModel model) {
