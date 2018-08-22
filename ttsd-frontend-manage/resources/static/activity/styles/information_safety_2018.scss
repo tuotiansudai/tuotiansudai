@@ -160,6 +160,7 @@ p {
           float: left;
           margin-left: 154px;
           .img {
+            margin: 0 auto;
             &.fanghu {
               width: 59px;
               height: 75px;
@@ -317,7 +318,7 @@ p {
     }
     .content {
       margin-top: 0.85rem;
-      width: 6.35rem;
+      width: 6.4rem;
       height: 7.32rem;
       padding-top: 0.5rem;
       padding-left: 0.5rem;
@@ -352,14 +353,14 @@ p {
                 background-size: contain;
               }
               &.manage {
-                width: 0.83rem;
+                width: 0.8rem;
                 height: 0.75rem;
                 background: url("../images/information-safety/system_manage.png") no-repeat top center;
                 background-size: contain;
               }
               &.baozhang {
                 width: 0.73rem;
-                height: 0.79rem;
+                height: 0.75rem;
                 background: url("../images/information-safety/baozhang.png") no-repeat top center;
                 background-size: contain;
               }
