@@ -352,9 +352,13 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 InvestModel investModel = investMapper.findById(input.getInvestId());
                 if (input.getTransferStatus() == TransferStatus.CANCEL) {
                     transferApplicationPaginationItemDataDto.setCancelTransfer(true);
-                } else if (investModel != null && !Strings.isNullOrEmpty(investModel.getContractNo()) && !investModel.getContractNo().equals("OLD")) {
-                    transferApplicationPaginationItemDataDto.setTransferNewSuccess(true);
-                    transferApplicationPaginationItemDataDto.setContractNo(investModel.getContractNo());
+                } else if (investModel != null  && !"OLD".equals(investModel.getContractNo())) {
+                    if(StringUtils.isEmpty(investModel.getContractNo())){
+                        transferApplicationPaginationItemDataDto.setCancelTransfer(true);
+                    }else{
+                        transferApplicationPaginationItemDataDto.setTransferNewSuccess(true);
+                        transferApplicationPaginationItemDataDto.setContractNo(investModel.getContractNo());
+                    }
                 } else {
                     transferApplicationPaginationItemDataDto.setTransferOldSuccess(true);
                 }
