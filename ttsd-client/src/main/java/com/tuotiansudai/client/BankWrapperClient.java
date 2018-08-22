@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -514,5 +515,17 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public BankAsyncMessage changeBankMobile(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String newPhone,String type) {
+        Map<String,String> params=new HashMap<>(8);
+        params.put("loginName",loginName);
+        params.put("mobile",mobile);
+        params.put("bankUserName",bankUserName);
+        params.put("bankAccountNo",bankAccountNo);
+        params.put("newPhone",newPhone);
+        params.put("type",type);
+        return asyncExecute(MessageFormat.format("/user/phone-update/source/{0}", source.name().toLowerCase()),
+                params);
     }
 }

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 
@@ -113,7 +114,8 @@ public class BankAccountService {
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
-                bankRegisterMessage.getBankOrderDate()));
+                bankRegisterMessage.getBankOrderDate(),
+                bankRegisterMessage.getBankMobile()));
 
         UserBankCardModel model = new UserBankCardModel(loginName, bankRegisterMessage.getBank(), bankRegisterMessage.getBankCode(), bankRegisterMessage.getBankCardNo(), bankRegisterMessage.getBankOrderNo(), bankRegisterMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
         userBankCardMapper.createInvestor(model);
@@ -136,7 +138,8 @@ public class BankAccountService {
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
-                bankRegisterMessage.getBankOrderDate()));
+                bankRegisterMessage.getBankOrderDate(),
+                bankRegisterMessage.getBankMobile()));
 
         UserBankCardModel model = new UserBankCardModel(loginName, bankRegisterMessage.getBank(), bankRegisterMessage.getBankCode(), bankRegisterMessage.getBankCardNo(), bankRegisterMessage.getBankOrderNo(), bankRegisterMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
         userBankCardMapper.createLoaner(model);
@@ -191,5 +194,15 @@ public class BankAccountService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         BankAccountModel bankAccountModel = this.findBankAccount(loginName, role);
         return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+    }
+
+    public BankAsyncMessage changeBankMobile(String loginName, String newPhone, String type,Role role,Source souce) {
+
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName,role);
+        if (bankAccountModel != null || StringUtils.isEmpty(bankAccountModel.getBankMobile())) {
+            return new BankAsyncMessage("没有实名认证");
+        }
+        return null;
+        //return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),);
     }
 }
