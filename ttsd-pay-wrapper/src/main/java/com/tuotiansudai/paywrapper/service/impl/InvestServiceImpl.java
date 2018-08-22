@@ -499,7 +499,8 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), investModel.getTransferInvestId() == null ? UserBillBusinessType.INVEST_SUCCESS : UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+            atm.setNext(new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null));
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
             // 返款失败，当作投资成功处理
