@@ -7,6 +7,10 @@ let $helpCenter = $("#helpCenter");
 let tpl = require('art-template/dist/template');
 var sourceKind = globalFun.parseURL(location.href);
 
+//左侧菜单栏
+let $leftBox = $('#helpLeftMenuBox');
+let $titleBox = $leftBox.find('.swiper-slide').find('>a');
+let $childBox = $leftBox.find('.swiper-slide').find('ul');
 
 $helpCenter.find("img.help-center-bar").attr("src", helpCenterImgBarUrl);
 
@@ -15,6 +19,11 @@ let $changeBtn = $('.problem-title-item span'),
     $problem = $('.problem-single-item'),
     page = location.href.split('#')[1] ? parseInt(location.href.split('#')[1].slice(0, 1)) - 1 : false,
     index = location.href.split('#')[1] ? parseInt(location.href.split('#')[1].slice(1, 2)) - 1 : false;
+
+$(window).on('hashchange',function () {
+    whichShow();
+})
+whichShow();
 
 let $resolvedBtn = $('.resolved-btn');
 let $unsolvedBtn = $('.unsolved-btn');
@@ -27,6 +36,8 @@ $changeBtn.on('click', function (event) {
     $contentList.find('.list-group:eq(' + index + ')').addClass('active')
         .siblings('.list-group').removeClass('active');
 });
+
+
 
 $problem.on('click', '.single-title', function (event) {
     event.preventDefault();
@@ -214,4 +225,71 @@ function selectSquare(contentId,isSolution) {
 
         }
     )
+}
+
+
+
+$titleBox.on('click',function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    let self = $(this);
+    if(self.parent().find('ul').hasClass('show')){
+        self.parent().find('ul').removeClass('show')
+    }else {
+        self.parent().find('ul').addClass('show')
+    }
+    if(self.find('.icon-arrow').hasClass('down')){
+        self.find('.icon-arrow').removeClass('down')
+    }else {
+        self.find('.icon-arrow').addClass('down')
+    }
+
+    if(self.find('.icon-arrow').hasClass('whiteDown')){
+        self.find('.icon-arrow').removeClass('whiteDown').addClass('whiteRight');
+    }else if(self.find('.icon-arrow').hasClass('whiteRight')){
+        self.find('.icon-arrow').removeClass('whiteRight').addClass('whiteDown');
+    }
+})
+
+function whichShow() {
+    let title = location.href.split('#')[0].split('/')[location.href.split('#')[0].split('/').length-1],
+        page2 = location.href.split('#')[1] ? parseInt(location.href.split('#')[1].slice(0, 1)) - 1 : false
+
+    $contentList.find('.list-group:eq(' + page2 + ')').addClass('active')
+        .siblings('.list-group').removeClass('active');
+    $changeBtn.eq(page2).addClass('active').siblings().removeClass('active');
+    console.log($leftBox.find('.ulSection').find('li').eq(page2).find('a').html())
+
+    switch (title) {
+        case 'account':
+            $leftBox.find('.swiper-slide').eq(0).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(0).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(0).find('ul').addClass('show');
+            $leftBox.find('.swiper-slide').eq(0).find('.ulSeciton').find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'user':
+            $leftBox.find('.swiper-slide').eq(1).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(1).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(1).find('ul').addClass('show');
+            $leftBox.find('.swiper-slide').eq(1).find('.ulSeciton').find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'money':
+            $leftBox.find('.swiper-slide').eq(2).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(2).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(2).find('ul').addClass('show');
+            $leftBox.find('.swiper-slide').eq(2).find('.ulSeciton').find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'product':
+            $leftBox.find('.swiper-slide').eq(3).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(3).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(3).find('ul').addClass('show');
+            $leftBox.find('.swiper-slide').eq(3).find('.ulSeciton').find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'other':
+            $leftBox.find('.swiper-slide').eq(4).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(4).find('a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(4).addClass('show');
+            $leftBox.find('.swiper-slide').eq(4).find('.ulSeciton').find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+    }
 }

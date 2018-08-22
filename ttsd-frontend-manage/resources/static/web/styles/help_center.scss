@@ -346,3 +346,45 @@
 .nav a {
   color: #4c4c4c;
 }
+.icon-arrow {
+  width: 11px;
+  height: 11px;
+  background: url("../images/helpcenter/icon_arrow_right.png") no-repeat;
+  &.down {
+    background: url("../images/helpcenter/icon_arrow_down.png") no-repeat;
+  }
+  &.whiteDown {
+    background: url("../images/helpcenter/icon_down_active.png") no-repeat;
+  }
+  &.whiteRight {
+    background: url("../images/helpcenter/icon_right_active.png") no-repeat;
+  }
+}
+#helpLeftMenuBox .swiper-slide >a{
+  position: relative;
+  &.active {
+    background: #ff7101;
+  }
+}
+#helpLeftMenuBox .swiper-slide >a .icon-arrow{
+  position: absolute;
+  right: 10px;
+  top: 17px;
+
+}
+#helpLeftMenuBox .swiper-slide ul{
+ display: none;
+  background: #fff;
+  &.show {
+    display: block!important;
+  }
+}
+#helpLeftMenuBox .swiper-slide ul li{
+  float: none;
+}
+#helpLeftMenuBox .ulSection li a{
+  color: #4d4d4d;
+  &.active {
+    color: #ff7101;
+  }
+}
