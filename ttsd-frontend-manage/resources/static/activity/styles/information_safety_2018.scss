@@ -113,7 +113,7 @@ p {
     padding-top: 110px;
     padding-right: 55px;
     .right-content {
-      width: 526px;
+      width: 514px;
       float: right;
       p {
         color: #fff;
@@ -168,19 +168,19 @@ p {
             }
             &.safe {
               width: 68px;
-              height: 79px;
+              height: 75px;
               background: url("../images/information-safety/information_safe.png") no-repeat top center;
               background-size: contain;
             }
             &.manage {
               width: 83px;
-              height: 72px;
+              height: 75px;
               background: url("../images/information-safety/system_manage.png") no-repeat top center;
               background-size: contain;
             }
             &.baozhang {
               width: 73px;
-              height: 79px;
+              height: 75px;
               background: url("../images/information-safety/baozhang.png") no-repeat top center;
               background-size: contain;
             }
@@ -188,6 +188,7 @@ p {
           p {
             color: #fff;
             font-size: 18px;
+            margin-top: 15px;
           }
         }
       }
@@ -249,7 +250,7 @@ p {
         }
         .ali-icon {
           width: 0.91rem;
-          height: 0.83rem;
+          height: 0.86rem;
           background: url("../images/information-safety/icon_ali.png") no-repeat top center;
           background-size: contain;
         }
