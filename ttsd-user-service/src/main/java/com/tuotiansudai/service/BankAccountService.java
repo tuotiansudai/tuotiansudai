@@ -202,7 +202,9 @@ public class BankAccountService {
         if (bankAccountModel != null || StringUtils.isEmpty(bankAccountModel.getBankMobile())) {
             return new BankAsyncMessage("没有实名认证");
         }
-        return null;
-        //return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),);
+        if(StringUtils.isEmpty(type) || StringUtils.isEmpty(newPhone)){
+            return new BankAsyncMessage("参数不能为空");
+        }
+        return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),bankAccountModel.getBankUserName(),bankAccountModel.getBankAccountNo(),newPhone,type);
     }
 }

@@ -152,12 +152,13 @@ public class UserController extends AsyncRequestController {
         String bankUserName = params.get("bankUserName");
         String bankAccountNo = params.get("bankAccountNo");
         String newPhone = params.get("newPhone");
+        String type = params.get("type");
 
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo, newPhone))) {
+        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo, newPhone,type))) {
             return ResponseEntity.badRequest().build();
         }
 
-        PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, loginName, mobile, bankUserName, bankAccountNo, newPhone);
+        PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, loginName, mobile, bankUserName, bankAccountNo, newPhone,type);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
 

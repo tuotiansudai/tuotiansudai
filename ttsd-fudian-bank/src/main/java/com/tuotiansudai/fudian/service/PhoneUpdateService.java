@@ -38,8 +38,8 @@ public class PhoneUpdateService implements ReturnCallbackInterface, NotifyCallba
         this.selectMapper = selectMapper;
     }
 
-    public PhoneUpdateRequestDto update(Source source, String loginName, String mobile, String userName, String accountNo, String newPhone) {
-        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(source, loginName, mobile, userName, accountNo, newPhone, null);
+    public PhoneUpdateRequestDto update(Source source, String loginName, String mobile, String userName, String accountNo, String newPhone,String type) {
+        PhoneUpdateRequestDto dto = new PhoneUpdateRequestDto(source, loginName, mobile, userName, accountNo, newPhone, null,type);
         signatureHelper.sign(API_TYPE, dto);
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
