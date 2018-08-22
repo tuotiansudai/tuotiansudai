@@ -111,6 +111,7 @@ public class RegisterService implements ReturnCallbackInterface, NotifyCallbackI
             bankRegisterMessage.setBank(registerContentDto.getBank());
             bankRegisterMessage.setBankCardNo(registerContentDto.getBankCardNo());
             bankRegisterMessage.setBankCode(registerContentDto.getBankCode());
+            bankRegisterMessage.setBankMobile(registerContentDto.getMobilePhone());
             this.messageQueueClient.sendMessage(MessageQueue.RegisterBankAccount_Success, bankRegisterMessage);
         }
 
