@@ -2,13 +2,13 @@
   "android": {
     "version": "5.0.0",
     "versionCode": 70,
-    "forceUpgrade": true,
-    "url": "http://ci3.tuotiansudai.com:9500/job/QA3/ws/tuotiansudai.apk",
+    "forceUpgrade": false,
+    "url": "http://qa.tuotiansudai.com:9999/app/tuotiansudai.apk",
     "message": "1，全面接入富滇银行存管系统；\n2，重组了整体业务架构；\n3，暂时关闭投资奖励类功能；\n4，暂时关闭积分商城和邀请奖励等功能。"
   },
   "ios": {
     "version": "5.0.0",
-    "forceUpgrade": true,
+    "forceUpgrade": false,
     "message": "1，全面接入富滇银行存管系统；\n2，重组了整体业务架构；\n3，暂时关闭投资奖励类功能；\n4，暂时关闭积分商城和邀请奖励等功能。"
   }
 }
