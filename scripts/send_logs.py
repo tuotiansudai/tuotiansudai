@@ -38,14 +38,14 @@ def send_mail():
     from email.mime.application import MIMEApplication
 
     strFrom = 'no-reply@tuotiansudai.com'
-    RECIPIENT = ["lei@tuotiansudai.com", "zhoujinmeng@tuotiansudai.com"]
+    RECIPIENT = ["gaoxiduan@tuotiansudai.com", "zhoujinmeng@tuotiansudai.com"]
 
     msg = MIMEMultipart()
     msg["From"] = strFrom
     msg["To"] = ', '.join(RECIPIENT)
     msg["Subject"] = u"{0}-logs".format(datetime.datetime.today())
 
-    for item in ('beijing.zip', 'shanghai.zip', 'wuhan.zip'):
+    for item in ('beijing.zip', 'shanghai.zip'):
         with open(item, 'rb') as f:
             part = MIMEApplication(
                     f.read(),
@@ -71,5 +71,5 @@ def send():
     env.password = get_password()
     mkzip('beijing')
     mkzip('shanghai')
-    mkzip('wuhan', 'cms')
+    #mkzip('wuhan', 'cms')
     send_mail()
