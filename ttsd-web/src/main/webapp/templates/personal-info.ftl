@@ -105,7 +105,7 @@
             <li><span class="info-title">银行预留手机号</span>
                 <em class="info">${bankMobile}</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setEmail" href="javascript:">修改</a>
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink" href="/personal-info/change-bank-mobile">修改</a>
                 </span>
             </li>
         </#if>

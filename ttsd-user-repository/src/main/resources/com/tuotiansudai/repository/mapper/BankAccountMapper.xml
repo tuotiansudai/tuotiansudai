@@ -18,6 +18,7 @@
         <result column="bank_authorization_order_date" property="bankAuthorizationOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="bank_mobile" property="bankMobile"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">

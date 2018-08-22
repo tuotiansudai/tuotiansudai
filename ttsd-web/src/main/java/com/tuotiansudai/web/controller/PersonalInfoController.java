@@ -56,7 +56,7 @@ public class PersonalInfoController {
             mv.addObject("authorization", bankAccountModel.isAuthorization());
             mv.addObject("autoInvest", bankAccountModel.isAutoInvest());
             mv.addObject("bankCard", bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role));
-            mv.addObject("bankMobile", null);
+            mv.addObject("bankMobile", "18354275208");
         }
         return mv;
     }
@@ -92,17 +92,20 @@ public class PersonalInfoController {
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 
-    @RequestMapping(value = "/change-bank-phone", method = RequestMethod.GET)
+    @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.GET)
     public ModelAndView changeBankPhoneView() {
-       ModelAndView modelAndView=new ModelAndView("/personal-change-bank-mobile");
-       return modelAndView;
+        ModelAndView modelAndView = new ModelAndView("/personal-change-bank-mobile");
+        String name=LoginUserInfo.getLoginName();
+        Role role=LoginUserInfo.getBankRole();
+        BankAccountModel bank=bankAccountService.findBankAccount(name, role);
+        modelAndView.addObject("originMobile",bank.getBankMobile());
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/change-bank-phone", method = RequestMethod.POST)
-    public ModelAndView changeBankPhone(@RequestParam("mobile") String mobile,
-                                         @RequestParam("newPhone") String newPhone,
-                                         @RequestParam("newPhone") String type) {
-        BankAsyncMessage bankAsyncData = bankAccountService.changeBankMobile(LoginUserInfo.getLoginName(),newPhone,type,LoginUserInfo.getBankRole(),Source.WEB);
+    @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.POST)
+    public ModelAndView changeBankPhone(@RequestParam("newPhone") String newPhone,
+                                        @RequestParam("newPhone") String type) {
+        BankAsyncMessage bankAsyncData = bankAccountService.changeBankMobile(LoginUserInfo.getLoginName(), newPhone, type, LoginUserInfo.getBankRole(), Source.WEB);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

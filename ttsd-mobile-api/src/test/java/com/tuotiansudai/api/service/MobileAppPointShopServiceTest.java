@@ -187,7 +187,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
         bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 10L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -208,7 +208,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
         bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 100000L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
@@ -229,7 +229,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
         bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 1000L);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);

@@ -66,7 +66,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
     }
 
     public BankAccountModel getAccountModel(String loginName) {
-        BankAccountModel model = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
+        BankAccountModel model = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
         bankAccountMapper.createInvestor(model);
         return model;
     }
