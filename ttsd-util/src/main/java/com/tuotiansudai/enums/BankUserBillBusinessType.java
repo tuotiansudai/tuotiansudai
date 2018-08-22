@@ -13,6 +13,7 @@ public enum BankUserBillBusinessType {
     INVEST_FEE("利息管理费"),
     TRANSFER_FEE("债权转让管理费"),
     CANCEL_INVEST_PAYBACK("流标返款"),
+    LOAN_FEE("借款手续费"),
     ;
 
     private final String description;

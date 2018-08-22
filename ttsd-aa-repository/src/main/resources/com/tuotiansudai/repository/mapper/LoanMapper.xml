@@ -61,6 +61,7 @@
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
         <result column="is_bank_platform" property="isBankPlatform"/>
+        <result column="loan_fee" property="loanFee"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -87,12 +88,12 @@
         periods, original_duration, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
         invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time,
         fundraising_end_time, deadline, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
-        recheck_login_name, status, update_time,is_bank_platform)
+        recheck_login_name, status, update_time,is_bank_platform,loan_fee)
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
         #{periods}, #{originalDuration}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
         #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
         #{fundraisingEndTime}, #{deadline}, #{showOnHome}, now(), #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
-        #{recheckTime}, #{recheckLoginName}, #{status}, now(),1)
+        #{recheckTime}, #{recheckLoginName}, #{status}, now(),1,#{loanFee})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap" useCache="false">
@@ -439,6 +440,9 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="loanFee !=null and loanFee!=''">
+                loan_fee = #{loanFee},
             </if>
             update_time = now()
         </trim>
