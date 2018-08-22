@@ -2,7 +2,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
     function ($, _, template, Mustache, loanerDetailsTemplate, loanerEnterpriseDetailsTemplate, pledgeHouseTemplate, pledgeVehicleTemplate, pledgeEnterpriseTemplate, loanExtraRateTemplate, loanTitleTemplate, loanTitleSelectTemplate, loanerEnterpriseInfoTemplate, loanerEnterpriseFactoringInfoTemplate) {
         var loanParam = ['id', 'name', 'agent', 'productType', 'pledgeType', 'loanType', 'pledgeType', 'activityType',
             'loanAmount', 'baseRate', 'activityRate', 'originalDuration', 'minInvestAmount', 'maxInvestAmount', 'investIncreasingAmount',
-            'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status'];
+            'fundraisingStartTime', 'fundraisingEndTime', 'deadline', 'contractId', 'status' , 'loanFee'];
 
         var loanDetailsParam = ['declaration', 'extraRateRuleIds', 'extraSource', 'activity', 'activityDesc', 'nonTransferable', 'disableCoupon', 'pushMessage', 'grantReward', 'rewardRate', 'estimate', 'introduce'];
 
@@ -414,6 +414,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 var $minInvestAmount = $('input[name="minInvestAmount"]');
                 var $maxInvestAmount = $('input[name="maxInvestAmount"]');
                 var $investIncreasingAmount = $('input[name="investIncreasingAmount"]');
+                var $loanFee = $('input[name="loanFee"]');
 
                 if (parseFloat($minInvestAmount.val()) > parseFloat($maxInvestAmount.val())) {
                     showErrorMessage('最小投资金额不得大于最大投资金额', $minInvestAmount);
@@ -432,6 +433,11 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
                 if (parseFloat($loanAmount.val()) < parseFloat($investIncreasingAmount.val())) {
                     showErrorMessage('投资递增金额不得大于预计出借金额', $investIncreasingAmount);
+                    return false;
+                }
+
+                if (parseFloat($loanAmount.val()) < parseFloat($loanFee.val())) {
+                    showErrorMessage('借款手续费不得大于预计出借金额', $loanFee);
                     return false;
                 }
 
@@ -716,4 +722,27 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             }
             return true;
         }
+
+        $('input[name="loanFee"]').on('click',function () {
+            if ($('input[name="loanAmount"]').val() == '') {
+                $('.pop_layer').css('width','300px');
+                $('.pop_layer').html('请先输入预计出借金额');
+                $('.pop_layer').show();
+                setTimeout(function() {
+                    $('.pop_layer').hide();
+                },3000)
+            }
+        });
+
+        $('input[name="loanFee"]').on('blur',function () {
+            if ($(this).val() < 0 || $(this).val() > $('input[name="loanAmount"]').val()) {
+                var str = '借款手续费金额应介于0-' +  $('input[name="loanAmount"]').val() + '之间';
+                $('.pop_layer').css('width','450px');
+                $('.pop_layer').html(str);
+                $('.pop_layer').show();
+                setTimeout(function() {
+                    $('.pop_layer').hide();
+                },3000)
+            }
+        })
     });

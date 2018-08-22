@@ -85,6 +85,9 @@ public class LoanCreateBaseRequestDto {
 
     private Boolean isBankPlatForm;//资金平台
 
+    @NotEmpty
+    private String loanFee;
+
     public LoanCreateBaseRequestDto() {
     }
 
@@ -115,6 +118,7 @@ public class LoanCreateBaseRequestDto {
         this.recheckLoginName = loanModel.getRecheckLoginName();
         this.raisingCompleteTime = loanModel.getRaisingCompleteTime();
         this.isBankPlatForm=loanModel.getIsBankPlatform();
+        this.loanFee=AmountConverter.convertCentToString(loanModel.getLoanFee());;
     }
 
     public Long getId() {
@@ -331,5 +335,13 @@ public class LoanCreateBaseRequestDto {
 
     public void setIsBankPlatForm(Boolean isBankPlatForm) {
         this.isBankPlatForm = isBankPlatForm;
+    }
+
+    public String getLoanFee() {
+        return loanFee;
+    }
+
+    public void setLoanFee(String loanFee) {
+        this.loanFee = loanFee;
     }
 }

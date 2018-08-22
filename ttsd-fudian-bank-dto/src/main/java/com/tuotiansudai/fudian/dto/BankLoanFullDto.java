@@ -20,10 +20,12 @@ public class BankLoanFullDto extends BankBaseDto {
 
     private String fullTime;
 
+    private  long  loanFee;
+
     public BankLoanFullDto() {
     }
 
-    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime) {
+    public BankLoanFullDto(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime,long loanFee) {
         super(loginName, mobile, bankUserName, bankAccountNo);
         this.loanId = loanId;
         this.loanTxNo = loanTxNo;
@@ -32,6 +34,7 @@ public class BankLoanFullDto extends BankBaseDto {
         this.expectRepayTime = expectRepayTime;
         this.checkerLoginName = checkerLoginName;
         this.fullTime = fullTime;
+        this.loanFee=loanFee;
     }
 
     public long getLoanId() {
@@ -79,4 +82,7 @@ public class BankLoanFullDto extends BankBaseDto {
     }
 
 
+    public long getLoanFee() {
+        return loanFee;
+    }
 }
