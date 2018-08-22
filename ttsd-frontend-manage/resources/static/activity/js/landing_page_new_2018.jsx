@@ -7,6 +7,7 @@ let ValidatorObj = require('publicJs/validator');
 let $registerContainer = $('#registerContainer');
 let $agreementLi = $('#agreementLable');
 let $btnCoupon = $('.coupon-btn'),
+    $btnCoupon2 = $('.coupon2-btn'),
     browser = globalFun.browserRedirect();
 let urlObj = globalFun.parseURL(location.href);
 let $btnChangeImgCode = $('.img-change',$registerContainer );//换一张
@@ -391,6 +392,13 @@ $btnCoupon.on('click', function (event) {
     } else {
         $('body,html').animate({scrollTop: registerContainerTop}, 'fast');
     }
+});
+
+//点击马上投资
+$btnCoupon2.on('click', function (event) {
+    event.preventDefault();
+        window.location.href = "/loan-list";
+
 });
 $('.coupon-btn-bottom').on('click', function (event) {
     event.preventDefault();
