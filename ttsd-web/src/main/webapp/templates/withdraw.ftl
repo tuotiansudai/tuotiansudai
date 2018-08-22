@@ -5,9 +5,9 @@
 
     <div class="pad-s">
         <div class="borderBox withdraw">
-            <span style="padding-left: 15px;">可提现额度：<i class="color-note">60000.00</i>元</span><br/>
+            <span style="padding-left: 15px;">可提现额度：<i class="color-note">${balance}</i>元</span><br/>
             <span class="pad-l-15">提现金额：</span>
-            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="60000" placeholder="0.00" style="margin-left: 10px;"> 元
+            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00" style="margin-left: 10px;"> 元
             <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于<em id="cash">1.50</em>元</span>
 
             <div class="calculate">
