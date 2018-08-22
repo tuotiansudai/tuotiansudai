@@ -93,29 +93,6 @@ public class RegisterUserControllerTest extends BaseControllerTest {
                 .andExpect(status().isOk());
     }
 
-
-    @Test
-    public void shouldMobileIsExist() throws Exception {
-        when(userService.mobileIsExist(anyString())).thenReturn(true);
-
-        this.mockMvc.perform(post("/register/user/mobile/13900000000/is-exist"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
-    }
-
-    @Test
-    public void shouldMobileIsNotExist() throws Exception {
-        when(userService.mobileIsExist(anyString())).thenReturn(false);
-
-        this.mockMvc.perform(post("/register/user/mobile/13900000000/is-exist"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(false));
-    }
-
     @Test
     public void shouldLoginNameIsExist() throws Exception {
         when(userService.loginNameIsExist(anyString())).thenReturn(true);

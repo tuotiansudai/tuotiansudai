@@ -152,37 +152,7 @@ validator.newStrategy(registerForm.captcha, 'isCaptchaValid', function (errorMsg
     return getResult;
 });
 
-//推荐人是否存在
-validator.newStrategy(registerForm.referrer, 'isReferrerExist', function (errorMsg, showErrorAfter) {
-    var getResult = '',
-        that = this,
-        _arguments = arguments;
-    //只验证推荐人是否存在，不验证是否为空
-    if (this.value == '') {
-        referrerValidBool=true;
-        getResult = '';
-        ValidatorObj.isHaveError.no.apply(that, _arguments);
-        return '';
-    }
-    commonFun.useAjax({
-        type: 'POST',
-        async: false,
-        url: '/register/user/referrer/' + this.value + '/is-exist'
-    }, function (response) {
-        if (response.data.status) {
-            // 如果为true说明推荐人存在
-            referrerValidBool=true;
-            getResult = '';
-            ValidatorObj.isHaveError.no.apply(that, _arguments);
-        }
-        else {
-            referrerValidBool=false;
-            getResult = errorMsg;
-            ValidatorObj.isHaveError.yes.apply(that, _arguments);
-        }
-    });
-    return getResult;
-});
+
 
 validator.add(registerForm.mobile, [{
     strategy: 'isNonEmpty',
@@ -190,10 +160,7 @@ validator.add(registerForm.mobile, [{
 }, {
     strategy: 'isMobile',
     errorMsg: '手机号格式不正确'
-}, {
-    strategy: 'isMobileExist',
-    errorMsg: '手机号已经存在'
-}], true);
+},], true);
 validator.add(registerForm.password, [{
     strategy: 'isNonEmpty',
     errorMsg: '密码不能为空'
@@ -216,16 +183,13 @@ validator.add(registerForm.captcha, [{
     errorMsg: '验证码不正确'
 }], true);
 
-validator.add(registerForm.referrer, [{
-    strategy: 'isReferrerExist',
-    errorMsg: '推荐人不存在'
-}], true);
 
 
 let reInputs = $(registerForm).find('input[validate]');
 
 for (let i = 0, len = reInputs.length; i < len; i++) {
     globalFun.addEventHandler(reInputs[i], "keyup", "focusout", function () {
+        $('.errorMessage').hide();
         let errorMsg = validator.start(this);
         isDisabledButton();
     })

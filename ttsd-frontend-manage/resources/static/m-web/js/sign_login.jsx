@@ -2,13 +2,15 @@ let ValidatorObj = require('publicJs/validator');
 let commonFun = require('publicJs/commonFun');
 let isVoice = false;
 let formLogin = globalFun.$('#formLogin');
-
+let EntryPointFormPageOne = globalFun.$('#EntryPointFormPageOne');
 //用户注册表单校验
 let validator = new ValidatorObj.ValidatorForm();
 let $errorBox = $('.error-box', $(formLogin));
 let imageCaptcha = globalFun.$('#imageCaptcha');
 let loginSubmit = $('button[type="submit"]', $(formLogin));
 let telephoneNum = '';
+
+let imageCaptchaPageOne = globalFun.$('#imageCaptchaPageOne');
 
 (function (doc, win) {
     let docEl = doc.documentElement,
@@ -50,6 +52,12 @@ let entryEv = () => {
     $('.login_container').hide();
 };
 
+commonFun.refreshCaptcha(imageCaptchaPageOne, '/login/captcha');
+//刷新验证码
+$('#imageCaptchaPageOne').on('click', function () {
+    commonFun.refreshCaptcha(this, '/login/captcha');
+    $('.captchaPageOne').val('');
+});
 let loginEv = () => {
     $('.entry_container').hide();
     $('.login_container').show();
@@ -92,7 +100,7 @@ let pushHistory = (url) => {
 };
 
 let contentInput = (id, content, length) => {
-    $(id).find('input').on('keyup', (e) => {
+    $(id).find('input').not('#captchaPageOneInput').on('keyup', (e) => {
         if (!e.currentTarget.value) {
             $(id).find('.close_btn').hide();
             $(id).find(content).html('');
@@ -104,7 +112,18 @@ let contentInput = (id, content, length) => {
             if (!!length) {
                 if (e.currentTarget.value.length === length) {
                     telephoneNum = e.currentTarget.value;
-                    $('.step_one').attr("disabled", false);
+                    if(e.currentTarget.id =='mobileInput' ){
+
+                        if($('.captchaPageOne').val().length <5){
+                            $('.step_one').attr("disabled", true);
+                        }else {
+                            $('.step_one').attr("disabled", false);
+                        }
+                    }else {
+                        $('.step_one').attr("disabled", false);
+                    }
+
+
                 } else {
                     $('.step_one').attr("disabled", true);
                 }
@@ -132,24 +151,44 @@ let clearInputTwoVal = (id) => {
 };
 
 let stepOneEv = () => {
-    $('.step_one').on('click', () => {
+    $('.step_one').on('click', (e) => {
+        e.preventDefault();
         if (!/(^1[0-9]{10}$)/.test(telephoneNum)) { // 入口手机号码校验
             layer.msg('手机号格式不正确');
             return;
         }
+        if($('.captchaPageOne').val()==''){
+            layer.msg('验证码不能为空');
+            return;
+        }
+        if($('.captchaPageOne').val().length <5){
+            layer.msg('验证码为5位数');
+            return;
+        }
+        var captcha = $('#captchaPageOneInput').val();
+
         localStorage.setItem('login_telephone', telephoneNum);
         commonFun.useAjax({
             type: 'POST',
             async: false,
-            url: '/register/user/mobile/' + telephoneNum + '/is-exist'
+            url: '/register/user/mobile/' + telephoneNum + '/is-exist?captcha='+captcha
         }, function (response) {
-            if (response.data.status) {
-                pushHistory('#login'); // 登录
-                hashFun();
+            if(response.success){
+                if (response.data.status) {
+                    commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                    pushHistory('#login'); // 登录
+                    hashFun();
+                }
+                else {
+                    commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+                    location.href = '/m/register/user'; // 注册
+
+                }
+            }else {
+                layer.msg('验证码错误');
+                commonFun.refreshCaptcha(imageCaptchaPageOne, '/login/captcha');
             }
-            else {
-                location.href = '/m/register/user'; // 注册
-            }
+
         });
     })
 };
@@ -168,8 +207,16 @@ let seePassword = () => {
     })
 };
 
+$('#captchaPageOneInput').on('keyup', (e) => {
+            if ($('#captchaPageOneInput').val().length === 5&&/(^1[0-9]{10}$)/.test(telephoneNum)) {
+                $('.step_one').attr('disabled',false);
+            } else {
+                $('.step_one').attr('disabled',true);
+            }
+})
 // 登录注册第一步入口
 contentInput('#EntryPointForm', '.show-mobile-entry', 11);
+
 clearInputOneVal('#EntryPointForm', '.show-mobile-entry', '.step_one');
 stepOneEv();
 
@@ -185,12 +232,15 @@ clearInputTwoVal('.password_container');
 
 seePassword();
 
-commonFun.refreshCaptcha(imageCaptcha, '/login/captcha');
+
 //刷新验证码
 $('#imageCaptcha').on('click', function () {
     commonFun.refreshCaptcha(this, '/login/captcha');
     formLogin.captcha.value = '';
 });
+
+
+
 
 validator.add(formLogin.password, [{
     strategy: 'isNonEmpty',
@@ -201,6 +251,14 @@ validator.add(formLogin.password, [{
 }]);
 
 validator.add(formLogin.captcha, [{
+    strategy: 'isNonEmpty',
+    errorMsg: '验证码不能为空'
+}, {
+    strategy: 'isNumber:5',
+    errorMsg: '验证码必须为5位数字'
+}]);
+
+validator.add(EntryPointFormPageOne.captchaPageOne, [{
     strategy: 'isNonEmpty',
     errorMsg: '验证码不能为空'
 }, {
@@ -223,6 +281,7 @@ Array.prototype.forEach.call(loginInputs, function (el) {
         $('button', $(formLogin)).prop('disabled', !isAllValid);
     })
 });
+
 
 //提交表单前验证表单函数
 let validateLogin = function () {

@@ -280,10 +280,6 @@ validator.add(formRegister.captcha, [{
     errorMsg: '验证码不正确'
 }]);
 
-validator.add(formRegister.referrer, [{
-    strategy: 'isReferrerExist',
-    errorMsg: '推荐人不存在'
-}]);
 
 let reInputs = $(formRegister).find('input[validate]');
 for(let i=0,len=reInputs.length; i<len;i++) {
@@ -360,6 +356,8 @@ $('#submitBtn').on('click',function (event) {
     },function(response) {
         if(response.success) {
           location.href = '/m/register/success'
+        }else {
+            layer.msg(response.referrerMobileError)
         }
     });
 });
@@ -369,37 +367,7 @@ $('.register_next_step').on('click',() => {
     localStorage.setItem('captcha',formRegister.captcha.value);
 });
 
-//推荐人是否存在
-validator.newStrategy(formRegister.referrer,'isReferrerExist',function(errorMsg,showErrorAfter) {
-    var getResult='',
-        that=this,
-        _arguments=arguments;
-    //只验证推荐人是否存在，不验证是否为空
-    if(this.value=='') {
-        referrerValidBool=true;
-        getResult='';
-        ValidatorObj.isHaveError.no.apply(that,_arguments);
-        return '';
-    }
-    commonFun.useAjax({
-        type:'POST',
-        async: false,
-        url:'/register/user/referrer/'+this.value+'/is-exist'
-    },function(response) {
-        if(response.data.status) {
-            // 如果为true说明推荐人存在
-            referrerValidBool=true;
-            getResult='';
-            ValidatorObj.isHaveError.no.apply(that,_arguments);
-        }
-        else {
-            referrerValidBool=false;
-            getResult=errorMsg;
-            ValidatorObj.isHaveError.yes.apply(that,_arguments);
-        }
-    });
-    return getResult;
-});
+
 // 密码明文
 $('.see_password').on('click',() => {
     let input = $('.set-password');
