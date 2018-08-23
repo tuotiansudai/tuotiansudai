@@ -1,0 +1,83 @@
+.mobile-container {
+  border: 1px solid #e6e6e6;
+  padding-left: 43px;
+  padding-bottom: 90px;
+  .input-li {
+    font-size: 14px;
+    color: #4c4c4c;
+    margin-top: 30px;
+    &.error-li {
+      margin-top: 5px;
+      color: red;
+      font-size: 12px;
+      display: none;
+    }
+    .label-width {
+      display: inline-block;
+      width: 130px;
+      text-align: right;
+      margin-right: 18px;
+    }
+    .radio-list {
+      width: 60px;
+      position: relative;
+      margin-right: 25px;
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      padding-left: 25px;
+      box-sizing: border-box;
+      &.second {
+        width: 80px;
+      }
+      .radio-on {
+        display: none;
+      }
+
+      .radio-bg {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #e6e6e6;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 7px;
+        margin-right: 5px;
+        border-radius: 9px;
+      }
+      input {
+        display: none;
+        &:checked + span.radio-on {
+          display: block;
+          width: 18px;
+          height: 18px;
+          border: none;
+          box-sizing: border-box;
+          position: absolute;
+          left: 0;
+          top: 7px;
+          margin-right: 5px;
+          border-radius: 9px;
+          background: url("../../images/icons/icon_checked.png") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+    .btn-sub {
+      width: 140px;
+      height: 36px;
+      background: #ff752a;
+      font-size: 14px;
+      color: #fff;
+      line-height: 36px;
+      border: none;
+      padding: 0;
+      &[disabled] {
+        background: #ccc;
+      }
+    }
+    div {
+      display: inline-block;
+    }
+  }
+}
