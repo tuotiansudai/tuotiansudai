@@ -67,7 +67,16 @@
 
             </div>
         </#if>
+    <#-- 修改手机号成功 -->
+        <#if bankCallbackType == 'PHONE_UPDATE'>
+            <div class="handle_btn_container">
+                <div class="personal-info">查看个人资料</div>
+
+            </div>
+        </#if>
         <p class="phone-tip">客服电话：400-169-1188 （工作日 9:00-22:00）</p>
     </div>
+
+
 </div>
 </@global.main>
