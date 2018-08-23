@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankBaseDto;
+import com.tuotiansudai.fudian.dto.BankChangeMobileDto;
 import com.tuotiansudai.fudian.dto.BankRegisterDto;
 import com.tuotiansudai.fudian.dto.request.*;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
@@ -144,21 +145,15 @@ public class UserController extends AsyncRequestController {
     }
 
     @RequestMapping(path = "/phone-update/source/{source}", method = RequestMethod.POST)
-    public ResponseEntity<BankAsyncMessage> phoneUpdate(@PathVariable Source source, @RequestBody Map<String, String> params) {
+    public ResponseEntity<BankAsyncMessage> phoneUpdate(@PathVariable Source source, @RequestBody BankChangeMobileDto params) {
         logger.info("[Fudian] call phone update, params: {}", params);
 
-        String loginName = params.get("loginName");
-        String mobile = params.get("mobile");
-        String bankUserName = params.get("bankUserName");
-        String bankAccountNo = params.get("bankAccountNo");
-        String newPhone = params.get("newPhone");
-        String type = params.get("type");
-
-        if (isBadRequest(Lists.newArrayList(loginName, mobile, bankUserName, bankAccountNo, newPhone,type))) {
+        if (!params.isValid()) {
+            logger.error("[Fudian] phone-update, data: {}", params);
             return ResponseEntity.badRequest().build();
         }
 
-        PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, loginName, mobile, bankUserName, bankAccountNo, newPhone,type);
+        PhoneUpdateRequestDto requestDto = phoneUpdateService.update(source, params);
 
         BankAsyncMessage bankAsyncData = this.generateAsyncRequestData(requestDto, ApiType.PHONE_UPDATE);
 

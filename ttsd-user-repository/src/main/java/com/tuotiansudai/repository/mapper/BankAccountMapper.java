@@ -32,4 +32,6 @@ public interface BankAccountMapper {
 
     void updateLoanerBalance(@Param("loginName") String loginName,
                              @Param("balanceDelta") long balanceDelta);
+
+    void updateBankMobileByLoginNameAndAccountNo(@Param("loginName")String loginName, @Param("bankAccountNo")String bankAccountNo, @Param("bankMobile")String bankMobile);
 }

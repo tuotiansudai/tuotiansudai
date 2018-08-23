@@ -6,6 +6,7 @@
     是否可用: 是-<input checked="checked" type="radio" name="type" value="1"/>
     否-<input  type="radio" name="type" value="2"/>
     </br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <button type="submit" value="tijiao"/>tijiao
 </form>
 </@global.main>

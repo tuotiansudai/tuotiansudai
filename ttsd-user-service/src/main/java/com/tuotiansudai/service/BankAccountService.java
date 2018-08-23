@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankAuthorizationMessage;
+import com.tuotiansudai.fudian.message.BankChangeMobileMessage;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.EventMessage;
@@ -206,5 +207,9 @@ public class BankAccountService {
             return new BankAsyncMessage("参数不能为空");
         }
         return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),bankAccountModel.getBankUserName(),bankAccountModel.getBankAccountNo(),newPhone,type);
+    }
+
+    public void processChangeBankMoible(BankChangeMobileMessage bankChangeMobileMessage) {
+        bankAccountMapper.updateBankMobileByLoginNameAndAccountNo(bankChangeMobileMessage.getLoginName(),bankChangeMobileMessage.getBankAccountNo(),bankChangeMobileMessage.getNewPhone());
     }
 }
