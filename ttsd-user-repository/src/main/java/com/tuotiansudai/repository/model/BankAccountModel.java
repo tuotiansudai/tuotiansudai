@@ -19,16 +19,18 @@ public class BankAccountModel implements Serializable {
     private String bankAuthorizationOrderDate;
     private Date createdTime;
     private Date updatedTime;
+    private String bankMobile;
 
     public BankAccountModel() {
     }
 
-    public BankAccountModel(String loginName, String bankUserName, String bankAccountNo, String bankAccountOrderNo, String bankAccountOrderDate) {
+    public BankAccountModel(String loginName, String bankUserName, String bankAccountNo, String bankAccountOrderNo, String bankAccountOrderDate,String bankMobile) {
         this.loginName = loginName;
         this.bankUserName = bankUserName;
         this.bankAccountNo = bankAccountNo;
         this.bankAccountOrderNo = bankAccountOrderNo;
         this.bankAccountOrderDate = bankAccountOrderDate;
+        this.bankMobile=bankMobile;
     }
 
     public long getId() {
@@ -141,5 +143,13 @@ public class BankAccountModel implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getBankMobile() {
+        return bankMobile;
+    }
+
+    public void setBankMobile(String bankMobile) {
+        this.bankMobile = bankMobile;
     }
 }

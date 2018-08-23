@@ -122,17 +122,17 @@ public class RegisterUserController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        boolean isCheckSuccess = true;
+        boolean checkMobile = true;
         if (userService.mobileIsExist(registerUserDto.getMobile())){
             redirectAttributes.addFlashAttribute("registerMobileError", "手机号已存在");
-            isCheckSuccess = false;
+            checkMobile = false;
         }
         if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())) {
             redirectAttributes.addFlashAttribute("referrerMobileError", "推荐人手机号不存在");
-            isCheckSuccess = false;
+            checkMobile = false;
         }
 
-        boolean isRegisterSuccess = isCheckSuccess && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
@@ -149,16 +149,16 @@ public class RegisterUserController {
     @ResponseBody
     public Map<String, Object> registerUserOnMSite(@Valid @ModelAttribute RegisterUserDto registerUserDto, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
-        boolean isCheckSuccess = true;
+        boolean checkMobile = true;
         if (userService.mobileIsExist(registerUserDto.getMobile())){
             result.put("registerMobileError", "手机号已存在");
-            isCheckSuccess = false;
+            checkMobile = false;
         }
         if (!Strings.isNullOrEmpty(registerUserDto.getReferrer()) && !userService.mobileIsExist(registerUserDto.getReferrer())){
             result.put("referrerMobileError", "推荐人手机号不存在");
-            isCheckSuccess = false;
+            checkMobile = false;
         }
-        boolean isRegisterSuccess = isCheckSuccess && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
         result.put("success", isRegisterSuccess);
         return result;
     }
