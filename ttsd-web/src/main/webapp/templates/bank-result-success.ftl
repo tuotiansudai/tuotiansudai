@@ -70,7 +70,7 @@
     <#-- 修改手机号成功 -->
         <#if bankCallbackType == 'PHONE_UPDATE'>
             <div class="handle_btn_container">
-                <div class="see_my_account">查看我的账户</div>
+                <div class="personal-info">查看个人资料</div>
 
             </div>
         </#if>

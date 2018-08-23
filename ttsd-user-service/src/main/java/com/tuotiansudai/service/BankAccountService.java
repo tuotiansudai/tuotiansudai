@@ -200,11 +200,14 @@ public class BankAccountService {
     public BankAsyncMessage changeBankMobile(String loginName, String newPhone, String type,Role role,Source souce) {
 
         BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName,role);
-        if (bankAccountModel != null || StringUtils.isEmpty(bankAccountModel.getBankMobile())) {
+        if (bankAccountModel == null || StringUtils.isEmpty(bankAccountModel.getBankMobile())) {
             return new BankAsyncMessage("没有实名认证");
         }
         if(StringUtils.isEmpty(type) || StringUtils.isEmpty(newPhone)){
             return new BankAsyncMessage("参数不能为空");
+        }
+        if(newPhone.equals(bankAccountModel.getBankMobile())){
+            return new BankAsyncMessage("手机号没有改变");
         }
         return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),bankAccountModel.getBankUserName(),bankAccountModel.getBankAccountNo(),newPhone,type);
     }

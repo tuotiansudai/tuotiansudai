@@ -95,16 +95,14 @@ public class PersonalInfoController {
     @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.GET)
     public ModelAndView changeBankPhoneView() {
         ModelAndView modelAndView = new ModelAndView("/personal-change-bank-mobile");
-        String name=LoginUserInfo.getLoginName();
-        Role role=LoginUserInfo.getBankRole();
-        BankAccountModel bank=bankAccountService.findBankAccount(name, role);
+        BankAccountModel bank=bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), LoginUserInfo.getBankRole());
         modelAndView.addObject("originMobile",bank.getBankMobile());
         return modelAndView;
     }
 
     @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.POST)
     public ModelAndView changeBankPhone(@RequestParam("newPhone") String newPhone,
-                                        @RequestParam("newPhone") String type) {
+                                        @RequestParam("type") String type) {
         BankAsyncMessage bankAsyncData = bankAccountService.changeBankMobile(LoginUserInfo.getLoginName(), newPhone, type, LoginUserInfo.getBankRole(), Source.WEB);
         return new ModelAndView("/pay", "pay", bankAsyncData);
     }
