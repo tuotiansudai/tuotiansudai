@@ -49,7 +49,7 @@
                 </@global.role><a href="javascript:;" class="setlink change-role-btn">切换</a></span>
             </li>
         </@global.role>
-        <li><span class="info-title"> 手机</span>
+        <li><span class="info-title">注册手机号</span>
             <em class="info">${mobile}</em>
             <span class="binding-set"><i class="fa fa-check-circle ok"></i>已绑定</span>
         </li>
@@ -100,6 +100,16 @@
                 </#if>
             </#if>
         </li>
+
+        <#if bankMobile??>
+            <li><span class="info-title">银行预留手机号</span>
+                <em class="info">${bankMobile}</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink" href="/personal-info/change-bank-mobile">修改</a>
+                </span>
+            </li>
+        </#if>
+
         <li><span class="info-title"> 登录密码</span>
             <em class="info">********</em>
             <span class="binding-set">

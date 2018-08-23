@@ -33,7 +33,9 @@ $('.retry').on('click',() => {
     $('#retry-form').submit();
     return false;
 });
-
+$('.personal-info').on('click',() => {
+    location.href = '/personal-info';
+});
 if($('#registerSuccess').length){
     let referParam = globalFun.parseURL(location.href);
     let referrer = referParam.params.referrer;

@@ -134,7 +134,7 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType){
+    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType) {
         return asyncExecute(MessageFormat.format("/recharge/source/{0}", source.name().toLowerCase()),
                 new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, rechargeId, amount, RechargePayType.valueOf(payType)));
     }
@@ -207,8 +207,8 @@ public class BankWrapperClient {
         return new BankLoanCancelMessage(false, null);
     }
 
-    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime,long  loanFee) {
-        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, fullTime,loanFee);
+    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime, long loanFee) {
+        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, fullTime, loanFee);
 
         String json = syncExecute("/loan-full", bankLoanFullDto);
 
@@ -429,7 +429,7 @@ public class BankWrapperClient {
         return umpAsyncExecute("/ump/withdraw", new UmpWithdrawDto(loginName, payUserId, withdrawId, amount));
     }
 
-    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard){
+    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard) {
         return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isReplaceCard));
     }
 
@@ -525,5 +525,11 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public BankAsyncMessage changeBankMobile(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String newPhone, String type) {
+        BankChangeMobileDto params = new BankChangeMobileDto(loginName, mobile, bankUserName, bankAccountNo, type, newPhone);
+        return asyncExecute(MessageFormat.format("/user/phone-update/source/{0}", source.name().toLowerCase()),
+                params);
     }
 }

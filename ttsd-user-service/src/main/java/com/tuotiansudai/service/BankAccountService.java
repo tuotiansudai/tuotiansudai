@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankAuthorizationMessage;
+import com.tuotiansudai.fudian.message.BankChangeMobileMessage;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.EventMessage;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 
@@ -193,5 +195,24 @@ public class BankAccountService {
         UserModel userModel = userMapper.findByLoginName(loginName);
         BankAccountModel bankAccountModel = this.findBankAccount(loginName, role);
         return bankWrapperClient.resetPassword(source, userModel.getLoginName(), userModel.getMobile(), bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo());
+    }
+
+    public BankAsyncMessage changeBankMobile(String loginName, String newPhone, String type,Role role,Source souce) {
+
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName,role);
+        if (bankAccountModel == null || StringUtils.isEmpty(bankAccountModel.getBankMobile())) {
+            return new BankAsyncMessage("没有实名认证");
+        }
+        if(StringUtils.isEmpty(type) || StringUtils.isEmpty(newPhone)){
+            return new BankAsyncMessage("参数不能为空");
+        }
+        if(newPhone.equals(bankAccountModel.getBankMobile())){
+            return new BankAsyncMessage("手机号没有改变");
+        }
+        return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),bankAccountModel.getBankUserName(),bankAccountModel.getBankAccountNo(),newPhone,type);
+    }
+
+    public void processChangeBankMoible(BankChangeMobileMessage bankChangeMobileMessage) {
+        bankAccountMapper.updateBankMobileByLoginNameAndAccountNo(bankChangeMobileMessage.getLoginName(),bankChangeMobileMessage.getBankAccountNo(),bankChangeMobileMessage.getNewPhone());
     }
 }

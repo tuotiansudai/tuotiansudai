@@ -18,6 +18,7 @@
         <result column="bank_authorization_order_date" property="bankAuthorizationOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="bank_mobile" property="bankMobile"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
@@ -64,4 +65,7 @@
         update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'LOANER'
     </update>
 
+    <update id="updateBankMobileByLoginNameAndAccountNo" parameterType="map">
+        update bank_account set bank_mobile = #{bankMobile},updated_time = now()  where login_name = #{loginName} and bank_account_no=#{bankAccountNo}
+    </update>
 </mapper>
