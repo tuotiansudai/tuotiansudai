@@ -8,7 +8,7 @@
             <ul>
                 <li class="input-li"><div class="label-width">原手机号：</div><div id="originMobile">${originMobile}</div></li>
                 <li class="input-li"><div class="label-width">新手机号： </div><input name="newPhone" vlaue="" id="newMobile" /></li>
-                <li class="input-li error-li"><div class="label-width"> </div><div class="error-box">手机号格式不正确</div></li>
+                <li class="input-li error-li"><div class="label-width"> </div><div class="error-box"></div></li>
 
                 <li class="input-li"><div class="label-width">原手机号是否可用： </div><label class="radio-list" for="usable"><span class="radio-bg"></span> <input id="usable" checked="checked" type="radio" name="type" value="1"/><span class="radio-on"></span>可用</label>
                     <label class="radio-list second" for="unusable"><span class="radio-bg"></span> <input id="unusable" type="radio" name="type" value="2"/><span class="radio-on"></span>不可用</label></li>
