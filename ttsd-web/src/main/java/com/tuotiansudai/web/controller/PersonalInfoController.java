@@ -56,7 +56,7 @@ public class PersonalInfoController {
             mv.addObject("authorization", bankAccountModel.isAuthorization());
             mv.addObject("autoInvest", bankAccountModel.isAutoInvest());
             mv.addObject("bankCard", bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role));
-            mv.addObject("bankMobile", "18354275208");
+            mv.addObject("bankMobile", bankAccountModel.getBankMobile());
         }
         return mv;
     }

@@ -14,6 +14,7 @@
                     <label class="radio-list second" for="unusable"><span class="radio-bg"></span> <input id="unusable" type="radio" name="type" value="2"/><span class="radio-on"></span>不可用</label></li>
                 <li class="input-li"><div class="label-width"></div><input class="btn-sub" type="submit" value="确认修改"/></li>
             </ul>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </div>
 </div>
