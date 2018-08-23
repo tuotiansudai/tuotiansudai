@@ -13,7 +13,7 @@ public enum BankCallbackType {
 
     PASSWORD_RESET("重置支付密码", "/personal-info/reset-bank-password/source/WEB",  "/personal-info/reset-bank-password/source/M", "post", "tuotian://resetPwd"),
 
-    PHONE_UPDATE("修改手机号", "/personal-info", "/personal-info", "get", ""),
+    PHONE_UPDATE("修改", "/personal-info", "/personal-info", "get", ""),
 
     LOAN_INVEST("投资", "/loan-list", "/loan-list",  "get", "tuotian://invest"),
     LOAN_FAST_INVEST("投资", "/loan-list", "/loan-list",  "get", ""),
