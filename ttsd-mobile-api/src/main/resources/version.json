@@ -1,14 +1,14 @@
 {
   "android": {
-    "version": "3.5",
-    "versionCode": 10,
+    "version": "5.0.0",
+    "versionCode": 70,
     "forceUpgrade": false,
-    "url": "http://ci3.tuotiansudai.com:9500/job/QA3/ws/tuotiansudai.apk",
-    "message": "1，拓天助手修改为个人中心；\n2，新增账户信息模块；\n3，新增服务费用、常见问题、意见反馈；\n4，合并密码修改，优化修改流程；\n5，交互优化；\n6，新增8家银行快捷支付；\n7，推荐人二维码扫描注册。"
+    "url": "http://qa.tuotiansudai.com:9999/app/tuotiansudai.apk",
+    "message": "1，全面接入富滇银行存管系统；\n2，重组了整体业务架构；\n3，暂时关闭投资奖励类功能；\n4，暂时关闭积分商城和邀请奖励等功能。"
   },
   "ios": {
-    "version": "2.5.5",
+    "version": "5.0.0",
     "forceUpgrade": false,
-    "message": "1，拓天助手修改为个人中心；\n2，新增账户信息模块；\n3，新增服务费用、常见问题、意见反馈；\n4，合并密码修改，优化修改流程；\n5，交互优化；\n6，新增8家银行快捷支付；\n7，推荐人二维码扫描注册。"
+    "message": "1，全面接入富滇银行存管系统；\n2，重组了整体业务架构；\n3，暂时关闭投资奖励类功能；\n4，暂时关闭积分商城和邀请奖励等功能。"
   }
 }

@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -15,17 +14,19 @@ import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
@@ -56,15 +57,6 @@ public class ConsoleUserService {
     private UserRestClient userRestClient;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private BankAccountMapper bankAccountMapper;
-
-    @Autowired
-    private BankBindCardService bankBindCardService;
-
-    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
@@ -84,6 +76,11 @@ public class ConsoleUserService {
 
     @Autowired
     private UserBankCardMapper userBankCardMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     @Transactional(rollbackFor = Exception.class)
     public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
@@ -119,6 +116,13 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (!mobile.equals(beforeUpdateUserMobile) && accountModel != null) {
+            BankBaseMessage message = bankWrapperClient.umpUpdateMobile(accountModel.getId(), userModel.getLoginName(), mobile, userModel.getUmpUserName(), userModel.getUmpIdentityNumber());
+            if (!message.isStatus()){
+                throw new EditUserException(message.getMessage() == null ? "修改联动优势手机号失败" : message.getMessage());
+            }
+        }
         // update referrer relationship
         mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
     }

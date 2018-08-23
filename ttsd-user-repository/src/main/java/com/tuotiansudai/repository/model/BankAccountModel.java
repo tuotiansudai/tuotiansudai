@@ -20,6 +20,7 @@ public class BankAccountModel implements Serializable {
     private Date createdTime;
     private Date updatedTime;
     private String bankMobile;
+
     public BankAccountModel() {
     }
 

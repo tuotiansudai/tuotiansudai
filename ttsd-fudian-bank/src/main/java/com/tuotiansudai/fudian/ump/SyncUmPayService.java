@@ -1,6 +1,7 @@
 package com.tuotiansudai.fudian.ump;
 
 public enum SyncUmPayService {
+    MER_REGISTER_PERSON("mer_register_person"),
     PROJECT_ACCOUNT_SEARCH("project_account_search"),
     /**
      * 商户账户查询
