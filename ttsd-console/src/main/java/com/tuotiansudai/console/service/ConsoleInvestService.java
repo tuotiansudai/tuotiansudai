@@ -100,4 +100,13 @@ public class ConsoleInvestService {
     public List<String> findAllInvestChannels() {
         return investMapper.findAllInvestChannels();
     }
+
+    public boolean updateInvestTransferStatus(long investId){
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null || !Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.NONTRANSFERABLE).contains(investModel.getTransferStatus())){
+            return false;
+        }
+        investMapper.updateTransferStatus(investId, investModel.getTransferStatus() == TransferStatus.TRANSFERABLE ? TransferStatus.NONTRANSFERABLE : TransferStatus.TRANSFERABLE);
+        return true;
+    }
 }
