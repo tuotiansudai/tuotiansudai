@@ -72,10 +72,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         });
 
         $('.updateTransferStatus').on('click', function () {
-            var transferStatus = $(this).data('investtransferstatus');
             var investId = $(this).data('investid');
 
-            if (confirm(transferStatus === 'TRANSFERABLE' ? '确认修改为不可转让吗?' : '确认修改为可转让吗?')) {
+            if (confirm('确认修改?')) {
                 $.ajax({
                     url: '/finance-manage/update/invest/'+ investId +'/transfer-status',
                     type: 'POST',
