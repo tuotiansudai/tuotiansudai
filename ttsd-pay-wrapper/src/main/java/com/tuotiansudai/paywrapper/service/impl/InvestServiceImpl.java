@@ -126,7 +126,7 @@ public class InvestServiceImpl implements InvestService {
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(Long.parseLong(dto.getLoanId()));
 
         InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), new Date(), dto.getSource(), dto.getChannel(), rate);
-        investModel.setTransferStatus(loanDetailsModel.getNonTransferable() ? TransferStatus.NONTRANSFERABLE : TransferStatus.TRANSFERABLE);
+        investModel.setTransferStatus(loanDetailsModel != null && loanDetailsModel.getNonTransferable() ? TransferStatus.NONTRANSFERABLE : TransferStatus.TRANSFERABLE);
         investMapper.create(investModel);
 
         logger.info(MessageFormat.format("[Invest Request Data] user={0}, loan={1}, invest={2}, amount={3}, userCoupon={4}, source={5}",
@@ -169,7 +169,7 @@ public class InvestServiceImpl implements InvestService {
 
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, amount, loginName, new Date(), source, channel, rate);
-        investModel.setTransferStatus(loanDetailsModel.getNonTransferable() ? TransferStatus.NONTRANSFERABLE : TransferStatus.TRANSFERABLE);
+        investModel.setTransferStatus(loanDetailsModel != null && loanDetailsModel.getNonTransferable() ? TransferStatus.NONTRANSFERABLE : TransferStatus.TRANSFERABLE);
         try {
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
