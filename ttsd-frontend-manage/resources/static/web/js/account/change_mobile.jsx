@@ -18,7 +18,7 @@ $newMobile.on('keyup',function () {
         $errorLi.show();
         $btnSub.attr('disabled',true);
     }else {
-        if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(elementInput))){
+        if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(elementInput))){
             $errorBox.text('手机号格式不正确');
             $errorLi.show();
             $btnSub.attr('disabled',true);

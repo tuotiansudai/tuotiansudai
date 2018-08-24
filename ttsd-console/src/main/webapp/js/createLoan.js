@@ -436,8 +436,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     return false;
                 }
 
-                if (parseFloat($loanAmount.val()) < parseFloat($loanFee.val())) {
-                    showErrorMessage('借款手续费不得大于预计出借金额', $loanFee);
+                if (parseFloat($loanAmount.val()) <= parseFloat($loanFee.val())) {
+                    showErrorMessage('借款手续费应该小于预计出借金额', $loanFee);
                     return false;
                 }
 
@@ -735,7 +735,9 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         });
 
         $('input[name="loanFee"]').on('blur',function () {
-            if ($(this).val() < 0 || $(this).val() > $('input[name="loanAmount"]').val()) {
+            var value = Number($(this).val());
+
+            if ($(this).val() == '' || value < 0 || value >= Number($('input[name="loanAmount"]').val())) {
                 var str = '借款手续费金额应介于0-' +  $('input[name="loanAmount"]').val() + '之间';
                 $('.pop_layer').css('width','450px');
                 $('.pop_layer').html(str);

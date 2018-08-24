@@ -213,6 +213,6 @@ public class BankAccountService {
     }
 
     public void processChangeBankMoible(BankChangeMobileMessage bankChangeMobileMessage) {
-        bankAccountMapper.updateBankMobileByLoginNameAndAccountNo(bankChangeMobileMessage.getLoginName(),bankChangeMobileMessage.getBankAccountNo(),bankChangeMobileMessage.getNewPhone());
+        bankAccountMapper.updateBankMobileByLoginName(bankChangeMobileMessage.getLoginName(),bankChangeMobileMessage.getNewPhone());
     }
 }

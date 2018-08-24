@@ -438,10 +438,7 @@
             <if test="loanFullBankOrderDate !=null">
                 loan_full_bank_order_date = #{loanFullBankOrderDate},
             </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="loanFee !=null and loanFee!=''">
+            <if test="loanFee !=null">
                 loan_fee = #{loanFee},
             </if>
             update_time = now()

@@ -112,7 +112,7 @@
                     <label class="col-sm-2 control-label">借款手续费（元）:</label>
 
                     <div class="col-sm-4">
-                        <input name="loanFee" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
+                        <input name="loanFee" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[0-9]\d*)$/"
                                errormsg="借款手续费需要正确填写" value="${loan.loan.loanFee}" <#if !(["PREHEAT", "WAITING_VERIFY","RAISING","RECHECK"]?seq_contains(loan.loan.status)) >disabled="disabled"</#if>>
                     </div>
                 </div>
@@ -507,6 +507,9 @@
             </div>
         </div>
     </div>
+    <div class="pop_layer">
+    </div>
 </div>
+
 <!-- content area end -->
 </@global.main>
