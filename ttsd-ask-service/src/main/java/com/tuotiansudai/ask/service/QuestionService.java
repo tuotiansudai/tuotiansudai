@@ -67,7 +67,7 @@ public class QuestionService {
         dataDto.setAdditionSensitiveValid(true);
 
         String timeKey = MessageFormat.format(USER_CREATE_QUESTION_TIME_KEY, mobile);
-        if (!FakeMobileUtil.mobileIsFakeMobile(mobile) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 5){
+        if (!FakeMobileUtil.mobileIsFakeMobile(mobile) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 6){
             dataDto.setMessage("今日提问已达上限");
             return dataDto;
         }

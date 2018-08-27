@@ -88,7 +88,7 @@ public class AnswerService {
         UserModel userModel = userMapper.findByLoginName(loginName);
 
         String timeKey = MessageFormat.format(USER_CREATE_ANSWER_TIME_KEY, loginName);
-        if (!FakeMobileUtil.mobileIsFakeMobile(userModel.getMobile()) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 5){
+        if (!FakeMobileUtil.mobileIsFakeMobile(userModel.getMobile()) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 6){
             answerResultDataDto.setMessage("今日回答已达上限");
             return answerResultDataDto;
         }
