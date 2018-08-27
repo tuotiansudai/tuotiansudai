@@ -46,11 +46,6 @@ public class QuestionService {
 
     public QuestionResultDataDto createQuestion(String mobile, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
-        String timeKey = MessageFormat.format(USER_CREATE_QUESTION_TIME_KEY, mobile);
-        if (!FakeMobileUtil.mobileIsFakeMobile(mobile) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 5){
-            dataDto.setMessage("今日提问已达上限");
-            return dataDto;
-        }
 
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
@@ -70,6 +65,12 @@ public class QuestionService {
             return dataDto;
         }
         dataDto.setAdditionSensitiveValid(true);
+
+        String timeKey = MessageFormat.format(USER_CREATE_QUESTION_TIME_KEY, mobile);
+        if (!FakeMobileUtil.mobileIsFakeMobile(mobile) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 5){
+            dataDto.setMessage("今日提问已达上限");
+            return dataDto;
+        }
 
         try {
             askRestClient.createQuestion(questionRequestDto);
