@@ -127,4 +127,15 @@ public class RechargeServiceTest {
         assertNotNull(rechargeRequestDto);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void merchantRechargeFalse() {
+        when(bankConfig.getMerchantUserName()).thenReturn("12312");
+        when(bankConfig.getMerchantAccountNo()).thenReturn("11111");
+        ArgumentCaptor<RechargeRequestDto> dtoCaptor = ArgumentCaptor.forClass(RechargeRequestDto.class);
+        RechargeRequestDto rechargeRequestDto = rechargeService.merchantRecharge(Source.WEB, "loginName", "mobile", 10000l, 1000l);
+        verify(signatureHelper, times(1)).sign(any(), dtoCaptor.capture());
+        verify(insertMapper, times(0)).insertRecharge(dtoCaptor.capture());
+        assertNull(rechargeRequestDto);
+    }
+
 }
