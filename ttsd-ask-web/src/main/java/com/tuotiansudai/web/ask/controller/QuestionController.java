@@ -1,9 +1,11 @@
 package com.tuotiansudai.web.ask.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.ask.dto.QuestionDto;
 import com.tuotiansudai.ask.dto.QuestionResultDataDto;
 import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
+import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
 import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.ask.service.QuestionService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/question")
@@ -36,14 +39,14 @@ public class QuestionController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<QuestionResultDataDto> question(@Valid @ModelAttribute QuestionWithCaptchaRequestDto questionRequestDto) {
-        return new BaseDto<>(questionService.createQuestion(questionRequestDto));
+        return new BaseDto<>(questionService.createQuestion(LoginUserInfo.getMobile(), questionRequestDto));
     }
 
     @RequestMapping(path = "/{questionId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView question(@PathVariable long questionId,
                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         QuestionDto question = questionService.getQuestion(LoginUserInfo.getLoginName(), questionId);
-        if (question == null) {
+        if (question == null || Lists.newArrayList(QuestionStatus.REJECTED, QuestionStatus.UNAPPROVED).contains(question.getStatus())) {
             ModelAndView modelAndView = new ModelAndView("/error/404");
             modelAndView.addObject("errorPage", "true");
             return modelAndView;

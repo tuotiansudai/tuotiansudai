@@ -17,6 +17,8 @@ import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.Random;
 
+import static javax.swing.UIManager.getColor;
+
 public class CaptchaGenerator {
 
     public static Captcha generate(int captchaWidth, int captchaHeight, String captcha) {
@@ -49,6 +51,7 @@ public class CaptchaGenerator {
             RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             hints.add(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
             g.setRenderingHints(hints);
+            createRandomLine(image.getWidth(), image.getHeight(), g);
             FontRenderContext frc = g.getFontRenderContext();
             int xBaseline = (int) Math.round((double) image.getWidth() * 0.02D);
             int yBaseline = image.getHeight() - (int) Math.round((double) image.getHeight() * 0.25D);
@@ -69,5 +72,25 @@ public class CaptchaGenerator {
                 xBaseline += width;
             }
         }
-    }
+
+        private void createRandomLine(int width, int height, Graphics g) {
+            for (int i = 0; i < 4; i++) {
+                int x1 = getIntRandom(0, (int) (width * 0.6));
+                int y1 = getIntRandom(0, (int) (height * 0.6));
+                int x2 = getIntRandom((int) (width * 0.4), width);
+                int y2 = getIntRandom((int) (height * 0.2), height);
+                g.setColor(Color.black);
+                g.drawLine(x1, y1, x2, y2);
+            }
+        }
+
+        private int getIntRandom(int start, int end) {
+            if (end < start) {
+                int t = end;
+                end = start;
+                start = t;
+            }
+            return start + (int) (Math.random() * (end - start));
+        }
+        }
 }
