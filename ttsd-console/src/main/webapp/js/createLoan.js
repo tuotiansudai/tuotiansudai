@@ -736,7 +736,15 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         $('input[name="loanFee"]').on('blur',function () {
             var value = Number($(this).val());
-
+            if ($('input[name="loanAmount"]').val() == '') {
+                $('.pop_layer').css('width','300px');
+                $('.pop_layer').html('请先输入预计出借金额');
+                $('.pop_layer').show();
+                setTimeout(function() {
+                    $('.pop_layer').hide();
+                },3000)
+                return;
+            }
             if ($(this).val() == '' || value < 0 || value >= Number($('input[name="loanAmount"]').val())) {
                 var str = '借款手续费金额应介于0-' +  $('input[name="loanAmount"]').val() + '之间';
                 $('.pop_layer').css('width','450px');
