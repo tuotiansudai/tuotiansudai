@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @Component
 public class CaptchaHelperService {
@@ -24,6 +25,7 @@ public class CaptchaHelperService {
     public boolean captchaVerify(String captcha) {
         String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(ASK_CAPTCHA);
         httpServletRequest.getSession().removeAttribute(ASK_CAPTCHA);
+        logger.info(MessageFormat.format("ask captcha verify, captcha:{0}, actualCaptcha:{1}", captcha, actualCaptcha));
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
 }
