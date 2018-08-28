@@ -249,6 +249,12 @@ if($questionDetailTag.length) {
                 commonFun.refreshCaptcha($formAnswer.find('.captchaImg')[0],'../captcha',false,function () {
                     $formAnswerSubmit.prop('disabled',true);
                 });
+
+                if (response.message){
+                    layer.msg(response.message);
+                    return;
+                }
+
                 if(response.isCaptchaValid) {
                     if(!response.isAnswerSensitiveValid) {
                         $formAnswer.find('.answer').next().show().text('您输入的内容不能包含\"' + response.sensitiveWord + '\"字样!');
@@ -358,6 +364,11 @@ if($createQuestion.length) {
                 commonFun.refreshCaptcha($formQuestion.find('.captchaImg')[0],'captcha',false,function () {
                     $formSubmit.prop('disabled',true);
                 });
+
+                if (response.message){
+                    layer.msg(response.message);
+                    return;
+                }
 
                 if(response.isCaptchaValid) {
                     if(!response.isQuestionSensitiveValid) {

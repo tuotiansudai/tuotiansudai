@@ -247,5 +247,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.pledgeType = userInvestRecordDataDto.getPledgeType();
         this.isTransferInvest = userInvestRecordDataDto.isTransferInvest();
         this.repayProgress = userInvestRecordDataDto.getRepayProgress();
+        this.transferApplicationId=userInvestRecordDataDto.getTransferApplicationId();
     }
 }

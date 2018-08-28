@@ -15,10 +15,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.tuotiansudai.repository.mapper" level="DEBUG"/>
-    <logger name="com.tuotiansudai.ask.repository.mapper" level="DEBUG"/>
-    <logger name="com.tuotiansudai.rest.client" level="DEBUG"/>
-
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
