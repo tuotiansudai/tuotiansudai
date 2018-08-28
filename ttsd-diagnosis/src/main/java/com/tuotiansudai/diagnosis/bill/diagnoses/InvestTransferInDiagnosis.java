@@ -38,6 +38,9 @@ public class InvestTransferInDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         TransferApplicationModel tracedObject = transferApplicationMapper.findByInvestId(userBillModel.getOrderId());
+        if (tracedObject == null && investMapper.findById(userBillModel.getOrderId()).getStatus() == InvestStatus.OVER_INVEST_PAYBACK){
+            return;
+        }
         String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
