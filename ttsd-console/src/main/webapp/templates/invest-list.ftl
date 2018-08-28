@@ -149,7 +149,7 @@
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
                     <td>${invest.investStatus}</td>
                     <td>${invest.allowTransfer?then('是','否')}
-                        <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">
+                        <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR_ADMIN')">
                             <#if !invest.allowTransfer>
                                 <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
                                         data-investid="${invest.investId?string.computer}">修改</button>
