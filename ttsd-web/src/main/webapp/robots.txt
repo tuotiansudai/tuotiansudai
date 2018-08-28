@@ -1,1 +1,13 @@
-User-Agent: *
+User-agent: *
+Disallow: /*?*
+Disallow:/css/
+Disallow:/js/
+Disallow:/loan/
+Disallow:/transfer/
+Sitemap:https://tuotiansudai.com/sitemap.xml
+Sitemap:https://tuotiansudai.com/cms/sitemap.txt
+Sitemap:https://tuotiansudai.com/ask/sitemap.txt
+Sitemap:https://tuotiansudai.com/sitemap-cms-baike-1.xml
+Sitemap:https://tuotiansudai.com/sitemap-cms-column-1.xml
+Sitemap:https://tuotiansudai.com/sitemap-cms-new-1.xml
+Sitemap:https://tuotiansudai.com/sitemap-ask-1.xml

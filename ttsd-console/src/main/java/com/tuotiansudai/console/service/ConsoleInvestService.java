@@ -5,10 +5,7 @@ import com.tuotiansudai.dto.InvestPaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
@@ -49,6 +46,9 @@ public class ConsoleInvestService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
 
     public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
                                                        Role role, Date startTime, Date endTime, InvestStatus investStatus,
@@ -99,5 +99,14 @@ public class ConsoleInvestService {
 
     public List<String> findAllInvestChannels() {
         return investMapper.findAllInvestChannels();
+    }
+
+    public boolean updateInvestTransferStatus(long investId){
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null || investModel.getTransferStatus() != TransferStatus.NONTRANSFERABLE){
+            return false;
+        }
+        investMapper.updateTransferStatus(investId, TransferStatus.TRANSFERABLE);
+        return true;
     }
 }
