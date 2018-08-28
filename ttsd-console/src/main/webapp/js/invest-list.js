@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'csrf'], function ($) {
 
     $(function(){
         $('.selectpicker').selectpicker();
@@ -69,6 +69,29 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
         $('.down-load').on('click',function () {
             location.href = "/export/invests?" + $('form').serialize();
+        });
+
+        $('.updateTransferStatus').on('click', function () {
+            var investId = $(this).data('investid');
+
+            if (confirm('确认修改?')) {
+                $.ajax({
+                    url: '/finance-manage/update/invest/'+ investId +'/transfer-status',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                })
+                    .done(function (res) {
+                        if (res.status){
+                            location.href='/finance-manage/invests';
+                        }else {
+                            alert("修改失败");
+                        }
+                    })
+                    .fail(function() {
+                        alert("修改失败");
+                    })
+            }
         });
     })
 

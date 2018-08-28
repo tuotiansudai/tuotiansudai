@@ -2,10 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleInvestService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestPaginationDataDto;
-import com.tuotiansudai.dto.InvestRepayDataDto;
-import com.tuotiansudai.dto.InvestRepayDataItemDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
@@ -16,10 +13,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
@@ -94,4 +88,9 @@ public class InvestController {
         return mv;
     }
 
+    @RequestMapping(value = "/update/invest/{investId:^\\d+$}/transfer-status", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDataDto updateTransfer(@PathVariable long investId) {
+        return new BaseDataDto(consoleInvestService.updateInvestTransferStatus(investId));
+    }
 }

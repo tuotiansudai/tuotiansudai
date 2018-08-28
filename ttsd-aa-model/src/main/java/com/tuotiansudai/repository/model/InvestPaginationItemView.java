@@ -35,6 +35,7 @@ public class InvestPaginationItemView implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
+    private TransferStatus transferStatus;
 
     public List<Role> getInvestorRoleList() {
         List<Role> roles = new ArrayList<>();
@@ -248,5 +249,13 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public TransferStatus getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(TransferStatus transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }

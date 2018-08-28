@@ -257,13 +257,14 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.info(MessageFormat.format("{0} is not exist or invest failed", investId));
             return false;
         }
+
+        if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE){
+            return false;
+        }
+
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (loanModel.getStatus() != LoanStatus.REPAYING) {
             logger.info(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
-            return false;
-        }
-        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanModel.getId());
-        if (loanDetailsModel != null && loanDetailsModel.getNonTransferable()) {
             return false;
         }
 
