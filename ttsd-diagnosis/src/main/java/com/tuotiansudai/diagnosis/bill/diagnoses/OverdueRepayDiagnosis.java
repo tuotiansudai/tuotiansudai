@@ -50,13 +50,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         if (investModel == null) {
             return -2;
         }
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId());
-        long overdueDefaultInterest = investRepayModels.stream()
-                .map(InvestRepayModel::getDefaultInterest)
-                .filter(defaultInterest -> defaultInterest > 0)
-                .findAny()
-                .orElse(0L);
-        return investModel.getAmount() + investRepayModel.getActualInterest() + overdueDefaultInterest;
+        return investModel.getAmount() + investRepayModel.getActualInterest();
     }
 
     @Override
@@ -67,12 +61,6 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         if (loanModel == null) {
             return -1;
         }
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepayModel.getLoanId());
-        long overdueDefaultInterest = loanRepayModels.stream()
-                .map(LoanRepayModel::getDefaultInterest)
-                .filter(defaultInterest -> defaultInterest > 0)
-                .findAny()
-                .orElse(0L);
-        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
+        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest();
     }
 }
