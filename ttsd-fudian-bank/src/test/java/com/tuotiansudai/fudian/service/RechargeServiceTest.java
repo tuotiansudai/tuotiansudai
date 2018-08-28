@@ -1,11 +1,11 @@
 package com.tuotiansudai.fudian.service;
 
-import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankRechargeDto;
 import com.tuotiansudai.fudian.dto.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
+import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
 import com.tuotiansudai.fudian.mapper.fudian.SelectMapper;
 import com.tuotiansudai.fudian.mapper.fudian.UpdateMapper;
@@ -127,7 +127,7 @@ public class RechargeServiceTest {
         assertNotNull(rechargeRequestDto);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void merchantRechargeFalse() {
         when(bankConfig.getMerchantUserName()).thenReturn("12312");
         when(bankConfig.getMerchantAccountNo()).thenReturn("11111");
@@ -138,4 +138,20 @@ public class RechargeServiceTest {
         assertNull(rechargeRequestDto);
     }
 
+    @Test
+    public void returnCallback() {
+        ResponseDto responseDto = new ResponseDto();
+        rechargeService.returnCallback(responseDto);
+        verify(updateMapper, times(1)).updateReturnResponse(any(String.class), any(ResponseDto.class));
+    }
+
+    @Test
+    public void notifyCallbackSuccess() {
+
+    }
+
+    @Test
+    public void notifyCallbackFalse() {
+
+    }
 }
