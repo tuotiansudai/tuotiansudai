@@ -116,7 +116,7 @@ public class CancelCardBindServiceTest {
 
     @Test
     public void cardBindNotifyCallbackSuccess(){
-        ArgumentCaptor<CancelCardBindRequestDto> messageCaptor = ArgumentCaptor.forClass(CancelCardBindRequestDto.class);
+        ArgumentCaptor<BankBindCardMessage> messageCaptor = ArgumentCaptor.forClass(BankBindCardMessage.class);
         ArgumentCaptor<String> messageKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> messageHKeyCaptor = ArgumentCaptor.forClass(String.class);
 
@@ -135,20 +135,20 @@ public class CancelCardBindServiceTest {
 
         assertThat(messageCaptor.getValue().getBankAccountNo(), is("UA02683949835131001"));
         assertThat(messageCaptor.getValue().getCardNumber(), is("6212***********3166"));
-        assertThat(messageKeyCaptor.getValue(), is("BANK_CARD_BIND_MESSAGE_20180810"));
+        assertThat(messageKeyCaptor.getValue(), is("BANK_CANCEL_CARD_BIND_MESSAGE_20180810"));
         assertThat(messageHKeyCaptor.getValue(), is("20180810000000000000"));
     }
 
-//    @Test
-//    public void cardBindNotifyCallbackFail(){
-//        BankBindCardMessage bankBindCardMessage = new BankBindCardMessage("loginName", "18612801708", "UU02683949835091001", "UA02683949835131001", "111111", "20180810", true);
-//        Gson gson = new GsonBuilder().create();
-//        when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
-//        when(redisTemplate.opsForHash().get(any(), any())).thenReturn(gson.toJson(bankBindCardMessage));
-//        cardBindService.notifyCallback(null);
-//        verify(this.redisTemplate.opsForHash(), times(0)).get(anyString(), anyString());
-//        verify(this.messageQueueClient, times(0)).publishMessage(any(), any());
-//        verify(this.updateMapper, times(0)).updateNotifyResponseData(anyString(), any());
-//    }
+    @Test
+    public void cancelCardBindNotifyCallbackFail(){
+        BankBindCardMessage bankBindCardMessage = new BankBindCardMessage("loginName", "18612801708", "UU02683949835091001", "UA02683949835131001", "111111", "20180810", true);
+        Gson gson = new GsonBuilder().create();
+        when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
+        when(redisTemplate.opsForHash().get(any(), any())).thenReturn(gson.toJson(bankBindCardMessage));
+        cancelCardBindService.notifyCallback(null);
+        verify(this.redisTemplate.opsForHash(), times(0)).get(anyString(), anyString());
+        verify(this.messageQueueClient, times(0)).sendMessage(any(), any());
+        verify(this.updateMapper, times(0)).updateNotifyResponseData(anyString(), any());
+    }
 
 }
