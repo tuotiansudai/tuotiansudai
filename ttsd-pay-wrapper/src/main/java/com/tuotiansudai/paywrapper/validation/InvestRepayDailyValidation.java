@@ -49,12 +49,16 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
         List<UserBillModel> normalRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.NORMAL_REPAY);
         List<UserBillModel> advancedRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.ADVANCE_REPAY);
         List<UserBillModel> investFeeRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
+        List<UserBillModel> overdueRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.OVERDUE_REPAY);
         long userBillAmount = 0;
         if (normalRepayUserBillModels.size() == 1) {
             userBillAmount += normalRepayUserBillModels.get(0).getAmount();
         }
         if (advancedRepayUserBillModels.size() == 1) {
             userBillAmount += advancedRepayUserBillModels.get(0).getAmount();
+        }
+        if (overdueRepayUserBillModels.size() == 1) {
+            userBillAmount += overdueRepayUserBillModels.get(0).getAmount();
         }
         if (investFeeRepayUserBillModels.size() == 1) {
             userBillAmount -= investFeeRepayUserBillModels.get(0).getAmount();
