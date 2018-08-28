@@ -78,7 +78,7 @@ public class RechargeServiceTest {
     @Mock
     private QueryTradeService queryTradeService;
 
-    //@Test
+    @Test
     public void rechargeSuccess() {
         ArgumentCaptor<RechargeRequestDto> dtoCaptor = ArgumentCaptor.forClass(RechargeRequestDto.class);
         ArgumentCaptor<String> messageKeyCaptor = ArgumentCaptor.forClass(String.class);
@@ -106,7 +106,7 @@ public class RechargeServiceTest {
         assertNotNull(rechargeRequestDto);
     }
 
-    //@Test(expected = NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void rechargeFalse() {
         BankRechargeDto dto = new BankRechargeDto();
         ArgumentCaptor<RechargeRequestDto> dtoCaptor = ArgumentCaptor.forClass(RechargeRequestDto.class);
@@ -119,7 +119,7 @@ public class RechargeServiceTest {
         assertNull(rechargeRequestDto);
     }
 
-    //@Test
+    @Test
     public void merchantRechargeSuccess() {
         when(bankConfig.getMerchantUserName()).thenReturn("12312");
         when(bankConfig.getMerchantAccountNo()).thenReturn("11111");
@@ -138,7 +138,7 @@ public class RechargeServiceTest {
         assertNotNull(rechargeRequestDto);
     }
 
-    //@Test
+    @Test
     public void merchantRechargeFalse() {
         when(bankConfig.getMerchantUserName()).thenReturn("12312");
         when(bankConfig.getMerchantAccountNo()).thenReturn("11111");
@@ -149,7 +149,7 @@ public class RechargeServiceTest {
         assertNull(rechargeRequestDto);
     }
 
-    //@Test
+    @Test
     public void returnCallback() {
         ResponseDto responseDto = new ResponseDto();
         rechargeService.returnCallback(responseDto);
