@@ -5,12 +5,9 @@ import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.mapper.UserBillMapper;
+import com.tuotiansudai.repository.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +21,13 @@ public class InvestTransferInDiagnosis extends UserBillBusinessDiagnosis {
 
     private final TransferApplicationMapper transferApplicationMapper;
 
+    private final UserBillMapper userBillMapper;
+
     @Autowired
-    public InvestTransferInDiagnosis(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper) {
+    public InvestTransferInDiagnosis(InvestMapper investMapper, TransferApplicationMapper transferApplicationMapper, UserBillMapper userBillMapper) {
         this.investMapper = investMapper;
         this.transferApplicationMapper = transferApplicationMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override
@@ -38,8 +38,11 @@ public class InvestTransferInDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         TransferApplicationModel tracedObject = transferApplicationMapper.findByInvestId(userBillModel.getOrderId());
-        if (tracedObject == null && investMapper.findById(userBillModel.getOrderId()).getStatus() == InvestStatus.OVER_INVEST_PAYBACK){
-            return;
+        if (tracedObject == null
+                && investMapper.findById(userBillModel.getOrderId()).getStatus() == InvestStatus.OVER_INVEST_PAYBACK
+                && userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.OVER_INVEST_PAYBACK).size() == 1
+                && userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.INVEST_TRANSFER_IN).size() == 1){
+                return;
         }
         String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
