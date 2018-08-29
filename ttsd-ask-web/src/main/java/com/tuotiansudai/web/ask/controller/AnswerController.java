@@ -6,6 +6,7 @@ import com.tuotiansudai.ask.service.AnswerService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -6,23 +6,32 @@
         <div class="banner-img">
             <div class="my-page-width banner-con">
 
-                    <div class="login-wrap" id="registerContainer">
+                <div class="login-wrap" id="registerContainer">
 
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
                         <h2 class="title"><span class="icon-title"></span><span>出借资金全程由联动优势存管</span></h2>
                         <div class="login-con">
                             <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
                             <ul>
-                                <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile" class="width100 height100 borderRadiusRight" placeholder="输入手机号码"
-                                           name="mobile"
-                                           maxlength="11" type="text" autocomplete="off" validate>
-                                   <#if registerMobileError??><div class="errorMessage">${registerMobileError}</div> </#if>
+                                <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile"
+                                                                                                  class="width100 height100 borderRadiusRight"
+                                                                                                  placeholder="输入手机号码"
+                                                                                                  name="mobile"
+                                                                                                  maxlength="11"
+                                                                                                  type="text"
+                                                                                                  autocomplete="off"
+                                                                                                  validate>
+                                   <#if registerMobileError??>
+                                       <div class="errorMessage">${registerMobileError}</div> </#if>
                                 </li>
-                                <li><span class="passwordIcon icons borderRadiusLeft"></span><input class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
-                                           type="password" name="password" id="passwordInput" autocomplete="off" validate></li>
+                                <li><span class="passwordIcon icons borderRadiusLeft"></span><input
+                                        class="width100 height100 borderRadiusRight" placeholder="密码" maxlength="20"
+                                        type="password" name="password" id="passwordInput" autocomplete="off" validate>
+                                </li>
                                 <li class="clearfix">
                                     <span class="captchaIcon icons borderRadiusLeft"></span>
-                                    <input class="borderRadiusRight height100" id="input_img_captcha" placeholder="图形验证码"
+                                    <input class="borderRadiusRight height100" id="input_img_captcha"
+                                           placeholder="图形验证码"
                                            name="appCaptcha"
                                            type="text" maxlength="5" validate>
                                     <em class="image-captcha"><img class="borderRadius height100" src="" alt=""> </em>
@@ -33,10 +42,10 @@
                                 <li class="captcha-li smsIcon-li">
                                     <span class="smsIcon icons borderRadiusLeft"></span>
                                     <input id="smsCaptcha" class="height100 borderRadiusRight"
-                                                              placeholder="手机验证码"
-                                                              name="captcha" type="text" maxlength="6" validate>
+                                           placeholder="手机验证码"
+                                           name="captcha" type="text" maxlength="6" validate>
                                     <input id="getCaptchaBtn" type="button" class="get-captcha borderRadius height100"
-                                           value="获取验证码" /><br/>
+                                           value="获取验证码"/><br/>
                                     <span class="voice-captcha" id="voice_captcha" style="display: none">如收不到短信，可使用 <a
                                             href="javascript:;" id="voice_btn">语音验证</a> </span>
                                 </li>
@@ -49,7 +58,8 @@
                                 <li class="recomender-iphone"><input class="borderRadius width100 height100" type="text"
                                                                      name="referrer"
                                                                      maxlength="11" placeholder="推荐人手机号" validate>
-                                    <#if referrerMobileError??><div class="errorMessage">${referrerMobileError}</div> </#if>
+                                    <#if referrerMobileError??>
+                                        <div class="errorMessage">${referrerMobileError}</div> </#if>
                                 </li>
                                 <li class="agreement-li">
                                     <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check"
@@ -95,27 +105,27 @@
             <div class="newbie-register-wrap">
                 <h2 class="newbie-register-title"></h2>
 
-                     <div class="desc-container">
-                        <h2 class="title">新手体验项目</h2>
-                        <div class="line"></div>
-                        <div class="transverse-line left-line"></div>
-                        <div class="transverse-line right-line"></div>
-                        <div class="top"></div>
-                        <div class="content clearfix">
-                            <dl class="fl left-desc">
-                                <dt>13<span>%</span></dt>
-                                <dd>约定年化利率</dd>
-                            </dl>
+                <div class="desc-container">
+                    <h2 class="title">新手体验项目</h2>
+                    <div class="line"></div>
+                    <div class="transverse-line left-line"></div>
+                    <div class="transverse-line right-line"></div>
+                    <div class="top"></div>
+                    <div class="content clearfix">
+                        <dl class="fl left-desc">
+                            <dt>13<span>%</span></dt>
+                            <dd>约定年化利率</dd>
+                        </dl>
 
-                            <dl class="fr right-desc">
-                                <dt>3<span>天</span></dt>
-                                <dd>项目期限</dd>
-                            </dl>
-
-                        </div>
-                        <div class="bot"></div>
+                        <dl class="fr right-desc">
+                            <dt>3<span>天</span></dt>
+                            <dd>项目期限</dd>
+                        </dl>
 
                     </div>
+                    <div class="bot"></div>
+
+                </div>
 
 
                 <div class="to-experience textCenter">
@@ -128,36 +138,52 @@
                 </div>
             </div>
             <div class="wap-con-swiper">
-                    <div class="swiper-container" id="fuliList">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide item1 coupon-btn">
-                               <@global.isAnonymous>
+                <div class="swiper-container" id="fuliList">
+                    <div class="swiper-wrapper">
+                        <@global.isAnonymous>
+                        <div class="swiper-slide item1 coupon-btn">
                                  <a class="get-btn">领取6888元体验金</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">马上投资</a>
-                                </@global.isNotAnonymous>
-                            </div>
-                            <div class="swiper-slide item2 coupon-btn">
-                                <@global.isAnonymous>
-                                    <a class="get-btn">领取6888元体验金</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">马上投资</a>
-                                </@global.isNotAnonymous>
-                            </div>
-                            <div class="swiper-slide item3 coupon-btn">
-                                <@global.isAnonymous>
-                                    <a class="get-btn">领取6888元体验金</a>
-                                </@global.isAnonymous>
-                                <@global.isNotAnonymous>
-                                    <a class="get-btn" href="/loan-list">马上投资</a>
-                                </@global.isNotAnonymous>
-                            </div>
                         </div>
-                        <div class="controlsBtn prevBtn"></div>
-                        <div class="controlsBtn nextBtn"></div>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+
+                        <div class="swiper-slide item1 coupon2-btn">
+
+                            <a class="get-btn" href="/loan-list">马上投资</a>
+
+                        </div>
+                        </@global.isNotAnonymous>
+                        <@global.isAnonymous>
+                            <div class="swiper-slide item2 coupon-btn">
+                                <a class="get-btn">领取6888元体验金</a>
+                            </div>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+
+                           <div class="swiper-slide item2 coupon2-btn">
+                               <a class="get-btn" href="/loan-list">马上投资</a>
+
+                           </div>
+                        </@global.isNotAnonymous>
+                        <@global.isAnonymous>
+                            <div class="swiper-slide item3 coupon-btn">
+
+                                <a class="get-btn">领取6888元体验金</a>
+
+                            </div>
+                        </@global.isAnonymous>
+                         <@global.isNotAnonymous>
+
+                          <div class="swiper-slide item3 coupon2-btn">
+
+                              <a class="get-btn" href="/loan-list">马上投资</a>
+
+                          </div>
+                         </@global.isNotAnonymous>
                     </div>
+                    <div class="controlsBtn prevBtn"></div>
+                    <div class="controlsBtn nextBtn"></div>
+                </div>
             </div>
             <div class="red-ware-wrap">
                 <h2 class="red-ware-title"></h2>
@@ -225,34 +251,40 @@
                                             <div class="swiper-slide loan-wrap">
                                                 <h2 class="loan-title">房产抵押借款</h2>
                                                 <div class="loan-con">
-                                                    <div class="loan-info"><span class="big-num">10</span><span class="percent">%</span>360<span
+                                                    <div class="loan-info"><span class="big-num">10</span><span
+                                                            class="percent">%</span>360<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
                                                     <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
-                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a>
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide loan-wrap">
                                                 <h2 class="loan-title">车辆抵押借款</h2>
                                                 <div class="loan-con">
-                                                    <div class="loan-info"><span class="big-num">9</span><span class="percent">%</span>180<span
+                                                    <div class="loan-info"><span class="big-num">9</span><span
+                                                            class="percent">%</span>180<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
                                                     <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
-                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a>
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide loan-wrap">
                                                 <h2 class="loan-title">车辆抵押借款</h2>
                                                 <div class="loan-con">
-                                                    <div class="loan-info"><span class="big-num">8</span><span class="percent">%</span>90<span
+                                                    <div class="loan-info"><span class="big-num">8</span><span
+                                                            class="percent">%</span>90<span
                                                             class="day">天</span></div>
                                                     <p class="rate">约定年化利率</p>
                                                     <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                             class="icon2"></span><span>按天计息 即投即生息</span></p>
-                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                                    <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,19 +295,23 @@
                                     <form id="countForm" action="" class="clearfix">
                                         <ul>
                                             <li><label>投资金额：</label>
-                                                <div class="border-section"><input type="text" maxlength="9" name="money" id="moneyNum"><span>元</span></div>
+                                                <div class="border-section"><input type="text" maxlength="9"
+                                                                                   name="money"
+                                                                                   id="moneyNum"><span>元</span></div>
                                             </li>
                                             <li><label>项目期限：</label>
-                                                <div class="border-section"><input type="text" name="day" maxlength="3" id="dayNum"><span>天</span></div>
+                                                <div class="border-section"><input type="text" name="day" maxlength="3"
+                                                                                   id="dayNum"><span>天</span></div>
                                             </li>
                                             <li class="rate-li"><label>约定年化利率：</label>
-                                                <div class="border-section"><input type="text" name="rate" id="rateNum"><span>%</span></div>
+                                                <div class="border-section"><input type="text" name="rate" id="rateNum"><span>%</span>
+                                                </div>
                                             </li>
                                             <li class="error-li"><label></label>
-                                               <div class="error-box"></div>
+                                                <div class="error-box"></div>
                                             </li>
                                         </ul>
-                                        <p class="compute-link"><input type="submit" class="btn-red" value="计算收益" /></p>
+                                        <p class="compute-link"><input type="submit" class="btn-red" value="计算收益"/></p>
                                         <p class="profit">本息合计<strong id="resultNum">0</strong>元</p>
                                         <p class="small-tip">计算结果仅供参考，以实际收益为准</p>
                                     </form>
@@ -338,12 +374,20 @@
             </div>
             <div class="good-project-wap">
                 <h2 class="title"></h2>
-                    <ul class="project-list">
-                        <li><div class="pro-item item1"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                        <li><div class="pro-item item2"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                        <li><div class="pro-item item3"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                        <li><div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                    </ul>
+                <ul class="project-list">
+                    <li>
+                        <div class="pro-item item1"><a class="btn-red" href="/loan-list">马上投资</a></div>
+                    </li>
+                    <li>
+                        <div class="pro-item item2"><a class="btn-red" href="/loan-list">马上投资</a></div>
+                    </li>
+                    <li>
+                        <div class="pro-item item3"><a class="btn-red" href="/loan-list">马上投资</a></div>
+                    </li>
+                    <li>
+                        <div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div>
+                    </li>
+                </ul>
             </div>
             <div class="link-bottom textCenter">
                 <@global.isAnonymous>
@@ -354,7 +398,9 @@
                 </@global.isNotAnonymous>
             </div>
             <div class="kindly-tips-wrap">
-                <div class="title"><span class="tip-line left-line"></span><span class="squre"></span><span class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span class="squre"></span><span class="squre"></span><span class="tip-line right-line"></span>
+                <div class="title"><span class="tip-line left-line"></span><span class="squre"></span><span
+                        class="squre"></span><span class="squre"></span>温馨提示<span class="squre right-first"></span><span
+                        class="squre"></span><span class="squre"></span><span class="tip-line right-line"></span>
                 </div>
                 <div class="kindly-tips-con">
                     <p>1.活动时间：2018年6月1日起，本活动仅针对活动开始后注册的新用户；</p>
@@ -371,7 +417,7 @@
         </div>
 
     </div>
-    <div class="app-container-landing clearfix" >
+    <div class="app-container-landing clearfix">
         <div class="logo"></div>
         <div class="app-detail">
             拓天速贷<br/>

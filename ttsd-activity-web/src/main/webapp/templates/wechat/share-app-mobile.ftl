@@ -98,30 +98,39 @@
             <div class="wap-con-swiper">
                 <div class="swiper-container" id="fuliList">
                     <div class="swiper-wrapper">
+                        <@global.isAnonymous>
                         <div class="swiper-slide item1 coupon-btn1">
-                            <@global.isAnonymous>
                                 <a class="get-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
-                            </@global.isNotAnonymous>
                         </div>
+                        </@global.isAnonymous>
+                         <@global.isNotAnonymous>
+
+                          <div class="swiper-slide item1 coupon-btn5">
+                              <a class="get-btn" href="/loan-list">立即投资</a>
+                          </div>
+                         </@global.isNotAnonymous>
+                        <@global.isAnonymous>
                         <div class="swiper-slide item2 coupon-btn2">
-                            <@global.isAnonymous>
                                 <a class="get-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
-                            </@global.isNotAnonymous>
                         </div>
+                        </@global.isAnonymous>
+                         <@global.isNotAnonymous>
+
+                          <div class="swiper-slide item2 coupon-btn5">
+                                  <a class="get-btn" href="/loan-list">立即投资</a>
+                          </div>
+                         </@global.isNotAnonymous>
+                        <@global.isAnonymous>
                         <div class="swiper-slide item3 coupon-btn3">
-                            <@global.isAnonymous>
                                 <a class="get-btn">领取6888元体验金</a>
-                            </@global.isAnonymous>
-                            <@global.isNotAnonymous>
-                                <a class="get-btn" href="/loan-list">立即投资</a>
-                            </@global.isNotAnonymous>
                         </div>
+                        </@global.isAnonymous>
+                         <@global.isNotAnonymous>
+
+                         <div class="swiper-slide item3 coupon-btn5">
+                             <a class="get-btn" href="/loan-list">立即投资</a>
+                         </div>
+                         </@global.isNotAnonymous>
                     </div>
                     <div class="controlsBtn prevBtn"></div>
                     <div class="controlsBtn nextBtn"></div>

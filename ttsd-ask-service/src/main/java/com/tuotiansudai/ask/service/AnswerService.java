@@ -23,16 +23,16 @@ import com.tuotiansudai.util.MobileEncoder;
 import com.tuotiansudai.util.PaginationUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AnswerService {
@@ -56,6 +56,8 @@ public class AnswerService {
 
     @Autowired
     private CaptchaHelperService captchaHelperService;
+
+    private static final String USER_CREATE_ANSWER_TIME_KEY = "USER_CREATE_ANSWER_TIME_KEY:{0}";
 
     public AnswerResultDataDto createAnswer(String loginName, AnswerRequestDto answerRequestDto) {
         AnswerResultDataDto answerResultDataDto = new AnswerResultDataDto();
@@ -84,6 +86,13 @@ public class AnswerService {
         answerResultDataDto.setAnswerSensitiveValid(true);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
+
+        String timeKey = MessageFormat.format(USER_CREATE_ANSWER_TIME_KEY, loginName);
+        if (!FakeMobileUtil.mobileIsFakeMobile(userModel.getMobile()) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 6){
+            answerResultDataDto.setMessage("今日回答已达上限");
+            return answerResultDataDto;
+        }
+
         AnswerModel answerModel = new AnswerModel(loginName,
                 userModel.getMobile(),
                 FakeMobileUtil.generateFakeMobile(userModel.getMobile()),
@@ -92,7 +101,6 @@ public class AnswerService {
         answerMapper.create(answerModel);
 
         answerResultDataDto.setStatus(true);
-
         return answerResultDataDto;
     }
 
