@@ -36,9 +36,6 @@ public class BankBindCardService {
     private final BankAccountMapper bankAccountMapper;
 
     @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
     public BankBindCardService(UserMapper userMapper, BankAccountMapper bankAccountMapper, UserBankCardMapper userBankCardMapper, UserOpLogService userOpLogService) {
         this.userMapper = userMapper;
         this.bankAccountMapper = bankAccountMapper;
