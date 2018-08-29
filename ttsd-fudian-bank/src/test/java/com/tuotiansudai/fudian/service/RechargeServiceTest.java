@@ -200,7 +200,6 @@ public class RechargeServiceTest {
         verify(selectMapper, times(1)).selectResponseInOneHour(any(String.class));
         verify(queryTradeService, times(rechargeRequests.size())).query(any(String.class), any(String.class), any(QueryTradeType.class));
         verify(updateMapper, times(rechargeRequests.size())).updateQueryResponse(any(String.class), any(ResponseDto.class));
-
         verify(messageQueueClient, times(rechargeRequests.size())).publishMessage(any(MessageTopic.Recharge.getClass()), any(Object.class));
     }
 
