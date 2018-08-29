@@ -2,10 +2,8 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
-import com.tuotiansudai.fudian.message.BankRechargeMessage;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.WeChatMessageNotify;
@@ -14,7 +12,10 @@ import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.mapper.WeChatUserMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.BankWithdrawModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserBankCardModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,10 +27,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by qduljs2011 on 2018/8/29.
