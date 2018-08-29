@@ -9,11 +9,14 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanRepayModel;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -24,6 +27,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
     private final InvestRepayMapper investRepayMapper;
     private final LoanMapper loanMapper;
     private final LoanRepayMapper loanRepayMapper;
+    private static final Date VERSION_UPDATING_DATE = DateTime.parse("2016-05-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     @Autowired
     public OverdueRepayDiagnosis(InvestRepayMapper investRepayMapper,
@@ -50,7 +54,15 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         if (investModel == null) {
             return -2;
         }
-        return investModel.getAmount() + investRepayModel.getActualInterest();
+
+        long overdueDefaultInterest = investRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ?
+                investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId())
+                .stream()
+                .map(InvestRepayModel::getDefaultInterest)
+                .filter(defaultInterest -> defaultInterest > 0)
+                .findAny()
+                .orElse(0L) : 0L;
+        return investModel.getAmount() + investRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 
     @Override
@@ -61,6 +73,12 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         if (loanModel == null) {
             return -1;
         }
-        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest();
+        long overdueDefaultInterest = loanRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ? loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepayModel.getLoanId())
+                .stream()
+                .map(LoanRepayModel::getDefaultInterest)
+                .filter(defaultInterest -> defaultInterest > 0)
+                .findAny()
+                .orElse(0L) : 0L;
+        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 }
