@@ -21,13 +21,13 @@
     </resultMap>
 
     <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
-        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
     </insert>
 
     <insert id="createLoaner" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
-        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
     </insert>
 
     <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">

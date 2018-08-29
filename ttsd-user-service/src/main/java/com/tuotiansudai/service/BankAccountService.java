@@ -113,7 +113,8 @@ public class BankAccountService {
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
-                bankRegisterMessage.getBankOrderDate()));
+                bankRegisterMessage.getBankOrderDate(),
+                bankRegisterMessage.getBankMobile()));
 
         UserBankCardModel model = new UserBankCardModel(loginName, bankRegisterMessage.getBank(), bankRegisterMessage.getBankCode(), bankRegisterMessage.getBankCardNo(), bankRegisterMessage.getBankOrderNo(), bankRegisterMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
         userBankCardMapper.createInvestor(model);
@@ -136,7 +137,8 @@ public class BankAccountService {
                 bankRegisterMessage.getBankUserName(),
                 bankRegisterMessage.getBankAccountNo(),
                 bankRegisterMessage.getBankOrderNo(),
-                bankRegisterMessage.getBankOrderDate()));
+                bankRegisterMessage.getBankOrderDate(),
+                bankRegisterMessage.getBankMobile()));
 
         UserBankCardModel model = new UserBankCardModel(loginName, bankRegisterMessage.getBank(), bankRegisterMessage.getBankCode(), bankRegisterMessage.getBankCardNo(), bankRegisterMessage.getBankOrderNo(), bankRegisterMessage.getBankOrderDate(), UserBankCardStatus.BOUND);
         userBankCardMapper.createLoaner(model);
