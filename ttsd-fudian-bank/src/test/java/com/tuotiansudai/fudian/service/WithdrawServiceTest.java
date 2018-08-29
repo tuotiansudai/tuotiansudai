@@ -2,27 +2,22 @@ package com.tuotiansudai.fudian.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tuotiansudai.fudian.dto.BankRechargeDto;
 import com.tuotiansudai.fudian.dto.BankWithdrawDto;
 import com.tuotiansudai.fudian.dto.QueryTradeType;
-import com.tuotiansudai.fudian.dto.RechargePayType;
 import com.tuotiansudai.fudian.dto.request.BaseRequestDto;
 import com.tuotiansudai.fudian.dto.request.RechargeRequestDto;
 import com.tuotiansudai.fudian.dto.request.Source;
 import com.tuotiansudai.fudian.dto.request.WithdrawRequestDto;
 import com.tuotiansudai.fudian.dto.response.QueryTradeContentDto;
-import com.tuotiansudai.fudian.dto.response.RechargeContentDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.dto.response.WithdrawContentDto;
 import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
 import com.tuotiansudai.fudian.mapper.fudian.SelectMapper;
 import com.tuotiansudai.fudian.mapper.fudian.UpdateMapper;
-import com.tuotiansudai.fudian.message.BankRechargeMessage;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
 import com.tuotiansudai.fudian.sign.SignatureHelper;
 import com.tuotiansudai.fudian.util.MessageQueueClient;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.mq.client.model.MessageTopic;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -46,8 +41,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by qduljs2011 on 2018/8/29.
@@ -84,10 +77,8 @@ public class WithdrawServiceTest {
         ArgumentCaptor<String> messageValueCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Long> messageTimeoutCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<TimeUnit> messageTimeUnitCaptor = ArgumentCaptor.forClass(TimeUnit.class);
-
-
         BankWithdrawDto bankWithdrawDto = new BankWithdrawDto(1l, "loginName", "mobile", "bankUserName", "bankAccountNo", 1l, true, "openId");
-
+        //
         doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
             @Override
             public boolean matches(Object o) {
@@ -97,7 +88,9 @@ public class WithdrawServiceTest {
             }
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
+        //
         WithdrawRequestDto withdrawRequestDto = withdrawService.withdraw(Source.WEB, bankWithdrawDto);
+        //
         verify(this.signatureHelper, times(1)).sign(any(), dtoCaptor.capture());
         verify(this.redisTemplate.opsForHash(), times(1)).put(messageKeyCaptor.capture(), messageHKeyCaptor.capture(), messageValueCaptor.capture());
         verify(this.redisTemplate, times(1)).expire(messageKeyCaptor.capture(), messageTimeoutCaptor.capture(), messageTimeUnitCaptor.capture());
@@ -137,9 +130,7 @@ public class WithdrawServiceTest {
     public void scheduleSuccess() {
         BankWithdrawMessage bankRechargeMessage = new BankWithdrawMessage(1l, "loginName", "mobile", "bankUserName", "bankAccountNo", 2l, 1l, "bankOrderNo", "bankOrderDate");
         Gson gson = new GsonBuilder().create();
-        //
         List<BaseRequestDto> rechargeRequests = getRequestData();
-        //
         ResponseDto<QueryTradeContentDto> query = new ResponseDto<QueryTradeContentDto>();
         QueryTradeContentDto dto = new QueryTradeContentDto();
         dto.setQueryState("1");
@@ -156,21 +147,18 @@ public class WithdrawServiceTest {
         when(hashOperations.get(any(), any())).thenReturn(gson.toJson(bankRechargeMessage));
         //
         withdrawService.schedule();
-
+        //
         verify(redissonClient, times(1)).getLock("BANK_WITHDRAW_QUERY_LOCK");
         verify(redisTemplate, times(1)).opsForHash();
         verify(selectMapper, times(1)).selectResponseInOneHour(any(String.class));
         verify(queryTradeService, times(rechargeRequests.size())).query(any(String.class), any(String.class), any(QueryTradeType.class));
         verify(updateMapper, times(rechargeRequests.size())).updateQueryResponse(any(String.class), any(ResponseDto.class));
-
         verify(messageQueueClient, times(rechargeRequests.size())).sendMessage(any(MessageQueue.Withdraw_Success.getClass()), any(Object.class));
     }
 
     @Test
     public void scheduleFalse() {
-        //
         List<BaseRequestDto> withdrawRequest = getRequestData();
-        //
         ResponseDto<QueryTradeContentDto> query = new ResponseDto<QueryTradeContentDto>();
         QueryTradeContentDto dto = new QueryTradeContentDto();
         dto.setQueryState("1");
@@ -187,7 +175,7 @@ public class WithdrawServiceTest {
         when(hashOperations.get(any(), any())).thenReturn(null);
         //
         withdrawService.schedule();
-
+        //
         verify(redissonClient, times(1)).getLock("BANK_WITHDRAW_QUERY_LOCK");
         verify(redisTemplate, times(1)).opsForHash();
         verify(selectMapper, times(1)).selectResponseInOneHour(any(String.class));
