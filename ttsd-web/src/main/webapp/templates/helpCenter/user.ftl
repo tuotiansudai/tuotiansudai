@@ -8,10 +8,10 @@
 
     <div class="problem-list-group">
         <div class="problem-title-item">
-            <span class="active">密码设置</span>
+            <span class="active"><a href="/help/user#11">密码设置</a></span>
             <#--<span>优惠券</span>-->
-            <span>VIP会员</span>
-            <span>银行卡认证及更换</span>
+            <span><a href="/help/user#21">VIP会员</a></span>
+            <span><a href="/help/user#31">银行卡认证及更换</a></span>
         </div>
         <div class="problem-content-item">
             <ul class="list-group active" id="passwordList">

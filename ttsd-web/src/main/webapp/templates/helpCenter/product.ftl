@@ -8,8 +8,8 @@
 
     <div class="problem-list-group">
         <div class="problem-title-item">
-            <span class="active">抵押贷</span>
-            <span>债权转让</span>
+            <span class="active"><a href="/help/product#11">抵押贷</a></span>
+            <span><a href="/help/product#21">债权转让</a></span>
         </div>
         <div class="problem-content-item">
             <ul class="list-group active" id="mortgageList">

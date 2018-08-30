@@ -343,14 +343,14 @@ whichShow();
 let $resolvedBtn = $('.resolved-btn');
 let $unsolvedBtn = $('.unsolved-btn');
 //切换类型
-$changeBtn.on('click', function (event) {
-    event.preventDefault();
-    let $self = $(this),
-        index = $self.index();
-    $self.addClass('active').siblings().removeClass('active');
-    $contentList.find('.list-group:eq(' + index + ')').addClass('active')
-        .siblings('.list-group').removeClass('active');
-});
+// $changeBtn.on('click', function (event) {
+//     event.preventDefault();
+//     let $self = $(this),
+//         index = $self.index();
+//     $self.addClass('active').siblings().removeClass('active');
+//     $contentList.find('.list-group:eq(' + index + ')').addClass('active')
+//         .siblings('.list-group').removeClass('active');
+// });
 
 
 

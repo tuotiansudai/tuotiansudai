@@ -9,11 +9,11 @@
 
     <div class="problem-list-group">
         <div class="problem-title-item">
-            <span class="active">充值</span>
-            <span>投资</span>
-            <span>回款</span>
-            <span>提现</span>
-            <span>资金存管</span>
+            <span class="active"><a href="/help/money#11">充值</a></span>
+            <span><a href="/help/money#21">投资</a></span>
+            <span><a href="/help/money#31">回款</a></span>
+            <span><a href="/help/money#41">提现</a></span>
+            <span><a href="/help/money#51">资金存管</a></span>
         </div>
         <div class="problem-content-item">
             <ul class="list-group active" id="rechargeList">

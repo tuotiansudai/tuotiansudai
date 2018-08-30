@@ -185,6 +185,9 @@
         cursor: pointer;
         &.active {
           color: #ff7200;
+          a {
+            color: #ff7200;
+          }
         }
       }
     }

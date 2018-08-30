@@ -8,8 +8,8 @@
 
     <div class="problem-list-group">
         <div class="problem-title-item">
-            <span class="active">注册</span>
-            <span>认证</span>
+            <span class="active"><a href="/help/account#11">注册</a></span>
+            <span><a href="/help/account#21">认证</a></span>
         </div>
         <div class="problem-content-item">
             <ul class="list-group active" id="registerList">
