@@ -233,7 +233,7 @@ public class LoanInvestServiceTest {
         verify(selectMapper, times(1)).selectResponseInOneHour(any(String.class));
         verify(queryTradeService, times(0)).query(any(String.class), any(String.class), any(QueryTradeType.class));
         verify(updateMapper, times(0)).updateQueryResponse(any(String.class), any(ResponseDto.class));
-        verify(messageQueueClient, times(0)).sendMessage(any(MessageQueue.Withdraw_Success.getClass()), any(Object.class));
+        verify(messageQueueClient, times(0)).publishMessage(eq(MessageTopic.InvestSuccess), any(BankLoanInvestMessage.class));
     }
 
     private List<BaseRequestDto> getBaseRequestData() {
