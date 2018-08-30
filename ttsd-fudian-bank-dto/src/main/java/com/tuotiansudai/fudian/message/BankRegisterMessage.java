@@ -29,6 +29,8 @@ public class BankRegisterMessage {
 
     private boolean isInvestor;
 
+    private String bankMobile;
+
     public BankRegisterMessage() {
     }
 
@@ -115,5 +117,13 @@ public class BankRegisterMessage {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public String getBankMobile() {
+        return bankMobile;
+    }
+
+    public void setBankMobile(String bankMobile) {
+        this.bankMobile = bankMobile;
     }
 }

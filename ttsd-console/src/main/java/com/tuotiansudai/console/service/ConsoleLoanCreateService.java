@@ -423,6 +423,10 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于最大投资金额"));
         }
 
+        if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanFee()) >= AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款手续费需要小于预计出借金额"));
+        }
+
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
         }

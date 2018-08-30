@@ -18,16 +18,17 @@
         <result column="bank_authorization_order_date" property="bankAuthorizationOrderDate"/>
         <result column="created_time" property="createdTime"/>
         <result column="updated_time" property="updatedTime"/>
+        <result column="bank_mobile" property="bankMobile"/>
     </resultMap>
 
     <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
-        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
     </insert>
 
     <insert id="createLoaner" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time)
-        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now())
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
     </insert>
 
     <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">
@@ -64,4 +65,7 @@
         update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'LOANER'
     </update>
 
+    <update id="updateBankMobileByLoginName" parameterType="map">
+        update bank_account set bank_mobile = #{bankMobile},updated_time = now()  where login_name = #{loginName}
+    </update>
 </mapper>

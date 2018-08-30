@@ -93,7 +93,7 @@
 
             <div class="col-sm-3">
                 <#if editRole>
-                    <input name="mobile" readonly="readonly" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
+                    <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
                 <#else>
                     <p class="form-control-static">${(user.mobile)!}</p>
                 </#if>

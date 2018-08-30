@@ -36,6 +36,4 @@ public class AmountUtils {
         return Long.parseLong(split[0]) * 100 + Long.parseLong(split[1]);
     }
 
-
-
 }

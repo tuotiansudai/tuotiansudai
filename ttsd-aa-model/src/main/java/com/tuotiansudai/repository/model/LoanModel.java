@@ -115,6 +115,8 @@ public class LoanModel implements Serializable {
 
     private boolean isBankPlatform;//资金平台
 
+    private long loanFee;//借款手续费
+
     public LoanModel() {
     }
 
@@ -148,6 +150,7 @@ public class LoanModel implements Serializable {
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
     }
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
@@ -173,6 +176,7 @@ public class LoanModel implements Serializable {
         this.originalDuration = baseRequestDto.getOriginalDuration();
         this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
         return this;
     }
 
@@ -613,5 +617,13 @@ public class LoanModel implements Serializable {
 
     public void setIsBankPlatForm(boolean isBankPlatform) {
         this.isBankPlatform = isBankPlatform;
+    }
+
+    public long getLoanFee() {
+        return loanFee;
+    }
+
+    public void setLoanFee(long loanFee) {
+        this.loanFee = loanFee;
     }
 }
