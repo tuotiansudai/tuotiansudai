@@ -1,7 +1,7 @@
 require('webStyle/help_center.scss');
 require('webJsModule/touch_menu');
 let commonFun= require('publicJs/commonFun');
-var helper = require('webJs/help_center_data.jsx')
+var helper = require('webJsModule/help_center_data.jsx')
 let helpCenterImgBarUrl = require('webImages/helpcenter/help-center.png');
 let $helpCenter = $("#helpCenter");
 let tpl = require('art-template/dist/template');
