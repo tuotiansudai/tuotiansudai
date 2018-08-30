@@ -1,3 +1,4 @@
+
 var helperCenterData = {
   registerBar:{
     register:[
@@ -311,4 +312,3 @@ var helperCenterData = {
       ]
   }
 }
-module.exports.helperCenterData = helperCenterData;
