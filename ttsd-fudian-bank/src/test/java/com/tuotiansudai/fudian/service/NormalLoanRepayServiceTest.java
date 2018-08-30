@@ -3,7 +3,6 @@ package com.tuotiansudai.fudian.service;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tuotiansudai.fudian.config.BankConfig;
 import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
 import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
 import com.tuotiansudai.fudian.dto.QueryTradeType;
@@ -58,9 +57,6 @@ public class NormalLoanRepayServiceTest {
 
     @Mock
     private MessageQueueClient messageQueueClient;
-
-    @Mock
-    private BankConfig bankConfig;
 
     @Mock
     private SignatureHelper signatureHelper;
@@ -182,7 +178,7 @@ public class NormalLoanRepayServiceTest {
     }
 
     private BankLoanRepayDto mockBankLoanRepayDto() {
-        return new BankLoanRepayDto("loginName", "mobile", "bankUserName", "bankAccountNo", 111l, 1000l, "loanTxNo", true, mockBankLoanRepayInvestDto());
+        return new BankLoanRepayDto("loginName", "mobile", "bankUserName", "bankAccountNo", 1, 1, "loanTxNo", true, mockBankLoanRepayInvestDto());
     }
 
     private List<BankLoanRepayInvestDto> mockBankLoanRepayInvestDto() {
