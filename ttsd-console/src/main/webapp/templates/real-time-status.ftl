@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="real-time-status.js" headLab="finance-manage" sideLab="realTimeStatus" title="联动优势余额查询">
+<@global.main pageCss="" pageJavascript="real-time-status.js" headLab="finance-manage" sideLab="realTimeStatus" title="银行交易状态">
 
 <div class="col-md-10">
     <form action="" method="get" class="form-inline query-build">

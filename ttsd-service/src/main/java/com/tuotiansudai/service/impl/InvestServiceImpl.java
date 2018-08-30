@@ -525,7 +525,7 @@ public class InvestServiceImpl implements InvestService {
                 dto.setExpectedInterest(AmountConverter.convertCentToString(couponExpectedInterest + investIncome));
             }
 
-            dto.setTransferStatus(investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()));
+            dto.setTransferStatus(loanModel.getIsBankPlatform() ? investTransferService.isTransferable(investModel.getId()) ? TransferStatus.TRANSFERABLE.name() : (investModel.getTransferStatus().equals(TransferStatus.TRANSFERABLE) ? TransferStatus.NONTRANSFERABLE.name() : investModel.getTransferStatus().name()) : TransferStatus.NONTRANSFERABLE.name());
 
             List<UserCouponModel> userCouponModels = userCouponMapper.findUserCouponSuccessByInvestId(investModel.getId());
             List<CouponType> couponTypes = Lists.newArrayList();

@@ -43,7 +43,7 @@
         <h3><b>账户总额：</b><span>${(((balance+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
             <ul class="proList fr">
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
-                <li class="fr"><a id="cashMoneyBtn" class="btn-primary" href="javascript:;">提现</a></li>
+                <li class="fr"><a id="cashMoneyBtn" class="btn-primary hoverNo" href="javascript:;">提现</a></li>
             </ul>
         </h3>
     </div>

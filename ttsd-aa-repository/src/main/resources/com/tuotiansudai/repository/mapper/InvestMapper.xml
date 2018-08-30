@@ -807,6 +807,7 @@
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND loan.is_bank_platform = 1
         AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
@@ -839,6 +840,7 @@
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND loan.is_bank_platform = 1
         AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
