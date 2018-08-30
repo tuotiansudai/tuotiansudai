@@ -53,6 +53,7 @@ public enum MessageQueue {
     BindBankCard_Success("BindBankCard-Success"),
     BindBankCard_CompletePointTask("BindBankCard-CompletePointTask"),
     UnbindBankCard_Success("UnbindBankCard-Success"),
+    BankChangeMobile("BankChangeMobile"),
 
     RegisterBankAccount_Success("RegisterBankAccount-Success"),
     RegisterBankAccount_CompletePointTask("RegisterBankAccount-CompletePointTask"),

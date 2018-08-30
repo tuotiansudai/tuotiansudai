@@ -11,10 +11,7 @@ import com.tuotiansudai.enums.BankCallbackType;
 import com.tuotiansudai.etcd.ETCDConfigReader;
 import com.tuotiansudai.fudian.dto.*;
 import com.tuotiansudai.fudian.message.*;
-import com.tuotiansudai.fudian.umpdto.UmpBindCardDto;
-import com.tuotiansudai.fudian.umpdto.UmpLoanRepayDto;
-import com.tuotiansudai.fudian.umpdto.UmpRechargeDto;
-import com.tuotiansudai.fudian.umpdto.UmpWithdrawDto;
+import com.tuotiansudai.fudian.umpdto.*;
 import com.tuotiansudai.repository.model.Source;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -137,7 +134,7 @@ public class BankWrapperClient {
                 new BankBaseDto(loginName, mobile, bankUserName, bankAccountNo));
     }
 
-    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType){
+    public BankAsyncMessage recharge(long rechargeId, Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, long amount, String payType) {
         return asyncExecute(MessageFormat.format("/recharge/source/{0}", source.name().toLowerCase()),
                 new BankRechargeDto(loginName, mobile, bankUserName, bankAccountNo, rechargeId, amount, RechargePayType.valueOf(payType)));
     }
@@ -210,8 +207,8 @@ public class BankWrapperClient {
         return new BankLoanCancelMessage(false, null);
     }
 
-    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime) {
-        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, fullTime);
+    public BankLoanFullMessage loanFull(String loginName, String mobile, String bankUserName, String bankAccountNo, long loanId, String loanTxNo, String loanOrderNo, String loanOrderDate, String expectRepayTime, String checkerLoginName, String fullTime, long loanFee) {
+        BankLoanFullDto bankLoanFullDto = new BankLoanFullDto(loginName, mobile, bankUserName, bankAccountNo, loanId, loanTxNo, loanOrderNo, loanOrderDate, expectRepayTime, checkerLoginName, fullTime, loanFee);
 
         String json = syncExecute("/loan-full", bankLoanFullDto);
 
@@ -432,12 +429,26 @@ public class BankWrapperClient {
         return umpAsyncExecute("/ump/withdraw", new UmpWithdrawDto(loginName, payUserId, withdrawId, amount));
     }
 
-    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard){
+    public UmpAsyncMessage umpBindCard(String loginName, String payUserId, long bankCardModelId, String userName, String identityNumber, String cardNumber, boolean isReplaceCard) {
         return umpAsyncExecute("/ump/bind-card", new UmpBindCardDto(loginName, payUserId, bankCardModelId, userName, identityNumber, cardNumber, isReplaceCard));
     }
 
     public UmpAsyncMessage umpLoanRepay(UmpLoanRepayDto dto) {
         return umpAsyncExecute("/ump/loan-repay", dto);
+    }
+
+    public BankBaseMessage umpUpdateMobile(long accountId, String loginName, String mobile, String userName, String identityNumber){
+        String json = syncExecute("/ump/update-mobile", new UmpUpdateMobileDto(accountId, loginName, mobile, userName, identityNumber));
+
+        if (Strings.isNullOrEmpty(json)) {
+            return new BankBaseMessage();
+        }
+        try {
+            return gson.fromJson(json, BankBaseMessage.class);
+        } catch (JsonSyntaxException e) {
+            logger.error(MessageFormat.format("[Ump update mobile] parse response error, response: {0}", json), e);
+        }
+        return new BankBaseMessage();
     }
 
     public Boolean isUmpCallbackSuccess(Map<String, String> params) {
@@ -514,5 +525,11 @@ public class BankWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    public BankAsyncMessage changeBankMobile(Source source, String loginName, String mobile, String bankUserName, String bankAccountNo, String newPhone, String type) {
+        BankChangeMobileDto params = new BankChangeMobileDto(loginName, mobile, bankUserName, bankAccountNo, type, newPhone);
+        return asyncExecute(MessageFormat.format("/user/phone-update/source/{0}", source.name().toLowerCase()),
+                params);
     }
 }

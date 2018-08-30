@@ -1,0 +1,3 @@
+ALTER TABLE `aa`.`loan`
+  ADD COLUMN `loan_fee`  BIGINT(20) UNSIGNED NOT NULL DEFAULT 0;
+
