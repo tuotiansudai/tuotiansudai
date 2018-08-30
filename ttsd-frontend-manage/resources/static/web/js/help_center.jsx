@@ -512,6 +512,8 @@ if($helpContainer.length){
     })
     selectSquare(contentId)
 
+    whichShowAtContentPage()
+
 }
 
 function selectSquare(contentId,isSolution) {
@@ -541,7 +543,6 @@ function selectSquare(contentId,isSolution) {
         }
     )
 }
-
 
 
 $titleBox.on('click',function (e) {
@@ -604,6 +605,79 @@ function whichShow() {
             $leftBox.find('.swiper-slide').eq(4).find('>a').find('.icon-arrow').addClass('whiteDown');
             $leftBox.find('.swiper-slide').eq(4).find('a').addClass('active');
             $leftBox.find('.swiper-slide').eq(4).find('ul').addClass('show');
+            $leftBox.find('.ulSection').eq(4).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+    }
+}
+
+function whichShowAtContentPage() {
+    var type = sourceKind.params.type;
+    var question = sourceKind.params.question;
+    var page2;
+
+    $contentList.find('.list-group:eq(' + page2 + ')').addClass('active')
+        .siblings('.list-group').removeClass('active');
+    $changeBtn.eq(page2).addClass('active').siblings().removeClass('active');
+
+
+    switch (type) {
+        case 'registerBar':
+            $leftBox.find('.swiper-slide').eq(0).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(0).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(0).find('ul').addClass('show');
+            if(question == 'register'){
+                page2 = 0;
+            }else if(question == 'account'){
+                page2 = 1;
+            }
+            $leftBox.find('.ulSection').eq(0).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'accountBar':
+            $leftBox.find('.swiper-slide').eq(1).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(1).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(1).find('ul').addClass('show');
+            if(question == 'password'){
+                page2 = 0;
+            }else if(question == 'vip'){
+                page2 = 1;
+            }else if(question == 'bankAccount'){
+                page2 = 2;
+            }
+            $leftBox.find('.ulSection').eq(1).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'moneyBar':
+            $leftBox.find('.swiper-slide').eq(2).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(2).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(2).find('ul').addClass('show');
+            if(question == 'recharge'){
+                page2 = 0;
+            }else if(question == 'invest'){
+                page2 = 1;
+            }else if(question == 'payments'){
+                page2 = 2;
+            }else if(question == 'cash'){
+                page2 = 3;
+            }else if(question == 'found'){
+                page2 = 4;
+            }
+            $leftBox.find('.ulSection').eq(2).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'productBar':
+            $leftBox.find('.swiper-slide').eq(3).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(3).find('>a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(3).find('ul').addClass('show');
+            if(question == 'mortgage'){
+                page2 = 0;
+            }else if(question == 'transferRights'){
+                page2 = 1;
+            }
+            $leftBox.find('.ulSection').eq(3).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
+            break;
+        case 'otherBar':
+            $leftBox.find('.swiper-slide').eq(4).find('>a').find('.icon-arrow').addClass('whiteDown');
+            $leftBox.find('.swiper-slide').eq(4).find('a').addClass('active');
+            $leftBox.find('.swiper-slide').eq(4).find('ul').addClass('show');
+            page2 = 0;
             $leftBox.find('.ulSection').eq(4).find('li').eq(page2).find('a').addClass('active').end().siblings().find('a').removeClass('active');
             break;
     }
