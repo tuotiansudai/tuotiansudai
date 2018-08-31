@@ -83,7 +83,7 @@ public class LoanInvestServiceTest {
         ArgumentCaptor<TimeUnit> messageTimeUnitCaptor = ArgumentCaptor.forClass(TimeUnit.class);
         BankInvestDto dto = new BankInvestDto("loginName", "mobile", "bankUserName", "bankAccountNo", 2l, 2l, "loanTxNo", 2l, "loanName");
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
+        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
             @Override
             public boolean matches(Object o) {
                 ((LoanInvestRequestDto) o).setOrderNo("111111");
@@ -117,7 +117,7 @@ public class LoanInvestServiceTest {
         String responseStr = "{\"certInfo\":\"certInfo\",\"content\":{\"accountNo\":\"UA02688390602211001\",\"amount\":100.00,\"award\":0.00,\"extMark\":\"{\\\"loginName\\\":\\\"skinxosu\\\",\\\"mobile\\\":\\\"18897730003\\\"}\",\"loanTxNo\":\"LU02688394699271001\",\"merchantNo\":\"M02608959047521001\",\"notifyUrl\":\"http://qa.tuotiansudai.com:10003/callback/notify-url/loan_invest\",\"orderDate\":\"20180709\",\"orderNo\":\"20180709000000000022\",\"returnUrl\":\"http://qa.tuotiansudai.com:10001/callback/return-url/loan_invest\",\"userName\":\"UU02688390602151001\"},\"retCode\":\"0000\",\"retMsg\":\"操作成功\",\"sign\":\"sign\"}";
         ArgumentCaptor<LoanInvestRequestDto> dtoCaptor = ArgumentCaptor.forClass(LoanInvestRequestDto.class);
         BankInvestDto dto = new BankInvestDto("loginName", "mobile", "bankUserName", "bankAccountNo", 2l, 2l, "loanTxNo", 2l, "loanName");
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
+        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
             @Override
             public boolean matches(Object o) {
                 ((LoanInvestRequestDto) o).setOrderNo("111111");
@@ -148,7 +148,7 @@ public class LoanInvestServiceTest {
     public void fastInvestClientFail() {
         ArgumentCaptor<LoanInvestRequestDto> dtoCaptor = ArgumentCaptor.forClass(LoanInvestRequestDto.class);
         BankInvestDto dto = new BankInvestDto("loginName", "mobile", "bankUserName", "bankAccountNo", 2l, 2l, "loanTxNo", 2l, "loanName");
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
+        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
             @Override
             public boolean matches(Object o) {
                 ((LoanInvestRequestDto) o).setOrderNo("111111");

@@ -75,7 +75,7 @@ public class LoanCreateServiceTest {
 
     @Test
     public void createFalseVerifySign() {
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
+        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanCreateRequestDto>() {
             @Override
             public boolean matches(Object o) {
                 ((LoanCreateRequestDto) o).setOrderNo("111111");
