@@ -136,7 +136,7 @@ public class BankAccountServiceTest {
     }
 
     private BankAccountModel mockBankAccountModel(){
-        return new BankAccountModel("loginName", "bankUserName", "bankAccountNo", "1111111", "20180810");
+        return new BankAccountModel("loginName", "bankUserName", "bankAccountNo", "1111111", "20180810", "22222222222");
     }
 
     private UserModel mockUserModel(){
