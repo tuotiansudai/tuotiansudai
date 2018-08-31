@@ -164,7 +164,7 @@ public class NormalLoanRepayServiceTest {
     }
 
     private BankAccountModel mockBankAccountModel() {
-        return new BankAccountModel("agentLoginName", "agentBankUserName", "agentBankAccountNo", "1111111", "20180810");
+        return new BankAccountModel("agentLoginName", "agentBankUserName", "agentBankAccountNo", "1111111", "20180810", "22222222222");
     }
 
     private BankLoanRepayInvestDataView mockBankLoanRepayInvestDataView() {
