@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
+import com.tuotiansudai.fudian.dto.BankLoanRepayInvestDto;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -10,12 +11,14 @@ import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.impl.RepayServiceImpl;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -47,9 +50,11 @@ public class AdvanceLoanRepayServiceTest {
     @Test
     public void advancedRepaySuccess() {
         LoanModel loanModel = getLoanModel();
+        ArgumentCaptor<List<BankLoanRepayInvestDto>> bankLoanRepayInvestDto=ArgumentCaptor.forClass((Class)List.class);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId())).thenReturn(getLoanRepayModels());
-
+        when(investRepayMapper.queryBankInvestRepayData(anyLong(),anyInt())).thenReturn(getBanLoanRepayInvestList());
+        List<BankLoanRepayInvestDto> bankLoanRepayInvests=null;
 
     }
 
@@ -58,6 +63,9 @@ public class AdvanceLoanRepayServiceTest {
         loanModel.setStatus(LoanStatus.REPAYING);
         loanModel.setId(1l);
         loanModel.setRecheckTime(new DateTime().minusMonths(2).toDate());
+        loanModel.setBaseRate(0.2);
+        loanModel.setActivityRate(0);
+        loanModel.setType(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
         return loanModel;
     }
 
@@ -69,7 +77,7 @@ public class AdvanceLoanRepayServiceTest {
         LoanRepayModel l2 = new LoanRepayModel();
         LoanRepayModel l3 = new LoanRepayModel();
         l1.setStatus(RepayStatus.COMPLETE);
-        l1.setActualRepayDate(new DateTime().minusMonths(1).toDate());
+        l1.setActualRepayDate(new DateTime().minusDays(30).toDate());
         l1.setPeriod(1);
         l1.setLoanId(loanId);
         l2.setStatus(RepayStatus.REPAYING);
@@ -87,10 +95,19 @@ public class AdvanceLoanRepayServiceTest {
     }
 
     private List<BankLoanRepayInvestDataView> getBanLoanRepayInvestList() {
+        LoanModel loanModel = getLoanModel();
+        int sumDayOfYear = new DateTime(loanModel.getRecheckTime()).dayOfYear().getMaximumValue();
+
         List<BankLoanRepayInvestDataView> bankLoanRepayInvestDataViewList = new ArrayList<>();
         BankLoanRepayInvestDataView data1 = new BankLoanRepayInvestDataView();
+        data1.setInvestAmount(sumDayOfYear * 100000l);
+        data1.setTradingTime(loanModel.getRecheckTime());
         BankLoanRepayInvestDataView data2 = new BankLoanRepayInvestDataView();
+        data2.setInvestAmount(sumDayOfYear * 100000l);
+        data2.setTradingTime(loanModel.getRecheckTime());
         BankLoanRepayInvestDataView data3 = new BankLoanRepayInvestDataView();
+        data3.setInvestAmount(sumDayOfYear * 100000l);
+        data3.setTradingTime(loanModel.getRecheckTime());
 
         bankLoanRepayInvestDataViewList.add(data1);
         bankLoanRepayInvestDataViewList.add(data2);
