@@ -45,7 +45,7 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest
-public class NormalLoanRepayServiceTest {
+public class LoanRepayServiceTest {
     @InjectMocks
     private LoanRepayService loanRepayService;
 

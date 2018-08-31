@@ -1,20 +1,12 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.client.BankWrapperClient;
-import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankBindCardMessage;
-import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserBankCardMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.junit.Before;
@@ -23,17 +15,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
@@ -56,9 +49,6 @@ public class BankBindCardServiceTest {
 
     @Mock
     private BankAccountMapper bankAccountMapper;
-
-    @Mock
-    private BankCardMapper bankCardMapper;
 
     @Before
     public void init() throws Exception {
