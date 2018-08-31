@@ -39,6 +39,7 @@ public enum SystemBillBusinessType {
     MEMBERSHIP_PRIVILEGE_PURCHASE("购买增值特权"),
 
     PAYROLL("代发工资"),
+    LOAN_FEE("借款手续费"),
     ;
 
     private final String description;

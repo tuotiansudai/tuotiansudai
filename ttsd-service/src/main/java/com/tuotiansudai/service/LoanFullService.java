@@ -6,10 +6,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.fudian.message.BankLoanFullMessage;
-import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.message.EventMessage;
-import com.tuotiansudai.message.PushMessage;
-import com.tuotiansudai.message.WeChatMessageNotify;
+import com.tuotiansudai.message.*;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -71,7 +68,7 @@ public class LoanFullService {
                 loanModel.getBankOrderDate(),
                 new DateTime(loanModel.getDeadline()).toString("yyyyMMdd"),
                 checkerLoginName,
-                new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+                new DateTime().toString("yyyy-MM-dd HH:mm:ss"),loanModel.getLoanFee());
     }
 
     @Transactional
@@ -97,9 +94,25 @@ public class LoanFullService {
                         bankLoanFullMessage.getBankOrderNo(),
                         bankLoanFullMessage.getBankOrderDate(),
                         BillOperationType.IN,
-                        BankUserBillBusinessType.LOAN_SUCCESS))
+                        BankUserBillBusinessType.LOAN_SUCCESS),
+                        new AmountTransferMessage(loanModel.getId(),
+                        loanModel.getAgentLoginName(),
+                        Role.LOANER,
+                        loanModel.getLoanFee(),
+                        bankLoanFullMessage.getBankOrderNo(),
+                        bankLoanFullMessage.getBankOrderDate(),
+                        BillOperationType.OUT,
+                        BankUserBillBusinessType.LOAN_FEE))
         );
-
+        mqWrapperClient.sendMessage(MessageQueue.BankSystemBill,
+                new BankSystemBillMessage(BillOperationType.IN,
+                        loanModel.getId(),
+                        bankLoanFullMessage.getBankOrderNo(),
+                        bankLoanFullMessage.getBankOrderDate(),
+                        loanModel.getLoanFee(),
+                        SystemBillBusinessType.LOAN_FEE,
+                        MessageFormat.format(SystemBillDetailTemplate.LOAN_FEE_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanModel.getId()), String.valueOf(loanModel.getLoanFee())))
+        );
         this.sendMessage(loanModel);
 
     }

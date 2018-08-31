@@ -17,7 +17,7 @@ public enum ApiType {
 
     PASSWORD_RESET(new PasswordResetResponseParser(), "/pwd/reset", PasswordResetService.class),
 
-    PHONE_UPDATE(new PhoneUpdateResponseParser(), "/phone/update", PasswordResetService.class),
+    PHONE_UPDATE(new PhoneUpdateResponseParser(), "/phone/update", PhoneUpdateService.class),
 
     LOAN_CREATE(new LoanCreateResponseParser(), "/loan/create", LoanCreateService.class),
     LOAN_CANCEL(new LoanCancelResponseParser(), "/loan/cancel", LoanCancelService.class),

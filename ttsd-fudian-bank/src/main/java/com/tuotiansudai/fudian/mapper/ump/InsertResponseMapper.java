@@ -1,5 +1,6 @@
 package com.tuotiansudai.fudian.mapper.ump;
 
+import com.tuotiansudai.fudian.ump.sync.response.MerRegisterPersonResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.fudian.ump.sync.response.TransferResponseModel;
 import org.apache.ibatis.annotations.Insert;
@@ -30,5 +31,10 @@ public interface InsertResponseMapper {
             "values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo},#{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertResponseTransfer(TransferResponseModel model);
+
+    @Insert("insert into mer_register_person_response (request_id, sign_type, sign, mer_Id, version, user_id, account_id, reg_date, ret_code, ret_msg, response_data, response_time)" +
+            "values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{userId}, #{accountId}, #{regDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertResponseRegisterPerson(MerRegisterPersonResponseModel model);
 
 }

@@ -283,7 +283,7 @@ public class ContractServiceTest {
     }
 
     public BankAccountModel getAccountModel(String loginName) {
-        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111");
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
         return accountModel;
     }
 

@@ -8,7 +8,7 @@
     <h4 class="column-title"><em class="tc">个人资料</em>
     <@global.role hasRole="'UMP_INVESTOR'">
         <div class="fr">
-            <div class="safety-notification"><a href="/ump/account" class="tip-title">联动优势资金账号</a><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
+            <div class="safety-notification"><a href="/ump/account" target="_blank" class="tip-title">联动优势资金账号</a><i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i>
                 <div class="notice-tips extra-rate-popup" style="display: none">
                     1.当前内容为富滇银行存管账号的资金信息;<br/>
                     2.应国家相关监管要求，拓天速贷已开通富滇银行存管服务;<br/>
@@ -49,7 +49,7 @@
                 </@global.role><a href="javascript:;" class="setlink change-role-btn">切换</a></span>
             </li>
         </@global.role>
-        <li><span class="info-title"> 手机</span>
+        <li><span class="info-title">注册手机号</span>
             <em class="info">${mobile}</em>
             <span class="binding-set"><i class="fa fa-check-circle ok"></i>已绑定</span>
         </li>
@@ -100,6 +100,16 @@
                 </#if>
             </#if>
         </li>
+
+        <#if bankMobile??>
+            <li><span class="info-title">银行预留手机号</span>
+                <em class="info">${bankMobile}</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink" href="/personal-info/change-bank-mobile">修改</a>
+                </span>
+            </li>
+        </#if>
+
         <li><span class="info-title"> 登录密码</span>
             <em class="info">********</em>
             <span class="binding-set">

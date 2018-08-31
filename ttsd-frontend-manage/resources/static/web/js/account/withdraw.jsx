@@ -20,19 +20,10 @@ if (isInWeChat && isIos) {
 }
 
 amountInputElement.keyup(function () {
-    let amount = parseFloat(amountInputElement.autoNumeric("get")),
-        withdrawFee = parseFloat(withdrawFeeElement.html());
-    console.log(withdrawFee)
-    moneyCheck(isFudianBank);
-    if(amountInputElement.val()==''){
-        if(isFudianBank){
-            withdrawFeeElement.html('1.00');
-            $('#cash').html('1.00')
-        }else {
-            $('#cash').html('1.50')
-        }
-    }
-    if (isNaN(amount) || amount <= withdrawFee) {
+    let amount = parseFloat(amountInputElement.autoNumeric("get"));
+   moneyCheck(isFudianBank);
+    let withdrawFee = parseFloat(withdrawFeeElement.html());
+    if (isNaN(amount) || amount <= 1.5) {
         submitElement.prop('disabled', true);
         errorElement.show();
         actualAmountElement.html('0.00');
@@ -40,6 +31,7 @@ amountInputElement.keyup(function () {
         submitElement.prop('disabled', false);
         errorElement.hide();
         actualAmountElement.html((amount - withdrawFee).toFixed(2));
+
     }
 });
 
