@@ -185,6 +185,9 @@
         cursor: pointer;
         &.active {
           color: #ff7200;
+          a {
+            color: #ff7200;
+          }
         }
       }
     }
@@ -288,4 +291,106 @@
   .main-frame {
     width:100%;
   }
+}
+.content-wrap {
+  padding-bottom: 40px;
+}
+.content-title {
+  height: 50px;
+  line-height: 50px;
+  padding-left: 20px;
+  color: #ff7200;
+  font-size: 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e6e6e6;
+}
+.content-wrap .content{
+  margin-top: 22px;
+  margin-left: 20px;
+  background: #fcfcfc;
+  border: 1px solid #e6e6e6;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.solve-wrap {
+  text-align: center;
+  margin-top: 30px;
+}
+.solve-btn {
+  width: 100px;
+  height: 34px;
+  line-height: 34px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #e6e6e6;
+  display: inline-block;
+  text-indent: 25px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  &.resolved-btn {
+    background-image: url('../images/helpcenter/icon_resoved.png');
+    &.selected {
+      background-image: url('../images/helpcenter/icon_resoved_selected.png');
+      color: #fff;
+      background-color: #ff7102;
+    }
+  }
+  &.unsolved-btn {
+    margin-left: 22px;
+    background-image: url('../images/helpcenter/icon_unresolve.png');
+    &.selected {
+      background-image: url('../images/helpcenter/icon_unresolve_selected.png');
+      color: #fff;
+      background-color: #ff7102;
+    }
+  }
+
+}
+.nav a {
+  color: #4c4c4c;
+}
+.icon-arrow {
+  width: 11px;
+  height: 11px;
+  background: url("../images/helpcenter/icon_arrow_right.png") no-repeat;
+  &.down {
+    background: url("../images/helpcenter/icon_arrow_down.png") no-repeat;
+  }
+  &.whiteDown {
+    background: url("../images/helpcenter/icon_down_active.png") no-repeat;
+  }
+  &.whiteRight {
+    background: url("../images/helpcenter/icon_right_active.png") no-repeat;
+  }
+}
+#helpLeftMenuBox .swiper-slide >a{
+  position: relative;
+  &.active {
+    background: #ff7101;
+  }
+}
+#helpLeftMenuBox .swiper-slide >a .icon-arrow{
+  position: absolute;
+  right: 10px;
+  top: 17px;
+
+}
+#helpLeftMenuBox .swiper-slide ul{
+ display: none;
+  background: #fff;
+  &.show {
+    display: block!important;
+  }
+}
+#helpLeftMenuBox .swiper-slide ul li{
+  float: none;
+}
+#helpLeftMenuBox .ulSection li a{
+  color: #4d4d4d;
+  &.active {
+    color: #ff7101;
+  }
+}
+.main-frame .left-nav li a.active {
+  background: none;
 }
