@@ -103,6 +103,9 @@ public class LoanRepayServiceTest {
         verify(this.insertMapper, times(1)).insertLoanRepay(dtoCaptor.capture());
         assertThat(dtoCaptor.getValue().getCapital(), is("20.00"));
         assertThat(dtoCaptor.getValue().getInterest(), is("20.00"));
+        assertThat(messageHKeyCaptor.getValue(), is("111111"));
+        assertThat(messageTimeoutCaptor.getValue(), is(7L));
+        assertThat(messageTimeUnitCaptor.getValue(), is(TimeUnit.DAYS));
     }
 
     @Test
