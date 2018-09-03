@@ -614,12 +614,7 @@ function whichShowAtContentPage() {
     var type = sourceKind.params.type;
     var question = sourceKind.params.question;
     var page2;
-
-    $contentList.find('.list-group:eq(' + page2 + ')').addClass('active')
-        .siblings('.list-group').removeClass('active');
-    $changeBtn.eq(page2).addClass('active').siblings().removeClass('active');
-
-
+    $leftBox.find('.swiper-slide').find('a').removeClass('active')
     switch (type) {
         case 'registerBar':
             $leftBox.find('.swiper-slide').eq(0).find('>a').find('.icon-arrow').addClass('whiteDown');
