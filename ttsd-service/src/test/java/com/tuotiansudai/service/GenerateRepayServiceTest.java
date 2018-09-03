@@ -52,11 +52,11 @@ public class GenerateRepayServiceTest {
 
     @Test
     public void generateRepaySuccess(){
-
         ArgumentCaptor<List<LoanRepayModel>> loanRepayModelCaptor = ArgumentCaptor.forClass((Class) List.class);
         ArgumentCaptor<List<InvestRepayModel>> investRepayModelCaptor = ArgumentCaptor.forClass((Class) List.class);
 
-        when(loanMapper.findById(anyLong())).thenReturn(mockLoanModel());
+        LoanModel loanModel = mockLoanModel();
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.findSuccessInvestsByLoanId(anyLong())).thenReturn(mockInvestModelList());
         when(investRepayMapper.findByInvestIdAndPeriod(anyLong(), anyInt())).thenReturn(null);
         when(loanRepayMapper.findByLoanIdAndPeriod(anyLong(), anyInt())).thenReturn(null);
@@ -81,6 +81,11 @@ public class GenerateRepayServiceTest {
         assertThat(investRepayModelCaptor.getValue().get(4).getCorpus(), is(1000L));
         assertThat(investRepayModelCaptor.getValue().get(5).getInvestId(), is(2L));
         assertThat(investRepayModelCaptor.getValue().get(5).getCorpus(), is(1000L));
+
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
+        assertThat(investRepayModelCaptor.getValue().get(0).getRepayDate(), is(lastRepayDate.plusDays(30).toDate()));
+        assertThat(investRepayModelCaptor.getValue().get(2).getRepayDate(), is(lastRepayDate.plusDays(60).toDate()));
+        assertThat(investRepayModelCaptor.getValue().get(4).getRepayDate(), is(lastRepayDate.plusDays(90).toDate()));
     }
 
     private BankLoanFullMessage mockBankLoanFullMessage(){
@@ -114,7 +119,7 @@ public class GenerateRepayServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setLoanTxNo("loanTxNo");
         loanModel.setLoanFee(10);
-        loanModel.setDeadline(DateTime.now().plusMonths(3).minusDays(3).toDate());
+        loanModel.setDeadline(DateTime.now().plusMonths(3).minusDays(2).toDate());
         loanModel.setRecheckTime(DateTime.now().toDate());
         loanModel.setRecheckLoginName("checkerLoginName");
         return loanModel;
