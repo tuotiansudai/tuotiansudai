@@ -612,6 +612,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("periods", loanModel.getPeriods() + "");
         dataModel.put("loanType", loanModel.getType().getName());
         dataModel.put("investorName", investorModel.getUserName());
+        dataModel.put("orderId", String.valueOf(investId));
         return dataModel;
     }
 
