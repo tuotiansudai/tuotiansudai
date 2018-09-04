@@ -21,17 +21,20 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,6 +102,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value(value = "${anxin.loan.contract.template}")
     private String loanTemplate;
+
+    @Value(value="${anxin.loan.contract.template.v1}")
+    private String  loanTemplateV1;
 
     @Value(value = "${anxin.transfer.contract.template}")
     private String transferTemplate;
@@ -523,25 +529,10 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
-        dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
-        createContractVO.setInvestmentInfo(dataModel);
+
+        String tempId=loanModel.getContractVersion();
+        if(StringUtils.isEmpty(tempId)) tempId=loanTemplateV1;
+        createContractVO.setInvestmentInfo(converLoanDataMap(investModel.getLoginName(),loanId,investId,tempId));
 
         SignInfoVO agentSignInfo = new SignInfoVO();
         agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
@@ -560,10 +551,70 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(loanTemplate);
+        createContractVO.setTemplateId(tempId);
         createContractVO.setIsSign(1);
         return createContractVO;
     }
+    private Map<String, String> converLoanDataMap(String investorLoginName,long loanId,long investId,String tempId){
+        Map<String,String> dataModel=new HashMap<>();
+        if(StringUtils.isEmpty(tempId) || tempId.equals(loanTemplateV1)){
+            Map<String, String> investMap = contractService.collectInvestorContractModel(investorLoginName, loanId, investId);
+            dataModel.put("agentMobile", investMap.get("agentMobile"));
+            dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
+            dataModel.put("investorMobile", investMap.get("investorMobile"));
+            dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
+            dataModel.put("loanerUserName", investMap.get("loanerUserName"));
+            dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
+            dataModel.put("loanAmount1", investMap.get("loanAmount"));
+            dataModel.put("loanAmount2", investMap.get("investAmount"));
+            dataModel.put("periods1", investMap.get("agentPeriods"));
+            dataModel.put("periods2", investMap.get("leftPeriods"));
+            dataModel.put("totalRate", investMap.get("totalRate"));
+            dataModel.put("recheckTime1", investMap.get("recheckTime"));
+            dataModel.put("recheckTime2", investMap.get("recheckTime"));
+            dataModel.put("endTime1", investMap.get("endTime"));
+            dataModel.put("endTime2", investMap.get("endTime"));
+            dataModel.put("orderId", String.valueOf(investId));
+            dataModel.put("pledge", investMap.get("pledge"));
+            return dataModel;
+        }
+        //直接默认就是最新版本的合同
+        LoanModel loanModel = loanMapper.findById(loanId);
+        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
+        InvestModel investModel = investMapper.findById(investId);
+        //
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
+        dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("loanName", loanModel.getName());
+        String amountUpper= AmountConverter.getRMBStr(investModel.getAmount());
+        amountUpper=amountUpper.endsWith("元")?amountUpper.replace("元",""):amountUpper;
+        dataModel.put("amountUpper", amountUpper);
+        dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
+        //根据标的类型判断借款开始时间
+        if (LoanType.INVEST_INTEREST_MONTHLY_REPAY.equals(loanModel.getType()) || LoanType.INVEST_INTEREST_LUMP_SUM_REPAY.equals(loanModel.getType())) {
+            DateTime recheckTimeYear = new DateTime(investModel.getCreatedTime());
+            dataModel.put("recheckTimeYear", String.valueOf(recheckTimeYear.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
+        } else {
+            DateTime fullTimeDate =new DateTime(loanModel.getRecheckTime());
+            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+        }
+        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
+        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
+        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
+        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
+        dataModel.put("periods", loanModel.getPeriods() + "");
+        dataModel.put("loanType", loanModel.getType().getName());
+        dataModel.put("investorName", investorModel.getUserName());
+        return dataModel;
+    }
+
 
     @Override
     public boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {

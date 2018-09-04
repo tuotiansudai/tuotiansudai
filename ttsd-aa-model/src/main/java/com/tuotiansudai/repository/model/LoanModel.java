@@ -192,6 +192,12 @@ public class LoanModel implements Serializable {
      */
     private long unpaidAmount;
 
+    /**
+     * 合同版本号
+     */
+    private String contractVersion;
+
+
     public LoanModel() {
     }
 
@@ -649,5 +655,13 @@ public class LoanModel implements Serializable {
 
     public void setRecheckLoginName(String recheckLoginName) {
         this.recheckLoginName = recheckLoginName;
+    }
+
+    public String getContractVersion() {
+        return contractVersion;
+    }
+
+    public void setContractVersion(String contractVersion) {
+        this.contractVersion = contractVersion;
     }
 }
