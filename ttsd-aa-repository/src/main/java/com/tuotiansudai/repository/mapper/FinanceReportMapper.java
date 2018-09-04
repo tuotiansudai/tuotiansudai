@@ -26,5 +26,7 @@ public interface FinanceReportMapper {
                                     @Param(value = "investLoginName") String investLoginName,
                                     @Param(value = "investStartTime") Date investStartTime,
                                     @Param(value = "investEndTime") Date investEndTime,
+                                    @Param(value = "repayStartTime") Date repayStartTime,
+                                    @Param(value = "repayEndTime") Date repayEndTime,
                                     @Param(value = "preferenceType") PreferenceType preferenceType);
 }

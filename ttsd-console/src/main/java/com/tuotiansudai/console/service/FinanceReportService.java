@@ -56,7 +56,7 @@ public class FinanceReportService {
                                                                         int index, int pageSize) {
         List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, repayStartTime, repayEndTime, preferenceType, (index - 1) * pageSize, pageSize);
         List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
-        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType);
+        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, repayStartTime, repayEndTime, preferenceType);
         return new BasePaginationDataDto<>(index, pageSize, count, financeReportDtos);
     }
 

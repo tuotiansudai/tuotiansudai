@@ -115,6 +115,12 @@
             <if test="investEndTime != null">
                 AND invest.invest_time &lt;= #{investEndTime}
             </if>
+            <if test="repayStartTime != null">
+                AND invest_repay.repay_date &gt;= #{repayStartTime}
+            </if>
+            <if test="repayEndTime != null">
+                AND invest_repay.repay_date &lt;= #{repayEndTime}
+            </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND invest_extra_rate.extra_rate IS NOT NULL
             </if>
