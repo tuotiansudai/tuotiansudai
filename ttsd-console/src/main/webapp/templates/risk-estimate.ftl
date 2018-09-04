@@ -85,11 +85,11 @@
                     <td>${item.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                     <td>${(item.investingAmount/100)?string["0.##"]} 元</td>
                     <td>${item.estimate.getType()}</td>
-                    <td>${item.income.getDesc()}</td>
-                    <td>${item.rate.getDesc()}</td>
-                    <td>${(item.investment.value * item.income.value)} 万元</td>
-                    <td>${item.duration.getDesc()}</td>
-                    <td>${item.age.getDesc()}</td>
+                    <td><#if item.income??>${item.income.getDesc()}</#if></td>
+                    <td><#if item.rate??>${item.rate.getDesc()}</#if></td>
+                    <td><#if item.income??>${(item.investment.value * item.income.value)} 万元</#if></td>
+                    <td><#if item.duration??>${item.duration.getDesc()}</#if></td>
+                    <td><#if item.age??>${item.age.getDesc()}</#if></td>
                 </tr>
                 <#else>
                 <tr>
