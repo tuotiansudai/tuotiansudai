@@ -15,6 +15,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +82,9 @@ public class ConsoleLoanCreateService {
 
     protected final static String generateLoanName = "{0}{1}";
 
+    @Value(value = "${anxin.loan.contract.template}")
+    private String loanTemplate;
+
     @Transactional
     public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
         BaseDto<BaseDataDto> dto = this.checkCreateLoanData(loanCreateRequestDto);
@@ -92,6 +96,7 @@ public class ConsoleLoanCreateService {
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
         loanModel.setName(generateLoanName(loanModel.getName(), loanModel.getPledgeType()));
+        loanModel.setContractVersion(loanTemplate);
         loanMapper.create(loanModel);
 
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
