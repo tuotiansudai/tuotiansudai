@@ -24,6 +24,7 @@
         <result column="amount" property="investAmount"/>
         <result column="repay_date" property="repayTime"/>
         <result column="period" property="period"/>
+        <result column="expect_interest" property="expectInterest"/>
         <result column="actual_interest" property="actualInterest"/>
         <result column="actual_fee" property="fee"/>
         <result column="repay_amount" property="actualRepayAmount"/>
@@ -38,15 +39,22 @@
         invest.id as invest_id, invest.login_name, user.user_name, user.referrer, invest.amount,
         invest_repay.repay_date,
         invest_repay.period, invest_repay.actual_interest, invest_repay.actual_fee, invest_repay.repay_amount,
-        coupon.coupon_id, invest_extra_rate.extra_rate, invest_extra_rate.actual_interest AS extra_amount
+        coupon.coupon_id, invest_extra_rate.extra_rate, invest_extra_rate.actual_interest AS extra_amount,
+
+        invest_repay.corpus + invest_repay.expected_interest - invest_repay.expected_fee +
+        ifnull(invest_extra_rate.expected_interest - invest_extra_rate.expected_fee, 0) +
+        if(coupon.coupon_type = 'RED_ENVELOPE', 0, ifnull(coupon_repay.expected_interest - coupon_repay.expected_fee, 0)) as expect_interest
+
         FROM
         `aa`.`loan` JOIN `aa`.`invest` JOIN `aa`.`invest_repay` JOIN `aa`.`user`
         ON
         loan.id = invest.loan_id AND invest.id = invest_repay.invest_id AND invest.login_name = user.login_name
         LEFT JOIN (SELECT user_coupon.coupon_id, user_coupon.invest_id, coupon.coupon_type FROM `aa`.`user_coupon` JOIN
         `aa`.`coupon` ON user_coupon.coupon_id = coupon.id) coupon ON coupon.invest_id = invest.id
-        LEFT JOIN (SELECT extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
+        LEFT JOIN (SELECT expected_interest, expected_fee, extra_rate, actual_interest, invest_id FROM `aa`.`invest_extra_rate`) invest_extra_rate ON
         invest_extra_rate.invest_id = invest.id
+        Left join (select invest_id, expected_interest, expected_fee, period from coupon_repay) coupon_repay on coupon_repay.invest_id = invest.id and coupon_repay.period = invest_repay.period
+
         <where>
             <if test="loanId != null">
                 AND loan.id = #{loanId}
@@ -62,6 +70,12 @@
             </if>
             <if test="investEndTime != null">
                 AND invest.invest_time &lt;= #{investEndTime}
+            </if>
+            <if test="repayStartTime != null">
+                AND invest_repay.repay_date &gt;= #{repayStartTime}
+            </if>
+            <if test="repayEndTime != null">
+                AND invest_repay.repay_date &lt;= #{repayEndTime}
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND invest_extra_rate.extra_rate IS NOT NULL

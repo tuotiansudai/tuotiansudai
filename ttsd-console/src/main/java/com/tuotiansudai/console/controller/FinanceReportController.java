@@ -36,11 +36,13 @@ public class FinanceReportController {
                                          @RequestParam(value = "investLoginName", defaultValue = "", required = false) String investLoginName,
                                          @RequestParam(value = "investStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investStartTime,
                                          @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investEndTime,
+                                         @RequestParam(value = "repayStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date repayStartTime,
+                                         @RequestParam(value = "repayEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date repayEndTime,
                                          @RequestParam(value = "usedPreferenceType", defaultValue = "", required = false) PreferenceType preferenceType,
                                          @RequestParam(value = "index", defaultValue = "1", required = true) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/finance-report");
-        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, index, pageSize);
+        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, repayStartTime, repayEndTime, index, pageSize);
         modelAndView.addObject("data", basePaginationDataDto);
         modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("selectedPeriod", period);
@@ -49,6 +51,8 @@ public class FinanceReportController {
         modelAndView.addObject("investEndTime", investEndTime);
         modelAndView.addObject("preferenceTypes", PreferenceType.values());
         modelAndView.addObject("selectedPreferenceType", preferenceType);
+        modelAndView.addObject("repayStartTime", repayStartTime);
+        modelAndView.addObject("repayEndTime", repayEndTime);
 
         return modelAndView;
     }
@@ -59,6 +63,8 @@ public class FinanceReportController {
                                             @RequestParam(value = "investLoginName", defaultValue = "", required = false) String investLoginName,
                                             @RequestParam(value = "investStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investStartTime,
                                             @RequestParam(value = "investEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date investEndTime,
+                                            @RequestParam(value = "repayStartTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date repayStartTime,
+                                            @RequestParam(value = "repayEndTime", defaultValue = "", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date repayEndTime,
                                             @RequestParam(value = "usedPreferenceType", defaultValue = "", required = false) PreferenceType preferenceType,
                                             @RequestParam(value = "index", defaultValue = "1", required = true) int index,
                                             HttpServletResponse httpServletResponse) throws IOException {
@@ -71,11 +77,11 @@ public class FinanceReportController {
         }
         httpServletResponse.setContentType("application/csv");
 
-        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType);
+        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, repayStartTime, repayEndTime);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.FinanceReportHeader, csvData, httpServletResponse.getOutputStream());
 
         ModelAndView modelAndView = new ModelAndView("/finance-report");
-        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, index, pageSize);
+        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, repayStartTime, repayEndTime, index, pageSize);
         modelAndView.addObject("data", basePaginationDataDto);
         modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("selectedPeriod", period);
