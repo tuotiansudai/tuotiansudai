@@ -93,6 +93,10 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String estimate;
 
+    private String contractVersion;
+
+    private String contractVersionStr;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto, double maxExtraLoanRate) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -351,5 +355,21 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setEstimate(String estimate) {
         this.estimate = estimate;
+    }
+
+    public String getContractVersion() {
+        return contractVersion;
+    }
+
+    public void setContractVersion(String contractVersion) {
+        this.contractVersion = contractVersion;
+    }
+
+    public String getContractVersionStr() {
+        return contractVersionStr;
+    }
+
+    public void setContractVersionStr(String contractVersionStr) {
+        this.contractVersionStr = contractVersionStr;
     }
 }
