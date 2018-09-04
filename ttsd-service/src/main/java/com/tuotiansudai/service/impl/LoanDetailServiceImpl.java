@@ -333,7 +333,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             loanDto.setContractVersion("loanAgreement-sample.pdf");
             loanDto.setContractVersionStr("债权转让协议样本");
         }else{
-            loanDto.setContractVersion("loanAgreement-ump-sample.pdf.pdf");
+            loanDto.setContractVersion("loanAgreement-ump-sample.pdf");
             loanDto.setContractVersionStr("借款协议协议样本");
         }
         return loanDto;
