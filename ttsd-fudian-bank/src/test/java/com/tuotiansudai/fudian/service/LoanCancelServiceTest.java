@@ -1,13 +1,8 @@
 package com.tuotiansudai.fudian.service;
 
-/**
- * Created by qduljs2011 on 2018/8/30.
- */
-
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankLoanCancelDto;
 import com.tuotiansudai.fudian.dto.request.LoanCancelRequestDto;
-import com.tuotiansudai.fudian.dto.request.LoanCreateRequestDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
@@ -26,17 +21,13 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by qduljs2011 on 2018/8/30.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 public class LoanCancelServiceTest {
@@ -82,7 +73,7 @@ public class LoanCancelServiceTest {
         BankLoanCancelMessage bankLoanCancelMessage = loanCancelService.cancel(new BankLoanCancelDto());
         verify(insertMapper, times(0)).insertLoanCancel(any(LoanCancelRequestDto.class));
         assertNotNull(bankLoanCancelMessage);
-        assertEquals(false, bankLoanCancelMessage.isStatus());
+        assertFalse(bankLoanCancelMessage.isStatus());
     }
 
     @Test
@@ -90,8 +81,8 @@ public class LoanCancelServiceTest {
         doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
             @Override
             public boolean matches(Object o) {
-                ((LoanCreateRequestDto) o).setOrderNo("111111");
-                ((LoanCreateRequestDto) o).setRequestData("requestData");
+                ((LoanCancelRequestDto) o).setOrderNo("111111");
+                ((LoanCancelRequestDto) o).setRequestData("requestData");
                 return false;
             }
         }));
@@ -100,6 +91,6 @@ public class LoanCancelServiceTest {
         verify(insertMapper, times(1)).insertLoanCancel(any(LoanCancelRequestDto.class));
         verify(updateMapper, times(0)).updateNotifyResponseData(anyString(), any(ResponseDto.class));
         assertNotNull(bankLoanCancelMessage);
-        assertEquals(false, bankLoanCancelMessage.isStatus());
+        assertFalse(bankLoanCancelMessage.isStatus());
     }
 }
