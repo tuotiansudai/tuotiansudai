@@ -27,6 +27,7 @@ public class FinanceReportDto {
     //投即生息-InvestRepayModel.repayDate-InvestModel.investTime,放款后生息-InvestRepayModel.repayDate-LoanModel.recheckTime
     private Date repayTime; //回款时间  InvestRepayModel.repayDate
     private int period;  //期限    InvestRepayModel.period
+    private String expectInterest; //预期收益
     private String actualInterest; //实际收益 InvestRepayModel.actualInterest
     private String fee;   //服务费   InvestRepayModel.actualFee
     private String actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
@@ -62,6 +63,7 @@ public class FinanceReportDto {
         this.setActualRepayAmount(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()));
         this.extraDetail = MessageFormat.format("{0,number,#.##}%", financeReportItemView.getExtraRate() * 100);
         this.extraActualInterest = AmountConverter.convertCentToString(financeReportItemView.getExtraAmount());
+        this.expectInterest = AmountConverter.convertCentToString(financeReportItemView.getExpectInterest());
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -289,5 +291,13 @@ public class FinanceReportDto {
 
     public void setExtraActualInterest(String extraActualInterest) {
         this.extraActualInterest = extraActualInterest;
+    }
+
+    public String getExpectInterest() {
+        return expectInterest;
+    }
+
+    public void setExpectInterest(String expectInterest) {
+        this.expectInterest = expectInterest;
     }
 }

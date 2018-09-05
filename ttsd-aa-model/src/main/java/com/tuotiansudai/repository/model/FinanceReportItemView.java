@@ -23,6 +23,7 @@ public class FinanceReportItemView implements Serializable {
     private long investAmount;  //投资金额 InvestModel.amount
     private Date repayTime; //回款时间  InvestRepayModel.repayDate
     private int period;  //期限    InvestRepayModel.period
+    private long expectInterest;  //预期期限
     private long actualInterest; //实际收益 InvestRepayModel.actualInterest
     private long fee;   //服务费   InvestRepayModel.actualFee
     private long actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
@@ -228,5 +229,13 @@ public class FinanceReportItemView implements Serializable {
 
     public void setExtraAmount(long extraAmount) {
         this.extraAmount = extraAmount;
+    }
+
+    public long getExpectInterest() {
+        return expectInterest;
+    }
+
+    public void setExpectInterest(long expectInterest) {
+        this.expectInterest = expectInterest;
     }
 }
