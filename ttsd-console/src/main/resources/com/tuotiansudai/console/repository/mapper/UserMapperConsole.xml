@@ -88,7 +88,7 @@
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
         bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay,
-        (select user.mobile from user where user.login_name = referrer_relation.referrer_login_name) as staff_mobile
+        referrer_relation.staff_mobile as staff_mobile
         from
         <choose>
             <when test="roleStage == null ">
@@ -111,100 +111,7 @@
         left join account a on u.login_name = a.login_name
 
         left join
-            (select referrer_login_name, login_name, level from referrer_relation temp1
-                where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
-                and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
-            on u.login_name = referrer_relation.login_name
-
-        <where>
-            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
-                and r.role = #{roleStage}
-            </if>
-            <if test="email !=null and email !='' ">
-                and u.email like '${email}%'
-            </if>
-            <if test="mobile !=null and mobile !='' ">
-                and u.mobile like '${mobile}%'
-            </if>
-            <if test="loginName !=null and loginName != '' ">
-                and u.login_name = #{loginName}
-            </if>
-            <if test="beginTime !=null">
-                and u.register_time >= #{beginTime}
-            </if>
-            <if test="endTime !=null ">
-                and u.register_time &lt;= #{endTime}
-            </if>
-            <if test="referrerMobile !=null and referrerMobile != '' ">
-                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
-            </if>
-            <if test="channel !=null and channel != '' ">
-                and u.channel = #{channel}
-            </if>
-            <if test="source !=null">
-                and u.source = #{source}
-            </if>
-            <if test="userOperation != null">
-                <if test="userOperation.name() == 'BIND_CARD'">
-                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
-                    bank_card.status = 'PASSED'), TRUE, FALSE)
-                </if>
-                <if test="userOperation.name() == 'FAST_PAY'">
-                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
-                    bank_card.status = 'PASSED' and bank_card.is_fast_pay_on = 1), TRUE, FALSE)
-                </if>
-                <if test="userOperation.name() == 'RECHARGED'">
-                    and IF(exists (select 1 from recharge where recharge.login_name = u.login_name and recharge.status =
-                    'SUCCESS'), TRUE, FALSE)
-                </if>
-                <if test="userOperation.name() == 'INVESTED'">
-                    and IF(exists (select 1 from invest where invest.login_name = u.login_name and invest.status =
-                    'SUCCESS'), TRUE, FALSE)
-                </if>
-                <if test="userOperation.name() == 'MULTIPLE_INVESTED'">
-                    and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
-                    'SUCCESS') > 1
-                </if>
-            </if>
-            <if test="hasStaff !=null">
-                <if test="hasStaff == true">
-                    referrer_relation.referrer_login_name is not null
-                </if>
-                <if test="hasStaff == false">
-                    referrer_relation.referrer_login_name is null
-                </if>
-            </if>
-            <if test="staffMobile !=null and staffMobile !=''">
-                referrer_relation.staff_mobile like '${staffMobile}%'
-            </if>
-        </where>
-        order by u.register_time desc
-        limit #{index}, #{pageSize}
-    </select>
-
-    <select id="findAllUserCount" parameterType="map" resultType="int">
-        select count(1) from
-        <choose>
-            <when test="roleStage == null">
-                user u
-            </when>
-            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
-                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
-                u
-            </when>
-            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
-                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
-                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
-                u
-            </when>
-            <otherwise>
-                user u join user_role r on u.login_name = r.login_name
-            </otherwise>
-        </choose>
-
-        left join
-            (select referrer_login_name, login_name, level from referrer_relation temp1
+            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
                 where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
                 and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
             on u.login_name = referrer_relation.login_name
@@ -268,7 +175,100 @@
                 </if>
             </if>
             <if test="staffMobile !=null and staffMobile !=''">
-                referrer_relation.staff_mobile like '${staffMobile}%'
+                and referrer_relation.staff_mobile like '${staffMobile}%'
+            </if>
+        </where>
+        order by u.register_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findAllUserCount" parameterType="map" resultType="int">
+        select count(1) from
+        <choose>
+            <when test="roleStage == null">
+                user u
+            </when>
+            <when test="roleStage.name() == 'SD_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'SD_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <when test="roleStage.name() == 'ZC_STAFF_RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'ZC_STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+
+        left join
+            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
+                where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
+                and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
+            on u.login_name = referrer_relation.login_name
+
+        <where>
+            <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
+                and r.role = #{roleStage}
+            </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and u.login_name = #{loginName}
+            </if>
+            <if test="beginTime !=null">
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrerMobile !=null and referrerMobile != '' ">
+                and exists (select 1 from user referrer where u.referrer = referrer.login_name and referrer.mobile = #{referrerMobile})
+            </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
+            <if test="userOperation != null">
+                <if test="userOperation.name() == 'BIND_CARD'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'FAST_PAY'">
+                    and IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and
+                    bank_card.status = 'PASSED' and bank_card.is_fast_pay_on = 1), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'RECHARGED'">
+                    and IF(exists (select 1 from recharge where recharge.login_name = u.login_name and recharge.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'INVESTED'">
+                    and IF(exists (select 1 from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS'), TRUE, FALSE)
+                </if>
+                <if test="userOperation.name() == 'MULTIPLE_INVESTED'">
+                    and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
+                    'SUCCESS') > 1
+                </if>
+            </if>
+            <if test="hasStaff !=null">
+                <if test="hasStaff == true">
+                    and referrer_relation.referrer_login_name is not null
+                </if>
+                <if test="hasStaff == false">
+                    and referrer_relation.referrer_login_name is null
+                </if>
+            </if>
+            <if test="staffMobile !=null and staffMobile !=''">
+                 and referrer_relation.staff_mobile like '${staffMobile}%'
             </if>
         </where>
     </select>
