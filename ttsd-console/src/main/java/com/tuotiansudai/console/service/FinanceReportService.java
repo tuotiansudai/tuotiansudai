@@ -52,19 +52,20 @@ public class FinanceReportService {
 
     public BasePaginationDataDto<FinanceReportDto> getFinanceReportDtos(Long loanId, Integer period, String investLoginName,
                                                                         Date investStartTime, Date investEndTime, PreferenceType preferenceType,
+                                                                        Date repayStartTime, Date repayEndTime,
                                                                         int index, int pageSize) {
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, (index - 1) * pageSize, pageSize);
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, repayStartTime, repayEndTime, preferenceType, (index - 1) * pageSize, pageSize);
         List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
-        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType);
+        int count = financeReportMapper.findCountFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, repayStartTime, repayEndTime, preferenceType);
         return new BasePaginationDataDto<>(index, pageSize, count, financeReportDtos);
     }
 
     public List<List<String>> getFinanceReportCsvData(Long loanId, Integer period, String investLoginName,
-                                                      Date investStartTime, Date investEndTime, PreferenceType preferenceType) {
+                                                      Date investStartTime, Date investEndTime, PreferenceType preferenceType, Date repayStartTime, Date repayEndTime) {
         //直接导出所有内容，所以index = 1, pageSize = 9999999
         final int index = 1;
         final int pageSize = 9999999;
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, preferenceType, (index - 1) * pageSize, pageSize);
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(loanId, period, investLoginName, investStartTime, investEndTime, repayStartTime, repayEndTime, preferenceType, (index - 1) * pageSize, pageSize);
         List<FinanceReportDto> financeReportDtos = combineFinanceReportDtos(financeReportItemViews);
         List<List<String>> csvData = new ArrayList<>();
         for (FinanceReportDto financeReportDto : financeReportDtos) {

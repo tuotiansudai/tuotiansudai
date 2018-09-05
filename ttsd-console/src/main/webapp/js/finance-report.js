@@ -13,7 +13,14 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             }
         });
 
-
+        $('#repayDatetimepickerStartTime').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+        $('#repayDatetimepickerEndTime').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }).on('dp.change', function(ev){
+            if($(this).find('.form-control').val().split(' ')[1]=='00:00:00') {
+                $(this).find('.form-control').val($(this).find('.form-control').val().split(' ')[0] + ' 23:59:59')
+            }
+        });
 
         $('.search').click(function () {
             $('.query-form').submit();
