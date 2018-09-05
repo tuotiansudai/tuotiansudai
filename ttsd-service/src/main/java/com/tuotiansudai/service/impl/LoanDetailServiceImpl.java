@@ -98,6 +98,10 @@ public class LoanDetailServiceImpl implements LoanDetailService {
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
 
+
+    @Value(value="${anxin.loan.contract.template.v1}")
+    private String  loanTemplateV1;
+
     @Override
     public LoanDetailDto getLoanDetail(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -324,7 +328,14 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
             loanDto.setAchievement(achievementDto);
         }
-
+        String contractVersion=loanModel.getContractVersion();
+        if(StringUtils.isEmpty(contractVersion) || contractVersion.equals(loanTemplateV1)){
+            loanDto.setContractVersion("loanAgreement-sample.pdf");
+            loanDto.setContractVersionStr("债权转让协议样本");
+        }else{
+            loanDto.setContractVersion("loanAgreement-ump-sample.pdf");
+            loanDto.setContractVersionStr("借款协议协议样本");
+        }
         return loanDto;
     }
 

@@ -57,7 +57,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf" target="_blank">债权转让协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/${loan.contractVersion}" target="_blank">${loan.contractVersionStr}</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">
