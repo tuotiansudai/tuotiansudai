@@ -40,9 +40,6 @@ public class LoanRepayNotifySchedulerTest {
     private LoanRepayMapper loanRepayMapper;
 
     @Mock
-    private PayWrapperClient payWrapperClient;
-
-    @Mock
     private MQWrapperClient mqWrapperClient;
 
     @Before
@@ -54,82 +51,16 @@ public class LoanRepayNotifySchedulerTest {
     public void shouldSendLoanRepayNotifySms() {
 
         LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
-        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName2", "13922222222");
-        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);
+        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
+        LoanRepayNotifyModel repayNotifyModel3 = this.getFakeLoanRepayNotify(200000, "loginName2", "13922222222");
+        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2, repayNotifyModel3);
 
         when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
 
-        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
-
-        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
-
         loanRepayService.loanRepayNotify();
 
-        verify(mqWrapperClient, times(4)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
-
+        verify(mqWrapperClient, times(2)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
     }
-
-    @Test
-    public void shouldSumAmountSendLoanRepayNotifySms() {
-
-        LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
-        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName1", "13911111111");
-        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);
-
-        when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
-
-        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
-
-        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
-        loanRepayService.loanRepayNotify();
-
-        verify(mqWrapperClient, times(3)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
-
-    }
-
-    @Test
-    public void shouldNotSendLoanRepayNotifySms() {
-
-        List<LoanRepayNotifyModel> repayNotifyModelList = new ArrayList<>();
-
-        when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
-
-        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
-
-        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
-        loanRepayService.loanRepayNotify();
-
-        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
-
-    }
-
-    @Test
-    public void shouldNotSendLoanRepayNotifySmsAutoRepaySuccess() {
-
-        LoanRepayNotifyModel repayNotifyModel1 = this.getFakeLoanRepayNotify(100000, "loginName1", "13911111111");
-        LoanRepayNotifyModel repayNotifyModel2 = this.getFakeLoanRepayNotify(200000, "loginName1", "13911111111");
-        List<LoanRepayNotifyModel> repayNotifyModelList = Lists.newArrayList(repayNotifyModel1, repayNotifyModel2);
-
-        when(loanRepayMapper.findLoanRepayNotifyToday(any(String.class))).thenReturn(repayNotifyModelList);
-
-        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(true));
-
-        ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
-        loanRepayService.loanRepayNotify();
-
-        verify(mqWrapperClient, times(0)).sendMessage(eq(MessageQueue.SmsNotify), any(SmsNotifyDto.class));
-
-    }
-
-    private BaseDto<PayDataDto> getAutoRepayReturnDto(boolean status) {
-        BaseDto<PayDataDto> autoRepayReturn = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        autoRepayReturn.setData(payDataDto);
-        payDataDto.setStatus(status);
-        autoRepayReturn.setSuccess(status);
-        return autoRepayReturn;
-    }
-
 
     private LoanRepayNotifyModel getFakeLoanRepayNotify(long repayAmount, String loanName, String mobile) {
         LoanRepayNotifyModel repayNotify = new LoanRepayNotifyModel();
@@ -138,5 +69,4 @@ public class LoanRepayNotifySchedulerTest {
         repayNotify.setRepayAmount(repayAmount);
         return repayNotify;
     }
-
 }
