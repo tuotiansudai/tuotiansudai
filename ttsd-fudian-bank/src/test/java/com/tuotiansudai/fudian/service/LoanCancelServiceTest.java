@@ -1,13 +1,8 @@
 package com.tuotiansudai.fudian.service;
 
-/**
- * Created by qduljs2011 on 2018/8/30.
- */
-
 import com.tuotiansudai.fudian.config.ApiType;
 import com.tuotiansudai.fudian.dto.BankLoanCancelDto;
 import com.tuotiansudai.fudian.dto.request.LoanCancelRequestDto;
-import com.tuotiansudai.fudian.dto.request.LoanCreateRequestDto;
 import com.tuotiansudai.fudian.dto.request.RegisterRequestDto;
 import com.tuotiansudai.fudian.dto.response.ResponseDto;
 import com.tuotiansudai.fudian.mapper.fudian.InsertMapper;
@@ -26,18 +21,13 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Created by qduljs2011 on 2018/8/30.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 public class LoanCancelServiceTest {

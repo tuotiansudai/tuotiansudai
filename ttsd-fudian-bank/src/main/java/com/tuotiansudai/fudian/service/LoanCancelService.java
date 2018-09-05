@@ -63,7 +63,6 @@ public class LoanCancelService {
 
         if (!signatureHelper.verifySign(responseData)) {
             logger.error("[Loan Create] failed to verify sign, response data: {}", bankLoanCancelDto);
-            message.setMessage("验签失败");
             return new BankLoanCancelMessage(false, "验签失败");
         }
 

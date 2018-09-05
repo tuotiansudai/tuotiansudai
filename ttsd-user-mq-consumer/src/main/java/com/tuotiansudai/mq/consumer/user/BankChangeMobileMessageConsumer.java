@@ -42,7 +42,7 @@ public class BankChangeMobileMessageConsumer implements MessageConsumer {
 
         try {
             BankChangeMobileMessage bankChangeMobileMessage = new Gson().fromJson(message, BankChangeMobileMessage.class);
-            bankAccountService.processChangeBankMoible(bankChangeMobileMessage);
+            bankAccountService.processChangeBankMobile(bankChangeMobileMessage);
         } catch (JsonSyntaxException e) {
             logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
