@@ -388,7 +388,8 @@
             </div>
         </div>
     </div>
-
+    <div class="pop_layer">
+    </div>
 
 </div>
 <!-- content area end -->

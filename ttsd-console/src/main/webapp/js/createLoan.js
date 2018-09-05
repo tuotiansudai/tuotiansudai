@@ -716,4 +716,5 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             }
             return true;
         }
+
     });
