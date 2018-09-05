@@ -1,6 +1,5 @@
 package com.tuotiansudai.cfca.service.impl;
 
-import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
@@ -24,6 +23,7 @@ public class CreateContractDataServiceV2Impl extends AbstractCreateContractDataS
 
     @Autowired
     private UserMapper userMapper;
+
     @Override
     public String getSupportContractVersion() {
         return supportTemp;
@@ -31,7 +31,7 @@ public class CreateContractDataServiceV2Impl extends AbstractCreateContractDataS
 
     @Override
     protected Map<String, String> getLoanDataMap(String investorLoginName, long loanId, long investId) {
-        Map<String,String> dataModel=new HashMap<>();
+        Map<String, String> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
@@ -41,8 +41,8 @@ public class CreateContractDataServiceV2Impl extends AbstractCreateContractDataS
         dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
         dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("loanName", loanModel.getName());
-        String amountUpper= AmountConverter.getRMBStr(investModel.getAmount());
-        amountUpper=amountUpper.endsWith("元")?amountUpper.replace("元",""):amountUpper;
+        String amountUpper = AmountConverter.getRMBStr(investModel.getAmount());
+        amountUpper = amountUpper.endsWith("元") ? amountUpper.replace("元", "") : amountUpper;
         dataModel.put("amountUpper", amountUpper);
         dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
@@ -53,7 +53,7 @@ public class CreateContractDataServiceV2Impl extends AbstractCreateContractDataS
             dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
         } else {
-            DateTime fullTimeDate =new DateTime(loanModel.getRecheckTime());
+            DateTime fullTimeDate = new DateTime(loanModel.getRecheckTime());
             dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
             dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
             dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));

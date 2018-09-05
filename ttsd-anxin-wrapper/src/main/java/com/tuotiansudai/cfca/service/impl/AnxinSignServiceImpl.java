@@ -22,20 +22,17 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,10 +73,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
-
-    private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
-
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
@@ -100,12 +93,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value(value = "${anxin.contract.batch.num}")
     private int batchSize;
-
-    @Value(value = "${anxin.loan.contract.template}")
-    private String loanTemplate;
-
-    @Value(value="${anxin.loan.contract.template.v1}")
-    private String  loanTemplateV1;
 
     @Value(value = "${anxin.transfer.contract.template}")
     private String transferTemplate;
@@ -363,7 +350,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createContractDataContext.createInvestorContractVo(loanId,investModel,loanModel.getContractVersion());
+            CreateContractVO createContractVO = createContractDataContext.createInvestorContractVo(loanId, investModel, loanModel.getContractVersion());
             if (createContractVO == null) {
                 continue;
             }
@@ -553,7 +540,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 
-    private void sendSms(String params){
+    private void sendSms(String params) {
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }
