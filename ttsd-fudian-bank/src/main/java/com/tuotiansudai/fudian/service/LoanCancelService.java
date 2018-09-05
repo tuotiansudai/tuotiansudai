@@ -54,8 +54,7 @@ public class LoanCancelService {
 
         if (Strings.isNullOrEmpty(dto.getRequestData())) {
             logger.error("[Loan Create] failed to sign, data: {}", bankLoanCancelDto);
-            message.setMessage("签名失败");
-            return message;
+            return new BankLoanCancelMessage(false, "签名失败");
         }
 
         insertMapper.insertLoanCancel(dto);
@@ -64,15 +63,13 @@ public class LoanCancelService {
 
         if (!signatureHelper.verifySign(responseData)) {
             logger.error("[Loan Create] failed to verify sign, response data: {}", bankLoanCancelDto);
-            message.setMessage("验签失败");
-            return message;
+            return new BankLoanCancelMessage(false, "验签失败");
         }
 
         ResponseDto<LoanCancelContentDto> responseDto = (ResponseDto<LoanCancelContentDto>) API_TYPE.getParser().parse(responseData);
         if (responseDto == null) {
             logger.error("[Loan Create] failed to parse response data: {}", responseData);
-            message.setMessage("解析银行数据失败");
-            return message;
+            return new BankLoanCancelMessage(false, "解析银行数据失败");
         }
 
         this.updateMapper.updateNotifyResponseData(API_TYPE.name().toLowerCase(), responseDto);

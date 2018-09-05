@@ -212,7 +212,7 @@ public class BankAccountService {
         return bankWrapperClient.changeBankMobile(souce, loginName,bankAccountModel.getBankMobile(),bankAccountModel.getBankUserName(),bankAccountModel.getBankAccountNo(),newPhone,type);
     }
 
-    public void processChangeBankMoible(BankChangeMobileMessage bankChangeMobileMessage) {
+    public void processChangeBankMobile(BankChangeMobileMessage bankChangeMobileMessage) {
         bankAccountMapper.updateBankMobileByLoginName(bankChangeMobileMessage.getLoginName(),bankChangeMobileMessage.getNewPhone());
     }
 }
