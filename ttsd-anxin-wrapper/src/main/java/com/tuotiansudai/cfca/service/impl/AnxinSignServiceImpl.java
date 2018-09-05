@@ -11,6 +11,7 @@ import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.CreateContractDataContext;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
@@ -125,6 +126,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String SEND_CAPTCHA_FAIL = "发送短信失败";
 
     private static final String SWITCH_SIGN_FAIL = "打开/关闭 免验开关失败";
+
+    @Autowired
+    private CreateContractDataContext createContractDataContext;
 
     /**
      * 以前是否授权过
@@ -359,7 +363,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            CreateContractVO createContractVO = createContractDataContext.createInvestorContractVo(loanId,investModel,loanModel.getContractVersion());
             if (createContractVO == null) {
                 continue;
             }
@@ -505,117 +509,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         return createContractVO;
     }
-
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
-        CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
-
-        // 标的
-        LoanModel loanModel = loanMapper.findById(loanId);
-
-        // 借款人（代理人 or 企业借款人）
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
-
-        // 投资人
-        long investId = investModel.getId();
-        String investLoginName = investModel.getLoginName();
-        AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-        if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            // 如果投资人未授权安心签，则将该笔投资的合同号设置为OLD，使用旧版合同：
-            investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            logger.warn(MessageFormat.format("[安心签] create contract fail, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
-                    String.valueOf(loanId), String.valueOf(investId), investLoginName));
-            return null;
-        }
-
-
-        String tempId=loanModel.getContractVersion();
-        if(StringUtils.isEmpty(tempId)) tempId=loanTemplateV1;
-        createContractVO.setInvestmentInfo(converLoanDataMap(investModel.getLoginName(),loanId,investId,tempId));
-
-        SignInfoVO agentSignInfo = new SignInfoVO();
-        agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
-        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
-        agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
-        agentSignInfo.setSignLocation(LOAN_CONTRACT_AGENT_SIGN);
-        agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
-        agentSignInfo.setIsProxySign(1);
-
-        SignInfoVO investorSignInfo = new SignInfoVO();
-        investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
-        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
-        investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
-        investorSignInfo.setSignLocation(LOAN_CONTRACT_INVESTOR_SIGN);
-        investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
-        investorSignInfo.setIsProxySign(1);
-
-        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(tempId);
-        createContractVO.setIsSign(1);
-        return createContractVO;
-    }
-    private Map<String, String> converLoanDataMap(String investorLoginName,long loanId,long investId,String tempId){
-        Map<String,String> dataModel=new HashMap<>();
-        if(StringUtils.isEmpty(tempId) || tempId.equals(loanTemplateV1)){
-            Map<String, String> investMap = contractService.collectInvestorContractModel(investorLoginName, loanId, investId);
-            dataModel.put("agentMobile", investMap.get("agentMobile"));
-            dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-            dataModel.put("investorMobile", investMap.get("investorMobile"));
-            dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-            dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-            dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-            dataModel.put("loanAmount1", investMap.get("loanAmount"));
-            dataModel.put("loanAmount2", investMap.get("investAmount"));
-            dataModel.put("periods1", investMap.get("agentPeriods"));
-            dataModel.put("periods2", investMap.get("leftPeriods"));
-            dataModel.put("totalRate", investMap.get("totalRate"));
-            dataModel.put("recheckTime1", investMap.get("recheckTime"));
-            dataModel.put("recheckTime2", investMap.get("recheckTime"));
-            dataModel.put("endTime1", investMap.get("endTime"));
-            dataModel.put("endTime2", investMap.get("endTime"));
-            dataModel.put("orderId", String.valueOf(investId));
-            dataModel.put("pledge", investMap.get("pledge"));
-            return dataModel;
-        }
-        //直接默认就是最新版本的合同
-        LoanModel loanModel = loanMapper.findById(loanId);
-        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
-        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        InvestModel investModel = investMapper.findById(investId);
-        //
-        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-        dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("loanName", loanModel.getName());
-        String amountUpper= AmountConverter.getRMBStr(investModel.getAmount());
-        amountUpper=amountUpper.endsWith("元")?amountUpper.replace("元",""):amountUpper;
-        dataModel.put("amountUpper", amountUpper);
-        dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
-        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
-        //根据标的类型判断借款开始时间
-        if (LoanType.INVEST_INTEREST_MONTHLY_REPAY.equals(loanModel.getType()) || LoanType.INVEST_INTEREST_LUMP_SUM_REPAY.equals(loanModel.getType())) {
-            DateTime recheckTimeYear = new DateTime(investModel.getCreatedTime());
-            dataModel.put("recheckTimeYear", String.valueOf(recheckTimeYear.getYear()));
-            dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
-            dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
-        } else {
-            DateTime fullTimeDate =new DateTime(loanModel.getRecheckTime());
-            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
-            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
-            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
-        }
-        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
-        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
-        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
-        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
-        dataModel.put("periods", loanModel.getPeriods() + "");
-        dataModel.put("loanType", loanModel.getType().getName());
-        dataModel.put("investorName", investorModel.getUserName());
-        dataModel.put("orderId", String.valueOf(investId));
-        return dataModel;
-    }
-
 
     @Override
     public boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
