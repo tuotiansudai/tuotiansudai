@@ -272,12 +272,14 @@ public class ExportController {
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                             RoleStage roleStage, String referrerMobile, String channel,
                             UserOperation userOperation,
+                            @RequestParam(value = "hasStaff", required = false) Boolean hasStaff,
+                            @RequestParam(value = "staffMobile", required = false) String staffMobile,
                             @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleUsers.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
-                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile, index, pageSize);
         List<List<String>> usersData = exportService.buildUsers(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, usersData, response.getOutputStream());
     }
