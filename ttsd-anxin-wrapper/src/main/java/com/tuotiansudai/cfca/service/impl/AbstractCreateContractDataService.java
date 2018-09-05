@@ -25,9 +25,9 @@ import java.util.Map;
  * Created by qduljs2011 on 2018/9/5.
  */
 public abstract class AbstractCreateContractDataService implements CreateContractDataService {
-    private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
+    protected static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
 
-    private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
+    protected static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
     private static Logger logger = Logger.getLogger(AbstractCreateContractDataService.class);
     @Autowired
     protected LoanMapper loanMapper;

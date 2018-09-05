@@ -9,6 +9,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 /**
  * Created by qduljs2011 on 2018/9/5.
  */
+@Service
 public class CreateContractDataServiceV2Impl extends AbstractCreateContractDataService {
     @Value(value = "${anxin.loan.contract.template.v2}")
     private String supportTemp;

@@ -36,7 +36,7 @@ public class CreateContractDataContext {
             contractVersion = defaultTemp;
         }
         if (createContractDataServiceList == null || createContractDataServiceList.size() == 0) {
-            logger.error("[CreateContractDataContext没有找到对应的数据构建类集合]");
+            logger.info("[CreateContractDataContext没有找到对应的数据构建类集合]");
         }
         for (CreateContractDataService createContractDataService : createContractDataServiceList) {
             if (contractVersion.equals(createContractDataService.getSupportContractVersion())) {
