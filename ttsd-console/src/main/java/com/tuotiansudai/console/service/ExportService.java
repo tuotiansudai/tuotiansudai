@@ -314,6 +314,7 @@ public class ExportService {
             row.add(record.getMobile());
             row.add(record.getEmail());
             row.add(record.getReferrerMobile());
+            row.add(record.getStaffMobile());
             row.add(record.isReferrerStaff() ? "是" : "否");
             row.add(record.getSource() != null ? record.getSource().name() : "");
             row.add(record.getChannel());

@@ -24,6 +24,7 @@
         <result column="is_referrer_staff" property="isReferrerStaff"/>
         <result column="last_bill_time" property="lastBillTime"/>
         <result column="fast_pay" property="fastPay"/>
+        <result column="staff_mobile" property="staffMobile"/>
     </resultMap>
 
     <resultMap id="userMicroModelView" type="com.tuotiansudai.console.repository.model.UserMicroModelView">
@@ -86,7 +87,8 @@
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED'),
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
-        bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay
+        bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay,
+        referrer_relation.staff_mobile as staff_mobile
         from
         <choose>
             <when test="roleStage == null ">
@@ -107,6 +109,13 @@
             </otherwise>
         </choose>
         left join account a on u.login_name = a.login_name
+
+        left join
+            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
+                where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
+                and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
+            on u.login_name = referrer_relation.login_name
+
         <where>
             <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
@@ -156,6 +165,17 @@
                     and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
                     'SUCCESS') > 1
                 </if>
+            </if>
+            <if test="hasStaff !=null">
+                <if test="hasStaff == true">
+                    referrer_relation.referrer_login_name is not null
+                </if>
+                <if test="hasStaff == false">
+                    referrer_relation.referrer_login_name is null
+                </if>
+            </if>
+            <if test="staffMobile !=null and staffMobile !=''">
+                referrer_relation.staff_mobile like '${staffMobile}%'
             </if>
         </where>
         order by u.register_time desc
@@ -182,6 +202,13 @@
                 user u join user_role r on u.login_name = r.login_name
             </otherwise>
         </choose>
+
+        left join
+            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
+                where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
+                and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
+            on u.login_name = referrer_relation.login_name
+
         <where>
             <if test="roleStage != null and roleStage.name() != 'SD_STAFF_RECOMMENDATION' and roleStage.name() != 'ZC_STAFF_RECOMMENDATION'">
                 and r.role = #{roleStage}
@@ -231,6 +258,17 @@
                     and (select count(1) from invest where invest.login_name = u.login_name and invest.status =
                     'SUCCESS') > 1
                 </if>
+            </if>
+            <if test="hasStaff !=null">
+                <if test="hasStaff == true">
+                    and referrer_relation.referrer_login_name is not null
+                </if>
+                <if test="hasStaff == false">
+                    and referrer_relation.referrer_login_name is null
+                </if>
+            </if>
+            <if test="staffMobile !=null and staffMobile !=''">
+                referrer_relation.staff_mobile like '${staffMobile}%'
             </if>
         </where>
     </select>

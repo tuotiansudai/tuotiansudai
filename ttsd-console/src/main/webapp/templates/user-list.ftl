@@ -51,6 +51,10 @@
             <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
         </div>
         <div class="form-group">
+            <label for="mobile">顶级业务员手机号</label>
+            <input type="text" class="form-control" name="staffMobile" placeholder="" value="${staffMobile!}">
+        </div>
+        <div class="form-group">
             <label for="email">电子邮件</label>
             <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
         </div>
@@ -93,6 +97,16 @@
             <input type="text" class="form-control ui-autocomplete-input" id="input-referrer" name="referrerMobile"
                    placeholder="" datatype="*" autocomplete="off" value="${referrerMobile!}">
         </div>
+
+        <div class="form-group">
+            <label for="hasStaff">顶级业务员</label>
+            <select class="selectpicker" name="hasStaff">
+                <option value="">全部</option>
+                <option value="true" <#if hasStaff?? && hasStaff >selected</#if>>有</option>
+                <option value="false" <#if hasStaff?? && !hasStaff >selected</#if>>无</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
         <button type="reset" class="btn btn-sm btn-default">重置</button>
     </form>
@@ -105,6 +119,7 @@
                 <th>手机号</th>
                 <th>电子邮件</th>
                 <th>推荐人手机</th>
+                <th>顶级业务员手机</th>
                 <th>开通快捷支付</th>
                 <th>来源</th>
                 <th>渠道</th>
@@ -134,6 +149,7 @@
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
+                    <td>${userItem.staffMobile!}</td>
                     <td><#if userItem.fastPay == true>是<#else>否</#if></td>
                     <td>${userItem.source!}</td>
                     <td>${userItem.channel!}</td>
@@ -169,7 +185,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&staffMobile=${staffMobile!}&hasStaff=<#if hasStaff??>${hasStaff?string("true","false")}</#if>&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -180,7 +196,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&staffMobile=${staffMobile!}&hasStaff=<#if hasStaff??>${hasStaff?string("true","false")}</#if>&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrerMobile=${referrerMobile!}&channel=${channel!}&userOperation=${(selectedUserOperation.name())!}&pageSize=${pageSize}&index=${pageIndex+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
