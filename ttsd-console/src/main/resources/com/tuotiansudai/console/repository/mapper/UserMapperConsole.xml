@@ -88,7 +88,7 @@
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
         bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay,
-        referrer_relation.staff_mobile as staff_mobile
+        (select user.mobile from user where user.login_name = referrer_relation.referrer_login_name) as staff_mobile
         from
         <choose>
             <when test="roleStage == null ">
@@ -111,7 +111,7 @@
         left join account a on u.login_name = a.login_name
 
         left join
-            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
+            (select referrer_login_name, login_name, level from referrer_relation temp1
                 where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
                 and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
             on u.login_name = referrer_relation.login_name
@@ -204,7 +204,7 @@
         </choose>
 
         left join
-            (select referrer_login_name, login_name, level, (select user.mobile from user where user.login_name = temp1.referrer_login_name) as staff_mobile from referrer_relation temp1
+            (select referrer_login_name, login_name, level from referrer_relation temp1
                 where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
                 and if (exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF')), true, false)) referrer_relation
             on u.login_name = referrer_relation.login_name
