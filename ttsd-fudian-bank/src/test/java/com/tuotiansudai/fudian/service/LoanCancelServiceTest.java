@@ -27,6 +27,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
@@ -82,7 +83,7 @@ public class LoanCancelServiceTest {
         BankLoanCancelMessage bankLoanCancelMessage = loanCancelService.cancel(new BankLoanCancelDto());
         verify(insertMapper, times(0)).insertLoanCancel(any(LoanCancelRequestDto.class));
         assertNotNull(bankLoanCancelMessage);
-        assertEquals(false, bankLoanCancelMessage.isStatus());
+        assertFalse(bankLoanCancelMessage.isStatus());
     }
 
     @Test
@@ -90,8 +91,8 @@ public class LoanCancelServiceTest {
         doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
             @Override
             public boolean matches(Object o) {
-                ((LoanCreateRequestDto) o).setOrderNo("111111");
-                ((LoanCreateRequestDto) o).setRequestData("requestData");
+                ((LoanCancelRequestDto) o).setOrderNo("111111");
+                ((LoanCancelRequestDto) o).setRequestData("requestData");
                 return false;
             }
         }));
@@ -100,6 +101,6 @@ public class LoanCancelServiceTest {
         verify(insertMapper, times(1)).insertLoanCancel(any(LoanCancelRequestDto.class));
         verify(updateMapper, times(0)).updateNotifyResponseData(anyString(), any(ResponseDto.class));
         assertNotNull(bankLoanCancelMessage);
-        assertEquals(false, bankLoanCancelMessage.isStatus());
+        assertFalse(bankLoanCancelMessage.isStatus());
     }
 }
