@@ -509,6 +509,9 @@ public class ConsoleLoanCreateService {
         if(anxinSignPropertyModel == null){
             return new BaseDto<>(new BaseDataDto(false, "此用户名未开通安心签服务"));
         }
+        if(!anxinSignPropertyModel.isSkipAuth()){
+            return new BaseDto<>(new BaseDataDto(false, "此用户名未开启安心签免密服务"));
+        }
         LoanerInfoDto loanerInfoDto=new LoanerInfoDto(true);
         loanerInfoDto.setAge(AmountConverter.getAgeByIdentityCard(userModel.getIdentityNumber(),0));
         loanerInfoDto.setIdentityNumber(userModel.getIdentityNumber());
