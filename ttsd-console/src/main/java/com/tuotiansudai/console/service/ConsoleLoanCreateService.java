@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -92,11 +93,11 @@ public class ConsoleLoanCreateService {
     @Transactional
     public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
         //新增的借款人校验
-        BaseDto<BaseDataDto> dto=checkLoaner(loanCreateRequestDto.getLoan().getAgent());
+        BaseDto<BaseDataDto> dto = checkLoaner(loanCreateRequestDto.getLoan().getAgent());
         if (!dto.getData().getStatus()) {
             return dto;
         }
-        dto= this.checkCreateLoanData(loanCreateRequestDto);
+        dto = this.checkCreateLoanData(loanCreateRequestDto);
         if (!dto.getData().getStatus()) {
             return dto;
         }
@@ -157,7 +158,7 @@ public class ConsoleLoanCreateService {
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
         //新增的借款人校验
-        BaseDto<BaseDataDto> dto=checkLoaner(loanCreateRequestDto.getLoan().getAgent());
+        BaseDto<BaseDataDto> dto = checkLoaner(loanCreateRequestDto.getLoan().getAgent());
         if (!dto.getData().getStatus()) {
             return dto;
         }
@@ -399,7 +400,7 @@ public class ConsoleLoanCreateService {
         }
 
         if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
-                return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
@@ -498,24 +499,24 @@ public class ConsoleLoanCreateService {
     }
 
     public BaseDto<BaseDataDto> checkLoaner(String loanerLoginName) {
-        UserModel userModel=consoleUserService.findByLoginName(loanerLoginName);
-        if(userModel == null){
+        UserModel userModel = consoleUserService.findByLoginName(loanerLoginName);
+        if (userModel == null) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名不存在"));
         }
-        if(StringUtils.isEmpty(userModel.getIdentityNumber())){
+        if (StringUtils.isEmpty(userModel.getIdentityNumber())) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名未做实名认证"));
         }
-        AnxinSignPropertyModel anxinSignPropertyModel=anxinSignPropertyMapper.findByLoginName(loanerLoginName);
-        if(anxinSignPropertyModel == null){
+        AnxinSignPropertyModel anxinSignPropertyModel = anxinSignPropertyMapper.findByLoginName(loanerLoginName);
+        if (anxinSignPropertyModel == null) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名未开通安心签服务"));
         }
-        if(!anxinSignPropertyModel.isSkipAuth()){
+        if (!anxinSignPropertyModel.isSkipAuth()) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名未开启安心签免密服务"));
         }
-        LoanerInfoDto loanerInfoDto=new LoanerInfoDto(true);
-        loanerInfoDto.setAge(AmountConverter.getAgeByIdentityCard(userModel.getIdentityNumber(),0));
+        LoanerInfoDto loanerInfoDto = new LoanerInfoDto(true);
+        loanerInfoDto.setAge(IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(), 0));
         loanerInfoDto.setIdentityNumber(userModel.getIdentityNumber());
-        loanerInfoDto.setSex(AmountConverter.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"));
+        loanerInfoDto.setSex(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(), "MALE"));
         loanerInfoDto.setUserName(userModel.getUserName());
         return new BaseDto<>(loanerInfoDto);
     }

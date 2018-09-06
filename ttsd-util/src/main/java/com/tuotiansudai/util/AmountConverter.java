@@ -82,50 +82,5 @@ public class AmountConverter {
         return result.toString();
     }
 
-    /**
-     * 根据18位身份证 和15位身份证号 获取年龄
-     *
-     * @param cardNumber
-     * @param defaultValue
-     * @return
-     */
-    public static int getAgeByIdentityCard(String cardNumber, int defaultValue) {
-        if (cardNumber == null) {
-            return defaultValue;
-        }
-        int length = cardNumber.trim().length();
-        Calendar calendar = Calendar.getInstance();
-        if (length == 18) {
-            String bornYear = cardNumber.substring(6, 10);
-            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
-        }
-        if (length == 15) {
-            String bornYear = "19" + cardNumber.substring(6, 8);
-            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
-        }
-        return defaultValue;
-    }
 
-    /**
-     * 根据18位和15位身份证号获取性别
-     *
-     * @param cardNumber
-     * @param defaultValue
-     * @return
-     */
-    public static String getSexByIdentityCard(String cardNumber, String defaultValue) {
-        if (cardNumber == null) {
-            return defaultValue;
-        }
-        int length = cardNumber.trim().length();
-        if (length == 18) {
-            String sexNum = cardNumber.substring(16, 17);
-            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
-        }
-        if (length == 15) {
-            String sexNum = cardNumber.substring(14);
-            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
-        }
-        return defaultValue;
-    }
 }
