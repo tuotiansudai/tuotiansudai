@@ -253,4 +253,31 @@ public class BankAccountServiceTest {
         message.setBankCardNo("6228483000000000000");
         return message;
     }
+
+    @Test
+    public void changeBankMobileSuccess(){
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(),any(Role.class))).thenReturn(mockBankAccountModel());
+        bankAccountService.changeBankMobile("loginName","newPhone","1",Role.INVESTOR,Source.WEB);
+        verify(bankWrapperClient,times(1)).changeBankMobile(any(Source.class),anyString(),anyString(),anyString(),anyString(),anyString(),anyString());
+    }
+    @Test
+    public void changeBankMobileFalseNoAccount(){
+        BankAsyncMessage bankAsyncMessage=bankAccountService.changeBankMobile("loginName","newPhone","1",Role.INVESTOR,Source.WEB);
+        assertNotNull(bankAsyncMessage);
+        assertEquals(false,bankAsyncMessage.isStatus());
+    }
+    @Test
+    public void changeBankMobileFalseNoParam(){
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(),any(Role.class))).thenReturn(mockBankAccountModel());
+        BankAsyncMessage bankAsyncMessage=bankAccountService.changeBankMobile("loginName","","",Role.INVESTOR,Source.WEB);
+        assertNotNull(bankAsyncMessage);
+        assertEquals(false,bankAsyncMessage.isStatus());
+    }
+    @Test
+    public void changeBankMobileFalseNoChange(){
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(),any(Role.class))).thenReturn(mockBankAccountModel());
+        BankAsyncMessage bankAsyncMessage=bankAccountService.changeBankMobile("loginName","22222222222","1",Role.INVESTOR,Source.WEB);
+        assertNotNull(bankAsyncMessage);
+        assertEquals(false,bankAsyncMessage.isStatus());
+    }
 }
