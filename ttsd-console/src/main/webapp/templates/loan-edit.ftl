@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户:</label>
+                    <label class="col-sm-2 control-label">借款人:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
@@ -497,6 +497,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="pop_layer">
     </div>
 </div>
 <!-- content area end -->

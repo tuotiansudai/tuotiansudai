@@ -134,4 +134,9 @@ public class LoanController {
     public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
     }
+    @RequestMapping(value = "/check-loaner", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> checkLoaner(@RequestParam(value = "loanerLoginName") String loanerLoginName) {
+        return consoleLoanCreateService.checkLoaner(loanerLoginName);
+    }
 }

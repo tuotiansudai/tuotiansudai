@@ -590,8 +590,7 @@ public class InvestServiceImpl implements InvestService {
         } catch (Exception e) {
             logger.error("send loan raising complete notify failed.", e);
         }
-
-        DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
+        //DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
     }
 
     private void sendLoanRaisingCompleteNotify(long loanId) {

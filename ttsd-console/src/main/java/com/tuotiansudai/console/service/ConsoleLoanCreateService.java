@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -85,9 +86,17 @@ public class ConsoleLoanCreateService {
     @Value(value = "${anxin.loan.contract.template}")
     private String loanTemplate;
 
+    @Autowired
+    private ConsoleUserService consoleUserService;
+
     @Transactional
     public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
-        BaseDto<BaseDataDto> dto = this.checkCreateLoanData(loanCreateRequestDto);
+        //新增的借款人校验
+        BaseDto<BaseDataDto> dto=checkLoaner(loanCreateRequestDto.getLoan().getAgent());
+        if (!dto.getData().getStatus()) {
+            return dto;
+        }
+        dto= this.checkCreateLoanData(loanCreateRequestDto);
         if (!dto.getData().getStatus()) {
             return dto;
         }
@@ -147,7 +156,12 @@ public class ConsoleLoanCreateService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<BaseDataDto> updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
-        BaseDto<BaseDataDto> dto = this.checkCreateLoanData(loanCreateRequestDto);
+        //新增的借款人校验
+        BaseDto<BaseDataDto> dto=checkLoaner(loanCreateRequestDto.getLoan().getAgent());
+        if (!dto.getData().getStatus()) {
+            return dto;
+        }
+        dto = this.checkCreateLoanData(loanCreateRequestDto);
         if (!dto.getData().getStatus()) {
             return dto;
         }
@@ -373,7 +387,7 @@ public class ConsoleLoanCreateService {
 
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
         if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
-            return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
+            return new BaseDto<>(new BaseDataDto(false, "借款用户不存在"));
         }
 
         if (loanCreateRequestDto.getLoan().getOriginalDuration() < 1) {
@@ -483,4 +497,23 @@ public class ConsoleLoanCreateService {
         return loanNameSeq;
     }
 
+    public BaseDto<BaseDataDto> checkLoaner(String loanerLoginName) {
+        UserModel userModel=consoleUserService.findByLoginName(loanerLoginName);
+        if(userModel == null){
+            return new BaseDto<>(new BaseDataDto(false, "此用户名不存在"));
+        }
+        if(StringUtils.isEmpty(userModel.getIdentityNumber())){
+            return new BaseDto<>(new BaseDataDto(false, "此用户名未做实名认证"));
+        }
+        AnxinSignPropertyModel anxinSignPropertyModel=anxinSignPropertyMapper.findByLoginName(loanerLoginName);
+        if(anxinSignPropertyModel == null){
+            return new BaseDto<>(new BaseDataDto(false, "此用户名未开通安心签服务"));
+        }
+        LoanerInfoDto loanerInfoDto=new LoanerInfoDto(true);
+        loanerInfoDto.setAge(AmountConverter.getAgeByIdentityCard(userModel.getIdentityNumber(),0));
+        loanerInfoDto.setIdentityNumber(userModel.getIdentityNumber());
+        loanerInfoDto.setSex(AmountConverter.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"));
+        loanerInfoDto.setUserName(userModel.getUserName());
+        return new BaseDto<>(loanerInfoDto);
+    }
 }
