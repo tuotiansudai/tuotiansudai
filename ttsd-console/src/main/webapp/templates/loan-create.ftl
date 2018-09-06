@@ -32,7 +32,7 @@
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="代理用户不能为空">
+                               errormsg="借款人不能为空">
                     </div>
                 </div>
 
