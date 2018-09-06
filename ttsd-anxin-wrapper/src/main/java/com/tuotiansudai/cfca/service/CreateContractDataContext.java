@@ -27,6 +27,7 @@ public class CreateContractDataContext {
         CreateContractDataService createContractDataService = getCreateContractDataService(contractVersion);
         if (createContractDataService == null) {
             logger.info(MessageFormat.format("[CreateContractDataContext没有找到对应的数据构建类],contractVersion={0}", contractVersion));
+            return null;
         }
         return createContractDataService.createInvestorContractVo(loanId, investModel);
     }
