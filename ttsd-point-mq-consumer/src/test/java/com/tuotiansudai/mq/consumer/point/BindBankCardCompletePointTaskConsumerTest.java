@@ -27,6 +27,6 @@ public class BindBankCardCompletePointTaskConsumerTest extends PointTaskConsumer
     @Test
     @Transactional
     public void shouldConsume() {
-        shouldCompleteNewbieTask(consumer, pointTaskService, PointTask.BIND_BANK_CARD);
+        shouldCompleteNewbieTask(pointTaskService, PointTask.BIND_BANK_CARD);
     }
 }
