@@ -1,5 +1,6 @@
 package com.tuotiansudai.util;
 
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class AmountConverter {
     public static String convertCentToString(long amount) {
         return String.format("%.2f", amount / 100D);
     }
+
     /**
      * 获取大写的人名币的金额，单位精确到分
      *
@@ -79,4 +81,6 @@ public class AmountConverter {
         }
         return result.toString();
     }
+
+
 }

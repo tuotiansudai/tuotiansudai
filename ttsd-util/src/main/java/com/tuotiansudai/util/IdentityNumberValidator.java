@@ -2,6 +2,7 @@ package com.tuotiansudai.util;
 
 
 import com.google.common.base.Strings;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,7 +49,7 @@ public class IdentityNumberValidator {
         return !Strings.isNullOrEmpty(val) && val.matches("^[0-9]*$");
     }
 
-    private static boolean validateFistNumber(String idCard){
+    private static boolean validateFistNumber(String idCard) {
         return Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9;
     }
 
@@ -93,7 +94,7 @@ public class IdentityNumberValidator {
         return !(Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0);
     }
 
-    private static boolean validateYearByAdult(String idCard){
+    private static boolean validateYearByAdult(String idCard) {
         return ((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6, 14))) / 10000 >= 18);
     }
 
@@ -104,7 +105,7 @@ public class IdentityNumberValidator {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             Calendar cal = Calendar.getInstance();
             if (birthDate != null)
                 cal.setTime(birthDate);
@@ -112,5 +113,52 @@ public class IdentityNumberValidator {
             String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
             return code18 + countCode18(code18);
         }
+    }
+
+    /**
+     * 根据18位身份证 和15位身份证号 获取年龄
+     *
+     * @param cardNumber
+     * @param defaultValue
+     * @return
+     */
+    public static int getAgeByIdentityCard(String cardNumber, int defaultValue) {
+        if (cardNumber == null) {
+            return defaultValue;
+        }
+        int length = cardNumber.trim().length();
+        Calendar calendar = Calendar.getInstance();
+        if (length == 18) {
+            String bornYear = cardNumber.substring(6, 10);
+            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
+        }
+        if (length == 15) {
+            String bornYear = "19" + cardNumber.substring(6, 8);
+            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 根据18位和15位身份证号获取性别
+     *
+     * @param cardNumber
+     * @param defaultValue
+     * @return
+     */
+    public static String getSexByIdentityCard(String cardNumber, String defaultValue) {
+        if (cardNumber == null) {
+            return defaultValue;
+        }
+        int length = cardNumber.trim().length();
+        if (length == 18) {
+            String sexNum = cardNumber.substring(16, 17);
+            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
+        }
+        if (length == 15) {
+            String sexNum = cardNumber.substring(14);
+            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
+        }
+        return defaultValue;
     }
 }

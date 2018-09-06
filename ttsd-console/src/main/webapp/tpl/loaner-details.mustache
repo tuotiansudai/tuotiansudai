@@ -5,15 +5,15 @@
         <label class="col-sm-2 control-label">借款人姓名: </label>
 
         <div class="col-sm-3">
-            <input name="userName" type="text" class="form-control" datatype="*" errormsg="借款人姓名不能为空">
+            <input name="userName" type="text" disabled="disabled" class="form-control" datatype="*" errormsg="借款人姓名不能为空">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">借款人性别: </label>
 
         <div class="col-sm-3">
-            <select name="gender" class="selectpicker b-width">
-                <option value="MALE" selected="selected">男</option>
+            <select id="genderSelector" name="gender" class="selectpicker b-width"  disabled="disabled">
+                <option value="MALE">男</option>
                 <option value="FEMALE">女</option>
             </select>
         </div>
@@ -22,14 +22,14 @@
         <label class="col-sm-2 control-label">借款人年龄: </label>
 
         <div class="col-sm-3">
-            <input name="age" type="text" class="form-control" datatype="*" errormsg="借款人年龄填写有误">
+            <input name="age" type="text" disabled="disabled" class="form-control" datatype="*" errormsg="借款人年龄填写有误">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">借款人身份证号: </label>
 
         <div class="col-sm-3">
-            <input name="identityNumber" type="text" class="form-control" datatype="idcard" errormsg="借款人身份证号填写有误">
+            <input name="identityNumber" disabled="disabled" type="text" class="form-control" datatype="idcard" errormsg="借款人身份证号填写有误">
         </div>
     </div>
     <div class="form-group">

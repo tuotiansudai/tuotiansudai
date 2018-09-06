@@ -716,4 +716,45 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             }
             return true;
         }
+
+        $('input[name="agent"]').on('blur',function () {
+            var loanerLoginName=$(this).val();
+            if (loanerLoginName=='') {
+                $('.pop_layer').css('width','450px');
+                $('.pop_layer').html('借款人不能为空!');
+                $('.pop_layer').show();
+                setTimeout(function() {
+                    $('.pop_layer').hide();
+                },3000)
+            }else{
+                $.ajax(
+                    {
+                        url: '/project-manage/loan/check-loaner?loanerLoginName='+loanerLoginName,
+                        async:false,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function (res) {
+                    if (res.data.status) {
+                        $('input[name="userName"]').val(res.data.userName);
+                        $('select option[value='+res.data.sex+']').attr("selected", "selected");
+                        $("#genderSelector").trigger("change");
+                        $('input[name="age"]').val(res.data.age);
+                        $('input[name="identityNumber"]').val(res.data.identityNumber);
+
+                    } else {
+                        $('.pop_layer').css('width','450px');
+                        $('.pop_layer').html(res.data.message);
+                        $('.pop_layer').show();
+                        setTimeout(function() {
+                            $('.pop_layer').hide();
+                        },3000)
+                    }
+                }).fail(function () {
+                    showErrorMessage('服务端操作失败', extraElement);
+                })
+            }
+
+        })
+
     });
