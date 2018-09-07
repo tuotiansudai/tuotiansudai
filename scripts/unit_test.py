@@ -21,7 +21,7 @@ class UTRunner(object):
 
     def config_file(self):
         print "Generate config file..."
-        config_deploy.deploy(self.etcd, self.env, 'true')
+        config_deploy.deploy(self.etcd, self.env)
 
     def init_docker(self):
         print "Initialing docker..."
