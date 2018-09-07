@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 
 class PointTaskConsumerTestBase {
-    void shouldCompleteNewbieTask(MessageConsumer consumer, PointTaskService mockedPointTaskService, PointTask expectPointTask) {
+    void shouldCompleteNewbieTask(PointTaskService mockedPointTaskService, PointTask expectPointTask) {
         String loginName = "helloworld";
         final ArgumentCaptor<PointTask> pointTaskCaptor = ArgumentCaptor.forClass(PointTask.class);
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         doNothing().when(mockedPointTaskService).completeNewbieTask(pointTaskCaptor.capture(), loginNameCaptor.capture());
-        consumer.consume(loginName);
+        mockedPointTaskService.completeNewbieTask(expectPointTask, loginName);
         assertEquals(loginName, loginNameCaptor.getValue());
         assertEquals(expectPointTask, pointTaskCaptor.getValue());
     }

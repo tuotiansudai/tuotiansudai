@@ -16,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class TurnOnNoPasswordInvestCompletePointTaskConsumerTest extends PointTaskConsumerTestBase {
+public class BankAccountRegisteredCompletePointTaskConsumerTest extends PointTaskConsumerTestBase {
+
     @Autowired
-    @Qualifier("turnOnNoPasswordInvestCompletePointTaskConsumer")
+    @Qualifier("bankAccountRegisteredCompletePointTaskConsumer")
     private MessageConsumer consumer;
 
     @MockBean
@@ -27,6 +28,6 @@ public class TurnOnNoPasswordInvestCompletePointTaskConsumerTest extends PointTa
     @Test
     @Transactional
     public void shouldConsume() {
-        shouldCompleteAdvancedTask(consumer, pointTaskService, PointTask.FIRST_TURN_ON_NO_PASSWORD_INVEST);
+        shouldCompleteNewbieTask(pointTaskService, PointTask.REGISTER);
     }
 }
