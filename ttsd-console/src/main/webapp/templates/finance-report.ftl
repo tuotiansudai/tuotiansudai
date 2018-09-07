@@ -53,6 +53,26 @@
             </div>
         </div>
         <div class="form-group">
+            <label>回款时间</label>
+
+            <div class='input-group date' id='repayDatetimepickerStartTime'>
+                <input type='text' class="form-control" name="repayStartTime"
+                       value="${(repayStartTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+            </div>
+            <span>-</span>
+
+            <div class='input-group date' id='repayDatetimepickerEndTime'>
+                <input type='text' class="form-control" name="repayEndTime"
+                       value="${(repayEndTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
+                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+            </div>
+        </div>
+        <div class="form-group">
             <label>使用优惠类型</label>
             <select class="selectpicker" name="usedPreferenceType">
                 <option value="">全部</option>
@@ -87,6 +107,7 @@
                 <th>计息天数</th>
                 <th>回款时间</th>
                 <th>期限</th>
+                <th>预期回款(元)</th>
                 <th>实际收益(元)</th>
                 <th>服务费(元)</th>
                 <th>实际回款(元)</th>
@@ -116,6 +137,7 @@
                     <td>${(financeReportDto.benefitDays)!}</td>
                     <td>${(financeReportDto.repayTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${(financeReportDto.period)!}</td>
+                    <td>${(financeReportDto.expectInterest)!}</td>
                     <td>${(financeReportDto.actualInterest)!}</td>
                     <td>${(financeReportDto.fee)!}</td>
                     <td>${(financeReportDto.actualRepayAmount)!}</td>
@@ -138,7 +160,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="/finance-manage/financeReport?index=${data.index - 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&repayStartTime=${(repayStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&repayEndTime=${(repayEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -149,7 +171,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="/finance-manage/financeReport?index=${data.index + 1}&pageSize=${data.pageSize}&loanId=${(loanId?c)!}&period=${selectedPeriod!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&repayStartTime=${(repayStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&repayEndTime=${(repayEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&<#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
