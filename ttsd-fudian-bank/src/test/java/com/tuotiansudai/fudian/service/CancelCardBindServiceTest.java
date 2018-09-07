@@ -63,13 +63,10 @@ public class CancelCardBindServiceTest {
 
         BankBaseDto dto = new BankBaseDto("loginName", "11111111111", "UU02683949835091001", "UA02683949835131001");
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((CancelCardBindRequestDto) o).setOrderNo("111111");
-                ((CancelCardBindRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((CancelCardBindRequestDto) o).setOrderNo("111111");
+            ((CancelCardBindRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
@@ -95,13 +92,10 @@ public class CancelCardBindServiceTest {
 
         BankBaseDto dto = new BankBaseDto("loginName", "11111111111", "UU02683949835091001", "UA02683949835131001");
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((CancelCardBindRequestDto) o).setOrderNo("111111");
-                ((CancelCardBindRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((CancelCardBindRequestDto) o).setOrderNo("111111");
+            ((CancelCardBindRequestDto) o).setRequestData(null);
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));

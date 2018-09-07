@@ -1,10 +1,12 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.fudian.message.BankWithdrawMessage;
+import com.tuotiansudai.message.EventMessage;
 import com.tuotiansudai.message.PushMessage;
 import com.tuotiansudai.message.WeChatMessageNotify;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -67,34 +69,28 @@ public class BankWithdrawServiceTest {
 
     @Test
     public void withdrawSuccessLoaner() {
-        BankAccountModel bankAccountMode = new BankAccountModel();
-        UserBankCardModel userBankCardModel = new UserBankCardModel();
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(bankAccountMode);
-        when(userBankCardMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(userBankCardModel);
-        //
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockBankAccountModel());
+        when(userBankCardMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockUserBankCardModel());
         bankWithdrawService.withdraw(Source.WEB, "loginName", "mobile", 1l, Role.LOANER);
-        //
         verify(bankWithdrawMapper, times(1)).createLoaner(any(BankWithdrawModel.class));
         verify(bankWithdrawMapper, times(0)).createInvestor(any(BankWithdrawModel.class));
-        verify(bankWrapperClient, times(1)).withdraw(anyLong(), any(Source.class), anyString(), anyString(), anyString(), anyString(), anyLong(), anyBoolean(), anyString());
+        verify(bankWrapperClient, times(1)).withdraw(anyLong(), any(Source.class), anyString(), anyString(), anyString(), anyString(), anyLong(), anyBoolean(), eq(null));
     }
 
     @Test
     public void withdrawSuccessInvestor() {
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(new BankAccountModel());
-        when(userBankCardMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(new UserBankCardModel());
-        //
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockBankAccountModel());
+        when(userBankCardMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockUserBankCardModel());
+        when(weChatUserMapper.findByLoginName(anyString())).thenReturn(Lists.newArrayList());
         bankWithdrawService.withdraw(Source.WEB, "loginName", "mobile", 1l, Role.INVESTOR);
-        //
         verify(bankWithdrawMapper, times(0)).createLoaner(any(BankWithdrawModel.class));
         verify(bankWithdrawMapper, times(1)).createInvestor(any(BankWithdrawModel.class));
-        verify(bankWrapperClient, times(1)).withdraw(anyLong(), any(Source.class), anyString(), anyString(), anyString(), anyString(), anyLong(), anyBoolean(), anyString());
+        verify(bankWrapperClient, times(1)).withdraw(anyLong(), any(Source.class), anyString(), anyString(), anyString(), anyString(), anyLong(), anyBoolean(), eq(null));
     }
 
     @Test
     public void withdrawFail() {
         bankWithdrawService.withdraw(Source.WEB, "loginName", "mobile", 1l, null);
-        //
         verify(bankWithdrawMapper, times(0)).createLoaner(any(BankWithdrawModel.class));
         verify(bankWithdrawMapper, times(0)).createInvestor(any(BankWithdrawModel.class));
         verify(bankWrapperClient, times(0)).withdraw(anyLong(), any(Source.class), anyString(), anyString(), anyString(), anyString(), anyLong(), anyBoolean(), anyString());
@@ -106,17 +102,13 @@ public class BankWithdrawServiceTest {
         bankWithdrawModel.setStatus(WithdrawStatus.WAIT_PAY);
         BankWithdrawMessage bankWithdrawMessage = new BankWithdrawMessage();
         bankWithdrawMessage.setStatus(true);
-        //
         when(bankWithdrawMapper.findById(anyLong())).thenReturn(bankWithdrawModel);
-        //
         bankWithdrawService.processWithdraw(bankWithdrawMessage);
-        //
         verify(mqWrapperClient, times(1)).sendMessage(eq(MessageQueue.AmountTransfer), any(List.class));
-        verify(mqWrapperClient, times(1)).sendMessage(eq(MessageQueue.EventMessage), any(List.class));
+        verify(mqWrapperClient, times(1)).sendMessage(eq(MessageQueue.EventMessage), any(EventMessage.class));
         verify(mqWrapperClient, times(1)).sendMessage(eq(MessageQueue.PushMessage), any(PushMessage.class));
         verify(mqWrapperClient, times(1)).sendMessage(eq(MessageQueue.WeChatMessageNotify), any(WeChatMessageNotify.class));
         verify(bankWithdrawMapper, times(1)).update(any(BankWithdrawModel.class));
-
     }
 
     @Test
@@ -125,12 +117,24 @@ public class BankWithdrawServiceTest {
         bankWithdrawModel.setStatus(WithdrawStatus.WAIT_PAY);
         BankWithdrawMessage bankWithdrawMessage = new BankWithdrawMessage();
         bankWithdrawMessage.setStatus(false);
-        //
         when(bankWithdrawMapper.findById(anyLong())).thenReturn(bankWithdrawModel);
-        //
         bankWithdrawService.processWithdraw(bankWithdrawMessage);
-        //
         verify(bankWithdrawMapper, times(1)).update(any(BankWithdrawModel.class));
         verify(mqWrapperClient, times(0)).sendMessage(any(MessageQueue.class), any());
+    }
+
+    private BankAccountModel mockBankAccountModel(){
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setId(1);
+        bankAccountModel.setLoginName("loginName");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        return bankAccountModel;
+    }
+
+    private UserBankCardModel mockUserBankCardModel(){
+        UserBankCardModel userBankCardModel = new UserBankCardModel();
+        userBankCardModel.setBankCode("000");
+        return userBankCardModel;
     }
 }

@@ -68,13 +68,10 @@ public class PhoneUpdateServiceTest {
     @Test
     public void updateSuccess() {
         BankChangeMobileDto bankChangeMobileDto = new BankChangeMobileDto("loginName", "mobile", "bankUserName", "bankAccountNo", "1", "18354275208");
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<PhoneUpdateRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((PhoneUpdateRequestDto) o).setOrderNo("111111");
-                ((PhoneUpdateRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((PhoneUpdateRequestDto) o).setOrderNo("111111");
+            ((PhoneUpdateRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
         PhoneUpdateRequestDto phoneUpdateRequestDto = phoneUpdateService.update(Source.WEB, bankChangeMobileDto);

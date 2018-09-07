@@ -7,7 +7,7 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-        insert ignore into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source)
+        insert into user (login_name, password, mobile, user_name, identity_number, email, register_time, last_modified_time, referrer, status, salt, channel, source)
         value(#{loginName}, #{password}, #{mobile}, #{userName}, #{identityNumber}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
     </insert>
 

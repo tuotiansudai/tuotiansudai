@@ -44,13 +44,10 @@ public class PasswordResetServiceTest {
 
     @Test
     public void resetSuccess() {
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((PasswordResetRequestDto) o).setOrderNo("111111");
-                ((PasswordResetRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((PasswordResetRequestDto) o).setOrderNo("111111");
+            ((PasswordResetRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         PasswordResetRequestDto dto = passwordResetService.reset(Source.WEB, mockBankBaseDto());
@@ -62,13 +59,10 @@ public class PasswordResetServiceTest {
 
     @Test
     public void resetFail() {
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((PasswordResetRequestDto) o).setOrderNo("111111");
-                ((PasswordResetRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((PasswordResetRequestDto) o).setOrderNo("111111");
+            ((PasswordResetRequestDto) o).setRequestData(null);
+            return false;
         }));
 
         PasswordResetRequestDto dto = passwordResetService.reset(Source.WEB, mockBankBaseDto());

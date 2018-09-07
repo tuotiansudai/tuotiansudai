@@ -48,13 +48,10 @@ public class LoanCancelServiceTest {
     public void cancelSuccess() {
         ArgumentCaptor<LoanCancelRequestDto> dtoCaptor = ArgumentCaptor.forClass(LoanCancelRequestDto.class);
         String responseStr = "{\"certInfo\":\"certInfo\",\"content\":{\"extMark\":\"\",\"loanOrderDate\":\"20180710\",\"loanOrderNo\":\"20180710000000000979\",\"loanTxNo\":\"LU02689298262601001\",\"merchantNo\":\"M02608959047521001\",\"orderDate\":\"20180710\",\"orderNo\":\"20180710000000007393\",\"status\":\"5\"},\"retCode\":\"0000\",\"retMsg\":\"操作成功\",\"sign\":\"sign\"}";
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanCancelRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCancelRequestDto) o).setOrderNo("111111");
-                ((LoanCancelRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCancelRequestDto) o).setOrderNo("111111");
+            ((LoanCancelRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(signatureHelper.verifySign(eq(responseStr))).thenReturn(true);
         when(bankClient.send(any(ApiType.class), anyString())).thenReturn(responseStr);
@@ -78,13 +75,10 @@ public class LoanCancelServiceTest {
 
     @Test
     public void cancelFalseVerifySign() {
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCancelRequestDto) o).setOrderNo("111111");
-                ((LoanCancelRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCancelRequestDto) o).setOrderNo("111111");
+            ((LoanCancelRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(bankClient.send(any(ApiType.class), anyString())).thenReturn(null);
         BankLoanCancelMessage bankLoanCancelMessage = loanCancelService.cancel(new BankLoanCancelDto());

@@ -85,13 +85,10 @@ public class LoanRepayServiceTest {
         ArgumentCaptor<Long> messageTimeoutCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<TimeUnit> messageTimeUnitCaptor = ArgumentCaptor.forClass(TimeUnit.class);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanRepayRequestDto) o).setOrderNo("111111");
-                ((LoanRepayRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanRepayRequestDto) o).setOrderNo("111111");
+            ((LoanRepayRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
         when(redisTemplate.opsForValue()).thenReturn(mock(ValueOperations.class));

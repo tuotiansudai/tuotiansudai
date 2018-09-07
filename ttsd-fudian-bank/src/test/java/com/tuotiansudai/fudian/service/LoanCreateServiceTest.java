@@ -47,13 +47,10 @@ public class LoanCreateServiceTest {
         ArgumentCaptor<LoanCreateRequestDto> dtoCaptor = ArgumentCaptor.forClass(LoanCreateRequestDto.class);
         String responseStr = "{\"certInfo\":\"certInfo\",\"content\":{\"accountNo\":\"UA02688350925091001\",\"amount\":100.00,\"extMark\":\"\",\"loanAccNo\":\"LA02688394699331001\",\"loanName\":\"房产抵押借款18001\",\"loanTxNo\":\"LU02688394699271001\",\"loanType\":\"1\",\"merchantNo\":\"M02608959047521001\",\"orderDate\":\"20180709\",\"orderNo\":\"20180709000000000008\",\"userName\":\"UU02688350925031001\"},\"retCode\":\"0000\",\"retMsg\":\"操作成功\",\"sign\":\"sign\"}";
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanCreateRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCreateRequestDto) o).setOrderNo("111111");
-                ((LoanCreateRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCreateRequestDto) o).setOrderNo("111111");
+            ((LoanCreateRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(bankClient.send(any(ApiType.class), anyString())).thenReturn(responseStr);
         when(signatureHelper.verifySign(eq(responseStr))).thenReturn(true);
@@ -75,13 +72,10 @@ public class LoanCreateServiceTest {
 
     @Test
     public void createFalseVerifySign() {
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanCreateRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCreateRequestDto) o).setOrderNo("111111");
-                ((LoanCreateRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCreateRequestDto) o).setOrderNo("111111");
+            ((LoanCreateRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(bankClient.send(any(ApiType.class), anyString())).thenReturn(null);
         BankLoanCreateMessage bankLoanCreateMessage = loanCreateService.create(new BankLoanCreateDto());

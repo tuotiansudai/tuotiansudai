@@ -89,13 +89,10 @@ public class RechargeServiceTest {
 
         BankRechargeDto dto = new BankRechargeDto("loginName", "mobile", "bankUserName", "bankAccountNo", 111l, 1000l, RechargePayType.FAST_PAY);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((RechargeRequestDto) o).setOrderNo("111111");
-                ((RechargeRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((RechargeRequestDto) o).setOrderNo("111111");
+            ((RechargeRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
         RechargeRequestDto rechargeRequestDto = rechargeService.recharge(Source.WEB, dto);
@@ -124,13 +121,10 @@ public class RechargeServiceTest {
         when(bankConfig.getMerchantUserName()).thenReturn("12312");
         when(bankConfig.getMerchantAccountNo()).thenReturn("11111");
         ArgumentCaptor<RechargeRequestDto> dtoCaptor = ArgumentCaptor.forClass(RechargeRequestDto.class);
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((RechargeRequestDto) o).setOrderNo("111111");
-                ((RechargeRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((RechargeRequestDto) o).setOrderNo("111111");
+            ((RechargeRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         RechargeRequestDto rechargeRequestDto = rechargeService.merchantRecharge(Source.WEB, "loginName", "mobile", 10000l, 1000l);
         verify(signatureHelper, times(1)).sign(any(), dtoCaptor.capture());
