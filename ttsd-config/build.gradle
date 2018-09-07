@@ -69,7 +69,7 @@ flyway {
     locations = ["filesystem:db_migration/${defaultDatabase}"]
     schemas = ["${defaultDatabase}"]
 
-    url = "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8&useSSL=false"
+    url = "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false"
     user = "${defaultUsername}"
     password = "${defaultPwd}"
 }
