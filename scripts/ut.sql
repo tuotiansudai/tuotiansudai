@@ -9,6 +9,7 @@ CREATE DATABASE `edxask`;
 CREATE DATABASE `anxin_operations`;
 CREATE DATABASE `edxlog`;
 CREATE DATABASE `edxmessage`;
+CREATE DATABASE `fudian`;
 
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'%' identified by 'tuotiansd';
 grant select,insert,update,delete,create,drop,alter,index on aa.* to tuotiansd@'localhost' identified by 'tuotiansd';
@@ -36,6 +37,9 @@ grant select,insert,update,delete,create,drop,alter,index on edxlog.* to sdlog@'
 
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'%' identified by 'sdmessage';
 grant select,insert,update,delete,create,drop,alter,index on edxmessage.* to sdmessage@'localhost' identified by 'sdmessage';
+
+grant select,insert,update,delete,create,drop,alter,index on fudian.* to tuotiansd@'%' identified by 'tuotiansd';
+grant select,insert,update,delete,create,drop,alter,index on fudian.* to tuotiansd@'localhost' identified by 'tuotiansd';
 
 update mysql.user set password=password('root') where user='root';
 
