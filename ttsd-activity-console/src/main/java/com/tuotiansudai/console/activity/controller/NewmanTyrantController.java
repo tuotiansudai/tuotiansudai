@@ -1,9 +1,9 @@
 package com.tuotiansudai.console.activity.controller;
 
 import com.tuotiansudai.activity.repository.dto.NewmanTyrantPrizeDto;
+import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.console.activity.service.ActivityConsoleNewmanTyrantService;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,13 +23,14 @@ public class NewmanTyrantController {
     private ActivityConsoleNewmanTyrantService activityConsoleNewmanTyrantService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView newmanTyrant(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date tradingTime) {
+    public ModelAndView newmanTyrant(@RequestParam(value = "tradingTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date tradingTime) {
 
         ModelAndView modelAndView = new ModelAndView("/newman-tyrant");
 
         if (tradingTime == null) {
             tradingTime = new Date();
         }
+
 
         List<NewmanTyrantView> newmanViews = activityConsoleNewmanTyrantService.obtainNewman(tradingTime);
 
@@ -53,7 +54,7 @@ public class NewmanTyrantController {
     @RequestMapping(value = "/upload-image", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public NewmanTyrantPrizeDto uploadMysteriousPrize(@RequestBody NewmanTyrantPrizeDto newmanTyrantPrizeDto,
-                                                    @RequestParam boolean today) {
+                                                      @RequestParam boolean today) {
         newmanTyrantPrizeDto.setPrizeDate(new Date());
         if (!today) {
             newmanTyrantPrizeDto.setPrizeDate(new DateTime().plusDays(1).toDate());

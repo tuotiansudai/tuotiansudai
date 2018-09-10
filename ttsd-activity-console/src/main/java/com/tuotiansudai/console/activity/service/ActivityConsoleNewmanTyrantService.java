@@ -59,6 +59,9 @@ public class ActivityConsoleNewmanTyrantService {
     @Value(value = "${activity.spring.breeze.endTime}")
     private String activitySpringBreezeEndTime;
 
+    @Value("#{'${activity.middleautum.nationalday.activity.period}'.split('\\~')}")
+    private List<String> middleautumNationalDayActivityPeriod = Lists.newArrayList();
+
     private int lifeSecond = 5184000;
 
     private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";
@@ -89,6 +92,7 @@ public class ActivityConsoleNewmanTyrantService {
 
         return CollectionUtils.isNotEmpty(newmanViews) && newmanViews.size() > 3 ? newmanViews.subList(0, 3) : newmanViews;
     }
+
 
 
     public void savePrize(NewmanTyrantPrizeDto newmanTyrantPrizeDto) {
@@ -198,5 +202,26 @@ public class ActivityConsoleNewmanTyrantService {
 
     public Date stringToDate(String date){
         return DateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+    }
+
+    public List<NewmanTyrantView> obtainNewmanViaMiddleAutum(Date tradingTime) {
+        if (tradingTime == null) {
+            logger.info("【MiddleAutumAndNationalDayService.obtainNewman】参数为空tradingTime");
+            return null;
+        }
+        Date tradingStartTime = null;
+        Date tradingEndTime = null;
+        //基准比较时间---查询时间当天的22点
+        Date standardDate = new DateTime(tradingTime).withTime(22, 0, 0, 0).toDate();
+        if (standardDate.before(tradingTime)) {
+            tradingStartTime = standardDate;
+            tradingEndTime = new DateTime(tradingStartTime).plusDays(1).toDate();
+        } else {
+            tradingEndTime = standardDate;
+            tradingStartTime = new DateTime(tradingEndTime).minusDays(1).toDate();
+        }
+
+        List<NewmanTyrantView> newmanViews = investNewmanTyrantMapper.findNewmanTyrantByTradingTimeWithEnd(tradingStartTime, tradingEndTime, middleautumNationalDayActivityPeriod.get(0), middleautumNationalDayActivityPeriod.get(1));
+        return CollectionUtils.isNotEmpty(newmanViews) && newmanViews.size() > 10 ? newmanViews.subList(0, 10) : newmanViews;
     }
 }

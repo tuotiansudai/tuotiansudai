@@ -1,7 +1,6 @@
 package com.tuotiansudai.activity.controller;
 
 import com.google.common.collect.Iterators;
-import com.tuotiansudai.activity.repository.model.NewmanTyrantHistoryView;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.activity.service.MiddleAutumAndNationalDayService;
 import com.tuotiansudai.activity.service.NewmanTyrantService;
@@ -13,12 +12,14 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by qduljs2011 on 2018/9/7.
@@ -35,13 +36,21 @@ public class MiddleAutumAndNationalDayController {
     public ModelAndView newmanTyrant() {
         ModelAndView modelAndView = new ModelAndView("/activities/middleautum-nationalday", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
+        Date tradingTime = new Date();
         List<String> activityTime = middleAutumAndNationalDayService.getActivityTime();
-        List<NewmanTyrantView> tyrantViews = middleAutumAndNationalDayService.obtainRecords(new Date());
+        List<NewmanTyrantView> tyrantViews = middleAutumAndNationalDayService.obtainRecords(tradingTime);
         int investRanking = CollectionUtils.isNotEmpty(tyrantViews) ?
                 Iterators.indexOf(tyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? tyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
-        modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(new DateTime().toString("yyyy-MM-dd")));
+        Date standardDate = new DateTime().withTime(22, 0, 0, 0).toDate();
+        String prizeDtoKey = null;
+        if (tradingTime.after(standardDate)) {
+            prizeDtoKey = new DateTime().plusDays(1).toString("yyyy-MM-dd");
+        } else {
+            prizeDtoKey = new DateTime().toString("yyyy-MM-dd");
+        }
+        modelAndView.addObject("prizeDto", newmanTyrantService.obtainPrizeDto(prizeDtoKey));
         modelAndView.addObject("investRanking", investRanking);
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("activityStartTime", activityTime.get(0));
@@ -51,7 +60,7 @@ public class MiddleAutumAndNationalDayController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/records", method = RequestMethod.GET)
+    @RequestMapping(value = "/records")
     @ResponseBody
     public BasePaginationDataDto<NewmanTyrantView> obtainNewman(@RequestParam("tradingTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
