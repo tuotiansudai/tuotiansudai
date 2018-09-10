@@ -1,19 +1,14 @@
 package com.tuotiansudai.activity.service;
 
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.activity.repository.mapper.InvestNewmanTyrantMapper;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -24,11 +19,6 @@ import java.util.List;
 @Service
 public class MiddleAutumAndNationalDayService {
     static Logger logger = Logger.getLogger(MiddleAutumAndNationalDayService.class);
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    private static final String NEWMAN_TYRANT_PRIZE_KEY = "console:Newman_Tyrant_Prize";
-
     @Autowired
     private InvestNewmanTyrantMapper investNewmanTyrantMapper;
 
