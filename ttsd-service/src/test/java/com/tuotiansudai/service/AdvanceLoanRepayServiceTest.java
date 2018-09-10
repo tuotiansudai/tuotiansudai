@@ -73,14 +73,12 @@ public class AdvanceLoanRepayServiceTest {
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId())).thenReturn(getLoanRepayModels());
         when(investRepayMapper.queryBankInvestRepayData(anyLong(), anyInt())).thenReturn(getBanLoanRepayInvestList());
-        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(new BankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(mockBankAccountModel());
         BankAsyncMessage bankAsyncMessage = new BankAsyncMessage();
         bankAsyncMessage.setStatus(true);
         when(bankWrapperClient.loanRepay(any(BankLoanRepayDto.class))).thenReturn(bankAsyncMessage);
-        //
         BankAsyncMessage returnMsg = repayService.advancedRepay(new RepayDto());
-        //
         verify(bankWrapperClient, times(1)).loanRepay(bankLoanRepayDto.capture());
         verify(loanRepayMapper, times(1)).update(any(LoanRepayModel.class));
         assertNotNull(returnMsg);
@@ -180,6 +178,7 @@ public class AdvanceLoanRepayServiceTest {
         loanModel.setBaseRate(0.2);
         loanModel.setActivityRate(0);
         loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
+        loanModel.setAgentLoginName("loginName");
         return loanModel;
     }
 
@@ -230,5 +229,20 @@ public class AdvanceLoanRepayServiceTest {
         bankLoanRepayInvestDataViewList.add(data2);
         bankLoanRepayInvestDataViewList.add(data3);
         return bankLoanRepayInvestDataViewList;
+    }
+
+    private UserModel mockUserModel(){
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("loginName");
+        userModel.setMobile("11111111111");
+        return userModel;
+    }
+
+    private BankAccountModel mockBankAccountModel(){
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setLoginName("loginName");
+        return bankAccountModel;
     }
 }

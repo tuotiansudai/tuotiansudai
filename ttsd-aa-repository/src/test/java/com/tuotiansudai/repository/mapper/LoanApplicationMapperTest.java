@@ -36,7 +36,7 @@ public class LoanApplicationMapperTest {
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
-        userModel.setMobile(String.valueOf(random.nextLong()));
+        userModel.setMobile(String.valueOf(random.nextLong()).substring(0, 11));
         userModel.setPassword("password");
         userModel.setSalt("salt");
         userModel.setRegisterTime(new Date());

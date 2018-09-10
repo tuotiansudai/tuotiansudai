@@ -129,7 +129,7 @@ public class InvestServiceTest {
     public void investSuccess() {
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
         when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
-        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
         when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
         when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
@@ -151,7 +151,7 @@ public class InvestServiceTest {
     public void fastInvestSuccess() {
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
         when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
-        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
         when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
         when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
@@ -441,7 +441,9 @@ public class InvestServiceTest {
         BankAccountModel bankAccountModel = new BankAccountModel();
         bankAccountModel.setBalance(10000000l);
         bankAccountModel.setAutoInvest(true);
-
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setLoginName("loginName");
         return bankAccountModel;
     }
 
@@ -453,6 +455,8 @@ public class InvestServiceTest {
         loanModel.setStatus(LoanStatus.RAISING);
         loanModel.setMaxInvestAmount(100000000l);
         loanModel.setLoanAmount(1000000l);
+        loanModel.setLoanTxNo("loanTxNo");
+        loanModel.setName("loanName");
         return loanModel;
     }
 
@@ -464,5 +468,10 @@ public class InvestServiceTest {
         return investDto;
     }
 
-
+    private UserModel mockUserModel(){
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("loginName");
+        userModel.setMobile("11111111111");
+        return userModel;
+    }
 }
