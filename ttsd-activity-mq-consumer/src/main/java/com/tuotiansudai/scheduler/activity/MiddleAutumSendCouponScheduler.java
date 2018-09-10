@@ -37,6 +37,7 @@ public class MiddleAutumSendCouponScheduler {
     @Scheduled(cron = "0 30 22 * * ?", zone = "Asia/Shanghai")
     public void sendCoupon() {
         Date tradingTime = new Date();
+        logger.info("[MiddleAutumSendCouponScheduler start] time:{}",tradingTime.toString());
         if (isActivityTime(tradingTime)) {
             Date tradingStartTime = null;
             Date tradingEndTime = null;
