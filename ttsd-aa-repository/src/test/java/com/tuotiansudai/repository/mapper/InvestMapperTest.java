@@ -104,6 +104,7 @@ public class InvestMapperTest {
         InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, User_ID, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTradingTime(new DateTime().withTimeAtStartOfDay().toDate());
+        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
         return model;
     }
 
@@ -494,6 +495,7 @@ public class InvestMapperTest {
         InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         model.setStatus(investStatus);
         model.setTransferStatus(transferStatus);
+        model.setCreatedTime(new Date());
         investMapper.create(model);
         return model;
     }
@@ -550,7 +552,7 @@ public class InvestMapperTest {
         loanDetailsModel.setNonTransferable(false);
         loanDetailsModel.setDeclaration("declaration");
         loanDetailsModel.setActivity(false);
-        loanDetailsModel.setActivityDesc("activityDesc");
+        loanDetailsModel.setActivityDesc("desc");
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsMapper.create(loanDetailsModel);
         return loanDetailsModel;

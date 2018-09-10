@@ -41,6 +41,7 @@ dependencies {
     compile('com.aliyun.oss:aliyun-sdk-oss:3.1.0')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    testCompile("org.mockito:mockito-core:2.21.0")
 
     compile project(':ttsd-fudian-bank-dto')
     compile project(':ttsd-etcd')
