@@ -6,6 +6,7 @@ import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferApplicationServic
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -58,6 +59,9 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Mock
+    private UserMembershipService userMembershipService;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -267,6 +271,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(accountModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.4);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
 
         BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
 
@@ -274,7 +279,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         assertEquals("1000.00", baseResponseDto.getData().getBalance());
         assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("0.15", baseResponseDto.getData().getExpectedInterestAmount());
+        assertEquals("0.22", baseResponseDto.getData().getExpectedInterestAmount());
     }
 
     @Test

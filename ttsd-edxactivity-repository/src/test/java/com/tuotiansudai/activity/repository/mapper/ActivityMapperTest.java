@@ -81,7 +81,7 @@ public class ActivityMapperTest {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser1");
+        UserModel userModel = createUserModel("testPrepareDataUser1");
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
         ActivityModel activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE, false);

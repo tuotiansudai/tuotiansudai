@@ -129,7 +129,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
     }
 
     private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser1");
+        UserModel userModel = createUserModel("testPrepareDataUser1");
         long loanId = IdGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);

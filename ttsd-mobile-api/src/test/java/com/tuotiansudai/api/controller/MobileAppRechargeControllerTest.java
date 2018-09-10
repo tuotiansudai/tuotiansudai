@@ -25,11 +25,11 @@ public class MobileAppRechargeControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldRechargeIsOk() throws Exception {
-        BankCardRequestDto bankCardRequestDto = new BankCardRequestDto();
-        bankCardRequestDto.setRechargeAmount("11.00");
+        BankRechargeRequestDto rechargeRequestDto = new BankRechargeRequestDto();
+        rechargeRequestDto.setAmount("11.00");
         when(service.recharge(anyString(), any(BankRechargeRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/recharge",
-                bankCardRequestDto);
+                rechargeRequestDto);
     }
 
 

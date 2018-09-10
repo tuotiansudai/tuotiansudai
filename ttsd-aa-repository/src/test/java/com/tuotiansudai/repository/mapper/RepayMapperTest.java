@@ -101,7 +101,6 @@ public class RepayMapperTest {
         assertThat(models.get(0).getStatus(), is(loanRepayModel.getStatus()));
         assertThat(models.get(0).getCreatedTime().getTime(), is(loanRepayModel.getCreatedTime().getTime()));
         assertThat(models.get(0).getLoan().getStatus(), is(loanModel.getStatus()));
-        assertThat(models.get(0).getLoan().getCreatedTime().getTime(), is(loanModel.getCreatedTime().getTime()));
         assertNotNull(models.get(0).getLoan().getName());
     }
 
