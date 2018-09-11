@@ -49,7 +49,7 @@
 <div class="heroic-list-section">
     <div class="horo-top page-width">
         <ul class="clearfix">
-            <li><span class="icon icon-time"></span>时间：<span class="date-time" id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}>2018-08-09</span></li>
+            <li><span class="icon icon-time"></span>时间：<span class="date-time" id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}">2018-08-09</span></li>
             <li><span class="icon icon-rank">
                 <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
                 <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
@@ -65,11 +65,6 @@
         <div class="horo-list-wrap">
             <div class="top-list"><div>排名</div><div>用户名</div><div>投资额（元）</div><div>奖励</div></div>
             <ul class="horo-list" id="contentList">
-
-                <li class="clearfix"><div>1</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li class="clearfix"><div>2</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li class="clearfix"><div>3</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li class="clearfix"><div>4</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
 
             </ul>
         </div>
@@ -100,26 +95,21 @@
     <script type="text/template" id="tplTable">
 
 
-        <#--<% for(var i = 0; i < records.length; i++) {-->
-        <#--var item = records[i];-->
-        <#--var reward;-->
-        <#--if(i==0) {-->
-        <#--reward='实物大奖';-->
-        <#--}-->
-        <#--else if(i>0 && i<4) {-->
-        <#--reward='1.1%加息券';-->
-        <#--}-->
-        <#--else {-->
-        <#--reward='100元京东E卡';-->
-        <#--}-->
-        <#--%>-->
-        <#--<tr>-->
-            <#--<td><%=i+1%></td>-->
-            <#--<td><%=item.loginName%></td>-->
-            <#--<td><%=item.centSumAmount%></td>-->
-            <#--<td><%=reward%></td>-->
-        <#--</tr>-->
-        <#--<% } %>-->
+        <% for(var i = 0; i < records.length; i++) {
+        var item = records[i];
+        var reward;
+        if(i==0) {
+        reward='实物大奖';
+        }
+        else if(i==1) {
+        reward='100元京东E卡';
+        }
+        else {
+        reward='1.1%加息券';
+        }
+        %>
+        <li class="clearfix"><div><%=i+1%></div><div><%=item.centSumAmount%></div><div><%=item.loginName%></div><div><%=reward%></div></li>
+        <% } %>
 
 
 
