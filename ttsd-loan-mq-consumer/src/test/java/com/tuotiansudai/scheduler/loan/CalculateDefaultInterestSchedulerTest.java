@@ -377,7 +377,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
-        assertThat(loanRepayModel2.getDefaultInterest(), is(32L));
+        assertThat(loanRepayModel2.getDefaultInterest(), is(31L));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.REPAYING));

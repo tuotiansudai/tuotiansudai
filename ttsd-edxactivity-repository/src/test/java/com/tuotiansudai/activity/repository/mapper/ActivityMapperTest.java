@@ -80,8 +80,8 @@ public class ActivityMapperTest {
         return activityModel;
     }
 
-    private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testPrepareDataUser1");
+    private List<ActivityModel> prepareData(String loginName) {
+        UserModel userModel = createUserModel(loginName);
         createUserModel("updatedUser");
         List<ActivityModel> activityModels = new ArrayList<>();
         ActivityModel activityModel = createActivityModel(userModel, "testTitle", DateTime.parse("2016-06-01T01:20").toDate(), DateTime.parse("2040-06-01T01:20").toDate(), Lists.newArrayList(Source.WEB), ActivityStatus.TO_APPROVE, false);
@@ -102,7 +102,7 @@ public class ActivityMapperTest {
 
     @Test
     public void testCreateAndFindById() throws Exception {
-        List<ActivityModel> activityModels = prepareData();
+        List<ActivityModel> activityModels = prepareData("testActivityUser1");
 
         ActivityModel activityModel = activityMapper.findById(activityModels.get(0).getId());
         ActivityModel originalActivityModel = activityModels.get(0);
@@ -127,7 +127,7 @@ public class ActivityMapperTest {
 
     @Test
     public void testUpdate() throws Exception {
-        List<ActivityModel> activityModels = prepareData();
+        List<ActivityModel> activityModels = prepareData("testActivityUser2");
 
         ActivityModel updatedActivityModel = new ActivityModel();
         updatedActivityModel.setId(activityModels.get(0).getId());
@@ -175,7 +175,7 @@ public class ActivityMapperTest {
 
     @Test
     public void testFindActiveActivities() throws Exception {
-        prepareData();
+        prepareData("testActivityUser3");
         List<ActivityModel> activityModels = activityMapper.findActiveActivities(Source.WEB, DateTime.parse("1999-1-1").toDate(), 0, 10);
         assertEquals(3, activityModels.size());
         for (ActivityModel activityModel : activityModels) {
