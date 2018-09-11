@@ -34,7 +34,7 @@ public class MiddleAutumAndNationalDayController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView newmanTyrant() {
-        ModelAndView modelAndView = new ModelAndView("/activities/middleautum-nationalday", "responsive", true);
+        ModelAndView modelAndView = new ModelAndView("/activities/2018/mid-autumn-festival", "responsive", true);
         String loginName = LoginUserInfo.getLoginName();
         Date tradingTime = new Date();
         List<String> activityTime = middleAutumAndNationalDayService.getActivityTime();
