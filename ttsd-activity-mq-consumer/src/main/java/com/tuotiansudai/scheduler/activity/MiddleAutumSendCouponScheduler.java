@@ -57,7 +57,7 @@ public class MiddleAutumSendCouponScheduler {
 
     private boolean isActivityTime(Date date) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        Date startTime = dateTimeFormatter.parseDateTime(middleautumNationalDayActivityPeriod.get(0)).minusDays(1).toDate();
+        Date startTime = dateTimeFormatter.parseDateTime(middleautumNationalDayActivityPeriod.get(0)).toDate();
         Date endTime = dateTimeFormatter.parseDateTime(middleautumNationalDayActivityPeriod.get(1)).plusDays(1).toDate();
         if (date.after(startTime) && date.before(endTime)) {
             return true;
