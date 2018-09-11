@@ -190,10 +190,10 @@ public class FinanceReportMapperTest {
     @Test
     public void testFindFinanceReportViews() throws Exception {
         List<FinanceReportItemView> originalFinanceReportItemViewList = prepareData();
-        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, null, null, null, 0, 100);
+        List<FinanceReportItemView> financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, null, null, null, null, null,0, 100);
         assertEquals(originalFinanceReportItemViewList.size(), financeReportItemViews.size());
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, null, null, null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, null, null, null, null, null, null, null,0, 100);
         assertEquals(4, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertEquals(1000L, financeReportItemView.getLoanId());
@@ -204,74 +204,74 @@ public class FinanceReportMapperTest {
             }
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, 2, null, null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, 2, null, null, null, null, null, null,0, 100);
         assertEquals(2, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertEquals(2, financeReportItemView.getPeriod());
         }
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, 1, null, null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, 1, null, null, null, null, null, null,0, 100);
         assertEquals(4, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertEquals(1, financeReportItemView.getPeriod());
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, "investorWithReferrer", null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, "investorWithReferrer", null, null, null, null, null,0, 100);
         assertEquals(6, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertEquals("investorWithReferrer", financeReportItemView.getInvestLoginName());
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, DateTime.parse("2016-11-12T00:20").toDate(), null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, DateTime.parse("2016-11-12T00:20").toDate(), null, null, null, null,0, 100);
         assertEquals(2, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertTrue(financeReportItemView.getInvestTime().after(DateTime.parse("2016-11-12T00:20").toDate()));
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, null, DateTime.parse("2016-10-12T02:20").toDate(), null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, null, DateTime.parse("2016-10-12T02:20").toDate(), null, null, null,0, 100);
         assertEquals(6, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertTrue(financeReportItemView.getInvestTime().before(DateTime.parse("2016-10-12T02:20").toDate()));
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, DateTime.parse("2016-10-12T00:20").toDate(), DateTime.parse("2016-11-12T02:20").toDate(), null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(null, null, null, DateTime.parse("2016-10-12T00:20").toDate(), DateTime.parse("2016-11-12T02:20").toDate(), null, null, null,0, 100);
         assertEquals(8, financeReportItemViews.size());
         for (FinanceReportItemView financeReportItemView : financeReportItemViews) {
             assertTrue(financeReportItemView.getInvestTime().after(DateTime.parse("2016-10-12T00:20").toDate()));
             assertTrue(financeReportItemView.getInvestTime().before(DateTime.parse("2016-11-12T02:20").toDate()));
         }
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 1, "investorWithReferrer", null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 1, "investorWithReferrer", null, null, null, null, null,0, 100);
         assertEquals(1, financeReportItemViews.size());
         assertEquals(1000L, financeReportItemViews.get(0).getLoanId());
         assertEquals(1, financeReportItemViews.get(0).getPeriod());
         assertEquals("investorWithReferrer", financeReportItemViews.get(0).getInvestLoginName());
 
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 1, "investorWithReferrer", DateTime.parse("2016-11-12T00:20").toDate(), null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 1, "investorWithReferrer", DateTime.parse("2016-11-12T00:20").toDate(), null, null, null, null,0, 100);
         assertEquals(0, financeReportItemViews.size());
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 5, null, null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 5, null, null, null, null, null, null,0, 100);
         assertEquals(0, financeReportItemViews.size());
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(3L, null, "user", null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(3L, null, "user", null, null, null, null, null,0, 100);
         assertEquals(0, financeReportItemViews.size());
-        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 2, "investorWithoutReferrer", null, null, null, 0, 100);
+        financeReportItemViews = financeReportMapper.findFinanceReportViews(1000L, 2, "investorWithoutReferrer", null, null, null, null, null,0, 100);
         assertEquals(0, financeReportItemViews.size());
     }
 
     @Test
     public void testFindCountFinanceReportViews() throws Exception {
         List<FinanceReportItemView> originalFinanceReportItemViewList = prepareData();
-        assertEquals(originalFinanceReportItemViewList.size(), financeReportMapper.findCountFinanceReportViews(null, null, null, null, null, null));
-        assertEquals(4, financeReportMapper.findCountFinanceReportViews(1000L, null, null, null, null, null));
-        assertEquals(2, financeReportMapper.findCountFinanceReportViews(null, 2, null, null, null, null));
-        assertEquals(4, financeReportMapper.findCountFinanceReportViews(null, 1, null, null, null, null));
-        assertEquals(6, financeReportMapper.findCountFinanceReportViews(null, null, "investorWithReferrer", null, null, null));
-        assertEquals(2, financeReportMapper.findCountFinanceReportViews(null, null, null, DateTime.parse("2016-11-12T00:20").toDate(), null, null));
-        assertEquals(6, financeReportMapper.findCountFinanceReportViews(null, null, null, null, DateTime.parse("2016-10-12T02:20").toDate(), null));
-        assertEquals(8, financeReportMapper.findCountFinanceReportViews(null, null, null, DateTime.parse("2016-10-12T00:20").toDate(), DateTime.parse("2016-11-12T02:20").toDate(), null));
-        assertEquals(1, financeReportMapper.findCountFinanceReportViews(1000L, 1, "investorWithReferrer", null, null, null));
+        assertEquals(originalFinanceReportItemViewList.size(), financeReportMapper.findCountFinanceReportViews(null, null, null, null, null, null, null, null));
+        assertEquals(4, financeReportMapper.findCountFinanceReportViews(1000L, null, null, null, null, null, null, null));
+        assertEquals(2, financeReportMapper.findCountFinanceReportViews(null, 2, null, null, null, null, null, null));
+        assertEquals(4, financeReportMapper.findCountFinanceReportViews(null, 1, null, null, null, null, null, null));
+        assertEquals(6, financeReportMapper.findCountFinanceReportViews(null, null, "investorWithReferrer", null, null, null, null, null));
+        assertEquals(2, financeReportMapper.findCountFinanceReportViews(null, null, null, DateTime.parse("2016-11-12T00:20").toDate(), null, null, null, null));
+        assertEquals(6, financeReportMapper.findCountFinanceReportViews(null, null, null, null, DateTime.parse("2016-10-12T02:20").toDate(), null, null, null));
+        assertEquals(8, financeReportMapper.findCountFinanceReportViews(null, null, null, DateTime.parse("2016-10-12T00:20").toDate(), DateTime.parse("2016-11-12T02:20").toDate(), null, null, null));
+        assertEquals(1, financeReportMapper.findCountFinanceReportViews(1000L, 1, "investorWithReferrer", null, null, null, null, null));
 
-        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 1, "investorWithReferrer", DateTime.parse("2016-11-12T00:20").toDate(), null, null));
-        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 5, null, null, null, null));
-        assertEquals(0, financeReportMapper.findCountFinanceReportViews(3L, null, "user", null, null, null));
-        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 2, "investorWithoutReferrer", null, null, null));
+        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 1, "investorWithReferrer", DateTime.parse("2016-11-12T00:20").toDate(), null, null, null, null));
+        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 5, null, null, null, null, null, null));
+        assertEquals(0, financeReportMapper.findCountFinanceReportViews(3L, null, "user", null, null, null, null, null));
+        assertEquals(0, financeReportMapper.findCountFinanceReportViews(1000L, 2, "investorWithoutReferrer", null, null, null, null, null));
     }
 }

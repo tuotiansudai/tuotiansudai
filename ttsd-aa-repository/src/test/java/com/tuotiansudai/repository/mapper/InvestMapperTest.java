@@ -271,6 +271,7 @@ public class InvestMapperTest {
         loanDetailsModel.setNonTransferable(true);
         loanDetailsModel.setDisableCoupon(true);
         loanDetailsMapper.updateByLoanId(loanDetailsModel);
+        investMapper.updateTransferStatus(investModel.getId(), TransferStatus.NONTRANSFERABLE);
         List<TransferableInvestView> transferableInvestViews1 = investMapper.findWebTransferableApplicationPaginationByLoginName(investorModel.getLoginName(), 0, 10);
         assertEquals(0, transferableInvestViews1.size());
 
@@ -550,7 +551,7 @@ public class InvestMapperTest {
         loanDetailsModel.setNonTransferable(false);
         loanDetailsModel.setDeclaration("declaration");
         loanDetailsModel.setActivity(false);
-        loanDetailsModel.setActivityDesc("activityDesc");
+        loanDetailsModel.setActivityDesc("desc");
         loanDetailsModel.setLoanId(loanModel.getId());
         loanDetailsMapper.create(loanDetailsModel);
         return loanDetailsModel;

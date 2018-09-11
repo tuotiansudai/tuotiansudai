@@ -16,6 +16,7 @@ public class UserItemDataDto implements Serializable {
     private String email;
     private String mobile;
     private String referrerMobile;
+    private String staffMobile;
     private boolean fastPay;
     private String channel;
     private boolean staff;
@@ -203,6 +204,14 @@ public class UserItemDataDto implements Serializable {
         this.modify = modify;
     }
 
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
+    }
+
     public String getBirthday() {
         if (identityNumber == null) {
             return "";
@@ -219,6 +228,7 @@ public class UserItemDataDto implements Serializable {
         this.loginName = userView.getLoginName();
         this.email = userView.getEmail();
         this.referrerMobile = userView.getReferrerMobile();
+        this.staffMobile = userView.getStaffMobile();
         this.channel = userView.getChannel();
         this.source = userView.getSource();
         this.mobile = userView.getMobile();

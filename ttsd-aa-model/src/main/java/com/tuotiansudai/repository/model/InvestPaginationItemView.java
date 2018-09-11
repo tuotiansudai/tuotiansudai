@@ -36,6 +36,7 @@ public class InvestPaginationItemView implements Serializable {
     private String identityNumber;
     //新增资金渠道
     private boolean isBankPlatform;
+    private TransferStatus transferStatus;
 
     public List<Role> getInvestorRoleList() {
         List<Role> roles = new ArrayList<>();
@@ -249,5 +250,13 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setIsBankPlatform(Boolean isBankPlatform) {
         this.isBankPlatform = isBankPlatform;
+    }
+
+    public TransferStatus getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(TransferStatus transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }

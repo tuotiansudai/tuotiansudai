@@ -46,4 +46,8 @@ public class FakeMobileUtil {
 
         return null;
     }
+
+    public static boolean mobileIsFakeMobile(String mobile){
+        return FAKE_MOBILES.contains(mobile);
+    }
 }

@@ -27,7 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class FinanceReportServiceTest {
     @Autowired
     FinanceReportService financeReportService;
@@ -207,14 +208,14 @@ public class FinanceReportServiceTest {
     public void testFinanceReportModel() throws Exception {
         List<FinanceReportItemView> originalFinanceReportItemViewList = prepareData();
 
-        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(null, null, null, null, null, null, 2, 3);
+        BasePaginationDataDto<FinanceReportDto> basePaginationDataDto = financeReportService.getFinanceReportDtos(null, null, null, null, null, null, null, null, 2, 3);
         assertEquals(true, basePaginationDataDto.isHasNextPage());
         assertEquals(true, basePaginationDataDto.isHasPreviousPage());
         assertEquals(14, basePaginationDataDto.getCount());
         assertEquals(2, basePaginationDataDto.getIndex());
         assertEquals(3, basePaginationDataDto.getRecords().size());
 
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 1, "investorWithReferrer", null, null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 1, "investorWithReferrer", null, null, null, null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         FinanceReportItemView financeReportItemView = originalFinanceReportItemViewList.get(0);
         FinanceReportDto financeReportDto = basePaginationDataDto.getRecords().get(0);
@@ -240,15 +241,15 @@ public class FinanceReportServiceTest {
         assertEquals(AmountConverter.convertCentToString(financeReportItemView.getFee()), financeReportDto.getFee());
         assertEquals(AmountConverter.convertCentToString(financeReportItemView.getActualRepayAmount()), financeReportDto.getActualRepayAmount());
         assertEquals("30.00", financeReportDto.getRecommendAmount());
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, null, null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         financeReportDto = basePaginationDataDto.getRecords().get(0);
         assertEquals(184, financeReportDto.getBenefitDays());
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 2, "investorWithReferrer", null, null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(1000L, 2, "investorWithReferrer", null, null, null, null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         financeReportDto = basePaginationDataDto.getRecords().get(0);
         assertEquals(0, financeReportDto.getBenefitDays());
-        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, null, 1, 100);
+        basePaginationDataDto = financeReportService.getFinanceReportDtos(2L, 1, "investorWithReferrer", null, null, null, null, null, 1, 100);
         assertEquals(1, basePaginationDataDto.getRecords().size());
         financeReportDto = basePaginationDataDto.getRecords().get(0);
         assertEquals("referrer", financeReportDto.getReferrer());
@@ -258,7 +259,7 @@ public class FinanceReportServiceTest {
     public void testGetFinanceReportCsvData() throws Exception {
         prepareData();
 
-        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null, null);
+        List<List<String>> csvData = financeReportService.getFinanceReportCsvData(null, null, null, null, null, null, null, null);
         assertEquals(14, csvData.size());
     }
 }

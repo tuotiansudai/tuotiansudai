@@ -7,16 +7,20 @@ import com.tuotiansudai.ask.dto.QuestionWithCaptchaRequestDto;
 import com.tuotiansudai.ask.repository.model.QuestionModel;
 import com.tuotiansudai.ask.repository.model.QuestionStatus;
 import com.tuotiansudai.ask.repository.model.Tag;
+import com.tuotiansudai.ask.utils.FakeMobileUtil;
 import com.tuotiansudai.ask.utils.SensitiveWordsFilter;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.rest.client.AskRestClient;
 import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import com.tuotiansudai.util.MobileEncoder;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +38,15 @@ public class QuestionService {
     @Autowired
     private BaiDuMaWebMasterService baiDuMaWebMasterService;
 
+    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
     private static final String urlTemplate = "https://tuotiansudai.com/ask/question/%s";
 
-    public QuestionResultDataDto createQuestion(QuestionWithCaptchaRequestDto questionRequestDto) {
+    private static final String USER_CREATE_QUESTION_TIME_KEY = "USER_CREATE_QUESTION_TIME_KEY:{0}";
+
+    public QuestionResultDataDto createQuestion(String mobile, QuestionWithCaptchaRequestDto questionRequestDto) {
         QuestionResultDataDto dataDto = new QuestionResultDataDto();
+
         if (!captchaHelperService.captchaVerify(questionRequestDto.getCaptcha())) {
             return dataDto;
         }
@@ -56,6 +65,12 @@ public class QuestionService {
             return dataDto;
         }
         dataDto.setAdditionSensitiveValid(true);
+
+        String timeKey = MessageFormat.format(USER_CREATE_QUESTION_TIME_KEY, mobile);
+        if (!FakeMobileUtil.mobileIsFakeMobile(mobile) && redisWrapperClient.incrEx(timeKey, (24 * 60 * 60 - DateTime.now().getSecondOfDay())) >= 6){
+            dataDto.setMessage("今日提问已达上限");
+            return dataDto;
+        }
 
         try {
             askRestClient.createQuestion(questionRequestDto);
