@@ -36,6 +36,7 @@ public enum MessageQueue {
     AmountTransfer("AmountTransfer"),
     SmsNotify("SmsNotify"),
     SmsFatalNotify("SmsFatalNotify"),
+    HuiZuCouponAssignQueue("HuiZuCouponAssignQueue"),//慧租发放优惠券
 
     //ump queues
     UmpRecharge_Success("UmpRecharge-Success"),
@@ -83,7 +84,8 @@ public enum MessageQueue {
     LoanRepay_Success("LoanRepay-Success"),
     LoanCallback_Success("LoanCallback-Success"),
 
-    QueryDownloadFiles("QueryDownloadFiles"),;
+    QueryDownloadFiles("QueryDownloadFiles"),
+    ;
 
     private final String queueName;
 

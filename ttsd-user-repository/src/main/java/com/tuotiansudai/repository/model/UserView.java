@@ -28,6 +28,7 @@ public class UserView implements Serializable {
     private boolean fastPay;
     private String umpUserName;
     private String umpIdentityNumber;
+    private String staffMobile;
 
     public boolean isBindBankCard() {
         return isBindBankCard;
@@ -219,5 +220,13 @@ public class UserView implements Serializable {
 
     public void setUmpIdentityNumber(String umpIdentityNumber) {
         this.umpIdentityNumber = umpIdentityNumber;
+    }
+
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
     }
 }

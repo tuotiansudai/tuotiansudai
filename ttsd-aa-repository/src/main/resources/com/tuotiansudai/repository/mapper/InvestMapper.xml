@@ -53,6 +53,7 @@
         <result column="city" property="city"/>
         <result column="identity_number" property="identityNumber"/>
         <result column="is_bank_platform" property="isBankPlatform"/>
+        <result column="transfer_status" property="transferStatus"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -307,7 +308,8 @@
         (SELECT extra_rate FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS extra_rate,
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS
         extra_actual_interest,
-        invest.status AS invest_status
+        invest.status AS invest_status,
+        invest.transfer_status as transfer_status
         FROM
         invest join loan on invest.loan_id = loan.id
         <where>

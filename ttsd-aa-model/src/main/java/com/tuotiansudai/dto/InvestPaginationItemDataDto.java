@@ -35,6 +35,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String city;
     private String identityNumber;
     private Boolean isBankPlatform;
+    private boolean allowTransfer;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -60,6 +61,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.city = view.getCity();
         this.identityNumber = view.getIdentityNumber();
         this.isBankPlatform=view.getIsBankPlatform();
+        this.allowTransfer = view.getTransferStatus() != TransferStatus.NONTRANSFERABLE;
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -295,5 +297,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setIsBankPlatform(Boolean isBankPlatform) {
         this.isBankPlatform = isBankPlatform;
+    }
+
+    public boolean isAllowTransfer() {
+        return allowTransfer;
+    }
+
+    public void setAllowTransfer(boolean allowTransfer) {
+        this.allowTransfer = allowTransfer;
     }
 }

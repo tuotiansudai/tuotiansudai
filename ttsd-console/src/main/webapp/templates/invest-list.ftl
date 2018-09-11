@@ -125,6 +125,7 @@
                 <th>使用优惠(使用优惠信息／实际返款)</th>
                 <th>阶梯加息优惠(阶梯加息利率/实际返款)</th>
                 <th>投资状态</th>
+                <th>允许转让</th>
                 <th>回款记录</th>
             </tr>
             </thead>
@@ -156,6 +157,14 @@
                     <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
                     <td>${invest.investStatus}</td>
+                    <td>${invest.allowTransfer?then('是','否')}
+                        <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR_ADMIN')">
+                            <#if !invest.allowTransfer>
+                                <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
+                                        data-investid="${invest.investId?string.computer}">修改</button>
+                            </#if>
+                        </@security.authorize>
+                    </td>
                     <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>

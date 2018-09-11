@@ -7,7 +7,9 @@ import com.tuotiansudai.dto.LoanRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.util.CalculateUtil;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,10 @@ public class ConsoleLoanRepayService {
 
     public BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> findLoanRepayPagination(int index, int pageSize, Long loanId,
                                                                                         String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
+
+        startTime = startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        endTime = endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+
         if (index < 1) {
             index = 1;
         }

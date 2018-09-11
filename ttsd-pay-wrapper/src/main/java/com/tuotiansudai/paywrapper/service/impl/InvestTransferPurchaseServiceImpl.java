@@ -575,7 +575,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 investDto.getSource(),
                 investDto.getChannel()
         );
-
+        investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investModel.setInvestFeeRate(membershipPrivilegePurchaseService.obtainServiceFee(loginName));
         investModel.setNoPasswordInvest(investDto.isNoPassword());
         return investModel;

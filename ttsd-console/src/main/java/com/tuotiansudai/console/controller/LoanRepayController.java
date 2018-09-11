@@ -38,8 +38,8 @@ public class LoanRepayController {
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
         BaseDto<BasePaginationDataDto<LoanRepayDataItemDto>> baseDto = consoleLoanRepayService.findLoanRepayPagination(index, pageSize,
                 loanId, loginName,
-                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
-                endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
+                startTime,
+                endTime,
                 repayStatus);
         List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto", baseDto);

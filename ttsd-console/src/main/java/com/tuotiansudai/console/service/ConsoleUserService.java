@@ -159,9 +159,10 @@ public class ConsoleUserService {
                                                                        Date beginTime, Date endTime, Source source,
                                                                        RoleStage roleStage, String referrerMobile,
                                                                        String channel, UserOperation userOperation,
+                                                                       Boolean hasStaff, String staffMobile,
                                                                        Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = new BaseDto<>();
-        List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, (index - 1) * pageSize, pageSize);
+        List<UserView> userViews = userMapperConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile,  (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItems = Lists.newArrayList();
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
@@ -171,7 +172,7 @@ public class ConsoleUserService {
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItems.add(userItemDataDto);
         }
-        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation);
+        int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItems);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);

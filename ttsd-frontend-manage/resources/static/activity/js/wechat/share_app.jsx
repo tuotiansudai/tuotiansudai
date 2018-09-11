@@ -329,6 +329,11 @@ $('.coupon-btn3').on('click',function (event) {
         $('body,html').animate({scrollTop: 0}, 'fast');
     }
 });
+
+$('.coupon-btn5').on('click',function (event) {
+    event.preventDefault();
+        window.location.href = "/loan-list";
+});
 $('.coupon-btn-bottom').on('click', function (event) {
     event.preventDefault();
     if (urlObj.params.source == 'app') {

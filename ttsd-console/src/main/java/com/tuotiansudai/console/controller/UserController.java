@@ -203,10 +203,12 @@ public class UserController {
                                     @RequestParam(value = "channel", required = false) String channel,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
+                                    @RequestParam(value = "hasStaff", required = false) Boolean hasStaff,
+                                    @RequestParam(value = "staffMobile", required = false) String staffMobile,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
-                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto", baseDto);
         mv.addObject("loginName", loginName);
@@ -226,6 +228,8 @@ public class UserController {
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("userOperations", UserOperation.values());
+        mv.addObject("hasStaff", hasStaff);
+        mv.addObject("staffMobile", staffMobile);
         return mv;
     }
 

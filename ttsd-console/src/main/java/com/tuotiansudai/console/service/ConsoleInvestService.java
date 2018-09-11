@@ -5,10 +5,7 @@ import com.tuotiansudai.dto.InvestPaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.mapper.CouponMapper;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.PaginationUtil;
@@ -50,17 +47,20 @@ public class ConsoleInvestService {
     @Autowired
     private UserMapper userMapper;
 
-    public InvestPaginationDataDto getInvestPagination(Boolean isBankPlatform,Long loanId, String investorMobile, String channel, Source source,
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    public InvestPaginationDataDto getInvestPagination(Boolean isBankPlatform, Long loanId, String investorMobile, String channel, Source source,
                                                        Role role, Date startTime, Date endTime, InvestStatus investStatus,
                                                        PreferenceType preferenceType, ProductType productType, int index, int pageSize) {
         UserModel investor = userMapper.findByLoginNameOrMobile(investorMobile);
         String investorLoginName = investor != null ? investor.getLoginName() : null;
 
         endTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
-        long count = investMapper.findCountInvestPagination(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
-        long investAmountSum = investMapper.sumInvestAmountConsole(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
+        long count = investMapper.findCountInvestPagination(isBankPlatform, loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
+        long investAmountSum = investMapper.sumInvestAmountConsole(isBankPlatform, loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
         index = PaginationUtil.validateIndex(index, pageSize, count);
-        List<InvestPaginationItemView> items = investMapper.findInvestPagination(isBankPlatform,loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<InvestPaginationItemView> items = investMapper.findInvestPagination(isBankPlatform, loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, view -> {
             InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
@@ -99,5 +99,14 @@ public class ConsoleInvestService {
 
     public List<String> findAllInvestChannels() {
         return investMapper.findAllInvestChannels();
+    }
+
+    public boolean updateInvestTransferStatus(long investId) {
+        InvestModel investModel = investMapper.findById(investId);
+        if (investModel == null || investModel.getTransferStatus() != TransferStatus.NONTRANSFERABLE) {
+            return false;
+        }
+        investMapper.updateTransferStatus(investId, TransferStatus.TRANSFERABLE);
+        return true;
     }
 }

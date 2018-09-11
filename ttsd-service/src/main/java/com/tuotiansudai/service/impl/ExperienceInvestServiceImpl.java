@@ -81,6 +81,7 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, investDto.getLoginName(), amount, defaultFee, false, new Date(), investDto.getSource(), investDto.getChannel());
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
+        investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         Date repayDate = new DateTime().plusDays(loanModel.getDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate();
         long expectedInterest = InterestCalculator.estimateExperienceExpectedInterest(amount, loanModel);

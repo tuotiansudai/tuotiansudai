@@ -31,17 +31,17 @@ public class ConsoleHomeService {
 
     public int userToday() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null, null, null);
     }
 
     public int user7Days() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null, null, null);
     }
 
     public int user30Days() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null, null, null, null);
     }
 
     public long rechargeToday_Loaner() {
