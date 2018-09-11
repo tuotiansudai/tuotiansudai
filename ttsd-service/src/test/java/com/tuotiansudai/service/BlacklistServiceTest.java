@@ -50,14 +50,14 @@ public class BlacklistServiceTest {
     }
 
     private List<BlacklistModel> prepareData() {
-        createUserByLoginName("testUser1");
-        createUserByLoginName("testUser2");
-        createUserByLoginName("testUser3");
+        createUserByLoginName("testBlacklistUser1");
+        createUserByLoginName("testBlacklistUser2");
+        createUserByLoginName("testBlacklistUser3");
 
         List<BlacklistModel> blacklistModels = new ArrayList<>();
-        blacklistModels.add(new BlacklistModel("testUser1", DateTime.parse("2010-06-30T01:20").toDate(), false));
-        blacklistModels.add(new BlacklistModel("testUser2", DateTime.parse("2011-06-30T01:20").toDate(), false));
-        blacklistModels.add(new BlacklistModel("testUser3", DateTime.parse("2012-06-30T01:20").toDate(), true));
+        blacklistModels.add(new BlacklistModel("testBlacklistUser1", DateTime.parse("2010-06-30T01:20").toDate(), false));
+        blacklistModels.add(new BlacklistModel("testBlacklistUser2", DateTime.parse("2011-06-30T01:20").toDate(), false));
+        blacklistModels.add(new BlacklistModel("testBlacklistUser3", DateTime.parse("2012-06-30T01:20").toDate(), true));
         return blacklistModels;
     }
 
@@ -65,8 +65,8 @@ public class BlacklistServiceTest {
     public void testUserIsInBlacklist() {
         List<BlacklistModel> blacklistModels = prepareData();
         blacklistMapper.massInsertBlacklist(blacklistModels);
-        assertTrue(blacklistService.userIsInBlacklist("testUser1"));
-        assertTrue(blacklistService.userIsInBlacklist("testUser2"));
-        assertFalse(blacklistService.userIsInBlacklist("testUser3"));
+        assertTrue(blacklistService.userIsInBlacklist("testBlacklistUser1"));
+        assertTrue(blacklistService.userIsInBlacklist("testBlacklistUser2"));
+        assertFalse(blacklistService.userIsInBlacklist("tesBlacklistUser3"));
     }
 }

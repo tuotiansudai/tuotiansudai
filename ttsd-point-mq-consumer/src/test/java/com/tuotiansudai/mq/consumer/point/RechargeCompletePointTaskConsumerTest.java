@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class RechargeSuccessCompletePointTaskConsumerTest extends PointTaskConsumerTestBase {
+public class RechargeCompletePointTaskConsumerTest extends PointTaskConsumerTestBase {
     @Autowired
-    @Qualifier("rechargeSuccessCompletePointTaskConsumer")
+    @Qualifier("rechargeCompletePointTaskConsumer")
     private MessageConsumer consumer;
 
     @MockBean
@@ -27,6 +27,6 @@ public class RechargeSuccessCompletePointTaskConsumerTest extends PointTaskConsu
     @Test
     @Transactional
     public void shouldConsume() {
-        shouldCompleteNewbieTask(consumer, pointTaskService, PointTask.FIRST_RECHARGE);
+        shouldCompleteNewbieTask(pointTaskService, PointTask.FIRST_RECHARGE);
     }
 }

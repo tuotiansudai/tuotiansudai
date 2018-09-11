@@ -128,8 +128,8 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         return activityModel;
     }
 
-    private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser1");
+    private List<ActivityModel> prepareData(String loginName) {
+        UserModel userModel = createUserModel(loginName);
         long loanId = IdGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
@@ -155,7 +155,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
 
     @Test
     public void testGetAppActivityCenterResponseData() {
-        prepareData();
+        prepareData("testApiActivityUser1");
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testUser");
         baseParam.setPlatform(Source.IOS.toString());

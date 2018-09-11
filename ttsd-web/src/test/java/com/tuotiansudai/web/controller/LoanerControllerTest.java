@@ -299,6 +299,7 @@ public class LoanerControllerTest extends BaseControllerTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        fakeLoanModel.setLoanFee(0);
         return fakeLoanModel;
     }
 

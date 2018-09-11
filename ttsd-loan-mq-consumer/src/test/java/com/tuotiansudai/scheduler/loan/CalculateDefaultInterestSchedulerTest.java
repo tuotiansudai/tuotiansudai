@@ -148,7 +148,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
-        assertThat(loanRepayModel1.getDefaultInterest(), is(12L));
+        assertThat(loanRepayModel1.getDefaultInterest(), is(11L));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.REPAYING));
@@ -223,7 +223,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
-        assertThat(loanRepayModel1.getDefaultInterest(), is(72L));
+        assertThat(loanRepayModel1.getDefaultInterest(), is(71L));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
@@ -298,7 +298,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
-        assertThat(loanRepayModel1.getDefaultInterest(), is(132L));
+        assertThat(loanRepayModel1.getDefaultInterest(), is(131L));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
@@ -377,7 +377,7 @@ public class CalculateDefaultInterestSchedulerTest {
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
-        assertThat(loanRepayModel2.getDefaultInterest(), is(32L));
+        assertThat(loanRepayModel2.getDefaultInterest(), is(31L));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.REPAYING));

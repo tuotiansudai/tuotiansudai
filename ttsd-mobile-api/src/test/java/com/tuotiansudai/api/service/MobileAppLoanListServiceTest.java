@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -43,6 +44,8 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     private UserCouponMapper userCouponMapper;
     @Mock
     private PageValidUtils pageValidUtils;
+    @Mock
+    private UserMembershipService userMembershipService;
 
     @Before
     public void before() {
@@ -75,6 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(Lists.newArrayList(userCouponModel));
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.09);
 
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -109,6 +113,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(null);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0D);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");

@@ -72,7 +72,7 @@ public class MobileAppLoanListV2ServiceTest extends ServiceTestBase {
         LoanDetailsModel loanDetailsModel1 = new LoanDetailsModel(loanModel1.getId(), "", Lists.newArrayList(Source.MOBILE, Source.WEB), false, "");
         loanDetailsMapper.create(loanDetailsModel1);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV2Service.generateIndexLoan(null);
-        assertTrue(dto.getData().getLoanList().get(0).getProductNewType().equals("EXPERIENCE"));
+        assertTrue(dto.getData().getLoanList().get(0).getProductNewType().equals("_90"));
     }
 
     @Test

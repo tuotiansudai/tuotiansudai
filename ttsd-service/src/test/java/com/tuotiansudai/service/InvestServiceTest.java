@@ -1,217 +1,477 @@
 package com.tuotiansudai.service;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.membership.repository.mapper.MembershipMapper;
-import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
-import com.tuotiansudai.membership.repository.model.UserMembershipModel;
-import com.tuotiansudai.membership.repository.model.UserMembershipType;
+import com.tuotiansudai.client.BankWrapperClient;
+import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.fudian.message.BankReturnCallbackMessage;
+import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.joda.time.DateTime;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.service.impl.InvestServiceImpl;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+/**
+ * Created by qduljs2011 on 2018/9/3.
+ */
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
 public class InvestServiceTest {
-    @Autowired
-    private InvestMapper investMapper;
+    @InjectMocks
+    private InvestServiceImpl investService;
 
-    @Autowired
-    private InvestService investService;
+    @Mock
+    private BankAccountMapper bankAccountMapper;
 
-    @Autowired
+    @Mock
     private LoanMapper loanMapper;
 
-    @Autowired
-    private FakeUserHelper userMapper;
+    @Mock
+    private InvestMapper investMapper;
 
-    @Autowired
+    @Mock
+    private UserCouponMapper userCouponMapper;
+
+    @Mock
+    private CouponMapper couponMapper;
+
+    @Mock
+    private InvestRepayMapper investRepayMapper;
+
+    @Mock
+    private InvestExtraRateMapper investExtraRateMapper;
+
+    @Mock
     private ExtraLoanRateMapper extraLoanRateMapper;
 
-    @Autowired
+    @Mock
+    private UserMapper userMapper;
+
+    @Mock
     private LoanDetailsMapper loanDetailsMapper;
 
-    @Autowired
-    private UserMembershipMapper userMembershipMapper;
+    @Mock
+    private UserCouponService userCouponService;
 
-    @Autowired
-    private MembershipMapper membershipMapper;
+    @Mock
+    private UserOpLogService userOpLogService;
 
-    static private long LOAN_ID = 0;
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
 
-    private void createLoanByUserId(String userId, long loanId) {
-        LoanDto loanDto = new LoanDto();
-        loanDto.setLoanerLoginName(userId);
-        loanDto.setLoanerUserName("借款人");
-        loanDto.setLoanerIdentityNumber("111111111111111111");
-        loanDto.setAgentLoginName(userId);
-        loanDto.setBasicRate("16.00");
-        loanDto.setId(loanId);
-        loanDto.setProjectName("店铺资金周转");
-        loanDto.setActivityRate("12");
-        loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NORMAL);
-        loanDto.setContractId(123);
-        loanDto.setDescriptionHtml("asdfasdf");
-        loanDto.setDescriptionText("asdfasd");
-        loanDto.setFundraisingEndTime(new Date());
-        loanDto.setFundraisingStartTime(new Date());
-        loanDto.setInvestIncreasingAmount("1");
-        loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
-        loanDto.setMaxInvestAmount("100000000000");
-        loanDto.setMinInvestAmount("0");
-        loanDto.setCreatedTime(new Date());
-        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
-        loanDto.setProductType(ProductType._30);
-        loanDto.setPledgeType(PledgeType.HOUSE);
-        LoanModel loanModel = new LoanModel(loanDto);
-        loanModel.setDeadline(new DateTime().plusDays(10).toDate());
-        loanMapper.create(loanModel);
-    }
+    @Mock
+    private CouponRepayMapper couponRepayMapper;
 
-    private void createUserByUserId(String userId) {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName(userId);
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
-    }
+    @Mock
+    private CouponService couponService;
 
-    private void createInvests(String loginName, long loanId) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, -98);
-        for (int i = 10000000; i < 10099000; i += 1000) {
-            cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
-            model.setStatus(InvestStatus.SUCCESS);
-            investMapper.create(model);
-        }
-    }
+    @Mock
+    private InvestTransferService investTransferService;
+
+    @Mock
+    private UserMembershipEvaluator userMembershipEvaluator;
+
+    @Mock
+    private UserMembershipService userMembershipService;
+
+    @Mock
+    private BankWrapperClient bankWrapperClient;
 
     @Before
-    public void setup() throws Exception {
-        long loanId = IdGenerator.generate();
-        LOAN_ID = loanId;
-        createUserByUserId("testuser");
-        createLoanByUserId("testuser", loanId);
-        createInvests("testuser", loanId);
+    public void init() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        Field bankWrapperClientField = investService.getClass().getDeclaredField("bankWrapperClient");
+        bankWrapperClientField.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(bankWrapperClientField, bankWrapperClientField.getModifiers() & ~Modifier.FINAL);
+        bankWrapperClientField.set(investService, this.bankWrapperClient);
+        //
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        Field field = investService.getClass().getDeclaredField("showRandomLoginNameList");
+        field.setAccessible(true);
+        field.set(investService, list);
+        //
+        Field newBilField = investService.getClass().getDeclaredField("NEWBIE_INVEST_LIMIT");
+        newBilField.setAccessible(true);
+        modifiersField.setInt(newBilField, newBilField.getModifiers() & ~Modifier.FINAL);
+        newBilField.set(investService, 1);
     }
 
     @Test
-    public void shouldEstimateInvestIncomeIsOk() {
-        String loginName = "testExtraRate";
-        long loanId = IdGenerator.generate();
-        createUserByUserId(loginName);
-        createLoanByUserId(loginName, loanId);
-        List<ExtraLoanRateModel> extraLoanRateModels = createExtraLoanRate(loanId);
-        extraLoanRateMapper.create(extraLoanRateModels);
-
-        loanDetailsMapper.create(createLoanDetails(loanId));
-
-        long amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 100000, new Date());
-        assertNotNull(amount);
-        amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 1000000, new Date());
-        assertNotNull(amount);
-        amount = investService.estimateInvestIncome(loanId, 0.1, loginName, 5000000, new Date());
-        assertNotNull(amount);
+    public void investSuccess() {
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        boolean hasError = false;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasError = false;
+        }
+        verify(investMapper, times(1)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(1)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(bankAsyncMessage);
+        assertEquals(false, hasError);
     }
 
-    private List<ExtraLoanRateModel> createExtraLoanRate(long loanId) {
-        ExtraLoanRateModel model = new ExtraLoanRateModel();
-        model.setLoanId(loanId);
-        model.setExtraRateRuleId(100001);
-        model.setCreatedTime(new Date());
-        model.setMinInvestAmount(100000);
-        model.setMaxInvestAmount(1000000);
-        model.setRate(0.1);
-        ExtraLoanRateModel model2 = new ExtraLoanRateModel();
-        model2.setLoanId(loanId);
-        model2.setExtraRateRuleId(100001);
-        model2.setCreatedTime(new Date());
-        model2.setMinInvestAmount(1000000);
-        model2.setMaxInvestAmount(5000000);
-        model2.setRate(0.3);
-        ExtraLoanRateModel model3 = new ExtraLoanRateModel();
-        model3.setLoanId(loanId);
-        model3.setExtraRateRuleId(100001);
-        model3.setCreatedTime(new Date());
-        model3.setMinInvestAmount(5000000);
-        model3.setMaxInvestAmount(0);
-        model3.setRate(0.5);
-        List<ExtraLoanRateModel> list = Lists.newArrayList();
-        list.add(model);
-        list.add(model2);
-        list.add(model3);
-        return list;
+    @Test
+    public void fastInvestSuccess() {
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.fastInvest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankReturnCallbackMessage());
+        boolean hasError = false;
+        BankReturnCallbackMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.noPasswordInvest(getInvestDto());
+        } catch (InvestException e) {
+            hasError = false;
+        }
+        verify(investMapper, times(1)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(1)).fastInvest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(bankAsyncMessage);
+        assertEquals(false, hasError);
     }
 
-    private LoanDetailsModel createLoanDetails(long loanId) {
+
+    @Test
+    public void investFalseNoLoan() {
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.NOT_ENOUGH_BALANCE, hasException.getType());
+    }
+
+    @Test
+    public void investFalseEqualLoan() {
+        LoanModel loanModel = getLoanModel();
+        InvestDto investDto = getInvestDto();
+        investDto.setLoginName("equal");
+        loanModel.setAgentLoginName("equal");
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(investDto);
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.INVESTOR_IS_LOANER, hasException.getType());
+    }
+
+    @Test
+    public void investFalseNoBalance() {
+        BankAccountModel bankAccountModel = getBankAccountModel();
+        bankAccountModel.setBalance(0l);
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(bankAccountModel);
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.NOT_ENOUGH_BALANCE, hasException.getType());
+    }
+
+    @Test
+    public void investFalseLoanStatus() {
+        LoanModel loanModel = getLoanModel();
+        loanModel.setStatus(LoanStatus.CANCEL);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.ILLEGAL_LOAN_STATUS, hasException.getType());
+    }
+
+    @Test
+    public void investFalseNewbie() {
+        LoanModel loanModel = getLoanModel();
+        loanModel.setActivityType(ActivityType.NEWBIE);
+        when(investMapper.countSuccessNewbieInvestByLoginName(anyString())).thenReturn(2000);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.OUT_OF_NOVICE_INVEST_LIMIT, hasException.getType());
+    }
+
+    @Test
+    public void investFalseMinAmount() {
+        LoanModel loanModel = getLoanModel();
+        loanModel.setMinInvestAmount(100000000l);
+        when(investMapper.countSuccessNewbieInvestByLoginName(anyString())).thenReturn(2000);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.LESS_THAN_MIN_INVEST_AMOUNT, hasException.getType());
+    }
+
+    @Test
+    public void investFalseIncreasingAmount() {
+        LoanModel loanModel = getLoanModel();
+        loanModel.setInvestIncreasingAmount(333l);
+        when(investMapper.countSuccessNewbieInvestByLoginName(anyString())).thenReturn(2000);
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.ILLEGAL_INVEST_AMOUNT, hasException.getType());
+    }
+
+    @Test
+    public void investFalseLoanIsFull() {
+        when(investMapper.countSuccessNewbieInvestByLoginName(anyString())).thenReturn(2000);
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(99999999999l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.LOAN_IS_FULL, hasException.getType());
+    }
+
+    @Test
+    public void investFalseLoanIsOut() {
+        when(investMapper.countSuccessNewbieInvestByLoginName(anyString())).thenReturn(2000);
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(990009l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.EXCEED_MONEY_NEED_RAISED, hasException.getType());
+    }
+
+    @Test
+    public void investFalseUserInvestAmout() {
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(999999999l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasException = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(getInvestDto());
+        } catch (InvestException e) {
+            hasException = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasException);
+        assertEquals(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT, hasException.getType());
+    }
+
+    @Test
+    public void investFalseNotUserCoupon() {
         LoanDetailsModel loanDetailsModel = new LoanDetailsModel();
-        loanDetailsModel.setId(IdGenerator.generate());
-        loanDetailsModel.setDeclaration("声明材料");
-        loanDetailsModel.setExtraSource(Lists.newArrayList(Source.WEB));
-        loanDetailsModel.setLoanId(loanId);
-        return loanDetailsModel;
+        loanDetailsModel.setDisableCoupon(true);
+        InvestDto investDto = getInvestDto();
+        List<Long> list = new ArrayList<>();
+        list.add(1l);
+        investDto.setUserCouponIds(list);
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(loanDetailsModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(getBankAccountModel());
+        when(loanMapper.findById(anyLong())).thenReturn(getLoanModel());
+        when(userMapper.findByLoginName(anyString())).thenReturn(new UserModel());
+        when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(0l);
+        when(investMapper.sumSuccessInvestAmountByLoginName(anyLong(), anyString(), anyBoolean())).thenReturn(0l);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
+        when(bankWrapperClient.invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString())).thenReturn(new BankAsyncMessage());
+        InvestException hasError = null;
+        BankAsyncMessage bankAsyncMessage = null;
+        try {
+            bankAsyncMessage = investService.invest(investDto);
+        } catch (InvestException e) {
+            hasError = e;
+        }
+        verify(investMapper, times(0)).create(any(InvestModel.class));
+        verify(bankWrapperClient, times(0)).invest(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyLong(), anyString());
+        assertNotNull(hasError);
+        assertEquals(InvestExceptionType.NOT_USE_COUPON, hasError.getType());
     }
 
-    @Test
-    public void testCalculateMembershipPreference() throws Exception {
-        UserMembershipModel userMembershipModel0 = new UserMembershipModel("testUser", membershipMapper.findByLevel(0).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel0.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel0);
-        assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+    private BankAccountModel getBankAccountModel() {
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setBalance(10000000l);
+        bankAccountModel.setAutoInvest(true);
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setLoginName("loginName");
+        return bankAccountModel;
+    }
 
-        UserMembershipModel userMembershipModel1 = new UserMembershipModel("testUser", membershipMapper.findByLevel(1).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel1.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel1);
-        assertEquals(0, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+    private LoanModel getLoanModel() {
+        LoanModel loanModel = new LoanModel();
+        loanModel.setAgentLoginName("agent");
+        loanModel.setMinInvestAmount(100l);
+        loanModel.setInvestIncreasingAmount(100l);
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setMaxInvestAmount(100000000l);
+        loanModel.setLoanAmount(1000000l);
+        loanModel.setLoanTxNo("loanTxNo");
+        loanModel.setName("loanName");
+        return loanModel;
+    }
 
-        UserMembershipModel userMembershipModel2 = new UserMembershipModel("testUser", membershipMapper.findByLevel(2).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel2.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel2);
-        assertEquals(1, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
+    private InvestDto getInvestDto() {
+        InvestDto investDto = new InvestDto();
+        investDto.setLoanId("1");
+        investDto.setLoginName("investor");
+        investDto.setAmount("10000");
+        return investDto;
+    }
 
-        UserMembershipModel userMembershipModel3 = new UserMembershipModel("testUser", membershipMapper.findByLevel(3).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel3.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel3);
-        assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
-
-        UserMembershipModel userMembershipModel4 = new UserMembershipModel("testUser", membershipMapper.findByLevel(4).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel4.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel4);
-        assertEquals(2, investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 10000L, Source.WEB));
-
-        UserMembershipModel userMembershipModel5 = new UserMembershipModel("testUser", membershipMapper.findByLevel(5).getId(), DateTime.parse("2099-06-30T01:20").toDate(), UserMembershipType.GIVEN);
-        userMembershipModel5.setCreatedTime(new DateTime().minusDays(1).toDate());
-        userMembershipMapper.create(userMembershipModel5);
-        extraLoanRateMapper.create(createExtraLoanRate(LOAN_ID));
-        loanDetailsMapper.create(createLoanDetails(LOAN_ID));
-        long expectedInterest = investService.calculateMembershipPreference("testUser", LOAN_ID, Lists.newArrayList(10000L), 1000000L, Source.WEB);
-        assertEquals(505, expectedInterest);
+    private UserModel mockUserModel(){
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("loginName");
+        userModel.setMobile("11111111111");
+        return userModel;
     }
 }
