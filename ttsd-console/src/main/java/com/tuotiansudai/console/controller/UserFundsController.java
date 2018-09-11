@@ -1,9 +1,11 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.service.ConsoleUserBillService;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.BillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,32 +26,47 @@ public class UserFundsController {
     private ConsoleUserBillService consoleUserBillService;
 
     @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
-    public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
-                                  @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
+    public ModelAndView userFunds(@RequestParam(value = "role", defaultValue = "INVESTOR", required = false) Role role,
+                                  @RequestParam(value = "businessType", required = false) BankUserBillBusinessType businessType,
+                                  @RequestParam(value = "operationType", required = false) BillOperationType operationType,
+                                  @RequestParam(value = "businessTypeUMP", required = false) UserBillBusinessType businessTypeUMP,
+                                  @RequestParam(value = "operationTypeUMP", required = false) UserBillOperationType operationTypeUMP,
                                   @RequestParam(value = "mobile", required = false) String mobile,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                   @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<UserBillPaginationView> userBillModels = consoleUserBillService.findUserFunds(userBillBusinessType, userBillOperationType, mobile, startTime, endTime, index, pageSize);
-        int userFundsCount = consoleUserBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, mobile, startTime, endTime);
+        List<? extends Object> userBillModels = null;
+        long userFundsCount = 0;
+        if (role == Role.UMP_INVESTOR) {
+            userBillModels = consoleUserBillService.findUserFunds(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(businessTypeUMP, operationTypeUMP, mobile, startTime, endTime);
+        } else {
+            userBillModels = consoleUserBillService.findUserFunds(role, businessType, operationType, mobile, startTime, endTime, index, pageSize);
+            userFundsCount = consoleUserBillService.findUserFundsCount(role, businessType, operationType, mobile, startTime, endTime);
+        }
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("userBillBusinessType", userBillBusinessType);
-        modelAndView.addObject("userBillOperationType", userBillOperationType);
+        modelAndView.addObject("businessType", businessType);
+        modelAndView.addObject("operationType", operationType);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("userBillModels", userBillModels);
         modelAndView.addObject("userFundsCount", userFundsCount);
-        modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
-        modelAndView.addObject("operationTypeList", UserBillOperationType.values());
+        modelAndView.addObject("businessTypes", BankUserBillBusinessType.values());
+        modelAndView.addObject("operationTypes", BillOperationType.values());
         long totalPages = PaginationUtil.calculateMaxPage(userFundsCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("role", role);
+        modelAndView.addObject("businessTypeUMP", businessTypeUMP);
+        modelAndView.addObject("businessTypeUMPList", UserBillBusinessType.values());
+        modelAndView.addObject("operationTypeUMP", operationTypeUMP);
+        modelAndView.addObject("operationTypeUMPList", UserBillOperationType.values());
         return modelAndView;
     }
 

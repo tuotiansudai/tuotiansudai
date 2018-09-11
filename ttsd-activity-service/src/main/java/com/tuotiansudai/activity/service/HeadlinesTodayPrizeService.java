@@ -8,8 +8,9 @@ import com.tuotiansudai.activity.repository.model.LotteryPrize;
 import com.tuotiansudai.activity.repository.model.PrizeType;
 import com.tuotiansudai.activity.repository.model.UserLotteryPrizeModel;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ public class HeadlinesTodayPrizeService {
     private UserLotteryPrizeMapper userLotteryPrizeMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private CouponAssignmentService couponAssignmentService;
@@ -56,8 +57,8 @@ public class HeadlinesTodayPrizeService {
             lotteryTime++;
         }
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        if (accountModel != null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
+        if (bankAccountModel != null) {
             lotteryTime++;
         }
 
@@ -113,24 +114,24 @@ public class HeadlinesTodayPrizeService {
         }
 
         UserModel userModel = userMapper.findByMobile(mobile);
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
 
         if (userModel == null) {
             logger.info("User is not exist, please register");
             return "NOT_REGISTER";
         }
 
-        if (userModel != null && accountModel == null && status.equals("fromRegister")) {
+        if (userModel != null && bankAccountModel == null && status.equals("fromRegister")) {
             logger.info("User is is exist, but not account");
             return "REGISTER_LOGIN_TO_ACCOUNT";
         }
 
-        if (userModel != null && accountModel == null && status.equals("")) {
+        if (userModel != null && bankAccountModel == null && status.equals("")) {
             logger.info("User is is exist, but not account");
             return "LOGIN_TO_ACCOUNT";
         }
 
-        if (userModel != null && accountModel != null) {
+        if (userModel != null && bankAccountModel != null) {
             logger.info("user is account");
             return "ACCOUNT";
         }

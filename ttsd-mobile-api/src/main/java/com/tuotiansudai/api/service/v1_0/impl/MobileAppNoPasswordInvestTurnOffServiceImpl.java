@@ -9,8 +9,7 @@ import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.service.UserOpLogService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -25,7 +24,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
     private static Logger logger = Logger.getLogger(MobileAppNoPasswordInvestTurnOffServiceImpl.class);
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -58,9 +57,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
             }
         }
 
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        accountModel.setNoPasswordInvest(false);
-        accountMapper.update(accountModel);
+        bankAccountMapper.updateAutoInvest(loginName, false);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 

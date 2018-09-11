@@ -41,6 +41,8 @@ public class InvestorInvestPaginationItemDataDto {
 
     private String contractNo;
 
+    private boolean isBankPlatForm;
+
     public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
@@ -64,6 +66,7 @@ public class InvestorInvestPaginationItemDataDto {
         this.productType = loanModel.getProductType();
         this.extraRate = investExtraRateModel != null ? investExtraRateModel.getExtraRate() : null;
         this.contractNo = investModel.getContractNo();
+        this.isBankPlatForm = loanModel.getIsBankPlatform();
     }
 
     public long getInvestId() {
@@ -133,5 +136,13 @@ public class InvestorInvestPaginationItemDataDto {
 
     public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
+    }
+
+    public boolean isBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setBankPlatForm(boolean bankPlatForm) {
+        isBankPlatForm = bankPlatForm;
     }
 }

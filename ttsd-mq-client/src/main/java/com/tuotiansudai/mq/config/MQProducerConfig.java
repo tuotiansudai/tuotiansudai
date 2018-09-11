@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(Settings.class)
 public class MQProducerConfig {
+
     @Value("${aliyun.mns.enabled}")
     private boolean enableAliyumMNS;
 

@@ -71,6 +71,7 @@ public enum ReturnMessage {
 
     /******绑卡失败******/
     BIND_CARD_FAIL("0026", "绑卡失败"),
+    UNBIND_CARD_FAIL("0042", "解绑失败"),
     BIND_CARD_LIMIT_FAIL("0203", "暂不支持该银行卡"),
     /******绑卡失败******/
 
@@ -82,13 +83,6 @@ public enum ReturnMessage {
 
     /******文章管理******/
     NODE_ID_IS_NOT_EXIST("0041", "内容不存在"),
-
-    /******换卡******/
-    REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL("0042", "换卡失败:银行卡号为空"),
-    REPLACE_CARD_FAIL_BANK_CARD_EXIST("0043", "换卡失败:该银行卡已存在"),
-    REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO("0047", "换卡失败:用户账户余额不为0"),
-    REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT("0048", "换卡失败:已开通快捷支付不能换卡"),
-
 
     /*****联动优势相关******/
     UMPAY_OPERATION_EXCEPTION("0044", "联动优势处理失败"),
@@ -127,7 +121,7 @@ public enum ReturnMessage {
     EXCHANGE_CODE_IS_FAIL("0109", "兑换码兑换失败"),
 
     /******提现******/
-    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070", "提现金额需大于手续费"),
+    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070", "提现金额需大于1.5元"),
 
     TRANSFER_APPLY_IS_FAIL("0073", "债权转让失败"),
 
@@ -188,8 +182,13 @@ public enum ReturnMessage {
 
     BANK_CARD_RECHARGE_DAILY_LIMIT("0205", "超银行卡单日充值限额"),
 
-    IDENTITY_NUMBER_INVALID("0300", "身份证不符合规范!");
+    IDENTITY_NUMBER_INVALID("0300", "身份证不符合规范!"),
 
+
+    BANK_ACCOUNT_NOT_EXIST("9001", "未开通银行存管账户"),
+    BANK_CARD_NOT_BOUND("9002", "未绑定银行卡"),
+
+    ;
 
     private String code;
     private String msg;
@@ -216,7 +215,6 @@ public enum ReturnMessage {
     }
 
     public static String getErrorMsgByCode(String code) {
-
         for (ReturnMessage errorMsg : ReturnMessage.values()) {
             if (errorMsg.code.equals(code)) {
                 return errorMsg.msg;
@@ -224,6 +222,4 @@ public enum ReturnMessage {
         }
         return null;
     }
-
-
 }

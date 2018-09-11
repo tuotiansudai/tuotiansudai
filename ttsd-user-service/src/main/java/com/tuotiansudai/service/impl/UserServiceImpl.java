@@ -128,12 +128,6 @@ public class UserServiceImpl implements UserService {
         return register;
     }
 
-    @Override
-    @Transactional
-    public boolean registerUserFromHuizu(RegisterUserDto dto) {
-        return registerUserCommon(dto, null);
-    }
-
     private boolean registerUserCommon(RegisterUserDto dto, UserModel referrerUserModel) {
         String referrer = referrerUserModel != null ? referrerUserModel.getLoginName() : null;
         RegisterRequestDto registerDto = new RegisterRequestDto(

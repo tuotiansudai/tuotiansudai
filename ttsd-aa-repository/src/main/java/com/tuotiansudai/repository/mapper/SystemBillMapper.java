@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.enums.SystemBillBusinessType;
 import com.tuotiansudai.repository.model.SystemBillModel;
-import com.tuotiansudai.repository.model.SystemBillOperationType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,25 +19,19 @@ public interface SystemBillMapper {
 
     List<SystemBillModel> findSystemBillPagination(@Param(value = "startTime") Date startTime,
                                                    @Param(value = "endTime") Date endTime,
-                                                   @Param(value = "operationType") SystemBillOperationType operationType,
+                                                   @Param(value = "operationType") BillOperationType operationType,
                                                    @Param(value = "businessType") SystemBillBusinessType businessType,
                                                    @Param(value = "index") int index,
                                                    @Param(value = "pageSize") int pageSize);
 
     int findSystemBillCount(@Param(value = "startTime") Date startTime,
                             @Param(value = "endTime") Date endTime,
-                            @Param(value = "operationType") SystemBillOperationType operationType,
+                            @Param(value = "operationType") BillOperationType operationType,
                             @Param(value = "businessType") SystemBillBusinessType businessType);
 
 
-    long findSumSystemIncome(@Param(value = "startTime") Date startTime,
-                             @Param(value = "endTime") Date endTime,
-                             @Param(value = "operationType") SystemBillOperationType operationType,
-                             @Param(value = "businessType") SystemBillBusinessType businessType);
-
-    long findSumSystemExpend(@Param(value = "startTime") Date startTime,
-                             @Param(value = "endTime") Date endTime,
-                             @Param(value = "operationType") SystemBillOperationType operationType,
-                             @Param(value = "businessType") SystemBillBusinessType businessType);
-
+    long findSumSystemBill(@Param(value = "startTime") Date startTime,
+                           @Param(value = "endTime") Date endTime,
+                           @Param(value = "operationType") BillOperationType operationType,
+                           @Param(value = "businessType") SystemBillBusinessType businessType);
 }

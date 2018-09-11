@@ -34,11 +34,13 @@
         {"title":"债权转让", "url":"${webServer}/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的财豆", "url":"${webServer}/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+        <#--{"title":"我的财豆", "url":"${webServer}/point", "role":"'USER', 'INVESTOR', 'LOANER'"},-->
+        {"title":"消息中心", "url":"/message/user-messages", "role":"'USER'"},
         {"title":"个人资料", "url":"${webServer}/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"自动投标", "url":"${webServer}/auto-invest", "role":"'USER', 'INVESTOR'"},
-        {"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
+        {"title":"安心签", "url":"/anxinSign", "role":"'USER', 'INVESTOR', 'LOANER'"}
+        <#--{"title":"自动投标", "url":"${webServer}/auto-invest", "role":"'USER', 'INVESTOR'"},-->
+        <#--{"title":"推荐管理", "url":"${webServer}/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},-->
+        <#--{"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}-->
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
     {"title":"信息披露", "url":"${webServer}/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
@@ -64,9 +66,7 @@
     <#local membershipMenus=[
         {"title":"我的会员", "url":"/membership","category":""},
         {"title":"成长体系", "url":"/membership/structure","category":""},
-        {"title":"会员特权", "url":"/membership/privilege","category":""},
-        {"title":"积分商城", "url":"/point-shop","category":""},
-        {"title":"积分任务", "url":"/point-shop/task","category":""}
+        {"title":"会员特权", "url":"/membership/privilege","category":""}
     ]/>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,9 +112,7 @@
 
     <#if !errorPage??>
 <#--ad image-->
-<div class="banner-box page-width">
-    <a href="https://tuotiansudai.com/activity/landing-page" target="_blank"></a>
-</div>
+
 <#--ad image-->
     </#if>
 <div class="main-frame full-screen clearfix main-frame-ask">
@@ -147,8 +145,6 @@
         <div class="aside-frame fr" >
             <#include "../pageLayout/user.ftl"/>
             <#include "../pageLayout/tags.ftl"/>
-
-            <a href="https://tuotiansudai.com/activity/landing-page" target="_blank" class="margin-top-10 ad-welfare" ></a>
         </div>
     <#--left content-->
         </#if>

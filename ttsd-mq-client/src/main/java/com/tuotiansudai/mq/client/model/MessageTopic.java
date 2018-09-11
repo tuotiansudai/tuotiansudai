@@ -1,33 +1,36 @@
 package com.tuotiansudai.mq.client.model;
 
-import java.util.stream.Stream;
+import com.tuotiansudai.etcd.ETCDConfigReader;
+
+import java.text.MessageFormat;
 
 public enum MessageTopic {
     InvestSuccess("InvestSuccess",
-            MessageQueue.InvestSuccess_CompletePointTask,
-            MessageQueue.InvestSuccess_MembershipUpdate,
-            MessageQueue.InvestSuccess_CouponUpdate,
-            MessageQueue.InvestSuccess_ActivityAnnualized,
-            MessageQueue.InvestSuccess_Ranking,
-            MessageQueue.InvestSuccess_ActivityInvest),
+            MessageQueue.Invest_Success,
+            MessageQueue.Invest_MembershipUpdate,
+            MessageQueue.Invest_CheckLoanFull),
 
-    LoanOutSuccess("LoanOutSuccess",
-            MessageQueue.LoanOutSuccess_GenerateRepay,
-            MessageQueue.LoanOutSuccess_RewardReferrer,
-            MessageQueue.LoanOutSuccess_AssignCoupon,
-            MessageQueue.LoanOutSuccess_AssignAchievement,
-            MessageQueue.LoanOutSuccess_GenerateAnXinContract,
-            MessageQueue.LoanOutSuccess_SendCashReward,
-            MessageQueue.LoanOutSuccess_SmsInvestor,
-            MessageQueue.LoanOutSuccess_SuperScholarActivity),
+    LoanFullSuccess("LoanFullSuccess",
+            MessageQueue.LoanFull_Success,
+            MessageQueue.LoanFull_GenerateAnXinContract,
+            MessageQueue.LoanFull_SmsInvestor),
 
-    RepaySuccess("RepaySuccess",
-            MessageQueue.RepaySuccess_InvestRepay,
-            MessageQueue.RepaySuccess_CouponRepay,
-            MessageQueue.RepaySuccess_ExtraRateRepay);
+    BindBankCard("BindBandCard",
+            MessageQueue.BindBankCard_Success,
+            MessageQueue.BindBankCard_CompletePointTask),
+
+    Recharge("Recharge",
+            MessageQueue.Recharge_Success,
+            MessageQueue.Recharge_CompletePointTask),
+
+    Authorization("Authorization",
+            MessageQueue.Authorization_Success,
+            MessageQueue.Authorization_CompletePointTask),
+    ;
 
     final String topicName;
     final MessageQueue[] queues;
+    private final String ENV = ETCDConfigReader.getReader().getValue("common.environment");
 
     MessageTopic(String topicName, MessageQueue... queues) {
         this.topicName = topicName;
@@ -35,14 +38,10 @@ public enum MessageTopic {
     }
 
     public String getTopicName() {
-        return topicName;
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? topicName : MessageFormat.format("{0}-{1}", ENV.toLowerCase(), topicName);
     }
 
     public MessageQueue[] getQueues() {
         return queues;
-    }
-
-    public static boolean contains(String topicName) {
-        return Stream.of(MessageTopic.values()).anyMatch(t -> t.getTopicName().equals(topicName));
     }
 }

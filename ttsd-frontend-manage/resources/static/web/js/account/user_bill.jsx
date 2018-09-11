@@ -4,6 +4,7 @@ require('publicJs/plugins/daterangepicker.scss');
 let moment = require('moment');
 require('publicJs/pagination');
 require('publicJs/plugins/jquery.daterangepicker-0.0.7.js');
+require('webJs/plugins/autoNumeric');
 
 //初始化页面
 var today = moment().format('YYYY-MM-DD'); // 今天
@@ -15,6 +16,7 @@ var dataPickerElement = $('#date-picker'),
     paginationElement = $('.pagination');
 
 dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+$('.money').autoNumeric("init");
 
 var changeDatePicker = function () {
     var duration = $(".date-filter .select-item.current").data('day');
@@ -73,6 +75,37 @@ $('.apply-btn').click(function () {
 });
 
 loadLoanData();
-let metaViewPort = $('meta[name=viewport]');//
-metaViewPort.remove()
-$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
+
+let isBankCard = $('#moneyMessagerContainer').data('bankcard');
+let isAccount = $('#moneyMessagerContainer').data('account');
+
+$('#cashMoneyBtn').on('click',function () {
+    if(!isAccount == true){
+        location.href = '/register/account';
+    }else if(!isBankCard) {
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '绑卡',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn: 0,
+            content: $('#bankCardDOM')
+        });
+    }else {
+        location.href = '/withdraw'
+    }
+})
+
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})
+
+//显示隐藏联动优势资金账号提示
+$('#noticeBtn').on('mouseover',function () {
+    $('.notice-tips').show();
+})
+$('#noticeBtn').on('mouseout',function () {
+    $('.notice-tips').hide();
+})

@@ -93,7 +93,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         cal.add(Calendar.SECOND, -98);
         for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
-            InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+            InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -128,8 +128,8 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
         return activityModel;
     }
 
-    private List<ActivityModel> prepareData() {
-        UserModel userModel = createUserModel("testUser1");
+    private List<ActivityModel> prepareData(String loginName) {
+        UserModel userModel = createUserModel(loginName);
         long loanId = IdGenerator.generate();
         createLoanModel(userModel.getLoginName(), loanId);
         createInvests(userModel.getLoginName(), loanId);
@@ -155,7 +155,7 @@ public class MobileAppActivityServiceTest extends ServiceTestBase {
 
     @Test
     public void testGetAppActivityCenterResponseData() {
-        prepareData();
+        prepareData("testApiActivityUser1");
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testUser");
         baseParam.setPlatform(Source.IOS.toString());

@@ -8,6 +8,8 @@
 
     <resultMap id="investResultMap" type="InvestModel">
         <id column="id" property="id"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
         <result column="transfer_invest_id" property="transferInvestId"/>
         <result column="login_name" property="loginName"/>
         <result column="loan_id" property="loanId"/>
@@ -16,7 +18,6 @@
         <result column="status" property="status"/>
         <result column="transfer_status" property="transferStatus"/>
         <result column="source" property="source"/>
-        <result column="is_auto_invest" property="isAutoInvest"/>
         <result column="channel" property="channel"/>
         <result column="is_no_password_invest" property="isNoPasswordInvest"/>
         <result column="invest_time" property="investTime"/>
@@ -43,7 +44,6 @@
         <result column="channel" property="channel"/>
         <result column="source" property="source"/>
         <result column="invest_time" property="investTime"/>
-        <result column="auto_invest" property="autoInvest"/>
         <result column="invest_amount" property="investAmount"/>
         <result column="coupon_id" property="couponId"/>
         <result column="extra_rate" property="extraRate"/>
@@ -52,6 +52,7 @@
         <result column="province" property="province"/>
         <result column="city" property="city"/>
         <result column="identity_number" property="identityNumber"/>
+        <result column="is_bank_platform" property="isBankPlatform"/>
         <result column="transfer_status" property="transferStatus"/>
     </resultMap>
 
@@ -104,27 +105,28 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
+        id, bank_order_no, bank_order_date, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest (
         <include refid="columns"></include>
         )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
-        #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
+        value(#{id}, #{bankOrderNo}, #{bankOrderDate},  #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
+        #{channel}, #{isNoPasswordInvest}, now(), now(), #{investTime}, #{tradingTime},
         #{achievements, typeHandler=com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler},
         #{investFeeRate}, #{contractNo})
     </insert>
 
     <update id="update" parameterType="InvestModel">
         update invest set
+        bank_order_no = #{bankOrderNo},
+        bank_order_date = #{bankOrderDate},
         login_name = #{loginName},
         loan_id = #{loanId},
         amount = #{amount},
         status = #{status},
         source = #{source},
-        is_auto_invest = #{isAutoInvest},
         channel = #{channel},
         is_no_password_invest = #{isNoPasswordInvest},
         created_time = #{createdTime},
@@ -163,7 +165,7 @@
     </select>
 
     <select id="findPaginationByLoginName" parameterType="map" resultMap="investResultMap">
-        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements, invest.contract_no
+        select invest.id, invest.bank_order_no, invest.bank_order_date, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.created_time, invest.invest_time, invest.trading_time, invest.achievements
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -185,8 +187,8 @@
     </select>
 
     <select id="findByLoginNameExceptTransfer" parameterType="map" resultMap="investResultMap">
-        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status,
-        invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time, invest.invest_time
+        select invest.id, invest.bank_order_no, invest.bank_order_date, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status,
+        invest.transfer_status, invest.source, invest.created_time, invest.invest_time
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
@@ -274,6 +276,7 @@
     <select id="findInvestPagination" resultMap="investPaginationItemView">
         SELECT
         invest.id AS invest_id,
+        loan.is_bank_platform as is_bank_platform,
         loan.id AS loan_id,
         loan.name AS loan_name,
         loan.periods AS loan_periods,
@@ -295,7 +298,6 @@
         invest.channel AS channel,
         invest.source AS source,
         invest.invest_time AS invest_time,
-        invest.is_auto_invest AS auto_invest,
         invest.amount AS invest_amount,
         (SELECT coupon.id FROM coupon join user_coupon on
         user_coupon.coupon_id = coupon.id
@@ -312,6 +314,9 @@
         invest join loan on invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
+            </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
             </if>
@@ -360,7 +365,7 @@
     <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
         select invest.*
         from invest
-        join loan on invest.loan_id = loan.id
+        join loan on invest.loan_id = loan.id and loan.id != 1
         <where>
             and invest.login_name = #{loginName}
             <if test="startTime != null">
@@ -387,7 +392,7 @@
     <select id="countInvestorInvestPagination" parameterType="map" resultType="long">
         select count(1)
         from invest
-        join loan on invest.loan_id = loan.id
+        join loan on invest.loan_id = loan.id and loan.id != 1
         <where>
             and invest.login_name = #{loginName}
             <if test="startTime != null">
@@ -412,6 +417,9 @@
         SELECT COUNT(1) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
+            </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
             </if>
@@ -491,6 +499,9 @@
         SELECT IFNULL(sum(amount), 0) FROM invest JOIN loan ON invest.loan_id = loan.id
         <where>
             invest.transfer_invest_id IS NULL
+            <if test="isBankPlatform != null">
+                AND loan.is_bank_platform = #{isBankPlatform}
+            </if>
             <if test="productType == null">
                 AND loan.product_type &lt;&gt; 'EXPERIENCE'
             </if>
@@ -623,10 +634,6 @@
 
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
-
-
-
-
          select case
             when loan.periods ='1' then 30
             when loan.periods ='3' then 90
@@ -638,10 +645,6 @@
           and invest.trading_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
-
-
-
-
         ]]>
     </select>
 
@@ -806,6 +809,8 @@
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND loan.is_bank_platform = 1
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
@@ -837,6 +842,8 @@
         WHERE
         invest.login_name = #{loginName}
         AND loan.status = 'REPAYING'
+        AND loan.is_bank_platform = 1
+        AND ld.non_transferable = 0
         AND invest.status = 'SUCCESS'
         AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
@@ -864,7 +871,6 @@
         invest.status,
         invest.transfer_status,
         invest.source,
-        invest.is_auto_invest,
         invest.created_time,
         invest.invest_time
         FROM
@@ -1062,7 +1068,7 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
+        and invest.status = 'SUCCESS' and loan.id != 1
         <if test="loanStatus.name() == 'COMPLETE' ">
             and (loan.product_type = 'EXPERIENCE' and exists(select * from invest_repay ir where ir.status='COMPLETE'
             and ir.invest_id = invest.id and ir.period = 1)
@@ -1088,7 +1094,7 @@
         from invest
         join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and invest.status = 'SUCCESS'
+        and invest.status = 'SUCCESS' and loan.id != 1
         <if test="loanStatus.name() == 'COMPLETE' ">
             and ((loan.product_type = 'EXPERIENCE' and TO_DAYS(NOW()) - TO_DAYS(invest_time) >= loan.duration)
             or (loan.product_type != 'EXPERIENCE' and loan.status = 'COMPLETE' and invest.transfer_status != 'SUCCESS')

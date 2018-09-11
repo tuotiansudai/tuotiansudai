@@ -1,123 +1,103 @@
 package com.tuotiansudai.mq.consumer.amount.service;
 
-
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.BillOperationType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.message.AmountTransferMessage;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.FakeUserHelper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.mapper.BankUserBillMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
 public class AmountTransferServiceTest {
 
-    @Autowired
-    private FakeUserHelper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
+    @InjectMocks
     private AmountTransferService amountTransferService;
 
+    @Mock
+    private BankAccountMapper bankAccountMapper;
+
+    @Mock
+    private UserMapper userMapper;
+
+    @Mock
+    private BankUserBillMapper bankUserBillMapper;
+
+    @Before
+    public void init(){
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
-    public void shouldConsumerAmountTransferMessage() throws AmountTransferException {
+    public void process(){
 
-        String loginName = "zbx_asdf";
+        ArgumentCaptor<Long> amountCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<BankUserBillModel> bankUserBillModelCaptor = ArgumentCaptor.forClass(BankUserBillModel.class);
+        when(bankAccountMapper.findByLoginNameAndRole(eq("loginName"), eq(Role.INVESTOR))).thenReturn(mockBankAccountModel());
+        when(userMapper.findByLoginName(eq("loginName"))).thenReturn(mockUserModel());
 
-        mockUser(loginName);
-        mockAccount(loginName);
+        amountTransferService.process(mockAmountTransferMessageList());
 
-        long orderId = 123456789;
+        verify(bankAccountMapper, times(2)).updateInvestorBalance(eq("loginName"), amountCaptor.capture());
+        verify(bankUserBillMapper, times(2)).create(bankUserBillModelCaptor.capture());
 
-        // test transfer_in_balance
-        long inAmount = 400000;
-        UserBillBusinessType businessType = UserBillBusinessType.RECHARGE_SUCCESS;
-
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, loginName, orderId,
-                inAmount, businessType, null, null);
-
-        amountTransferService.amountTransferProcess(inAtm);
-        verifyBalance(loginName, inAmount);
-
-        // test transfer_out_balance
-        long outAmount = 100000;
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId,
-                outAmount, businessType, null, null);
-
-        amountTransferService.amountTransferProcess(outAtm);
-        verifyBalance(loginName, inAmount - outAmount);
-
-        // test freeze
-        long freezeAmount = 150000;
-        AmountTransferMessage freezeAtm = new AmountTransferMessage(TransferType.FREEZE, loginName, orderId,
-                freezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(freezeAtm);
-
-        verifyBalance(loginName, inAmount - outAmount - freezeAmount);
-        verifyFreeze(loginName, freezeAmount);
-
-        // test unfreeze
-        long unfreezeAmount = 100000;
-
-        AmountTransferMessage unfreezeAtm = new AmountTransferMessage(TransferType.UNFREEZE, loginName, orderId,
-                unfreezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(unfreezeAtm);
-        verifyBalance(loginName, inAmount - outAmount - freezeAmount + unfreezeAmount);
-        verifyFreeze(loginName, freezeAmount - unfreezeAmount);
-
-        // test transfer_out_freeze
-        long toFreezeAmount = 40000;
-
-        AmountTransferMessage toFreezeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_FREEZE, loginName, orderId,
-                toFreezeAmount, businessType, null, null);
-        amountTransferService.amountTransferProcess(toFreezeAtm);
-        verifyFreeze(loginName, freezeAmount - unfreezeAmount - toFreezeAmount);
+        assertThat(amountCaptor.getAllValues().get(0), is(1000L));
+        assertThat(amountCaptor.getAllValues().get(1), is(-10L));
+        assertThat(bankUserBillModelCaptor.getAllValues().get(0).getAmount(), is(1000L));
+        assertThat(bankUserBillModelCaptor.getAllValues().get(0).getBusinessType(), is(BankUserBillBusinessType.NORMAL_REPAY));
+        assertThat(bankUserBillModelCaptor.getAllValues().get(1).getAmount(), is(10L));
+        assertThat(bankUserBillModelCaptor.getAllValues().get(1).getBusinessType(), is(BankUserBillBusinessType.INVEST_FEE));
     }
 
-    private void verifyBalance(String loginName, long amount) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assert (accountModel.getBalance() == amount);
+    private List<AmountTransferMessage> mockAmountTransferMessageList(){
+        return Lists.newArrayList(
+                new AmountTransferMessage(1,
+                        "loginName",
+                        Role.INVESTOR,
+                        1000L,
+                        "111111",
+                        "20180810",
+                        BillOperationType.IN,
+                        BankUserBillBusinessType.NORMAL_REPAY),
+                new AmountTransferMessage(2,
+                        "loginName",
+                        Role.INVESTOR,
+                        10L,
+                        "111111",
+                        "20180810",
+                        BillOperationType.OUT,
+                        BankUserBillBusinessType.INVEST_FEE));
     }
 
-    private void verifyFreeze(String loginName, long amount) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        assert (accountModel.getFreeze() == amount);
+    private BankAccountModel mockBankAccountModel(){
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setBalance(0);
+        bankAccountModel.setLoginName("loginName");
+        return bankAccountModel;
     }
 
-    private UserModel mockUser(String loginName) {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName(loginName);
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
-        return userModelTest;
+    private UserModel mockUserModel(){
+        UserModel userModel = new UserModel();
+        userModel.setMobile("11111111111");
+        userModel.setLoginName("loginName");
+        return userModel;
     }
-
-    private void mockAccount(String loginName) {
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
-    }
-
 }

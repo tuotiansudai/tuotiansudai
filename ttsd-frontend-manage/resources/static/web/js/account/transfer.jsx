@@ -3,9 +3,13 @@ require('webStyle/account/transfer.scss');
 require('webJsModule/coupon_alert');
 require('publicJs/pagination');
 let commonFun= require('publicJs/commonFun');
+let $myTransferCon = $('#myTransferCon');
 var activeIndex=$('.filters-list li.active').index(),
 	$ruleList = $('#ruleList'),
 	$paginationElement = $('.pagination');
+let $turnInvestorDOM_TRANSFERABLE = $('#turnInvestorDOM_TRANSFERABLE');//切换成投资人
+let $turnInvestorDOM_TRANSFERRING = $('#turnInvestorDOM_TRANSFERRING');//切换成投资人
+let isLoaner = $myTransferCon.data('loaner-role');
 
 //template data to page and generate pagenumber
 function loadLoanData(currentPage) {
@@ -66,6 +70,19 @@ loadLoanData();
 $('body').on('click', '.cancel-btn' ,function(event) {
 //click cancel btn
 	event.preventDefault();
+    if(isLoaner) {
+        layer.open({
+            type: 1,
+            move: false,
+            offset: "200px",
+            title: '温馨提示',
+            area: ['490px', '220px'],
+            shadeClose: false,
+            closeBtn:0,
+            content: $turnInvestorDOM_TRANSFERRING
+        });
+        return false;
+    }
 	var $self=$(this),
 		transferApplicationId=$self.data('transfer-application-id');
 
@@ -91,6 +108,20 @@ $('body').on('click', '.cancel-btn' ,function(event) {
 	.on('click', '.apply-transfer', function(event) {
 		//click apply btn
 		event.preventDefault();
+
+        if(isLoaner) {
+            layer.open({
+                type: 1,
+                move: false,
+                offset: "200px",
+                title: '温馨提示',
+                area: ['490px', '220px'],
+                shadeClose: false,
+                closeBtn:0,
+                content: $turnInvestorDOM_TRANSFERABLE
+            });
+            return false;
+		}
 		var $self=$(this),
 			investId=$self.data('invest-id');
 		commonFun.useAjax({
@@ -122,6 +153,6 @@ $('body').on('click', '.cancel-btn' ,function(event) {
 		event.preventDefault();
 		$ruleList.fadeIn('fast');
 	});
-let metaViewPort = $('meta[name=viewport]');//
-metaViewPort.remove()
-$('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
+$('.btn-close').on('click',function () {
+    layer.closeAll();
+})

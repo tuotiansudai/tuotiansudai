@@ -29,10 +29,7 @@ configurations{
 }
 
 dependencies {
-    compile project(':ttsd-service')
-    compile project(':ttsd-user-repository')
-    compile project(':ttsd-membership')
-    compile project(':ttsd-mq-client')
+    compile project(':ttsd-user-service')
 
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"

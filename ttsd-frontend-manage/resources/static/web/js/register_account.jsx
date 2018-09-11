@@ -10,7 +10,20 @@ let validator = new ValidatorObj.ValidatorForm();
 validator.add(registerAccountForm.userName, [{
     strategy: 'isNonEmpty',
     errorMsg: '请输入姓名',
-}], true);
+},
+    {
+        strategy: 'minLength:2',
+        errorMsg: '至少输入两位汉字',
+    },
+    {
+        strategy: 'isChinese',
+        errorMsg: '请输入汉字',
+    },
+    {
+        strategy: 'maxLength:16',
+        errorMsg: '最多输入16位汉字',
+    }
+], true);
 
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',
@@ -51,39 +64,37 @@ function isDisabledButton() {
     }
 }
 
-
-//点击立即注册按钮
-registerAccountForm.onsubmit = function (event) {
-    event.preventDefault();
-    $buttonLayer.find('.status').removeClass('error').html('请耐心等待');
-    $btnSubmit.prop('disabled', true).val('认证中');
-    $('.loading-effect', $buttonLayer).show();
-    let params = $(registerAccountForm).serialize();
-    if (location.hash == '#loan') {
-        params += '&referrer=loan';
-    }
-
-    commonFun.useAjax({
-        url: "/register/account",
-        type: 'POST',
-        data: params
-    }, function (response) {
-        if (response.data.status) {
-            $buttonLayer.find('.status').removeClass('error').html('认证成功');
-            if (response.data.extraValues && response.data.extraValues.referrer) {
-                location.href = '/register/account/success?referrer=' + response.data.extraValues.referrer;
-            } else {
-                location.href = '/register/account/success';
-            }
-        } else {
-            let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
-            $buttonLayer.find('.status').addClass('error').html(errorMsg);
-            $btnSubmit.prop('disabled', false).val('认证');
-            $('.loading-effect', $buttonLayer).hide();
-
-        }
-    });
-};
+// registerAccountForm.onsubmit = function (event) {
+//     event.preventDefault();
+//     $buttonLayer.find('.status').removeClass('error').html('请耐心等待');
+//     $btnSubmit.prop('disabled', true).val('认证中');
+//     $('.loading-effect', $buttonLayer).show();
+//     let params = $(registerAccountForm).serialize();
+//     if (location.hash == '#loan') {
+//         params += '&referrer=loan';
+//     }
+//
+//     commonFun.useAjax({
+//         url: "/register/account",
+//         type: 'POST',
+//         data: params
+//     }, function (response) {
+//         if (response.data.status) {
+//             $buttonLayer.find('.status').removeClass('error').html('认证成功');
+//             if (response.data.extraValues && response.data.extraValues.referrer) {
+//                 location.href = '/register/account/success?referrer=' + response.data.extraValues.referrer;
+//             } else {
+//                 location.href = '/register/account/success';
+//             }
+//         } else {
+//             let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
+//             $buttonLayer.find('.status').addClass('error').html(errorMsg);
+//             $btnSubmit.prop('disabled', false).val('认证');
+//             $('.loading-effect', $buttonLayer).hide();
+//
+//         }
+//     });
+// };
 
 let metaViewPort = $('meta[name=viewport]');//
 metaViewPort.remove()

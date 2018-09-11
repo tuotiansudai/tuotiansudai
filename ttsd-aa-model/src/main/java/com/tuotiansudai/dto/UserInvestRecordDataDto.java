@@ -48,6 +48,8 @@ public class UserInvestRecordDataDto implements Serializable {
 
     private int repayProgress;
 
+    private boolean isBankPlatform;
+
     public String getLoanId() {
         return loanId;
     }
@@ -200,6 +202,14 @@ public class UserInvestRecordDataDto implements Serializable {
         this.repayProgress = repayProgress;
     }
 
+    public boolean isBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setBankPlatform(boolean bankPlatform) {
+        isBankPlatform = bankPlatform;
+    }
+
     public UserInvestRecordDataDto() {
 
     }
@@ -207,6 +217,7 @@ public class UserInvestRecordDataDto implements Serializable {
     public UserInvestRecordDataDto(InvestModel invest, LoanModel loanModel) {
         this.loanId = String.valueOf(invest.getLoanId());
         this.loanName = loanModel.getName();
+        this.isBankPlatform = loanModel.getIsBankPlatform();
         this.investId = String.valueOf(invest.getId());
         this.investAmount = AmountConverter.convertCentToString(invest.getAmount());
         this.investTime = new DateTime(invest.getTradingTime() == null ? invest.getCreatedTime() : invest.getTradingTime()).toString("yyyy-MM-dd");

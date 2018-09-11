@@ -3,18 +3,20 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
-import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,14 +30,10 @@ public class TransferServiceImpl implements TransferService {
 
     static Logger logger = Logger.getLogger(TransferServiceImpl.class);
 
-    @Autowired
-    private PayWrapperClient payWrapperClient;
+    private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
@@ -56,44 +54,80 @@ public class TransferServiceImpl implements TransferService {
     private TransferRuleMapper transferRuleMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMapper userMapper;
 
-    @Value(value = "${pay.interest.fee}")
-    private double defaultFee;
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
+
+    @Autowired
+    private UserMembershipService userMembershipService;
 
     @Override
-    public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException {
-        this.checkTransferPurchase(investDto);
-        return payWrapperClient.purchase(investDto);
+    public BankAsyncMessage transferPurchase(InvestDto investDto) throws InvestException {
+
+        UserModel userModel = userMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
+        investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
+
+        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        InvestModel investModel = generateInvestModel(investDto, transferApplicationModel, transferrerModel);
+
+        return bankWrapperClient.loanCreditInvest(
+                transferApplicationModel.getId(),
+                investModel.getId(),
+                investDto.getSource(),
+                investDto.getLoginName(),
+                userModel.getMobile(),
+                bankAccountModel.getBankUserName(),
+                bankAccountModel.getBankAccountNo(),
+                transferApplicationModel.getInvestAmount(),
+                transferApplicationModel.getTransferAmount(),
+                transferApplicationModel.getTransferFee(),
+                transferrerModel.getBankOrderNo(),
+                transferrerModel.getBankOrderDate(),
+                loanModel.getLoanTxNo());
     }
 
-    @Override
-    public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException {
-        investDto.setNoPassword(true);
+    private InvestModel generateInvestModel(InvestDto investDto, TransferApplicationModel transferApplicationModel, InvestModel transferrerModel) throws InvestException{
         this.checkTransferPurchase(investDto);
-        return payWrapperClient.noPasswordPurchase(investDto);
+        double rate = userMembershipService.obtainServiceFee(investDto.getLoginName());
+        InvestModel investModel = new InvestModel(IdGenerator.generate(),
+                transferApplicationModel.getLoanId(),
+                transferApplicationModel.getTransferInvestId(),
+                investDto.getLoginName(), transferrerModel.getAmount(),
+                rate, false, transferrerModel.getInvestTime(),
+                investDto.getSource(),
+                investDto.getChannel()
+        );
+        investMapper.create(investModel);
+        return investModel;
     }
 
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
-        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(investDto.getLoginName(), Role.INVESTOR);
 
         long loanId = Long.parseLong(investDto.getLoanId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
-        if (transferApplicationModel.getLoginName().equals(investDto.getLoginName())) {
-            throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
+
+        if(transferApplicationModel == null || transferApplicationModel.getStatus() !=TransferStatus.TRANSFERRING){
+            throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
+
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             throw new InvestException(InvestExceptionType.LOAN_NOT_FOUND);
         }
-        long investAmount = Long.parseLong(investDto.getAmount());
 
-        if (accountModel.getBalance() < investAmount) {
-            throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
+        if (transferApplicationModel.getLoginName().equals(investDto.getLoginName()) || loan.getAgentLoginName().equals(investDto.getLoginName())) {
+            throw new InvestException(InvestExceptionType.INVESTOR_IS_LOANER);
         }
 
-        if (investDto.isNoPassword() && !accountModel.isNoPasswordInvest()) {
-            throw new InvestException(InvestExceptionType.PASSWORD_INVEST_OFF);
+        long investAmount = Long.parseLong(investDto.getAmount());
+
+        if (bankAccountModel.getBalance() < investAmount) {
+            throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
 
         if (LoanStatus.REPAYING != loan.getStatus()) {
@@ -203,7 +237,7 @@ public class TransferServiceImpl implements TransferService {
             TransferRuleModel transferRuleModel = transferRuleMapper.find();
             return transferRuleModel.isMultipleTransferEnabled() || (!transferRuleModel.isMultipleTransferEnabled() && transferApplicationMapper.findByInvestId(input.getInvestId()) == null);
         });
-        BasePaginationDataDto<TransferableInvestPaginationItemDataView> baseDto = new BasePaginationDataDto(index, pageSize, count, Lists.newArrayList(filter));
+        BasePaginationDataDto<TransferableInvestPaginationItemDataView> baseDto = new BasePaginationDataDto<>(index, pageSize, count, Lists.newArrayList(filter));
         baseDto.setStatus(true);
 
         return baseDto;
@@ -212,7 +246,7 @@ public class TransferServiceImpl implements TransferService {
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginName) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
-        double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
+        double investFeeRate = userMembershipService.obtainServiceFee(loginName);
 
         InvestRepayModel investRepayModel = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod()) : investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
@@ -260,10 +294,10 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
-            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));
-            transferApplicationDetailDto.setBalance(accountModel != null ? AmountConverter.convertCentToString(accountModel.getBalance()) : "0.00");
+            transferApplicationDetailDto.setBalance(bankAccountModel != null ? AmountConverter.convertCentToString(bankAccountModel.getBalance()) : "0.00");
         } else if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
             InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setLoginName(randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId()));

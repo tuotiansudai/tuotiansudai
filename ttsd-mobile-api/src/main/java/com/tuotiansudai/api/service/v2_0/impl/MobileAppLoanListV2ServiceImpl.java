@@ -10,7 +10,7 @@ import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
@@ -41,7 +41,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     private InvestMapper investMapper;
 
     @Autowired
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
@@ -55,12 +55,12 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(String loginName) {
         List<LoanModel> loanModels = Lists.newArrayList();
-        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360, ProductType.EXPERIENCE);
+        List<ProductType> allProductTypesCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         List<ProductType> noContainExperienceCondition = Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360);
         ActivityType activityType = ActivityType.NORMAL;
         if (Strings.isNullOrEmpty(loginName)
                 || investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE));
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING, allProductTypesCondition, ActivityType.NEWBIE));
         }
 
         if (investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceCondition) == 0) {
@@ -137,8 +137,8 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             loanResponseDataDto.setLoanMoneyCent(String.valueOf(loan.getLoanAmount()));
 
             loanResponseDataDto.setExtraRates(convertExtraRateList(loan.getId()));
-            double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(loginName);
-            if (loan != null && ProductType.EXPERIENCE == loan.getProductType()) {
+            double investFeeRate = userMembershipService.obtainServiceFee(loginName);
+            if (ProductType.EXPERIENCE == loan.getProductType()) {
                 investFeeRate = this.defaultFee;
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));

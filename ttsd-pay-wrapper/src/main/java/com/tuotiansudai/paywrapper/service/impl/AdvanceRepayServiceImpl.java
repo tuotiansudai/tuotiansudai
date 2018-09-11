@@ -202,7 +202,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels);
 
         // update agent user bill
-        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY, null, null);
+        AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         logger.info(MessageFormat.format("[Advance Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
                 String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
@@ -509,7 +509,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
      * @param currentInvestRepay 投资人还款计划
      * @throws AmountTransferException
      */
-    private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws Exception {
+    private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) {
         long investRepayId = currentInvestRepay.getId();
         InvestModel investModel = investMapper.findById(currentInvestRepay.getInvestId());
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
@@ -517,11 +517,11 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         // interest user bill
         long paybackAmount = investModel.getAmount() + currentInvestRepay.getActualInterest();
         AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
-                investRepayId, paybackAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
+                investRepayId, paybackAmount, UserBillBusinessType.ADVANCE_REPAY);
 
         // fee user bill
         AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
-                investRepayId, currentInvestRepay.getActualFee(), UserBillBusinessType.INVEST_FEE, null, null);
+                investRepayId, currentInvestRepay.getActualFee(), UserBillBusinessType.INVEST_FEE);
 
         inAtm.setNext(outAtm);
 

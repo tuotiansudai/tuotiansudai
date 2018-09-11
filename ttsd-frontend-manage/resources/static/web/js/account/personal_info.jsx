@@ -255,16 +255,6 @@ require.ensure([],function() {
 //点击联动优势按钮
     $btnTurnOnElement.on('click',function(){
         layer.closeAll();
-        layer.open({
-            type: 1,
-            closeBtn:0,
-            move: false,
-            offset: "200px",
-            title: '免密投资',
-            area: ['490px', '220px'],
-            shadeClose: true,
-            content: $noPasswordInvestDOM
-        });
     });
 
 //关闭免密支付按钮
@@ -543,84 +533,81 @@ require.ensure([],function() {
 
 },'changePassword');
 
-//支付密码
-(function(){
-    let $resetUmpayPassDOM = $('#resetUmpayPassDOM');
-    let resetUmpayPasswordForm = globalFun.$('#resetUmpayPasswordForm');
-    let $resetUmpayPasswordLayer = $('.setUmpayPass', $InfoBox);
-    let errorDom=$('.error-box',$resetUmpayPassDOM);
-    let $successUmpayPass = $('#successUmpayPass');
-    $resetUmpayPasswordLayer.on('click', function() {
-        layer.open({
-            type: 1,
-            move: false,
-            offset: "200px",
-            title: '修改支付密码',
-            area: ['500px', '300px'],
-            shadeClose: false,
-            content: $resetUmpayPassDOM,
-            cancel: function () {
-                resetUmpayPasswordForm.reset();
-                errorDom.css('visibility','hidden');
-            }
-        });
-    });
+require.ensure([],function(){
+    //出借人和借款人分开
+    let $applyLoanerDOM = $('#applyLoanerDOM');//申请成为借款人
+    let $turnToLoanerDOM = $('#turnToLoanerDOM');//切换成借款人
+    let $turnToInvestorDOM = $('#turnInvestorDOM');//切换成投资人
+    let $changeRoleBtn = $('.change-role-btn');//切换按钮
 
-    //修改支付密码表单验证
-    let umpayValidator = new ValidatorObj.ValidatorForm();
-    umpayValidator.add(resetUmpayPasswordForm.identityNumber, [{
-        strategy: 'isNonEmpty',
-        errorMsg: '请输入身份证'
-    }, {
-        strategy: 'identityValid',
-        errorMsg: '请输入有效身份证'
-    }]);
+    let userRole = $InfoBox.data('user-role');
+    let loanerRole = $InfoBox.data('loaner-role');
+    let isInvestor = 'INVESTOR'===userRole;
+    let isLoaner = 'LOANER'===loanerRole;
+    let hasLoanerAccount = $InfoBox.data('has-loaner-account');
 
-    $(resetUmpayPasswordForm.identityNumber).on('blur',function() {
-        let errorMsg = umpayValidator.start(this);
-        if(errorMsg) {
-            errorDom.text(errorMsg).css('visibility','visible');
-        }
-        else {
-            errorDom.text('').css('visibility','hidden');
-        }
-    });
+    let $applyLoanerBtn = $('.btn-apply-loaner'),
+        $turnToLoanerBtn = $('.btn-turn-loaner'),
+        $turnToInvestorBtn = $('.btn-turn-investor');
 
-    resetUmpayPasswordForm.onsubmit = function(event) {
-        event.preventDefault();
-        let UmpayForm=this;
-        $(UmpayForm).find(':submit').prop('disabled',true);
-        if($(UmpayForm.identityNumber).hasClass('valid')) {
-            commonFun.useAjax({
-                url:"/personal-info/reset-umpay-password",
-                type:'POST',
-                data:$(UmpayForm).serialize()
-            },function(response) {
-                var data = response.data;
-                $(UmpayForm).find(':submit').prop('disabled',false);
-                if (data.status) {
-                    layer.closeAll();
+    $changeRoleBtn.on('click',function () {
+
+            if(isInvestor){
+                if(hasLoanerAccount){
                     layer.open({
                         type: 1,
                         move: false,
                         offset: "200px",
-                        title: '修改支付密码',
-                        area: ['500px', '300px'],
+                        title: '温馨提示',
+                        area: ['490px', '220px'],
                         shadeClose: false,
-                        content: $successUmpayPass
+                        closeBtn:0,
+                        content: $turnToLoanerDOM
                     });
-                } else {
-                    errorDom.text('您输入的身份证号与当前账号不符，请重新输入。').css('visibility','visible');
+                }else {
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        offset: "200px",
+                        title: '温馨提示',
+                        area: ['490px', '220px'],
+                        shadeClose: false,
+                        closeBtn:0,
+                        content: $applyLoanerDOM
+                    });
                 }
-            });
-        }
-    }
-})();
+            }
+            if(isLoaner){
+                layer.open({
+                    type: 1,
+                    move: false,
+                    offset: "200px",
+                    title: '温馨提示',
+                    area: ['490px', '220px'],
+                    shadeClose: false,
+                    closeBtn:0,
+                    content: $turnToInvestorDOM
+                });
+            }
+
+
+    })
+    $('.btn-close').on('click', function () {
+        layer.closeAll();
+    });
 
 let metaViewPort = $('meta[name=viewport]');//
 metaViewPort.remove()
 $('head').prepend($('<meta name="viewport" content="width=1024,user-scalable=yes" />'));
 
 
+},'changeRole')
 
+//显示隐藏联动优势资金账号提示
+$('#noticeBtn').on('mouseover',function () {
+    $('.notice-tips').show();
+})
+$('#noticeBtn').on('mouseout',function () {
+    $('.notice-tips').hide();
+})
 

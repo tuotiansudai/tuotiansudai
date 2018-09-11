@@ -1,0 +1,538 @@
+//Personal Info Page
+$CK1:#ffac2a;
+.main-frame .content-container {
+  min-height: auto;
+  margin-top: 18px;
+}
+.ump-nav {
+
+  .ump-tip {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    padding-top: 30px;
+  }
+}
+.kindly-tip {
+  padding-left: 37px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  p {
+    &.title {
+      font-weight: bold;
+    }
+    font-size: 14px;
+    margin-bottom: 0;
+    line-height: 33px;
+    color: #666;
+  }
+}
+.voice-captcha {
+  width: 94px;
+  color: #999;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 12px;
+  line-height: 16px;
+  a {
+    color: #ff9c1b;
+  }
+}
+#alreadyTurnOffDOM {
+  .font-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    background:url('../../images/myaccount/rightOk.png') no-repeat center;
+    background-size:100%;
+  }
+  .text-m {
+    margin-top: 10px;
+  }
+}
+#turnOnNoPasswordInvestForm {
+  .person-info-btn {
+    margin-top: 16px;
+  }
+  .error-box {
+    text-indent: 86px;
+  }
+}
+
+.person-info-btn {
+  button {
+    margin-top: 0px;
+    width: 37%;
+    letter-spacing: 2px;
+    font-size: 13px;
+    &.btn-cancel {
+      margin-right:20px;
+    }
+    &.btn-close {
+      background: #e5e5e5;
+      border-width: 0!important;
+      color:#808080;
+    }
+  }
+}
+
+.personal-info {
+  .info-list {
+    color: #797979;
+    line-height: 38px;
+    em.info {
+      display: inline-block;
+    }
+    .fa {
+      font-size: 16px;
+      padding-right: 5px;
+    }
+    .info-title {
+      font-weight: bold;
+      display: inline-block;
+      width: 76px;
+      text-align: right;
+      margin-right: 20px;
+      color: #000;
+    }
+    .binding-set {
+      display: inline-block;
+      width: 140px;
+      float: right;
+
+      .ok {
+        color: #2ac30c;
+      }
+      .no {
+        color: #ff1010;
+      }
+      a.setlink {
+        color: #ffac2a;
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
+
+.account-overview {
+  padding: 0 !important;
+  background: red;
+  font-size: 14px;
+  .more {
+    padding-right:15px;
+  }
+  .sign-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    z-index: 999;
+    display: none;
+    .sign-layer-list {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -208px;
+      margin-left: -230px;
+      width: 460px;
+      height: 416px;
+      border-radius: 5px;
+      overflow: hidden;
+      background: url("../../images/myaccount/sign-bg.png") no-repeat;
+      .sign-top {
+        float: left;
+        width: 100%;
+        min-height: 250px;
+        padding-top: 75px;
+        text-align:center;
+        position: relative;
+        .close-btn {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          width: 24px;
+          height: 24px;
+          background: url("../../images/myaccount/bean-bg.png") no-repeat;
+          background-size: 100%;
+          cursor: pointer;
+        }
+        .sign-text{
+          display:inline-block;
+          width:100%;
+          height:60px;
+          line-height:60px;
+          margin-top:20px;
+          font-size:36px;
+          color:#fff;
+          text-align:center;
+        }
+        .sign-content{
+          display:inline-block;
+          width:400px;
+          height:260px;
+          background:#fffdee;
+          border-bottom-left-radius:15px;
+          border-bottom-right-radius:15px;
+          p {
+            color: #9a3528;
+            text-align: center;
+            margin-bottom: 0;
+            &.sign-point {
+              margin-top: 10px;
+              font-size: 20px;
+              span{
+                font-size:36px;
+              }
+            }
+            &.tomorrow-text {
+              margin-bottom:20px;
+              font-size: 16px;
+              border-bottom:1px dashed #9a3528;
+            }
+            &.intro-text {
+              font-size: 14px;
+            }
+            &.sign-reward{
+              margin-top:10px;
+              a{
+                display: inline-block;
+                width: 180px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                color: #9a3528;
+                background: #fceb5e;
+                border-radius: 40px;
+                box-shadow: 0 4px 0 #eeb33d;
+                position: relative;
+                &:hover {
+                  top: 2px;
+                  box-shadow: 0 2px 0 #eeb33d;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.content-container {
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .icon-has-con {
+    display: inline-block;
+    width:18px;
+    height: 11px;
+    margin-left: 7px;
+    background: url('../../images/icons/icon-arrow-up.png') right center no-repeat;
+    margin-top: 10px;
+    float: right;
+  }
+  .detail-list {
+    padding:10px 10px 15px 15px;
+    height: auto;
+    overflow: auto;
+    li {
+      float: left;
+      width:30%;
+      line-height: 38px;
+    }
+  }
+
+  .btn-primary, .btn-normal {
+    margin-left: 10px;
+    padding: 8px 20px;
+  }
+  .column-box {
+    border-bottom: 1px solid #f9f9f9;
+    &.profile-box {
+      padding: 15px;
+      .account-profile {
+        margin-right: 10px;
+        width: 78px;
+        height: 78px;
+        display: inline-block;
+        border: 1px solid #e5e5e5;
+        background: #f5fefd url('../../images/myaccount/icon-profile.png') center 19px no-repeat;
+      }
+
+      .welcome-text {
+        font-size: 14px;
+        height: auto;
+        overflow: auto;
+        margin-bottom: 13px;
+        .tip-hello {
+          font-size: 16px;
+        }
+      }
+      .proList {
+        li {
+          a {
+            display: block;
+          }
+          &.fl {
+            font-size: 20px;
+            line-height: 0;
+            margin-top: 14px;
+            margin-right: 3px;
+
+            a {
+              display: block;
+            }
+            &.sign-top {
+              margin-top: 5px !important;
+              padding: 5px 0;
+              background: #ff7200;
+              color: #fff;
+              border-radius: 0px;
+              width: 80px;
+              height: 20px;
+              line-height: 20px;
+              text-align: center;
+
+              &.no-click {
+                background: #ccc;
+              }
+              span {
+                float: left;
+                text-align: center;
+                line-height: 20px;
+                font-size: 14px;
+
+                &.will-sign {
+                  float: left;
+                  width: 60px;
+                  text-align: center;
+                  line-height: 20px;
+                  background: url("../../images/sign/icon-sign.png") no-repeat left;
+                  background-position: 15px 2px;
+                  padding-left: 20px;
+                  font-size: 14px;
+                  cursor: pointer;
+                }
+                &.finish-sign {
+                  width: 100%;
+                  cursor: no-drop;
+                }
+              }
+            }
+            &.fl {
+              font-size: 20px;
+              line-height: 0;
+              margin-top: 14px;
+              margin-right: 3px;
+
+              a {
+                color: $CK1;
+                cursor: pointer;
+
+                &.fa-mobile {
+                  font-size: 24px;
+                  margin-top: -3px;
+                }
+                &.fa-envelope-o {
+                  color: #666;
+                }
+              }
+              &.fa-mobile {
+                font-size: 24px;
+                margin-top: -3px;
+              }
+              &.fa-envelope-o {
+                color: #666;
+              }
+            }
+          }
+
+        }
+      }
+      .vip {
+        display: inline-block;
+        width: 38px;
+        height: 14px;
+        vertical-align: middle;
+        &.vip0 {
+          background: url("../../images/icons/vip/account-vip/v0.png") no-repeat;
+        }
+        &.vip1 {
+          background: url("../../images/icons/vip/account-vip/v1.png") no-repeat;
+        }
+        &.vip2 {
+          background: url("../../images/icons/vip/account-vip/v2.png") no-repeat;
+        }
+        &.vip3 {
+          background: url("../../images/icons/vip/account-vip/v3.png") no-repeat;
+        }
+        &.vip4 {
+          background: url("../../images/icons/vip/account-vip/v4.png") no-repeat;
+        }
+        &.vip5 {
+          background: url("../../images/icons/vip/account-vip/v5.png") no-repeat;
+        }
+      }
+      .user-info {
+        display: inline-block;
+        width: 20px;
+        height: 14px;
+        vertical-align: middle;
+        background: url("../../images/icons/vip/account-vip/user-info.png") no-repeat;
+      }
+    }
+
+    h3 {
+      font-size: 16px;
+      color: #4c4c4c;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    &.amount-sum {
+      border: 1px solid #fff;
+      border-bottom:1px solid #f9f9f9;
+      .detail-list {
+        display: none;
+      }
+
+      &.open {
+        border: 1px solid #fbd0ae;
+        .detail-list {
+          display: block;
+        }
+        .icon-has-con {
+          transform: rotate(180deg);
+        }
+        h3 {
+          background: #e7eaee;
+        }
+      }
+    }
+  }
+
+  .birth-icon {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: url('../../images/sign/birthday.png') no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
+  }
+
+  .payment-switch {
+    font-size: 16px;
+    color: #808080;
+    em {
+      float: left;
+      padding: 10px 0px;
+      margin:0 20px;
+      font-weight: bold;
+      border-top:3px solid #fff;
+      cursor: pointer;
+      &.current {
+        border-top:3px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+    span.total {
+      font-size: 14px;
+      color: #4c4c4c;
+      padding: 10px;
+      display: none;
+      &.current {
+        display: block;
+      }
+    }
+  }
+
+  .table tfoot td.last {
+    border-bottom-width:0;
+  }
+
+  .new-projects {
+    margin-top:15px;
+    .trade-detail {
+      width: 170px;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .last-month {
+
+  }
+}
+
+.item-block {
+  display: block;
+  margin-top: 10px;
+  line-height: 30px;
+  font-size: 12px;
+
+  .select-item {
+    display: inline-block;
+    padding: 0 10px;
+    margin-left: 10px;
+    color: #333;
+    cursor: pointer;
+
+    &.current {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
+}
+
+.recharge-cash {
+  font-size: 16px;
+  color: #999;
+  text-align: center;
+  background: #fafafa;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  >span {
+    vert-align: middle;
+  }
+  .money {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+  }
+  p {
+    position: relative;
+    text-indent: 30px;
+    display:inline-block;
+    margin-bottom: 0;
+    &.cash-p {
+      margin-left: 60px;
+    }
+    &.cash-section {
+      margin-left: 70px;
+    }
+    .icon-small {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      left: 0;
+      top: 10px;
+      &.icon-recharge {
+        background: url('../../images/sign/icon_recharge.png') no-repeat left center;
+        background-size: contain;
+      }
+      &.icon-cash {
+        background: url('../../images/sign/icon_getCash.png') no-repeat left center;
+        background-size: contain;
+      }
+    }
+  }
+}

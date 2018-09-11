@@ -2,20 +2,21 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankModel;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserBankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.*;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.RiskEstimateService;
+import com.tuotiansudai.service.BankBindCardService;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,46 +26,37 @@ import javax.servlet.http.HttpServletRequest;
 public class PersonalInfoController {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private RiskEstimateService riskEstimateService;
 
-    @Autowired
-    private BankService bankService;
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
-        UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
-
-        AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
+        Role role = LoginUserInfo.getBankRole();
 
         mv.addObject("loginName", userModel.getLoginName());
         mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
-        mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
-        mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
         mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        mv.addObject("hasLoanerAccount", bankAccountService.findBankAccount(userModel.getLoginName(), Role.LOANER) != null);
 
-        if (accountModel != null) {
+        if (role != null) {
             mv.addObject("userName", userModel.getUserName());
             mv.addObject("identityNumber", userModel.getIdentityNumber());
-            BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
-            if (bankCard != null) {
-                mv.addObject("bankCard", bankCard.getCardNumber());
-                BankModel bankModel = bankService.findByBankCode(bankCard.getBankCode());
-                mv.addObject("bankName", bankModel.getName());
-            }
+            BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role);
+            mv.addObject("authorization", bankAccountModel.isAuthorization());
+            mv.addObject("autoInvest", bankAccountModel.isAutoInvest());
+            mv.addObject("bankCard", bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role));
+            mv.addObject("bankMobile", bankAccountModel.getBankMobile());
         }
         return mv;
     }
@@ -93,19 +85,25 @@ public class PersonalInfoController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset-bank-password/source/{source}", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> resetUmpayPassword(String identityNumber) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        baseDto.setData(dataDto);
-        dataDto.setStatus(accountService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
-        return baseDto;
+    public ModelAndView resetBankPassword(@PathVariable(value = "source") Source source) {
+        BankAsyncMessage bankAsyncData = bankAccountService.resetPassword(source, LoginUserInfo.getLoginName(), LoginUserInfo.getBankRole());
+        return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 
-    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView resetUmpayPasswordPage() {
-        return new ModelAndView("reset-password");
+    @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.GET)
+    public ModelAndView changeBankPhoneView() {
+        ModelAndView modelAndView = new ModelAndView("/personal-change-bank-mobile");
+        BankAccountModel bank=bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), LoginUserInfo.getBankRole());
+        modelAndView.addObject("originMobile",bank.getBankMobile());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/change-bank-mobile", method = RequestMethod.POST)
+    public ModelAndView changeBankPhone(@RequestParam("newPhone") String newPhone,
+                                        @RequestParam("type") String type) {
+        BankAsyncMessage bankAsyncData = bankAccountService.changeBankMobile(LoginUserInfo.getLoginName(), newPhone, type, LoginUserInfo.getBankRole(), Source.WEB);
+        return new ModelAndView("/pay", "pay", bankAsyncData);
     }
 }

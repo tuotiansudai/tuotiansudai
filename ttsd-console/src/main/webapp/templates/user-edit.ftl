@@ -26,7 +26,23 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">姓名：</label>
+            <label class="col-sm-2 control-label">姓名(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.umpUserName!}</p>
+                <input type="hidden" name="umpUserName" value="${user.umpUserName!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证(联动优势)：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.umpIdentityNumber!}</p>
+                <input type="hidden" name="umpIdentityNumber" value="${user.umpIdentityNumber!}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">姓名(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.userName!}</p>
@@ -34,21 +50,44 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">身份证：</label>
+            <label class="col-sm-2 control-label">身份证(富滇银行)：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.identityNumber!}</p>
                 <input type="hidden" name="identityNumber" value="${user.identityNumber!}"/>
             </div>
         </div>
+        <hr size="1" color="#999999">
         <div class="form-group">
-            <label class="col-sm-2 control-label">银行卡：</label>
+            <label class="col-sm-2 control-label">银行卡</label>
+        </div>
+        <#if user.bankCardNumberUMP??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">联动优势：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.bankCardNumber!}</p>
-                <input type="hidden" name="identityNumber" value="${user.bankCardNumber!}"/>
+                <p class="form-control-static">${user.bankCardNumberUMP!}</p>
             </div>
         </div>
+        </#if>
+        <#if user.bankCardNumberInvestor??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">富滇银行-出借人：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.bankCardNumberInvestor!}</p>
+            </div>
+        </div>
+        </#if>
+        <#if user.bankCardNumberLoaner??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">富滇银行-借款人：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.bankCardNumberLoaner!}</p>
+            </div>
+        </div>
+        </#if>
+        <hr size="1" color="#999999">
         <div class="form-group">
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
 
@@ -121,7 +160,7 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
                                           <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          <#if !editRole>disabled="disabled"</#if>
+                                          <#if !editRole || roleItem.name()=='INVESTOR'|| roleItem.name()=='LOANER'>onclick="return false"</#if>
                                           value="${roleItem.name()}">${roleItem.getDescription()}
                             </label>
                         </div>

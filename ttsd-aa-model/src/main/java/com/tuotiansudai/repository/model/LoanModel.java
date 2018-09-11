@@ -14,183 +14,108 @@ import java.util.Date;
 import java.util.List;
 
 public class LoanModel implements Serializable {
-    /***
-     * 标的号
-     ***/
-    private long id;
-    /***
-     * 借款项目名称
-     ***/
-    private String name;
-    /***
-     * 代理人
-     ***/
-    private String agentLoginName;
-    /***
-     * 借款人ID
-     ***/
+
+    private long id; // 标的号
+
+    private String name; // 借款项目名称
+
+    private String agentLoginName; // 代理人
+
     private String loanerLoginName;
-    /***
-     * 借款人
-     ***/
-    private String loanerUserName;
-    /***
-     * 借款人身份证号
-     ***/
-    private String loanerIdentityNumber;
-    /***
-     * 标的类型
-     ***/
-    private LoanType type;
-    /***
-     * 借款期数
-     ***/
-    private int periods;
-    /***
-     * 原始借款期限
-     ***/
-    private int originalDuration;
-    /**
-     * 借款天数
-     */
-    private int duration;
-    /***
-     * 项目描述（纯文本）
-     ***/
-    private String descriptionText;
-    /***
-     * 项目描述（带html标签）
-     ***/
-    private String descriptionHtml;
-    /***
-     * 抵押物类型
-     */
-    private PledgeType pledgeType;
-    /***
-     * 借款金额
-     ***/
-    private long loanAmount;
-    /***
-     * 最小投资金额
-     ***/
-    private long minInvestAmount;
-    /***
-     * 投资递增金额
-     ***/
-    private long investIncreasingAmount;
-    /***
-     * 单笔最大投资金额
-     ***/
-    private long maxInvestAmount;
-    /***
-     * 活动类型
-     ***/
-    private ActivityType activityType;
-    /**
-     * 产品线
-     */
-    private ProductType productType;
-    /***
-     * 活动利率
-     ***/
-    private double activityRate;
-    /***
-     * 基本利率
-     ***/
-    private double baseRate;
-    /***
-     * 合同
-     ***/
-    private long contractId;
-    /***
-     * 筹款开始时间
-     ***/
-    private Date fundraisingStartTime;
-    /***
-     * 筹款截止时间
-     ***/
-    private Date fundraisingEndTime;
-    /***
-     * 借款截止时间
-     ***/
-    private Date deadline;
-    /***
-     * 筹款完成时间
-     ***/
-    private Date raisingCompleteTime;
-    /***
-     * 是否显示在首页true:显示在首页，false:不显示在首页
-     ***/
-    private boolean showOnHome;
-    /***
-     * 建标时间
-     ***/
-    private Date createdTime = new Date();
+
+    private String loanerUserName; // 借款人
+
+    private String loanerIdentityNumber; //借款人身份证号
+
+    private LoanType type; // 标的类型
+
+    private int periods; // 借款期数
+
+    private int originalDuration; // 原始借款期限
+
+    private int duration; // 借款天数
+
+    private String descriptionText; // 项目描述（纯文本）
+
+    private String descriptionHtml; // 项目描述（带html标签）
+
+    private PledgeType pledgeType; // 抵押物类型
+
+    private long loanAmount; // 借款金额
+
+    private long minInvestAmount; // 最小投资金额
+
+    private long maxInvestAmount; // 单笔最大投资金额
+
+    private long investIncreasingAmount; // 投资递增金额
+
+    private ActivityType activityType; // 活动类型
+
+    private ProductType productType; //产品线
+
+    private double baseRate; // 基本利率
+
+    private double activityRate; // 活动利率
+
+    private long contractId; // 合同
+
+    private Date fundraisingStartTime; // 筹款开始时间
+
+    private Date fundraisingEndTime; // 筹款截止时间
+
+    private Date deadline; // 借款截止时间
+
+    private Date raisingCompleteTime; // 筹款完成时间
+
+    private Date verifyTime; // 初审时间
+
+    private String verifyLoginName;
+
+    private Date recheckTime; // 复审时间
+
+    private String recheckLoginName;
+
+    private LoanStatus status; // 标的状态
+
+    private Long firstInvestAchievementId; //拓荒先锋
+
+    private Long maxAmountAchievementId; //标王
+
+    private Long lastInvestAchievementId; //一锤定音
+
+    private boolean showOnHome; // 是否显示在首页true:显示在首页，false:不显示在首页
+
+    private Date createdTime; // 建标时间
 
     private String createdLoginName;
 
-    private Date updateTime = new Date();
-    /***
-     * 初审时间
-     ***/
-    private Date verifyTime;
+    private Date updateTime;
 
-    private String verifyLoginName;
-    /***
-     * 复审时间
-     ***/
-    private Date recheckTime;
+    private String loanTxNo; //银行标的号
 
-    private String recheckLoginName;
-    /***
-     * 标的状态
-     ***/
-    private LoanStatus status;
+    private String loanAccNo; //银行标的账户
 
-    /**
-     * FIRST_INVEST_ACHIEVEMENT
-     */
-    private Long firstInvestAchievementId;
+    private String bankOrderNo; //银行开标订单
 
-    /**
-     * MAX_INVEST_ACHIEVEMENT
-     */
-    private Long maxAmountAchievementId;
+    private String bankOrderDate; //银行开标订单日期
 
-    /**
-     * LAST_INVEST_ACHIEVEMENT
-     */
-    private Long lastInvestAchievementId;
+    private String loanFullBankOrderNo; //银行放款订单
 
-    /***
-     * 申请材料
-     ***/
-    private List<LoanTitleRelationModel> loanTitles;
+    private String loanFullBankOrderDate; //银行放款订单日期
 
-    /**
-     * 还款日
-     */
-    private Date nextRepayDate;
+    private Date nextRepayDate; //还款日
 
-    /**
-     * 完成日期
-     */
-    private Date completedDate;
+    private Date completedDate; //完成日期
 
-    /**
-     * 应还总额
-     */
-    private long expectedRepayAmount;
+    private long expectedRepayAmount; //应还总额
 
-    /**
-     * 实还总额
-     */
-    private long actualRepayAmount;
+    private long actualRepayAmount; //实还总额
 
-    /**
-     * 待还总额
-     */
-    private long unpaidAmount;
+    private long unpaidAmount; // 待还总额
+
+    private boolean isBankPlatform;//资金平台
+
+    private long loanFee;//借款手续费
 
     public LoanModel() {
     }
@@ -225,6 +150,7 @@ public class LoanModel implements Serializable {
         this.descriptionHtml = "";
         this.descriptionText = "";
         this.showOnHome = true;
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
     }
 
     public LoanModel updateLoan(LoanCreateRequestDto loanCreateRequestDto) {
@@ -250,7 +176,7 @@ public class LoanModel implements Serializable {
         this.originalDuration = baseRequestDto.getOriginalDuration();
         this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
-        this.updateTime = new Date();
+        this.loanFee=AmountConverter.convertStringToCent(baseRequestDto.getLoanFee());
         return this;
     }
 
@@ -285,6 +211,12 @@ public class LoanModel implements Serializable {
         this.createdLoginName = loanDto.getCreatedLoginName();
         this.verifyLoginName = loanDto.getVerifyLoginName();
         this.recheckLoginName = loanDto.getRecheckLoginName();
+        this.isBankPlatform = loanDto.getIsBankPlatform();
+    }
+
+    private String rateStrDivideOneHundred(String rate) {
+        BigDecimal rateBigDecimal = new BigDecimal(rate);
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
     }
 
     public long getId() {
@@ -407,20 +339,20 @@ public class LoanModel implements Serializable {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public long getInvestIncreasingAmount() {
-        return investIncreasingAmount;
-    }
-
-    public void setInvestIncreasingAmount(long investIncreasingAmount) {
-        this.investIncreasingAmount = investIncreasingAmount;
-    }
-
     public long getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
     public void setMaxInvestAmount(long maxInvestAmount) {
         this.maxInvestAmount = maxInvestAmount;
+    }
+
+    public long getInvestIncreasingAmount() {
+        return investIncreasingAmount;
+    }
+
+    public void setInvestIncreasingAmount(long investIncreasingAmount) {
+        this.investIncreasingAmount = investIncreasingAmount;
     }
 
     public ActivityType getActivityType() {
@@ -431,12 +363,12 @@ public class LoanModel implements Serializable {
         this.activityType = activityType;
     }
 
-    public double getActivityRate() {
-        return activityRate;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public void setActivityRate(double activityRate) {
-        this.activityRate = activityRate;
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     public double getBaseRate() {
@@ -445,6 +377,14 @@ public class LoanModel implements Serializable {
 
     public void setBaseRate(double baseRate) {
         this.baseRate = baseRate;
+    }
+
+    public double getActivityRate() {
+        return activityRate;
+    }
+
+    public void setActivityRate(double activityRate) {
+        this.activityRate = activityRate;
     }
 
     public long getContractId() {
@@ -487,22 +427,6 @@ public class LoanModel implements Serializable {
         this.raisingCompleteTime = raisingCompleteTime;
     }
 
-    public boolean isShowOnHome() {
-        return showOnHome;
-    }
-
-    public void setShowOnHome(boolean showOnHome) {
-        this.showOnHome = showOnHome;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
     public Date getVerifyTime() {
         return verifyTime;
     }
@@ -511,12 +435,28 @@ public class LoanModel implements Serializable {
         this.verifyTime = verifyTime;
     }
 
+    public String getVerifyLoginName() {
+        return verifyLoginName;
+    }
+
+    public void setVerifyLoginName(String verifyLoginName) {
+        this.verifyLoginName = verifyLoginName;
+    }
+
     public Date getRecheckTime() {
         return recheckTime;
     }
 
     public void setRecheckTime(Date recheckTime) {
         this.recheckTime = recheckTime;
+    }
+
+    public String getRecheckLoginName() {
+        return recheckLoginName;
+    }
+
+    public void setRecheckLoginName(String recheckLoginName) {
+        this.recheckLoginName = recheckLoginName;
     }
 
     public LoanStatus getStatus() {
@@ -551,80 +491,20 @@ public class LoanModel implements Serializable {
         this.lastInvestAchievementId = lastInvestAchievementId;
     }
 
-    public List<LoanTitleRelationModel> getLoanTitles() {
-        return loanTitles;
+    public boolean isShowOnHome() {
+        return showOnHome;
     }
 
-    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
-        this.loanTitles = loanTitles;
+    public void setShowOnHome(boolean showOnHome) {
+        this.showOnHome = showOnHome;
     }
 
-    public Date getNextRepayDate() {
-        return nextRepayDate;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public Date getCompletedDate() {
-        return completedDate;
-    }
-
-    public long getExpectedRepayAmount() {
-        return expectedRepayAmount;
-    }
-
-    public long getActualRepayAmount() {
-        return actualRepayAmount;
-    }
-
-    public long getUnpaidAmount() {
-        return unpaidAmount;
-    }
-
-    public Date getCanceledDate() {
-        if (LoanStatus.CANCEL == status) {
-            return recheckTime;
-        }
-        return null;
-    }
-
-    public void setNextRepayDate(Date nextRepayDate) {
-        this.nextRepayDate = nextRepayDate;
-    }
-
-    public void setCompletedDate(Date completedDate) {
-        this.completedDate = completedDate;
-    }
-
-    public void setExpectedRepayAmount(long expectedRepayAmount) {
-        this.expectedRepayAmount = expectedRepayAmount;
-    }
-
-    public void setActualRepayAmount(long actualRepayAmount) {
-        this.actualRepayAmount = actualRepayAmount;
-    }
-
-    public void setUnpaidAmount(long unpaidAmount) {
-        this.unpaidAmount = unpaidAmount;
-    }
-
-    private String rateStrDivideOneHundred(String rate) {
-        BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getCreatedLoginName() {
@@ -635,19 +515,115 @@ public class LoanModel implements Serializable {
         this.createdLoginName = createdLoginName;
     }
 
-    public String getVerifyLoginName() {
-        return verifyLoginName;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setVerifyLoginName(String verifyLoginName) {
-        this.verifyLoginName = verifyLoginName;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getRecheckLoginName() {
-        return recheckLoginName;
+    public String getLoanTxNo() {
+        return loanTxNo;
     }
 
-    public void setRecheckLoginName(String recheckLoginName) {
-        this.recheckLoginName = recheckLoginName;
+    public void setLoanTxNo(String loanTxNo) {
+        this.loanTxNo = loanTxNo;
+    }
+
+    public String getLoanAccNo() {
+        return loanAccNo;
+    }
+
+    public void setLoanAccNo(String loanAccNo) {
+        this.loanAccNo = loanAccNo;
+    }
+
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
+    }
+
+    public String getLoanFullBankOrderNo() {
+        return loanFullBankOrderNo;
+    }
+
+    public void setLoanFullBankOrderNo(String loanFullBankOrderNo) {
+        this.loanFullBankOrderNo = loanFullBankOrderNo;
+    }
+
+    public String getLoanFullBankOrderDate() {
+        return loanFullBankOrderDate;
+    }
+
+    public void setLoanFullBankOrderDate(String loanFullBankOrderDate) {
+        this.loanFullBankOrderDate = loanFullBankOrderDate;
+    }
+
+    public Date getNextRepayDate() {
+        return nextRepayDate;
+    }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    public long getExpectedRepayAmount() {
+        return expectedRepayAmount;
+    }
+
+    public void setExpectedRepayAmount(long expectedRepayAmount) {
+        this.expectedRepayAmount = expectedRepayAmount;
+    }
+
+    public long getActualRepayAmount() {
+        return actualRepayAmount;
+    }
+
+    public void setActualRepayAmount(long actualRepayAmount) {
+        this.actualRepayAmount = actualRepayAmount;
+    }
+
+    public long getUnpaidAmount() {
+        return unpaidAmount;
+    }
+
+    public void setUnpaidAmount(long unpaidAmount) {
+        this.unpaidAmount = unpaidAmount;
+    }
+
+    public boolean getIsBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setIsBankPlatForm(boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
+    }
+
+    public long getLoanFee() {
+        return loanFee;
+    }
+
+    public void setLoanFee(long loanFee) {
+        this.loanFee = loanFee;
     }
 }

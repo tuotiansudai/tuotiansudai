@@ -28,11 +28,11 @@
             可校验性
         </span>
         </div>
-        <@global.role hasRole="'INVESTOR'">
+        <@global.role hasRole="'INVESTOR', 'LOANER'">
             <button type="button" class="btn-wap-normal next-step" id="openSafetySigned">立即开启</button>
         </@global.role>
         <button type="button" class="btn-wap-normal next-step" id="authentication_identity"
-                style="<@global.role hasRole="'INVESTOR'">display: none</@global.role>">立即开启
+                style="<@global.role hasRole="'INVESTOR', 'LOANER'">display: none</@global.role>">立即开启
         </button>
         <div class="agreement-box">
         <span class="init-checkbox-style on">

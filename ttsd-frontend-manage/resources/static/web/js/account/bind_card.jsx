@@ -2,9 +2,9 @@ require('webStyle/account/bind_card.scss');
 let commonFun= require('publicJs/commonFun');
 
 var $bindCardBox = $('#bindCardBox'),
-    $inputBankcard = $('.input-bankcard', $bindCardBox),
+    // $inputBankcard = $('.input-bankcard', $bindCardBox),
     $btnBindCard = $('.bind-card-submit', $bindCardBox),
-    $btnReplaceCard = $('.replace-card-submit', $bindCardBox),
+    // $btnReplaceCard = $('.replace-card-submit', $bindCardBox),
     $FormOpenFastPay = $('.open-fast-pay-form', $bindCardBox),
     $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay),
     $bankList=$('#bankList');
@@ -18,15 +18,15 @@ if (isInWeChat && isIos) {
 }
 
 
-$inputBankcard.keyup(function () {
-    if (/^\d+$/.test($(this).val())) {
-        $btnBindCard.prop('disabled', false);
-        $btnReplaceCard.prop('disabled', false);
-    } else {
-        $btnBindCard.prop('disabled', true);
-        $btnReplaceCard.prop('disabled', true);
-    }
-});
+// $inputBankcard.keyup(function () {
+//     if (/^\d+$/.test($(this).val())) {
+//         $btnBindCard.prop('disabled', false);
+//         $btnReplaceCard.prop('disabled', false);
+//     } else {
+//         $btnBindCard.prop('disabled', true);
+//         $btnReplaceCard.prop('disabled', true);
+//     }
+// });
 
 /*开通快捷支付*/
 $btnOpenFastPay.click(function () {
@@ -43,19 +43,20 @@ $btnOpenFastPay.click(function () {
 
 //绑卡提交
 $btnBindCard.click(function () {
-    layer.open({
-        type: 1,
-        title: '登录到联动优势支付平台充值',
-        area: ['520px', '290px'],
-        shadeClose: true,
-        content: $('#pop-bind-card')
-    });
+    // layer.open({
+    //     type: 1,
+    //     title: '登录到联动优势支付平台充值',
+    //     area: ['520px', '290px'],
+    //     shadeClose: true,
+    //     content: $('#pop-bind-card')
+    // });
+    alert(9)
 });
 
-$bankList.on('mouseover mouseout', function(event) {
-    event.preventDefault();
-    $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
-});
+// $bankList.on('mouseover mouseout', function(event) {
+//     event.preventDefault();
+//     $(this).hasClass('active')?$(this).removeClass('active'):$(this).addClass('active');
+// });
 
 
 $('.bank-checked',$bindCardBox).on('click',function() {

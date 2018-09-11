@@ -3,16 +3,19 @@ package com.tuotiansudai.api.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.enums.BillOperationType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.MessageFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class CommonUtils {
@@ -23,21 +26,16 @@ public class CommonUtils {
         }
 
         if (cardNo.length() > 4) {
-
             cardNo = cardNo.substring(0, 4) + "***" + cardNo.substring(cardNo.length() - 4);
-
         }
         return cardNo;
     }
 
-    public static String convertRealMoneyByType(long amount, UserBillOperationType type) {
-
-        if (UserBillOperationType.TI_BALANCE.equals(type)) {
+    public static String convertRealMoneyByType(long amount, BillOperationType type) {
+        if (BillOperationType.IN.equals(type)) {
             return "+" + AmountConverter.convertCentToString(amount);
-        } else if (UserBillOperationType.TO_BALANCE.equals(type) || UserBillOperationType.TO_FREEZE.equals(type)) {
-            return "-" + AmountConverter.convertCentToString(amount);
         }
-        return "" + AmountConverter.convertCentToString(amount);
+        return "-" + AmountConverter.convertCentToString(amount);
     }
 
     public static String mapToFormData(Map<String, String> map) throws UnsupportedEncodingException {
@@ -48,6 +46,20 @@ public class CommonUtils {
         }
 
         return Joiner.on("&").withKeyValueSeparator("=").join(mapCopy);
+    }
+
+    public static BaseResponseDto<BankAsynResponseDto> mapToFormData(BankAsyncMessage bankAsyncMessage) {
+        if (bankAsyncMessage.isStatus()) {
+            try {
+                BaseResponseDto<BankAsynResponseDto> responseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
+                responseDto.setData(new BankAsynResponseDto(bankAsyncMessage.getUrl(), MessageFormat.format("reqData={0}", URLEncoder.encode(bankAsyncMessage.getData(), "UTF-8"))));
+                return responseDto;
+            } catch (UnsupportedEncodingException e) {
+                return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG);
+            }
+        }
+
+        return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), bankAsyncMessage.getMessage());
     }
 
     public static String calculatorInvestBeginSeconds(Date investBeginTime) {

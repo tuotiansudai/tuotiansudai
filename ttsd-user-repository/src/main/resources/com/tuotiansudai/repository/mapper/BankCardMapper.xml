@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankCardMapper">
+
+    <resultMap id="BankCardResultMap" type="BankCardModel">
+        <id column="id" property="id"></id>
+        <result column="bank_code" property="bankCode"></result>
+        <result column="card_number" property="cardNumber"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="is_fast_pay_on" property="isFastPayOn"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        insert into bank_card (id, bank_code, card_number, created_time, status, login_name, is_fast_pay_on)
+        value(#{id}, #{bankCode}, #{cardNumber}, #{createdTime}, #{status}, #{loginName}, #{isFastPayOn})
+    </insert>
+
+    <update id="updateStatusAndBankCode" parameterType="map">
+        UPDATE bank_card set
+        status = #{status},
+        bank_code = #{bankCode}
+        where id = #{id}
+    </update>
+
+    <select id="findPassedBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'PASSED'
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
+        select * from bank_card where id = #{id}
+    </select>
+
+    <select id="findApplyBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'APPLY' and is_fast_pay_on = true
+    </select>
+
+    <select id="findCountReplaceBankCardByLoginName" parameterType="map" resultType="int">
+        select count(1) from (select * from bank_card
+        where status != 'UNCHECKED' and status != 'FAILED'
+        <if test="loginName != null and loginName != ''">
+            and login_name = #{loginName}
+        </if>
+        group by login_name having count(1) > 1) t
+    </select>
+
+    <select id="findReplaceBankCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
+        select * from (
+        select * from bank_card
+        where status != 'UNCHECKED' and status != 'FAILED'
+        <if test="loginName != null and loginName != ''">
+            and login_name = #{loginName}
+        </if>
+        order by created_time desc) t
+        group by login_name having count(1) > 1 order by created_time desc limit #{index},#{pageSize}
+    </select>
+
+    <select id="findReplaceBeforeCardByLoginName" parameterType="map" resultMap="BankCardResultMap">
+        SELECT
+        *
+        FROM
+        bank_card
+        WHERE
+        status = 'REMOVED'
+        AND login_name = #{loginName}
+        ORDER BY created_time DESC limit 1
+    </select>
+
+</mapper>

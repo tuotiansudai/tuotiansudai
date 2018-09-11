@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @Api(description = "债权转让")
 public class MobileAppTransferController extends MobileAppBaseController {
 
+    private final MobileAppTransferService mobileAppTransferService;
+
     @Autowired
-    private MobileAppTransferService mobileAppTransferService;
+    public MobileAppTransferController(MobileAppTransferService mobileAppTransferService){
+        this.mobileAppTransferService = mobileAppTransferService;
+    }
 
     @RequestMapping(value = "/get/transferee", method = RequestMethod.POST)
     @ResponseBody
@@ -25,15 +29,8 @@ public class MobileAppTransferController extends MobileAppBaseController {
     @RequestMapping(value = "/transfer-purchase", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("验密债权购买")
-    public BaseResponseDto<InvestResponseDataDto> transferPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
+    public BaseResponseDto<BankAsynResponseDto> transferPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
         return mobileAppTransferService.transferPurchase(transferPurchaseRequestDto);
-    }
-
-    @RequestMapping(value = "/transfer-no-password-purchase", method = RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation("我的债权转让记录")
-    public BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        return mobileAppTransferService.transferNoPasswordPurchase(transferPurchaseRequestDto);
     }
 
 }

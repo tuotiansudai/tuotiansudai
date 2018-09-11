@@ -94,6 +94,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String CONTRACT_TIME_FORMAT = "yyyyMMddHHmmss";
 
+    private static final String DEFAULT_CAPTCHA = "999999";
+
     @Value(value = "${anxin.contract.batch.num}")
     private int batchSize;
 
@@ -105,6 +107,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
+
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Value("${default.mobile.captcha}")
+    private String defaultMobileCaptha;
 
     private static final String BATCH_NO_IS_INVALID = "该标的已经超过7天，无法再次［查询合同结果并更新合同编号］";
 
@@ -153,7 +161,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      */
     @Transactional
     @Override
-    public BaseDto createAccount3001(String loginName) {
+    public BaseDto<AnxinDataDto> createAccount3001(String loginName) {
 
         userMapper.lockByLoginName(loginName);
 
@@ -179,7 +187,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setCreatedTime(now);
                 anxinProp.setAnxinUserId(tx3001ResVO.getPerson().getUserId());
                 anxinSignPropertyMapper.create(anxinProp);
-                return new BaseDto(true);
+                return new BaseDto<>(true);
             } else {
                 if (tx3001ResVO == null) {
                     logger.error("create anxin sign account failed. result is null.");
@@ -201,14 +209,14 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      */
     @Transactional
     @Override
-    public BaseDto sendCaptcha3101(String loginName, boolean isVoice) {
+    public BaseDto<AnxinDataDto> sendCaptcha3101(String loginName, boolean isVoice) {
 
         userMapper.lockByLoginName(loginName);
 
         try {
             // 如果用户没有开通安心签账户，则先开通账户，再进行授权（发送验证码）
             if (!hasAnxinAccount(loginName)) {
-                BaseDto createAccountRet = this.createAccount3001(loginName);
+                BaseDto<AnxinDataDto> createAccountRet = this.createAccount3001(loginName);
                 if (!createAccountRet.isSuccess()) {
                     return createAccountRet;
                 }
@@ -222,7 +230,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
             if (isSuccess(tx3101ResVO)) {
                 redisWrapperClient.setex(TEMP_PROJECT_CODE_KEY + loginName, TEMP_PROJECT_CODE_EXPIRE_TIME, projectCode);
-                return new BaseDto(true);
+                return new BaseDto<>(true);
             } else {
                 if (tx3101ResVO == null) {
                     logger.error("send anxin captcha code failed. result is null.");
@@ -243,7 +251,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 确认验证码 （授权）
      */
     @Override
-    public BaseDto verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
+    public BaseDto<AnxinDataDto> verifyCaptcha3102(String loginName, String captcha, boolean skipAuth, String ip) {
 
         try {
             // 如果用户没有开通安心签账户，则返回失败
@@ -251,12 +259,20 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 logger.error("user has not create anxin account yet. loginName: " + loginName);
                 return failBaseDto("用户还未开通安心签账户");
             }
-
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
             String anxinUserId = anxinProp.getAnxinUserId();
 
             String projectCode = redisWrapperClient.get(TEMP_PROJECT_CODE_KEY + loginName);
+
+            if (!Environment.isProduction(environment) && DEFAULT_CAPTCHA.equals(captcha)){
+                anxinProp.setProjectCode("1");
+                anxinProp.setSkipAuth(skipAuth);
+                anxinProp.setAuthTime(new Date());
+                anxinProp.setAuthIp(ip);
+                anxinSignPropertyMapper.update(anxinProp);
+                return new BaseDto<>(true, new AnxinDataDto(true, skipAuth ? "skipAuth" : ""));
+            }
 
             if (StringUtils.isEmpty(projectCode)) {
                 logger.warn("project code is expired. loginName:" + loginName + ", anxinUserId:" + anxinUserId);
@@ -272,7 +288,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
                 anxinProp.setAuthTime(new Date());
                 anxinProp.setAuthIp(ip);
                 anxinSignPropertyMapper.update(anxinProp);
-                return new BaseDto<>(true, new BaseDataDto(true, skipAuth ? "skipAuth" : ""));
+                return new BaseDto<>(true, new AnxinDataDto(true, skipAuth ? "skipAuth" : ""));
             } else {
                 if (tx3102ResVO == null) {
                     logger.error("verify anxin captcha code failed. result is null.");
@@ -285,7 +301,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         } catch (PKIException e) {
             logger.error("verify anxin captcha code failed. ", e);
-            return new BaseDto(false);
+            return new BaseDto<>(false);
         }
     }
 
@@ -293,7 +309,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
      * 打开/关闭 免验开关
      */
     @Override
-    public BaseDto switchSkipAuth(String loginName, boolean open) {
+    public BaseDto<AnxinDataDto> switchSkipAuth(String loginName, boolean open) {
         try {
             logger.info(loginName + " is switching anxin-sign skip-auth " + (open ? "on." : "off."));
             AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
@@ -303,7 +319,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             logger.error("switch anxin-sign skip-auth " + (open ? "on " : "off ") + "failed.", e);
             return failBaseDto(SWITCH_SIGN_FAIL);
         }
-        return new BaseDto(true);
+        return new BaseDto<>(true);
     }
 
     private BaseDto<AnxinDataDto> failBaseDto(String errorMessage) {
@@ -332,16 +348,19 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
 
     @Override
-    public BaseDto<AnxinDataDto> createLoanContracts(long loanId) {
+    public BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto) {
+        long loanId = anxinLoanSuccessDto.getLoanId();
         logger.info(MessageFormat.format("[安心签]: createLoanContracts loanId:{0}", String.valueOf(loanId)));
+
         redisWrapperClient.setex(LOAN_CONTRACT_IN_CREATING_KEY + loanId, CREATE_CONTRACT_MAX_IN_DOING_TIME, "1");
 
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
+
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
             // 如果 代理人/借款人 未授权安心签，该标的所有投资都使用旧版合同，更新contractNo为OLD
             investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
-            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
+            logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanId:{0}, loginName:{1}",
                     String.valueOf(loanId), loanModel.getAgentLoginName()));
             return new BaseDto<>(new AnxinDataDto(false, AGENT_IS_NOT_SIGN));
         }
@@ -353,7 +372,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel, anxinLoanSuccessDto.getFullTime());
             if (createContractVO == null) {
                 continue;
             }
@@ -474,6 +493,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("msg1", transferMap.get("msg1"));
         dataModel.put("msg2", transferMap.get("msg2"));
         dataModel.put("msg3", transferMap.get("msg3"));
+        dataModel.put("loanType", transferMap.get("loanType"));
 
         createContractVO.setInvestmentInfo(dataModel);
 
@@ -500,9 +520,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
+    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel, String fullTime) {
         CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
 
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -523,24 +542,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
+        Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId(), fullTime);
         dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
+        //
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -608,7 +612,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 
-    private void sendSms(String params){
+    private void sendSms(String params) {
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }

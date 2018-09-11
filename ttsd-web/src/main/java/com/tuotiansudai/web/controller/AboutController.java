@@ -18,10 +18,6 @@ import java.util.Date;
 @RequestMapping(path = "/about")
 public class AboutController {
 
-    @Value("${pay.withdraw.fee}")
-    private long withdrawFee;
-
-
     @Autowired
     private OperationDataService operationDataService;
 
@@ -29,9 +25,6 @@ public class AboutController {
     public ModelAndView about(@PathVariable String item) {
         ModelAndView modelAndView = new ModelAndView("/about/" + item);
         modelAndView.addObject("responsive", true);
-        if ("service-fee".equals(item)) {
-            modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
-        }
         if ("operational".equals(item)) {
             modelAndView.addObject("investDetailList", operationDataService.getInvestDetail(new Date()));
         }

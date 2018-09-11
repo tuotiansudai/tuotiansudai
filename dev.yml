@@ -9,8 +9,6 @@ user-rest-service:
     - ./ttsd-etcd/src/main/resources/etcd-endpoints.yml:/app/etcd-endpoints.yml
   ports:
     - "20001:80"
-  links:
-    - "redis-server"
   command: ["/usr/bin/supervisord"]
 
 web:
@@ -18,7 +16,7 @@ web:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20002:8080"
   volumes:
@@ -27,7 +25,6 @@ web:
     - /var/log/tuotian/web:/var/log/tomcat
   links:
     - "pay-wrapper"
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "anxin-wrapper"
@@ -37,7 +34,7 @@ console:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20003:8080"
   volumes:
@@ -46,7 +43,6 @@ console:
     - /var/log/tuotian/console:/var/log/tomcat
   links:
     - "pay-wrapper"
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "ask-rest-service"
@@ -57,24 +53,21 @@ pay-wrapper:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20004:8080"
   volumes:
     - /workspace/deploy-config/ttsd-pay-wrapper/:/workspace/deploy-config/ttsd-pay-wrapper
-    - ./ttsd-pay-wrapper/war:/usr/local/tomcat/webapps
+    - ./ttsd-fudian-bank/build/libs:/usr/local/tomcat/webapps
     - /var/log/tuotian/pay-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/pay-wrapper:/var/log/tomcat
-  links:
-    - "user-rest-service"
-    - "redis-server"
 
 mobile-api:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
     - "spring.profiles.active=QA"
   ports:
     - "20006:8080"
@@ -85,7 +78,6 @@ mobile-api:
   links:
     - "static-server"
     - "pay-wrapper"
-    - "redis-server"
     - "user-rest-service"
     - "anxin-wrapper"
 
@@ -94,7 +86,7 @@ activity:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20007:8080"
   volumes:
@@ -102,7 +94,6 @@ activity:
     - /var/log/tuotian/activity:/usr/local/tomcat/logs
     - /var/log/tuotian/activity:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
 
@@ -123,7 +114,7 @@ ask:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20009:8080"
   volumes:
@@ -131,29 +122,16 @@ ask:
     - /var/log/tuotian/ask-web:/usr/local/tomcat/logs
     - /var/log/tuotian/ask-web:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
     - "ask-rest-service"
-
-redis-server:
-  image: "grokzen/redis-cluster"
-  ports:
-    - "20010:7000"
-    - "20011:7001"
-    - "20012:7002"
-    - "20013:7003"
-    - "20014:7004"
-    - "20015:7005"
-    - "20016:7006"
-    - "20017:7007"
 
 point:
   image: "andreptb/tomcat:8-jdk8"
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20018:8080"
   volumes:
@@ -161,7 +139,6 @@ point:
     - /var/log/tuotian/point-web:/usr/local/tomcat/logs
     - /var/log/tuotian/point-web:/var/log/tomcat
   links:
-    - "redis-server"
     - "static-server"
     - "user-rest-service"
 
@@ -170,7 +147,7 @@ activity-console:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20019:8080"
   volumes:
@@ -178,7 +155,6 @@ activity-console:
     - /var/log/tuotian/activity-console:/usr/local/tomcat/logs
     - /var/log/tuotian/activity-console:/var/log/tomcat
   links:
-    - "redis-server"
     - "user-rest-service"
 
 static-server:
@@ -194,7 +170,7 @@ anxin-wrapper:
   environment:
     - "TZ=Asia/Shanghai"
     - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
+    - "JAVA_OPTS=-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/tomcat/logs/oom.hprof -XX:ErrorFile=/usr/local/tomcat/logs/javaerror%p.log"
   ports:
     - "20021:8080"
   volumes:
@@ -203,7 +179,6 @@ anxin-wrapper:
     - /var/log/tuotian/anxin-wrapper:/usr/local/tomcat/logs
     - /var/log/tuotian/anxin-wrapper:/var/log/tomcat
   links:
-    - "redis-server"
     - "user-rest-service"
 
 nginx-server_console:
@@ -227,7 +202,6 @@ worker-all:
     - /var/log/tuotian/worker-all:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-job-worker-all/bin/ttsd-job-worker"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 auditLog-mq-consumer:
@@ -241,7 +215,6 @@ auditLog-mq-consumer:
     - /var/log/tuotian/ttsd-auditLog-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-auditLog-mq-consumer/bin/ttsd-auditLog-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 loan-mq-consumer:
@@ -256,7 +229,6 @@ loan-mq-consumer:
   command: bash -c "/opt/worker/ttsd-loan-mq-consumer/bin/ttsd-loan-mq-consumer"
   links:
     - "pay-wrapper"
-    - "redis-server"
     - "anxin-wrapper"
     - "user-rest-service"
 
@@ -271,7 +243,6 @@ message-mq-consumer:
     - /var/log/tuotian/ttsd-message-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-message-mq-consumer/bin/ttsd-message-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 email-mq-consumer:
@@ -285,7 +256,6 @@ email-mq-consumer:
     - /var/log/tuotian/ttsd-email-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-email-mq-consumer/bin/ttsd-email-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 point-mq-consumer:
@@ -299,7 +269,6 @@ point-mq-consumer:
     - /var/log/tuotian/ttsd-point-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-point-mq-consumer/bin/ttsd-point-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 activity-mq-consumer:
@@ -313,7 +282,6 @@ activity-mq-consumer:
     - /var/log/tuotian/ttsd-activity-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-activity-mq-consumer/bin/ttsd-activity-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
     - "pay-wrapper"
 
@@ -328,7 +296,6 @@ user-mq-consumer:
     - /var/log/tuotian/ttsd-user-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-user-mq-consumer/bin/ttsd-user-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 amount-mq-consumer:
@@ -342,7 +309,6 @@ amount-mq-consumer:
     - /var/log/tuotian/ttsd-amount-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-amount-mq-consumer/bin/ttsd-amount-mq-consumer"
   links:
-    - "redis-server"
     - "user-rest-service"
 
 sms-mq-consumer:
@@ -355,8 +321,6 @@ sms-mq-consumer:
     - ./ttsd-sms-mq-consumer/build/distributions:/opt/worker
     - /var/log/tuotian/ttsd-sms-mq-consumer:/var/log/job-worker
   command: bash -c "/opt/worker/ttsd-sms-mq-consumer/bin/ttsd-sms-mq-consumer"
-  links:
-    - "redis-server"
 
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
@@ -372,22 +336,7 @@ ask-rest-service:
 
   command: bash -c "/opt/worker/ttsd-ask-rest/bin/ttsd-ask-rest"
   links:
-    - "redis-server"
     - "user-rest-service"
-
-diagnosis:
-  image: "anapsix/alpine-java:8_jdk"
-  environment:
-    - "TZ=Asia/Shanghai"
-    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
-    - "JAVA_OPTS=-Xmx1024m"
-  volumes:
-    - ./ttsd-diagnosis/build/distributions:/opt/worker
-    - /var/log/tuotian/diagnosis:/var/log/job-worker
-  command: bash -c "/opt/worker/ttsd-diagnosis/bin/ttsd-diagnosis"
-  links:
-    - "redis-server"
-    - "pay-wrapper"
 
 worker-monitor:
   image: "anapsix/alpine-java:8_jdk"
@@ -399,5 +348,3 @@ worker-monitor:
     - ./ttsd-worker-monitor/build/libs:/opt/worker
     - /var/log/tuotian/worker-monitor:/var/log/job-worker
   command: bash -c "java -Xmx256m -jar /opt/worker/ttsd-worker-monitor.jar"
-  links:
-    - "redis-server"

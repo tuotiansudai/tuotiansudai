@@ -1,11 +1,12 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.enums.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
 
@@ -30,18 +31,15 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     public WithdrawDetailResponseDataDto() {
     }
 
-    public WithdrawDetailResponseDataDto(WithdrawModel withdrawModel) {
+    public WithdrawDetailResponseDataDto(long withdrawId, long amount, WithdrawStatus status, Date createdTime, Date updatedTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.withdrawId = "" + withdrawModel.getId();
-        this.time = sdf.format(withdrawModel.getCreatedTime());
-        if (withdrawModel.getNotifyTime() != null) {
-            this.recheckTime = sdf.format(withdrawModel.getNotifyTime());
-        } else {
-            this.recheckTime = "";
-        }
-        this.money = AmountConverter.convertCentToString(withdrawModel.getAmount());
-        this.status = convertToMobileAppWithDrawStatus(withdrawModel.getStatus());
-        this.statusDesc = withdrawModel.getStatus().getDescription();
+        this.withdrawId = String.valueOf(withdrawId);
+        this.time = new DateTime(createdTime).toString("yyyy-MM-dd HH:mm:ss");
+        this.recheckTime = new DateTime(updatedTime).toString("yyyy-MM-dd HH:mm:ss");
+
+        this.money = AmountConverter.convertCentToString(amount);
+        this.status = convertToMobileAppWithDrawStatus(status);
+        this.statusDesc = status.getDescription();
 
     }
 
@@ -93,20 +91,16 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
         this.statusDesc = statusDesc;
     }
 
-    private String convertToMobileAppWithDrawStatus(WithdrawStatus withdrawStatus){
-        if(WithdrawStatus.WAIT_PAY.equals(withdrawStatus)){
+    private String convertToMobileAppWithDrawStatus(WithdrawStatus withdrawStatus) {
+        if (WithdrawStatus.WAIT_PAY.equals(withdrawStatus)) {
             return "wait_verify";
-        }else if(WithdrawStatus.APPLY_SUCCESS.equals(withdrawStatus)){
+        } else if (WithdrawStatus.SUCCESS.equals(withdrawStatus)) {
             return "recheck";
-        }else if(WithdrawStatus.APPLY_FAIL.equals(withdrawStatus)){
+        } else if (WithdrawStatus.FAIL.equals(withdrawStatus)) {
             return "verify_fail";
-        }else if(WithdrawStatus.FAIL.equals(withdrawStatus)){
+        } else if (WithdrawStatus.FAIL.equals(withdrawStatus)) {
             return "recheck_fail";
         }
         return "success";
-
     }
-
-
-
 }

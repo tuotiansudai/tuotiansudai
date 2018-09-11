@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.SystemRechargeDto;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;

@@ -2,9 +2,15 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleInvestService;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestPaginationDataDto;
+import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.PreferenceType;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
@@ -17,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +44,8 @@ public class InvestController {
     private RepayService repayService;
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
-    public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
+    public ModelAndView getInvestList(@RequestParam(value = "isBankPlatform", required = false, defaultValue = "true") Boolean isBankPlatform,
+                                      @RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "mobile", required = false) String investorMobile,
                                       @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType,
                                       @RequestParam(name = "channel", required = false) String channel,
@@ -50,7 +56,7 @@ public class InvestController {
                                       @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source, role,
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(isBankPlatform, loanId, investorMobile, channel, source, role,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 investStatus, preferenceType, null, index, pageSize);
@@ -71,6 +77,7 @@ public class InvestController {
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("roleList", Lists.newArrayList(Role.values()).stream().filter(r -> !Lists.newArrayList(Role.AGENT).contains(r)).collect(Collectors.toList()));
+        mv.addObject("isBankPlatform", isBankPlatform);
         return mv;
     }
 

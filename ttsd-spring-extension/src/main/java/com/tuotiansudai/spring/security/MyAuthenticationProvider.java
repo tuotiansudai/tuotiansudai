@@ -1,8 +1,8 @@
 package com.tuotiansudai.spring.security;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.dto.SignInResult;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -19,21 +19,29 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
-    static Logger logger = Logger.getLogger(MyAuthenticationProvider.class);
+    private static Logger logger = Logger.getLogger(MyAuthenticationProvider.class);
+
+    private final SignInClient signInClient = SignInClient.getInstance();
+
+    private final CaptchaHelper captchaHelper;
+
+    private final MQWrapperClient mqWrapperClient;
+
+    private final HttpServletRequest httpServletRequest;
 
     @Autowired
-    private CaptchaHelper captchaHelper;
-
-    @Autowired
-    private SignInClient signInClient;
-
-    @Autowired
-    private MQWrapperClient mqWrapperClient;
+    public MyAuthenticationProvider(CaptchaHelper captchaHelper, MQWrapperClient mqWrapperClient, HttpServletRequest httpServletRequest) {
+        this.captchaHelper = captchaHelper;
+        this.mqWrapperClient = mqWrapperClient;
+        this.httpServletRequest = httpServletRequest;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -47,7 +55,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
                 authentication.getCredentials().toString(),
                 details.getSessionId(),
                 Source.valueOf(details.getSource().toUpperCase()),
-                details.getDeviceId());
+                details.getDeviceId(),
+                httpServletRequest.getHeader("X-Forwarded-For"));
 
         if (signInResult == null || !signInResult.isResult()) {
             throw new BadCredentialsException(signInResult != null ? signInResult.getMessage() : "登录异常");
@@ -55,7 +64,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatBoundNotify, new WeChatBoundMessage(details.getMobile(), details.getOpenid()));
 
-        List<GrantedAuthority> grantedAuthorities = Lists.transform(signInResult.getUserInfo().getRoles(), SimpleGrantedAuthority::new);
+        List<GrantedAuthority> grantedAuthorities = signInResult.getUserInfo().getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 new MyUser(signInResult.getToken(), signInResult.getUserInfo().getLoginName(), authentication.getCredentials().toString(), true, true, true, true, grantedAuthorities, signInResult.getUserInfo().getMobile()),

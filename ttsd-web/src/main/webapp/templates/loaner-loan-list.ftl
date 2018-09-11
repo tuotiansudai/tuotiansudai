@@ -3,9 +3,6 @@
 <div class="content-container loan-list-content">
     <h4 class="column-title">
         <em class="tc">借款记录</em>
-        <#if !autoRepay>
-            <i class="fr"><a href="/agreement/repay">开通自动还款 ></a></i>
-        </#if>
     </h4>
 
     <div class="item-block date-filter">
@@ -49,14 +46,23 @@
             var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if (item.bankPlatForm){ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if (!item.bankPlatForm){ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+
+            </td>
             <td><%=item.recheckTime%></td>
             <td class="tr"><%=item.loanAmount%> 元</td>
             <td class="tr"><%=item.unpaidAmount%> 元</td>
             <td>
                 <%=item.nextRepayDate?item.nextRepayDate:'--'%>
             </td>
-            <td><a class="show-loan-repay" data-url='/loaner/loan/<%=item.loanId%>/repay-data'>还款计划</a> |
+            <td><a class="show-loan-repay" data-url='/loaner/loan/<%=item.loanId%>/repay-data' data-isbank="<%=item.bankPlatForm%>">还款计划</a> |
                 <a href="https://www.anxinsign.com/" target="_blank">合同</a>
             </td>
         </tr>
@@ -81,7 +87,15 @@
         var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if (item.bankPlatForm){ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if (!item.bankPlatForm){ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+            </td>
             <td><%=item.recheckTime%></td>
             <td><%=item.expectedRepayAmount%> 元</td>
             <td><%=item.actualRepayAmount%> 元</td>
@@ -112,7 +126,15 @@
         var item=records[i]
         %>
         <tr>
-            <td><%=item.loanName%></td>
+            <td>
+                <%if (item.bankPlatForm){ %>
+                <i class="fudian-icon">富</i>
+                <%}%>
+                <%if (!item.bankPlatForm){ %>
+                <i class="liandong-icon">联</i>
+                <%}%>
+                <%=item.loanName%>
+            </td>
             <td><%=item.loanAmount%>元</td>
             <td><%=item.recheckTime%></td>
         </tr>

@@ -83,10 +83,15 @@ public class LoanCreateBaseRequestDto {
 
     private Date raisingCompleteTime;
 
+    private Boolean isBankPlatForm;//资金平台
+
+    @NotEmpty
+    private String loanFee;
+
     public LoanCreateBaseRequestDto() {
     }
 
-    public LoanCreateBaseRequestDto(LoanModel loanModel) {
+    public LoanCreateBaseRequestDto(LoanModel loanModel, List<LoanTitleRelationModel> loanTitles) {
         this.id = loanModel.getId();
         this.productType = loanModel.getProductType();
         this.loanType = loanModel.getType();
@@ -106,12 +111,14 @@ public class LoanCreateBaseRequestDto {
         this.deadline = loanModel.getDeadline();
         this.contractId = loanModel.getContractId();
         this.status = loanModel.getStatus();
-        this.loanTitles = loanModel.getLoanTitles();
+        this.loanTitles = loanTitles;
         this.verifyTime = loanModel.getVerifyTime();
         this.verifyLoginName = loanModel.getVerifyLoginName();
         this.recheckTime = loanModel.getRecheckTime();
         this.recheckLoginName = loanModel.getRecheckLoginName();
         this.raisingCompleteTime = loanModel.getRaisingCompleteTime();
+        this.isBankPlatForm=loanModel.getIsBankPlatform();
+        this.loanFee=AmountConverter.convertCentToString(loanModel.getLoanFee());;
     }
 
     public Long getId() {
@@ -320,5 +327,21 @@ public class LoanCreateBaseRequestDto {
 
     public void setRaisingCompleteTime(Date raisingCompleteTime) {
         this.raisingCompleteTime = raisingCompleteTime;
+    }
+
+    public Boolean getIsBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setIsBankPlatForm(Boolean isBankPlatForm) {
+        this.isBankPlatForm = isBankPlatForm;
+    }
+
+    public String getLoanFee() {
+        return loanFee;
+    }
+
+    public void setLoanFee(String loanFee) {
+        this.loanFee = loanFee;
     }
 }

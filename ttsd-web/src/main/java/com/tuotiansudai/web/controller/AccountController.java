@@ -1,5 +1,7 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
@@ -7,9 +9,7 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.UserFundView;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -25,6 +26,8 @@ import java.util.Date;
 @Controller
 @RequestMapping(value = "/account")
 public class AccountController {
+
+    private static final SignInClient signInClient = SignInClient.getInstance();
 
     @Autowired
     private UserRoleService userRoleService;
@@ -54,24 +57,23 @@ public class AccountController {
     private UserService userService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
 
         String loginName = LoginUserInfo.getLoginName();
-
-        UserFundView userFundView = userFundMapper.findByLoginName(loginName);
+        String mobile = LoginUserInfo.getMobile();
+        Role role = LoginUserInfo.getBankRole();
+        UserFundView userFundView = userFundMapper.findByLoginName(loginName, role);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluate(loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
 
-        modelAndView.addObject("mobile", LoginUserInfo.getMobile());
+        modelAndView.addObject("mobile", Strings.isNullOrEmpty(mobile) ? "" : mobile );
         modelAndView.addObject("userMembershipLevel", membershipModel != null ? membershipModel.getLevel() : 0);
 
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
@@ -90,19 +92,12 @@ public class AccountController {
         modelAndView.addObject("expectedCouponInterest", userFundView.getExpectedCouponInterest()); //待收优惠券收益
         modelAndView.addObject("actualExperienceInterest", userFundView.getActualExperienceInterest()); //已收体验金收益
 
-        modelAndView.addObject("investFrozeAmount", userFundView.getInvestFrozeAmount());
-        modelAndView.addObject("withdrawFrozeAmount", userFundView.getWithdrawFrozeAmount());
-        modelAndView.addObject("freeze", userFundView.getInvestFrozeAmount() + userFundView.getWithdrawFrozeAmount()); //冻结金额
-        modelAndView.addObject("hasAccount", accountModel != null);
-        modelAndView.addObject("hasBankCard", bankCard != null);
+        modelAndView.addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null);
+        modelAndView.addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
 
         //累计收益(分)=已收投资收益+已收投资奖励(阶梯加息+现金补贴)+已收优惠券奖励(已收红包奖励+已收加息券奖励)+已收推荐奖励+已收体验金收益
         modelAndView.addObject("totalIncome", userFundView.getActualTotalInterest()
-                + userFundView.getActualTotalExtraInterest()
-                + userFundView.getActualCouponInterest()
-                + userFundView.getRedEnvelopeAmount()
-                + userFundView.getReferRewardAmount()
-                + userFundView.getActualExperienceInterest());
+                + userFundView.getActualTotalExtraInterest());
 
 
         modelAndView.addObject("experienceBalance", userService.getExperienceBalanceByLoginName(loginName));
@@ -128,6 +123,19 @@ public class AccountController {
 
         modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/switch", method = RequestMethod.POST)
+    public ModelAndView switchAccount(@RequestParam(value = "redirect", required = false) String redirect) {
+        if (LoginUserInfo.getBankRole() == Role.INVESTOR) {
+            signInClient.switchRole(LoginUserInfo.getToken(), Role.LOANER);
+        }
+
+        if (LoginUserInfo.getBankRole() == Role.LOANER) {
+            signInClient.switchRole(LoginUserInfo.getToken(), Role.INVESTOR);
+        }
+
+        return new ModelAndView(String.format("redirect:%s", Strings.isNullOrEmpty(redirect) ? "/personal-info" : redirect));
     }
 
 }

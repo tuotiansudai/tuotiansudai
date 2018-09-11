@@ -1,4 +1,10 @@
 @charset "utf-8";
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
 .register-container {
   height: auto;
   overflow: hidden;
@@ -6,6 +12,11 @@
   margin: 12px auto;
   position: relative;
   text-align: center;
+  .head-banner {
+    height: 173px;
+    background:url("../images/myaccount/account_banner.png") no-repeat center center;
+    background-size: 100%;
+  }
 
   .step-register-head {
     border-bottom: 1px solid #e6e6e6;
@@ -27,15 +38,63 @@
     color: #4d4d4d;
     font-size: 22px;
     display: inline-block;
-    margin-top: 50px;
+    margin-top: 20px;
     i {
       display: inline-block;
     }
     span {
       display: inline-block;
-      text-align: left;
-      padding-left: 20px;
+      text-align: center;
+      width: 580px;
+      height: 36px;
+      line-height: 36px;
+      background: #fffbe5;
+      color: #666;
+      font-size: 14px;
 
+    }
+    .progress-wrap {
+      width: 266px;
+      margin: 0 auto;
+      margin-top: 27px;
+      dl {
+        &.arrow {
+          display: inline-block;
+          width: 29px;
+          height: 28px;
+          margin-top: 4px;
+          background: url("../images/myaccount/icon_arror_right.png") no-repeat;
+          background-size: 100%;
+        }
+        dt {
+          width: 60px;
+          height: 35px;
+          text-align: center;
+          span {
+            display: inline-block;
+            &.account {
+
+              width: 41px;
+              height: 35px;
+              background: url("../images/myaccount/icon_account.png") no-repeat;
+              background-size: 100%;
+            }
+            &.bind-card {
+              width: 42px;
+              height: 27px;
+              background: url("../images/myaccount/icon_nobind_card.png") no-repeat;
+              background-size: 100%;
+            }
+          }
+        }
+        dd {
+          font-size: 16px;
+          color: #ccc;
+          &.active {
+            color: #ff752a;
+          }
+        }
+      }
     }
   }
 
@@ -43,6 +102,7 @@
     margin-left: 322px;
     height: auto;
     overflow: auto;
+    margin-top: 20px;
     @media (min-width:701px) and (max-width:999px) {
       width: 522px;
       position: relative;
@@ -54,7 +114,7 @@
       margin-top: 20px;
     }
     .register-step-two {
-      margin-top: 40px;
+      margin-top: 30px;
       label.title {
         font-size: 14px;
         padding-right: 10px;
@@ -80,6 +140,7 @@
         position: relative;
         span.error {
           display: block;
+          margin-left: 68px;
           @media screen and (max-width: 700px) {
             float: left;
           }
@@ -213,7 +274,7 @@
       }
     }
     .button-layer {
-      width: 53%;
+      width: 49%;
       text-align: center;
       padding-bottom:20px;
       position: relative;
@@ -226,7 +287,11 @@
         }
       }
       .btn-success {
-        padding: 10px 50px;
+        width: 300px;
+        height: 40px;
+        box-sizing: border-box;
+        margin-left: 4px;
+        background: #ff752a;
         &[disabled] {
           background: #e6e6e6;
           border: 1px solid #ccc;

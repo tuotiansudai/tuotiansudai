@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.dto.UserItemDataDto;
 import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class AccountBalanceController {
 
 
     @RequestMapping(value = "/account-balance")
-    public ModelAndView accountBalance(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+    public ModelAndView accountBalance(@RequestParam(value = "role", defaultValue ="INVESTOR", required = false)Role role,
+                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "mobile", required = false) String mobile,
                                        @RequestParam(value = "balanceMin", required = false) String balanceMin,
                                        @RequestParam(value = "balanceMax", required = false) String balanceMax) {
@@ -36,10 +38,10 @@ public class AccountBalanceController {
         ModelAndView modelAndView = new ModelAndView("/account-balance");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        List<UserItemDataDto> userItemDataDtoList = consoleUserService.findUsersAccountBalance(mobile, balanceMin, balanceMax, index, pageSize);
+        List<UserItemDataDto> userItemDataDtoList = consoleUserService.findUsersAccountBalance(role,mobile, balanceMin, balanceMax, index, pageSize);
         modelAndView.addObject("userAccountList", userItemDataDtoList);
-        long count = consoleUserService.findUsersAccountBalanceCount(mobile, balanceMin, balanceMax);
-        modelAndView.addObject("sumBalance", consoleUserService.findUsersAccountBalanceSum(mobile, balanceMin, balanceMax));
+        long count = consoleUserService.findUsersAccountBalanceCount(role,mobile, balanceMin, balanceMax);
+        modelAndView.addObject("sumBalance", consoleUserService.findUsersAccountBalanceSum(role,mobile, balanceMin, balanceMax));
         long totalPages = PaginationUtil.calculateMaxPage(count, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
@@ -49,6 +51,7 @@ public class AccountBalanceController {
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("balanceMin", balanceMin);
         modelAndView.addObject("balanceMax", balanceMax);
+        modelAndView.addObject("role",role);
         return modelAndView;
     }
 }

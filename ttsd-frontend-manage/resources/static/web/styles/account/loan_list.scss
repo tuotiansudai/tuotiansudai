@@ -297,9 +297,9 @@
       }
       span.icon-list{
         position: absolute;
-        width: 60px;
+        width: 100px;
         height: 20px;
-        left: 0;
+        left: 5px;
         top: 50%;
         margin-top: -10px;
         &.loan-icon-list{
@@ -312,6 +312,7 @@
           background: url("../../images/sign/icon_result.png") no-repeat;
           background-position: 0px 0px;
         }
+
         .coupon-icon {
           float: left;
           width: 20px;
@@ -391,8 +392,8 @@
 .user-bill-list-content {
   .money-box {
     font-size: 12px;
-    background: url("../../images/sign/invest-record.png") 360px 30px no-repeat;
-
+    padding-bottom: 30px;
+    box-shadow: 10px 10px 20px #f4f6fb;
     a {
       display: inline-block;
       margin-right: 10px;
@@ -401,10 +402,152 @@
       letter-spacing: 0px;
     }
     .balance {
-      color: #ffac2a;
-      padding: 0px 0 20px;
+      width: 300px;
+      color: #666;
+      font-size: 16px;
+      padding: 0px;
+      .money {
+        font-size: 46px;
+        color: #333333;
+      }
     }
+
+    .recharge-cash {
+      font-size: 16px;
+      color: #999;
+      >span {
+        vert-align: middle;
+      }
+      .money {
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+      }
+     p {
+       position: relative;
+       text-indent: 30px;
+       .icon-small {
+         width: 18px;
+         height: 18px;
+         position: absolute;
+         left: 0;
+         top: 10px;
+         &.icon-recharge {
+           background: url('../../images/sign/icon_recharge.png') no-repeat left center;
+           background-size: contain;
+         }
+         &.icon-cash {
+           background: url('../../images/sign/icon_getCash.png') no-repeat left center;
+           background-size: contain;
+         }
+       }
+     }
+    }
+    .btns {
+      clear: both;
+      .btn-list {
+        width: 120px;
+        height: 40px;
+        border: 1px solid #ff7200;
+        padding: 0;
+        box-sizing: border-box;
+        color: #ff7200;
+        text-align: center;
+        line-height: 40px;
+        font-size: 16px;
+      }
+    }
+
+  }
+}
+
+.popLayer .person-info-btn button {
+  width: auto;
+  height: 36px;
+  letter-spacing: 1.3;
+}
+.btn-success {
+ padding:8px 26px;
+}
+
+.safety-notification {
+  position: relative;
+  margin-right: 42px;
+  .tip-title {
+    background: #ff7200;
+    color: #fff;
+    padding-right: 16px;
+    padding-left: 16px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px!important;
+    font-size: 16px;
+    cursor: pointer;
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+  }
+  i {
+    position: absolute;
+    color: #ff752a;
+    top: 10px;
+    right: -18px;
+    cursor: pointer;
+    font-size: 18px;
+
   }
 }
 
 
+.extra-rate-popup {
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  border: 1px solid #ffd4b2;
+  width: 400px;
+  text-align: center;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
+  }
+}
+.notice-tips {
+  padding: 10px;
+  text-align: left;
+  position: absolute;
+  right: -28px;
+  top: 44px;
+  strong {
+    color: #ff7200;
+    font-weight: normal;
+  }
+}
+
+.fudian-icon {
+  float: left;
+  width: 20px;
+  height: 15px;
+  margin-right: 3px;
+  text-align: center;
+  line-height: 16px;
+  color: #ff7200;
+  border: 1px solid #ff7200;
+}
+.liandong-icon {
+  float: left;
+  width: 20px;
+  height: 15px;
+  margin-right: 3px;
+  text-align: center;
+  line-height: 16px;
+  color: #ff7200;
+  border: 1px solid #ff7200;
+}

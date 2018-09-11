@@ -1,28 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<#if (pay.data)??>
-    <#assign payData = pay.data>
-<head>
-    <#if payData.status>
-        <script type="text/javascript">
-            window.onload=function()  {
-                document.getElementById('payForm').submit()
-            }
-        </script>
-    </#if>
-</head>
-<body>
+<#import "macro/global.ftl" as global>
+<@global.main pageCss="${css.invest_success}" pageJavascript="${js.account_success}" activeLeftNav="" title="正在载入">
+    <#if pay??>
+        <div class="callBack_container">
+            <div class="loading-wrap">
+                <div class="loading"></div>
+                <#if pay.status>
+                    <p>正在载入...</p>
+                <#else>
+                    <p>${pay.message!('交易失败，请联系客服！')}</p>
+                </#if>
+            </div>
+        </div>
 
-    <#if payData.status>
-    <form id="payForm" action="${payData.url}" method="post">
-        <#list payData.fields?keys as key>
-            <input type="hidden" name="${key}" value="${payData.fields[key]}"/>
-        </#list>
-    </form>
-    <#else>
-    <p>${payData.message!}</p>
-    </#if>
-</body>
-</#if>
+        <#if pay.status>
+            <form id="payForm" action="${pay.url}" method="post">
+                <input type="hidden" name="reqData" value='${pay.data}'/>
+            </form>
 
-</html>
+            <script type="text/javascript">
+                window.onload = function () {
+                    document.getElementById('payForm').submit()
+                }
+            </script>
+        </#if>
+
+    </#if>
+</@global.main>

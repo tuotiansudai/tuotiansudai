@@ -6,6 +6,19 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
+            <label class="control-label">账户类型: </label>&nbsp;&nbsp;
+            <input type="radio" name="role" value="UMP_INVESTOR"
+                           <#if role?? && role == 'UMP_INVESTOR'>checked="checked"</#if>
+                           />联动优势 &nbsp;&nbsp;
+            <input type="radio" name="role" value="LOANER"
+                   <#if role?? && role=='LOANER'>checked="checked"</#if>
+            />富滇银行-借款人 &nbsp;&nbsp;
+            <input type="radio" name="role" value="INVESTOR"
+                   <#if role?? && role=='INVESTOR'>checked="checked"</#if>
+            />富滇银行-出借人 &nbsp;&nbsp;
+        </div>
+        </br>
+        <div class="form-group">
             <label for="control-label">电话号码：</label>
             <input type="text" class="form-control jq-loginName" name="mobile" value="${mobile!}">
         </div>
@@ -39,7 +52,11 @@
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
-                    <td>${userAccount.userName!''}</td>
+                    <#if role?? && role == 'UMP_INVESTOR'>
+                        <td>${userAccount.umpUserName!''}</td>
+                    <#else>
+                        <td>${userAccount.userName!''}</td>
+                    </#if>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>
                     <td>${(userAccount.lastBillTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
@@ -57,7 +74,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/account-balance?mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?role=${role!}&mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -66,7 +83,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/account-balance?mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?role=${role!}&mobile=${mobile!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

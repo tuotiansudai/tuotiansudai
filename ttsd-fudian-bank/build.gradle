@@ -1,0 +1,65 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE'
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    def springBootVersion = '2.0.1.RELEASE'
+
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion")
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+    compile('com.google.code.gson:gson:2.8.2')
+    compile('com.google.guava:guava:24.1-jre')
+    compile('javax.servlet:jstl')
+    compile('com.squareup.okhttp3:okhttp:3.10.0')
+    compile('mysql:mysql-connector-java:8.0.11')
+    compile('org.redisson:redisson:3.6.5')
+    compile('joda-time:joda-time:2.10')
+    compile('com.jcraft:jsch:0.1.54')
+    compile('com.aliyun.oss:aliyun-sdk-oss:3.1.0')
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    testCompile("org.mockito:mockito-core:2.21.0")
+
+    compile project(':ttsd-fudian-bank-dto')
+    compile project(':ttsd-etcd')
+    compile project(':ttsd-mq-client')
+    compile fileTree(dir: 'libs', include: '**/*.jar')
+}
+
+processResources {
+    from("${configPath}/ttsd-pay-wrapper/SignVerProp.properties") {
+        into '/'
+    }
+    from("${configPath}/ttsd-bank-cfca/") {
+        into '/cfca/'
+    }
+}
+
+task renameWar {
+    doLast {
+        file("${project.projectDir.getPath()}/build/libs/ttsd-fudian-bank.war").renameTo(file("${project.projectDir.getPath()}/build/libs/ROOT.war"))
+    }
+}

@@ -2,15 +2,16 @@ package com.tuotiansudai.point.service.impl;
 
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.repository.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.SignInService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.UserSignInMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.time.DateUtils;
@@ -38,7 +39,7 @@ public class SignInServiceImpl implements SignInService {
     private UserSignInMapper userSignInMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private CouponService couponService;
@@ -77,8 +78,8 @@ public class SignInServiceImpl implements SignInService {
     @Override
     @Transactional(transactionManager = "aaTransactionManager")
     public SignInPointDto signIn(String loginName) {
-        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
-        if (null == accountModel) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
+        if (null == bankAccountModel) {
             return null;
         }
 

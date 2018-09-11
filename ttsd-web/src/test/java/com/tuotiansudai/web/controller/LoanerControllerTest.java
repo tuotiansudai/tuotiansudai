@@ -125,7 +125,7 @@ public class LoanerControllerTest extends BaseControllerTest {
     }
     @Test
     public void testAA(){
-        List<LoanRepayModel>  models = loanRepayMapper.findNotCompleteLoanRepay();
+        List<LoanRepayModel>  models = loanRepayMapper.findIncompleteLoanRepay();
         System.out.println(models.stream().map(LoanRepayModel::getLoanId).distinct().count());
     }
 
@@ -299,6 +299,7 @@ public class LoanerControllerTest extends BaseControllerTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        fakeLoanModel.setLoanFee(0);
         return fakeLoanModel;
     }
 

@@ -26,7 +26,6 @@ public class InvestPaginationItemView implements Serializable {
     private String channel;
     private Source source;
     private Date investTime;
-    private boolean autoInvest;
     private long investAmount;
     private long couponId;
     private double extraRate;
@@ -35,6 +34,8 @@ public class InvestPaginationItemView implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
+    //新增资金渠道
+    private boolean isBankPlatform;
     private TransferStatus transferStatus;
 
     public List<Role> getInvestorRoleList() {
@@ -179,14 +180,6 @@ public class InvestPaginationItemView implements Serializable {
         this.investTime = investTime;
     }
 
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
-    }
-
     public long getInvestAmount() {
         return investAmount;
     }
@@ -249,6 +242,14 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public boolean getIsBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setIsBankPlatform(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
     }
 
     public TransferStatus getTransferStatus() {

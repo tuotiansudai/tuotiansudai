@@ -139,7 +139,7 @@ public class CreditLoanTransferAgentService {
             try {
                 String statusString = redisWrapperClient.hget(redisKey, CREDIT_LOAN_TRANSFER);
                 if (Strings.isNullOrEmpty(statusString) || statusString.equals(SyncRequestStatus.FAILURE.name())) {
-                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT, null, null);
+                    AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, accountModel.getLoginName(), orderId, transferAmount, UserBillBusinessType.CREDIT_LOAN_TRANSFER_AGENT);
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                     mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill, new CreditLoanBillModel(orderId, transferAmount, CreditLoanBillOperationType.OUT, CreditLoanBillBusinessType.CREDIT_LOAN_RETRIEVE, creditLoanAgent));
                     redisWrapperClient.hset(redisKey, CREDIT_LOAN_TRANSFER, SyncRequestStatus.SUCCESS.name());

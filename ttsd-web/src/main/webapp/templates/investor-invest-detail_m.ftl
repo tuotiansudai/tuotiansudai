@@ -101,7 +101,13 @@
                 </a>
             </li>
             </#if>
+
         </ul>
+    <@global.role hasRole="'UMP_INVESTOR'">
+        <p class="invest-contract-link liandong-tip">
+            提示：此投资项目回款将发放至联动优势资金存管账号，查看余额和提现请登录<strong>PC端拓天速贷</strong>进行操作。
+        </p>
+    </@global.role>
     </div>
 </div>
 </@global.main>

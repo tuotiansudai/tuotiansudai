@@ -118,7 +118,8 @@ public interface InvestMapper {
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                     @Param(value = "afterTime") Date afterTime);
 
-    long findCountInvestPagination(@Param(value = "loanId") Long loanId,
+    long findCountInvestPagination(@Param(value = "isBankPlatform") Boolean isBankPlatform,
+                                   @Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
                                    @Param(value = "source") Source source,
@@ -129,7 +130,8 @@ public interface InvestMapper {
                                    @Param(value = "preferenceType") PreferenceType preferenceType,
                                    @Param(value = "productType") ProductType productType);
 
-    List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
+    List<InvestPaginationItemView> findInvestPagination(@Param(value = "isBankPlatform") Boolean isBankPlatform,
+                                                        @Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "channel") String channel,
                                                         @Param(value = "source") Source source,
@@ -152,7 +154,8 @@ public interface InvestMapper {
                          @Param(value = "investStatus") InvestStatus investStatus,
                          @Param(value = "loanStatus") LoanStatus loanStatus);
 
-    long sumInvestAmountConsole(@Param(value = "loanId") Long loanId,
+    long sumInvestAmountConsole(@Param(value = "isBankPlatform") Boolean isBankPlatform,
+                                @Param(value = "loanId") Long loanId,
                                 @Param(value = "investorLoginName") String investorLoginName,
                                 @Param(value = "channel") String channel,
                                 @Param(value = "source") Source source,
@@ -314,21 +317,21 @@ public interface InvestMapper {
                                                         @Param(value = "activityEndTime") Date activityEndTime,
                                                         @Param(value = "limit") Integer limit);
 
-    List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value="loginName") String loginName,
-                                                                  @Param(value="startTime") Date startTime,
-                                                                  @Param(value="endTime") Date endTime);
+    List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "startTime") Date startTime,
+                                                                  @Param(value = "endTime") Date endTime);
 
-    List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value="startTime") Date startTime,
-                                         @Param(value="endTime") Date endTime,
-                                         @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
+    List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value = "startTime") Date startTime,
+                                                               @Param(value = "endTime") Date endTime,
+                                                               @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 
     List<InvestProductTypeView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
                                                                     @Param(value = "endTime") Date endTime,
                                                                     @Param(value = "activityDesc") String activityDesc);
 
     List<InvestModel> findSuccessDoubleElevenActivityByTime(@Param(value = "loanId") Long loanId,
-                                                            @Param(value="startTime") Date startTime,
-                                                            @Param(value="endTime") Date endTime);
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
 
     long sumAmountActivityDoubleElevenByLoginName(@Param(value = "loginName") String loginName,
                                                   @Param(value = "startTime") Date startTime,

@@ -1,47 +1,45 @@
 package com.tuotiansudai.message;
 
-import com.tuotiansudai.enums.TransferType;
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.*;
 
 public class AmountTransferMessage {
 
-    private TransferType transferType;
+    private long businessId;
 
     private String loginName;
 
-    private long orderId;
+    private Role role;
 
     private long amount;
 
-    private UserBillBusinessType businessType;
+    private String bankOrderNo;
 
-    private String operatorLoginName;
+    private String bankOrderDate;
 
-    private String interventionReason;
+    private BillOperationType operationType;
 
-    private AmountTransferMessage next;
+    private BankUserBillBusinessType businessType;
 
     public AmountTransferMessage() {
 
     }
 
-    public AmountTransferMessage(TransferType transferType, String loginName, long orderId, long amount,
-                                 UserBillBusinessType businessType, String operatorLoginName, String interventionReasonl) {
-        this.transferType = transferType;
+    public AmountTransferMessage(long businessId, String loginName, Role role, long amount, String bankOrderNo, String bankOrderDate, BillOperationType operationType, BankUserBillBusinessType businessType) {
+        this.businessId = businessId;
         this.loginName = loginName;
-        this.orderId = orderId;
+        this.role = role;
         this.amount = amount;
+        this.bankOrderNo = bankOrderNo;
+        this.bankOrderDate = bankOrderDate;
+        this.operationType = operationType;
         this.businessType = businessType;
-        this.operatorLoginName = operatorLoginName;
-        this.interventionReason = interventionReasonl;
+    }
+    public long getBusinessId() {
+        return businessId;
     }
 
-    public TransferType getTransferType() {
-        return transferType;
-    }
-
-    public void setTransferType(TransferType transferType) {
-        this.transferType = transferType;
+    public void setBusinessId(long businessId) {
+        this.businessId = businessId;
     }
 
     public String getLoginName() {
@@ -52,12 +50,12 @@ public class AmountTransferMessage {
         this.loginName = loginName;
     }
 
-    public long getOrderId() {
-        return orderId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getAmount() {
@@ -68,35 +66,35 @@ public class AmountTransferMessage {
         this.amount = amount;
     }
 
-    public UserBillBusinessType getBusinessType() {
+    public String getBankOrderNo() {
+        return bankOrderNo;
+    }
+
+    public void setBankOrderNo(String bankOrderNo) {
+        this.bankOrderNo = bankOrderNo;
+    }
+
+    public String getBankOrderDate() {
+        return bankOrderDate;
+    }
+
+    public void setBankOrderDate(String bankOrderDate) {
+        this.bankOrderDate = bankOrderDate;
+    }
+
+    public BillOperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(BillOperationType operationType) {
+        this.operationType = operationType;
+    }
+
+    public BankUserBillBusinessType getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(UserBillBusinessType businessType) {
+    public void setBusinessType(BankUserBillBusinessType businessType) {
         this.businessType = businessType;
-    }
-
-    public String getOperatorLoginName() {
-        return operatorLoginName;
-    }
-
-    public void setOperatorLoginName(String operatorLoginName) {
-        this.operatorLoginName = operatorLoginName;
-    }
-
-    public String getInterventionReason() {
-        return interventionReason;
-    }
-
-    public void setInterventionReason(String interventionReason) {
-        this.interventionReason = interventionReason;
-    }
-
-    public AmountTransferMessage getNext() {
-        return next;
-    }
-
-    public void setNext(AmountTransferMessage next) {
-        this.next = next;
     }
 }

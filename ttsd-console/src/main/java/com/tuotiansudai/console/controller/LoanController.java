@@ -4,8 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLoanCreateService;
 import com.tuotiansudai.console.service.ExtraLoanRateService;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.fudian.message.BankLoanFullMessage;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.LoanFullService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
@@ -32,6 +34,9 @@ public class LoanController {
     private LoanService loanService;
 
     @Autowired
+    private LoanFullService loanFullService;
+
+    @Autowired
     private ConsoleLoanCreateService consoleLoanCreateService;
 
     @Autowired
@@ -44,7 +49,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
-        modelAndView.addObject("loanTypes", Lists.newArrayList(INVEST_INTEREST_MONTHLY_REPAY, INVEST_INTEREST_LUMP_SUM_REPAY));
+        modelAndView.addObject("loanTypes", LoanType.values());
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
@@ -112,7 +117,10 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
         loanCreateRequestDto.getLoan().setRecheckLoginName(LoginUserInfo.getLoginName());
-        return consoleLoanCreateService.loanOut(loanCreateRequestDto);
+
+        BankLoanFullMessage bankLoanFullMessage = loanFullService.full(loanCreateRequestDto.getLoan().getId(), LoginUserInfo.getLoginName());
+
+        return new BaseDto<>(true, new PayDataDto(bankLoanFullMessage.isStatus(), bankLoanFullMessage.getMessage()));
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

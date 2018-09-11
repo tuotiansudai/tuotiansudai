@@ -4,75 +4,72 @@ import cfca.trustsign.common.vo.cs.CreateContractVO;
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.cs.SignInfoVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
-import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
+import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Test3202 {
     public static void main(String[] args) throws Exception {
-        AnxinClientTest anxinClient = new AnxinClientTest();
-        anxinClient.initSSL();
+        AnxinClient anxinClient = AnxinClient.getClient();
 
         Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20160102235959");
+        head.setTxTime("20180102235959");
 
         List<CreateContractVO> createContractlist = new ArrayList<CreateContractVO>();
 
         CreateContractVO createContract = new CreateContractVO();
-        createContract.setTemplateId("7");
+        createContract.setTemplateId("JK_1742");
+        createContract.setIsSign(1);
 
         Map<String, String> fieldMap = new HashMap<String, String>();
-        fieldMap.put("text1", "2016");
-        fieldMap.put("text2", "3");
-        fieldMap.put("text3", "16");
-        fieldMap.put("text4", "孙一");
-        fieldMap.put("text5", "222321199112050001");
-        fieldMap.put("text6", "成都");
-        fieldMap.put("text7", "壹万");
-        fieldMap.put("text8", "壹万元整");
-        fieldMap.put("text9", "10000");
-        fieldMap.put("text10", "壹万元整");
-        fieldMap.put("text11", "10000");
-        fieldMap.put("text12", "壹万元整");
-        fieldMap.put("text13", "10000");
-        fieldMap.put("text14", "叁万元整");
-        fieldMap.put("text15", "30000");
-        fieldMap.put("text16", "10000");
-        fieldMap.put("text17", "10000");
-        fieldMap.put("text18", "10000");
-        fieldMap.put("text19", "孙一");
-        fieldMap.put("text20", "成都支行");
-        fieldMap.put("text21", "001");
+        fieldMap.put("investorIdentityNumber", "370786199111050610");
+        fieldMap.put("loanerIdentityNumber", "370786199111050610");
+        fieldMap.put("loanName", "房产抵押借款17015");
+        fieldMap.put("amountUpper", AmountConverter.getRMBStr(900000).replace("元",""));
+        fieldMap.put("amount", "9000");
+        fieldMap.put("totalRate", "11");
+        DateTime endTimeDate = new DateTime(new Date());
+        fieldMap.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
+        fieldMap.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
+        fieldMap.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
+        DateTime fullTimeDate = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime("2018-08-03 11:50:55");
+        fieldMap.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
+        fieldMap.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+        fieldMap.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
+        fieldMap.put("periods", "12");
+        fieldMap.put("loanType", "先付收益后还投资本金，按天计息，放款后生息");
+        fieldMap.put("investorName", "高兴费");
+
         createContract.setInvestmentInfo(fieldMap);
 
-        SignInfoVO[] signInfos = new SignInfoVO[1];
-        SignInfoVO signInfoVO0 = new SignInfoVO();
-        signInfoVO0.setUserId("2E25DA12B23DC896E050007F01007548");
-        signInfoVO0.setIsProxySign(1);
-        signInfoVO0.setLocation("210.74.41.0");
-        signInfoVO0.setProjectCode("002");
-        signInfoVO0.setSignLocation("Signature1");
-        signInfoVO0.setAuthorizationTime("20160214171200");
-        signInfos[0] = signInfoVO0;
-        createContract.setSignInfos(signInfos);
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId("4074F0BDDC1263F9E05311016B0A0D35");
+        agentSignInfo.setAuthorizationTime(new DateTime("2016-11-17").toString("yyyyMMddHHmmss"));
+        agentSignInfo.setLocation("118.187.56.162");
+        agentSignInfo.setSignLocation("agentUserName");
+        agentSignInfo.setProjectCode("f337f9748c5146ed9c520d26f02e06b1");
+        agentSignInfo.setIsProxySign(1);
 
-        CreateContractVO createContract2 = new CreateContractVO();
-        createContract2.setTemplateId("7");
-        createContract2.setInvestmentInfo(fieldMap);
-        createContract2.setSignInfos(signInfos);
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId("40C1F3CB74D35AE3E05312016B0AA49B");
+        investorSignInfo.setAuthorizationTime(new DateTime("2017-08-18").toString("yyyyMMddHHmmss"));
+        investorSignInfo.setLocation("118.187.56.162");
+        investorSignInfo.setSignLocation("investorUserName");
+        investorSignInfo.setProjectCode("3cfa5dbae5fb43f7aeb7a86a8ce6f534");
+        investorSignInfo.setIsProxySign(1);
 
+        createContract.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
         createContractlist.add(createContract);
-        createContractlist.add(createContract2);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B113");
-        tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[0]));
+        tx3202ReqVO.setBatchNo("B141");
+        tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);

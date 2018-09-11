@@ -1,5 +1,6 @@
 package com.tuotiansudai.cfca.contract.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.AcroFields;
@@ -15,7 +16,9 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -191,39 +195,46 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("msg1", msg1);
         dataModel.put("msg2", msg2);
         dataModel.put("msg3", msg3);
-
+        dataModel.put("loanType", Arrays.asList(LoanType.INVEST_INTEREST_MONTHLY_REPAY,LoanType.LOAN_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())?"每月还息到期还本":"到期还本付息");
         return dataModel;
     }
 
     @Override
-    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId) {
+    public Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId, String fullTime) {
         Map<String, String> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
-        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = investMapper.findById(investId);
-        dataModel.put("agentMobile", agentModel.getMobile());
-        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
-        dataModel.put("investorMobile", investorModel.getMobile());
-        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
-        dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
-        dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
-        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
-        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
-        dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
-        dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
+        //
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
-        dataModel.put("recheckTime", loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
-                simpleDateFormat.format(investModel.getTradingTime()) : simpleDateFormat.format(loanModel.getRecheckTime()));
-        dataModel.put("endTime", simpleDateFormat.format(loanModel.getDeadline()));
-        dataModel.put("investId", String.valueOf(investId));
-        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
-            dataModel.put("pledge", "房屋");
-        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
-            dataModel.put("pledge", "车辆");
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
+        dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("loanName", loanModel.getName());
+        String amountUpper=AmountConverter.getRMBStr(investModel.getAmount());
+        amountUpper=amountUpper.endsWith("元")?amountUpper.replace("元",""):amountUpper;
+        dataModel.put("amountUpper", amountUpper);
+        dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100));
+        //根据标的类型判断借款开始时间
+        if (LoanType.INVEST_INTEREST_MONTHLY_REPAY.equals(loanModel.getType()) || LoanType.INVEST_INTEREST_LUMP_SUM_REPAY.equals(loanModel.getType())) {
+            DateTime recheckTimeYear = new DateTime(investModel.getCreatedTime());
+            dataModel.put("recheckTimeYear", String.valueOf(recheckTimeYear.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(recheckTimeYear.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(recheckTimeYear.getDayOfMonth()));
+        } else {
+            DateTime fullTimeDate = Strings.isNullOrEmpty(fullTime) ? DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(fullTime) : new DateTime(loanModel.getRecheckTime());
+            dataModel.put("recheckTimeYear", String.valueOf(fullTimeDate.getYear()));
+            dataModel.put("recheckTimeMonth", String.valueOf(fullTimeDate.getMonthOfYear()));
+            dataModel.put("recheckTimeDay", String.valueOf(fullTimeDate.getDayOfMonth()));
         }
+        DateTime endTimeDate = new DateTime(loanModel.getDeadline());
+        dataModel.put("endTimeYear", String.valueOf(endTimeDate.getYear()));
+        dataModel.put("endTimeMonth", String.valueOf(endTimeDate.getMonthOfYear()));
+        dataModel.put("endTimeDay", String.valueOf(endTimeDate.getDayOfMonth()));
+        dataModel.put("periods", loanModel.getPeriods() + "");
+        dataModel.put("loanType", loanModel.getType().getName());
+        dataModel.put("investorName", investorModel.getUserName());
         return dataModel;
     }
 
@@ -233,7 +244,7 @@ public class ContractServiceImpl implements ContractService {
         Map<String, String> dataMap;
         if (anxinContractType.equals(AnxinContractType.LOAN_CONTRACT)) {
             pdfTemplate = LOAN_CONTRACT_TEMPLATE;
-            dataMap = collectInvestorContractModel(loginName, OrderId, investId);
+            dataMap = collectInvestorContractModelOld(loginName, OrderId, investId);
         } else {
             pdfTemplate = TRANSFER_CONTRACT_TEMPLaTE;
             dataMap = collectTransferContractModel(OrderId);
@@ -301,5 +312,43 @@ public class ContractServiceImpl implements ContractService {
         }
 
         return fields;
+    }
+
+    /**
+     * 没有对接安心签 以前对应的合同 需要自己打印 渲染
+     * @param investorLoginName
+     * @param loanId
+     * @param investId
+     * @return
+     */
+    private  Map<String, String> collectInvestorContractModelOld(String investorLoginName, long loanId, long investId) {
+        Map<String, String> dataModel = new HashMap<>();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        UserModel investorModel = userMapper.findByLoginName(investorLoginName);
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
+        InvestModel investModel = investMapper.findById(investId);
+        dataModel.put("agentMobile", agentModel.getMobile());
+        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("investorMobile", investorModel.getMobile());
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
+        dataModel.put("loanerUserName", loanerDetailsModel == null ? "" : loanerDetailsModel.getUserName());
+        dataModel.put("loanerIdentityNumber", loanerDetailsModel == null ? "" : loanerDetailsModel.getIdentityNumber());
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        dataModel.put("investAmount", AmountConverter.convertCentToString(investModel.getAmount()) + "元");
+        dataModel.put("agentPeriods", String.valueOf(loanModel.getOriginalDuration()) + "天");
+        dataModel.put("leftPeriods", loanModel.getPeriods() + "期");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
+        dataModel.put("recheckTime", loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
+                simpleDateFormat.format(investModel.getTradingTime()) : simpleDateFormat.format(loanModel.getRecheckTime()));
+        dataModel.put("endTime", simpleDateFormat.format(loanModel.getDeadline()));
+        dataModel.put("investId", String.valueOf(investId));
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+            dataModel.put("pledge", "房屋");
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+            dataModel.put("pledge", "车辆");
+        }
+        return dataModel;
     }
 }

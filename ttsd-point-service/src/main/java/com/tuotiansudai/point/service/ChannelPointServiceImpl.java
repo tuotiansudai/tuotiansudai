@@ -1,9 +1,9 @@
 package com.tuotiansudai.point.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.ChannelPointDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.point.exception.ChannelPointDataValidationException;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailDto;
 import com.tuotiansudai.point.repository.dto.ChannelPointDetailPaginationItemDataDto;
@@ -15,11 +15,10 @@ import com.tuotiansudai.point.repository.model.ChannelPointDetailModel;
 import com.tuotiansudai.point.repository.model.ChannelPointModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,7 +46,7 @@ public class ChannelPointServiceImpl {
     @Autowired
     private ChannelPointDetailMapper channelPointDetailMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -180,8 +179,8 @@ public class ChannelPointServiceImpl {
             channelPointDetailDto.setRemark("手机号与用户姓名不匹配");
             return false;
         }
-        AccountModel accountModel = accountMapper.findByMobile(channelPointDetailDto.getMobile());
-        if (accountModel == null) {
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
+        if (bankAccountModel == null) {
             channelPointDetailDto.setSuccess(false);
             channelPointDetailDto.setRemark("用户没有进行实名认证!");
             return false;

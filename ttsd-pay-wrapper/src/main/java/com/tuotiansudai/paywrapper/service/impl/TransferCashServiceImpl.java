@@ -59,7 +59,7 @@ public class TransferCashServiceImpl implements TransferCashService {
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 if (responseModel.isSuccess()) {
                     AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
-                            transferCashDto.getUserBillBusinessType(), null, null);
+                            transferCashDto.getUserBillBusinessType());
                     mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                     String detail = MessageFormat.format(transferCashDto.getSystemBillDetailTemplate().getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
 

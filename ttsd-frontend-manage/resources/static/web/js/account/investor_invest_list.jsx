@@ -52,6 +52,7 @@ var loadLoanData = function (currentPage) {
 };
 $('body').on('click','.show-invest-repay',function (event) {
     event.preventDefault();
+    var isBank = $(this).data('isbank');
     $.ajax({
         url: $(this).data('url'),
         type: 'get',
@@ -59,6 +60,7 @@ $('body').on('click','.show-invest-repay',function (event) {
         contentType: 'application/json; charset=UTF-8'
     }).success(function (response) {
         var data = response.data;
+        data.isBank = isBank;
         data.isLoanCompleted = status == 'COMPLETE';
         data.csrfToken = $("meta[name='_csrf']").attr("content");
         if (data.status) {

@@ -7,36 +7,31 @@
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="userBillResultMap" type="UserBillModel">
-        <id column="id" property="id"></id>
-        <result column="login_name" property="loginName"></result>
-        <result column="order_id" property="orderId"></result>
-        <result column="amount" property="amount"></result>
-        <result column="balance" property="balance"></result>
-        <result column="freeze" property="freeze"></result>
-        <result column="operation_type" property="operationType"></result>
-        <result column="business_type" property="businessType"></result>
-        <result column="operator_login_name" property="operatorLoginName"></result>
-        <result column="intervention_reason" property="interventionReason"></result>
-        <result column="created_time" property="createdTime"></result>
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="order_id" property="orderId"/>
+        <result column="amount" property="amount"/>
+        <result column="balance" property="balance"/>
+        <result column="freeze" property="freeze"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="business_type" property="businessType"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <resultMap id="userBillResultView" type="UserBillPaginationView" extends="userBillResultMap">
-        <result column="user_name" property="userName"></result>
-        <result column="mobile" property="mobile"></result>
-        <result column="is_staff" property="isStaff"></result>
+        <result column="user_name" property="userName"/>
+        <result column="ump_user_name" property="umpUserName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="is_staff" property="isStaff"/>
     </resultMap>
 
     <insert id="create" parameterType="UserBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, operator_login_name, intervention_reason, created_time)
-        value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{operatorLoginName}, #{interventionReason}, #{createdTime})
+        insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, created_time)
+        value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBillResultMap">
         select * from user_bill where login_name = #{loginName}
-    </select>
-
-    <select id="findByOrderIdAndBusinessType" parameterType="map" resultMap="userBillResultMap">
-        select * from user_bill where order_id = #{orderId} and business_type = #{userBillBusinessType}
     </select>
 
     <select id="findUserBillsCount" parameterType="map" resultType="int">
@@ -45,12 +40,6 @@
             <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
-                operation_type in
-                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -75,12 +64,6 @@
                     #{item}
                 </foreach>
             </if>
-            <if test="userBillOperationTypes != null and userBillOperationTypes.size != 0">
-                operation_type in
-                <foreach item="item" index="index" collection="userBillOperationTypes" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
             <if test="startTime != null">
                 and created_time >= #{startTime}
             </if>
@@ -99,6 +82,7 @@
         select ub.*,
         u.user_name,
         u.mobile,
+        u.ump_user_name,
         IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role in ('SD_STAFF',
         'ZC_STAFF')),0) as is_staff
         from user_bill ub
@@ -148,11 +132,6 @@
             </if>
             AND user_bill.business_type != 'PAYROLL'
         </where>
-    </select>
-
-    <select id="findUserSumInterest" resultType="long">
-      select ifnull(sum(amount),0) from user_bill
-      where business_type in('ACTIVITY_REWARD', 'REFERRER_REWARD', 'INVEST_COUPON', 'INTEREST_COUPON', 'RED_ENVELOPE', 'LOTTERY_CASH', 'EXTRA_RATE');
     </select>
 
 </mapper>

@@ -17,21 +17,25 @@ import javax.validation.Valid;
 @RequestMapping(value = "/anxin-sign")
 public class AnxinSignServerController {
 
-    @Autowired
-    private AnxinSignService anxinSignService;
+    private final AnxinSignService anxinSignService;
+
+    private final ContractService contractService;
 
     @Autowired
-    private ContractService contractService;
+    public AnxinSignServerController(AnxinSignService anxinSignService, ContractService contractService) {
+        this.anxinSignService = anxinSignService;
+        this.contractService = contractService;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/create-loan-contract", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> createLoanContracts(@Valid @RequestBody long loanId, HttpServletRequest request) {
-        return anxinSignService.createLoanContracts(loanId);
+    public BaseDto<AnxinDataDto> createLoanContracts(@Valid @RequestBody AnxinLoanSuccessDto anxinLoanSuccessDto) {
+        return anxinSignService.createLoanContracts(anxinLoanSuccessDto);
     }
 
     @ResponseBody
     @RequestMapping(value = "/create-transfer-contract", method = RequestMethod.POST)
-    public BaseDto<AnxinDataDto> createTransferContracts(@Valid @RequestBody long transferId, HttpServletRequest request) {
+    public BaseDto<AnxinDataDto> createTransferContracts(@Valid @RequestBody long transferId) {
         return anxinSignService.createTransferContracts(transferId);
     }
 

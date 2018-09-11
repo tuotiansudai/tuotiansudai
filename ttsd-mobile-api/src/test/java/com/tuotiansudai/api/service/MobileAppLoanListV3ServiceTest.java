@@ -115,91 +115,10 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel getInvestModel(String loginName, long loanId) {
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);
         return investModel;
-    }
-
-    @Test
-    public void testGenerateIndexLoan() throws Exception {
-        UserModel user = createUser("testUser");
-        createUser("loaner");
-        getFakeExperienceLoan("loaner");
-        CouponModel fakeNewbieCoupon = getFakeNewbieCoupon(user);
-        getFakeUserCoupon(user, fakeNewbieCoupon);
-        //数据库中默认有新手体验标
-        final long experienceLoanId = 1L;
-        //没有投资过的
-        BaseResponseDto baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        LoanListResponseDataDto loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        LoanResponseDataDto loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
-        //参数为空
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(null);
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
-
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan("");
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
-
-        Date now = DateTime.now().toDate();
-        //没有可投标 && 只投资过体验标
-        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.COMPLETE, now);
-        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.COMPLETE, now);
-        createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.COMPLETE, now);
-        LoanModel loanModel = createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.COMPLETE, now);
-
-        InvestModel investModel = getInvestModel(user.getLoginName(), experienceLoanId);
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertNotEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        //没有可投标 && 投资过其它标
-        investModel.setLoanId(loanModel.getId());
-        investMapper.update(investModel);
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-
-        Date newDate = DateTime.now().toDate();
-        //有可投标 && 投资过其它标
-        createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, newDate);
-        createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, newDate);
-        createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.RAISING, newDate);
-
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
-        //有可投标 && 只投资过体验标
-        investModel.setLoanId(experienceLoanId);
-        investMapper.update(investModel);
-
-        baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
-        loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-        assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
-        loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
-        assertEquals(ProductType._30.name(), loanResponseDataDto.getProductNewType());
-        assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
     }
 
     @Test
@@ -213,7 +132,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         extraLoanRateMapper.create(extraLoanRateModels);
         loanDetailsMapper.create(createLoanDetails(loanId));
 
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanModel.getId(), null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListV3Service.generateIndexLoan(loginName);

@@ -27,7 +27,8 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})@Transactional
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
 public class InvestMapperTest {
     @Autowired
     private FakeUserHelper userMapper;
@@ -45,7 +46,7 @@ public class InvestMapperTest {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
     @Autowired
     private LoanDetailsMapper loanDetailsMapper;
 
@@ -101,14 +102,15 @@ public class InvestMapperTest {
     }
 
     private InvestModel getFakeInvestModel() {
-        InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, User_ID, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTradingTime(new DateTime().withTimeAtStartOfDay().toDate());
+        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
         return model;
     }
 
     private InvestModel getFakeInvestModelByLoginName(String loginName) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, 1000000L, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), Loan_ID, null, loginName, 1000000L, 0.1, false, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         model.setTradingTime(new DateTime().withTimeAtStartOfDay().toDate());
         return model;
@@ -492,9 +494,10 @@ public class InvestMapperTest {
     }
 
     private InvestModel createInvest(String loginName, long loanId, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 1, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 1, 0.1, false, new Date(), Source.WEB, null);
         model.setStatus(investStatus);
         model.setTransferStatus(transferStatus);
+        model.setCreatedTime(new Date());
         investMapper.create(model);
         return model;
     }
@@ -578,13 +581,12 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
-        accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
-        accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
-        accountMapper.create(accountModel3);
-
+        BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel1);
+        BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel2);
+        BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -623,13 +625,12 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
-        accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
-        accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
-        accountMapper.create(accountModel3);
-
+        BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel1);
+        BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel2);
+        BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -671,13 +672,12 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
-        accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
-        accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
-        accountMapper.create(accountModel3);
-
+        BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel1);
+        BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel2);
+        BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel3);
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
         investModel1.setAmount(2000);
@@ -715,12 +715,12 @@ public class InvestMapperTest {
         UserModel investor1 = createUserByUserId("investor1");
         UserModel investor2 = createUserByUserId("investor2");
         UserModel investor3 = createUserByUserId("investor3");
-        AccountModel accountModel1 = new AccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", new Date());
-        accountMapper.create(accountModel1);
-        AccountModel accountModel2 = new AccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", new Date());
-        accountMapper.create(accountModel2);
-        AccountModel accountModel3 = new AccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", new Date());
-        accountMapper.create(accountModel3);
+        BankAccountModel accountModel1 = new BankAccountModel(investor1.getLoginName(), "payUserId1", "payAccountId1", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel1);
+        BankAccountModel accountModel2 = new BankAccountModel(investor2.getLoginName(), "payUserId2", "payAccountId2", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel2);
+        BankAccountModel accountModel3 = new BankAccountModel(investor3.getLoginName(), "payUserId3", "payAccountId3", "111", "111", "");
+        bankAccountMapper.createInvestor(accountModel3);
 
 
         InvestModel investModel1 = this.getFakeInvestModelByLoginName(investor1.getLoginName());
@@ -956,25 +956,22 @@ public class InvestMapperTest {
         fakeLoanModel.setCreatedTime(new Date());
         fakeLoanModel.setProductType(ProductType._180);
         fakeLoanModel.setPledgeType(PledgeType.HOUSE);
+        fakeLoanModel.setIsBankPlatForm(true);
         loanMapper.create(fakeLoanModel);
 
-        Date startDate = DateTime.parse("2014-10-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-        Date endDate = DateTime.parse("2014-10-01 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-
-        long investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null);
+        long investAmount = investMapper.sumInvestAmountConsole(true, fakeLoanModel.getId(), null, null, null, null, null, null, null, null, null);
         assertEquals(investAmount, 0);
 
         InvestModel investModel2 = this.getFakeInvestModel();
         investModel2.setLoanId(fakeLoanModel.getId());
         investModel2.setLoginName(User_ID2);
-        investModel2.setInvestTime(DateTime.now().toDate());
         investModel2.setStatus(InvestStatus.SUCCESS);
         investModel2.setInvestTime(DateTime.now().toDate());
         investModel2.setCreatedTime(DateTime.parse("2014-10-01 15:31:12", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         investModel2.setAmount(100);
         investMapper.create(investModel2);
 
-        investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null);
+        investAmount = investMapper.sumInvestAmountConsole(true, fakeLoanModel.getId(), null, null, null, null, null, null, null, null, null);
         assertEquals(investAmount, investModel2.getAmount());
 
     }
@@ -1037,13 +1034,13 @@ public class InvestMapperTest {
         investModel2.setInvestTime(DateTime.now().toDate());
         investMapper.create(investModel2);
 
-        long sum = investMapper.sumInvestAmountConsole(null, User_ID2, null, null, null, null, null, null, null, null);
+        long sum = investMapper.sumInvestAmountConsole(true, null, User_ID2, null, null, null, null, null, null, null, null);
         assertEquals(sum, 1000000L);
 
-        long count = investMapper.findCountInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null);
+        long count = investMapper.findCountInvestPagination(true, null, User_ID2, null, null, null, null, null, null, null, null);
         assertEquals(count, 1L);
 
-        List<InvestPaginationItemView> list = investMapper.findInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
+        List<InvestPaginationItemView> list = investMapper.findInvestPagination(true, null, User_ID2, null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(list.size(), 1);
     }
 

@@ -36,20 +36,23 @@ public class RegisterUserController {
 
     private final static Logger logger = Logger.getLogger(RegisterUserController.class);
 
-    @Autowired
-    private UserService userService;
+    private final MyAuthenticationUtil myAuthenticationUtil = MyAuthenticationUtil.getInstance();
+
+    private final UserService userService;
+
+    private final SmsCaptchaService smsCaptchaService;
+
+    private final CaptchaHelper captchaHelper;
+
+    private final PrepareUserService prepareService;
 
     @Autowired
-    private SmsCaptchaService smsCaptchaService;
-
-    @Autowired
-    private CaptchaHelper captchaHelper;
-
-    @Autowired
-    private PrepareUserService prepareService;
-
-    @Autowired
-    private MyAuthenticationUtil myAuthenticationUtil;
+    public RegisterUserController(UserService userService, SmsCaptchaService smsCaptchaService, CaptchaHelper captchaHelper, PrepareUserService prepareService) {
+        this.userService = userService;
+        this.smsCaptchaService = smsCaptchaService;
+        this.captchaHelper = captchaHelper;
+        this.prepareService = prepareService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerRedirect() {
@@ -129,7 +132,7 @@ public class RegisterUserController {
             checkMobile = false;
         }
 
-        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
 
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
@@ -155,18 +158,17 @@ public class RegisterUserController {
             result.put("referrerMobileError", "推荐人手机号不存在");
             checkMobile = false;
         }
-        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"));
+        boolean isRegisterSuccess = checkMobile && registerUser(registerUserDto, request.getSession().getAttribute("channel"), request.getHeader("X-Forwarded-For"));
         result.put("success", isRegisterSuccess);
         return result;
     }
 
     @RequestMapping(path = "/success", method = RequestMethod.GET)
-    public ModelAndView registerUserSuccess(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("/register-success");
-        return modelAndView;
+    public ModelAndView registerUserSuccess() {
+        return new ModelAndView("/register-success");
     }
 
-    private boolean registerUser(RegisterUserDto registerUserDto, Object channel) {
+    private boolean registerUser(RegisterUserDto registerUserDto, Object channel, String xForwardedForHeader) {
         boolean isRegisterSuccess;
         if (channel != null) {
             registerUserDto.setChannel(String.valueOf(channel));
@@ -177,7 +179,7 @@ public class RegisterUserController {
 
         if (isRegisterSuccess) {
             logger.info(MessageFormat.format("[Register User {0}] authenticate starting...", registerUserDto.getMobile()));
-            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB);
+            myAuthenticationUtil.createAuthentication(registerUserDto.getMobile(), Source.WEB, xForwardedForHeader);
             logger.info(MessageFormat.format("[Register User {0}] authenticate completed", registerUserDto.getMobile()));
         }
         return isRegisterSuccess;

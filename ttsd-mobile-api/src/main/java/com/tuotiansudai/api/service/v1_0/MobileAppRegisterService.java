@@ -8,7 +8,5 @@ public interface MobileAppRegisterService {
 
     BaseResponseDto<RegisterResponseDataDto> registerUser(RegisterRequestDto registerRequestDto);
 
-    BaseResponseDto<RegisterResponseDataDto> registerUserFromHuizu(RegisterHuizuRequestDto registerRequestDto);
-
     BaseResponseDto mobileNumberIsExist(MobileIsAvailableRequestDto requestDto);
 }

@@ -5,9 +5,10 @@ import com.tuotiansudai.activity.repository.mapper.UserExchangePrizeMapper;
 import com.tuotiansudai.activity.repository.model.ActivityCategory;
 import com.tuotiansudai.activity.repository.model.ExchangePrize;
 import com.tuotiansudai.activity.repository.model.UserExchangePrizeModel;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -47,7 +48,7 @@ public class ExerciseVSWorkActivityService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     public long sumInvestByLoginNameExceptTransferAndTime(String loginName) {
         return investMapper.findSuccessByLoginNameExceptTransferAndTime(loginName, ActivityStartTime, ActivityEndTime).stream().mapToLong(i -> i.getAmount()).sum();
@@ -91,10 +92,10 @@ public class ExerciseVSWorkActivityService {
         }
 
 
-        AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
         try {
             if (userExchangePrizeModel == null) {
-                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), accountModel != null ? userModel.getUserName() : "", exchangePrize, DateTime.now().toDate(), activityCategory));
+                userexchangePrizeMapper.create(new UserExchangePrizeModel(mobile, userModel.getLoginName(), bankAccountModel != null ? userModel.getUserName() : "", exchangePrize, DateTime.now().toDate(), activityCategory));
             } else {
                 userExchangePrizeModel.setPrize(exchangePrize);
                 userExchangePrizeModel.setExchangeTime(DateTime.now().toDate());

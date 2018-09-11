@@ -1,17 +1,11 @@
 package com.tuotiansudai.api.service.v1_0;
 
-import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 
 public interface MobileAppBankCardService {
 
-    BaseResponseDto<BankCardResponseDto> bindBankCard(BankCardRequestDto requestDto);
+    BaseResponseDto<BankAsynResponseDto> bindBankCard(String loginName, String ip, String deviceId);
 
-    BaseResponseDto<BankCardResponseDto> openFastPay(BankCardRequestDto requestDto);
-
-    BaseResponseDto queryStatus(BankCardRequestDto requestDto);
-
-    BaseResponseDto<BankCardReplaceResponseDataDto> replaceBankCard(BankCardReplaceRequestDto requestDto);
-
-    BaseResponseDto<BankCardIsReplacingResponseDto> isReplacing(BaseParamDto baseParamDto);
-
+    BaseResponseDto<BankAsynResponseDto> unBindBankCard(String loginName, String ip, String deviceId);
 }

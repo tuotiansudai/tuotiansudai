@@ -186,7 +186,7 @@ public class ExperienceRepayServiceImpl implements ExperienceRepayService {
         investRepayMapper.update(investRepayModel);
 
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
-                investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST, null, null);
+                investRepayModel.getId(), investRepayModel.getRepayAmount(), UserBillBusinessType.EXPERIENCE_INTEREST);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_EXPERIENCE_REPAY_NOTIFY_TEMPLATE,
                 Lists.newArrayList(userMapper.findByLoginName(investModel.getLoginName()).getMobile()),

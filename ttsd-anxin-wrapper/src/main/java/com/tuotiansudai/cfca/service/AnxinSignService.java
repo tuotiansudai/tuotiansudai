@@ -2,6 +2,7 @@ package com.tuotiansudai.cfca.service;
 
 
 import com.tuotiansudai.dto.AnxinDataDto;
+import com.tuotiansudai.dto.AnxinLoanSuccessDto;
 import com.tuotiansudai.dto.AnxinQueryContractDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AnxinContractType;
@@ -17,17 +18,17 @@ public interface AnxinSignService {
 
     AnxinSignPropertyModel getAnxinSignProp(String loginName);
 
-    BaseDto createAccount3001(String loginName);
+    BaseDto<AnxinDataDto> createAccount3001(String loginName);
 
-    BaseDto sendCaptcha3101(String loginName, boolean isVoice);
+    BaseDto<AnxinDataDto> sendCaptcha3101(String loginName, boolean isVoice);
 
-    BaseDto verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
+    BaseDto<AnxinDataDto> verifyCaptcha3102(String loginName, String captcha, boolean isSkipAuth, String ip);
 
-    BaseDto switchSkipAuth(String loginName, boolean open);
+    BaseDto<AnxinDataDto> switchSkipAuth(String loginName, boolean open);
 
     byte[] downContractByContractNo(String contractNo);
 
-    BaseDto<AnxinDataDto> createLoanContracts(long loanId);
+    BaseDto<AnxinDataDto> createLoanContracts(AnxinLoanSuccessDto anxinLoanSuccessDto);
 
     BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId);
 

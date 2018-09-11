@@ -37,17 +37,19 @@ def migrate():
 
 def mk_war(targets=None):
     if not targets:
-        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle war renameWar')
+        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle bootWar war renameWar')
         return
 
     for target in targets:
-        local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
+        if target == 'ttsd-fudian-bank':
+            local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:bootWar {0}:renameWar'.format(target))
+        else:
+            local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle {0}:war {0}:renameWar'.format(target))
 
 
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-diagnosis && /opt/gradle/latest/bin/gradle distZip')
-    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootRepackage')
+    local('cd ./ttsd-worker-monitor && /opt/gradle/latest/bin/gradle bootJar')
 
 
 def mk_mq_consumer():
@@ -123,7 +125,7 @@ def deploy_console():
 def deploy_pay():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-pay-wrapper/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-fudian-bank/build/libs/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
     sudo('service nginx restart')
 
@@ -140,7 +142,6 @@ def deploy_worker():
     put(local_path='./ttsd-email-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-amount-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./ttsd-sms-mq-consumer/build/distributions/*.zip', remote_path='/workspace/')
-    put(local_path='./ttsd-diagnosis/build/distributions/*.zip', remote_path='/workspace/')
     put(local_path='./scripts/supervisor/job-worker.ini', remote_path='/etc/supervisord.d/')
     put(local_path='./scripts/logstash/worker.conf', remote_path='/etc/logstash/conf.d/prod.conf')
     sudo('supervisorctl stop all')
@@ -158,7 +159,6 @@ def deploy_worker():
         sudo('rm -rf ttsd-email-mq-consumer/')
         sudo('rm -rf ttsd-amount-mq-consumer/')
         sudo('rm -rf ttsd-sms-mq-consumer/')
-        sudo('rm -rf ttsd-diagnosis/')
         sudo('unzip \*.zip')
         sudo('supervisorctl reload')
         sudo('supervisorctl start all')
@@ -340,22 +340,21 @@ def worker(skip_package):
                               'ttsd-auditLog-mq-consumer',
                               'ttsd-email-mq-consumer',
                               'ttsd-amount-mq-consumer',
-                              'ttsd-sms-mq-consumer',
-                              'ttsd-diagnosis'))
+                              'ttsd-sms-mq-consumer'))
     mk_worker_zip()
     mk_mq_consumer()
     execute(deploy_worker)
 
 
 def pay(skip_package):
-    pre_deploy(skip_package, ('ttsd-pay-wrapper',))
-    mk_war(('ttsd-pay-wrapper',))
+    pre_deploy(skip_package, ('ttsd-fudian-bank',))
+    mk_war(('ttsd-fudian-bank',))
     execute(deploy_pay)
 
 
 def point(skip_package):
-    pre_deploy(skip_package, ('ttsd-piont-web',))
-    mk_war(('ttsd-piont-web',))
+    pre_deploy(skip_package, ('ttsd-point-web',))
+    mk_war(('ttsd-point-web',))
     execute(deploy_static)
     execute(deploy_point)
 

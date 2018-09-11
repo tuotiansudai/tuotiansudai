@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.SignInClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -20,13 +21,10 @@ import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.service.ImpersonateService;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
-import com.tuotiansudai.spring.security.SignInClient;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
@@ -44,8 +42,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -53,6 +53,8 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final SignInClient signInClient = SignInClient.getInstance();
 
     @Autowired
     private UserService userService;
@@ -64,16 +66,7 @@ public class UserController {
     private ImpersonateService impersonateService;
 
     @Autowired
-    private BindBankCardService bindBankCardService;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private InvestService investService;
-
-    @Autowired
-    private SignInClient signInClient;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private AuditLogService auditLogService;
@@ -118,13 +111,12 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             UserModel userModel = consoleUserService.findByLoginName(loginName);
-            BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-            if (bankCard != null) {
-                editUserDto.setBankCardNumber(bankCard.getCardNumber());
-            }
+            Map<Role,String> bankCardMap=consoleUserService.getUserBankCardNumberByLoginName(loginName);
+            editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.UMP_INVESTOR));
+            editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.LOANER));
+            editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.INVESTOR));
 
-            AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
-            editUserDto.setAutoInvestStatus(autoInvestPlan != null && autoInvestPlan.isEnabled() ? "1" : "0");
+            editUserDto.setAutoInvestStatus("0");
             editUserDto.setIdentityNumber(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getIdentityNumber());
             editUserDto.setUserName(userModel == null || Strings.isNullOrEmpty(userModel.getUserName()) ? "" : userModel.getUserName());
             modelAndView.addObject("user", editUserDto);
@@ -231,9 +223,8 @@ public class UserController {
         mv.addObject("selectedUserOperation", userOperation);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
-        List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
         List<String> channelList = consoleUserService.findAllUserChannels();
-        mv.addObject("roleStageList", roleStageList);
+        mv.addObject("roleStageList", RoleStage.values());
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("userOperations", UserOperation.values());

@@ -1,17 +1,18 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.*;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.dto.request.BankRechargeRequestDto;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.repository.model.BankAccountModel;
+import com.tuotiansudai.repository.model.UserBankCardModel;
+import com.tuotiansudai.service.BankAccountService;
+import com.tuotiansudai.service.BankRechargeService;
+import com.tuotiansudai.service.BankService;
+import com.tuotiansudai.service.BankBindCardService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.web.config.interceptors.MobileAccessDecision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,54 +27,43 @@ import javax.validation.Valid;
 public class RechargeController {
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
-    private UserService userService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private BindBankCardService bindBankCardService;
+    private BankBindCardService bankBindCardService;
 
     @Autowired
     private BankService bankService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-        boolean isBindCard = bankCard != null;
-        boolean isFastPayOn = bankCard != null && bankCard.isFastPayOn();
-
-        ModelAndView modelAndView = new ModelAndView("/recharge");
-        modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
-        modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
-        modelAndView.addObject("isBindCard", isBindCard);
-        modelAndView.addObject("isFastPayOn", isFastPayOn);
-        modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
-
-        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
-        if (accountService.findByLoginName(LoginUserInfo.getLoginName()) != null && isBindCard) {
-            modelAndView.addObject("userName", userModel.getUserName());
-            modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
-            modelAndView.addObject("bankCode", bankCard.getBankCode());
-            modelAndView.addObject("bank", BankCardUtil.getBankName(bankCard.getBankCode()));
-            modelAndView.addObject("bankCard", bankCard.getCardNumber());
-
-            BankModel bankModel = bankService.findByBankCode(bankCard.getBankCode());
-            modelAndView.addObject("bankModel", bankModel);
+        Role role = LoginUserInfo.getBankRole();
+        if (role == null) {
+            return MobileAccessDecision.isMobileAccess() ? new ModelAndView("redirect:/m/personal-info") : new ModelAndView("redirect:/personal-info");
         }
-
+        UserBankCardModel userBankCardModel = bankBindCardService.findBankCard(LoginUserInfo.getLoginName(), role);
+        ModelAndView modelAndView = new ModelAndView("/recharge");
+        if (userBankCardModel != null){
+            modelAndView.addObject("bankModel", bankService.findByBankCode(userBankCardModel.getBankCode()));
+        }
+        BankAccountModel bankAccountModel = bankAccountService.findBankAccount(LoginUserInfo.getLoginName(), role);
+        modelAndView.addObject("bankCard", userBankCardModel);
+        modelAndView.addObject("balance", AmountConverter.convertCentToString(bankAccountModel == null ? 0 : bankAccountModel.getBalance()));
+        modelAndView.addObject("bankList", bankService.findBankList(0L, 0L));
         return modelAndView;
     }
 
-
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView recharge(@Valid @ModelAttribute RechargeDto rechargeDto) {
-        rechargeDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<PayFormDataDto> baseDto = rechargeService.recharge(rechargeDto);
+    public ModelAndView recharge(@Valid @ModelAttribute BankRechargeRequestDto dto) {
+        BankAsyncMessage baseDto = bankRechargeService.recharge(dto.getSource(),
+                LoginUserInfo.getLoginName(),
+                LoginUserInfo.getMobile(),
+                AmountConverter.convertStringToCent(dto.getAmount()),
+                dto.getPayType(),
+                dto.getChannel(), LoginUserInfo.getBankRole());
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

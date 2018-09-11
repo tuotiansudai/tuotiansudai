@@ -1,6 +1,7 @@
 package com.tuotiansudai.mq.consumer.point;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.fudian.message.BankLoanInvestMessage;
 import com.tuotiansudai.message.InvestInfo;
 import com.tuotiansudai.message.InvestSuccessMessage;
 import com.tuotiansudai.message.LoanDetailInfo;
@@ -50,20 +51,20 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
     public void shouldConsume() {
         long investId = 100001;
         String loginName = "helloworld";
-        InvestSuccessMessage investSuccessMessage = buildMockedInvestSuccessMessage(investId, loginName);
+        BankLoanInvestMessage bankLoanInvestMessage = buildMockedBankLoanInvestMessage(investId, loginName);
 
         InvestModel mockedInvestModel = buildMockInvestModel(investId, loginName);
 
         final ArgumentCaptor<String> loginNameCaptor = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<PointTask> pointTaskCaptor = ArgumentCaptor.forClass(PointTask.class);
-        final ArgumentCaptor<InvestModel> investModelCaptor = ArgumentCaptor.forClass(InvestModel.class);
+        final ArgumentCaptor<Long> investIdCaptor = ArgumentCaptor.forClass(Long.class);
         doNothing().when(pointTaskService).completeNewbieTask(pointTaskCaptor.capture(), loginNameCaptor.capture());
         doNothing().when(pointTaskService).completeAdvancedTask(pointTaskCaptor.capture(), loginNameCaptor.capture());
-        doNothing().when(pointService).obtainPointInvest(investModelCaptor.capture());
+        doNothing().when(pointService).obtainPointInvest(investIdCaptor.capture());
         when(investMapper.findById(investId)).thenReturn(mockedInvestModel);
 
         try {
-            consumer.consume(JsonConverter.writeValueAsString(investSuccessMessage));
+            consumer.consume(JsonConverter.writeValueAsString(bankLoanInvestMessage));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -77,7 +78,7 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         assertEquals(PointTask.FIRST_INVEST_180, pointTaskCaptor.getAllValues().get(4));
         assertEquals(PointTask.FIRST_INVEST_360, pointTaskCaptor.getAllValues().get(5));
 
-        assertEquals(mockedInvestModel.getId(), investModelCaptor.getValue().getId());
+        assertEquals(mockedInvestModel.getId(), (long) investIdCaptor.getValue());
     }
 
     private InvestModel buildMockInvestModel(long investId, String loginName) {
@@ -88,18 +89,7 @@ public class InvestSuccessCompletePointTaskConsumerTest extends PointTaskConsume
         return investModel;
     }
 
-    private InvestSuccessMessage buildMockedInvestSuccessMessage(long investId, String loginName) {
-        InvestInfo investInfo = new InvestInfo();
-        LoanDetailInfo loanDetailInfo = new LoanDetailInfo();
-
-        investInfo.setInvestId(investId);
-        investInfo.setLoginName(loginName);
-        investInfo.setAmount(4000000);
-        investInfo.setStatus("SUCCESS");
-        investInfo.setTransferStatus("TRANSFERABLE");
-
-        InvestSuccessMessage investSuccessMessage = new InvestSuccessMessage(investInfo, loanDetailInfo);
-        return investSuccessMessage;
+    private BankLoanInvestMessage buildMockedBankLoanInvestMessage(long investId, String loginName){
+        return new BankLoanInvestMessage(1, "loanName", investId, 4000000, loginName, "11111111111", "bankUserName", "bankAccountNo", "111111", "20180810");
     }
-
 }

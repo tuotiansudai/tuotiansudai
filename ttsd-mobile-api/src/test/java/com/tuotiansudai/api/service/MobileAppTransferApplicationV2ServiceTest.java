@@ -129,8 +129,9 @@ public class MobileAppTransferApplicationV2ServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 10000, 0.1, false, new Date(), Source.WEB, null);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
+        model.setTradingTime(new Date());
         return model;
     }
 

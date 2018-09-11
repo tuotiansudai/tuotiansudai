@@ -1,5 +1,3 @@
-
-<#--<@global.main pageCss="${css.buy_loan}" pageJavascript="${js.buy_loan}" title="直投项目购买详情">-->
 <div class="my-account-content apply-transfer show-page"  id="buyDetail" style="display: none"
      data-has-bank-card="${hasBankCard?c}" data-loan-status="${loan.loanStatus}"
      data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
@@ -61,9 +59,7 @@
         <div class="bg-square-box"></div>
     </div>
 
-
-
-    <form id="investForm" action="/invest" method="post">
+    <form id="investForm" action="/m/invest" method="post">
         <input type="hidden" name="source" value="M">
         <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
     <div class="input-amount-box">
@@ -88,13 +84,13 @@
                 <span class="number-text"><strong id="expectedEarnings">0.00</strong><strong class="experience-income"></strong>
                     元</span>
             </li>
-            <li id="select_coupon" class="select-coupon">
-                <label>优惠券</label>
-                <span id="couponText" type="text">${maxBenefitCouponDesc}</span>
-                <input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">
-                <input type="hidden" id="maxBenifit" value="${(maxBenefitUserCoupon.couponId?string.computer)!}">
-                <em><i class="fa fa-angle-right"></i></em>
-            </li>
+            <#--<li id="select_coupon" class="select-coupon">-->
+                <#--<label>优惠券</label>-->
+                <#--<span id="couponText" type="text">${maxBenefitCouponDesc}</span>-->
+                <#--<input id="couponId" type="hidden" value="${(maxBenefitCouponId?string.computer)!}" name="userCouponIds">-->
+                <#--<input type="hidden" id="maxBenifit" value="${(maxBenefitUserCoupon.couponId?string.computer)!}">-->
+                <#--<em><i class="fa fa-angle-right"></i></em>-->
+            <#--</li>-->
 
         </ul>
     </div>
@@ -103,6 +99,9 @@
    立即投资</button>
     </form>
     <input id="errorMassage" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
+    <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
 
 
 <@global.role hasRole="'INVESTOR'">
@@ -173,5 +172,3 @@
         </div>
     </div>
 </div>
-
-<#--</@global.main>-->

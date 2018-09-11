@@ -15,7 +15,6 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.ProductOrderViewDto;
 import com.tuotiansudai.point.repository.model.UserAddressModel;
 import com.tuotiansudai.point.service.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +47,6 @@ public class PointShopController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private SignInService signInService;

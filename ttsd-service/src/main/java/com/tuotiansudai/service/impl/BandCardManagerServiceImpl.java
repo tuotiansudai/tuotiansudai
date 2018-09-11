@@ -93,8 +93,7 @@ public class BandCardManagerServiceImpl implements BandCardManagerService {
     @Override
     public String updateBankCard(String loginName, long bankCardId, String ip) {
         BankCardModel bankCardModel = bankCardMapper.findById(bankCardId);
-        bankCardModel.setStatus(BankCardStatus.REJECT);
-        bankCardMapper.update(bankCardModel);
+        bankCardMapper.updateStatusAndBankCode(bankCardId, BankCardStatus.REJECT, bankCardModel.getBankCode());
         return "审核成功!";
     }
 

@@ -120,7 +120,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
             String loginName = membershipPrivilegePurchaseModel.getLoginName();
             long amount = membershipPrivilegePurchaseModel.getAmount();
             membershipPrivilegePurchaseModel.setStatus(MembershipPrivilegePurchaseStatus.SUCCESS);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE, null, null);
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.MEMBERSHIP_PRIVILEGE_PURCHASE);
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
             SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,

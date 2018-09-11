@@ -3,6 +3,7 @@ package com.tuotiansudai.point.service.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.mq.client.model.MessageQueue;
@@ -14,11 +15,11 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointModel;
 import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
@@ -40,12 +41,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class PointBillServiceImpl implements PointBillService {
-    static Logger logger = Logger.getLogger(PointBillServiceImpl.class);
+    private final static Logger logger = Logger.getLogger(PointBillServiceImpl.class);
+
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -65,13 +67,6 @@ public class PointBillServiceImpl implements PointBillService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-
-    @Override
-    @Transactional
-    public void createTaskPointBill(String loginName, long pointTaskId, long point, String note) {
-        createPointBill(loginName, pointTaskId, PointBusinessType.TASK, point, note);
-    }
-
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point) {
@@ -82,17 +77,7 @@ public class PointBillServiceImpl implements PointBillService {
     @Override
     @Transactional
     public void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point, String note) {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null) {
-            logger.info(String.format("createPointBill: %s no account", loginName));
-            return;
-        }
-
         UserModel userModel = userMapper.findByLoginName(loginName);
-
-        if (!userPointMapper.exists(loginName)) {
-            userPointMapper.createIfNotExist(new UserPointModel(loginName, 0, 0, null));
-        }
         UserPointModel userPointModel = userPointMapper.lockByLoginName(loginName);
 
         long channelPoint = calculateChannelPoint(userPointModel, point, businessType);
@@ -113,7 +98,7 @@ public class PointBillServiceImpl implements PointBillService {
         if (point > 0) {
             return 0;
         }
-        double channelRate = userPointModel.getPoint() == 0 ? 0.5 : (double)userPointModel.getChannelPoint() / userPointModel.getPoint();
+        double channelRate = userPointModel.getPoint() == 0 ? 0.5 : (double) userPointModel.getChannelPoint() / userPointModel.getPoint();
         // 分配积分时，如果产生小数，则将小数部分归到速贷积分中
         // 此时 point < 0, 因此在计算渠道积分时，应向上取整。 如计算结果为 -2.4 时，实际渠道积分应为 -2
         return (long) Math.ceil(point * channelRate);
@@ -178,7 +163,7 @@ public class PointBillServiceImpl implements PointBillService {
         long count = pointBillMapper.getCountPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType());
         List<PointBillPaginationItemDataDto> dataDtos = pointBillMapper.getPointBillPaginationConsole(startTime, endTime, businessType, channel, minPoint, maxPoint, userNameOrMobile, PointBusinessType.getPointConsumeBusinessType(), PaginationUtil.calculateOffset(index, pageSize, count), pageSize)
                 .stream()
-                .map(dto -> new PointBillPaginationItemDataDto(dto)).collect(Collectors.toList());
+                .map(PointBillPaginationItemDataDto::new).collect(Collectors.toList());
 
         BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<>(PaginationUtil.validateIndex(index, pageSize, count), pageSize, count, dataDtos);
         dto.setStatus(true);
@@ -215,8 +200,8 @@ public class PointBillServiceImpl implements PointBillService {
     // 根据用户名查询时，最多只返回一条数据
     private BasePaginationDataDto<UserPointItemDataDto> findUsersAccountPoint(String loginNameOrMobile) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
-        AccountModel accountModel = userModel == null ? null : accountMapper.findByLoginName(userModel.getLoginName());
-        List<UserModel> userModels = accountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
+        BankAccountModel bankAccountModel = userModel == null ? null : bankAccountMapper.findByLoginNameAndRole(userModel.getLoginName(), Role.INVESTOR);
+        List<UserModel> userModels = bankAccountModel == null ? Collections.emptyList() : Collections.singletonList(userModel);
         List<UserPointItemDataDto> records = userModels.stream()
                 .map(u -> new UserPointItemDataDto(
                         u.getLoginName(),

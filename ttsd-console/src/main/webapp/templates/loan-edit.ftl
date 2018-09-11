@@ -40,11 +40,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户:</label>
+                    <label class="col-sm-2 control-label">借款人用户名:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="代理用户不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="借款人用户名不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -105,6 +105,15 @@
                     <div class="col-sm-4">
                         <input name="loanAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
                                errormsg="预计出借金额需要正确填写" value="${loan.loan.loanAmount}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款手续费（元）:</label>
+
+                    <div class="col-sm-4">
+                        <input name="loanFee" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[0-9]\d*)$/"
+                               errormsg="借款手续费需要正确填写" value="${loan.loan.loanFee}" <#if !(["PREHEAT", "WAITING_VERIFY","RAISING","RECHECK"]?seq_contains(loan.loan.status)) >disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -498,6 +507,9 @@
             </div>
         </div>
     </div>
+    <div class="pop_layer">
+    </div>
 </div>
+
 <!-- content area end -->
 </@global.main>

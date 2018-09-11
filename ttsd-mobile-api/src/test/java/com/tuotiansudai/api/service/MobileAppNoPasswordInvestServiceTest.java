@@ -5,8 +5,8 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestResponseDataDto;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppNoPasswordInvestServiceImpl;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,9 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
-
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -28,19 +27,19 @@ import static org.mockito.Mockito.when;
     private MobileAppNoPasswordInvestServiceImpl mobileAppNoPasswordInvestService;
 
     @Mock
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Test
     public void shouldGetNoPasswordInvestDataIsSuccess(){
-        AccountModel accountModel = new AccountModel("loginName", "payUserId", "payAccountId", new Date());
-        accountModel.setNoPasswordInvest(true);
-        accountModel.setAutoInvest(true);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        BankAccountModel bankAccountModel = new BankAccountModel("loginName", "payUserId", "payAccountId", "111", "111","");
+        bankAccountModel.setAutoInvest(true);
+        bankAccountModel.setAuthorization(true);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(bankAccountModel);
         BaseParamDto baseParamDto = new BaseParamDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData(baseParamDto);
+        BaseResponseDto<NoPasswordInvestResponseDataDto> baseResponseDto = mobileAppNoPasswordInvestService.getNoPasswordInvestData("loginName");
 
         assertTrue(baseResponseDto.getData().isAutoInvest());
         assertTrue(baseResponseDto.getData().isNoPasswordInvest());

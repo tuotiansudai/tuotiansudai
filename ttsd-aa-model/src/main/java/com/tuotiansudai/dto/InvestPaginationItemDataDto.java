@@ -25,7 +25,6 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String channel;
     private Source source;
     private Date investTime;
-    private boolean autoInvest;
     private String investAmount;
     private String couponDetail;
     private String couponActualInterest;
@@ -35,6 +34,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
+    private Boolean isBankPlatform;
     private boolean allowTransfer;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
@@ -53,7 +53,6 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.channel = view.getChannel();
         this.source = view.getSource();
         this.investTime = view.getInvestTime();
-        this.autoInvest = view.isAutoInvest();
         this.investAmount = AmountConverter.convertCentToString(view.getInvestAmount());
         this.extraDetail = view.getExtraRate() == 0 ? "-" : MessageFormat.format("{0,number,#.##}%", view.getExtraRate() * 100);
         this.extraActualInterest = view.getExtraActualInterest() == 0 ? "-" : AmountConverter.convertCentToString(view.getExtraActualInterest());
@@ -61,6 +60,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.province = view.getProvince();
         this.city = view.getCity();
         this.identityNumber = view.getIdentityNumber();
+        this.isBankPlatform=view.getIsBankPlatform();
         this.allowTransfer = view.getTransferStatus() != TransferStatus.NONTRANSFERABLE;
     }
 
@@ -203,14 +203,6 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investTime = investTime;
     }
 
-    public boolean isAutoInvest() {
-        return autoInvest;
-    }
-
-    public void setAutoInvest(boolean autoInvest) {
-        this.autoInvest = autoInvest;
-    }
-
     public String getInvestAmount() {
         return investAmount;
     }
@@ -293,6 +285,18 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public void setCouponActualInterest(String couponActualInterest) {
+        this.couponActualInterest = couponActualInterest;
+    }
+
+    public Boolean getIsBankPlatform() {
+        return isBankPlatform;
+    }
+
+    public void setIsBankPlatform(Boolean isBankPlatform) {
+        this.isBankPlatform = isBankPlatform;
     }
 
     public boolean isAllowTransfer() {

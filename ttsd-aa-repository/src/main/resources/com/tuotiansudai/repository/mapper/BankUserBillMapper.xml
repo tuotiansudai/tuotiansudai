@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankUserBillMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="bankUserBillResultMap" type="BankUserBillModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_name" property="userName"/>
+        <result column="mobile" property="mobile"/>
+        <result column="role" property="role"/>
+        <result column="amount" property="amount"/>
+        <result column="balance" property="balance"/>
+        <result column="bank_order_no" property="bankOrderNo"/>
+        <result column="bank_order_date" property="bankOrderDate"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="business_type" property="businessType"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="BankUserBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_user_bill (login_name, mobile, user_name, business_id, role, amount, balance, bank_order_no, bank_order_date, operation_type, business_type)
+        value(#{loginName}, #{mobile}, #{userName}, #{businessId}, #{role}, #{amount}, #{balance}, #{bankOrderNo}, #{bankOrderDate}, #{operationType}, #{businessType})
+    </insert>
+
+    <select id="countBills" parameterType="map" resultType="long">
+        select count(1) from bank_user_bill
+        <where>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                AND mobile = #{mobile}
+            </if>
+            <if test="businessTypes != null and businessTypes.size != 0">
+                and business_type in
+                <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="operationType != null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUserBills" parameterType="map" resultMap="bankUserBillResultMap">
+        select * from bank_user_bill
+        <where>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                AND mobile = #{mobile}
+            </if>
+            <if test="businessTypes != null and businessTypes.size != 0">
+                and business_type in
+                <foreach item="item" index="index" collection="businessTypes" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="operationType != null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and #{endTime} >= created_time
+            </if>
+            <if test="role != null">
+                and role = #{role}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{offset}, #{pageSize}
+    </select>
+</mapper>

@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.dto.v1_0;
 
-import com.tuotiansudai.enums.UserBillBusinessType;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
 import io.swagger.annotations.ApiModelProperty;
 
-public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
+public class UserBillRecordResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "时间", example = "2016-11-25 16:27:01")
     private String time;
@@ -18,7 +18,7 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
     private String balance;
 
     @ApiModelProperty(value = "冻结金额", example = "0")
-    private String frozenMoney;
+    private String frozenMoney = "0";
 
     @ApiModelProperty(value = "明细", example = "可用余额转入")
     private String detail;
@@ -38,15 +38,14 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
         return typeInfo;
     }
 
-    public void setTypeInfo(UserBillBusinessType typeInfo) {
-        if(UserBillBusinessType.LOAN_SUCCESS.equals(typeInfo)){
+    public void setTypeInfo(BankUserBillBusinessType typeInfo) {
+        if (BankUserBillBusinessType.LOAN_SUCCESS.equals(typeInfo)) {
             this.typeInfo = "give_money_to_borrower";
-        }else if(UserBillBusinessType.CANCEL_INVEST_PAYBACK.equals(typeInfo)){
+        } else if (BankUserBillBusinessType.CANCEL_INVEST_PAYBACK.equals(typeInfo)) {
             this.typeInfo = "cancel_loan";
-        }else{
+        } else {
             this.typeInfo = typeInfo.name().toLowerCase();
         }
-
     }
 
     public String getDetail() {

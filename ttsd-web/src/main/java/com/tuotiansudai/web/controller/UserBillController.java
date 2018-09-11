@@ -2,12 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.RechargeService;
-import com.tuotiansudai.service.UserBillService;
-import com.tuotiansudai.service.WithdrawService;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -34,26 +31,31 @@ public class UserBillController {
     private UserBillService userBillService;
 
     @Autowired
-    private AccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private RechargeService rechargeService;
+    private BankRechargeService bankRechargeService;
 
     @Autowired
-    private WithdrawService withdrawService;
+    private BankWithdrawService bankWithdrawService;
+
+    @Autowired
+    private BankBindCardService bankBindCardService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        String balance = AmountConverter.convertCentToString(accountModel != null ? accountModel.getBalance() : 0);
-        String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
-        String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
+        Role role = LoginUserInfo.getBankRole();
+        String loginName = LoginUserInfo.getLoginName();
+        String balance = role == null ? "0" : AmountConverter.convertCentToString(bankAccountService.findBankAccount(loginName, role).getBalance());
+        String rechargeAmount = role == null ? "0" : AmountConverter.convertCentToString(bankRechargeService.sumSuccessRechargeAmount(loginName, role));
+        String withdrawAmount = role == null ? "0" : AmountConverter.convertCentToString(bankWithdrawService.sumSuccessWithdrawByLoginName(loginName, role));
 
-        ModelAndView modelAndView = new ModelAndView("/user-bill");
-        modelAndView.addObject("balance", balance);
-        modelAndView.addObject("rechargeAmount", rechargeAmount);
-        modelAndView.addObject("withdrawAmount", withdrawAmount);
-        return modelAndView;
+        return new ModelAndView("/user-bill")
+                .addObject("balance", balance)
+                .addObject("rechargeAmount", rechargeAmount)
+                .addObject("withdrawAmount", withdrawAmount)
+                .addObject("hasAccount", role != null && bankAccountService.findBankAccount(loginName, role) != null)
+                .addObject("hasBankCard", role != null && bankBindCardService.findBankCard(loginName, role) != null);
     }
 
     @RequestMapping(value = "/user-bill-list-data", method = RequestMethod.GET)
@@ -61,9 +63,8 @@ public class UserBillController {
     public BaseDto<BasePaginationDataDto> getUserBillData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                           @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                           @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                                          @RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes) {
+                                                          @RequestParam("status") List<BankUserBillBusinessType> bankUserBillBusinessTypes) {
 
-        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, userBillBusinessTypes);
+        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, 10, startTime, endTime, bankUserBillBusinessTypes, LoginUserInfo.getBankRole());
     }
-
 }

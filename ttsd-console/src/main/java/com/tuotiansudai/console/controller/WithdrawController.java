@@ -23,32 +23,35 @@ import java.util.Date;
 @RequestMapping(value = "/finance-manage", method = RequestMethod.GET)
 public class WithdrawController {
 
+    private final ConsoleWithdrawService consoleWithdrawService;
+
     @Autowired
-    private ConsoleWithdrawService consoleWithdrawService;
+    public WithdrawController(ConsoleWithdrawService consoleWithdrawService) {
+        this.consoleWithdrawService = consoleWithdrawService;
+    }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public ModelAndView getWithdrawList(@RequestParam(value = "withdrawId", required = false) String withdrawId,
+    public ModelAndView getWithdrawList(@RequestParam(value = "role", required = false, defaultValue = "INVESTOR") Role role,
+                                        @RequestParam(value = "withdrawId", required = false) Long withdrawId,
                                         @RequestParam(value = "mobile", required = false) String mobile,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
                                         @RequestParam(value = "source", required = false) Source source,
-                                        @RequestParam(value = "role", defaultValue = "", required = false) String role,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
-        int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/withdraw");
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(withdrawId, mobile, status, source, index, pageSize, startTime, endTime, role);
+        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = consoleWithdrawService.findWithdrawPagination(role, withdrawId, mobile, status, source, index, startTime, endTime);
 
-        long sumAmount = consoleWithdrawService.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime, role);
+        long sumAmount = consoleWithdrawService.findSumWithdrawAmount(role, withdrawId, mobile, status, source, startTime, endTime);
 
-        long sumFee = consoleWithdrawService.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
+        long sumFee = consoleWithdrawService.findSumWithdrawFee(role, withdrawId, mobile, status, source, startTime, endTime);
 
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("sumAmount", sumAmount);
         modelAndView.addObject("sumFee", sumFee);
         modelAndView.addObject("withdrawStatusList", Lists.newArrayList(WithdrawStatus.values()));
         modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("pageSize", 10);
         modelAndView.addObject("withdrawId", withdrawId);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("startTime", startTime);

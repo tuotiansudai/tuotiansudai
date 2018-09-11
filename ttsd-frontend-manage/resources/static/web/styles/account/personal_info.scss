@@ -69,7 +69,7 @@
     .info-title {
       font-weight: bold;
       display: inline-block;
-      width: 70px;
+      width: 95px;
       text-align: right;
       margin-right: 20px;
       color: #000;
@@ -122,5 +122,75 @@
     color:#ff0d2a;
     margin-top:220px;
     border-radius:50px;
+  }
+}
+.change-role-btn {
+  padding-left: 6px!important;
+}
+.fa-user-circle:before {
+  padding-left: 4px;
+  padding-right: 0;
+  vertical-align: middle;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  content: ' ';
+  background:url('../../images/myaccount/role_icon.png') no-repeat center;
+}
+
+.safety-notification {
+  position: relative;
+  margin-right: 20px;
+  .tip-title {
+    background: #ff7200;
+    color: #fff;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline-block;
+    height: 33px;
+    line-height: 33px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  i {
+    position: absolute;
+    color: #ff752a;
+    top: 12px;
+    right: -20px;
+    cursor: pointer;
+    line-height: 1;
+  }
+}
+.extra-rate-popup {
+  font-size: 12px;
+  background: #fff;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  border: 1px solid #ffd4b2;
+  width: 400px;
+  text-align: center;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    color: #ffd4b2;
+    background: #fff;
+    width: 12px;
+    height: 7px;
+    background: url("../../images/sign/chevron-up.png") no-repeat;
+  }
+}
+.notice-tips {
+  padding: 10px;
+  text-align: left;
+  position: absolute;
+  right: -28px;
+  top: 40px;
+  strong {
+    color: #ff7200;
+    font-weight: normal;
   }
 }

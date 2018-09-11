@@ -2,21 +2,20 @@ package com.tuotiansudai.cfca.test;
 
 import cfca.trustsign.common.vo.cs.HeadVO;
 import cfca.trustsign.common.vo.request.tx3.Tx3211ReqVO;
-import com.tuotiansudai.cfca.connector.AnxinClientTest;
+import com.tuotiansudai.cfca.connector.AnxinClient;
 import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
 
 public class Test3211 {
     public static void main(String[] args) throws Exception {
-        AnxinClientTest anxinClient = new AnxinClientTest();
-        anxinClient.initSSL();
+        AnxinClient anxinClient = AnxinClient.getClient();
 
         Tx3211ReqVO tx3211ReqVO = new Tx3211ReqVO();
         HeadVO head = new HeadVO();
         head.setTxTime("20160102235959");
 
         tx3211ReqVO.setHead(head);
-        tx3211ReqVO.setBatchNo("a1d58b4bd234458fb7c2c1da1f0cee8f");
+        tx3211ReqVO.setBatchNo("B141");
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3211ReqVO);

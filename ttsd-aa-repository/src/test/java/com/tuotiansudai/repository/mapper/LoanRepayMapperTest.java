@@ -192,7 +192,7 @@ public class LoanRepayMapperTest {
 
         LoanRepayModel enabledRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(fakeLoanModel.getId());
 
-        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel2.getId()));
+        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel1.getId()));
     }
 
     @Test
@@ -209,7 +209,7 @@ public class LoanRepayMapperTest {
 
         LoanRepayModel enabledRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(fakeLoanModel.getId());
 
-        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel2.getId()));
+        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel1.getId()));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class LoanRepayMapperTest {
 
         LoanRepayModel enabledRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(fakeLoanModel.getId());
 
-        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel2.getId()));
+        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel1.getId()));
     }
 
     @Test

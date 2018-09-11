@@ -1,5 +1,7 @@
 package com.tuotiansudai.mq.consumer.point;
 
+import com.google.gson.Gson;
+import com.tuotiansudai.fudian.message.BankBindCardMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
 import com.tuotiansudai.point.repository.model.PointTask;
@@ -8,29 +10,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+
+import java.text.MessageFormat;
 
 @Component
 public class BindBankCardCompletePointTaskConsumer implements MessageConsumer {
+
     private static Logger logger = LoggerFactory.getLogger(BindBankCardCompletePointTaskConsumer.class);
 
+    private final PointTaskService pointTaskService;
+
     @Autowired
-    private PointTaskService pointTaskService;
+    public BindBankCardCompletePointTaskConsumer(PointTaskService pointTaskService) {
+        this.pointTaskService = pointTaskService;
+    }
 
     @Override
     public MessageQueue queue() {
         return MessageQueue.BindBankCard_CompletePointTask;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: '{}'.", this.queue(), message);
-        if (!StringUtils.isEmpty(message)) {
-            logger.info("[MQ] ready to consume message: complete bind-bank-card task.");
-            pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, message);
-            logger.info("[MQ] consume message success.");
+
+        try {
+            BankBindCardMessage bankBindCardMessage = new Gson().fromJson(message, BankBindCardMessage.class);
+            this.pointTaskService.completeNewbieTask(PointTask.BIND_BANK_CARD, bankBindCardMessage.getLoginName());
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[MQ] consume message error, message: {0}", message), e);
         }
     }
 }

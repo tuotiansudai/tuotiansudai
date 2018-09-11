@@ -207,7 +207,7 @@ public class CreditLoanActivateAccountService {
                         new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(orderId).getLoginName(),
                                 Long.parseLong(orderId),
                                 ACTIVATE_ACCOUNT_MONEY,
-                                UserBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, null, null));
+                                UserBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                         new CreditLoanBillModel(Long.parseLong(orderId), ACTIVATE_ACCOUNT_MONEY, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_ACTIVATE_ACCOUNT, orderId));

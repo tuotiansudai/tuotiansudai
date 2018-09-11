@@ -44,12 +44,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private static final long EXPERIENCE_AMOUNT = 688800L;
 
-    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
-
-    private final int seconds = 60 * 24 * 60 * 60;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserModel register(RegisterRequestDto registerDto) {
@@ -63,11 +57,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
 
-        this.referrerSuperScholarActivityRegister(userModel.getLoginName(), registerDto.getActivityReferrer());
-
         this.sendMessage(userModel);
-
-        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_REGISTER_SUCCESS_TEMPLATE, Lists.newArrayList(userModel.getMobile())));
 
         return userModel;
     }
@@ -79,38 +69,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         mqWrapperClient.sendMessage(MessageQueue.UserRegistered_CompletePointTask, userModel.getLoginName());
 
-        //Title:5888元体验金已存入您的账户，请查收！
-        //Content:哇，您终于来啦！初次见面，岂能无礼？5888元体验金双手奉上，【立即体验】再拿588元红包和3%加息券！
-        mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.REGISTER_USER_SUCCESS,
-                Lists.newArrayList(userModel.getLoginName()),
-                MessageEventType.REGISTER_USER_SUCCESS.getTitleTemplate(),
-                MessageEventType.REGISTER_USER_SUCCESS.getContentTemplate(),
-                null));
 
         mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
 
-        if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
-            //Title:您推荐的好友 {0} 已成功注册
-            //AppTitle:您推荐的好友 {0} 已成功注册
-            //Content:尊敬的用户，您推荐的好友 {0} 已成功注册，【邀请好友投资】您还能再拿1%现金奖励哦！
-            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_SUCCESS,
-                    Lists.newArrayList(userModel.getReferrer()),
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getContentTemplate(), userModel.getMobile()),
-                    null));
-
-            mqWrapperClient.sendMessage(MessageQueue.PushMessage, new PushMessage(Lists.newArrayList(userModel.getReferrer()),
-                    PushSource.ALL,
-                    PushType.RECOMMEND_SUCCESS,
-                    MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
-                    AppUrl.MESSAGE_CENTER_LIST));
-        }
-    }
-
-    private void referrerSuperScholarActivityRegister(String loginName, String activityReferrer) {
-        if (!Strings.isNullOrEmpty(activityReferrer)) {
-            String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
-            redisWrapperClient.setex(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName), seconds, activityReferrer);
-        }
     }
 }

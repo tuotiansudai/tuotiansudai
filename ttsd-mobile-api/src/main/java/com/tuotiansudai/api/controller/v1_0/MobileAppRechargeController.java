@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller.v1_0;
 
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeService;
+import com.tuotiansudai.spring.LoginUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,8 @@ public class MobileAppRechargeController extends MobileAppBaseController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     @ApiOperation("快捷充值")
-    public BaseResponseDto<BankCardResponseDto> recharge(@Valid @RequestBody BankCardRequestDto bankCardRequestDto) {
-        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
-        bankCardRequestDto.setUserId(getLoginName());
-        bankCardRequestDto.setIsOpenFastPayment(true);
-        return mobileAppRechargeService.recharge(bankCardRequestDto);
+    public BaseResponseDto<BankAsynResponseDto> recharge(@Valid @RequestBody BankRechargeRequestDto bankRechargeRequestDto) {
+        return mobileAppRechargeService.recharge(LoginUserInfo.getLoginName(), bankRechargeRequestDto);
     }
 
     @RequestMapping(value = "/get/bank-limit", method = RequestMethod.POST)

@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
@@ -13,6 +14,7 @@ import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,11 +27,17 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     private static final int CAPTCHA_EXPIRED_TIME = 10;
 
+
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Value("${common.environment}")
+    private Environment environment;
+    @Value("${default.mobile.captcha}")
+    private String defaultMobileCaptha;
 
     @Override
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, boolean isVoice, String requestIP) {
@@ -60,6 +68,9 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     public boolean verifyMobileCaptcha(String mobile, String captcha, SmsCaptchaType smsCaptchaType) {
+        if(!Environment.isProduction(environment) && defaultMobileCaptha!=null && defaultMobileCaptha.equals(captcha)){
+            return true;
+        }
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, smsCaptchaType);
         Date now = new Date();
         return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);

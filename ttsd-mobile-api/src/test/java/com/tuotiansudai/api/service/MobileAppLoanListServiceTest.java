@@ -5,8 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -16,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -47,7 +45,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
     @Mock
     private PageValidUtils pageValidUtils;
     @Mock
-    private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+    private UserMembershipService userMembershipService;
 
     @Before
     public void before() {
@@ -73,7 +71,6 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.09);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
@@ -81,6 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(Lists.newArrayList(userCouponModel));
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.09);
 
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -110,12 +108,12 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         when(loanMapper.findLoanListMobileApp(any(ProductType.class), any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountMobileApp(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.09);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
         when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
         when(userCouponMapper.findUsedExperienceByLoginName(anyString())).thenReturn(null);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0D);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testLoan");

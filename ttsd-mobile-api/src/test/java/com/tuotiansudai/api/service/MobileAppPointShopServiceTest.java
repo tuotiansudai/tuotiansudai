@@ -10,7 +10,7 @@ import com.tuotiansudai.point.repository.mapper.ProductOrderMapper;
 import com.tuotiansudai.point.repository.mapper.UserAddressMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointMapper;
 import com.tuotiansudai.point.repository.model.*;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -44,7 +44,7 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
     private ProductMapper productMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private UserAddressMapper userAddressMapper;
@@ -121,28 +121,6 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         assertEquals(productOrderResponseDtoList.get(0).getProductNum(), String.valueOf(productOrderModel.getNum()));
     }
 
-    @Ignore
-    public void shouldFindPointHomeIsOk() {
-        String loginName = "findPointHomeUser";
-        UserModel userModel = getUserModelTest(loginName);
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
-
-        createUserPoint(loginName, 1000L);
-        ProductListRequestDto baseParamDto = new ProductListRequestDto();
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId(userModel.getLoginName());
-        baseParam.setPhoneNum("13900000000");
-        baseParamDto.setBaseParam(baseParam);
-        getProductModel(GoodsType.COUPON, 100, 0L);
-        getProductModel(GoodsType.PHYSICAL, 100, 0L);
-        getProductModel(GoodsType.VIRTUAL, 100, 0L);
-        BaseResponseDto<ProductListResponseDto> pointHome = mobileAppPointShopService.findPointHome(baseParamDto);
-        assertEquals("1000", pointHome.getData().getMyPoints());
-        assertTrue(pointHome.getData().getVirtuals().size() >= 2);
-        assertTrue(pointHome.getData().getPhysicals().size() >= 1);
-    }
-
     @Test
     public void shouldFindProductDetailIsOk() {
         String loginName = "findPointHomeUser1";
@@ -209,8 +187,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
+        bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 10L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(ReturnMessage.INSUFFICIENT_POINTS_BALANCE.getCode(), baseResponseDto.getCode());
@@ -230,8 +208,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
+        bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 100000L);
         BaseResponseDto baseResponseDto = mobileAppPointShopService.productExchange(productDetailRequestDto);
         assertEquals(baseResponseDto.getCode(), ReturnMessage.SUCCESS.getCode());
@@ -251,8 +229,8 @@ public class MobileAppPointShopServiceTest extends ServiceTestBase {
         productDetailRequestDto.setBaseParam(baseParam);
         productDetailRequestDto.setProductId(String.valueOf(productModel.getId()));
         productDetailRequestDto.setNum(2);
-        AccountModel accountModel = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(accountModel);
+        BankAccountModel accountModel = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
+        bankAccountMapper.createInvestor(accountModel);
         createUserPoint(loginName, 1000L);
         UserAddressModel userAddressModel = new UserAddressModel(loginName, loginName, userModel.getMobile(), "", loginName);
         userAddressMapper.create(userAddressModel);

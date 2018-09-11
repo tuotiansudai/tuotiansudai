@@ -1,0 +1,116 @@
+$fontGray:#808080;
+$fontGray52:#525252;
+$redf63:#FF635A;
+$fontGraya2:#a2a2a2;
+$fontGraya83:#838383;
+$fontSeconed:#FF473C;
+p {
+  margin: 0;
+}
+.info-container {
+  padding-top: 100px;
+  .status-container {
+    padding: 30px 0;
+    background: #fff;
+    .icon-status {
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+      &.icon-success {
+        background: url('../images/icon-success.png') center center no-repeat;
+        background-size: 100%;
+      }
+      &.icon-failure {
+        background: url('../images/icon_failure.png') center center no-repeat;
+        background-size: 100%;
+      }
+
+    }
+    .desc {
+      text-align: center;
+      font-size: 15px;
+      color: $fontGray;
+      margin-top: 17px;
+    }
+    .reason-error {
+      text-align: center;
+      font-size: 13px;
+      color: $fontGraya83;
+
+    }
+
+  }
+  .other-info-list {
+    background: #fff;
+    margin-top: 1px;
+    padding: 0 12px;
+    li {
+      height: 45px;
+      line-height: 45px;
+      font-size: 13px;
+      .title {
+        color: $fontGray;
+      }
+      .content {
+        color: $fontGray52;
+      }
+    }
+  }
+}
+.btn-container {
+  text-align: center;
+  width: 300px;
+  height: 45px;
+  margin: 0 auto;
+  margin-top: 60px;
+  a {
+    display: block;
+    width: 300px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0;
+    &.btn-confirm {
+      display: block;
+      width: 300px;
+      height: 45px;
+      background: $redf63;
+      border-radius: 22.5px;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      line-height: 45px!important;
+      padding: 0;
+    }
+  }
+
+}
+.contact {
+  p {
+    font-size: 12px;
+    color: $fontGraya2;
+    text-align: center;
+  }
+  margin-top: 100px;
+  padding-bottom: 25px;
+}
+
+//处理中页面
+.gif-container {
+  width: 200px;
+  height: 155px;
+  margin: 0 auto;
+  margin-top: 200px;
+  background: url("../images/loading.gif");
+  background-size:contain;
+
+}
+//读秒页面
+.progress-container {
+  color: $fontGraya2;
+  font-size: 14px;
+  text-align: center;
+  span {
+    color: $fontSeconed;
+  }
+}

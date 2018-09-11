@@ -4,9 +4,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanerLoanRepayDataDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -23,21 +21,19 @@ import java.util.Date;
 @RequestMapping(path = "/loaner")
 public class LoanerController {
 
-    @Autowired
-    private LoanService loanService;
+    private final LoanService loanService;
+
+    private final RepayService repayService;
 
     @Autowired
-    private RepayService repayService;
-
-    @Autowired
-    private AccountService accountService;
+    public LoanerController(LoanService loanService, RepayService repayService) {
+        this.loanService = loanService;
+        this.repayService = repayService;
+    }
 
     @RequestMapping(path = "loan-list", method = RequestMethod.GET)
     public ModelAndView loanList() {
-        ModelAndView modelAndView = new ModelAndView("/loaner-loan-list");
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        modelAndView.addObject("autoRepay",accountModel.isAutoRepay());
-        return modelAndView;
+        return new ModelAndView("/loaner-loan-list");
     }
 
     @RequestMapping(path = "/loan-list-data", method = RequestMethod.GET)
@@ -53,7 +49,6 @@ public class LoanerController {
     @RequestMapping(path = "/loan/{loanId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<LoanerLoanRepayDataDto> getLoanRepayData(@PathVariable long loanId) {
-        repayService.resetPayExpiredLoanRepay(loanId);
         return repayService.getLoanRepay(LoginUserInfo.getLoginName(), loanId);
     }
 }

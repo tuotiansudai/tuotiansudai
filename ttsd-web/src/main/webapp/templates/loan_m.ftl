@@ -135,7 +135,7 @@
         </li>
         <li>
             <label>借款协议</label>
-            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）</a><em class="pdf"><i
+            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">借款协议（样本）</a><em class="pdf"><i
                     class="iconRight" ></i></em></span>
 
         </li>
@@ -150,6 +150,9 @@
 
     <#if loan.loanStatus=='RAISING'>
         <button id="toInvest" class="to-invest-project" type="button">立即投资</button>
+        <form name="isPaySuccess" id="isPaySuccess" method="post" style="display: none">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
     <#elseif loan.loanStatus == "PREHEAT">
         <button class="to-invest-project" type="button" disabled>预热中</button>
     <#else>
@@ -159,8 +162,4 @@
 </div>
     <#include 'project-detail_m.ftl'>
     <#include 'buy-loan_m.ftl'>
-
-    <#include 'select-coupon_m.ftl'>
-
-
 </@global.main>

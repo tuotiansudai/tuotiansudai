@@ -46,7 +46,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private OperationDataMapper operationDataMapper;
 
     @Autowired
-    private UserBillMapper userBillMapper;
+    private BankUserBillMapper bankUserBillMapper;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -125,7 +125,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum()));
         operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
         operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCount()));
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findIncompleteLoanRepay();
         long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
         long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
         operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));
@@ -394,7 +394,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         if (redisWrapperClient.exists(REDIS_USER_SUM_INTEREST)) {
             userSumInterest = Long.parseLong(redisWrapperClient.get(REDIS_USER_SUM_INTEREST));
         } else {
-            userSumInterest = loanRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
+            userSumInterest = loanRepayMapper.findSumActualInterest(endDate);
             redisWrapperClient.setex(REDIS_USER_SUM_INTEREST, timeout, Long.toString(userSumInterest));
         }
         return userSumInterest;

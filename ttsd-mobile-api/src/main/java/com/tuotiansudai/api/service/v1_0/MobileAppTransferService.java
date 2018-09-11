@@ -7,8 +7,6 @@ public interface MobileAppTransferService {
 
     BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto);
 
-    BaseResponseDto<InvestResponseDataDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
-
-    BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
+    BaseResponseDto<BankAsynResponseDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto);
 
 }

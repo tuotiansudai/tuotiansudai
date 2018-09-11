@@ -240,7 +240,7 @@ public class CreditLoanRepayService {
                         new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, userMapper.findByMobile(mobile).getLoginName(),
                                 Long.parseLong(orderId),
                                 amount,
-                                UserBillBusinessType.CREDIT_LOAN_REPAY, null, null));
+                                UserBillBusinessType.CREDIT_LOAN_REPAY));
 
                 mqWrapperClient.sendMessage(MessageQueue.CreditLoanBill,
                         new CreditLoanBillModel(Long.parseLong(orderId), amount, CreditLoanBillOperationType.IN, CreditLoanBillBusinessType.CREDIT_LOAN_REPAY, mobile));

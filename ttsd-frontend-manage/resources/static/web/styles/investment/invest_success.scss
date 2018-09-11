@@ -85,16 +85,21 @@
 .callBack_container {
   position: relative;
   width: 100%;
-  height: 430px;
   overflow: hidden;
+  background: #fff;
+  padding-bottom: 30px;
+  min-height: 500px;
   &.change_card_calBack {
     height: 685px;
   }
   .success_tip_icon {
-    margin: 98px auto 27px auto;
+    margin: 80px auto 27px auto;
     width: 60px;
     height: 60px;
     background: url("../../images/icons/success-tip.png") no-repeat center center;
+    &.failure {
+      background: url("../../images/icons/failure_icon.png") no-repeat center center;
+    }
     &.success_tip_icon_changeCard {
       margin: 70px auto 27px auto;
     }
@@ -129,20 +134,28 @@
     font-size: 0;
     text-align: center;
     overflow: hidden;
+    .btn-wrap {
+      display: block;
+      width: 360px;
+      margin: 0 auto;
+    }
+
     .see_my_account, .my_personal-info{
+      padding: 0;
       display: inline-block;
-      margin-right: 20px;
       width: 158px;
       height: 34px;
       line-height: 34px;
       text-align: center;
-      border: 1px solid #ff752a;
       border-radius: 3px;
       font-size: 16px;
-      color: #ff752a;
+      color: #fff;
       cursor: pointer;
+      background: #ff752a;
     }
-    .see_other_project, .go_to_recharge, .go_to_invest {
+    .see_other_project, .go_to_recharge, .go_to_invest, .retry,.to-bank-card,.toRecharge {
+      border: none;
+      padding: 0;
       display: inline-block;
       width: 160px;
       height: 36px;
@@ -177,3 +190,103 @@
     display:block;
   }
 }
+.head-banner {
+  height: 173px;
+  background:url("../../images/myaccount/account_banner.png") no-repeat center center;
+  background-size: 100%;
+}
+.progress-wrap {
+  width: 266px;
+  margin: 0 auto;
+  margin-top: 27px;
+  text-align: center;
+  dl {
+    &.arrow {
+      display: inline-block;
+      width: 29px;
+      height: 28px;
+      margin-top: 4px;
+      background: url("../../images/myaccount/icon_arror_right.png") no-repeat;
+      background-size: 100%;
+    }
+    dt {
+      width: 60px;
+      height: 35px;
+      text-align: center;
+      span {
+        display: inline-block;
+        &.account {
+
+          width: 41px;
+          height: 35px;
+          background: url("../../images/myaccount/icon_account.png") no-repeat;
+          background-size: 100%;
+        }
+        &.bind-card {
+          width: 42px;
+          height: 27px;
+          background: url("../../images/myaccount/icon_nobind_card.png") no-repeat;
+          background-size: 100%;
+          &.active {
+            background: url("../../images/myaccount/bind_card_active.png") no-repeat;
+            background-size: 100%;
+          }
+        }
+      }
+    }
+    dd {
+      font-size: 16px;
+      color: #ccc;
+      &.active {
+        color: #ff752a;
+      }
+    }
+  }
+}
+.loading-wrap {
+  padding-bottom: 100px;
+  .loading {
+    width: 84px;
+    height:66px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 200px;
+    background: url("../../images/icons/loading_text.png") no-repeat left center;
+    cursor: default;
+    text-indent: -9999px;
+  }
+  .loading-handling {
+    position: relative;
+    width: 84px;
+    height:66px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 200px;
+    background: url("../../images/icons/handling.png") no-repeat left center;
+    cursor: default;
+    text-indent: -9999px;
+    span {
+      position: absolute;
+      right: 12px;
+      bottom: 4px;
+      color: #ef8e04;
+      font-size: 16px;
+      width:20px;
+      height:20px;
+      text-indent: 0;
+      text-align: center;
+      line-height: 20px;
+    }
+  }
+  p {
+    text-align: center;
+    font-size: 16px;
+    color: #999;
+  }
+}
+.phone-tip {
+  margin-top: 80px;
+  text-align: center;
+  color: #797979;
+}
+

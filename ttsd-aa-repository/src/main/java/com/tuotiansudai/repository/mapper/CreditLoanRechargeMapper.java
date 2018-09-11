@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.model.CreditLoanRechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -26,7 +26,7 @@ public class LoanApplicationMapperTest {
     FakeUserHelper userMapper;
 
     @Autowired
-    AccountMapper accountMapper;
+    BankAccountMapper bankAccountMapper;
 
     @Autowired
     LoanApplicationMapper loanApplicationMapper;
@@ -36,7 +36,7 @@ public class LoanApplicationMapperTest {
     private UserModel createUserModel(String loginName) {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
-        userModel.setMobile(String.valueOf(random.nextLong()));
+        userModel.setMobile(String.valueOf(random.nextLong()).substring(0, 11));
         userModel.setPassword("password");
         userModel.setSalt("salt");
         userModel.setRegisterTime(new Date());
@@ -45,9 +45,9 @@ public class LoanApplicationMapperTest {
         return userModel;
     }
 
-    private AccountModel createAccountModel(UserModel userModel) {
-        AccountModel accountModel = new AccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), new Date());
-        accountMapper.create(accountModel);
+    private BankAccountModel createAccountModel(UserModel userModel) {
+        BankAccountModel accountModel = new BankAccountModel(userModel.getLoginName(), String.valueOf(random.nextLong()).substring(0, 10), String.valueOf(random.nextLong()).substring(0, 10), "111", "111","");
+        bankAccountMapper.createInvestor(accountModel);
         return accountModel;
     }
 

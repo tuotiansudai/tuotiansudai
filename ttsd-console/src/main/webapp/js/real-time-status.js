@@ -1,7 +1,7 @@
 require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], function ($) {
 
-    $('#businessType').selectpicker();
-    $('#merDate').datetimepicker({
+    $('.selectpicker').selectpicker();
+    $('#orderDate').datetimepicker({
         format: 'YYYY-MM-DD',
         maxDate: 'now',
         ignoreReadonly: true
@@ -9,24 +9,22 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
 
     $('.btnSearch').click(function(){
         var type = $('select[name="type"]').val();
-
-        var queryParam = "type=" + type;
-
+        var role=$("input[name='role']:checked").val();
         if (type === 'user') {
-            queryParam += '&' + "mobile=" +  $('input[name="login-name"]').val();
+            location.href = "/finance-manage/real-time-status/user?loginNameOrMobile=" + $('input[name="loginNameOrMobile"]').val()+"&role="+role;
         }
 
         if (type === 'loan') {
-            queryParam += '&' + "loanId=" +  $('input[name="loan-id"]').val();
+            location.href = "/finance-manage/real-time-status/loan?loanId=" + $('input[name="loanId"]').val()+"&role="+role;
         }
 
-        if (type === 'transfer') {
-            queryParam += '&' + "orderId=" +  $('input[name="order-id"]').val();
-            queryParam += '&' + "merDate=" +  $('input[name="mer-date"]').val();
-            queryParam += '&' + "businessType=" +  $('select[name="business-type"]').val();
+        if (type === 'trade') {
+            location.href = "/finance-manage/real-time-status/trade?orderNo={orderNo}&orderDate={orderDate}&queryTradeType={queryTradeType}&role={role}"
+                .replace("{orderNo}", $('input[name="orderNo"]').val())
+                .replace("{orderDate}", $('input[name="orderDate"]').val())
+                .replace("{queryTradeType}", $('select[name="queryTradeType"]').val())
+                .replace("{role}", role);
         }
-
-        location.href = "?" + queryParam;
         return false;
     });
 
@@ -46,23 +44,9 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
             $("div.loan").show();
         }
 
-        if (selected === 'transfer') {
+        if (selected === 'trade') {
             $("div.transfer").show();
-        }
-    });
-
-    $('#loginName').autocomplete({
-        minLength: 0,
-        source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user-manage/mobile/' + query.term + '/search', function (respData) {
-                return process(respData);
-            });
-        },
-        change: function (event, ui) {
-            if (!ui.item) {
-                this.value = '';
-            }
+            $("#queryTradeType").show();
         }
     });
 });

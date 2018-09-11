@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;

@@ -172,6 +172,16 @@ body {
         font-size: 1rem;
         color: #525252;
       }
+      .icon-success {
+        display: block;
+        margin: 30px auto 15px auto;
+        background: url("../images/investment/suc_icon.png");
+        background-size: contain;
+      }
+      .suc-text {
+        font-size: 1rem;
+        color: #525252;
+      }
     }
     .success-img {
       flex: 2.1;

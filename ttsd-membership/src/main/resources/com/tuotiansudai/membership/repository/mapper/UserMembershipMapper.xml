@@ -72,7 +72,7 @@
         user_membership.login_name,
         user.user_name,
         user.mobile,
-        account.membership_point,
+        bank_account.membership_point,
         membership.level,
         user_membership.type,
         user.register_time,
@@ -81,10 +81,11 @@
         FROM `aa`.`user_membership`
         JOIN `aa`.`membership`
         JOIN `aa`.`user`
-        JOIN `aa`.`account` ON `user_membership`.`membership_id` = `membership`.`id`
+        JOIN `aa`.`bank_account` ON `user_membership`.`membership_id` = `membership`.`id`
         AND `user_membership`.`login_name` = `user`.`login_name`
-        AND `user_membership`.`login_name` = `account`.`login_name`
+        AND `user_membership`.`login_name` = `bank_account`.`login_name`
         AND `user_membership`.`expired_time` > now()
+        AND `aa`.`bank_account`.role_type = 'INVESTOR'
         <where>
             <if test="loginName != null and loginName != ''">
                 user_membership.login_name = #{loginName}
@@ -121,7 +122,7 @@
         user_membership.login_name,
         user.user_name,
         user.mobile,
-        account.membership_point,
+        bank_account.membership_point,
         membership.level,
         user_membership.type,
         user.register_time,
@@ -130,10 +131,11 @@
         FROM `aa`.`user_membership`
         JOIN `aa`.`membership`
         JOIN `aa`.`user`
-        JOIN `aa`.`account` ON `user_membership`.`membership_id` = `membership`.`id`
+        JOIN `aa`.`bank_account` ON `user_membership`.`membership_id` = `membership`.`id`
         AND `user_membership`.`login_name` = `user`.`login_name`
-        AND `user_membership`.`login_name` = `account`.`login_name`
+        AND `user_membership`.`login_name` = `bank_account`.`login_name`
         AND `user_membership`.`expired_time` > now()
+        AND `aa`.`bank_account`.role_type = 'INVESTOR'
         <where>
             <if test="loginName != null and loginName != ''">
                 user_membership.login_name = #{loginName}

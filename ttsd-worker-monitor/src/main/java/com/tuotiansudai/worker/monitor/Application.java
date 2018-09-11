@@ -1,14 +1,13 @@
 package com.tuotiansudai.worker.monitor;
 
 import com.tuotiansudai.etcd.ETCDPropertySourcesPlaceholderConfigurer;
-import com.tuotiansudai.mq.config.MQConsumerConfig;
-import com.tuotiansudai.mq.config.MQProducerConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import com.tuotiansudai.mq.config.MQProducerConfig;
 
 
 @SpringBootApplication(exclude = {FreeMarkerAutoConfiguration.class, DataSourceAutoConfiguration.class})

@@ -123,7 +123,7 @@ public class ExperienceController {
                                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, null, source, null,
+        InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(null,loanId, investorMobile, null, source, null,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 null, null, ProductType.EXPERIENCE, index, pageSize);

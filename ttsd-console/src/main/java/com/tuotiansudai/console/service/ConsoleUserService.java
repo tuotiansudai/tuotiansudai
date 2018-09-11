@@ -5,8 +5,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -14,20 +14,19 @@ import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
 import com.tuotiansudai.console.repository.model.RemainUserView;
 import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.request.UpdateUserInfoRequestDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.fudian.message.BankBaseMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.PaginationUtil;
@@ -41,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,15 +57,6 @@ public class ConsoleUserService {
     private UserRestClient userRestClient;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private BindBankCardService bindBankCardService;
-
-    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
@@ -79,6 +70,17 @@ public class ConsoleUserService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private UserBankCardMapper userBankCardMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    private final BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     @Transactional(rollbackFor = Exception.class)
     public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
@@ -114,17 +116,13 @@ public class ConsoleUserService {
         updateDto.setLastModifiedUser(operatorLoginName);
         userRestClient.update(updateDto);
 
-        if (!mobile.equals(beforeUpdateUserMobile) && accountMapper.findByLoginName(loginName) != null) {
-            RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
-                    mobile,
-                    userModel.getUserName(),
-                    userModel.getIdentityNumber());
-            BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
-            if (!baseDto.getData().getStatus()) {
-                throw new EditUserException(baseDto.getData().getMessage());
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (!mobile.equals(beforeUpdateUserMobile) && accountModel != null) {
+            BankBaseMessage message = bankWrapperClient.umpUpdateMobile(accountModel.getId(), userModel.getLoginName(), mobile, userModel.getUmpUserName(), userModel.getUmpIdentityNumber());
+            if (!message.isStatus()){
+                throw new EditUserException(message.getMessage() == null ? "修改联动优势手机号失败" : message.getMessage());
             }
         }
-
         // update referrer relationship
         mqWrapperClient.sendMessage(MessageQueue.GenerateReferrerRelation, userModel.getLoginName());
     }
@@ -139,15 +137,13 @@ public class ConsoleUserService {
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);
 
         EditUserDto editUserDto = new EditUserDto(userModel, roles, autoInvestPlanModel != null && autoInvestPlanModel.isEnabled());
-
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
-        if (bankCard != null) {
-            editUserDto.setBankCardNumber(bankCard.getCardNumber());
-        }
-
         if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.SD_STAFF) != null) {
             editUserDto.setReferrerStaff(true);
         }
+        Map<Role,String> bankCardMap=getUserBankCardNumberByLoginName(loginName);
+        editUserDto.setBankCardNumberUMP(bankCardMap.get(Role.UMP_INVESTOR));
+        editUserDto.setBankCardNumberLoaner(bankCardMap.get(Role.LOANER));
+        editUserDto.setBankCardNumberInvestor(bankCardMap.get(Role.INVESTOR));
         return editUserDto;
     }
 
@@ -187,11 +183,16 @@ public class ConsoleUserService {
         return userMapperConsole.searchAllUsers(loginName, referrerMobile, mobile, identityNumber);
     }
 
-    public List<UserItemDataDto> findUsersAccountBalance(String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
+    public List<UserItemDataDto> findUsersAccountBalance(Role role, String mobile, String balanceMin, String balanceMax, Integer index, Integer pageSize) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        List<UserView> userViews = userMapperConsole.findUsersAccountBalance(mobile, balance.get(0), balance.get(1),
-                index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
-
+        List<UserView> userViews = null;
+        if (role == Role.UMP_INVESTOR) {
+            userViews = userMapperConsole.findUsersAccountBalanceUMP(mobile, balance.get(0), balance.get(1),
+                    index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
+        } else {
+            userViews = userMapperConsole.findUsersAccountBalance(role, mobile, balance.get(0), balance.get(1),
+                    index != null && pageSize != null ? (index - 1) * pageSize : null, pageSize);
+        }
         List<UserItemDataDto> userItemDataDtoList = Lists.newArrayList();
         for (UserView userView : userViews) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userView);
@@ -200,14 +201,20 @@ public class ConsoleUserService {
         return userItemDataDtoList;
     }
 
-    public long findUsersAccountBalanceCount(String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceCount(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapperConsole.findUsersAccountBalanceCount(mobile, balance.get(0), balance.get(1));
+        if (role == Role.UMP_INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceCountUMP(mobile, balance.get(0), balance.get(1));
+        }
+        return userMapperConsole.findUsersAccountBalanceCount(role, mobile, balance.get(0), balance.get(1));
     }
 
-    public long findUsersAccountBalanceSum(String mobile, String balanceMin, String balanceMax) {
+    public long findUsersAccountBalanceSum(Role role, String mobile, String balanceMin, String balanceMax) {
         List<Long> balance = parseBalanceInt(balanceMin, balanceMax);
-        return userMapperConsole.findUsersAccountBalanceSum(mobile, balance.get(0), balance.get(1));
+        if (role == Role.UMP_INVESTOR) {
+            return userMapperConsole.findUsersAccountBalanceSumUMP(mobile, balance.get(0), balance.get(1));
+        }
+        return userMapperConsole.findUsersAccountBalanceSum(role, mobile, balance.get(0), balance.get(1));
     }
 
 
@@ -479,4 +486,17 @@ public class ConsoleUserService {
         }
         return false;
     }
+
+    public Map<Role, String> getUserBankCardNumberByLoginName(String loginName) {
+        Map<Role, String> bankCardMap = new HashMap<>();
+        List<UserBankCardModel> userBankCardModelList = userBankCardMapper.findBankCardNumberByloginName(loginName);
+        String bankCardNumberInvestor = userBankCardModelList.stream().filter(userItem -> Role.INVESTOR.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        String bankCardNumberLoaner = userBankCardModelList.stream().filter(userItem -> Role.LOANER.equals(userItem.getRoleType())).findAny().map(UserBankCardModel::getCardNumber).orElse(null);
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
+        bankCardMap.put(Role.UMP_INVESTOR, bankCardModel == null ? null : bankCardModel.getCardNumber());
+        bankCardMap.put(Role.INVESTOR, bankCardNumberInvestor);
+        bankCardMap.put(Role.LOANER, bankCardNumberLoaner);
+        return bankCardMap;
+    }
+
 }

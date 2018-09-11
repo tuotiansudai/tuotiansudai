@@ -89,6 +89,15 @@
                 </#list>
             </select>
         </div>
+        <div class="form-group">
+            <label for="project">资金平台</label>
+            <select class="selectpicker" name="isBankPlatform">
+                <option value="false"
+                        <#if (isBankPlatform?? && !isBankPlatform) >selected</#if>>联动优势</option>
+                <option value="true"
+                        <#if (isBankPlatform?? && isBankPlatform) >selected</#if>>富滇银行</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
     </form>
@@ -102,6 +111,7 @@
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>
+                <th>资金平台</th>
                 <th>投资人</th>
                 <th>投资人姓名</th>
                 <th>投资人手机号</th>
@@ -111,7 +121,6 @@
                 <th>渠道</th>
                 <th>来源</th>
                 <th>投资时间</th>
-                <th>自动投标</th>
                 <th>投资金额(元)</th>
                 <th>使用优惠(使用优惠信息／实际返款)</th>
                 <th>阶梯加息优惠(阶梯加息利率/实际返款)</th>
@@ -126,6 +135,7 @@
                     <td>${invest.loanId?string.computer}</td>
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
+                    <td>${isBankPlatform?string("富滇银行","联动优势")}</td>
                     <td>${invest.investorLoginName!}</td>
                     <td>${invest.investorUserName!}
                         <#if invest.investorStaff>
@@ -143,7 +153,6 @@
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
                     <td>${invest.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.investAmount}</td>
                     <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
@@ -177,7 +186,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index - 1}&isBankPlatform=${isBankPlatform?string("true","flase")}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -188,7 +197,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index + 1}&isBankPlatform=${isBankPlatform?string("true","flase")}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

@@ -28,7 +28,7 @@ public class MybatisAAConfig {
     @Bean(name = "hikariCPAAConfig")
     public HikariConfig hikariCPAAConfig(MybatisAAConnectionConfig connConfig) {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8",
+        config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/aa?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
                 connConfig.getDbHost(), connConfig.getDbPort()));
         config.setUsername(connConfig.getDbUser());
         config.setPassword(connConfig.getDbPassword());
@@ -47,7 +47,9 @@ public class MybatisAAConfig {
     @Bean
     public MapperScannerConfigurer aaMapperScannerConfigurer() {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.tuotiansudai.repository.mapper,com.tuotiansudai.membership.repository.mapper");
+        configurer.setBasePackage("com.tuotiansudai.repository.mapper, " +
+                "com.tuotiansudai.rest.client.mapper," +
+                "com.tuotiansudai.membership.repository.mapper");
         configurer.setSqlSessionFactoryBeanName("aaSqlSessionFactory");
         return configurer;
     }

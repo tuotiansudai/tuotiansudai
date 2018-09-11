@@ -11,6 +11,20 @@
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
+                <label class="control-label">账户类型: </label>&nbsp;&nbsp;
+                <input type="radio" name="role" value="UMP_INVESTOR"
+                       <#if role?? && role == 'UMP_INVESTOR'>checked="checked"</#if>
+                />联动优势 &nbsp;&nbsp;
+                <input type="radio" name="role" value="LOANER"
+                       <#if role?? && role=='LOANER'>checked="checked"</#if>
+                />富滇银行-借款人 &nbsp;&nbsp;
+                <input type="radio" name="role" value="INVESTOR"
+                       <#if role?? && role=='INVESTOR'>checked="checked"</#if>
+                />富滇银行-出借人 &nbsp;&nbsp;
+
+            </div>
+            </br>
+            <div class="form-group">
                 <label for="control-label">编号</label>
                 <input type="text" class="form-control" name="withdrawId" placeholder="" value="${withdrawId!}">
             </div>
@@ -63,14 +77,6 @@
                     </#list>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="control-label">用户角色</label>
-                <select class="selectpicker" name="role">
-                    <option value="">全部</option>
-                    <option value="LOANER" <#if role?? && role == "LOANER">selected</#if>>代理人</option>
-                    <option value="UN_LOANER" <#if role?? && role == "UN_LOANER">selected</#if>>非代理人</option>
-                </select>
-            </div>
 
             <button type="submit" class="btn btn-sm btn-primary">查询</button>
             <button type="reset" class="btn btn-sm btn-default">重置</button>
@@ -87,14 +93,11 @@
             <tr>
                 <th>编号</th>
                 <th>申请时间</th>
-                <th>初审时间</th>
-                <th>复核时间</th>
                 <th>用户名</th>
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>提现金额</th>
                 <th>手续费</th>
-                <th>银行卡</th>
                 <th>状态</th>
                 <th>来源</th>
             </tr>
@@ -106,18 +109,19 @@
                     <tr>
                         <td>${withdrawItem.withdrawId?string('0')}</td>
                         <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                        <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                        <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                         <td>${withdrawItem.loginName}
-                            <#if withdrawItem.isStaff()>
+                            <#if withdrawItem.isStaff == 'true'>
                                 <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                             </#if>
                         </td>
-                        <td>${withdrawItem.userName}</td>
+                        <#if role?? && role == 'UMP_INVESTOR'>
+                            <td>${withdrawItem.umpUserName!''}</td>
+                        <#else>
+                            <td>${withdrawItem.userName!''}</td>
+                        </#if>
                         <td>${withdrawItem.mobile!}</td>
                         <td>${withdrawItem.amount}</td>
                         <td>${withdrawItem.fee}</td>
-                        <td>${withdrawItem.bankCard}</td>
                         <td>${withdrawItem.status}</td>
                         <td>${(withdrawItem.source.name())!}</td>
                     </tr>
@@ -140,7 +144,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
+                    <a href="?role=${role}&withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -151,7 +155,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
+                    <a href="?role=${role}&withdrawId=${withdrawId!}&mobile=${mobile!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&source=${source!}&status=${status!}&role=${role!}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

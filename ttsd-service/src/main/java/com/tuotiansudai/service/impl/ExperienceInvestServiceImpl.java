@@ -11,7 +11,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.ExperienceBillService;
 import com.tuotiansudai.service.ExperienceInvestService;
 import com.tuotiansudai.util.IdGenerator;
@@ -79,7 +78,8 @@ public class ExperienceInvestServiceImpl implements ExperienceInvestService {
         LoanModel loanModel = loanMapper.findById(Long.parseLong(investDto.getLoanId()));
         long amount = Long.parseLong(investDto.getAmount());
 
-        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, amount, investDto.getLoginName(), new Date(), investDto.getSource(), investDto.getChannel(), defaultFee);
+        InvestModel investModel = new InvestModel(IdGenerator.generate(), Long.parseLong(investDto.getLoanId()), null, investDto.getLoginName(), amount, defaultFee, false, new Date(), investDto.getSource(), investDto.getChannel());
+        investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         investModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel);

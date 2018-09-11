@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class BankCardResponseDto extends BaseResponseDataDto{
+public class BankCardResponseDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "请求地址", example = "url")
     private String url;//请求地址

@@ -2,9 +2,12 @@ package com.tuotiansudai.console.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankLoanCancelMessage;
+import com.tuotiansudai.fudian.message.BankLoanCreateMessage;
 import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.repository.mapper.*;
@@ -78,6 +81,11 @@ public class ConsoleLoanCreateService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
+
+    private BankWrapperClient bankWrapperClient = new BankWrapperClient();
 
     protected final static String generateLoanName = "{0}{1}";
 
@@ -238,9 +246,9 @@ public class ConsoleLoanCreateService {
         LoanCreateRequestDto loanCreateRequestDto = new LoanCreateRequestDto();
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        loanModel.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanId));
+        List<LoanTitleRelationModel> loanTitles = loanTitleRelationMapper.findByLoanId(loanId);
 
-        loanCreateRequestDto.setLoan(new LoanCreateBaseRequestDto(loanModel));
+        loanCreateRequestDto.setLoan(new LoanCreateBaseRequestDto(loanModel, loanTitles));
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
@@ -287,13 +295,21 @@ public class ConsoleLoanCreateService {
             return baseDto;
         }
 
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loanModel.getAgentLoginName(), Role.LOANER);
 
-        baseDto = payWrapperClient.createLoan(loanId);
+        BankLoanCreateMessage message = bankWrapperClient.createLoan(bankAccountModel.getBankUserName(), bankAccountModel.getBankAccountNo(), loanModel.getName(), loanModel.getLoanAmount(), new DateTime(loanModel.getFundraisingEndTime()).toString("yyyyMMdd"));
 
-        if (baseDto.getData().getStatus()) {
+        payDataDto.setStatus(message.isStatus());
+        payDataDto.setMessage(message.getMessage());
+
+        if (message.isStatus()) {
             loanModel.setVerifyLoginName(loanCreateRequestDto.getLoan().getVerifyLoginName());
             loanModel.setVerifyTime(new Date());
             loanModel.setStatus(LoanStatus.PREHEAT);
+            loanModel.setLoanTxNo(message.getLoanTxNo());
+            loanModel.setLoanAccNo(message.getLoanAccNo());
+            loanModel.setBankOrderNo(message.getBankOrderNo());
+            loanModel.setBankOrderDate(message.getBankOrderDate());
             loanMapper.update(loanModel);
 
             DelayMessageDeliveryJobCreator.createOrReplaceStartRaisingDelayJob(jobManager, loanId, loanModel.getFundraisingStartTime());
@@ -363,7 +379,10 @@ public class ConsoleLoanCreateService {
 
         investMapper.cleanWaitingInvest(loanId);
 
-        return payWrapperClient.cancelLoan(loanId);
+        BankLoanCancelMessage message = bankWrapperClient.cancelLoan(loanId, loanModel.getBankOrderNo(), loanModel.getBankOrderDate(), loanModel.getLoanTxNo());
+        payDataDto.setStatus(message.isStatus());
+        payDataDto.setMessage(message.getMessage());
+        return baseDto;
     }
 
     private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
@@ -378,14 +397,14 @@ public class ConsoleLoanCreateService {
         if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
-
-        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
-                return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
+        //放开了四个标的类型，原有的判断没有意义
+        if (loanCreateRequestDto.getLoan().getLoanType() == null) {
+            return new BaseDto<>(new BaseDataDto(false, "标的类型不为空"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());
         if (anxinProp == null || !anxinProp.isSkipAuth()) {
-            return new BaseDto<>(new BaseDataDto(false, "代理/借款 用户未开通安心签免短信验证"));
+            return new BaseDto<>(new BaseDataDto(false, "借款 用户未开通安心签免短信验证"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
@@ -402,6 +421,10 @@ public class ConsoleLoanCreateService {
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount())) {
             return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于最大投资金额"));
+        }
+
+        if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanFee()) >= AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
+            return new BaseDto<>(new BaseDataDto(false, "借款手续费需要小于预计出借金额"));
         }
 
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {

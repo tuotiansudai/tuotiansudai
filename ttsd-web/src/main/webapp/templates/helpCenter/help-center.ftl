@@ -7,7 +7,7 @@
     <div class="model-group">
         <h3>常见问题</h3>
         <ul class="problem-list-item">
-            <li title="怎么使用红包、加息券？"><a href="/help/user#22">怎么使用红包、加息券？</a></li>
+            <li title="更换绑定的银行卡一般需要多久? "><a href="/help/user#19">更换绑定的银行卡一般需要多久？</a></li>
             <li title="VIP会员享有哪些特权？"><a href="/help/user#32">VIP会员享有哪些特权？</a></li>
             <li title="如何提高会员等级？"><a href="/help/user#33">如何提高会员等级？</a></li>
             <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/help/user#43">绑卡时提示该银行卡不支持，怎么回事？</a></li>

@@ -71,6 +71,9 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "还款进度", example = "100")
     private int repayProgress;
 
+    @ApiModelProperty(value = "是否为富滇标的", example = "true")
+    private boolean isBankPlatForm;
+
     public String getLoanId() {
         return loanId;
     }
@@ -223,6 +226,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.repayProgress = repayProgress;
     }
 
+    public boolean isBankPlatForm() {
+        return isBankPlatForm;
+    }
+
+    public void setBankPlatForm(boolean bankPlatForm) {
+        isBankPlatForm = bankPlatForm;
+    }
+
     public UserInvestRecordResponseDataDto() {
 
     }
@@ -247,6 +258,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.pledgeType = userInvestRecordDataDto.getPledgeType();
         this.isTransferInvest = userInvestRecordDataDto.isTransferInvest();
         this.repayProgress = userInvestRecordDataDto.getRepayProgress();
+        this.isBankPlatForm = userInvestRecordDataDto.isBankPlatform();
         this.transferApplicationId=userInvestRecordDataDto.getTransferApplicationId();
     }
 }

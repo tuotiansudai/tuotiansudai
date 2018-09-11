@@ -1,12 +1,12 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="transfer-bill.js" headLab="finance-manage" sideLab="transferBill" title="用户联动优势交易流水">
+<@global.main pageCss="" pageJavascript="transfer-bill.js" headLab="finance-manage" sideLab="umpTransferBill" title="用户联动优势交易流水">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="row">
             <div class="form-group">
-                <label for="control-label">用户名</label>
+                <label for="control-label">用户名或手机号</label>
                 <input type="text" class="form-control jq-loginName" value="${loginName!}">
             </div>
             <div class="form-group">

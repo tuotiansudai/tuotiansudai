@@ -5,10 +5,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanInfoService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,18 @@ public class MobileAppAutoInvestPlanInfoServiceImpl implements MobileAppAutoInve
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Override
     public BaseResponseDto<AutoInvestPlanInfoResponseDataDto> getAutoInvestPlanInfoData(BaseParamDto baseParamDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
         AutoInvestPlanInfoResponseDataDto autoInvestPlanInfoResponseDataDto = new AutoInvestPlanInfoResponseDataDto();
         String loginName = baseParamDto.getBaseParam().getUserId();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel == null){
+        BankAccountModel bankAccountModel = bankAccountMapper.findByLoginNameAndRole(loginName, Role.INVESTOR);
+        if (bankAccountModel == null){
             autoInvestPlanInfoResponseDataDto.setAutoInvest(false);
         }else{
-            autoInvestPlanInfoResponseDataDto.setAutoInvest(accountModel.isAutoInvest());
+            autoInvestPlanInfoResponseDataDto.setAutoInvest(bankAccountModel.isAuthorization());
         }
 
         AutoInvestPlanModel autoInvestPlanModel = autoInvestPlanMapper.findByLoginName(loginName);

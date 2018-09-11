@@ -1,7 +1,6 @@
 include "ttsd-service",
         "ttsd-web",
         "ttsd-console",
-        "ttsd-pay-wrapper",
         "ttsd-job-worker",
         "ttsd-mobile-api",
         'ttsd-membership',
@@ -18,7 +17,7 @@ include 'ttsd-edxactivity-model', 'ttsd-edxactivity-repository', 'ttsd-activity-
 include 'ttsd-edxpoint-model', 'ttsd-edxpoint-repository', "ttsd-point-service", 'ttsd-point-web'
 include 'ttsd-edxask-model', 'ttsd-edxask-repository', 'ttsd-ask-service', 'ttsd-ask-web' , 'ttsd-ask-rest-client'
 include 'ttsd-mq-client', 'ttsd-loan-mq-consumer', 'ttsd-message-mq-consumer', 'ttsd-point-mq-consumer', 'ttsd-user-mq-consumer', 'ttsd-activity-mq-consumer', 'ttsd-auditLog-mq-consumer', 'ttsd-email-mq-consumer'
-include 'ttsd-diagnosis', 'ttsd-worker-monitor'
+include 'ttsd-worker-monitor'
 include 'ttsd-rest', 'ttsd-ask-rest', 'ttsd-rest-client'
 include 'ump-project-transfer'
 include 'ttsd-edxlog-model', 'ttsd-edxlog-repository', 'ttsd-log-service'
@@ -28,5 +27,5 @@ include 'ttsd-job'
 include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
+include 'ttsd-fudian-bank', "ttsd-fudian-bank-dto"
 include 'ttsd-sms-mq-consumer'
-

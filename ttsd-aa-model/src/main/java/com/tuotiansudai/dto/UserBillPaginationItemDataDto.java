@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuotiansudai.enums.BillOperationType;
+import com.tuotiansudai.repository.model.BankUserBillModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.util.AmountConverter;
@@ -25,6 +27,19 @@ public class UserBillPaginationItemDataDto {
     private Date createdTime;
 
     public UserBillPaginationItemDataDto() {
+    }
+
+    public UserBillPaginationItemDataDto(BankUserBillModel bankUserBillModel) {
+        this.id = bankUserBillModel.getId();
+        this.balance = AmountConverter.convertCentToString(bankUserBillModel.getBalance());
+        if (BillOperationType.IN == bankUserBillModel.getOperationType()) {
+            this.income = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
+        }
+        if (BillOperationType.OUT == bankUserBillModel.getOperationType()) {
+            this.cost = AmountConverter.convertCentToString(bankUserBillModel.getAmount());
+        }
+        this.businessType = bankUserBillModel.getBusinessType().getDescription();
+        this.createdTime = bankUserBillModel.getCreatedTime();
     }
 
     public UserBillPaginationItemDataDto(UserBillModel userBillModel) {
@@ -73,14 +88,6 @@ public class UserBillPaginationItemDataDto {
         this.cost = cost;
     }
 
-    public String getFreeze() {
-        return freeze;
-    }
-
-    public void setFreeze(String freeze) {
-        this.freeze = freeze;
-    }
-
     public String getBalance() {
         return balance;
     }
@@ -97,4 +104,11 @@ public class UserBillPaginationItemDataDto {
         this.id = id;
     }
 
+    public String getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(String freeze) {
+        this.freeze = freeze;
+    }
 }

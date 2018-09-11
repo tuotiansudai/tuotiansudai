@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/account")
 public class AccountController {
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private UserMapper userMapper;
+    private BankAccountService bankAccountService;
 
     @RequestMapping(value = "/{loginName}",method = RequestMethod.GET)
     @ResponseBody
     public String account(@PathVariable String loginName) {
-        return AmountConverter.convertCentToString(accountService.getBalance(userMapper.findByLoginNameOrMobile(loginName).getLoginName()));
+        return AmountConverter.convertCentToString(bankAccountService.findBankAccount(loginName, Role.INVESTOR).getBalance());
     }
 }

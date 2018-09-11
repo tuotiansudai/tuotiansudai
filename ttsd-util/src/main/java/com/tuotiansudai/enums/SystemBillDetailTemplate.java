@@ -45,6 +45,7 @@ public enum SystemBillDetailTemplate {
     SUPER_SCHOLAR_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在学霸加薪季活动中,获取现金奖励{1}分"),
 
     THIRD_ANNIVERSARY_SEND_CASH_REWARD_DETAIL_TEMPLATE("用户({0})在速贷3周年活动中,获取现金奖励{1}分"),
+    LOAN_FEE_DETAIL_TEMPLATE("标的(loanId = {0})借款手续费(loanFee={1})"),
     ;
 
     private final String template;

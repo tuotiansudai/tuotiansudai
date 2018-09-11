@@ -4,20 +4,19 @@
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
 
     <div class="pad-s">
-        <div class="borderBox withdraw" data-access="${hasAccess}">
-            可提现额度：<i class="color-note">${balance}</i>元<br/>
-            <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-l-zero="deny"
-                                                      data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
-            <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
+        <div class="borderBox withdraw">
+            <span style="padding-left: 15px;">可提现额度：<i class="color-note">${balance}</i>元</span><br/>
+            <span class="pad-l-15">提现金额：</span>
+            <input type="text" class="amount-display" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00" style="margin-left: 10px;"> 元
+            <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于<em id="cash">1.50</em>元</span>
 
             <div class="calculate">
-                提现费用：<em class="withdraw-fee">${withdrawFee}</em> 元（每笔） <br/>
+                提现费用：<em class="withdraw-fee" data-fudianbank="${isFudianBank?c}" ></em> 元（每笔） <br/>
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
             <div class="clear-blank"></div>
-            <form action="/withdraw" method="post" id="withdraw"
-                  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+            <form action="/withdraw" method="post" id="withdraw">
                 <input name="amount" type="hidden" value=""/>
                 <input name="source" type="hidden" value="WEB"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -26,30 +25,12 @@
         <div class="clear-blank"></div>
         <div class="borderBox">
             <b>温馨提示:</b><br/>
-            1、每笔提现，手续费${withdrawFee}元。<br/>
-            2、当日16:00点前提现预计当日到款，16:00后提现预计次日到款（如遇双休日或法定节假日顺延）。<br/>
-            3、提现银行卡姓名应与实名认证身份一致，才可提现。<br/>
+            1、5W及以下，任何时间都可以申请提现，实时到账；<br/>
+            2、5W以上：工作日8:30-17:00，实时到账；其他时间不允许提现；<br/>
+            3、当日充值的金额只能下一个工作日12:00之后才能提现；<br/>
+            4、提现手续费收取标准：5万元（含5万）以下1.5元／笔，5万以上5元／笔。
         </div>
     </div>
 
-</div>
-
-<div id="popWithdraw" class="pad-m recharge-plat" style="display: none;">
-    <p>请在新打开的联动优势页面提现完成后选择：</p>
-
-    <div class="ret">
-        <p>提现成功：<a href="/account" class="btn-success" data-category="确认成功" data-label="withdraw">确认成功</a></p>
-
-        <p>提现失败：<a href="/withdraw" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
-            <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心"
-                                    data-label="recharge">帮助中心</a></span>
-        </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
-    </div>
-</div>
-
-<div id="popWithdrawFail" class="pad-m recharge-plat" style="display: none;">
-    <p>操作失败(错误代码:YM001), 请联系客服</p>
-    <span>客服电话:400-169-1188 (服务时间:9:00-20:00)</span>
 </div>
 </@global.main>

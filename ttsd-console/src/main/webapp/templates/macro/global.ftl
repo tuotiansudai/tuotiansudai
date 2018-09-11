@@ -59,15 +59,17 @@
                         {"name":"userFund","text":"用户资金查询","link":"/finance-manage/user-funds","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"recharge","text":"充值记录","link":"/finance-manage/recharge","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"withdraw","text":"提现记录","link":"/finance-manage/withdraw","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"adminIntervention","text":"修改账户余额","link":"/finance-manage/admin-intervention","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"payroll","text":"用户资金发放 ","link":"/finance-manage/payroll-manage/payroll-list","role":"'ADMIN','PAYROLL_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"系统账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"systemBill","text":"系统账户查询","link":"/finance-manage/system-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"transferBill","text":"用户联动优势交易流水","link":"/finance-manage/transfer-bill","role":"'ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"银行交易查询","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"realTimeStatus","text":"银行交易状态查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"accountBill","text":"银行用户交易流水查询","link":"/finance-manage/real-time-status/account-bill","role":"'ADMIN'"},
+                        {"name":"loanBill","text":"银行标的交易流水查询","link":"/finance-manage/real-time-status/loan-bill","role":"'ADMIN'"},
                         {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"umpRealTimeStatus","text":"联动优势交易状态查询","link":"/finance-manage/real-time-status/ump","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        {"name":"umpTransferBill","text":"用户联动优势交易流水","link":"/finance-manage/real-time-status/ump/transfer-bill","role":"'ADMIN'"},
+                        {"name":"umpBankMange","text":"银行卡管理","link":"/finance-manage/bank-list?isBank=false","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
@@ -144,9 +146,7 @@
                         {"name":"membershipQuery","text":"会员等级查询","link":"/membership-manage/membership-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"会员发放管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"membershipGiveCreate", "text":"会员发放创建", "link":"/membership-manage/give/edit-view","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"membershipGiveList", "text":"会员发放管理", "link":"/membership-manage/give/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"","class":"sub-title-1","text":"会员购买管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"membershipPurchase","text":"购买增值特权","link":"/membership-manage/membership-privilege-purchase","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"}
+                        {"name":"membershipGiveList", "text":"会员发放管理", "link":"/membership-manage/give/list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },
             {

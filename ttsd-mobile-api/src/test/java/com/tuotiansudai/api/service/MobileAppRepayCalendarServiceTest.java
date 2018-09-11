@@ -36,7 +36,7 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
     private InvestMapper investMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -375,7 +375,6 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         model.setAmount(10);
         model.setInvestTime(new Date());
         model.setId(IdGenerator.generate());
-        model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
@@ -385,14 +384,13 @@ public class MobileAppRepayCalendarServiceTest extends ServiceTestBase {
         return model;
     }
 
-    private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId, "", "", new Date());
+    private BankAccountModel createAccountByUserId(String userId) {
+        BankAccountModel accountModel = new BankAccountModel(userId, "payUserId", "payAccountId", "111", "111","");
+        bankAccountMapper.createInvestor(accountModel);
         accountModel.setBalance(10000);
-        accountModel.setFreeze(10000);
-        accountMapper.create(accountModel);
         accountModel.setAutoInvest(true);
-        accountModel.setNoPasswordInvest(true);
-        accountMapper.update(accountModel);
+        accountModel.setAuthorization(true);
+        bankAccountMapper.update(accountModel);
         return accountModel;
     }
 

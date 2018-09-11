@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankAccountMapper">
+    <resultMap id="bankAccountResultMap" type="BankAccountModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="bank_user_name" property="bankUserName"/>
+        <result column="bank_account_no" property="bankAccountNo"/>
+        <result column="bank_account_order_no" property="bankAccountOrderNo"/>
+        <result column="bank_account_order_date" property="bankAccountOrderDate"/>
+        <result column="balance" property="balance"/>
+        <result column="membership_point" property="membershipPoint"/>
+        <result column="authorization" property="authorization"/>
+        <result column="auto_invest" property="autoInvest"/>
+        <result column="bank_authorization_order_no" property="bankAuthorizationOrderNo"/>
+        <result column="bank_authorization_order_date" property="bankAuthorizationOrderDate"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="bank_mobile" property="bankMobile"/>
+    </resultMap>
+
+    <insert id="createInvestor" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'INVESTOR',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
+    </insert>
+
+    <insert id="createLoaner" parameterType="BankAccountModel" useGeneratedKeys="true" keyProperty="id">
+        insert into bank_account(login_name,role_type,bank_user_name,bank_account_no,bank_account_order_no,bank_account_order_date,created_time,updated_time,bank_mobile)
+        values (#{loginName},'LOANER',#{bankUserName},#{bankAccountNo},#{bankAccountOrderNo},#{bankAccountOrderDate},now(),now(),#{bankMobile})
+    </insert>
+
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="bankAccountResultMap">
+        select * from bank_account where login_name = #{loginName} and role_type = #{roleType}
+    </select>
+
+    <select id="lockInvestorByLoginName" parameterType="string" resultMap="bankAccountResultMap" useCache="false">
+        select * from bank_account where login_name = #{loginName} and role_type = 'INVESTOR' for update
+    </select>
+
+    <update id="update" parameterType="map">
+        update bank_account set
+        authorization = #{authorization},
+        auto_invest = #{autoInvest},
+        bank_authorization_order_no = #{bankAuthorizationOrderNo},
+        bank_authorization_order_date = #{bankAuthorizationOrderDate},
+        updated_time = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateMembershipPoint" parameterType="map">
+        update bank_account set membership_point = membership_point + (#{point}) where login_name = #{loginName} and role_type = 'INVESTOR'
+    </update>
+
+    <update id="updateAutoInvest" parameterType="map">
+        update bank_account set auto_invest = #{autoInvest} where login_name = #{loginName} and role_type = 'INVESTOR'
+    </update>
+
+    <update id="updateInvestorBalance" parameterType="map">
+        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'INVESTOR'
+    </update>
+
+    <update id="updateLoanerBalance" parameterType="map">
+        update bank_account set balance = balance + #{balanceDelta} where login_name = #{loginName} and role_type = 'LOANER'
+    </update>
+
+    <update id="updateBankMobileByLoginName" parameterType="map">
+        update bank_account set bank_mobile = #{bankMobile},updated_time = now()  where login_name = #{loginName}
+    </update>
+</mapper>

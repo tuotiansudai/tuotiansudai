@@ -6,27 +6,21 @@ import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppTransferService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.enums.AsyncUmPayService;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.TransferStatus;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 import java.util.Locale;
 
 @Service
@@ -34,26 +28,27 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
 
     static Logger logger = Logger.getLogger(MobileAppTransferServiceImpl.class);
 
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
+    private final TransferApplicationMapper transferApplicationMapper;
+
+    private final InvestMapper investMapper;
+
+    private final TransferService transferService;
+
+    private final MobileAppChannelService mobileAppChannelService;
+
+    private final RandomUtils randomUtils;
+
+    private final PageValidUtils pageValidUtils;
 
     @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
-    private TransferService transferService;
-
-    @Autowired
-    private MobileAppChannelService mobileAppChannelService;
-
-    @Value("${pay.callback.app.web.host}")
-    private String domainName;
-
-    @Autowired
-    private RandomUtils randomUtils;
-
-    @Autowired
-    private PageValidUtils pageValidUtils;
+    public MobileAppTransferServiceImpl(TransferApplicationMapper transferApplicationMapper, InvestMapper investMapper, TransferService transferService, MobileAppChannelService mobileAppChannelService, RandomUtils randomUtils, PageValidUtils pageValidUtils){
+        this.transferApplicationMapper = transferApplicationMapper;
+        this.investMapper = investMapper;
+        this.transferService = transferService;
+        this.mobileAppChannelService = mobileAppChannelService;
+        this.randomUtils = randomUtils;
+        this.pageValidUtils = pageValidUtils;
+    }
 
     @Override
     public BaseResponseDto<TransferTransfereeResponseDataDto> getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
@@ -79,60 +74,14 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
     }
 
     @Override
-    public BaseResponseDto<InvestNoPassResponseDataDto> transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        try {
-            InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
-            investDto.setNoPassword(true);
-            BaseDto<PayDataDto> payDataDto = transferService.noPasswordTransferPurchase(investDto);
-
-            if (payDataDto.getData().getStatus()) {
-                BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = new BaseResponseDto<>(ReturnMessage.SUCCESS);
-
-                String url = MessageFormat.format("{0}/{1}?order_id={2}", domainName, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD.getMobileRetCallbackPath(), payDataDto.getData().getExtraValues().get("order_id"));
-                baseResponseDto.setData(new InvestNoPassResponseDataDto(url));
-                return baseResponseDto;
-            }
-
-            return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), payDataDto.getData().getMessage());
-        } catch (InvestException e) {
-            return new BaseResponseDto<>(this.convertExceptionToDto(e));
-        }
-    }
-
-    @Override
-    public BaseResponseDto<InvestResponseDataDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
+    public BaseResponseDto<BankAsynResponseDto> transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
         try {
-            BaseDto<PayFormDataDto> formDto = transferService.transferPurchase(investDto);
-            if (!formDto.isSuccess()) {
-                logger.error("[MobileAppTransferServiceImpl][transferPurchase] pay wrapper may fail to connect.");
-
-                responseDto.setCode(ReturnMessage.FAIL.getCode());
-                responseDto.setMessage(ReturnMessage.FAIL.getMsg());
-                return responseDto;
-            }
-            if (formDto.getData().getStatus()) {
-                PayFormDataDto formDataDto = formDto.getData();
-                String requestData = CommonUtils.mapToFormData(formDataDto.getFields());
-
-                InvestResponseDataDto investResponseDataDto = new InvestResponseDataDto();
-                investResponseDataDto.setRequestData(requestData);
-                investResponseDataDto.setUrl(formDataDto.getUrl());
-                responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-                responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-                responseDto.setData(investResponseDataDto);
-            } else {
-                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(formDto.getData().getMessage());
-            }
-        } catch (UnsupportedEncodingException e) {
-            responseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
-            responseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+            BankAsyncMessage bankAsyncMessage = transferService.transferPurchase(investDto);
+            return CommonUtils.mapToFormData(bankAsyncMessage);
         } catch (InvestException e) {
-            return new BaseResponseDto<>(this.convertExceptionToDto(e));
+            return new BaseResponseDto<>(ReturnMessage.INVEST_FAILED.getCode(), e.getType().getDescription());
         }
-        return responseDto;
     }
 
     private InvestDto convertInvestDto(TransferPurchaseRequestDto transferPurchaseRequestDto) {
@@ -147,21 +96,4 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService {
         investDto.setTransferApplicationId(transferPurchaseRequestDto.getTransferApplicationId());
         return investDto;
     }
-
-    private ReturnMessage convertExceptionToDto(InvestException e) {
-        switch (e.getType()) {
-            case ILLEGAL_LOAN_STATUS:
-                return ReturnMessage.ILLEGAL_LOAN_STATUS;
-            case NOT_ENOUGH_BALANCE:
-                return ReturnMessage.NOT_ENOUGH_BALANCE;
-            case PASSWORD_INVEST_OFF:
-                return ReturnMessage.PASSWORD_INVEST_OFF;
-            case LOAN_NOT_FOUND:
-                return ReturnMessage.LOAN_NOT_FOUND;
-            case INVESTOR_IS_LOANER:
-                return ReturnMessage.APPLICATION_IS_HIS_OWN;
-        }
-        return ReturnMessage.ERROR;
-    }
-
 }

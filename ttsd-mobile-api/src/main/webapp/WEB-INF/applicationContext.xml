@@ -36,7 +36,7 @@
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
                 <property name="jdbcUrl"
-                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${mobile.aa.minimumIdle}"/>
@@ -58,7 +58,7 @@
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
                 <property name="jdbcUrl"
-                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${common.jdbc.username}"/>
                 <property name="password" value="${common.jdbc.password}"/>
                 <property name="minimumIdle" value="${mobile.job.minimumIdle}"/>
@@ -80,7 +80,7 @@
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
                 <property name="jdbcUrl"
-                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxactivity?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxactivity?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${activity.jdbc.username}"/>
                 <property name="password" value="${activity.jdbc.password}"/>
                 <property name="minimumIdle" value="${mobile.activity.minimumIdle}"/>
@@ -102,7 +102,7 @@
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
                 <property name="jdbcUrl"
-                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                          value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/edxpoint?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${point.jdbc.username}"/>
                 <property name="password" value="${point.jdbc.password}"/>
                 <property name="minimumIdle" value="${mobile.point.minimumIdle}"/>
@@ -123,7 +123,7 @@
         <constructor-arg>
             <bean class="com.zaxxer.hikari.HikariConfig">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${message.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/${message.jdbc.schema}?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
                 <property name="username" value="${message.jdbc.username}"/>
                 <property name="password" value="${message.jdbc.password}"/>
                 <property name="minimumIdle" value="${mobile.message.minimumIdle}"/>

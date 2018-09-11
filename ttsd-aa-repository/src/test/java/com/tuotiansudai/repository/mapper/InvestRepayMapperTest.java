@@ -235,7 +235,7 @@ public class InvestRepayMapperTest {
         LoanModel fakeLoanModel = this.getFakeLoanModel();
         userMapper.create(fakeUserModel);
         loanMapper.create(fakeLoanModel);
-        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), fakeLoanModel.getId(), null, 0L, fakeUserModel.getLoginName(), new Date(), Source.WEB, null, 0.1);
+        InvestModel fakeInvestModel = new InvestModel(IdGenerator.generate(), fakeLoanModel.getId(), null, fakeUserModel.getLoginName(), 0L, 0.1, false, new Date(), Source.WEB, null);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }

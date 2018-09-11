@@ -4,23 +4,12 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppTransferApplicationServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
+import com.tuotiansudai.membership.service.UserMembershipService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.dto.TransferApplicationDto;
-import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
-import com.tuotiansudai.repository.model.TransferApplicationRecordView;
-import com.tuotiansudai.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
@@ -30,7 +19,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +47,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     @Mock
     private LoanRepayMapper loanRepayMapper;
     @Mock
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
     @Mock
     private TransferRuleMapper transferRuleMapper;
     @Mock
@@ -71,6 +59,9 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Mock
+    private UserMembershipService userMembershipService;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -252,7 +243,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         long transferApplicationId = IdGenerator.generate();
         long investId = IdGenerator.generate();
 
-        AccountModel accountModel = createAccountByUserId("testuser");
+        BankAccountModel accountModel = createAccountByUserId("testuser");
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("testuser");
@@ -277,9 +268,10 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         investRepayModels.add(investRepayModel3);
 
         when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(accountModel);
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
         when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.4);
+        when(userMembershipService.obtainServiceFee(anyString())).thenReturn(0.1);
 
         BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
 
@@ -287,7 +279,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         assertEquals("1000.00", baseResponseDto.getData().getBalance());
         assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("0.15", baseResponseDto.getData().getExpectedInterestAmount());
+        assertEquals("0.22", baseResponseDto.getData().getExpectedInterestAmount());
     }
 
     @Test
@@ -445,7 +437,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     private InvestModel createInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, 10000, loginName, new Date(), Source.WEB, null, 0.1);
+        InvestModel model = new InvestModel(IdGenerator.generate(), loanId, null, loginName, 10000, 0.1, false, new Date(), Source.WEB, null);
         model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
@@ -474,10 +466,10 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         return userModelTest;
     }
 
-    private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel();
-        accountModel.setBalance(100000L);
-        return accountModel;
+    private BankAccountModel createAccountByUserId(String userId) {
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setBalance(100000L);
+        return bankAccountModel;
     }
 
     private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,

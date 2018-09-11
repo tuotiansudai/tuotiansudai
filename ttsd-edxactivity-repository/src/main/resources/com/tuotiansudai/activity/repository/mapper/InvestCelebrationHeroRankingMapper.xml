@@ -15,7 +15,6 @@
         <result column="invest_amount" property="investAmount"></result>
         <result column="newman" property="newman"></result>
         <result column="created_time" property="createdTime"></result>
-
     </resultMap>
 
     <resultMap id="newmanTyrantView" type="NewmanTyrantView">

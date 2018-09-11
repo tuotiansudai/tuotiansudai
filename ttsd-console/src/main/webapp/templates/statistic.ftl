@@ -67,9 +67,10 @@
                             <option value="">请选择</option>
                         </select>
                         <select class="form-control" name="role">
-                            <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="INVESTOR">银行出借人</option>
+                            <option value="LOANER">银行借款人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
@@ -103,9 +104,10 @@
                             <option value="">请选择</option>
                         </select>
                         <select class="form-control" name="role">
-                            <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="INVESTOR">银行出借人</option>
+                            <option value="LOANER">银行借款人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -134,9 +136,10 @@
                         开始时间： <input type="text" class="form-control start-date" name="startTime">
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="role">
-                            <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="INVESTOR">银行出借人</option>
+                            <option value="LOANER">银行借款人</option>
+                            <option value="UMP_LOANER">借款人</option>
+                            <option value="UN_UMP_LOANER">出借人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

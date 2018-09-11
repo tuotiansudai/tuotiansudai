@@ -3,9 +3,9 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppBookingLoanService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankAccountMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.BankAccountModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -26,7 +26,7 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
     @Autowired
     private FakeUserHelper userMapper;
     @Autowired
-    private AccountMapper accountMapper;
+    private BankAccountMapper bankAccountMapper;
 
     @Test
     public void shouldGetBookingLoanIsOk() {
@@ -65,9 +65,9 @@ public class MobileAppBookingLoanServiceTest extends ServiceTestBase {
         return userModelTest;
     }
 
-    public AccountModel getAccountModel(String loginName) {
-        AccountModel model = new AccountModel(loginName, "payUserId", "payAccountId", new Date());
-        accountMapper.create(model);
+    public BankAccountModel getAccountModel(String loginName) {
+        BankAccountModel model = new BankAccountModel(loginName, "payUserId", "payAccountId", "111", "111","");
+        bankAccountMapper.createInvestor(model);
         return model;
     }
 }

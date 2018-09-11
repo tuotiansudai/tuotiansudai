@@ -22,7 +22,7 @@ public class EditUserDto implements Serializable {
 
     private String referrer;
 
-    private String bankCardNumber;
+    private String bankCardNumberUMP;
 
     private boolean isReferrerStaff;
 
@@ -31,6 +31,14 @@ public class EditUserDto implements Serializable {
     private List<Role> roles;
 
     private String autoInvestStatus;
+
+    private String bankCardNumberInvestor;
+
+    private String bankCardNumberLoaner;
+
+    private String umpUserName;
+
+    private String umpIdentityNumber;
 
     public EditUserDto(UserModel userModel, List<Role> roles, boolean autoInvestPlanEnabled) {
         this.loginName = userModel.getLoginName();
@@ -41,6 +49,8 @@ public class EditUserDto implements Serializable {
         if (roles != null) {
             this.roles = roles;
         }
+        this.umpIdentityNumber=userModel.getUmpIdentityNumber();
+        this.umpUserName=userModel.getUmpUserName();
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
         this.autoInvestStatus = autoInvestPlanEnabled ? "1" : "0";
@@ -121,19 +131,51 @@ public class EditUserDto implements Serializable {
         this.autoInvestStatus = autoInvestStatus;
     }
 
-    public String getBankCardNumber() {
-        return bankCardNumber;
-    }
-
-    public void setBankCardNumber(String bankCardNumber) {
-        this.bankCardNumber = bankCardNumber;
-    }
-
     public boolean getIsReferrerStaff() {
         return isReferrerStaff;
     }
 
     public void setReferrerStaff(boolean referrerStaff) {
         isReferrerStaff = referrerStaff;
+    }
+
+    public String getBankCardNumberUMP() {
+        return bankCardNumberUMP;
+    }
+
+    public void setBankCardNumberUMP(String bankCardNumberUMP) {
+        this.bankCardNumberUMP = bankCardNumberUMP;
+    }
+
+    public String getBankCardNumberInvestor() {
+        return bankCardNumberInvestor;
+    }
+
+    public void setBankCardNumberInvestor(String bankCardNumberInvestor) {
+        this.bankCardNumberInvestor = bankCardNumberInvestor;
+    }
+
+    public String getBankCardNumberLoaner() {
+        return bankCardNumberLoaner;
+    }
+
+    public void setBankCardNumberLoaner(String bankCardNumberLoaner) {
+        this.bankCardNumberLoaner = bankCardNumberLoaner;
+    }
+
+    public String getUmpUserName() {
+        return umpUserName;
+    }
+
+    public void setUmpUserName(String umpUserName) {
+        this.umpUserName = umpUserName;
+    }
+
+    public String getUmpIdentityNumber() {
+        return umpIdentityNumber;
+    }
+
+    public void setUmpIdentityNumber(String umpIdentityNumber) {
+        this.umpIdentityNumber = umpIdentityNumber;
     }
 }

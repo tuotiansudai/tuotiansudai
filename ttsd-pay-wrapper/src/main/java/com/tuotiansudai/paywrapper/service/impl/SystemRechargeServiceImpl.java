@@ -116,7 +116,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
                 systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
 
-                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
+                AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,

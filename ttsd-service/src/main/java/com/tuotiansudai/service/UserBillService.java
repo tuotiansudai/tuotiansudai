@@ -2,6 +2,8 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.enums.BankUserBillBusinessType;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.repository.model.UserBillPaginationView;
@@ -15,5 +17,12 @@ public interface UserBillService {
                                                    int pageSize,
                                                    Date startTime,
                                                    Date endTime,
-                                                   List<UserBillBusinessType> userBillBusinessType);
+                                                   List<BankUserBillBusinessType> businessTypes,
+                                                   Role role);
+
+    BaseDto<BasePaginationDataDto> getUmpUserBillData(String loginName, int index,
+                                                      int pageSize,
+                                                      Date startTime,
+                                                      Date endTime,
+                                                      List<UserBillBusinessType> businessTypes);
 }

@@ -1,73 +1,77 @@
 package com.tuotiansudai.console.service;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.WithdrawPaginationItemDataDto;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.WithdrawStatus;
+import com.tuotiansudai.repository.mapper.BankWithdrawMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawPaginationView;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsoleWithdrawService {
 
+    private final BankWithdrawMapper bankWithdrawMapper;
+
     @Autowired
     private WithdrawMapper withdrawMapper;
 
-    public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(String withdrawId, String mobile,
-                                                                                                WithdrawStatus status, Source source,
-                                                                                                int index, int pageSize, Date startTime, Date endTime, String role) {
-        if (index < 1) {
-            index = 1;
-        }
-        if (pageSize < 1) {
-            pageSize = 10;
-        }
-
-        BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> baseDto = new BaseDto<>();
-        List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
-
-        long count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime, role);
-
-        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * pageSize, pageSize, startTime, endTime, role);
-
-        for (WithdrawModel model : withdrawModelList) {
-            WithdrawPaginationItemDataDto withdrawDto = new WithdrawPaginationItemDataDto(model);
-            withdrawPaginationItemDataDtos.add(withdrawDto);
-        }
-
-        BasePaginationDataDto<WithdrawPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, withdrawPaginationItemDataDtos);
-        basePaginationDataDto.setStatus(true);
-        baseDto.setData(basePaginationDataDto);
-        return baseDto;
+    @Autowired
+    public ConsoleWithdrawService(BankWithdrawMapper bankWithdrawMapper) {
+        this.bankWithdrawMapper = bankWithdrawMapper;
     }
 
-    public long findSumWithdrawAmount(String withdrawId,
-                                      String mobile,
-                                      WithdrawStatus status,
-                                      Source source,
-                                      Date startTime,
-                                      Date endTime,
-                                      String role) {
+    public BaseDto<BasePaginationDataDto<WithdrawPaginationItemDataDto>> findWithdrawPagination(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, int index, Date startTime, Date endTime) {
+        index = index < 1 ? 1 : index;
+        List<WithdrawPaginationView> views = null;
+        long count = 0;
+        if (role == Role.UMP_INVESTOR) {
+            count = withdrawMapper.findWithdrawCount(withdrawId, mobile, status, source, startTime, endTime);
+            views = withdrawMapper.findWithdrawPagination(withdrawId, mobile, status, source, (index - 1) * 10, 10, startTime, endTime);
 
-        return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, role, startTime, endTime);
+        } else {
+            count = bankWithdrawMapper.findWithdrawCount(role, withdrawId, mobile, status, source, startTime, endTime);
+            views = bankWithdrawMapper.findWithdrawPagination(role, withdrawId, mobile, status, source, PaginationUtil.calculateOffset(index, 10, count), 10, startTime, endTime);
+        }
+        List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = views.stream().map(item -> new WithdrawPaginationItemDataDto(item.getId(),
+                item.getLoginName(),
+                item.getMobile(),
+                item.getUmpUserName(),
+                item.getUserName(),
+                AmountConverter.convertCentToString(item.getAmount()),
+                AmountConverter.convertCentToString(item.getFee()),
+                item.getSource(),
+                item.getStatus().getDescription(),
+                item.getCreatedTime(),
+                String.valueOf(item.getIsStaff())
+        )).collect(Collectors.toList());
+        return new BaseDto<>(true, new BasePaginationDataDto<>(index, 10, count, withdrawPaginationItemDataDtos));
     }
 
-    public long findSumWithdrawFee(String withdrawId,
-                                   String mobile,
-                                   WithdrawStatus status,
-                                   Source source,
-                                   Date startTime,
-                                   Date endTime,
-                                   String role) {
+    public long findSumWithdrawAmount(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
+        if (role == Role.INVESTOR) {
+            return withdrawMapper.findSumWithdrawAmount(withdrawId, mobile, status, source, startTime, endTime);
+        } else {
+            return bankWithdrawMapper.sumWithdrawAmount(role, withdrawId, mobile, status, source, startTime, endTime);
+        }
+    }
 
-        return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime, role);
+    public long findSumWithdrawFee(Role role, Long withdrawId, String mobile, WithdrawStatus status, Source source, Date startTime, Date endTime) {
+        if (role == Role.INVESTOR) {
+            return withdrawMapper.findSumWithdrawFee(withdrawId, mobile, status, source, startTime, endTime);
+        } else {
+            return bankWithdrawMapper.sumWithdrawFee(role, withdrawId, mobile, status, source, startTime, endTime);
+        }
+
     }
 }

@@ -217,10 +217,10 @@ public class LoanMapperTest {
         assertThat(loanModels.size(), is(2));
 
         assertThat(loanModels.get(0).getId(), is(fakeCanceledLoan3.getId()));
-        assertThat(loanModels.get(0).getCanceledDate().getTime(), is(fakeCanceledLoan3.getRecheckTime().getTime()));
+        assertThat(loanModels.get(0).getRecheckTime().getTime(), is(fakeCanceledLoan3.getRecheckTime().getTime()));
 
         assertThat(loanModels.get(1).getId(), is(fakeCanceledLoan2.getId()));
-        assertThat(loanModels.get(1).getCanceledDate().getTime(), is(fakeCanceledLoan2.getRecheckTime().getTime()));
+        assertThat(loanModels.get(1).getRecheckTime().getTime(), is(fakeCanceledLoan2.getRecheckTime().getTime()));
     }
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus,ActivityType activityType) {
@@ -281,22 +281,9 @@ public class LoanMapperTest {
 
     @Test
     public void findLoanListTest() {
-        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING, 1L, "", new Date(), new Date(), 0, 10);
-        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING, 1L, "", new Date(), new Date());
+        List<LoanModel> loanModels = loanMapper.findLoanList(true,LoanStatus.RAISING, 1L, "", new Date(), new Date(), 0, 10);
+        int loanListCount = loanMapper.findLoanListCount(true,LoanStatus.RAISING, 1L, "", new Date(), new Date());
         assertThat(loanModels.size(), is(loanListCount));
-    }
-
-    @Test
-    public void updateRaisingCompleteTimeTest() {
-        UserModel fakeUserModel = this.getFakeUserModel();
-        userMapper.create(fakeUserModel);
-
-        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL,ActivityType.NEWBIE);
-        loanMapper.create(fakeCanceledLoan1);
-        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId(), new Date());
-
-        LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
-        assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
     }
 
     @Test

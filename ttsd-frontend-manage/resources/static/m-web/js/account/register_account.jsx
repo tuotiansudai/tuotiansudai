@@ -14,12 +14,22 @@ validator.add(registerAccountForm.userName, [{
     {
         strategy: 'isChinese',
         errorMsg: '请输入汉字',
-    }]);
+    },
+    {
+        strategy: 'minLength:2',
+        errorMsg: '最少输入2位汉字',
+    }
+]);
 
 validator.add(registerAccountForm.identityNumber, [{
     strategy: 'isNonEmpty',
     errorMsg: '请输入身份证号',
-}, {
+},
+    {
+        strategy: 'maxLengthSpace:18',
+        errorMsg: '您的身份证号码不正确'
+    },
+    {
     strategy: 'identityValid',
     errorMsg: '您的身份证号码不正确'
 },{
@@ -28,7 +38,9 @@ validator.add(registerAccountForm.identityNumber, [{
 },{
     strategy: 'isCardExist',
     errorMsg: '身份证已存在'
-}]);
+}
+
+]);
 
 let reInputs=$(registerAccountForm).find('input:text'),
     $errorBox = $('.error-box',$(registerAccountForm));
@@ -44,6 +56,7 @@ for(let i=0,len=reInputs.length; i<len;i++) {
     })
 }
 $('#perNum').on('keyup',(e) => {
+
     if (e.keyCode != 8) {
         if ($('#perNum').val().length === 6 || $('#perNum').val().length === 15) {
             let text = $('#perNum').val() + ' ';
@@ -60,6 +73,7 @@ $('#perNum').on('keyup',(e) => {
             $('#perNum').val(text);
         }
     }
+
 });
 $('#perNum').on("paste",(e) => {
     var pastedText = undefined;
@@ -87,30 +101,16 @@ function isDisabledButton() {
 }
 
 //点击立即注册按钮
-registerAccountForm.onsubmit = function(event) {
-    event.preventDefault();
-    $btnSubmit.prop('disabled', true).val('认证中');
+
+$('#accountBtn').on('click',function (e) {
+    e.preventDefault();
     $('#perNum').val($('#perNum').val().replace(/\s+/g, ""));
-    console.log($(registerAccountForm).serialize())
-    commonFun.useAjax({
-        url:"/register/account",
-        type:'POST',
-        data:$(registerAccountForm).serialize().replace(/\s+/g, "")
-    },function(response) {
-        if(response.data.status) {
-            $btnSubmit.prop('disabled', true).val('认证成功');
-            location.href = '/m/register/account/success';
-        } else {
-            let errorMsg = (response.data.code === '1002') ? '实名认证超时，请重试' : '认证失败，请检查您的信息';
-            $errorBox.text(errorMsg);
-            $btnSubmit.prop('disabled', false).val('认证');
-            let inputVal = $('#perNum').val();
-            let text = inputVal.substring(0,6) + ' ' +  inputVal.substring(6,14) + ' ' + inputVal.substring(14);
-            $('#perNum').val(text);
-        }
-    });
-};
+    $('#registerAccountForm').submit();
+})
 
 $('#iconRegister').on('click',function () {
     history.go(-1);
 })
+
+
+

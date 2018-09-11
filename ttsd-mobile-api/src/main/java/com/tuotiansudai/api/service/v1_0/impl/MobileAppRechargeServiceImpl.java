@@ -2,19 +2,20 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.api.service.v1_0.MobileAppRechargeService;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.fudian.dto.RechargePayType;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.repository.mapper.BankMapper;
-import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.mapper.BankRechargeMapper;
+import com.tuotiansudai.repository.mapper.UserBankCardMapper;
 import com.tuotiansudai.repository.model.BankModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.service.BankRechargeService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -32,58 +32,38 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     final static Logger logger = Logger.getLogger(MobileAppRechargeServiceImpl.class);
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private BankCardMapper bankCardMapper;
-
-    @Autowired
-    private MobileAppChannelService mobileAppChannelService;
-
-    @Autowired
     private BankMapper bankMapper;
 
     @Autowired
-    private RechargeMapper rechargeMapper;
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserBankCardMapper userBankCardMapper;
+
+    @Autowired
+    private BankRechargeMapper rechargeMapper;
+
+    @Autowired
+    private BankRechargeService bankRechargeService;
 
     @Override
-    public BaseResponseDto<BankCardResponseDto> recharge(BankCardRequestDto bankCardRequestDto) {
-        BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<>();
-        RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
-        rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
-
-        String loginName = rechargeDto.getLoginName();
-        BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
-        if (bankCardModel == null) {
-            return new BaseResponseDto(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
+    public BaseResponseDto<BankAsynResponseDto> recharge(String loginName, BankRechargeRequestDto bankRechargeRequestDto) {
+        if (userBankCardMapper.findByLoginNameAndRole(loginName, Role.INVESTOR) == null) {
+            return new BaseResponseDto<>(ReturnMessage.BANK_CARD_NOT_BOUND);
         }
-        rechargeDto.setBankCode(bankCardModel.getBankCode());
-        BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-        try {
-            BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
-            if (!formDto.isSuccess()) {
-                logger.error("[MobileAppRechargeServiceImpl][recharge] pay wrapper may fail to connect.");
-
-                baseResponseDto.setCode(ReturnMessage.FAIL.getCode());
-                baseResponseDto.setMessage(ReturnMessage.FAIL.getMsg());
-                return baseResponseDto;
-            }
-            if (formDto.getData().getStatus()) {
-                bankCardResponseDto.setUrl(formDto.getData().getUrl());
-                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields()));
-            }
-        } catch (UnsupportedEncodingException e) {
-            return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
-        }
-        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(bankCardResponseDto);
-
-        return baseResponseDto;
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        BankAsyncMessage bankAsyncMessage = bankRechargeService.recharge(
+                Source.valueOf(bankRechargeRequestDto.getBaseParam().getPlatform().toUpperCase()),
+                userModel.getLoginName(),
+                userModel.getMobile(),
+                AmountConverter.convertStringToCent(bankRechargeRequestDto.getAmount()),
+                RechargePayType.FAST_PAY.name(),
+                bankRechargeRequestDto.getBaseParam().getChannel(), Role.INVESTOR);
+        return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 
     private long getLeftRechargeAmount(String mobile, BankModel bankModel) {
-        long rechargeAmount = rechargeMapper.findSumRechargeAmount(null, mobile, null, RechargeStatus.SUCCESS, null, null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
+        long rechargeAmount = rechargeMapper.findSumRechargeAmount(Role.INVESTOR,null, mobile, null, RechargeStatus.SUCCESS,  null, DateTime.now().withTimeAtStartOfDay().toDate(), new Date());
         return bankModel.getSingleDayAmount() - rechargeAmount;
     }
 

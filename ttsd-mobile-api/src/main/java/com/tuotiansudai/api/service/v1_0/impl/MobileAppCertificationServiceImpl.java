@@ -1,17 +1,15 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.tuotiansudai.api.dto.v1_0.BankAsynResponseDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
-import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppCertificationService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.BankAccountService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.IdentityNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,57 +18,40 @@ import org.springframework.stereotype.Service;
 @Service
 public class MobileAppCertificationServiceImpl implements MobileAppCertificationService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final BankAccountService bankAccountService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
+    public MobileAppCertificationServiceImpl(UserService userService, BankAccountService bankAccountService) {
+        this.userService = userService;
+        this.bankAccountService = bankAccountService;
+    }
 
     @Override
-    public BaseResponseDto<CertificationResponseDataDto> validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
-        UserModel userModel = userMapper.findByLoginName(certificationRequestDto.getBaseParam().getUserId());
-        if (userModel == null) {
-            userModel = userMapper.findByLoginNameOrMobile(certificationRequestDto.getBaseParam().getPhoneNum());
-        }
-        RegisterAccountDto registerAccountDto = certificationRequestDto.convertToRegisterAccountDto(userModel);
-        if (accountMapper.findByLoginName(registerAccountDto.getLoginName()) != null) {
-            CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
-            certificationResponseDataDto.setUserIdCardNumber(userModel.getIdentityNumber());
-            certificationResponseDataDto.setUserRealName(userModel.getUserName());
-            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = new BaseResponseDto<>();
-            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            baseResponseDto.setData(certificationResponseDataDto);
-            return baseResponseDto;
+    public BaseResponseDto<BankAsynResponseDto> certificate(String loginName, String mobile, String userName, String identityNumber, String token, String ip, String deviceId) {
+        if (!IdentityNumberValidator.validateIdentity(identityNumber)) {
+            return new BaseResponseDto<>(ReturnMessage.CERTIFICATION_FAIL);
         }
 
-        if (!IdentityNumberValidator.validateIdentity(certificationRequestDto.getUserIdCardNumber())) {
-            return new BaseResponseDto<>(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg());
+        if (userService.isIdentityNumberExist(identityNumber)) {
+            return new BaseResponseDto<>(ReturnMessage.ID_CARD_IS_EXIST);
         }
 
-        if (userService.isIdentityNumberExist(certificationRequestDto.getUserIdCardNumber())) {
-            return new BaseResponseDto<>(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
-        }
+        RegisterAccountDto registerAccountDto = new RegisterAccountDto(loginName, mobile, userName, identityNumber, Source.MOBILE);
 
-        BaseDto<PayDataDto> dto = accountService.registerAccount(registerAccountDto);
-        if (dto.getData().getStatus()) {
-            CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
-            certificationResponseDataDto.setUserIdCardNumber(certificationRequestDto.getUserIdCardNumber());
-            certificationResponseDataDto.setUserRealName(certificationRequestDto.getUserRealName());
-            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = new BaseResponseDto<>();
-            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            baseResponseDto.setMessage(dto.getData().getMessage());
-            baseResponseDto.setData(certificationResponseDataDto);
-            return baseResponseDto;
-        } else {
-            return new BaseResponseDto<>(dto.getData().getCode(), dto.getData().getMessage());
-        }
+        BankAsyncMessage bankAsyncMessage = bankAccountService.registerInvestorAccount(registerAccountDto, Source.MOBILE, token, ip, deviceId);
 
+        return CommonUtils.mapToFormData(bankAsyncMessage);
+    }
+
+    @Override
+    public BaseResponseDto<BankAsynResponseDto> resetBankPassword(String loginName) {
+        if (bankAccountService.findBankAccount(loginName, Role.INVESTOR) == null) {
+            return new BaseResponseDto<>(ReturnMessage.BANK_ACCOUNT_NOT_EXIST);
+        }
+        BankAsyncMessage bankAsyncMessage = bankAccountService.resetPassword(Source.MOBILE, loginName, Role.INVESTOR);
+
+        return CommonUtils.mapToFormData(bankAsyncMessage);
     }
 }

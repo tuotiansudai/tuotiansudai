@@ -27,15 +27,6 @@ import java.util.List;
 @Service
 public class ExportService {
 
-    public <T> List<List<String>> buildUserPointToCsvData(List<T> originList) {
-        List<List<String>> csvData = new ArrayList<>();
-        for (T item : originList) {
-            List<String> dtoStrings = ExportCsvUtil.dtoToStringList(item);
-            csvData.add(dtoStrings);
-        }
-        return csvData;
-    }
-
     public List<List<String>> buildLoanRepayCsvData(List<LoanRepayDataItemDto> loanRepayDataItemDtos) {
         List<List<String>> rows = Lists.newArrayList();
         for (LoanRepayDataItemDto loanRepayDataItemDto : loanRepayDataItemDtos) {
@@ -291,6 +282,7 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(String.valueOf(loanListDto.getId()));
             row.add(loanListDto.getName());
+            row.add(loanListDto.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(loanListDto.getProductType() == null ? "" : loanListDto.getProductType().getName());
             row.add(loanListDto.getLoanerUserName());
             row.add(loanListDto.getAgentLoginName());
@@ -339,6 +331,7 @@ public class ExportService {
             row.add(String.valueOf(record.getLoanId()));
             row.add(record.getLoanName());
             row.add(String.valueOf(record.getLoanPeriods()));
+            row.add(record.getIsBankPlatform()==null?"":record.getIsBankPlatform()?"富滇银行":"联动优势");
             row.add(record.getInvestorLoginName());
             row.add(record.isInvestorStaff() ? "是" : "否");
             row.add(record.getInvestorUserName());
@@ -354,7 +347,6 @@ public class ExportService {
             row.add(record.getChannel() != null ? record.getChannel() : "");
             row.add(record.getSource().name());
             row.add(new DateTime(record.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(record.isAutoInvest() ? "是" : "否");
             row.add(record.getInvestAmount());
 
             row.add((record.getCouponDetail() == null ? "-" : record.getCouponDetail()) + "/" + (record.getCouponActualInterest() == null ? "-" : record.getCouponActualInterest()));
@@ -373,11 +365,10 @@ public class ExportService {
             row.add(new BigDecimal(record.getRechargeId()).toString());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
+            row.add("1".equals(record.getIsStaff()) ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getAmount());
-            row.add(record.getBankCode());
             row.add(record.isFastPay() ? "是" : "否");
             row.add(record.getStatus());
             row.add(record.getSource().name());
@@ -393,15 +384,12 @@ public class ExportService {
             List<String> row = Lists.newArrayList();
             row.add(new BigDecimal(record.getWithdrawId()).toString());
             row.add(new DateTime(record.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(new DateTime(record.getApplyNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
-            row.add(new DateTime(record.getNotifyTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
+            row.add(record.getIsStaff());
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getAmount());
             row.add(record.getFee());
-            row.add(record.getBankCard());
             row.add(record.getStatus());
             row.add(record.getSource().name());
             rows.add(row);
@@ -409,27 +397,44 @@ public class ExportService {
         return rows;
     }
 
-    public List<List<String>> buildUserFunds(List<UserBillPaginationView> records) {
+    public List<List<String>> buildUserFunds(List<BankUserBillModel> records) {
         List<List<String>> rows = Lists.newArrayList();
-        for (UserBillPaginationView record : records) {
+        for (BankUserBillModel record : records) {
             List<String> row = Lists.newArrayList();
             DateTime dateTime = new DateTime(record.getCreatedTime());
             row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
             row.add(String.valueOf(record.getId()));
             row.add(record.getLoginName());
-            row.add(record.isStaff() ? "是" : "否");
             row.add(record.getUserName());
             row.add(record.getMobile());
             row.add(record.getOperationType().getDescription());
             row.add(record.getBusinessType().getDescription());
             row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
             row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
-            row.add(String.valueOf(new BigDecimal(record.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add("0");
             rows.add(row);
         }
         return rows;
     }
-
+    public List<List<String>> buildUserFundsUMP(List<UserBillPaginationView> userBillPaginationViews) {
+        List<List<String>> rows = Lists.newArrayList();
+        userBillPaginationViews.forEach(record->{
+            List<String> row = Lists.newArrayList();
+            row.add(record.getUserName());
+            DateTime dateTime = new DateTime(record.getCreatedTime());
+            row.add(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(String.valueOf(record.getId()));
+            row.add(record.getLoginName());
+            row.add(record.getMobile());
+            row.add(record.getOperationType().getDescription());
+            row.add(record.getBusinessType().getDescription());
+            row.add(String.valueOf(new BigDecimal(record.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add(String.valueOf(new BigDecimal(record.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+            row.add("0");
+            rows.add(row);
+        });
+        return rows;
+    }
     public List<List<String>> buildAccountBalance(List<UserItemDataDto> records) {
         List<List<String>> rows = Lists.newArrayList();
         for (UserItemDataDto record : records) {

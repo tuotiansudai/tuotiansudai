@@ -28,15 +28,18 @@
     <div class="menu-quick">
         <#if hasAccount>
             <#if hasBankCard>
-        <a href="/m/recharge">充值</a>
-        <a href="/m/withdraw">提现</a>
+                <a href="/m/recharge">充值</a>
+                <a href="/m/withdraw">提现</a>
             <#else>
-        <a href="/m/bind-card">充值</a>
-        <a href="/m/bind-card">提现</a>
+                <a href="#" id="noBankCardRecharge">充值</a>
+                <a href="#" id="noBankCardWithdraw">提现</a>
+                <form id="bindCardForm" action="/m/bank-card/bind/source/M" method="post" style="display: none">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
             </#if>
         <#else>
-        <a href="/m/register/account">充值</a>
-        <a href="/m/register/account">提现</a>
+            <a href="/m/register/account">充值</a>
+            <a href="/m/register/account">提现</a>
         </#if>
     </div>
 
@@ -44,10 +47,12 @@
         <li class="top-distance"><a>我的体验金<em
                 class="experience-amount">${((experienceBalance/100)?string.computer)!}元</em></a></li>
         <li><a href="/m/investor/invest-list">我的投资<i class="iconRight"></i></a></li>
-        <li><a href="/m/my-treasure">优惠券<i class="iconRight"></i></a></li>
         <li class="top-distance"><a href="/m/personal-info">个人资料<i class="iconRight"></i></a></li>
         <li class="top-distance"><a href="/m/settings">设置<i class="iconRight"></i></a></li>
     </ul>
+    <@global.role hasRole="'UMP_INVESTOR'">
+        <p class="liandong-tip"> 提示：查看联动优势存管账号资金余额，请登录<strong>PC端拓天速贷</strong></p>
+    </@global.role>
 </div>
 
 </@global.main>
