@@ -47,43 +47,47 @@
     <div class="bot"></div>
 </div>
 <div class="heroic-list-section">
-    <div class="horo-top">
-        <ul>
-            <li><span class="icon"></span>时间：2018-08-09</li>
-            <li><span class="icon"></span>我的排名：登录后查看</li>
-            <li><span class="icon"></span>今日投资额：登录后查看</li>
+    <div class="horo-top page-width">
+        <ul class="clearfix">
+            <li><span class="icon icon-time"></span>时间：2018-08-09</li>
+            <li><span class="icon icon-rank"></span>我的排名：<span>登录后查看</span></li>
+            <li><span class="icon icon-invest"></span>今日投资额：<span>登录后查看</span></li>
         </ul>
     </div>
     <div class="horo-wrap">
         <div class="title"></div>
         <div class="horo-list-wrap">
-            <ul>
-                <li><div>排名</div><div>用户名</div><div>投资额（元）</div><div>奖励</div></li>
-                <li><div>1</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li><div>2</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li><div>3</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
-                <li><div>4</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
+            <div class="top-list"><div>排名</div><div>用户名</div><div>投资额（元）</div><div>奖励</div></div>
+            <ul class="horo-list">
+
+                <li class="clearfix"><div>1</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
+                <li class="clearfix"><div>2</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
+                <li class="clearfix"><div>3</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
+                <li class="clearfix"><div>4</div><div>157****8989</div><div>333333.3333</div><div>实物大奖</div></li>
 
             </ul>
         </div>
-        <div class="prev-btn"></div>
-        <div class="next-btn"></div>
+        <div class="change-btn prev-btn"></div>
+        <div class="change-btn next-btn"></div>
     </div>
 
     <div class="loan-bg">
         <div class="loan-btn"></div>
+        <div class="big-red-ware"></div>
     </div>
 </div>
 <div class="kindly-tip">
-    <div class="kindly-title">温馨提示：</div>
-    <div class="kindly-content">
-      <p>1. 本活动仅限直投项目，债权转让及新手专享项目不参与累计；</p>
-      <p>2. 每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</p>
-      <p>3. 排行榜活动加息券将于获奖后三个工作日内统一发放，实物奖品将于活动结束后七个工作日内统一安排发放；</p>
-      <p>4. 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</p>
-      <p>5. 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</p>
-      <p>6. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
-      <p>7. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</p>
+    <div class="page-width">
+        <div class="kindly-title">温馨提示：</div>
+        <div class="kindly-content">
+            <p class="first">1. 本活动仅限直投项目，债权转让及新手专享项目不参与累计；</p>
+            <p>2. 每日投资排行榜排名将在活动页面实时更新，排行榜中奖人数最多10名，如遇金额一致，则当日先达到该投资额的用户优先获奖，其他用户名次顺延；</p>
+            <p>3. 排行榜活动加息券将于获奖后三个工作日内统一发放，实物奖品将于活动结束后七个工作日内统一安排发放；</p>
+            <p>4. 为了保证获奖结果的公平性，排行榜活动中实物大奖获奖用户在活动期间所进行的所有投标不允许进行债权转让，否则奖品将不予发放；</p>
+            <p>5. 拓天速贷会根据活动的情况，以等值、增值为基础调整奖品类型；</p>
+            <p>6. 活动中如有使用虚假账号、恶意刷奖等违规行为，一经查出拓天速贷有权撤销您的获奖资格；</p>
+            <p>7. 活动遵循拓天速贷法律声明，最终解释权归拓天速贷所有。</p>
+        </div>
     </div>
 </div>
 
