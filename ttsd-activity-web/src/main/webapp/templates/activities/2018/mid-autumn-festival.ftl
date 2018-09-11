@@ -23,11 +23,11 @@
         <div class="big-prize-title">
 
         </div>
-        <p class="big-prize-des">小米全面屏智能手机全网通4G双卡</p>
+        <p class="big-prize-des"><#if prizeDto??>${prizeDto.goldPrizeName}</#if></p>
 
         <div class="three-prize-bg">
             <div class="phone">
-                <img src="" alt="">
+                <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>" alt="">
             </div>
         </div>
         <div class="other-prize clearfix">
@@ -50,8 +50,14 @@
     <div class="horo-top page-width">
         <ul class="clearfix">
             <li><span class="icon icon-time"></span>时间：<span class="date-time" id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}>2018-08-09</span></li>
-            <li><span class="icon icon-rank"></span>我的排名：<span>登录后查看</span></li>
-            <li><span class="icon icon-invest"></span>今日投资额：<span>登录后查看</span></li>
+            <li><span class="icon icon-rank">
+                <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
+                <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
+            </li>
+            <li><span class="icon icon-invest">
+                <@global.isAnonymous>今日投资额：<span class="show-login">登录后查看</span></@global.isAnonymous>
+                <@global.isNotAnonymous>今日投资额：<span>${(investAmount/100)?string('0.00')}</span>元</@global.isNotAnonymous>
+            </li>
         </ul>
     </div>
     <div class="horo-wrap">
