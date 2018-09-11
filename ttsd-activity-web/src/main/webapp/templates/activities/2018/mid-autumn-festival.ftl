@@ -94,26 +94,26 @@
     <script type="text/template" id="tplTable">
 
 
-        <% for(var i = 0; i < records.length; i++) {
-        var item = records[i];
-        var reward;
-        if(i==0) {
-        reward='实物大奖';
-        }
-        else if(i>0 && i<4) {
-        reward='1.1%加息券';
-        }
-        else {
-        reward='100元京东E卡';
-        }
-        %>
-        <tr>
-            <td><%=i+1%></td>
-            <td><%=item.loginName%></td>
-            <td><%=item.centSumAmount%></td>
-            <td><%=reward%></td>
-        </tr>
-        <% } %>
+        <#--<% for(var i = 0; i < records.length; i++) {-->
+        <#--var item = records[i];-->
+        <#--var reward;-->
+        <#--if(i==0) {-->
+        <#--reward='实物大奖';-->
+        <#--}-->
+        <#--else if(i>0 && i<4) {-->
+        <#--reward='1.1%加息券';-->
+        <#--}-->
+        <#--else {-->
+        <#--reward='100元京东E卡';-->
+        <#--}-->
+        <#--%>-->
+        <#--<tr>-->
+            <#--<td><%=i+1%></td>-->
+            <#--<td><%=item.loginName%></td>-->
+            <#--<td><%=item.centSumAmount%></td>-->
+            <#--<td><%=reward%></td>-->
+        <#--</tr>-->
+        <#--<% } %>-->
 
 
 
