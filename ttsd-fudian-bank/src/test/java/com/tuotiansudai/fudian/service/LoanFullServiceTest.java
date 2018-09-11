@@ -70,13 +70,10 @@ public class LoanFullServiceTest {
         ArgumentCaptor<String> messageKeyCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> messageHKeyCaptor = ArgumentCaptor.forClass(String.class);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanFullRequestDto) o).setOrderNo("111111");
-                ((LoanFullRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanFullRequestDto) o).setOrderNo("111111");
+            ((LoanFullRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
@@ -103,13 +100,10 @@ public class LoanFullServiceTest {
 
     @Test
     public void loanFullSignFail(){
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanFullRequestDto) o).setOrderNo("111111");
-                ((LoanFullRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanFullRequestDto) o).setOrderNo("111111");
+            ((LoanFullRequestDto) o).setRequestData(null);
+            return false;
         }));
         BankBaseMessage message = loanFullService.full(mockBankLoanFullDto());
         assertFalse(message.isStatus());
@@ -118,13 +112,10 @@ public class LoanFullServiceTest {
 
     @Test
     public void loanFullVerifySignFail(){
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<LoanInvestRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanFullRequestDto) o).setOrderNo("111111");
-                ((LoanFullRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanFullRequestDto) o).setOrderNo("111111");
+            ((LoanFullRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
         when(bankClient.send(eq(ApiType.LOAN_FULL), anyString())).thenReturn(null);

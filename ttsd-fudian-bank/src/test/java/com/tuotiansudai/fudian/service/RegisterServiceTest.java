@@ -64,13 +64,10 @@ public class RegisterServiceTest {
 
         BankRegisterDto dto = new BankRegisterDto("loginName", "11111111111", "token", "realName", "111111111111111111");
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((RegisterRequestDto) o).setOrderNo("111111");
-                ((RegisterRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((RegisterRequestDto) o).setOrderNo("111111");
+            ((RegisterRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
@@ -96,13 +93,10 @@ public class RegisterServiceTest {
 
         BankRegisterDto dto = new BankRegisterDto("loginName", "11111111111", "token", "realName", "111111111111111111");
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RegisterRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((RegisterRequestDto) o).setOrderNo("111111");
-                ((RegisterRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((RegisterRequestDto) o).setOrderNo("111111");
+            ((RegisterRequestDto) o).setRequestData(null);
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));

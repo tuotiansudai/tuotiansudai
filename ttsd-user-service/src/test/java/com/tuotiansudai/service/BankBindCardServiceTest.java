@@ -68,7 +68,6 @@ public class BankBindCardServiceTest {
         when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(mockBankAccountModel());
         bankBindCardService.bind("loginName", Source.WEB, "ip", "deviceId", Role.INVESTOR);
-        verify(userOpLogService, times(1)).sendUserOpLogMQ(anyString(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(1)).investorBindBankCard(any(), loginNameCaptor.capture(), anyString(), anyString(), anyString());
         verify(bankWrapperClient, times(0)).loanerBindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         assertThat(loginNameCaptor.getValue(), is("loginName"));
@@ -81,7 +80,6 @@ public class BankBindCardServiceTest {
         when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(mockBankAccountModel());
         BankAsyncMessage message = bankBindCardService.bind("loginName", Source.WEB, "ip", "deviceId", Role.INVESTOR);
-        verify(userOpLogService, times(0)).sendUserOpLogMQ(anyString(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(0)).investorBindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         verify(bankWrapperClient, times(0)).loanerBindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         assertFalse(message.isStatus());
@@ -115,7 +113,6 @@ public class BankBindCardServiceTest {
         when(userMapper.findByLoginName(anyString())).thenReturn(mockUserModel());
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(mockBankAccountModel());
         bankBindCardService.unbind("loginName", Source.WEB, "ip", "deviceId", Role.INVESTOR);
-        verify(userOpLogService, times(1)).sendUserOpLogMQ(anyString(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(1)).investorUnbindBankCard(any(), loginNameCaptor.capture(), anyString(), anyString(), anyString());
         verify(bankWrapperClient, times(0)).loanerUnbindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         assertThat(loginNameCaptor.getValue(), is("loginName"));
@@ -125,7 +122,6 @@ public class BankBindCardServiceTest {
     public void unbindFail(){
         when(userBankCardMapper.findByLoginNameAndRole(anyString(), any())).thenReturn(null);
         BankAsyncMessage message = bankBindCardService.unbind("loginName", Source.WEB, "ip", "deviceId", Role.INVESTOR);
-        verify(userOpLogService, times(0)).sendUserOpLogMQ(anyString(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(0)).investorUnbindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         verify(bankWrapperClient, times(0)).loanerUnbindBankCard(any(), anyString(), anyString(), anyString(), anyString());
         assertFalse(message.isStatus());

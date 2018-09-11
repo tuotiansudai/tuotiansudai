@@ -89,34 +89,30 @@ public class LoanCallbackServiceTest {
         when(redisTemplate.opsForValue()).thenReturn(operations);
         when(operations.increment(anyString(), anyInt())).thenReturn(1l);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCallbackRequestDto) o).setOrderNo("111111");
-                ((LoanCallbackRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCallbackRequestDto) o).setOrderNo("111111");
+            ((LoanCallbackRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         doNothing().when(insertMapper).insertLoanCallback(any(LoanCallbackRequestDto.class));
-        doNothing().when(insertMapper).insertLoanCallbackInvestItems(anyListOf(LoanCallbackInvestItemRequestDto.class));
+        doNothing().when(insertMapper).insertLoanCallbackInvestItems(anyList());
 
         String responseData = "{\"certInfo\":\"certInfo\",\"content\":{\"extMark\":\"{\\\"loginName\\\":\\\"loginName1\\\",\\\"mobile\\\":\\\"11111111111\\\"}\",\"investList\":[{\"capital\":10.00,\"interest\":0.01,\"interestFee\":0.01,\"investAccountNo\":\"bankAccountNo1\",\"investOrderDate\":\"20180810\",\"investOrderNo\":\"111111111111\",\"investUserName\":\"bankUserName1\",\"merchantName\":\"拓天速贷\",\"orderDate\":\"20180810\",\"orderNo\":\"111111\",\"rateInterest\":0.00,\"retCode\":\"0000\",\"retMsg\":\"操作成功\"},{\"capital\":10.00,\"interest\":0.01,\"interestFee\":0.01,\"investAccountNo\":\"bankAccountNo2\",\"investOrderDate\":\"20180810\",\"investOrderNo\":\"222222222222\",\"investUserName\":\"bankUserName\",\"merchantName\":\"拓天速贷\",\"orderDate\":\"20180810\",\"orderNo\":\"222222\",\"rateInterest\":0.00,\"retCode\":\"0000\",\"retMsg\":\"操作成功\"}],\"loanTxNo\":\"LU02688449311831001\",\"merchantNo\":\"M02608959047521001\",\"orderDate\":\"20180810\",\"orderNo\":\"333333\"},\"retCode\":\"0000\",\"retMsg\":\"操作成功\",\"sign\":\"sign\"}";
         when(bankClient.send(eq(ApiType.LOAN_CALLBACK), anyString())).thenReturn(responseData);
         when(signatureHelper.verifySign(anyString())).thenReturn(true);
 
         when(updateMapper.updateNotifyResponseData(anyString(), any(ResponseDto.class))).thenReturn(1);
-        doNothing().when(updateMapper).updateLoanCallbackInvestItems(anyListOf(LoanCallbackInvestItemContentDto.class));
+        doNothing().when(updateMapper).updateLoanCallbackInvestItems(anyList());
 
         loanCallbackService.sendSchedule();
 
         verify(signatureHelper, times(1)).sign(eq(ApiType.LOAN_CALLBACK), any(LoanCallbackRequestDto.class));
         verify(insertMapper, times(1)).insertLoanCallback(loanCallbackRequestDtoCaptor.capture());
-        verify(insertMapper, times(1)).insertLoanCallbackInvestItems(anyListOf(LoanCallbackInvestItemRequestDto.class));
+        verify(insertMapper, times(1)).insertLoanCallbackInvestItems(anyList());
         verify(bankClient, times(1)).send(eq(ApiType.LOAN_CALLBACK), anyString());
         verify(signatureHelper, times(1)).verifySign(anyString());
         verify(updateMapper, times(1)).updateNotifyResponseData(anyString(), any(ResponseDto.class));
-        verify(messageQueueClient, times(2)).sendMessage(eq(MessageQueue.LoanCallback_Success), any(LoanCallbackInvestItemContentDto.class));
 
         assertThat(loanCallbackRequestDtoCaptor.getValue().getLoanTxNo(), is("loanTxNo"));
         assertThat(loanCallbackRequestDtoCaptor.getValue().getOrderNo(), is("111111"));
@@ -154,13 +150,10 @@ public class LoanCallbackServiceTest {
         when(redisTemplate.opsForValue()).thenReturn(operations);
         when(operations.increment(anyString(), anyInt())).thenReturn(1l);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCallbackRequestDto) o).setOrderNo("111111");
-                ((LoanCallbackRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCallbackRequestDto) o).setOrderNo("111111");
+            ((LoanCallbackRequestDto) o).setRequestData(null);
+            return false;
         }));
 
         loanCallbackService.sendSchedule();

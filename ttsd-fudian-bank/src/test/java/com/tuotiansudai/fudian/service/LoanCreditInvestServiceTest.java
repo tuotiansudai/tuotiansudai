@@ -88,13 +88,10 @@ public class LoanCreditInvestServiceTest {
         ArgumentCaptor<Long> messageTimeoutCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<TimeUnit> messageTimeUnitCaptor = ArgumentCaptor.forClass(TimeUnit.class);
 
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCreditInvestRequestDto) o).setOrderNo("111111");
-                ((LoanCreditInvestRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCreditInvestRequestDto) o).setOrderNo("111111");
+            ((LoanCreditInvestRequestDto) o).setRequestData("requestData");
+            return false;
         }));
 
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
@@ -113,13 +110,10 @@ public class LoanCreditInvestServiceTest {
 
     @Test
     public void investFail(){
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((LoanCreditInvestRequestDto) o).setOrderNo("111111");
-                ((LoanCreditInvestRequestDto) o).setRequestData(null);
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((LoanCreditInvestRequestDto) o).setOrderNo("111111");
+            ((LoanCreditInvestRequestDto) o).setRequestData(null);
+            return false;
         }));
 
         LoanCreditInvestRequestDto dto = loanCreditInvestService.invest(Source.WEB, mockBankLoanCreditInvestDto());

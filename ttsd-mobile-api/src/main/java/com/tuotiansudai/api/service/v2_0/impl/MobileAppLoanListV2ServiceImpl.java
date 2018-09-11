@@ -60,7 +60,7 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
         ActivityType activityType = ActivityType.NORMAL;
         if (Strings.isNullOrEmpty(loginName)
                 || investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
-            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(), ActivityType.NEWBIE));
+            loanModels.addAll(loanMapper.findByProductType(LoanStatus.RAISING, allProductTypesCondition, ActivityType.NEWBIE));
         }
 
         if (investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceCondition) == 0) {

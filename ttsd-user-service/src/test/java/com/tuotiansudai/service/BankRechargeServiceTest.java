@@ -4,6 +4,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.RechargeStatus;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankRechargeMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -108,11 +109,8 @@ public class BankRechargeServiceTest {
 
     @Test
     public void rechargeSuccessLoaner() {
-        BankAccountModel bankAccountMode = new BankAccountModel();
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(bankAccountMode);
-        //
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockBankAccountModel());
         bankRechargeService.recharge(Source.WEB, "loginName", "mobile", 1l, "payType", "channel", Role.LOANER);
-        //
         verify(bankRechargeMapper, times(1)).createLoaner(any(BankRechargeModel.class));
         verify(bankRechargeMapper, times(0)).createInvestor(any(BankRechargeModel.class));
         verify(bankWrapperClient, times(1)).recharge(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString());
@@ -120,11 +118,11 @@ public class BankRechargeServiceTest {
 
     @Test
     public void rechargeSuccessInvestor() {
-        BankAccountModel bankAccountMode = new BankAccountModel();
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(bankAccountMode);
-        //
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), any(Role.class))).thenReturn(mockBankAccountModel());
+        BankAsyncMessage message = new BankAsyncMessage();
+        message.setStatus(true);
+        when(bankWrapperClient.recharge(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString())).thenReturn(message);
         bankRechargeService.recharge(Source.WEB, "loginName", "mobile", 1l, "payType", "channel", Role.INVESTOR);
-        //
         verify(bankRechargeMapper, times(0)).createLoaner(any(BankRechargeModel.class));
         verify(bankRechargeMapper, times(1)).createInvestor(any(BankRechargeModel.class));
         verify(bankWrapperClient, times(1)).recharge(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString());
@@ -133,9 +131,17 @@ public class BankRechargeServiceTest {
     @Test
     public void rechargeFail() {
         bankRechargeService.recharge(Source.WEB, "loginName", "mobile", 1l, "payType", "channel", null);
-        //
         verify(bankRechargeMapper, times(0)).createLoaner(any(BankRechargeModel.class));
         verify(bankRechargeMapper, times(0)).createInvestor(any(BankRechargeModel.class));
         verify(bankWrapperClient, times(0)).recharge(anyLong(), any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString());
+    }
+
+    private BankAccountModel mockBankAccountModel(){
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setId(1);
+        bankAccountModel.setLoginName("loginName");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        return bankAccountModel;
     }
 }

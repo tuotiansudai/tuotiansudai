@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.fudian.dto.BankLoanRepayDto;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.repository.mapper.BankAccountMapper;
@@ -26,7 +27,6 @@ import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertThat;
 
@@ -92,7 +92,7 @@ public class NormalLoanRepayServiceTest {
         verify(loanRepayMapper, times(1)).findEnabledLoanRepayByLoanId(anyLong());
         verify(loanMapper, times(1)).findById(anyLong());
         verify(userMapper, times(1)).findByLoginName(anyString());
-        verify(bankAccountMapper, times(1)).findByLoginNameAndRole(anyString(), any());
+        verify(bankAccountMapper, times(1)).findByLoginNameAndRole(anyString(), eq(Role.LOANER));
         verify(investRepayMapper, times(1)).queryBankInvestRepayData(anyLong(), anyInt());
         verify(bankWrapperClient, times(1)).loanRepay(bankLoanRepayDtoCaptor.capture());
         verify(loanRepayMapper, times(1)).update(loanRepayModelCaptor.capture());

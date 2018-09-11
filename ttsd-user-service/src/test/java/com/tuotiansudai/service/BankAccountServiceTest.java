@@ -4,6 +4,7 @@ import com.tuotiansudai.client.BankWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.enums.Role;
+import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.fudian.message.BankAsyncMessage;
 import com.tuotiansudai.fudian.message.BankRegisterMessage;
 import com.tuotiansudai.log.service.UserOpLogService;
@@ -82,7 +83,6 @@ public class BankAccountServiceTest {
         message.setStatus(true);
         when(bankWrapperClient.registerInvestor(any(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(message);
         bankAccountService.registerInvestorAccount(mockRegisterAccountDto(), Source.WEB, "token", "ip", "deviceld");
-        verify(userOpLogService, times(1)).sendUserOpLogMQ(loginNameCaptor.capture(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(1)).registerInvestor(any(), loginNameCaptor.capture(), anyString(), anyString(), anyString(), anyString());
         assertThat(loginNameCaptor.getValue(), is("loginName"));
         assertTrue(message.isStatus());
@@ -108,7 +108,6 @@ public class BankAccountServiceTest {
         message.setStatus(true);
         when(bankWrapperClient.registerInvestor(any(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(message);
         bankAccountService.registerLoanerAccount("loginName","token", "ip", "deviceld");
-        verify(userOpLogService, times(1)).sendUserOpLogMQ(loginNameCaptor.capture(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(1)).registerLoaner(any(), loginNameCaptor.capture(), anyString(), anyString(), anyString(), anyString());
         assertThat(loginNameCaptor.getValue(), is("loginName"));
     }
@@ -125,7 +124,6 @@ public class BankAccountServiceTest {
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.INVESTOR))).thenReturn(mockBankAccountModel());
         when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(mockBankAccountModel());
         BankAsyncMessage message1 = bankAccountService.registerLoanerAccount("loginName","token", "ip", "deviceld");
-        verify(userOpLogService, times(0)).sendUserOpLogMQ(anyString(), anyString(), anyString(), anyString(), any(), anyString());
         verify(bankWrapperClient, times(0)).registerInvestor(any(), anyString(), anyString(), anyString(), anyString(), anyString());
         assertFalse(message1.isStatus());
         assertThat(message1.getMessage(), is("已实名认证"));

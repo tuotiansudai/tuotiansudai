@@ -79,13 +79,10 @@ public class WithdrawServiceTest {
         ArgumentCaptor<TimeUnit> messageTimeUnitCaptor = ArgumentCaptor.forClass(TimeUnit.class);
         BankWithdrawDto bankWithdrawDto = new BankWithdrawDto(1l, "loginName", "mobile", "bankUserName", "bankAccountNo", 1l, true, "openId");
         //
-        doNothing().when(signatureHelper).sign(any(), argThat(new ArgumentMatcher<RechargeRequestDto>() {
-            @Override
-            public boolean matches(Object o) {
-                ((WithdrawRequestDto) o).setOrderNo("111111");
-                ((WithdrawRequestDto) o).setRequestData("requestData");
-                return false;
-            }
+        doNothing().when(signatureHelper).sign(any(), argThat(o -> {
+            ((WithdrawRequestDto) o).setOrderNo("111111");
+            ((WithdrawRequestDto) o).setRequestData("requestData");
+            return false;
         }));
         when(redisTemplate.opsForHash()).thenReturn(mock(HashOperations.class));
         //

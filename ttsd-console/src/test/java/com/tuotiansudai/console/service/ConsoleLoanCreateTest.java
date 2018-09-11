@@ -117,15 +117,14 @@ public class ConsoleLoanCreateTest {
         LoanCreateBaseRequestDto loan = new LoanCreateBaseRequestDto();
         loan.setId(1l);
         loanCreateRequestDto.setLoan(loan);
-        LoanModel loanModel = new LoanModel();
+        LoanModel loanModel = mockLoanModel();
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
-
 
         Scheduler scheduler = mock(Scheduler.class);
         TriggeredJobBuilder triggeredJobBuilder = new TriggeredJobBuilder(DelayMessageDeliveryJob.class, scheduler);
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(new BankAccountModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(mockBankAccountModel());
         when(jobManager.newJob(any(JobType.class), any())).thenReturn(triggeredJobBuilder);
         BankLoanCreateMessage bankLoanCreateMessage = new BankLoanCreateMessage();
         bankLoanCreateMessage.setStatus(true);
@@ -161,11 +160,11 @@ public class ConsoleLoanCreateTest {
         LoanCreateBaseRequestDto loan = new LoanCreateBaseRequestDto();
         loan.setId(1l);
         loanCreateRequestDto.setLoan(loan);
-        LoanModel loanModel = new LoanModel();
+        LoanModel loanModel = mockLoanModel();
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
-        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(new BankAccountModel());
+        when(bankAccountMapper.findByLoginNameAndRole(anyString(), eq(Role.LOANER))).thenReturn(mockBankAccountModel());
         BankLoanCreateMessage bankLoanCreateMessage = new BankLoanCreateMessage();
         bankLoanCreateMessage.setStatus(false);
         when(bankWrapperClient.createLoan(anyString(), anyString(), anyString(), anyLong(), anyString())).thenReturn(bankLoanCreateMessage);
@@ -181,9 +180,8 @@ public class ConsoleLoanCreateTest {
         LoanCreateBaseRequestDto loan = new LoanCreateBaseRequestDto();
         loan.setId(1l);
         loanCreateRequestDto.setLoan(loan);
-        LoanModel loanModel = new LoanModel();
 
-        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+        when(loanMapper.findById(anyLong())).thenReturn(mockLoanModel());
         when(investMapper.findWaitingInvestCountAfter(anyLong(), any(Date.class))).thenReturn(0);
         BankLoanCancelMessage bankLoanCancelMessage = new BankLoanCancelMessage();
         bankLoanCancelMessage.setStatus(true);
@@ -226,5 +224,26 @@ public class ConsoleLoanCreateTest {
         verify(investMapper, times(0)).cleanWaitingInvest(anyLong());
         verify(bankWrapperClient, times(0)).cancelLoan(anyLong(), anyString(), anyString(), anyString());
         assertNotNull(baseDto);
+    }
+
+    private LoanModel mockLoanModel(){
+        LoanModel loanModel = new LoanModel();
+        loanModel.setName("loanName");
+        loanModel.setAgentLoginName("agentLoanName");
+        loanModel.setLoanAmount(1000L);
+        loanModel.setLoanTxNo("loanTxNo");
+        loanModel.setBankOrderNo("111111");
+        loanModel.setBankOrderDate("20180810");
+        loanModel.setFundraisingStartTime(new Date());
+        loanModel.setFundraisingEndTime(new Date());
+        return loanModel;
+    }
+
+    private BankAccountModel mockBankAccountModel(){
+        BankAccountModel bankAccountModel = new BankAccountModel();
+        bankAccountModel.setLoginName("agentLoanName");
+        bankAccountModel.setBankUserName("bankUserName");
+        bankAccountModel.setBankAccountNo("bankAccountNo");
+        return bankAccountModel;
     }
 }
