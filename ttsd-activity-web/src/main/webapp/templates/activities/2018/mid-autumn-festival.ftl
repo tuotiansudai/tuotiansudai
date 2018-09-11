@@ -49,14 +49,14 @@
 <div class="heroic-list-section">
     <div class="horo-top page-width">
         <ul class="clearfix">
-            <li><span class="icon icon-time"></span>时间：<span class="date-time" id="dateTime" data-starttime="${activityStartTime}" data-endtime="${activityEndTime}">2018-08-09</span></li>
-            <li><span class="icon icon-rank">
-                <@global.isAnonymous>我的排名：<span class="show-login">登录后查看</span></@global.isAnonymous>
-                <@global.isNotAnonymous><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></@global.isNotAnonymous>
+            <li><span class="icon icon-time"></span>时间：${currentTime}</li>
+            <li>
+                <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<span>登录后查看</span></@global.isAnonymous>
+                <@global.isNotAnonymous><span class="icon icon-rank"></span><span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
             </li>
-            <li><span class="icon icon-invest">
-                <@global.isAnonymous>今日投资额：<span class="show-login">登录后查看</span></@global.isAnonymous>
-                <@global.isNotAnonymous>今日投资额：<span>${(investAmount/100)?string('0.00')}</span>元</@global.isNotAnonymous>
+            <li>
+                <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<span>登录后查看</span></@global.isAnonymous>
+                <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：<span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
             </li>
         </ul>
     </div>

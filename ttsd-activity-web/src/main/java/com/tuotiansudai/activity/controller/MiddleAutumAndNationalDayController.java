@@ -55,7 +55,7 @@ public class MiddleAutumAndNationalDayController {
         modelAndView.addObject("investAmount", investAmount);
         modelAndView.addObject("activityStartTime", activityTime.get(0));
         modelAndView.addObject("activityEndTime", activityTime.get(1));
-        modelAndView.addObject("currentTime", new DateTime().withTimeAtStartOfDay().toDate());
+        modelAndView.addObject("currentTime", prizeDtoKey);
         modelAndView.addObject("yesterdayTime", DateUtils.addDays(new DateTime().withTimeAtStartOfDay().toDate(), -1));
         return modelAndView;
     }
