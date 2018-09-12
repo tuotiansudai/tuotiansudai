@@ -5,7 +5,7 @@ require('publicJs/login_tip');
 let sourceKind = globalFun.parseURL(location.href);
 
 let imgUrl = require('../images/2018/mid-autumn-festival/phone.png');
-$('.phone').find('img').attr('src',imgUrl)
+$('#staticImg').attr('src',imgUrl)
 let $contentList = $('#contentList'),
     $changeBtn = $('.change-btn'),
     $currentDate = $('#currentDate'),
@@ -20,25 +20,36 @@ $date.text(nowDate.substr(0,10))//当日日期
 heroRank(nowDate);
 showBtns();
 
-
+var timer= null;
 function cutDownTime() {
     let nowDate = getNowDate();
     let nowDateTime = new Date(nowDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date(nowDate.substr(0,10)+' 22:00:00'.replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date(nowDate.substr(0,10)+' 22:10:00'.replace(/-/g, "/")).getTime();
     let distance = todayOverTime-nowDateTime;
-    var second = Math.floor(distance / 1000);//未来时间距离现在的秒数
-    var day = Math.floor(second / 86400);//整数部分代表的是天；一天有24*60*60=86400秒 ；
-    second = second % 86400;//余数代表剩下的秒数；
-    var hour = Math.floor(second / 3600);//整数部分代表小时；
-    second %= 3600; //余数代表 剩下的秒数；
-    var minute = Math.floor(second / 60);
-    second %= 60;
+    var second,hour,minute;
+    if(distance>=0){
+        second = Math.floor(distance / 1000);//未来时间距离现在的秒数
+        second = second % 86400;//余数代表剩下的秒数；
+        hour = Math.floor(second / 3600);//整数部分代表小时；
+        second %= 3600; //余数代表 剩下的秒数；
+        minute = Math.floor(second / 60);
+        second %= 60;
+    }else {
+        second = 0;
+        minute = 0;
+        hour = 0 ;
+    }
+
+    if(hour <= 0&&second<=0&&minute<=0){
+        clearInterval(timer)
+    }
     $('#hourDOM').text(hour<10?'0'+hour:hour);
     $('#minutesDOM').text(minute<10?'0'+minute:minute);
     $('#secondDOM').text(second<10?'0'+second:second);
 
+
 }
-setInterval(cutDownTime, 1000);
+ timer = setInterval(cutDownTime, 1000);
 
 
 //不在活动时间范围内的提示

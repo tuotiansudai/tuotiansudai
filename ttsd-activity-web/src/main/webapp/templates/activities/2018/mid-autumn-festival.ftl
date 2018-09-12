@@ -11,9 +11,9 @@
         </div>
         <div class="rule-content">
             <ul>
-                <li>.活动期间，每天22：00计算当日新增投资排名，上榜者可获丰厚奖励。</li>
-                <li>.投资者在当日22:00之前进行的多次投资，金额可累计计算。</li>
-                <li>.截止时间以活动页面倒计时为准。</li>
+                <li class="paddingTop0"><span class="dian"></span>活动期间，每天22：00计算当日新增投资排名，上榜者可获丰厚奖励。</li>
+                <li class="borderTop"><span class="dian"></span>投资者在当日22:00之前进行的多次投资，<span class="mobileStyle">金额可累计计算。</span></li>
+                <li class="borderTop borderNone lastLi"><span class="dian"></span>截止时间以活动页面倒计时为准。</li>
             </ul>
         </div>
 
@@ -23,11 +23,15 @@
     <div class="big-prize-title">
 
     </div>
-    <p class="big-prize-des"><#if prizeDto??>${prizeDto.goldPrizeName}</#if></p>
+    <p class="big-prize-des"><#if prizeDto??>${prizeDto.goldPrizeName}<#else>实物大奖</#if></p>
 
     <div class="three-prize-bg">
         <div class="phone">
-            <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>" alt="">
+            <#if prizeDto??>
+                <img src="${commonStaticServer}${prizeDto.goldImageUrl}" alt="">
+            <#else>
+                <img id="staticImg" src="" alt="">
+            </#if>
         </div>
     </div>
     <div class="other-prize clearfix">
@@ -41,7 +45,9 @@
     <div class="content">
         <div class="cut-tip"></div>
         <div class="cut-down-wrap clearfix" id="cutDownDOM">
-            <span class="num" id="hourDOM">02</span><span class="dot">:</span><span class="num" id="minutesDOM">53</span><span class="dot">:</span><span class="num" id="secondDOM">26</span>
+            <span class="num" id="hourDOM">00</span><span class="dot">:</span><span class="num"
+                                                                                    id="minutesDOM">00</span><span
+                class="dot">:</span><span class="num" id="secondDOM">00</span>
         </div>
     </div>
     <div class="bot"></div>
