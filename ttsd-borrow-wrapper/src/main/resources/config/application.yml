@@ -1,0 +1,30 @@
+server:
+  port: 8888
+spring:
+  datasource:
+      jdbc-url: jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&useSSL=false
+      username: ${common.jdbc.username}
+      password: ${common.jdbc.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 10
+        minimum-idle: 1
+        idle-timeout: 60000
+        connection-timeout: 10000
+
+  redis:
+      host: ${common.redis.host}
+      port: ${common.redis.port}
+      database: 5
+      jedis:
+        pool:
+          max-active: 50
+          max-wait: 3s
+          min-idle: 10
+          max-idle: 15
+
+redisson:
+  address: redis://${common.redis.host}:${common.redis.port}
+  timeout: 10000
+  connectionPoolSize: 50
+  database: 10
