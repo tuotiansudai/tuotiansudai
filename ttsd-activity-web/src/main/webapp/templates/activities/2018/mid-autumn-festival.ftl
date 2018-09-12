@@ -40,8 +40,8 @@
     <div class="top"></div>
     <div class="content">
         <div class="cut-tip"></div>
-        <div class="cut-down-wrap clearfix">
-            <span class="num">02</span><span class="dot">:</span><span class="num">53</span><span class="dot">:</span><span class="num">26</span>
+        <div class="cut-down-wrap clearfix" id="cutDownDOM">
+            <span class="num" id="hourDOM">02</span><span class="dot">:</span><span class="num" id="minutesDOM">53</span><span class="dot">:</span><span class="num" id="secondDOM">26</span>
         </div>
     </div>
     <div class="bot"></div>

@@ -16,10 +16,31 @@ let $activityStatus = $('#activity_status')
 
 let nowDate = getNowDate();
 $currentDate.val(nowDate);
-$date.text(nowDate.substr(0,10))
+$date.text(nowDate.substr(0,10))//当日日期
 heroRank(nowDate);
-console.log('哈哈')
 showBtns();
+
+
+function cutDownTime() {
+    let nowDate = getNowDate();
+    let nowDateTime = new Date(nowDate.replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date(nowDate.substr(0,10)+' 22:00:00'.replace(/-/g, "/")).getTime();
+    let distance = todayOverTime-nowDateTime;
+    var second = Math.floor(distance / 1000);//未来时间距离现在的秒数
+    var day = Math.floor(second / 86400);//整数部分代表的是天；一天有24*60*60=86400秒 ；
+    second = second % 86400;//余数代表剩下的秒数；
+    var hour = Math.floor(second / 3600);//整数部分代表小时；
+    second %= 3600; //余数代表 剩下的秒数；
+    var minute = Math.floor(second / 60);
+    second %= 60;
+    $('#hourDOM').text(hour<10?'0'+hour:hour);
+    $('#minutesDOM').text(minute<10?'0'+minute:minute);
+    $('#secondDOM').text(second<10?'0'+second:second);
+
+}
+setInterval(cutDownTime, 1000);
+
+
 //不在活动时间范围内的提示
 // if(commonFun.activityStatus($activityStatus) == 'activity-noStarted'){
 //     $('.no-record').text('不在活动时间范围内！');
