@@ -152,33 +152,89 @@ strong, em {
     .cut-down-wrap {
       width: 952px;
       height: 189px;
-      font-size: 50px;
       color: #e30000;
       margin: 0 auto;
       margin-top: 40px;
       background: url("../images/2018/mid-autumn-festival/cut_down_bg.png") no-repeat top center;
       background-size: 100%;
       text-align: center;
+      line-height: 189px;
+      font-size: 160px;
+      font-weight: bold;
+      padding-left: 70px;
+      padding-right: 70px;
+      box-sizing: border-box;
+      >span {
+        float: left;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        &.dot {
+          line-height: 170px;
+          margin-left: 50px;
+          margin-right: 50px;
+          color: #fff;
+          font-family: 'Microsoft Yahei', '\5FAE\8F6F\96C5\9ED1', Arial, 'Hiragino Sans GB', '\5B8B\4F53';
+        }
+      }
     }
   }
 }
 .heroic-list-section {
+  margin-top: 180px;
   .horo-top {
     padding-left: 50px;
     padding-right: 50px;
     background: #ca2600;
     border-radius: 50px;
+    position: relative;
+    .money {
+      position: absolute;
+      z-index: -10;
+      left: 60px;
+      top: -160px;
+      width: 182px;
+      height: 192px;
+      background: url("../images/2018/mid-autumn-festival/money.png") no-repeat top center;
+      background-size: 100%;
+    }
+    .person {
+      position: absolute;
+      top: -236px;
+      right: -60px;
+      width: 252px;
+      height: 242px;
+      z-index: -10;
+      background: url("../images/2018/mid-autumn-festival/person.png") no-repeat top center;
+      background-size: 100%;
+    }
+    .title-font {
+      position: absolute;
+      left: 50%;
+      margin-left: -284px;
+      top: -136px;
+      width: 568px;
+      height: 95px;
+      background: url("../images/2018/mid-autumn-festival/horo_font.png") no-repeat top center;
+      background-size: 100%;
+    }
     ul {
       li {
         height: 100px;
         line-height: 100px;
         width: 33.333%;
+        a {
+          color: #fff;
+          &:hover {
+            color: #fff;
+            text-decoration: underline;
+          }
+        }
         .icon {
           display: inline-block;
           width: 82px;
           height: 72px;
           vertical-align: middle;
           margin-right: 10px;
+
           &.icon-time {
             background: url("../images/2018/mid-autumn-festival/icon_time.png") no-repeat top center;
             background-size: 100%;
@@ -252,14 +308,15 @@ strong, em {
       width: 49px;
       height: 99px;
       position: absolute;
-      top: 60%;
+      top: 440px;
+      cursor: pointer;
       &.prev-btn {
-        left: -40px;
+        left: -80px;
         background: url("../images/2018/mid-autumn-festival/icon_left_btn.png") no-repeat top center;
         background-size: 100%;
       }
       &.next-btn {
-        right: -40px;
+        right: -80px;
         background: url("../images/2018/mid-autumn-festival/icon_right_btn.png") no-repeat top center;
         background-size: 100%;
       }

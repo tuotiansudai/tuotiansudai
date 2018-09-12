@@ -20,56 +20,71 @@
     </div>
 </div>
 <div class="prize-wrap page-width">
-        <div class="big-prize-title">
+    <div class="big-prize-title">
 
-        </div>
-        <p class="big-prize-des"><#if prizeDto??>${prizeDto.goldPrizeName}</#if></p>
+    </div>
+    <p class="big-prize-des"><#if prizeDto??>${prizeDto.goldPrizeName}</#if></p>
 
-        <div class="three-prize-bg">
-            <div class="phone">
-                <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>" alt="">
-            </div>
+    <div class="three-prize-bg">
+        <div class="phone">
+            <img src="<#if prizeDto??>${commonStaticServer}${prizeDto.goldImageUrl}</#if>" alt="">
         </div>
-        <div class="other-prize clearfix">
-            <div class="seconed prize-box fl"></div>
-            <div class="third prize-box fr"></div>
-        </div>
+    </div>
+    <div class="other-prize clearfix">
+        <div class="seconed prize-box fl"></div>
+        <div class="third prize-box fr"></div>
+    </div>
 
 </div>
 <div class="cut-down-section">
     <div class="top"></div>
     <div class="content">
         <div class="cut-tip"></div>
-        <div class="cut-down-wrap">
-            02:53:26
+        <div class="cut-down-wrap clearfix">
+            <span class="num">02</span><span class="dot">:</span><span class="num">53</span><span class="dot">:</span><span class="num">26</span>
         </div>
     </div>
     <div class="bot"></div>
 </div>
 <div class="heroic-list-section">
     <div class="horo-top page-width">
+        <i id="activity_status" data-starttime="${activityStartTime!}" data-overtime="${activityEndTime!}"
+           style="visibility: hidden"></i>
+        <div class="money"></div>
+        <div class="person"></div>
+        <div class="title-font"></div>
         <ul class="clearfix">
-            <li><span class="icon icon-time"></span>时间：${currentTime}</li>
+            <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
             <li>
-                <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<span>登录后查看</span></@global.isAnonymous>
-                <@global.isNotAnonymous><span class="icon icon-rank"></span><span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
+                <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn">登录后查看</a></@global.isAnonymous>
+                <@global.isNotAnonymous><span class="icon icon-rank"></span>
+                    <span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>
+                        我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
             </li>
             <li>
-                <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<span>登录后查看</span></@global.isAnonymous>
-                <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：<span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
+                <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<a href="javascript:;"
+                                                                                    id="loginTipBtnInvest">登录后查看</a></@global.isAnonymous>
+                <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：
+                    <span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
             </li>
         </ul>
     </div>
+    <input id="currentDate" type="text" value="">
     <div class="horo-wrap">
         <div class="title"></div>
         <div class="horo-list-wrap">
-            <div class="top-list"><div>排名</div><div>用户名</div><div>投资额（元）</div><div>奖励</div></div>
+            <div class="top-list">
+                <div>排名</div>
+                <div>用户名</div>
+                <div>投资额（元）</div>
+                <div>奖励</div>
+            </div>
             <ul class="horo-list" id="contentList">
 
             </ul>
         </div>
-        <div class="change-btn prev-btn"></div>
-        <div class="change-btn next-btn"></div>
+        <div class="change-btn prev-btn" id="rankingPre"></div>
+        <div class="change-btn next-btn" id="rankingNext"></div>
     </div>
 
     <div class="loan-bg">
@@ -108,9 +123,26 @@
         reward='1.1%加息券';
         }
         %>
-        <li class="clearfix"><div><%=i+1%></div><div><%=item.centSumAmount%></div><div><%=item.loginName%></div><div><%=reward%></div></li>
-        <% } %>
+        <li class="clearfix">
+            <div><%=i+1%></div>
+            <div><%=item.centSumAmount%></div>
+            <div><%=item.loginName%></div>
+            <div><%=reward%></div>
+        </li>
+        <% }
 
+        if(records.length <10){
+        for(var i = 0;i < 10-records.length;i++){
+        %>
+        <li class="clearfix">
+            <div><%=records.length+i+1%></div>
+            <div>-</div>
+            <div>-</div>
+            <div>-</div>
+        </li>
+        <% }
+        }
+        %>
 
 
     </script>
