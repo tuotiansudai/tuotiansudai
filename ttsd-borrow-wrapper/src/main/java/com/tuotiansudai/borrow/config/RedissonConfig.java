@@ -1,4 +1,4 @@
-package com.tuotiansudai.borrow.wrapper.config;
+package com.tuotiansudai.borrow.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
