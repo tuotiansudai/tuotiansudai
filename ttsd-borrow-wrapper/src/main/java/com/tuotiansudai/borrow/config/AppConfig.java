@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = {"com.tuotiansudai.rest.client"})
+@ComponentScan(basePackages = {"com.tuotiansudai.rest.client", "com.tuotiansudai.client"})
 @MapperScan(basePackages = {"com.tuotiansudai.repository.mapper"})
 @EnableTransactionManagement
 public class AppConfig {

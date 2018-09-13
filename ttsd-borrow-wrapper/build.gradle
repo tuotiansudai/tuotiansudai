@@ -36,6 +36,7 @@ dependencies {
     compile('com.google.guava:guava:24.1-jre')
 
     compile project(':ttsd-etcd')
+    compile project(':ttsd-client')
     compile project(':ttsd-aa-repository')
     compile project(':ttsd-user-repository')
 }

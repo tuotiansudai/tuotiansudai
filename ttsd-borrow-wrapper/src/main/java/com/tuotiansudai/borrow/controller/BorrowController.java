@@ -28,4 +28,14 @@ public class BorrowController {
         }
         return borrowService.isAuthentication(dto.getMobile());
     }
+
+
+    @RequestMapping(value = "/open-auto-repay", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto openAutoRepay(@RequestBody BaseRequestDto dto){
+        if (!dto.isValid()){
+            return new BaseResponseDto("请求参数错误");
+        }
+        return borrowService.openAutoRepay(dto.getMobile());
+    }
 }
