@@ -3,6 +3,7 @@ from paver.shell import sh
 
 import config_deploy
 import etcd_client
+import time
 
 
 class UTRunner(object):
@@ -36,6 +37,7 @@ class UTRunner(object):
         sh('/usr/local/bin/docker-compose -f unit_test.yml up -d')
 
     def run_test(self):
+        time.sleep(5)
         print "Starting test..."
         from scripts import migrate_db
         migrate_db.migrate(self._gradle, self.etcd, sh)
