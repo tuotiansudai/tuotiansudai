@@ -24,10 +24,9 @@
     <div class="top"></div>
     <div class="content">
         <div class="cut-tip"></div>
-        <div class="cut-down-wrap clearfix" id="cutDownDOM">
-            <span class="num" id="hourDOM">00</span><span class="dot">:</span><span class="num"
-                                                                                    id="minutesDOM">00</span><span
-                class="dot">:</span><span class="num" id="secondDOM">00</span>
+        <div class="cut-down-wrap clearfix cutDownDOM">
+            <span class="num hourDOM">00</span><span class="dot">:</span><span class="num" minutesDOM>00</span><span
+                class="dot">:</span><span class="num secondDOM">00</span>
         </div>
     </div>
     <div class="bot"></div>
@@ -57,10 +56,9 @@
     <div class="top"></div>
     <div class="content">
         <div class="cut-tip"></div>
-        <div class="cut-down-wrap clearfix" id="cutDownDOM">
-            <span class="num" id="hourDOM">00</span><span class="dot">:</span><span class="num"
-                                                                                    id="minutesDOM">00</span><span
-                class="dot">:</span><span class="num" id="secondDOM">00</span>
+        <div class="cut-down-wrap clearfix cutDownDOM">
+            <span class="num hourDOM"></span><span class="dot">:</span><span class="num minutesDOM"></span><span
+                class="dot">:</span><span class="num secondDOM"></span>
         </div>
     </div>
     <div class="bot"></div>
