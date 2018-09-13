@@ -1,5 +1,5 @@
 <#import "../../macro/global.ftl" as global>
-<@global.main pageCss="${css.mid_autumn_festival_2018}" pageJavascript="${js.mid_autumn_festival_2018}" activeNav="" activeLeftNav="" title="假日投资_夺魁英雄榜_拓天速贷" keywords="拓天速贷,投资大礼包,返现奖励,实物大奖" description='拓天速贷4月活动,活动期间关注"拓天速贷服务号",380元投资大礼包带回家,每逢国家法定假日,投资"0.6%返现"标签项目可获得返现奖励,累计投资即可夺魁英雄榜赢取实物大奖.'>
+<@global.main pageCss="${css.mid_autumn_festival_2018}" pageJavascript="${js.mid_autumn_festival_2018}" activeNav="" activeLeftNav="" title="中秋国庆活动_投资排行榜_拓天速贷" keywords="拓天速贷,投资排行,加息券,实物大奖" description='拓天速贷中午国庆活动,活动期间每日22点计算当日新增投资排名,上榜者可获得实物大奖、加息券、京东E卡等丰厚奖励,立即投资抢占英雄榜,先到先得.'>
 <div class="mid-banner compliance-banner">
     <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
 
