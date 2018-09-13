@@ -2,6 +2,7 @@ $yellow: #fecb00;
 $yellow2: #fcf101;
 $yelllow3: #f9f368;
 $yellow4:#ffbc03;
+
 html {
   font-size: 100px;
 }
@@ -9,6 +10,9 @@ html {
 body {
   font-size: 12px;
   background: $yellow;
+}
+p {
+  margin-bottom: 0;
 }
 .fl {
   float: left;
@@ -143,6 +147,9 @@ strong, em {
 
 }
 .cut-down-section {
+  &.mobile-style {
+    display: none;
+  }
   .top {
     height: 85px;
     background: url("../images/2018/mid-autumn-festival/cut_down_top.png") no-repeat top center;
@@ -311,6 +318,9 @@ strong, em {
             color: #595757;
             text-align: center;
             font-size: 24px;
+            &.last {
+              color: #ff2c21;
+            }
           }
         }
       }
@@ -320,7 +330,7 @@ strong, em {
       width: 49px;
       height: 99px;
       position: absolute;
-      top: 440px;
+      bottom: 330px;
       cursor: pointer;
       &.prev-btn {
         left: -80px;
@@ -498,17 +508,25 @@ strong, em {
 
 }
 .cut-down-section {
+  &.mobile-style {
+    display: block;
+  }
+  &.pc-style {
+    display: none;
+  }
   .top {
     height: 0.48rem;
     background: url("../images/2018/mid-autumn-festival/app_cut_down_top.png") no-repeat top center;
+    background-size: contain;
   }
   .bot {
     height: 0.53rem;
-    background: url("../images/2018/mid-autumn-festival/cut_down_bot.png") no-repeat top center;
+    background: url("../images/2018/mid-autumn-festival/app_cut_down_bot.png") no-repeat top center;
+    background-size: contain;
   }
   .content {
-    //background: $yellow4;
     padding-top: 0.24rem;
+    padding-bottom: 0.2rem;
     .cut-tip {
       width: 3.38rem;
       height: 0.73rem;
@@ -536,190 +554,182 @@ strong, em {
   }
 }
 .heroic-list-section {
-  margin-top: 180px;
-  .horo-top {
-    padding-left: 50px;
-    padding-right: 50px;
-    background: #ca2600;
-    border-radius: 50px;
+  margin-top: 0.2rem;
+  .top {
+    height: 0.48rem;
+    background: url("../images/2018/mid-autumn-festival/app_cut_down_top.png") no-repeat top center;
+    background-size: contain;
     position: relative;
+
+  }
+  .bot {
+    height: 0.53rem;
+    background: url("../images/2018/mid-autumn-festival/hero_bot.png") no-repeat top center;
+    background-size: 100%;
+    position: relative;
+  }
+  .content {
+    background: $yellow4;
+    position: relative;
+    z-index: -20;
+    padding-top: 1rem;
+    padding-bottom: 0.14rem;
+  }
+  .horo-top {
+    padding-left: 0;
+    padding-right: 0;
+    background: none;
+    border-radius: 0;
+    position: relative;
+    width: 4.86rem;
+    margin: 0 auto;
     .money {
       position: absolute;
-      z-index: -10;
-      left: 0.2rem;
-      top: -0.6rem;
+      left: 0.26rem;
+      top: -0.5rem;
       width: 0.71rem;
       height: 0.75rem;
       background: url("../images/2018/mid-autumn-festival/money.png") no-repeat top center;
-      background-size: 100%;
+      background-size: contain;
     }
     .person {
       position: absolute;
-      top: -236px;
-      right: -60px;
-      width: 252px;
-      height: 242px;
-      z-index: -10;
+      top: -0.8rem;
+      right: -0.33rem;
+      width: 1.07rem;
+      height: 1.02rem;
       background: url("../images/2018/mid-autumn-festival/person.png") no-repeat top center;
-      background-size: 100%;
+      background-size: contain;
     }
     .title-font {
       position: absolute;
       left: 50%;
-      margin-left: -284px;
-      top: -136px;
-      width: 568px;
-      height: 95px;
+      margin-left: -1.4rem;
+      top: -0.9rem;
+      width: 3.04rem;
+      height: 0.49rem;
       background: url("../images/2018/mid-autumn-festival/horo_font.png") no-repeat top center;
-      background-size: 100%;
+      background-size: contain;
     }
     ul {
       li {
-        height: 100px;
-        line-height: 100px;
-        width: 33.333%;
-        a {
-          color: #fff;
-          &:hover {
-            color: #fff;
-            text-decoration: underline;
-          }
-        }
+        height: 0.7rem;
+        line-height:0.7rem;
+        width: 4.86rem;
+        background: #ca2600;
+        border-radius: 0.35rem;
+        text-align: center;
+        margin-top: 0.16rem;
         .icon {
           display: inline-block;
-          width: 82px;
-          height: 72px;
-          vertical-align: middle;
-          margin-right: 10px;
+          width: 0.64rem;
+          height: 0.55rem;
+          margin-right: 0.1rem;
 
           &.icon-time {
             background: url("../images/2018/mid-autumn-festival/icon_time.png") no-repeat top center;
-            background-size: 100%;
+            background-size: contain;
           }
           &.icon-rank {
             background: url("../images/2018/mid-autumn-festival/icon_rank.png") no-repeat top center;
-            background-size: 100%;
+            background-size: contain;
           }
           &.icon-invest {
             background: url("../images/2018/mid-autumn-festival/icon_invest.png") no-repeat top center;
-            background-size: 100%;
+            background-size: contain;
           }
         }
-        float: left;
-        color: #fff;
-        font-size: 14px;
-        font-weight: bold;
+        float: none;
+        font-size: 0.24rem;
       }
     }
   }
   .horo-wrap {
-    width: 950px;
-    margin: 0 auto;
-    margin-top: 40px;
-    background: #ff5d0d;
-    padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 45px;
-    position: relative;
+    width: 100%;
+    margin-top: 0;
+    padding: 0;
+    padding-top: 0.2rem;
+    .bot {
+      margin-top: 0.18rem;
+      height: 0.55rem;
+      background: url("../images/2018/mid-autumn-festival/hero_list_bot.png") no-repeat top center;
+      background-size: contain;
+      position: relative;
+    }
     .title {
-      width: 528px;
-      height: 90px;
-      margin: 0 auto;
+      width: 5rem;
+      height: 0.74rem;
       background: url("../images/2018/mid-autumn-festival/horo_title.png") no-repeat top center;
-      background-size: 100%;
-      margin-bottom: 24px;
+      background-size:contain;
+      margin-bottom: 0.1rem;
     }
     .horo-list-wrap {
-      background: #fff;
       .top-list {
-        height: 80px;
-        line-height: 80px;
+        height: 0.62rem;
+        line-height: 0.62rem;
         >div {
-          width: 25%;
-          float: left;
-          font-size: 24px;
-          color: #595757;
-          text-align: center;
+          font-size: 0.2rem;
         }
       }
       ul.horo-list {
         li {
-          height: 60px;
-          line-height: 60px;
-          &:nth-child(odd) {
-            background: #f6f6f6;
-          }
+          height: 0.46rem;
+          line-height: 0.46rem;
           >div {
-            width: 25%;
-            float: left;
-            color: #595757;
-            text-align: center;
-            font-size: 24px;
+            font-size: 0.2rem;
           }
         }
       }
 
     }
     .change-btn {
-      width: 49px;
-      height: 99px;
-      position: absolute;
-      top: 440px;
+      width: 0.3rem;
+      height: 0.48rem;
+      bottom: -0.94rem;
       cursor: pointer;
       &.prev-btn {
-        left: -80px;
+        left: 1.3rem;
         background: url("../images/2018/mid-autumn-festival/icon_left_btn.png") no-repeat top center;
-        background-size: 100%;
+        background-size: contain;
       }
       &.next-btn {
-        right: -80px;
+        right: 1.3rem;
         background: url("../images/2018/mid-autumn-festival/icon_right_btn.png") no-repeat top center;
-        background-size: 100%;
+        background-size: contain;
       }
     }
 
 
   }
   .loan-bg {
-    margin-top: 40px;
-    height: 574px;
-    background: url("../images/2018/mid-autumn-festival/red_ware_bg.png") no-repeat top center;
+    margin-top: 0.18rem;
+    height: 3.5rem;
+    background: url("../images/2018/mid-autumn-festival/app_red_ware.png") no-repeat bottom center;
     .loan-btn {
-      width: 410px;
-      height: 157px;
-      margin: 0 auto;
+      width: 2.78rem;
+      height: 1.06rem;
       background: url("../images/2018/mid-autumn-festival/invest_btn.png") no-repeat top center;
-      background-size: 100%;
+      background-size: contain;
     }
     .big-red-ware {
-      margin: 0 auto;
-      width: 723px;
-      height: 454px;
-      position: relative;
-      top: 15px;
-      background: url("../images/2018/mid-autumn-festival/big_red_ware.png") no-repeat top center;
-      background-size: 100%;
+     display: none;
     }
   }
 }
 
 .kindly-tip {
-  background: #f4471e;
-  color: #fff;
-  padding-top: 60px;
-  padding-bottom: 130px;
+  padding-top: 0;
+  padding-bottom: 0.55rem;
   .kindly-title {
-    font-size: 36px;
+    font-size: 0.24rem;
   }
   .kindly-content {
     p {
-      font-size: 24px;
-      line-height: 38px;
-      margin-top: 30px;
-      color: #fff;
+      font-size: 0.2rem;
+      line-height: 0.28rem;
+      margin-top: 0.25rem;
       &.first {
-        margin-top: 20px;
+        margin-top: 0.2rem;
       }
     }
   }
@@ -730,7 +740,76 @@ strong, em {
 
 
 
-
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 102.4px;
+  }
+}
+@media screen and (max-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+@media screen and (max-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 53.33px;
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 42.66px;
+  }
+}
+@media screen and (max-width: 240px) {
+  html {
+    font-size: 32px;
+  }
+}
 
 
 

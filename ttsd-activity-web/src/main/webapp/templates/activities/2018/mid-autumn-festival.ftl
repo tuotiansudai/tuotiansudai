@@ -19,6 +19,18 @@
 
     </div>
 </div>
+<div class="cut-down-section mobile-style">
+    <div class="top"></div>
+    <div class="content">
+        <div class="cut-tip"></div>
+        <div class="cut-down-wrap clearfix" id="cutDownDOM">
+            <span class="num" id="hourDOM">00</span><span class="dot">:</span><span class="num"
+                                                                                    id="minutesDOM">00</span><span
+                class="dot">:</span><span class="num" id="secondDOM">00</span>
+        </div>
+    </div>
+    <div class="bot"></div>
+</div>
 <div class="prize-wrap page-width">
     <div class="big-prize-title">
 
@@ -40,7 +52,7 @@
     </div>
 
 </div>
-<div class="cut-down-section">
+<div class="cut-down-section pc-style">
     <div class="top"></div>
     <div class="content">
         <div class="cut-tip"></div>
@@ -53,29 +65,36 @@
     <div class="bot"></div>
 </div>
 <div class="heroic-list-section">
-    <div class="horo-top page-width">
-        <i id="activity_status" data-starttime="${activityStartTime!}" data-overtime="${activityEndTime!}"
-           style="visibility: hidden"></i>
-        <div class="money"></div>
-        <div class="person"></div>
-        <div class="title-font"></div>
-        <ul class="clearfix">
-            <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
-            <li>
+    <div class="top"></div>
+
+   <div class="content">
+       <div class="horo-top page-width">
+           <i id="activity_status" data-starttime="${activityStartTime!}" data-overtime="${activityEndTime!}"
+              style="visibility: hidden"></i>
+
+           <div class="money"></div>
+           <div class="person"></div>
+           <div class="title-font"></div>
+           <ul class="clearfix">
+               <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
+               <li>
                 <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn">登录后查看</a></@global.isAnonymous>
                 <@global.isNotAnonymous><span class="icon icon-rank"></span>
                     <span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>
                         我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
-            </li>
-            <li>
+               </li>
+               <li>
                 <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<a href="javascript:;"
                                                                                     id="loginTipBtnInvest">登录后查看</a></@global.isAnonymous>
                 <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：
                     <span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
-            </li>
-        </ul>
-    </div>
-    <input id="currentDate" type="text" value="">
+               </li>
+           </ul>
+
+       </div>
+   </div>
+    <div class="bot"></div>
+    <input id="currentDate" type="hidden" value="">
     <div class="horo-wrap">
         <div class="title"></div>
         <div class="horo-list-wrap">
@@ -89,6 +108,7 @@
 
             </ul>
         </div>
+        <div class="bot"></div>
         <div class="change-btn prev-btn" id="rankingPre"></div>
         <div class="change-btn next-btn" id="rankingNext"></div>
     </div>
@@ -133,7 +153,7 @@
             <div><%=i+1%></div>
             <div><%=item.centSumAmount%></div>
             <div><%=item.loginName%></div>
-            <div><%=reward%></div>
+            <div class="last"><%=reward%></div>
         </li>
         <% }
 
