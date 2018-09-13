@@ -3,11 +3,13 @@ package com.tuotiansudai.borrow.dto.response;
 
 import java.io.Serializable;
 
-public class BaseResponseDto implements Serializable{
+public class BaseResponseDto<T> implements Serializable{
 
     private boolean status;
 
     private String message;
+
+    private T data;
 
     public BaseResponseDto(){
 
@@ -36,5 +38,13 @@ public class BaseResponseDto implements Serializable{
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

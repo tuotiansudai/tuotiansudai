@@ -1,10 +1,13 @@
 package com.tuotiansudai.borrow.controller;
 
 import com.tuotiansudai.borrow.dto.request.BaseRequestDto;
+import com.tuotiansudai.borrow.dto.response.AuthenticationResponseDto;
 import com.tuotiansudai.borrow.dto.response.BaseResponseDto;
 import com.tuotiansudai.borrow.service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/borrow")
@@ -17,9 +20,12 @@ public class BorrowController {
         this.borrowService = borrowService;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/is-authentication", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto text(@RequestBody BaseRequestDto dto){
-        return borrowService.findAccountByLoginName(dto.getMobile());
+    public BaseResponseDto<AuthenticationResponseDto> isAuthentication(@RequestBody BaseRequestDto dto){
+        if (!dto.isValid()){
+            return new BaseResponseDto<AuthenticationResponseDto>("请求参数错误");
+        }
+        return borrowService.isAuthentication(dto.getMobile());
     }
 }
