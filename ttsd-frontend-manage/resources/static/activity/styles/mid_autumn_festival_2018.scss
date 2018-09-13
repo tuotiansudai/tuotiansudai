@@ -180,8 +180,8 @@ strong, em {
       line-height: 189px;
       font-size: 160px;
       font-weight: bold;
-      padding-left: 70px;
-      padding-right: 70px;
+      padding-left: 60px;
+      padding-right: 60px;
       box-sizing: border-box;
       >span {
         float: left;
@@ -297,6 +297,7 @@ strong, em {
       .top-list {
         height: 80px;
         line-height: 80px;
+        background: #fff;
         >div {
           width: 25%;
           float: left;
