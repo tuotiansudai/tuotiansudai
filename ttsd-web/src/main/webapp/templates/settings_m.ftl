@@ -10,12 +10,14 @@
 </div>
 <div class="my-account-content" id="settingBox">
     <ul class="input-list">
+        <#if isRegist>
         <li id="reset-password">
             <label for="perName">支付密码</label>
             <a class="update-payment-pwd">
                 修改 <i class="icon-more"></i>
             </a>
         </li>
+        </#if>
         <li id="anxinSign">
             <label for="perName">安心签</label>
             <a><i class="icon-more"></i></a>
