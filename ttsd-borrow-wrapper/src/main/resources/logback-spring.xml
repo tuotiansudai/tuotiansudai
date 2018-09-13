@@ -15,7 +15,9 @@
         </encoder>
     </appender>
 
-    <logger name="com.tuotiansudai" level="INFO"/>
+    <logger name="com.tuotiansudai.repository.mapper" level="DEBUG"/>
+    <logger name="org.mybatis.spring" level="DEBUG"/>
+    <logger name="com.tuotiansudai.rest.client" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

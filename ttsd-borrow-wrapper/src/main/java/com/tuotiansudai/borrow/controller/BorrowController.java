@@ -1,6 +1,7 @@
 package com.tuotiansudai.borrow.controller;
 
 import com.tuotiansudai.borrow.dto.request.BaseRequestDto;
+import com.tuotiansudai.borrow.dto.response.AuthenticationResponseDto;
 import com.tuotiansudai.borrow.dto.response.BaseResponseDto;
 import com.tuotiansudai.borrow.service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ public class BorrowController {
         this.borrowService = borrowService;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/is-authentication", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto text(@RequestBody BaseRequestDto dto){
-        return borrowService.findAccountByLoginName(dto.getMobile());
+    public AuthenticationResponseDto isAuthentication(@RequestBody BaseRequestDto dto){
+        return borrowService.isAuthentication(dto.getMobile());
     }
 }
