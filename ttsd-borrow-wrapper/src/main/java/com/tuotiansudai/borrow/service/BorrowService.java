@@ -1,6 +1,7 @@
 package com.tuotiansudai.borrow.service;
 
 import com.tuotiansudai.borrow.dto.response.AuthenticationResponseDto;
+import com.tuotiansudai.borrow.dto.response.BaseResponseDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
@@ -25,16 +26,18 @@ public class BorrowService {
     @Autowired
     private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
-    public AuthenticationResponseDto isAuthentication(String mobile) {
+    public BaseResponseDto<AuthenticationResponseDto> isAuthentication(String mobile) {
+        BaseResponseDto<AuthenticationResponseDto> baseResponseDto = new BaseResponseDto<>(true);
         UserModel userModel = userMapper.findByMobile(mobile);
         if (userModel == null) {
-            return new AuthenticationResponseDto(true, false, false, false, false);
+            baseResponseDto.setData(new AuthenticationResponseDto());
+            return baseResponseDto;
         }
         AccountModel accountModel = accountMapper.findByLoginName(userModel.getLoginName());
-        return new AuthenticationResponseDto(true,
-                accountModel != null,
+        baseResponseDto.setData(new AuthenticationResponseDto(accountModel != null,
                 bankCardMapper.findPassedBankCardByLoginName(userModel.getLoginName()) != null,
                 accountModel != null && accountModel.isAutoRepay(),
-                anxinSignPropertyMapper.findByLoginName(userModel.getLoginName()) != null);
+                anxinSignPropertyMapper.findByLoginName(userModel.getLoginName()) != null));
+        return baseResponseDto;
     }
 }

@@ -1,7 +1,7 @@
 package com.tuotiansudai.borrow.dto.response;
 
 
-public class AuthenticationResponseDto extends BaseResponseDto{
+public class AuthenticationResponseDto {
 
     private boolean isRegister;
 
@@ -14,8 +14,7 @@ public class AuthenticationResponseDto extends BaseResponseDto{
     public AuthenticationResponseDto() {
     }
 
-    public AuthenticationResponseDto(boolean status, boolean isRegister, boolean isBindCard, boolean isAutoRepay, boolean isAnxin) {
-        super(status);
+    public AuthenticationResponseDto(boolean isRegister, boolean isBindCard, boolean isAutoRepay, boolean isAnxin) {
         this.isRegister = isRegister;
         this.isBindCard = isBindCard;
         this.isAutoRepay = isAutoRepay;
