@@ -131,8 +131,8 @@
         %>
         <li class="clearfix">
             <div><%=i+1%></div>
+            <div><%=item.mobile%></div>
             <div><%=item.centSumAmount%></div>
-            <div><%=item.loginName%></div>
             <div><%=reward%></div>
         </li>
         <% }
