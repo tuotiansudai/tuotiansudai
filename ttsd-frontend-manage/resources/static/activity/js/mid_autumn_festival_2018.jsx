@@ -27,9 +27,10 @@ timer = setInterval(()=>{
 }, 1000);
 function cutDownTime() {
     let nowDate = getNowDate();
+    let currentDate = getCurrentDate();
     console.log('倒计时',nowDate)
-    let nowDateTime = new Date(nowDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date(nowDate.substr(0,10)+' 16:42:00'.replace(/-/g, "/")).getTime();
+    let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date(nowDate.substr(0,10)+' 22:00:00'.replace(/-/g, "/")).getTime();
     let distance = todayOverTime-nowDateTime;
     console.log(new Date(nowDate.replace(/-/g, "/")))
     var second,hour,minute;
@@ -81,13 +82,17 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=16){
+    if(dd.getHours() >=22){
         dd.setDate(dd.getDate()+1)
     }
     console.log('日期日期日期',getHMS(dd))
     return getHMS(dd);
 }
-
+function getCurrentDate() {
+    let dd = new Date();
+    console.log('日期日期日期',getHMS(dd))
+    return getHMS(dd);
+}
 //获取前一天或者后一天的日期
  function GetDateStr(date,AddDayCount) {
     var dd = new Date(date);

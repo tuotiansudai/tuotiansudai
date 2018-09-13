@@ -25,8 +25,8 @@
     <div class="content">
         <div class="cut-tip"></div>
         <div class="cut-down-wrap clearfix cutDownDOM">
-            <span class="num hourDOM">00</span><span class="dot">:</span><span class="num" minutesDOM>00</span><span
-                class="dot">:</span><span class="num secondDOM">00</span>
+            <span class="num hourDOM">&nbsp;&nbsp;</span><span class="dot">:</span><span class="num minutesDOM">&nbsp;&nbsp;</span><span
+                class="dot">:</span><span class="num secondDOM">&nbsp;&nbsp;</span>
         </div>
     </div>
     <div class="bot"></div>
@@ -57,8 +57,8 @@
     <div class="content">
         <div class="cut-tip"></div>
         <div class="cut-down-wrap clearfix cutDownDOM">
-            <span class="num hourDOM"></span><span class="dot">:</span><span class="num minutesDOM"></span><span
-                class="dot">:</span><span class="num secondDOM"></span>
+            <span class="num hourDOM">&nbsp;&nbsp;</span><span class="dot">:</span><span class="num minutesDOM">&nbsp;&nbsp;</span><span
+                class="dot">:</span><span class="num secondDOM">&nbsp;&nbsp;</span>
         </div>
     </div>
     <div class="bot"></div>
@@ -97,15 +97,6 @@
     <div class="horo-wrap">
         <div class="title"></div>
     <div class="horo-list-wrap" id="contentList">
-    <#--<div class="top-list">-->
-    <#--<div>排名</div>-->
-    <#--<div>用户名</div>-->
-    <#--<div>投资额（元）</div>-->
-    <#--<div>奖励</div>-->
-    <#--</div>-->
-    <#--<ul class="horo-list" id="contentList">-->
-
-    <#--</ul>-->
     </div>
         <div class="bot"></div>
         <div class="change-btn prev-btn" id="rankingPre"></div>

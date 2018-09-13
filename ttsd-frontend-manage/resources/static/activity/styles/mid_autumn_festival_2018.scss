@@ -406,6 +406,9 @@ strong, em {
   height: 4.2rem;
   background: url("../images/2018/mid-autumn-festival/app_banner.png") no-repeat top center;
   background-size: contain;
+  .invest-tip {
+    display: none;
+  }
 }
 
 .activity-rules {
@@ -463,7 +466,7 @@ strong, em {
 }
 
 .prize-wrap {
-  margin-top: 90px;
+  margin-top: 0.35rem;
   .big-prize-title {
     margin: 0 auto;
     width: 3.04rem;
