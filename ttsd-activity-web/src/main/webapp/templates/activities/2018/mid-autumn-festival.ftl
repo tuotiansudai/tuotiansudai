@@ -151,9 +151,10 @@
         %>
         <li class="clearfix">
             <div><%=i+1%></div>
-            <div><%=item.centSumAmount%></div>
             <div><%=item.loginName%></div>
+            <div><%=item.centSumAmount%></div>
             <div class="last"><%=reward%></div>
+
         </li>
         <% }
 
