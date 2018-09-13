@@ -28,19 +28,24 @@ timer = setInterval(()=>{
 function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
-    console.log('倒计时',nowDate)
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
     let todayOverTime = new Date(nowDate.substr(0,10)+' 22:00:00'.replace(/-/g, "/")).getTime();
     let distance = todayOverTime-nowDateTime;
-    console.log(new Date(nowDate.replace(/-/g, "/")))
     var second,hour,minute;
+
+    if(activityStatus().status == 'noStart'||activityStatus().status == 'end'){
+        clearInterval(timer);
+        second = 0;
+        minute = 0;
+        hour =  0;
+    }else {
         second = Math.floor(distance / 1000);//未来时间距离现在的秒数
         second = second % 86400;//余数代表剩下的秒数；
         hour = Math.floor(second / 3600);//整数部分代表小时；
         second %= 3600; //余数代表 剩下的秒数；
         minute = Math.floor(second / 60);
         second %= 60;
-
+    }
     $('.hourDOM').text(hour<10?'0'+hour:hour);
     $('.minutesDOM').text(minute<10?'0'+minute:minute);
     $('.secondDOM').text(second<10?'0'+second:second);
@@ -50,12 +55,8 @@ function cutDownTime() {
 
 
 
-//不在活动时间范围内的提示
-// if(commonFun.activityStatus($activityStatus) == 'activity-noStarted'){
-//     $('.no-record').text('不在活动时间范围内！');
-// }else {
-//     $('.no-record').text('目前还没有人获得现金奖励，快去投资吧！');
-// }
+
+    //活动未开始
 
 $changeBtn.on('click', function (event) {
     let currDate = getNowDate();
@@ -85,12 +86,10 @@ function getNowDate() {
     if(dd.getHours() >=22){
         dd.setDate(dd.getDate()+1)
     }
-    console.log('日期日期日期',getHMS(dd))
     return getHMS(dd);
 }
 function getCurrentDate() {
     let dd = new Date();
-    console.log('日期日期日期',getHMS(dd))
     return getHMS(dd);
 }
 //获取前一天或者后一天的日期
@@ -164,22 +163,16 @@ function showBtns() {
             $heroPre.css({'visibility':'hidden'});
         }
 
-        // $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
-        // addStaticImg();
-
     }else if (activityStatusStr.status == 'end'){
         //活动已结束
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
-        // $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
-        //礼物图片静态
-        // addStaticImg();
+
 
     }else if(activityStatusStr.status == 'activiting'){
         // addStaticImg();
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
-console.log(activityStatusStr)
         if(activityStatusStr.isToday){
 
             $heroNext.css({'visibility':'hidden'});
@@ -248,29 +241,21 @@ function activityStatus() {
 
 function loadData(nowDay) {
     let activityStatusStr = activityStatus();
-    if(activityStatusStr.status == 'activity-noStarted'){
+    if(activityStatusStr.status == 'noStarted'){
         //活动未开始
         if(activityStatusStr.isToday == true){
             $heroPre.hide()
             $heroNext.hide()
-            // $toInvestBtn.css('marginTop','0')
         }else if(!activityStatusStr.isToday == true){
             $heroPre.css({'visibility':'hidden'});
         }
 
-        // $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
-        // addStaticImg();
-
-    }else if (activityStatusStr.status == 'activity-end'){
+    }else if (activityStatusStr.status == 'end'){
         //活动已结束
         $heroNext.css({'visibility':'hidden'});
         $heroPre.css({'visibility':'visible'});
-        // $contentRanking.html(`<tr> <td colspan="4" class="noData">不在活动时间范围内</td> </tr>`);
-        //礼物图片静态
-        // addStaticImg();
 
-    }else if(activityStatusStr.status == 'activity-ing'){
-        // addStaticImg();
+    }else if(activityStatusStr.status == 'activiting'){
         $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
 
