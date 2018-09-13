@@ -12,7 +12,8 @@
         <div class="rule-content">
             <ul>
                 <li class="paddingTop0"><span class="dian"></span>活动期间，每天22：00计算当日新增投资排名，上榜者可获丰厚奖励。</li>
-                <li class="borderTop"><span class="dian"></span>投资者在当日22:00之前进行的多次投资，<span class="mobileStyle">金额可累计计算。</span></li>
+                <li class="borderTop"><span class="dian"></span>投资者在当日22:00之前进行的多次投资，<span
+                        class="mobileStyle">金额可累计计算。</span></li>
                 <li class="borderTop borderNone lastLi"><span class="dian"></span>截止时间以活动页面倒计时为准。</li>
             </ul>
         </div>
@@ -67,47 +68,47 @@
 <div class="heroic-list-section">
     <div class="top"></div>
 
-   <div class="content">
-       <div class="horo-top page-width">
-           <i id="activity_status" data-starttime="${activityStartTime!}" data-overtime="${activityEndTime!}"
-              style="visibility: hidden"></i>
+    <div class="content">
+        <div class="horo-top page-width">
+            <i id="activity_status" data-starttime="${activityStartTime!}" data-overtime="${activityEndTime!}"
+               style="visibility: hidden"></i>
 
-           <div class="money"></div>
-           <div class="person"></div>
-           <div class="title-font"></div>
-           <ul class="clearfix">
-               <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
-               <li>
+            <div class="money"></div>
+            <div class="person"></div>
+            <div class="title-font"></div>
+            <ul class="clearfix">
+                <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
+                <li>
                 <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn">登录后查看</a></@global.isAnonymous>
                 <@global.isNotAnonymous><span class="icon icon-rank"></span>
                     <span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>
                         我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
-               </li>
-               <li>
+                </li>
+                <li>
                 <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<a href="javascript:;"
                                                                                     id="loginTipBtnInvest">登录后查看</a></@global.isAnonymous>
                 <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：
                     <span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
-               </li>
-           </ul>
+                </li>
+            </ul>
 
-       </div>
-   </div>
+        </div>
+    </div>
     <div class="bot"></div>
     <input id="currentDate" type="hidden" value="">
     <div class="horo-wrap">
         <div class="title"></div>
-        <div class="horo-list-wrap">
-            <div class="top-list">
-                <div>排名</div>
-                <div>用户名</div>
-                <div>投资额（元）</div>
-                <div>奖励</div>
-            </div>
-            <ul class="horo-list" id="contentList">
+    <div class="horo-list-wrap" id="contentList">
+    <#--<div class="top-list">-->
+    <#--<div>排名</div>-->
+    <#--<div>用户名</div>-->
+    <#--<div>投资额（元）</div>-->
+    <#--<div>奖励</div>-->
+    <#--</div>-->
+    <#--<ul class="horo-list" id="contentList">-->
 
-            </ul>
-        </div>
+    <#--</ul>-->
+    </div>
         <div class="bot"></div>
         <div class="change-btn prev-btn" id="rankingPre"></div>
         <div class="change-btn next-btn" id="rankingNext"></div>
@@ -134,43 +135,64 @@
 </div>
     <#include "../../module/login-tip.ftl" />
     <script type="text/template" id="tplTable">
+        <#--<div class="horo-list-wrap">-->
+        <%
+        if(records.length>0){
+        %>
+        <div class="top-list">
+            <div>排名</div>
+            <div>用户名</div>
+            <div>投资额（元）</div>
+            <div>奖励</div>
+        </div>
+        <ul class="horo-list">
 
 
-        <% for(var i = 0; i < records.length; i++) {
-        var item = records[i];
-        var reward;
-        if(i==0) {
-        reward='实物大奖';
-        }
-        else if(i==1) {
-        reward='100元京东E卡';
-        }
-        else {
-        reward='1.1%加息券';
+            <% for(var i = 0; i < records.length; i++) {
+            var item = records[i];
+            var reward;
+            if(i==0) {
+            reward='实物大奖';
+            }
+            else if(i==1) {
+            reward='100元京东E卡';
+            }
+            else {
+            reward='1.1%加息券';
+            }
+            %>
+            <li class="clearfix">
+                <div><%=i+1%></div>
+                <div><%=item.loginName%></div>
+                <div><%=item.centSumAmount%></div>
+                <div class="last"><%=reward%></div>
+
+            </li>
+
+            <% }
+
+            if(records.length <10 && records.length>0){
+            for(var i = 0;i < 10-records.length;i++){
+            %>
+            <li class="clearfix">
+                <div><%=records.length+i+1%></div>
+                <div>-</div>
+                <div>-</div>
+                <div>-</div>
+            </li>
+            <% }
+            }
+            %>
+        </ul>
+        <%
+        }else {
+        %>
+        <div class="no-invest-tip"></div>
+        <%
         }
         %>
-        <li class="clearfix">
-            <div><%=i+1%></div>
-            <div><%=item.loginName%></div>
-            <div><%=item.centSumAmount%></div>
-            <div class="last"><%=reward%></div>
 
-        </li>
-        <% }
-
-        if(records.length <10){
-        for(var i = 0;i < 10-records.length;i++){
-        %>
-        <li class="clearfix">
-            <div><%=records.length+i+1%></div>
-            <div>-</div>
-            <div>-</div>
-            <div>-</div>
-        </li>
-        <% }
-        }
-        %>
-
+        <#--</div>-->
 
     </script>
 

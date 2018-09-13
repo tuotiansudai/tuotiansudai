@@ -293,7 +293,7 @@ strong, em {
       margin-bottom: 24px;
     }
     .horo-list-wrap {
-      background: #fff;
+
       .top-list {
         height: 80px;
         line-height: 80px;
@@ -306,6 +306,7 @@ strong, em {
         }
       }
       ul.horo-list {
+        background: #fff;
         li {
           height: 60px;
           line-height: 60px;
@@ -323,6 +324,13 @@ strong, em {
             }
           }
         }
+      }
+      .no-invest-tip {
+        width: 793px;
+        height: 660px;
+        background: url("../images/2018/mid-autumn-festival/app_no_invest.png") no-repeat top center;
+        background-size:100%;
+        margin: 0 auto;
       }
 
     }
@@ -679,6 +687,13 @@ strong, em {
             font-size: 0.2rem;
           }
         }
+      }
+      .no-invest-tip {
+        width: 5.76rem;
+        height: 4.77rem;
+        background: url("../images/2018/mid-autumn-festival/app_no_invest.png") no-repeat top center;
+        background-size:contain;
+        margin: 0 auto;
       }
 
     }
