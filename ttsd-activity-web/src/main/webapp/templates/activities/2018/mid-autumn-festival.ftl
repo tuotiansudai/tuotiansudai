@@ -104,7 +104,7 @@
     </div>
 
     <div class="loan-bg">
-        <div class="loan-btn"></div>
+        <div class="loan-btn"><a href="/loan-list"></a></div>
         <div class="big-red-ware"></div>
     </div>
 </div>

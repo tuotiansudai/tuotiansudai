@@ -723,11 +723,17 @@ strong, em {
     margin-top: 0.18rem;
     height: 3.5rem;
     background: url("../images/2018/mid-autumn-festival/app_red_ware.png") no-repeat bottom center;
+    background-size: contain;
     .loan-btn {
       width: 2.78rem;
       height: 1.06rem;
       background: url("../images/2018/mid-autumn-festival/invest_btn.png") no-repeat top center;
       background-size: contain;
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     }
     .big-red-ware {
      display: none;
