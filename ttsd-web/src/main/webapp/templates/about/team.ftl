@@ -5,7 +5,7 @@
         <div class="team-box com-list clearfix" style="padding-top: 10px;">
             <i class="sign-profile user-one"></i>
             <dl class="company-user">
-                <dt>李显玉先生 <span>董事长</span></dt>
+                <dt>李显玉先生 <span>法定代表人</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
                 <dd>平静时，我们宁静平和；</dd>
