@@ -347,7 +347,7 @@ strong, em {
       .no-invest-tip {
         width: 793px;
         height: 660px;
-        background: url("../images/2018/mid-autumn-festival/app_no_invest.png") no-repeat top center;
+        background: url("../images/2018/mid-autumn-festival/no_invest.png") no-repeat top center;
         background-size:100%;
         margin: 0 auto;
       }
@@ -430,9 +430,6 @@ strong, em {
   height: 4.2rem;
   background: url("../images/2018/mid-autumn-festival/app_banner.png") no-repeat top center;
   background-size: contain;
-  .invest-tip {
-    display: none;
-  }
 }
 
 .activity-rules {
@@ -453,8 +450,8 @@ strong, em {
       box-sizing: border-box;
       ul {
         li {
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
+          padding-left: 1.1rem;
+          padding-right: 1.1rem;
           line-height: 0.36rem;
           font-size: 0.24rem;
           position: relative;
@@ -658,10 +655,12 @@ strong, em {
       li {
         height: 0.7rem;
         line-height:0.7rem;
+        box-sizing: border-box;
+        padding-left: 0.8rem;
         width: 4.86rem;
         background: #ca2600;
         border-radius: 0.35rem;
-        text-align: center;
+        text-align: left;
         margin-top: 0.16rem;
         position: relative;
         z-index: 30;

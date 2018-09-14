@@ -1,8 +1,6 @@
 <#import "../../macro/global.ftl" as global>
 <@global.main pageCss="${css.mid_autumn_festival_2018}" pageJavascript="${js.mid_autumn_festival_2018}" activeNav="" activeLeftNav="" title="中秋国庆活动_投资排行榜_拓天速贷" keywords="拓天速贷,投资排行,加息券,实物大奖" description='拓天速贷中午国庆活动,活动期间每日22点计算当日新增投资排名,上榜者可获得实物大奖、加息券、京东E卡等丰厚奖励,立即投资抢占英雄榜,先到先得.'>
-<div class="mid-banner compliance-banner">
-    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
-
+<div class="mid-banner">
 </div>
 <div class="activity-rules">
     <div class="page-width clearfix inner">
@@ -12,8 +10,7 @@
         <div class="rule-content">
             <ul>
                 <li class="paddingTop0"><span class="dian"></span>活动期间，每天22：00计算当日新增投资排名，上榜者可获丰厚奖励。</li>
-                <li class="borderTop"><span class="dian"></span>投资者在当日22:00之前进行的多次投资，<span
-                        class="mobileStyle">金额可累计计算。</span></li>
+                <li class="borderTop"><span class="dian"></span>投资者在当日22:00之前进行的多次投资，金额可累计计算。</li>
                 <li class="borderTop borderNone lastLi"><span class="dian"></span>截止时间以活动页面倒计时为准。</li>
             </ul>
         </div>

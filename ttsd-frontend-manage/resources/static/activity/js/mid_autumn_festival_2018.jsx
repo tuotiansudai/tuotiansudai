@@ -29,8 +29,8 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date(nowDate.substr(0,10)+' 22:00:00'.replace(/-/g, "/")).getTime();
-    let distance = todayOverTime-nowDateTime;
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 22:00:00').replace(/-/g, "/")).getTime();
+    let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
     if(activityStatus().status == 'noStart'||activityStatus().status == 'end'){
@@ -39,12 +39,15 @@ function cutDownTime() {
         minute = 0;
         hour =  0;
     }else {
-        second = Math.floor(distance / 1000);//未来时间距离现在的秒数
-        second = second % 86400;//余数代表剩下的秒数；
-        hour = Math.floor(second / 3600);//整数部分代表小时；
-        second %= 3600; //余数代表 剩下的秒数；
-        minute = Math.floor(second / 60);
-        second %= 60;
+
+        if(leftTime>0){
+
+            hour = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+            minute = Math.floor(leftTime / 1000 / 60 % 60);
+            second = Math.floor(leftTime / 1000 % 60);
+        }
+
+
     }
     $('.hourDOM').text(hour<10?'0'+hour:hour);
     $('.minutesDOM').text(minute<10?'0'+minute:minute);
