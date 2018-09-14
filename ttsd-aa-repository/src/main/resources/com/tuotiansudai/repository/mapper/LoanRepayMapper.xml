@@ -139,7 +139,7 @@
         (
         loan.agent_login_name = #{agentLoginName}
         OR
-        EXISTS (select * from loan_mapping_history WHERE loan_mapping_history.loan_id=#{loanId} and loan_mapping_history.identity_number=(select user.identity_number from user  WHERE user.login_name=#{agentLoginName}))
+        EXISTS (select * from loan_mapping_history WHERE loan_mapping_history.loan_id=#{loanId} and loan_mapping_history.login_name=#{agentLoginName})
         )
         order by period asc
     </select>

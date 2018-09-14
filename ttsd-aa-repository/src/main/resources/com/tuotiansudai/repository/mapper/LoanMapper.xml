@@ -256,7 +256,7 @@
         where (
                   agent_login_name = #{agentLoginName}
               OR
-                  loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+                   loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
               )
               and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
               and
@@ -274,7 +274,7 @@
         where (
                   agent_login_name = #{agentLoginName}
               OR
-                  loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+                  loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
               )
               and status in ('REPAYING', 'OVERDUE')
               and
@@ -301,7 +301,7 @@
         (
               agent_login_name = #{agentLoginName}
           OR
-              loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+              loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
         )
         and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
@@ -315,7 +315,7 @@
         (
           agent_login_name = #{agentLoginName}
         OR
-          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
         )
         and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
@@ -327,7 +327,7 @@
         (
           agent_login_name = #{agentLoginName}
         OR
-          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
         )
         and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
@@ -340,7 +340,7 @@
         (
           agent_login_name = #{agentLoginName}
         OR
-          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.login_name=#{agentLoginName})
         )
         and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
