@@ -253,7 +253,12 @@
              from loan_repay
              where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
-        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
+        where (
+                  agent_login_name = #{agentLoginName}
+              OR
+                  loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+              )
+              and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
               and
               (
                   (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
@@ -266,7 +271,12 @@
 
     <select useCache="false" id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
+        where (
+                  agent_login_name = #{agentLoginName}
+              OR
+                  loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+              )
+              and status in ('REPAYING', 'OVERDUE')
               and
               (
                   (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
@@ -287,7 +297,13 @@
         from loan_repay
         where loan.id=loan_repay.loan_id) as actual_repay_amount
         from loan
-        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
+        where
+        (
+              agent_login_name = #{agentLoginName}
+          OR
+              loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+        )
+        and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
         order by completed_date desc, id asc
         limit #{index}, #{pageSize}
@@ -295,20 +311,38 @@
 
     <select useCache="false" id="findCountCompletedByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+        )
+        and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
     </select>
 
     <select useCache="false" id="findCanceledPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select * from loan
-        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+        )
+        and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select useCache="false" id="findCountCanceledByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan.id in (select loan_id from loan_mapping_history where loan_mapping_history.identity_number=(select identity_number from user where user.login_name=#{agentLoginName}))
+        )
+        and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
 
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">

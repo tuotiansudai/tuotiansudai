@@ -134,7 +134,13 @@
 
     <select id="findByAgentAndLoanId" parameterType="map" resultMap="loanRepayResultMap">
         select loan_repay.* from loan_repay join loan on loan_repay.loan_id = loan.id
-        where loan.id= #{loanId} and loan.agent_login_name = #{agentLoginName}
+        where loan.id= #{loanId}
+        and
+        (
+        loan.agent_login_name = #{agentLoginName}
+        OR
+        EXISTS (select * from loan_mapping_history WHERE loan_mapping_history.loan_id=#{loanId} and loan_mapping_history.identity_number=(select user.identity_number from user  WHERE user.login_name=#{agentLoginName}))
+        )
         order by period asc
     </select>
 
