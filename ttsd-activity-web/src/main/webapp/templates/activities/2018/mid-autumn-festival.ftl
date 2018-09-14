@@ -74,7 +74,10 @@
             <div class="money"></div>
             <div class="person"></div>
             <div class="title-font"></div>
-            <ul class="clearfix">
+            <ul class="clearfix top-content">
+                <div class="money"></div>
+                <div class="person"></div>
+                <div class="title-font"></div>
                 <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
                 <li>
                 <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn">登录后查看</a></@global.isAnonymous>
@@ -151,7 +154,24 @@
             }
             %>
             <li class="clearfix">
+                <%
+                if(i==0){
+                %>
+               <div> <span class="number num1"></span></div>
+                <%
+                }else if(i==1){
+                %>
+               <div> <span class="number num2"></span></div>
+                <%
+                }else if(i==2) {
+
+                %>
+                <div><span class="number num3"></span></div>
+                <%}else {
+                %>
                 <div><%=i+1%></div>
+                <% } %>
+
                 <div><%=item.loginName%></div>
                 <div><%=item.centSumAmount%></div>
                 <div class="last"><%=reward%></div>

@@ -4,7 +4,7 @@ let commonFun= require('publicJs/commonFun');
 require('publicJs/login_tip');
 let sourceKind = globalFun.parseURL(location.href);
 
-let imgUrl = require('../images/2018/mid-autumn-festival/phone.png');
+let imgUrl = require('../images/2018/mid-autumn-festival/staticImg.png');
 $('#staticImg').attr('src',imgUrl)
 let $contentList = $('#contentList'),
     $changeBtn = $('.change-btn'),
