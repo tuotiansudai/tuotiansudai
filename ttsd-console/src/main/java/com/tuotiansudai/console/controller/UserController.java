@@ -10,6 +10,7 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ConsoleRiskEstimateService;
 import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
@@ -37,15 +38,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -486,10 +490,34 @@ public class UserController {
     }
 
     @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.GET)
-    public ModelAndView riskEstimate() {
+    public ModelAndView riskEstimateLimit() {
         ModelAndView modelAndView = new ModelAndView("/risk-estimate-limit");
-
+        Map<String,String> limitMap=redisWrapperClient.hgetAll("risk-estimat:limit");
+        modelAndView.addObject("conservative",limitMap.get("conservative"));
+        modelAndView.addObject("steady",limitMap.get("steady"));
+        modelAndView.addObject("positive",limitMap.get("positive"));
         return modelAndView;
+    }
+    @RequestMapping(value = "/risk-estimate/limit/edit")
+    @ResponseBody
+    public BaseDataDto riskEstimateLimitEdit(@RequestParam("conservative") String conservative, @RequestParam("steady") String steady, @RequestParam("positive")String positive) {
+        if(!(Long.valueOf(conservative) <Long.valueOf(steady) && Long.valueOf(steady) <Long.valueOf(positive))){
+            return new BaseDataDto(false,"输入的金额需满足:保守型<稳健型<积极型!");
+        }
+        redisWrapperClient.hset("risk-estimat:limit","conservative",conservative);
+        redisWrapperClient.hset("risk-estimat:limit","steady",steady);
+        redisWrapperClient.hset("risk-estimat:limit","positive",positive);
+       return new BaseDataDto(true);
+    }
+
+    @PostConstruct
+    public void  initRiskEstimvate(){
+        Map<String,String> limitMap=redisWrapperClient.hgetAll("risk-estimat:limit");
+        if(CollectionUtils.isEmpty(limitMap)){
+            redisWrapperClient.hset("risk-estimat:limit","conservative","500000");
+            redisWrapperClient.hset("risk-estimat:limit","steady","1500000");
+            redisWrapperClient.hset("risk-estimat:limit","positive","5000000");
+        }
     }
 
 }
