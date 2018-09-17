@@ -863,4 +863,9 @@
     <select id="findAllUserChannels" resultType="string">
         select IFNULL(channel,'其他') from user group by channel order by channel desc
     </select>
+
+    <select id="findUserCountByRegisterTime" resultType="int">
+        select count(1) from user where register_time >= #{startTime}
+    </select>
+
 </mapper>
