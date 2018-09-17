@@ -43,7 +43,7 @@ public class MiddleAutumAndNationalDayController {
                 Iterators.indexOf(tyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
         long investAmount = investRanking > 0 ? tyrantViews.get(investRanking - 1).getSumAmount() : 0;
 
-        Date standardDate = new DateTime().withTime(15, 0, 0, 0).toDate();
+        Date standardDate = new DateTime().withTime(15, 30, 0, 0).toDate();
         String prizeDtoKey = null;
         if (tradingTime.after(standardDate)) {
             prizeDtoKey = new DateTime().plusDays(1).toString("yyyy-MM-dd");
