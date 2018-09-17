@@ -29,7 +29,7 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 22:00:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:20:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
