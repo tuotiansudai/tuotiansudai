@@ -22,6 +22,8 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE">税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL">企业经营性借款—票据</option>
+                            <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER">个人资金周转</option>
+                            <option value="企业资金周转" data-pledgeType="ENTERPRISE_CAPITAL_TURNOVER">企业资金周转</option>
                         </select>
                     </div>
                 </div>
