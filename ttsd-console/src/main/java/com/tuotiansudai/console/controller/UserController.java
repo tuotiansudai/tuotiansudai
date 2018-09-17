@@ -485,5 +485,11 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.GET)
+    public ModelAndView riskEstimate() {
+        ModelAndView modelAndView = new ModelAndView("/risk-estimate-limit");
+
+        return modelAndView;
+    }
 
 }
