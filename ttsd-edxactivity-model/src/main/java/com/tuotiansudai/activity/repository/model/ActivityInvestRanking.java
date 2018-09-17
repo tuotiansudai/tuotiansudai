@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public enum ActivityInvestRanking {
 
-    SPRING_BREEZE_ACTIVITY_RANKING(ETCDConfigReader.getReader().getValue("activity.spring.breeze.startTime"), ETCDConfigReader.getReader().getValue("activity.spring.breeze.endTime"))
+    SPRING_BREEZE_ACTIVITY_RANKING(ETCDConfigReader.getReader().getValue("activity.spring.breeze.startTime"), ETCDConfigReader.getReader().getValue("activity.spring.breeze.endTime")),
+    MIDDLE_AUTUM_NATIONALDAY(ETCDConfigReader.getReader().getValue("activity.middleautum.nationalday.activity.period").split("\\~")[0],ETCDConfigReader.getReader().getValue("activity.middleautum.nationalday.activity.period").split("\\~")[1])
     ;
 
     ActivityInvestRanking(String startTime, String endTime) {
