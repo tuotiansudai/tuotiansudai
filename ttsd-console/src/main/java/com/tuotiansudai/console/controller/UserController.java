@@ -58,6 +58,8 @@ public class UserController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
+    private final static String RISK_ESTIMATE_LIMIT_KEY = "risk-estimate:limit";
+
     @Autowired
     private UserService userService;
 
@@ -492,31 +494,29 @@ public class UserController {
     @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.GET)
     public ModelAndView riskEstimateLimit() {
         ModelAndView modelAndView = new ModelAndView("/risk-estimate-limit");
-        Map<String,String> limitMap=redisWrapperClient.hgetAll("risk-estimat:limit");
-        modelAndView.addObject("conservative",limitMap.get("conservative"));
-        modelAndView.addObject("steady",limitMap.get("steady"));
-        modelAndView.addObject("positive",limitMap.get("positive"));
+        modelAndView.addAllObjects(redisWrapperClient.hgetAll(RISK_ESTIMATE_LIMIT_KEY));
         return modelAndView;
     }
+
     @RequestMapping(value = "/risk-estimate/limit/edit")
     @ResponseBody
-    public BaseDataDto riskEstimateLimitEdit(@RequestParam("conservative") String conservative, @RequestParam("steady") String steady, @RequestParam("positive")String positive) {
-        if(!(Long.valueOf(conservative) <Long.valueOf(steady) && Long.valueOf(steady) <Long.valueOf(positive))){
-            return new BaseDataDto(false,"输入的金额需满足:保守型<稳健型<积极型!");
+    public BaseDataDto riskEstimateLimitEdit(@RequestParam("conservative") String conservative, @RequestParam("steady") String steady, @RequestParam("positive") String positive) {
+        if (!(Long.valueOf(conservative) < Long.valueOf(steady) && Long.valueOf(steady) < Long.valueOf(positive))) {
+            return new BaseDataDto(false, "输入的金额需满足:保守型<稳健型<积极型!");
         }
-        redisWrapperClient.hset("risk-estimat:limit","conservative",conservative);
-        redisWrapperClient.hset("risk-estimat:limit","steady",steady);
-        redisWrapperClient.hset("risk-estimat:limit","positive",positive);
-       return new BaseDataDto(true);
+        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.CONSERVATIVE.name(), conservative);
+        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.STEADY.name(), steady);
+        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.POSITIVE.name(), positive);
+        return new BaseDataDto(true);
     }
 
     @PostConstruct
-    public void  initRiskEstimvate(){
-        Map<String,String> limitMap=redisWrapperClient.hgetAll("risk-estimat:limit");
-        if(CollectionUtils.isEmpty(limitMap)){
-            redisWrapperClient.hset("risk-estimat:limit","conservative","500000");
-            redisWrapperClient.hset("risk-estimat:limit","steady","1500000");
-            redisWrapperClient.hset("risk-estimat:limit","positive","5000000");
+    public void initRiskEstimvate() {
+        Map<String, String> limitMap = redisWrapperClient.hgetAll(RISK_ESTIMATE_LIMIT_KEY);
+        if (CollectionUtils.isEmpty(limitMap)) {
+            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.CONSERVATIVE.name(), "500000");
+            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.STEADY.name(), "1500000");
+            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.POSITIVE.name(), "5000000");
         }
     }
 

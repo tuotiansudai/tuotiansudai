@@ -7,19 +7,19 @@
         <div class="form-group">
             <label class="col-sm-1 control-label">保守型</label>
             <div class="col-sm-2">
-                <span class="form-control">${conservative!}元</span>
+                <span class="form-control">${CONSERVATIVE!}元</span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">稳健型</label>
             <div class="col-sm-2">
-                <span class="form-control">${steady!}元</span>
+                <span class="form-control">${STEADY!}元</span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">积极型</label>
             <div class="col-sm-2">
-                <span class="form-control">${positive!}元</span>
+                <span class="form-control">${POSITIVE!}元</span>
             </div>
         </div>
         <div class="form-group">
@@ -35,19 +35,19 @@
         <div class="form-group">
             <label class="col-sm-1 control-label">保守型(元):</label>
             <div class="col-sm-2">
-                <input type="text"  name="conservative" class="form-control number-input" value="${conservative!}"/>
+                <input type="text"  name="conservative" class="form-control number-input" value="${CONSERVATIVE!}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">稳健型(元):</label>
             <div class="col-sm-2">
-                <input type="text" name="steady" class="form-control number-input" value="${steady!}"/>
+                <input type="text" name="steady" class="form-control number-input" value="${STEADY!}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-1 control-label">积极型(元):</label>
             <div class="col-sm-2">
-                <input type="text" name="positive" class="form-control number-input" value="${positive!}"/>
+                <input type="text" name="positive" class="form-control number-input" value="${POSITIVE!}"/>
             </div>
         </div>
         <div class="form-group web-error-message">

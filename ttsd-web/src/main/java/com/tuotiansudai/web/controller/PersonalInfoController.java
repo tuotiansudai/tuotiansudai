@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.BankModel;
@@ -9,6 +10,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,10 @@ public class PersonalInfoController {
     @Autowired
     private BankService bankService;
 
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    private final static String RISK_ESTIMATE_LIMIT_KEY = "risk-estimate:limit";
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
         ModelAndView mv = new ModelAndView("/personal-info");
@@ -54,7 +60,9 @@ public class PersonalInfoController {
         mv.addObject("email", userModel.getEmail());
         mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
         mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
-        mv.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
+        mv.addObject("estimate", estimate);
+        mv.addObject("estimateLimit",estimate == null?"":redisWrapperClient.hget(RISK_ESTIMATE_LIMIT_KEY,estimate.name()));
 
         if (accountModel != null) {
             mv.addObject("userName", userModel.getUserName());

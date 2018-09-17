@@ -44,7 +44,7 @@
                         {"name":"userRemain","text":"用户留存管理","link":"/user-manage/remain-users","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"userMicroModel","text":"用户微模型","link":"/user-manage/user-micro-model","role":"'ADMIN','OPERATOR_ADMIN','OPERATOR','DATA'"},
                         {"name":"riskEstimate","text":"用户投资偏好","link":"/user-manage/risk-estimate","role":"'ADMIN','OPERATOR_ADMIN','OPERATOR','DATA'"},
-                        {"name":"riskEstimateLimit","text":"投资限额管理","link":"/user-manage/risk-estimate/limit","role":"'ADMIN','OPERATOR_ADMIN','OPERATOR','DATA'"}
+                        {"name":"riskEstimateLimit","text":"投资限额管理","link":"/user-manage/risk-estimate/limit","role":"'ADMIN','OPERATOR_ADMIN'"}
                 ]
             },
             {
