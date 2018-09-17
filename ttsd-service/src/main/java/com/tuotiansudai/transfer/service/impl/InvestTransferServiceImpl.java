@@ -143,12 +143,6 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
-                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
-            return false;
-        }
-
         if (loanMapper.findById(investModel.getLoanId()).getStatus() != LoanStatus.REPAYING) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] loan status is not REPAYING", String.valueOf(investModel.getId())));
             return false;
@@ -174,7 +168,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
         long transferFee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), investModel.getAmount(),
                 transferFee, getDeadlineFromNow(), leftPeriod, transferApplicationDto.getSource());
 
         transferApplicationMapper.create(transferApplicationModel);
