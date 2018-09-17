@@ -1,11 +1,12 @@
 package com.tuotiansudai.activity.controller;
 
+import cn.jpush.api.utils.StringUtils;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.activity.repository.model.NewmanTyrantView;
 import com.tuotiansudai.activity.service.MiddleAutumAndNationalDayService;
 import com.tuotiansudai.activity.service.NewmanTyrantService;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by qduljs2011 on 2018/9/7.
@@ -62,13 +65,18 @@ public class MiddleAutumAndNationalDayController {
 
     @RequestMapping(value = "/records")
     @ResponseBody
-    public BasePaginationDataDto<NewmanTyrantView> obtainNewman(@RequestParam("tradingTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date tradingTime) {
+    public Map obtainNewman(@RequestParam("tradingTime") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date tradingTime) {
         final String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<NewmanTyrantView> baseListDataDto = new BasePaginationDataDto<>();
         List<NewmanTyrantView> newmanTyrantViews = middleAutumAndNationalDayService.obtainRecords(tradingTime);
+        int investRanking = CollectionUtils.isNotEmpty(newmanTyrantViews) ?
+                Iterators.indexOf(newmanTyrantViews.iterator(), input -> input.getLoginName().equalsIgnoreCase(loginName)) + 1 : 0;
+        long investAmount = investRanking > 0 ? newmanTyrantViews.get(investRanking - 1).getSumAmount() : 0;
         newmanTyrantViews.stream().forEach(newmanTyrantView -> newmanTyrantView.setLoginName(newmanTyrantService.encryptMobileForWeb(loginName, newmanTyrantView.getLoginName(), newmanTyrantView.getMobile())));
-        baseListDataDto.setRecords(newmanTyrantViews);
-        baseListDataDto.setStatus(true);
-        return baseListDataDto;
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", true);
+        map.put("records", newmanTyrantViews);
+        map.put("investRanking", StringUtils.isEmpty(loginName) ? "登陆后查看" : (investRanking > 20 || investRanking == 0) ? "未上榜" : investRanking);
+        map.put("investAmount", StringUtils.isEmpty(loginName) ? "登陆后查看" : AmountConverter.convertCentToString(investAmount) + "元");
+        return map;
     }
 }
