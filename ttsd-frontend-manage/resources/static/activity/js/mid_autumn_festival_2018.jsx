@@ -29,7 +29,7 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:20:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 12:00:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
@@ -45,6 +45,8 @@ function cutDownTime() {
             hour = Math.floor(leftTime / 1000 / 60 / 60 % 24);
             minute = Math.floor(leftTime / 1000 / 60 % 60);
             second = Math.floor(leftTime / 1000 % 60);
+        }else {
+            location.reload();
         }
 
 
@@ -86,7 +88,7 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=22){
+    if(dd.getHours() >=12){
         dd.setDate(dd.getDate()+1)
     }
     return getHMS(dd);
