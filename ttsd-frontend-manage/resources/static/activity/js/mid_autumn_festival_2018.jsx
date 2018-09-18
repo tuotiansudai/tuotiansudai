@@ -29,7 +29,7 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 12:00:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:00:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
@@ -45,8 +45,6 @@ function cutDownTime() {
             hour = Math.floor(leftTime / 1000 / 60 / 60 % 24);
             minute = Math.floor(leftTime / 1000 / 60 % 60);
             second = Math.floor(leftTime / 1000 % 60);
-        }else {
-            location.reload();
         }
 
 
@@ -88,8 +86,14 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=12){
-        dd.setDate(dd.getDate()+1)
+    if(dd.getHours() >=15){
+        if(activityStatus($activityStatus).status !== 'end'){
+            dd.setDate(dd.getDate()+1)
+        }else {
+            dd.setDate(dd.getDate())
+        }
+
+        location.reload();
     }
     return getHMS(dd);
 }
@@ -103,6 +107,7 @@ function getCurrentDate() {
     dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
     return getHMS(dd)
 }
+
 function getHMS(dd){
     var y = dd.getFullYear();
     var m = dd.getMonth()+1;//获取当前月份的日期
@@ -126,14 +131,21 @@ function heroRank(date) {
             let render = _.template(ListTpl);
             let html = render(data);
             $contentList.html(html);
+            //获取模版内容
+            let investTpl = $('#myInvestTable').html();
+            // 解析模板, 返回解析后的内容
+            let render2 = _.template(investTpl);
+            let html2 = render2(data);
+            $('#myInvestContent').append(html2);
+
         }
     })
 }
 
-$('#loginTipBtn').on('click',function () {
+$('body').on('click','#loginTipBtn',function () {
     loginTip();
 });
-$('#loginTipBtnInvest').on('click',function () {
+$('body').on('click','#loginTipBtnInvest',function () {
     loginTip();
 });
 //登录按钮
@@ -158,6 +170,7 @@ function loginTip() {
 
 function showBtns() {
     let activityStatusStr = activityStatus();
+    console.log(activityStatusStr)
     if(activityStatusStr.status == 'noStart'){
         //活动未开始
         if(activityStatusStr.isToday == true){
@@ -170,8 +183,23 @@ function showBtns() {
 
     }else if (activityStatusStr.status == 'end'){
         //活动已结束
-        $heroNext.css({'visibility':'hidden'});
+        $heroNext.css({'visibility':'visible'});
         $heroPre.css({'visibility':'visible'});
+        if(activityStatusStr.isToday){
+
+            $heroNext.css({'visibility':'hidden'});
+        }
+
+        if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == true){
+            //活动第一天
+            $heroNext.css({'visibility':'visible'});
+            $heroPre.css({'visibility':'visible'});
+
+        }
+        if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == false){
+            console.log('jintian')
+            $heroPre.css({'visibility':'hidden'});
+        }
 
 
     }else if(activityStatusStr.status == 'activiting'){
@@ -185,13 +213,14 @@ function showBtns() {
 
         if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == true){
             //活动第一天
-            $heroPre.hide();
-            $heroNext.hide()
+            $heroNext.css({'visibility':'visible'});
+            $heroPre.css({'visibility':'visible'});
 
         }
         if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == false){
             $heroPre.css({'visibility':'hidden'});
         }
+
 
     }
 
@@ -207,6 +236,18 @@ function activityStatus() {
 
     let isToday = nowDayStr==todayDayStr;
     let currentTime = new Date().getTime();
+    let isFirstDay = false;
+    let isLastDay = false;
+    //活动中
+    if($date.text().substr(0,10)==start.substr(0,10)){
+        //活动第一天
+        isFirstDay = true;
+
+    }else if($date.text().substr(0,10)==over.substr(0,10)){
+        //活动最后一天
+        isLastDay = true;
+
+    }
 
     if (currentTime < startTime) {
         //活动未开始
@@ -218,21 +259,12 @@ function activityStatus() {
         //活动结束
         return {
             status:'end',
-            isToday:isToday
+            isToday:isToday,
+            isFirstDay:isFirstDay,
+            isLastDay:isLastDay
         }
     }else {
-        let isFirstDay = false;
-        let isLastDay = false;
-        //活动中
-        if($date.text().substr(0,10)==start.substr(0,10)){
-            //活动第一天
-            isFirstDay = true;
 
-        }else if($date.text().substr(0,10)==over.substr(0,10)){
-            //活动最后一天
-            isLastDay = true;
-
-        }
 
         return {
             status:'activiting',

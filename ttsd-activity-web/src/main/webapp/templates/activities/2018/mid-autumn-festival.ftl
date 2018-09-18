@@ -71,23 +71,12 @@
             <div class="money"></div>
             <div class="person"></div>
             <div class="title-font"></div>
-            <ul class="clearfix top-content">
+            <ul class="clearfix top-content" >
                 <div class="money"></div>
                 <div class="person"></div>
                 <div class="title-font"></div>
                 <li><span class="icon icon-time"></span>时间：<span id="dateTime"></span></li>
-                <li>
-                <@global.isAnonymous><span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn">登录后查看</a></@global.isAnonymous>
-                <@global.isNotAnonymous><span class="icon icon-rank"></span>
-                    <span><#if investRanking &gt; 20 || investRanking == 0>未上榜<#else>
-                        我的排名：${investRanking}</#if></span></span></@global.isNotAnonymous>
-                </li>
-                <li>
-                <@global.isAnonymous><span class="icon icon-invest"></span>今日投资额：<a href="javascript:;"
-                                                                                    id="loginTipBtnInvest">登录后查看</a></@global.isAnonymous>
-                <@global.isNotAnonymous><span class="icon icon-invest"></span>今日投资额：
-                    <span>${(investAmount/100)?string('0.00')}元</span></@global.isNotAnonymous>
-                </li>
+                <div id="myInvestContent"></div>
             </ul>
 
         </div>
@@ -124,7 +113,7 @@
 </div>
     <#include "../../module/login-tip.ftl" />
     <script type="text/template" id="tplTable">
-        <#--<div class="horo-list-wrap">-->
+
         <%
         if(records.length>0){
         %>
@@ -198,9 +187,23 @@
         }
         %>
 
-        <#--</div>-->
 
     </script>
+ <script type="text/template" id="myInvestTable">
+
+
+     <li>
+               <span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn"><%=investRanking%></a>
+
+     </li>
+     <li>
+                <span class="icon icon-invest"></span>今日投资额：<a href="javascript:;" id="loginTipBtnInvest"><%=investAmount%></a>
+
+     </li>
+
+
+
+ </script>
 
 
 
