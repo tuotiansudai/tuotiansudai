@@ -79,7 +79,7 @@
         <li>
             <span class="info-title">投资偏好</span>
             <#if estimate??>
-                <em class="info">${estimate.summary}</em>
+                <em class="info">${estimate.summary}。出借限额为${estimateLimit}元</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已评估<a class="setlink" href="/risk-estimate">重置</a>
                 </span>
