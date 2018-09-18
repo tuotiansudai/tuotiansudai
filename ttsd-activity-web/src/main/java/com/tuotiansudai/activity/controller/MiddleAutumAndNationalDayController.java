@@ -75,8 +75,8 @@ public class MiddleAutumAndNationalDayController {
         Map<String, Object> map = new HashMap<>();
         map.put("status", true);
         map.put("records", newmanTyrantViews);
-        map.put("investRanking", StringUtils.isEmpty(loginName) ? "登陆后查看" : (investRanking > 20 || investRanking == 0) ? "未上榜" : investRanking);
-        map.put("investAmount", StringUtils.isEmpty(loginName) ? "登陆后查看" : AmountConverter.convertCentToString(investAmount) + "元");
+        map.put("investRanking", StringUtils.isEmpty(loginName) ? "登录后查看" : (investRanking > 20 || investRanking == 0) ? "未上榜" : investRanking);
+        map.put("investAmount", StringUtils.isEmpty(loginName) ? "登录后查看" : AmountConverter.convertCentToString(investAmount) + "元");
         return map;
     }
 }
