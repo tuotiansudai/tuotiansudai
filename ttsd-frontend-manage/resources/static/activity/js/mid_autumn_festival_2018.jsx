@@ -85,7 +85,7 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=16){
+    if(dd.getHours() >=17){
         let over = $activityStatus.data('overtime');
         let endTime = new Date(over.replace(/-/g, "/")).getTime();
         let currentTime = new Date().getTime();
@@ -285,7 +285,7 @@ function activityStatus() {
 function contrastTime(time) {
     var dB = new Date(time.replace(/-/g, "/"));//获取某个时间点，结束时间
     var d = new Date();
-    var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();//获取当前实际日期
+    var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+ " "+ d.getHours() + ':'+ d.getMinutes()+':'+d.getSeconds();//获取当前实际日期
 
     console.log(d,Date.parse(str))
     console.log(dB,Date.parse(dB))
@@ -338,4 +338,4 @@ function loadData(nowDay) {
 
 }
 
-//alert(contrastTime('2018-09-18 16:14:00'))
+alert(contrastTime('2018-09-18 16:29:00'))
