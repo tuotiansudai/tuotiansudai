@@ -338,4 +338,4 @@ function loadData(nowDay) {
 
 }
 
-alert(contrastTime('2018-09-18 16:29:00'))
+//alert(contrastTime('2018-09-18 16:29:00'))

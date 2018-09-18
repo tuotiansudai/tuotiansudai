@@ -116,12 +116,16 @@ strong, em {
     background: url("../images/2018/mid-autumn-festival/big_prize_bg.png") no-repeat top center;
     background-size: 100%;
     .phone {
+      width: 459px;
+      height: 460px;
+      line-height: 460px;
       position: absolute;
-      top: -150px;
+      top: -267px;
       left: 50%;
       transform: translateX(-50%);
-      height: 370px;
       text-align: center;
+      background: url("../images/2018/mid-autumn-festival/prize_white_bg.png") no-repeat top center;
+      background-size: 100%;
       img {
         height: 370px;
       }
@@ -512,10 +516,15 @@ strong, em {
     background: url("../images/2018/mid-autumn-festival/big_prize_bg.png") no-repeat top center;
     background-size: contain;
     .phone {
-      top: -1.2rem;
-      height: 2.36rem;
+      width: 2.4rem;
+      top: -1.4rem;
+      height: 2.4rem;
+      line-height:2.36rem;
+      padding-left: 0.1rem;
+      padding-right: 0.1rem;
+      box-sizing: border-box;
       img {
-        height: 2.36rem;
+        height: 2.2rem;
       }
     }
   }
