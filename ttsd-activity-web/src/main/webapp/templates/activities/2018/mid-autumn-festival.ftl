@@ -193,11 +193,33 @@
 
 
      <li>
-               <span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn"><%=investRanking%></a>
+         <%
+         if(investRanking == '登录后查看'){
+         %>
+         <span class="icon icon-rank"></span>我的排名：<a href="javascript:;" id="loginTipBtn"><%=investRanking%></a>
+         <%
+         }else {
+         %>
+         <span class="icon icon-rank"></span>我的排名：<%=investRanking%>
+         <%
+         }
+         %>
+
 
      </li>
      <li>
-                <span class="icon icon-invest"></span>今日投资额：<a href="javascript:;" id="loginTipBtnInvest"><%=investAmount%></a>
+         <%
+         if(investRanking == '登录后查看'){
+         %>
+         <span class="icon icon-invest"></span>今日投资额：<a href="javascript:;" id="loginTipBtnInvest"><%=investAmount%></a>
+         <%
+         }else {
+         %>
+         <span class="icon icon-invest"></span>今日投资额：<%=investAmount%>
+         <%
+         }
+         %>
+
 
      </li>
 

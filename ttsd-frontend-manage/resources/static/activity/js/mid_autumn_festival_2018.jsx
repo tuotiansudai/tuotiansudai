@@ -19,7 +19,6 @@ $currentDate.val(nowDate);
 $date.text(nowDate.substr(0,10))//当日日期
 heroRank(nowDate);
 showBtns();
-
 var timer= null;
 cutDownTime();
 timer = setInterval(()=>{
@@ -29,7 +28,7 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:00:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 16:00:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
@@ -63,7 +62,7 @@ function cutDownTime() {
 
 $changeBtn.on('click', function (event) {
     let currDate = getNowDate();
-     var dateSpilt = $currentDate.val();
+     var dateSpilt = $currentDate.val().replace(/-/g, "/");
     if (/rankingPre/.test(event.target.id)) {
         currDate = GetDateStr(dateSpilt, -1); //前一天
     }
@@ -86,14 +85,14 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=15){
-        if(activityStatus($activityStatus).status !== 'end'){
+    if(dd.getHours() >=16){
+        // if(activityStatus($activityStatus).status !== 'end'){
             dd.setDate(dd.getDate()+1)
-        }else {
-            dd.setDate(dd.getDate())
-        }
+        // }else {
+        //     dd.setDate(dd.getDate())
+        // }
 
-        location.reload();
+
     }
     return getHMS(dd);
 }
