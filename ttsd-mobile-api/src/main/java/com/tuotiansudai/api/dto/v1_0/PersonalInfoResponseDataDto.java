@@ -71,6 +71,12 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "投资偏好说明", example = "进取型")
     private String riskEstimateDesc;
 
+    @ApiModelProperty(value = "风险评估等级")
+    private Integer estimateLevel;
+
+    @ApiModelProperty(value = "风险评估限制金额")
+    private Integer estimateLimit;
+
 
     public boolean getCertificationFlag() {
         return certificationFlag;
@@ -246,5 +252,21 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
 
     public void setRiskEstimateDesc(String riskEstimateDesc) {
         this.riskEstimateDesc = riskEstimateDesc;
+    }
+
+    public Integer getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(Integer estimateLevel) {
+        this.estimateLevel = estimateLevel;
+    }
+
+    public Integer getEstimateLimit() {
+        return estimateLimit;
+    }
+
+    public void setEstimateLimit(Integer estimateLimit) {
+        this.estimateLimit = estimateLimit;
     }
 }

@@ -24,6 +24,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.LoanPeriodCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,11 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
+
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
@@ -181,7 +187,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setInterestPerTenThousands(String.valueOf(InterestCalculator.estimateExperienceExpectedInterest(1000000, loan)));
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
-
+            if(loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() !=null){
+                loanResponseDataDto.setEstimateLevel(loanDetailsModelActivity.getEstimate().getLower());
+                loanResponseDataDto.setEstimateLimit(Integer.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,loanDetailsModelActivity.getEstimate().name())));
+            }
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

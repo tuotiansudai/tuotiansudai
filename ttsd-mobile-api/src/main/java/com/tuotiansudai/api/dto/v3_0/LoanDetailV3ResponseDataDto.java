@@ -167,6 +167,12 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
     private String estimate;
 
+    @ApiModelProperty(value = "风险评估等级")
+    private Integer estimateLevel;
+
+    @ApiModelProperty(value = "风险评估限额")
+    private Integer estimateLimit;
+
     public Long getLoanId() {
         return loanId;
     }
@@ -573,5 +579,21 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     public void setNonTransferable(boolean nonTransferable) {
         this.nonTransferable = nonTransferable;
+    }
+
+    public Integer getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(Integer estimateLevel) {
+        this.estimateLevel = estimateLevel;
+    }
+
+    public Integer getEstimateLimit() {
+        return estimateLimit;
+    }
+
+    public void setEstimateLimit(Integer estimateLimit) {
+        this.estimateLimit = estimateLimit;
     }
 }
