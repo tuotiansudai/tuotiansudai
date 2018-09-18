@@ -19,6 +19,8 @@ public interface UserMapper {
 
     void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber);
 
+    void updateStaffMobile(String loginName, String staffMobile);
+
     BasePaginationDataDto<UserRegisterInfo> findUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer, int page, int pageSize);
 
     BasePaginationDataDto<UserRegisterInfo> findUsersHasReferrerByRegisterTime(Date startTime, Date endTime, int page, int pageSize);

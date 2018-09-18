@@ -31,6 +31,8 @@ public class UpdateUserInfoRequestDto implements Serializable {
     private String city;
     @JsonProperty("sign_in_count")
     private Integer signInCount;
+    @JsonProperty("staff_mobile")
+    private String staffMobile;
 
     public UpdateUserInfoRequestDto(String loginName) {
         this.loginName = loginName;
@@ -150,5 +152,13 @@ public class UpdateUserInfoRequestDto implements Serializable {
 
     public void setSignInCount(Integer signInCount) {
         this.signInCount = signInCount;
+    }
+
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
     }
 }

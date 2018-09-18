@@ -80,6 +80,13 @@ public class UserMapperRest implements UserMapper {
     }
 
     @Override
+    public void updateStaffMobile(String loginName, String staffMobile) {
+        UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
+        updateDto.setStaffMobile(staffMobile);
+        userRestClient.update(updateDto);
+    }
+
+    @Override
     public BasePaginationDataDto<UserRegisterInfo> findUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer, int page, int pageSize) {
         UserRestQueryDto queryDto = new UserRestQueryDto();
         queryDto.setRegisterTimeGte(startTime);
