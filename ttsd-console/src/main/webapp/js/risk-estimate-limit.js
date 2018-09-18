@@ -32,14 +32,15 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
             $('.message').html('输入的金额需满足:保守型<稳健型<积极型!');
             return false;
         }
-        var dataJson={"conservative":conservative,"steady":steady,"positive":positive};
+        var dataJson={"CONSERVATIVE":conservative,"STEADY":steady,"POSITIVE":positive};
+
         $.ajax({
             url: '/user-manage/risk-estimate/limit',
             type: 'POST',
             async:false,
             contentType: "application/json; charset=utf-8",
             dataType: 'JSON',
-            data: dataJson
+            data: JSON.stringify(dataJson)
         })
         .done(function(resData) {
            if(resData.status){

@@ -58,7 +58,8 @@ public class UserController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final static String RISK_ESTIMATE_LIMIT_KEY = "risk-estimate:limit";
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
 
     @Autowired
     private UserService userService;
@@ -494,32 +495,32 @@ public class UserController {
     @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.GET)
     public ModelAndView riskEstimateLimit() {
         ModelAndView modelAndView = new ModelAndView("/risk-estimate-limit");
-        modelAndView.addAllObjects(redisWrapperClient.hgetAll(RISK_ESTIMATE_LIMIT_KEY));
+        modelAndView.addAllObjects(redisWrapperClient.hgetAll(riskEstimateLimitKey));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/risk-estimate/limit",method=RequestMethod.POST)
+    @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto riskEstimateLimitEdit(@RequestBody Map<String,String> dataMap) {
-        String conservative=dataMap.get(Estimate.CONSERVATIVE.name());
-        String steady=dataMap.get(Estimate.STEADY.name());
-        String positive=dataMap.get(Estimate.POSITIVE.name());
+    public BaseDataDto riskEstimateLimitEdit(@RequestBody Map<String, String> dataMap) {
+        String conservative = dataMap.get(Estimate.CONSERVATIVE.name());
+        String steady = dataMap.get(Estimate.STEADY.name());
+        String positive = dataMap.get(Estimate.POSITIVE.name());
         if (!(Long.valueOf(conservative) < Long.valueOf(steady) && Long.valueOf(steady) < Long.valueOf(positive))) {
             return new BaseDataDto(false, "输入的金额需满足:保守型<稳健型<积极型!");
         }
-        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.CONSERVATIVE.name(), conservative);
-        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.STEADY.name(), steady);
-        redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.POSITIVE.name(), positive);
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.CONSERVATIVE.name(), conservative);
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.STEADY.name(), steady);
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.POSITIVE.name(), positive);
         return new BaseDataDto(true);
     }
 
     @PostConstruct
     public void initRiskEstimvate() {
-        Map<String, String> limitMap = redisWrapperClient.hgetAll(RISK_ESTIMATE_LIMIT_KEY);
+        Map<String, String> limitMap = redisWrapperClient.hgetAll(riskEstimateLimitKey);
         if (CollectionUtils.isEmpty(limitMap)) {
-            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.CONSERVATIVE.name(), "500000");
-            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.STEADY.name(), "1500000");
-            redisWrapperClient.hset(RISK_ESTIMATE_LIMIT_KEY, Estimate.POSITIVE.name(), "5000000");
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.CONSERVATIVE.name(), "500000");
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.STEADY.name(), "1500000");
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.POSITIVE.name(), "5000000");
         }
     }
 

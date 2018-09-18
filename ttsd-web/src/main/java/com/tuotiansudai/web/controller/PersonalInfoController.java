@@ -13,6 +13,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,8 @@ public class PersonalInfoController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private final static String RISK_ESTIMATE_LIMIT_KEY = "risk-estimate:limit";
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
@@ -60,9 +62,9 @@ public class PersonalInfoController {
         mv.addObject("email", userModel.getEmail());
         mv.addObject("noPasswordInvest", accountModel != null && accountModel.isNoPasswordInvest());
         mv.addObject("autoInvest", accountModel != null && accountModel.isAutoInvest());
-        Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
+        Estimate estimate = riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
         mv.addObject("estimate", estimate);
-        mv.addObject("estimateLimit",estimate == null?"":redisWrapperClient.hget(RISK_ESTIMATE_LIMIT_KEY,estimate.name()));
+        mv.addObject("estimateLimit", estimate == null ? "" : redisWrapperClient.hget(riskEstimateLimitKey, estimate.name()));
 
         if (accountModel != null) {
             mv.addObject("userName", userModel.getUserName());
