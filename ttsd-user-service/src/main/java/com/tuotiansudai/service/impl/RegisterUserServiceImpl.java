@@ -44,12 +44,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private static final long EXPERIENCE_AMOUNT = 688800L;
 
-    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
-
-    private final int seconds = 60 * 24 * 60 * 60;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserModel register(RegisterRequestDto registerDto) {
@@ -62,8 +56,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         MembershipModel membershipModel = membershipMapper.findByLevel(0);
         UserMembershipModel userMembershipModel = UserMembershipModel.createUpgradeUserMembershipModel(userModel.getLoginName(), membershipModel.getId());
         userMembershipMapper.create(userMembershipModel);
-
-        this.referrerSuperScholarActivityRegister(userModel.getLoginName(), registerDto.getActivityReferrer());
 
         this.sendMessage(userModel);
 
@@ -104,13 +96,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                     PushType.RECOMMEND_SUCCESS,
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),
                     AppUrl.MESSAGE_CENTER_LIST));
-        }
-    }
-
-    private void referrerSuperScholarActivityRegister(String loginName, String activityReferrer) {
-        if (!Strings.isNullOrEmpty(activityReferrer)) {
-            String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
-            redisWrapperClient.setex(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName), seconds, activityReferrer);
         }
     }
 }

@@ -129,7 +129,6 @@
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
-                        <input type="hidden" name="zeroShoppingPrize" value="${zeroShoppingPrize!}">
                         <dl class="account-list">
                             <dd class="clearfix">
                                 <span class="fl">账户余额：</span>
