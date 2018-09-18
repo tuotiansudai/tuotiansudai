@@ -74,7 +74,7 @@ $changeBtn.on('click', function (event) {
 
 
     showBtns();
-   if(activityStatus($activityStatus).status == 'activiting'){
+   if(activityStatus().status == 'activiting'){
 
         heroRank($currentDate.val());
 
@@ -85,12 +85,16 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=16){
-        // if(activityStatus($activityStatus).status !== 'end'){
+    if(dd.getHours() >=15){
+        let over = $activityStatus.data('overtime');
+        let endTime = new Date(over.replace(/-/g, "/")).getTime();
+        let currentTime = new Date().getTime();
+        if(currentTime > endTime){
             dd.setDate(dd.getDate()+1)
-        // }else {
-        //     dd.setDate(dd.getDate())
-        // }
+        }else {
+            dd.setDate(dd.getDate())
+        }
+
 
 
     }
@@ -135,7 +139,7 @@ function heroRank(date) {
             // 解析模板, 返回解析后的内容
             let render2 = _.template(investTpl);
             let html2 = render2(data);
-            $('#myInvestContent').append(html2);
+            $('#myInvestContent').html(html2);
 
         }
     })
