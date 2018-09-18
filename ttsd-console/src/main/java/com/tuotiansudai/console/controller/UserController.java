@@ -498,9 +498,12 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/risk-estimate/limit/edit")
+    @RequestMapping(value = "/risk-estimate/limit",method=RequestMethod.POST)
     @ResponseBody
-    public BaseDataDto riskEstimateLimitEdit(@RequestParam("conservative") String conservative, @RequestParam("steady") String steady, @RequestParam("positive") String positive) {
+    public BaseDataDto riskEstimateLimitEdit(@RequestBody Map<String,String> dataMap) {
+        String conservative=dataMap.get(Estimate.CONSERVATIVE.name());
+        String steady=dataMap.get(Estimate.STEADY.name());
+        String positive=dataMap.get(Estimate.POSITIVE.name());
         if (!(Long.valueOf(conservative) < Long.valueOf(steady) && Long.valueOf(steady) < Long.valueOf(positive))) {
             return new BaseDataDto(false, "输入的金额需满足:保守型<稳健型<积极型!");
         }
