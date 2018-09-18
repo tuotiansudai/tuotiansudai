@@ -199,7 +199,6 @@ public class InvestTransferServiceTest {
 
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
-        transferApplicationDto.setTransferAmount(1L);
         investTransferService.investTransferApply(transferApplicationDto);
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
@@ -225,7 +224,6 @@ public class InvestTransferServiceTest {
 
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
-        transferApplicationDto.setTransferAmount(1L);
         investTransferService.investTransferApply(transferApplicationDto);
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
@@ -254,7 +252,6 @@ public class InvestTransferServiceTest {
 
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
-        transferApplicationDto.setTransferAmount(1L);
 
         investTransferService.investTransferApply(transferApplicationDto);
 
