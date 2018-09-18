@@ -85,14 +85,18 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=15){
+    if(dd.getHours() >=16){
         let over = $activityStatus.data('overtime');
         let endTime = new Date(over.replace(/-/g, "/")).getTime();
         let currentTime = new Date().getTime();
         if(currentTime > endTime){
-            dd.setDate(dd.getDate()+1)
-        }else {
+            console.log(99)
+
             dd.setDate(dd.getDate())
+        }else {
+            dd.setDate(dd.getDate()+1)
+            console.log(101010)
+
         }
 
 
@@ -278,6 +282,21 @@ function activityStatus() {
     }
 
 }
+function contrastTime(time) {
+    var dB = new Date(time.replace(/-/g, "/"));//获取某个时间点，结束时间
+    var d = new Date();
+    var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();//获取当前实际日期
+
+    console.log(d,Date.parse(str))
+    console.log(dB,Date.parse(dB))
+alert(Date.parse(str) > Date.parse(dB))
+    if (Date.parse(str) > Date.parse(dB)) {//时间戳对比
+        return 1;
+    }else {
+        return 0;
+    }
+
+}
 
 function loadData(nowDay) {
     let activityStatusStr = activityStatus();
@@ -318,3 +337,5 @@ function loadData(nowDay) {
     }
 
 }
+
+//alert(contrastTime('2018-09-18 16:14:00'))
