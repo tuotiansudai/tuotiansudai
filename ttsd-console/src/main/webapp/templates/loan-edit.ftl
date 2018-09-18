@@ -35,6 +35,8 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE" <#if loan.loan.pledgeType == "ENTERPRISE_PLEDGE">selected</#if>>税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
+                            <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER" <#if loan.loan.pledgeType == "PERSONAL_CAPITAL_TURNOVER">selected</#if>>个人资金周转</option>
+                            <option value="企业资金周转" data-pledgeType="ENTERPRISE_CAPITAL_TURNOVER" <#if loan.loan.pledgeType == "ENTERPRISE_CAPITAL_TURNOVER">selected</#if>>企业资金周转</option>
                         </select>
                     </div>
                 </div>
@@ -349,7 +351,7 @@
         </section>
 
         <section id="section-two">
-            <#if ['HOUSE', 'VEHICLE']?seq_contains(loan.loan.pledgeType)>
+            <#if ['HOUSE', 'VEHICLE', 'PERSONAL_CAPITAL_TURNOVER', 'ENTERPRISE_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
