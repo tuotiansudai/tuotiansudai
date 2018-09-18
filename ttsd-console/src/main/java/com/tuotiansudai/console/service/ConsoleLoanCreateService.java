@@ -244,26 +244,21 @@ public class ConsoleLoanCreateService {
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
-        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanModel.getPledgeType())) {
+        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
             loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
+            List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
+                    .map(LoanCreatePledgeHouseRequestDto::new).collect(Collectors.toList());
+            loanCreateRequestDto.setPledgeHouse(loanCreatePledgeHouseRequestDtoList);
 
-            if (loanModel.getPledgeType() == PledgeType.HOUSE) {
-                List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
-                        .map(n -> new LoanCreatePledgeHouseRequestDto(n)).collect(Collectors.toList());
-                loanCreateRequestDto.setPledgeHouse(loanCreatePledgeHouseRequestDtoList);
-            }
-
-            if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
-                List<LoanCreatePledgeVehicleRequestDto> loanCreatePledgeVehicleRequestDtoList = pledgeVehicleMapper.getByLoanId(loanId).stream()
-                        .map(n -> new LoanCreatePledgeVehicleRequestDto(n)).collect(Collectors.toList());
-                loanCreateRequestDto.setPledgeVehicle(loanCreatePledgeVehicleRequestDtoList);
-            }
+            List<LoanCreatePledgeVehicleRequestDto> loanCreatePledgeVehicleRequestDtoList = pledgeVehicleMapper.getByLoanId(loanId).stream()
+                    .map(LoanCreatePledgeVehicleRequestDto::new).collect(Collectors.toList());
+            loanCreateRequestDto.setPledgeVehicle(loanCreatePledgeVehicleRequestDtoList);
         }
 
         if (PledgeType.ENTERPRISE_PLEDGE == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeEnterpriseRequestDto> loanCreatePledgeEnterpriseRequestDtoList = pledgeEnterpriseMapper.getByLoanId(loanId).stream()
-                    .map(n -> new LoanCreatePledgeEnterpriseRequestDto(n)).collect(Collectors.toList());
+                    .map(LoanCreatePledgeEnterpriseRequestDto::new).collect(Collectors.toList());
             loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
         }
         if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
