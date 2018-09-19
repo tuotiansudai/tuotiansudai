@@ -1,7 +1,7 @@
 ALTER TABLE `user`
-  ADD staff_mobile VARCHAR(11);
+  ADD staff_referrer_mobile VARCHAR(11);
 ALTER TABLE `user`
-  ADD INDEX INDEX_USER_STAFF_MOBILE (`staff_mobile`);
+  ADD INDEX INDEX_USER_STAFF_MOBILE (`staff_referrer_mobile`);
 
 UPDATE user
   INNER JOIN (SELECT
@@ -18,4 +18,4 @@ UPDATE user
                                   WHERE user_role.login_name = temp1.referrer_login_name AND
                                         user_role.role IN ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE)) referrer_relation
     ON user.login_name = referrer_relation.login_name
-SET user.staff_mobile = referrer_relation.staff_mobile
+SET user.staff_referrer_mobile = referrer_relation.staff_mobile

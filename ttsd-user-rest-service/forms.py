@@ -70,7 +70,7 @@ class UserUpdateForm(wtforms.Form):
     province = wtforms.StringField('province', [wtforms.validators.Length(max=32)])
     city = wtforms.StringField('city', [wtforms.validators.Length(max=32)])
     source = wtforms.StringField('source', [wtforms.validators.Length(max=16)])
-    staff_mobile = wtforms.StringField('staff_mobile', [wtforms.validators.Regexp(r'^(1\d{10})?$')])
+    staff_referrer_mobile = wtforms.StringField('staff_referrer_mobile', [wtforms.validators.Regexp(r'^(1\d{10})?$')])
 
     def validate_login_name(self, field):
         if field.data and not User.query.filter(User.login_name == field.data).first():

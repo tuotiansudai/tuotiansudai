@@ -96,9 +96,9 @@ public class ReferrerRelationService {
             }
         }
 
-        String staffMobile = referrerRelationMapper.findStaffReferrerMobileByLoginName(loginName);
-        if (!Strings.isNullOrEmpty(staffMobile)){
-            userMapper.updateStaffMobile(loginName, staffMobile);
+        String staffReferrerMobile = referrerRelationMapper.findStaffReferrerMobileByLoginName(loginName);
+        if (!Strings.isNullOrEmpty(staffReferrerMobile)){
+            userMapper.updateStaffReferrerMobile(loginName, staffReferrerMobile);
         }
     }
 

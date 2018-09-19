@@ -31,7 +31,7 @@ class User(db.Model):
     province = db.Column(db.String(32))
     city = db.Column(db.String(32))
     source = db.Column(db.String(16))
-    staff_mobile = db.Column(db.String(11))
+    staff_referrer_mobile = db.Column(db.String(11))
 
     def __init__(self, mobile, referrer, channel, source):
         self.login_name = self._generate_login_name()
