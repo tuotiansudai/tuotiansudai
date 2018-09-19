@@ -102,7 +102,6 @@ public class LoanDetailController {
         Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
         if(estimate!=null){
             modelAndView.addObject("estimateLimit",Long.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,estimate.name()))*100);
-            modelAndView.addObject("userEstimateLevel",estimate.getLower());
         }
         modelAndView.addObject("usedMoney",  investService.sumUsedFund(LoginUserInfo.getLoginName()));
         modelAndView.addObject("estimate",  estimate);
