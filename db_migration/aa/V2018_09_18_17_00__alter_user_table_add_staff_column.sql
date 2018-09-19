@@ -13,9 +13,9 @@ UPDATE user
               WHERE level = (SELECT max(level)
                              FROM referrer_relation temp2
                              WHERE temp1.login_name = temp2.login_name)
-                    AND if(exists(SELECT 1
+                    AND exists(SELECT 1
                                   FROM user_role
                                   WHERE user_role.login_name = temp1.referrer_login_name AND
-                                        user_role.role IN ('SD_STAFF', 'ZC_STAFF')), TRUE, FALSE)) referrer_relation
+                                        user_role.role IN ('SD_STAFF', 'ZC_STAFF'))) referrer_relation
     ON user.login_name = referrer_relation.login_name
 SET user.staff_referrer_mobile = referrer_relation.staff_mobile
