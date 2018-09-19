@@ -28,7 +28,7 @@ function cutDownTime() {
     let nowDate = getNowDate();console.log(nowDate)
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:40:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 15:50:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
@@ -90,7 +90,7 @@ $changeBtn.on('click', function (event) {
 function getNowDate() {
     let dd = new Date();
     console.log(88,dd)
-    if(contrastTime(getCurrentDate().substr(0,10)+' 15:40:00') == 1){
+    if(contrastTime(getCurrentDate().substr(0,10)+' 15:50:00') == 1){
         let over = $activityStatus.data('overtime');
         let endTime = new Date(over.replace(/-/g, "/")).getTime();
         let currentTime = new Date().getTime();
