@@ -25,7 +25,7 @@ timer = setInterval(()=>{
     cutDownTime();
 }, 1000);
 function cutDownTime() {
-    let nowDate = getNowDate();
+    let nowDate = getNowDate();console.log(nowDate)
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
     let todayOverTime = new Date((nowDate.substr(0,10)+' 14:00:00').replace(/-/g, "/")).getTime();
@@ -78,7 +78,7 @@ $changeBtn.on('click', function (event) {
 
 
     showBtns();
-   if(activityStatus().status == 'activiting'){
+   if(activityStatus().status == 'activiting'||activityStatus().status == 'end'){
 
         heroRank($currentDate.val());
 
@@ -89,18 +89,17 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
+    console.log(88,dd)
     if(contrastTime(getCurrentDate().substr(0,10)+' 14:00:00') == 1){
         let over = $activityStatus.data('overtime');
         let endTime = new Date(over.replace(/-/g, "/")).getTime();
         let currentTime = new Date().getTime();
         if(currentTime > endTime){
-
             dd.setDate(dd.getDate())
         }else {
             dd.setDate(dd.getDate()+1)
 
         }
-
 
 
     }
@@ -268,7 +267,7 @@ function activityStatus() {
             status:'end',
             isToday:isToday,
             isFirstDay:isFirstDay,
-            isLastDay:isLastDay
+            isLatDay:isLastDay
         }
     }else {
 
