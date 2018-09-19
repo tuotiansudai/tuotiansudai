@@ -88,7 +88,7 @@
         TRUE, FALSE) as is_bind_bank_card,
         IF(exists (select 1 from bank_card where bank_card.login_name = u.login_name and bank_card.status = 'PASSED' and
         bank_card.is_fast_pay_on = 1), TRUE, FALSE) as fast_pay,
-        u.staff_mobile as staff_mobile
+        u.staff_referrer_mobile as staff_mobile
         from
         <choose>
             <when test="roleStage == null ">
@@ -162,14 +162,14 @@
             </if>
             <if test="hasStaff !=null">
                 <if test="hasStaff == true">
-                    and u.staff_mobile is not null
+                    and u.staff_referrer_mobile is not null
                 </if>
                 <if test="hasStaff == false">
-                    and u.staff_mobile is null
+                    and u.staff_referrer_mobile is null
                 </if>
             </if>
             <if test="staffMobile !=null and staffMobile !=''">
-                and u.staff_mobile like '${staffMobile}%'
+                and u.staff_referrer_mobile like '${staffMobile}%'
             </if>
         </where>
         order by u.register_time desc
@@ -248,14 +248,14 @@
             </if>
             <if test="hasStaff !=null">
                 <if test="hasStaff == true">
-                    and u.staff_mobile is not null
+                    and u.staff_referrer_mobile is not null
                 </if>
                 <if test="hasStaff == false">
-                    and u.staff_mobile is null
+                    and u.staff_referrer_mobile is null
                 </if>
             </if>
             <if test="staffMobile !=null and staffMobile !=''">
-                 and u.staff_mobile like '${staffMobile}%'
+                 and u.staff_referrer_mobile like '${staffMobile}%'
             </if>
         </where>
     </select>
