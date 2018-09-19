@@ -1,7 +1,7 @@
 ALTER TABLE `user`
   ADD staff_referrer_mobile VARCHAR(11);
 ALTER TABLE `user`
-  ADD INDEX INDEX_USER_STAFF_MOBILE (`staff_referrer_mobile`);
+  ADD INDEX INDEX_USER_STAFF_REFERRER_MOBILE (`staff_referrer_mobile`);
 
 UPDATE user
   INNER JOIN (SELECT
