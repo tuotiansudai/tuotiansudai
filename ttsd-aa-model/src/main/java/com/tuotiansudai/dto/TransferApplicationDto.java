@@ -6,6 +6,8 @@ public class TransferApplicationDto {
 
     private Long transferInvestId;
 
+    private Long transferAmount;
+
     private Source source = Source.WEB;
 
     public TransferApplicationDto() {
@@ -17,6 +19,14 @@ public class TransferApplicationDto {
 
     public void setTransferInvestId(Long transferInvestId) {
         this.transferInvestId = transferInvestId;
+    }
+
+    public Long getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(Long transferAmount) {
+        this.transferAmount = transferAmount;
     }
 
     public Source getSource() {
