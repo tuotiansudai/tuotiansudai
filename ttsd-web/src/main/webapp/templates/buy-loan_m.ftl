@@ -4,7 +4,7 @@
      data-has-bank-card="${hasBankCard?c}" data-loan-status="${loan.loanStatus}"
      data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
-     data-estimate="${estimate?string('true', 'false')}"
+     data-estimate="${estimate???string('true', 'false')}"
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="m-header"><em id="iconBuy" class="icon-left"><i></i></em>购买详情 </div>
     <#if coupons?has_content>

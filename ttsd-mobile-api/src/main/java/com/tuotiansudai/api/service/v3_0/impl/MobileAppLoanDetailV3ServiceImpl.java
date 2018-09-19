@@ -24,6 +24,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.LoanPeriodCalculator;
 import com.tuotiansudai.util.RandomUtils;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -104,6 +105,12 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
 
     private String content = "个人经营借款投资项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+
     @Override
     public BaseResponseDto<LoanDetailV3ResponseDataDto> findLoanDetail(LoanDetailV3RequestDto requestDto) {
         BaseResponseDto<LoanDetailV3ResponseDataDto> responseDto = new BaseResponseDto<>();
@@ -139,7 +146,8 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         dataDto.setRepayTypeName(repayTypeName);
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
         if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
-            dataDto.setEstimate(loanDetailsModelActivity.getEstimate().getType());
+            dataDto.setEstimateLevel(loanDetailsModelActivity.getEstimate().getLower());
+            dataDto.setEstimateLimit(Integer.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,loanDetailsModelActivity.getEstimate().name())));
         }
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 

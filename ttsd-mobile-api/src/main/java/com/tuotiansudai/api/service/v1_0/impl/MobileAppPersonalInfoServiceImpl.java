@@ -13,9 +13,11 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,6 +43,11 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     @Autowired
     private RiskEstimateMapper riskEstimateMapper;
+
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
     public BaseResponseDto<PersonalInfoResponseDataDto> getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
@@ -116,6 +123,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(user.getLoginName());
         personalInfoDataDto.setRiskEstimate(riskEstimateModel != null ? riskEstimateModel.getEstimate().getType() : "");
         personalInfoDataDto.setRiskEstimateDesc(riskEstimateModel != null ? riskEstimateModel.getEstimate().getDescription() : "");
+        personalInfoDataDto.setEstimateLevel(riskEstimateModel != null ?riskEstimateModel.getEstimate().getLower():null);
+        personalInfoDataDto.setEstimateLimit(riskEstimateModel != null ?Integer.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,riskEstimateModel.getEstimate().name())):null);
         return personalInfoDataDto;
     }
 }

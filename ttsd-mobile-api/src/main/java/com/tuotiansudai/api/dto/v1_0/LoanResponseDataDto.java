@@ -117,6 +117,12 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "万元收益", example = "1000")
     private String interestPerTenThousands;
 
+    @ApiModelProperty(value = "风险评估等级，默认为Estimate.lower")
+    private Integer estimateLevel;
+
+    @ApiModelProperty(value = "风险评估金额")
+    private Integer estimateLimit;
+
     public String getLoanId() {
         return loanId;
     }
@@ -402,5 +408,21 @@ public class LoanResponseDataDto {
 
     public void setInterestPerTenThousands(String interestPerTenThousands) {
         this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public Integer getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(Integer estimateLevel) {
+        this.estimateLevel = estimateLevel;
+    }
+
+    public Integer getEstimateLimit() {
+        return estimateLimit;
+    }
+
+    public void setEstimateLimit(Integer estimateLimit) {
+        this.estimateLimit = estimateLimit;
     }
 }

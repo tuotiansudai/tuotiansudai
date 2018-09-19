@@ -60,4 +60,6 @@ public interface InvestService {
     InvestorInvestDetailDto getInvestDetailById(long investId);
 
     boolean isUserContractNo(String loginName, String contractNo);
+
+    long sumUsedFund(String loginName);
 }
