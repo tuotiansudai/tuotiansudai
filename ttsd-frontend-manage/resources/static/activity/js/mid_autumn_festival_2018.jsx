@@ -28,7 +28,7 @@ function cutDownTime() {
     let nowDate = getNowDate();
     let currentDate = getCurrentDate();
     let nowDateTime = new Date(currentDate.replace(/-/g, "/")).getTime();
-    let todayOverTime = new Date((nowDate.substr(0,10)+' 16:00:00').replace(/-/g, "/")).getTime();
+    let todayOverTime = new Date((nowDate.substr(0,10)+' 11:20:00').replace(/-/g, "/")).getTime();
     let leftTime = todayOverTime-nowDateTime;
     var second,hour,minute;
 
@@ -37,6 +37,7 @@ function cutDownTime() {
         second = 0;
         minute = 0;
         hour =  0;
+
     }else {
 
         if(leftTime>0){
@@ -44,6 +45,9 @@ function cutDownTime() {
             hour = Math.floor(leftTime / 1000 / 60 / 60 % 24);
             minute = Math.floor(leftTime / 1000 / 60 % 60);
             second = Math.floor(leftTime / 1000 % 60);
+        }
+        if(second == 0&& minute == 0&&hour == 0){
+            location.reload()
         }
 
 
@@ -85,17 +89,15 @@ $changeBtn.on('click', function (event) {
 
 function getNowDate() {
     let dd = new Date();
-    if(dd.getHours() >=17){
+    if(contrastTime(getCurrentDate().substr(0,10)+' 11:20:00') == 1){
         let over = $activityStatus.data('overtime');
         let endTime = new Date(over.replace(/-/g, "/")).getTime();
         let currentTime = new Date().getTime();
         if(currentTime > endTime){
-            console.log(99)
 
             dd.setDate(dd.getDate())
         }else {
             dd.setDate(dd.getDate()+1)
-            console.log(101010)
 
         }
 
@@ -177,7 +179,6 @@ function loginTip() {
 
 function showBtns() {
     let activityStatusStr = activityStatus();
-    console.log(activityStatusStr)
     if(activityStatusStr.status == 'noStart'){
         //活动未开始
         if(activityStatusStr.isToday == true){
@@ -204,7 +205,6 @@ function showBtns() {
 
         }
         if(activityStatusStr.isFirstDay == true&&activityStatusStr.isToday == false){
-            console.log('jintian')
             $heroPre.css({'visibility':'hidden'});
         }
 
@@ -287,13 +287,10 @@ function contrastTime(time) {
     var d = new Date();
     var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+ " "+ d.getHours() + ':'+ d.getMinutes()+':'+d.getSeconds();//获取当前实际日期
 
-    console.log(d,Date.parse(str))
-    console.log(dB,Date.parse(dB))
-alert(Date.parse(str) > Date.parse(dB))
-    if (Date.parse(str) > Date.parse(dB)) {//时间戳对比
-        return 1;
+    if (d.getTime() < dB.getTime()) {//时间戳对比
+        return 0;//现在时间大于10：00：00时间
     }else {
-        return 0;
+        return 1;
     }
 
 }
@@ -338,4 +335,3 @@ function loadData(nowDay) {
 
 }
 
-//alert(contrastTime('2018-09-18 16:29:00'))
