@@ -57,7 +57,20 @@ function showLayer() {
         }
     });
 };
-
+// function showRiskTip() {
+//     layer.open({
+//         shadeClose: false,
+//         title: '温馨提示',
+//         btn: ['确认'],
+//         type: 1,
+//         area: ['500px', 'auto'],
+//         content: '<p class="pad-m-tb tc">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</p>',
+//         btn1: function () {
+//             layer.closeAll();
+//         }
+//     });
+// };
+// showRiskTip()
 function getInvestAmount() {
     var amount = 0;
     if (!isNaN(amountInputElement.autoNumeric("get"))) {
