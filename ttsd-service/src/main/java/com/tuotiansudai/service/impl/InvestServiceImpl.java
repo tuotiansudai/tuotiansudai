@@ -884,4 +884,9 @@ public class InvestServiceImpl implements InvestService {
         }
         return "暂无优惠";
     }
+
+    @Override
+    public long sumUsedFund(String loginName) {
+        return investMapper.sumUsedFund(loginName);
+    }
 }
