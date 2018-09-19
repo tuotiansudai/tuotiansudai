@@ -7,7 +7,9 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.message.service.AnnounceService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.ExperienceLoanDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.HomeService;
@@ -56,6 +58,9 @@ public class HomeController {
     @Autowired
     private RiskEstimateService riskEstimateService;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @RequestMapping(path = {"/", "/m"}, method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index");
@@ -94,7 +99,10 @@ public class HomeController {
 
     @RequestMapping(value = "/settings")
     public ModelAndView settings() {
-        return new ModelAndView("/settings", "estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        ModelAndView modelAndView=new ModelAndView("/settings");
+        modelAndView.addObject("estimate",riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("isRegist",accountMapper.findByLoginName( LoginUserInfo.getLoginName()) == null?false:true);
+        return modelAndView;
     }
 
     @RequestMapping(path = "/sitemap.xml", method = RequestMethod.GET)
