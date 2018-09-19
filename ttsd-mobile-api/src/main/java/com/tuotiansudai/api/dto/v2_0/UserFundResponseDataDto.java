@@ -89,12 +89,12 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否显示摇钱树", example = "1")
     private int showMoneyTree = 0; //是否显示摇钱树
 
-    @ApiModelProperty(value = "用户在平台已经使用的金钱，单位:分", example = "1")
-    private long usedMoney;
+    @ApiModelProperty(value = "风险评估可用投资额度，单位:分", example = "1")
+    private long availableInvestMoney;
 
     public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
                                    long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
-                                   Date membershipPrivilegeExpiredDate, long experienceBalance,long usedMoney) {
+                                   Date membershipPrivilegeExpiredDate, long experienceBalance,long availableInvestMoney) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -126,7 +126,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
         this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s", DateConvertUtil.format(membershipPrivilegeExpiredDate, "yyyy-MM-dd HH:mm:ss")) : null;
         this.experienceBalance = experienceBalance;
-        this.usedMoney=usedMoney;
+        this.availableInvestMoney=availableInvestMoney;
     }
 
     public long getBalance() {
@@ -233,11 +233,11 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         return actualTotalCouponInterest;
     }
 
-    public long getUsedMoney() {
-        return usedMoney;
+    public long getAvailableInvestMoney() {
+        return availableInvestMoney;
     }
 
-    public void setUsedMoney(long usedMoney) {
-        this.usedMoney = usedMoney;
+    public void setAvailableInvestMoney(long availableInvestMoney) {
+        this.availableInvestMoney = availableInvestMoney;
     }
 }

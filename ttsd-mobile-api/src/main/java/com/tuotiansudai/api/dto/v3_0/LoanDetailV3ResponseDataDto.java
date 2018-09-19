@@ -170,9 +170,6 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "风险评估等级")
     private Integer estimateLevel;
 
-    @ApiModelProperty(value = "风险评估限额")
-    private Integer estimateLimit;
-
     public Long getLoanId() {
         return loanId;
     }
@@ -589,11 +586,4 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
         this.estimateLevel = estimateLevel;
     }
 
-    public Integer getEstimateLimit() {
-        return estimateLimit;
-    }
-
-    public void setEstimateLimit(Integer estimateLimit) {
-        this.estimateLimit = estimateLimit;
-    }
 }

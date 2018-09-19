@@ -886,7 +886,14 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long sumUsedFund(String loginName) {
-        return investMapper.sumUsedFund(loginName);
+    public long availableInvestMoney(String loginName) {
+        RiskEstimateModel riskEstimateModel=riskEstimateMapper.findByLoginName(loginName);
+        //没进行风险评估可用投资额度为0
+        if(riskEstimateModel== null || riskEstimateModel.getEstimate() == null){
+            return 0l;
+        }
+        long usedMoney=investMapper.sumUsedFund(loginName);
+        long estimateLimit=AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()));
+        return estimateLimit-usedMoney>=0?(estimateLimit-usedMoney):0;
     }
 }

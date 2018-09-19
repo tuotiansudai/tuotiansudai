@@ -8,7 +8,6 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
@@ -20,7 +19,6 @@ import com.tuotiansudai.service.LoanDetailService;
 import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -64,11 +62,6 @@ public class LoanDetailController {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
-    @Value("${risk.estimate.limit.key}")
-    private String riskEstimateLimitKey;
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId, HttpServletRequest request) {
         LoanDetailDto loanDetail = loanDetailService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
@@ -99,12 +92,8 @@ public class LoanDetailController {
 
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
         modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);
-        Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
-        if(estimate!=null){
-            modelAndView.addObject("estimateLimit",Long.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,estimate.name()))*100);
-        }
-        modelAndView.addObject("usedMoney",  investService.sumUsedFund(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("estimate",  estimate);
+        modelAndView.addObject("availableInvestMoney", investService.availableInvestMoney(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 

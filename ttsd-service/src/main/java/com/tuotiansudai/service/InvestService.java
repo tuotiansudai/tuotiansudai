@@ -61,5 +61,5 @@ public interface InvestService {
 
     boolean isUserContractNo(String loginName, String contractNo);
 
-    long sumUsedFund(String loginName);
+    long availableInvestMoney(String loginName);
 }

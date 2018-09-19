@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppLoanListService;
@@ -9,32 +7,22 @@ import com.tuotiansudai.api.util.AppVersionUtil;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.api.util.ProductTypeConverter;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.membership.repository.model.MembershipModel;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
-import com.tuotiansudai.membership.service.UserMembershipEvaluator;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.LoanPeriodCalculator;
-import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,11 +57,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
-    @Value("${risk.estimate.limit.key}")
-    private String riskEstimateLimitKey;
-
-    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
     @Override
     public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
@@ -87,7 +70,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), null, loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index, pageSize);
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
-        if(AppVersionUtil.compareVersion() == AppVersionUtil.low ){
+        if (AppVersionUtil.compareVersion() == AppVersionUtil.low) {
             loanModels = loanModels.stream().filter(n -> pledgeTypeList.contains(n.getPledgeType())).collect(Collectors.toList());
         }
 
@@ -175,8 +158,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
 
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loan.getId());
-            if(loanDetailsModel != null)
-            {
+            if (loanDetailsModel != null) {
                 loanResponseDataDto.setExtraSource(loanDetailsModel.getExtraSource() != null ? (loanDetailsModel.getExtraSource().size() == 1 && loanDetailsModel.getExtraSource().contains(Source.WEB)) ? Source.WEB.name() : null : null);
             }
 
@@ -187,9 +169,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setInterestPerTenThousands(String.valueOf(InterestCalculator.estimateExperienceExpectedInterest(1000000, loan)));
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
-            if(loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() !=null){
+            if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
                 loanResponseDataDto.setEstimateLevel(loanDetailsModelActivity.getEstimate().getLower());
-                loanResponseDataDto.setEstimateLimit(Integer.valueOf(redisWrapperClient.hget(riskEstimateLimitKey,loanDetailsModelActivity.getEstimate().name())));
             }
             loanDtoList.add(loanResponseDataDto);
         }
