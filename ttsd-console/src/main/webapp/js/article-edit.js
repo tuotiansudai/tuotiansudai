@@ -115,7 +115,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                 $errorDom.html('');
                 var $articleTitle = $('.article-title').val(),
                     $articleSource = $('.article-source').val();
-                var subSection = $('input[name="subSection"]:checked').val();
+                var subSectionVal = $('input[name="subSection"]:checked').val();
 
                 if ($articleTitle.length > 30) {
                     showErrorMessage('标题最多30个中文字符', $('.article-title', curform));
@@ -125,8 +125,10 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
                     showErrorMessage('文章来源最多17个中文字符', $('.article-source', curform));
                     return false;
                 }
-                if(subSection == null ){
-
+                var sectionVal=$('#section').val();
+                if(sectionVal =='KNOWLEDGE' &&(subSectionVal == null || subSectionVal== '')){
+                    showErrorMessage('网贷课堂子栏目必选', $('.subSectionLabel', curform));
+                    return false;
                 }
 
 

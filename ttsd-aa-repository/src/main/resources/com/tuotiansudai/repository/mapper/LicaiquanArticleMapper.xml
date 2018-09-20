@@ -22,28 +22,32 @@
         <result column="updated_time" property="updatedTime"/>
         <result column="deleted" property="deleted"/>
         <result column="timing_time" property="timingTime"/>
+        <result column="sub_section" property="subSection"/>
     </resultMap>
 
     <insert id="createArticle" parameterType="LicaiquanArticleModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`licaiquan_article` (id, title, creator_login_name, checker_login_name, author, section,
-        source, carousel, thumb, show_picture, content, created_time, updated_time, deleted,timing_time)
+        source, carousel, thumb, show_picture, content, created_time, updated_time, deleted,timing_time,sub_section)
         VALUE (#{id}, #{title}, #{creatorLoginName}, #{checkerLoginName}, #{author}, #{section}, #{source}, #{carousel},
-        #{thumb}, #{showPicture}, #{content}, #{createdTime}, #{updatedTime}, #{deleted},#{timingTime})
+        #{thumb}, #{showPicture}, #{content}, #{createdTime}, #{updatedTime}, #{deleted},#{timingTime},#{subSection})
     </insert>
 
     <update id="deleteArticle">
         UPDATE `aa`.`licaiquan_article` SET deleted = TRUE WHERE id = #{id}
     </update>
 
-    <select id="findArticleById" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
+    <sql id="columns">
+        id, title, creator_login_name, checker_login_name, author, section, sub_section, source, carousel, thumb, show_picture,
         content, created_time, updated_time, deleted,timing_time
+    </sql>
+
+    <select id="findArticleById" resultMap="licaiquanArticleModel">
+        SELECT  <include refid="columns"></include>
         FROM `aa`.`licaiquan_article` WHERE id = #{id}
     </select>
 
     <select id="findCarouselArticle" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, `section`, source, carousel, thumb, show_picture,
-        content, created_time, updated_time, deleted, timing_time
+        SELECT <include refid="columns"></include>
         FROM `licaiquan_article`
         WHERE carousel = true
         AND show_picture is not NULL
@@ -56,13 +60,12 @@
         UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creatorLoginName},
         checker_login_name = #{checkerLoginName}, author = #{author}, section = #{section}, source = #{source},
         carousel = #{carousel}, thumb = #{thumb}, show_picture = #{showPicture}, content = #{content},
-        created_time = #{createdTime}, updated_time = #{updatedTime},timing_time = #{timingTime}
+        created_time = #{createdTime}, updated_time = #{updatedTime},timing_time = #{timingTime},sub_section=#{subSection}
         WHERE id = #{id}
     </update>
 
     <select id="findExistedArticleListOrderByCreateTime" resultMap="licaiquanArticleModel">
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
-        content, created_time, updated_time, deleted,timing_time
+        SELECT <include refid="columns"></include>
         FROM `aa`.`licaiquan_article`
         WHERE id >= #{index} AND deleted = 0
         <if test="title != null and title != '' " >
@@ -71,13 +74,15 @@
         <if test="section != null">
             AND section = #{section}
         </if>
+        <if test="subSection != null">
+            AND sub_section = #{subSection}
+        </if>
         ORDER BY id,created_time DESC
         LIMIT #{pageSize}
     </select>
 
     <select id="findArticleByArticleSectionType" resultMap="licaiquanArticleModel" parameterType="map" useCache="false" >
-        SELECT id, title, creator_login_name, checker_login_name, author, section, source, carousel, thumb, show_picture,
-        content, created_time, updated_time, deleted,timing_time
+        SELECT <include refid="columns"></include>
         FROM `aa`.`licaiquan_article`
         WHERE deleted = FALSE AND (now() >= timing_time or timing_time is null)
         <if test="section != null ">

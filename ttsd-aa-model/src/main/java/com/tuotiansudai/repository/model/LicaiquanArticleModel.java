@@ -67,6 +67,11 @@ public class LicaiquanArticleModel implements Serializable {
 
     private Date timingTime;
 
+    /**
+     * 文章所属子栏目
+     */
+    private SubArticleSectionType subSection;
+
     public LicaiquanArticleModel() {
     }
 
@@ -103,6 +108,7 @@ public class LicaiquanArticleModel implements Serializable {
         this.createdTime = dto.getTimingTime() != null ? dto.getTimingTime() : dto.getCreateTime();
         this.updatedTime = dto.getUpdateTime();
         this.timingTime = dto.getTimingTime();
+        this.subSection=dto.getSubSection();
 
     }
 
@@ -221,4 +227,12 @@ public class LicaiquanArticleModel implements Serializable {
     public Date getTimingTime() { return timingTime; }
 
     public void setTimingTime(Date timingTime) { this.timingTime = timingTime; }
+
+    public SubArticleSectionType getSubSection() {
+        return subSection;
+    }
+
+    public void setSubSection(SubArticleSectionType subSection) {
+        this.subSection = subSection;
+    }
 }

@@ -6,8 +6,7 @@ package com.tuotiansudai.repository.model;
 public enum SubArticleSectionType {
     LAW_RULE("法律法规",ArticleSectionType.KNOWLEDGE),
     INVESTOR_EDUCATION("出借人教育",ArticleSectionType.KNOWLEDGE),
-    BASIC_KNOWLEDGE("基础知识",ArticleSectionType.KNOWLEDGE)
-    ;
+    BASIC_KNOWLEDGE("基础知识",ArticleSectionType.KNOWLEDGE);
 
     private String articleSectionTypeName;
 

@@ -42,7 +42,7 @@ public class LiCaiQuanArticleController {
         Map<String,String> comments = consoleLiCaiQuanArticleService.getAllComments(articleId);
         mv.addObject("comments",comments);
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        mv.addObject("subSectionList", Arrays.stream(SubArticleSectionType.values()).filter(item->item.getParent().equals(ArticleSectionType.KNOWLEDGE)).collect(Collectors.toList()));
+        mv.addObject("subSectionList", SubArticleSectionType.values());
         mv.addObject("dto", liCaiQuanArticleDto);
         return mv;
     }
@@ -64,11 +64,12 @@ public class LiCaiQuanArticleController {
     @RequestMapping(value = "/article/list", method = RequestMethod.GET)
     public ModelAndView findArticle(@RequestParam(value = "title", required = false) String title,
                                     @RequestParam(name = "articleSectionType", required = false) ArticleSectionType articleSectionType,
+                                    @RequestParam(name="subArticleSectionType",required=false) SubArticleSectionType subArticleSectionType,
                                     @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "status", required = false) ArticleStatus status) {
         int pageSize = 10;
         ModelAndView mv = new ModelAndView("/article-list");
-        ArticlePaginationDataDto dto = consoleLiCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index);
+        ArticlePaginationDataDto dto = consoleLiCaiQuanArticleService.findLiCaiQuanArticleDto(title,articleSectionType,status, pageSize, index,subArticleSectionType);
         mv.addObject("data", dto);
         mv.addObject("title", title);
         mv.addObject("selected", articleSectionType);
@@ -76,6 +77,8 @@ public class LiCaiQuanArticleController {
         mv.addObject("userName",LoginUserInfo.getLoginName());
         mv.addObject("articleStatus",ArticleStatus.values());
         mv.addObject("status",status);
+        mv.addObject("subArticleSectionTypeList",SubArticleSectionType.values());
+        mv.addObject("subSelected",subArticleSectionType);
         return mv;
     }
 

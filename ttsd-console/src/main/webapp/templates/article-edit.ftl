@@ -100,8 +100,8 @@
                 </div>
                 <div id="subSectionDiv" class="col-sm-3 radio" <#if  !(dto.section)?? || dto.section != 'KNOWLEDGE'>style="display: none"</#if> >
                     <#list subSectionList as subSectionItem>
-                        <label>
-                            <input type="radio" name="subSection" value="${subSectionItem.name()}" <#if  dto?? && dto.section?? && subSectionItem==dto.subSection>checked="checked"</#if> />${subSectionItem.getArticleSectionTypeName()}
+                        <label class="subSectionLabel">
+                            <input type="radio" name="subSection" value="${subSectionItem.name()}" <#if  dto?? && dto.subSection?? && subSectionItem==dto.subSection>checked="checked"</#if> />${subSectionItem.getArticleSectionTypeName()}
                             &nbsp;
                         </label>
                     </#list>
