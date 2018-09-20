@@ -74,6 +74,9 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "风险评估等级")
     private Integer estimateLevel;
 
+    @ApiModelProperty(value = "风险评估等级限额")
+    private long estimateLimit;
+
 
     public boolean getCertificationFlag() {
         return certificationFlag;
@@ -259,4 +262,11 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.estimateLevel = estimateLevel;
     }
 
+    public long getEstimateLimit() {
+        return estimateLimit;
+    }
+
+    public void setEstimateLimit(long estimateLimit) {
+        this.estimateLimit = estimateLimit;
+    }
 }

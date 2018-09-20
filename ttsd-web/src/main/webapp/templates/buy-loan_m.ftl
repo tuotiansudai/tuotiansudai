@@ -7,7 +7,7 @@
      data-estimate="${estimate???string('true', 'false')}"
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
      data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney!''}"
-     data-loan-estimate-type="${loan.estimate!''}" data-loan-estimate-level="${loan.estimateLevel!''}" >
+     data-estimate-limit="${estimateLimit!''}" data-loan-estimate-level="${loan.estimateLevel!''}" >
     <div class="m-header"><em id="iconBuy" class="icon-left"><i></i></em>购买详情 </div>
     <#if coupons?has_content>
         <#if maxBenefitUserCoupon??>
