@@ -120,6 +120,9 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "风险评估等级，默认为Estimate.lower")
     private Integer estimateLevel;
 
+    @ApiModelProperty(value = "投资偏好", example = "进取型")
+    private String riskEstimate;
+
     public String getLoanId() {
         return loanId;
     }
@@ -415,4 +418,11 @@ public class LoanResponseDataDto {
         this.estimateLevel = estimateLevel;
     }
 
+    public String getRiskEstimate() {
+        return riskEstimate;
+    }
+
+    public void setRiskEstimate(String riskEstimate) {
+        this.riskEstimate = riskEstimate;
+    }
 }

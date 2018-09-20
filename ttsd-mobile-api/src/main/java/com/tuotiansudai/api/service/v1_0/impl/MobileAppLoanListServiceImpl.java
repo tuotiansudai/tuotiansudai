@@ -169,8 +169,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 loanResponseDataDto.setInterestPerTenThousands(String.valueOf(InterestCalculator.estimateExperienceExpectedInterest(1000000, loan)));
             }
             loanResponseDataDto.setInvestFeeRate(String.valueOf(investFeeRate));
-            if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
+            if (loanDetailsModel != null && loanDetailsModel.getEstimate() != null) {
                 loanResponseDataDto.setEstimateLevel(loanDetailsModelActivity.getEstimate().getLower());
+                loanResponseDataDto.setRiskEstimate(loanDetailsModelActivity.getEstimate().getType());
             }
             loanDtoList.add(loanResponseDataDto);
         }
