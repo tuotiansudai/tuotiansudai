@@ -77,19 +77,4 @@ public class TransferCashServiceImpl implements TransferCashService {
         baseDto.setData(payDataDto);
         return baseDto;
     }
-
-    @Override
-    public BaseDto<PayDataDto> transferCashInviteHelpActivity(InviteHelpActivityPayCashDto dto) {
-        PayDataDto payDataDto = new PayDataDto();
-        BaseDto<PayDataDto> baseDto = new BaseDto<>(payDataDto);
-        WeChatUserModel weChatUserModel = weChatUserMapper.findByOpenid(dto.getOpenid());
-        if (weChatUserModel == null || !weChatUserModel.isBound()) {
-            payDataDto.setCode(String.valueOf(HttpStatus.BAD_REQUEST));
-            payDataDto.setMessage("用户未注册");
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        TransferCashDto transferCashDto = new TransferCashDto(weChatUserModel.getLoginName(), dto.getOrderId(), dto.getAmount(), dto.getUserBillBusinessType(), dto.getSystemBillBusinessType(), dto.getSystemBillDetailTemplate());
-        return transferCash(transferCashDto);
-    }
 }
