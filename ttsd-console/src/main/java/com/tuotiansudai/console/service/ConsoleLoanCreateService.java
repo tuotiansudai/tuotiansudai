@@ -500,11 +500,17 @@ public class ConsoleLoanCreateService {
 
     public BaseDto<BaseDataDto> checkLoaner(String loanerLoginName) {
         UserModel userModel = consoleUserService.findByLoginName(loanerLoginName);
+
         if (userModel == null) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名不存在"));
         }
+
         if (StringUtils.isEmpty(userModel.getIdentityNumber())) {
             return new BaseDto<>(new BaseDataDto(false, "此用户名未做实名认证"));
+        }
+        UserRoleModel userRoleModel=userRoleMapper.findByLoginNameAndRole(loanerLoginName,Role.LOANER);
+        if(userRoleModel == null){
+            return new BaseDto<>(new BaseDataDto(false, "此用户名没有借款人角色"));
         }
         AnxinSignPropertyModel anxinSignPropertyModel = anxinSignPropertyMapper.findByLoginName(loanerLoginName);
         if (anxinSignPropertyModel == null) {
