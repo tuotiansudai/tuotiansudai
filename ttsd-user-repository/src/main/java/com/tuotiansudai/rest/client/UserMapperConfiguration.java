@@ -67,8 +67,8 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
-    public void updateStaffReferrerMobile(String loginName, String staffMobile) {
-        throw new NotImplementedException("updateStaffReferrerMobile not support for test, please Mock UserMapper for test");
+    public void updateStaffReferrerMobile(String loginName, String staffReferrerMobile) {
+        mapper.updateStaffReferrerMobile(loginName, staffReferrerMobile);
     }
 
     @Override

@@ -80,9 +80,9 @@ public class UserMapperRest implements UserMapper {
     }
 
     @Override
-    public void updateStaffReferrerMobile(String loginName, String staffMobile) {
+    public void updateStaffReferrerMobile(String loginName, String staffReferrerMobile) {
         UpdateUserInfoRequestDto updateDto = new UpdateUserInfoRequestDto(loginName);
-        updateDto.setStaffReferrerMobile(staffMobile);
+        updateDto.setStaffReferrerMobile(staffReferrerMobile);
         userRestClient.update(updateDto);
     }
 

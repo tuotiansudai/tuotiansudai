@@ -19,7 +19,7 @@ public interface UserMapper {
 
     void updateUserNameAndIdentityNumber(String loginName, String userName, String identityNumber);
 
-    void updateStaffReferrerMobile(String loginName, String staffMobile);
+    void updateStaffReferrerMobile(String loginName, String staffReferrerMobile);
 
     BasePaginationDataDto<UserRegisterInfo> findUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer, int page, int pageSize);
 
