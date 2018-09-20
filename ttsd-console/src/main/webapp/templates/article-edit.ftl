@@ -96,7 +96,15 @@
                         <#list sectionList as sectionItem>
                             <option value="${sectionItem.name()}" <#if dto?? && dto.section?? && sectionItem == dto.section>selected</#if>> ${sectionItem.getArticleSectionTypeName()}</option>
                         </#list>
-                    </select>
+                    </select>˙
+                </div>
+                <div class="col-sm-3 radio">
+                        <label>
+                            <input type="radio" name="userGroup" />nihao
+                        </label>
+                    <label>
+                        <input type="radio" name="userGroup" />nihao
+                    </label>
                 </div>
             </div>
 
