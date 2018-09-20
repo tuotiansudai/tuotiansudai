@@ -68,7 +68,7 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(
-            "${param0}上线的${param1}天总额为${param2}万的项目于今日${param3}已满，借款人:${param4};代理人:${param5}，30分钟内将完成复核。",
+            "${param0}上线的${param1}天总额为${param2}万的项目于今日${param3}已满，借款人:${param4}，30分钟内将完成复核。",
             null),
 
     SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE(
