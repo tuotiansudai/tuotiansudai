@@ -169,5 +169,13 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             }
 
         });
+        //栏目改变
+        $('#section').on('change',function(){
+           if( $(this).val() == 'KNOWLEDGE'){
+               $('#subSectionDiv').show();
+           }else{
+               $('#subSectionDiv').hide();
+           }
+        });
     });
 })

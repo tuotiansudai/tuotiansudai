@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLiCaiQuanArticleService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -28,6 +31,7 @@ public class LiCaiQuanArticleController {
     public ModelAndView createArticle() {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
+        mv.addObject("subSectionList", SubArticleSectionType.values());
         return mv;
     }
 
@@ -38,6 +42,7 @@ public class LiCaiQuanArticleController {
         Map<String,String> comments = consoleLiCaiQuanArticleService.getAllComments(articleId);
         mv.addObject("comments",comments);
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
+        mv.addObject("subSectionList", Arrays.stream(SubArticleSectionType.values()).filter(item->item.getParent().equals(ArticleSectionType.KNOWLEDGE)).collect(Collectors.toList()));
         mv.addObject("dto", liCaiQuanArticleDto);
         return mv;
     }
