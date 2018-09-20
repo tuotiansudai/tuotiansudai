@@ -101,7 +101,7 @@ public class ConsoleLiCaiQuanArticleService {
                 statusFilter=true;
             }
             if(subArticleSectionType == null || subArticleSectionType.equals(liCaiQuanArticleDto.getSubSection())){
-                statusFilter=true;
+                subSectionFilter=true;
             }
             if(titileFilter && sectionFilter && subSectionFilter && statusFilter){
                 articleDtoList.add(liCaiQuanArticleDto);
