@@ -219,6 +219,8 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     private String estimate;
 
+    private int estimateLevel;
+
     public LoanDto() {
     }
 
@@ -557,5 +559,13 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setEstimate(String estimate) {
         this.estimate = estimate;
+    }
+
+    public int getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(int estimateLevel) {
+        this.estimateLevel = estimateLevel;
     }
 }

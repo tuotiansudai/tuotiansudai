@@ -3,7 +3,9 @@
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details"
      data-has-bank-card="${hasBankCard?c}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
-     data-estimate="${estimate?string('true', 'false')}"
+     data-estimate="${estimate???string('true', 'false')}"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney!''}"
+     data-estimate-limit="${estimateLimit!''}" data-loan-estimate-level="${loanDto.estimateLevel!''}"
      style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
     <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
