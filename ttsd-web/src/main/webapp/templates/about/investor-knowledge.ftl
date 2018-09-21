@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="网贷知识" activeLeftNav="法律法规" title="网贷知识_拓天速贷" keywords="拓天速贷,拓天活动,拓天排行榜,拓天理财,网贷知识" description="拓天速贷是中国金融行业较为安全的P2P金融平台,全方位报道拓天速贷最新新闻动态,实时推出拓天速贷最新活动以及拓天公告.">
+<@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="网贷知识" activeLeftNav="出借人教育" title="网出借人教育_拓天速贷" keywords="拓天速贷,拓天活动,拓天排行榜,拓天理财,网贷知识" description="拓天速贷是中国金融行业较为安全的P2P金融平台,全方位报道拓天速贷最新新闻动态,实时推出拓天速贷最新活动以及拓天公告.">
 <div class="about-us-container" id="WhetherApp">
-    <h2 class="column-title"><em>法律法规</em></h2>
+    <h2 class="column-title"><em>出借人教育</em></h2>
     <div id="noticeList"></div>
 
     <script type="text/template" id="noticeListTemplate">
