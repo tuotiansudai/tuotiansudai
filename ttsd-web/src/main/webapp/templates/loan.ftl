@@ -379,15 +379,15 @@
                             </div>
                         </#if>
 
-                        <#if "HOUSE" == loan.pledgeType>
+                        <#if ["HOUSE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeHouseDetailList??>
                             <#list loan.pledgeHouseDetailList as pledgeHouseDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
+                                    <h3>房产信息<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
+                                            <#list ['房产所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>
@@ -399,15 +399,15 @@
                             </#list>
                         </#if>
 
-                        <#if "VEHICLE" == loan.pledgeType>
+                        <#if ["VEHICLE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeVehicleDetailList??>
                             <#list loan.pledgeVehicleDetailList as pledgeVehicleDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
+                                    <h3>车辆信息<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeVehicleDetail??>
-                                            <#list ['抵押物所在地', '车辆品牌', '车辆型号'] as key>
+                                            <#list ['车辆所在地', '车辆品牌', '车辆型号'] as key>
                                                 <#if pledgeVehicleDetail[key]?? && pledgeVehicleDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeVehicleDetail[key]}</div>
                                                 </#if>
