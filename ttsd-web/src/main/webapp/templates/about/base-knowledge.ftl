@@ -14,6 +14,6 @@
         </ul>
     </script>
 
-    <div class="pagination" data-url="/knowledge/list"></div>
+    <div class="pagination" data-url="/knowledge/list?subSection=BASIC_KNOWLEDGE"></div>
 </div>
 </@global.main>

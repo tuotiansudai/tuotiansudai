@@ -11,9 +11,9 @@
             %>
             <li><i>●</i><a href="/knowledge/<%=item.id%>"><%=item.title%></a> <span><%=item.updatedTime%></span></li>
             <% } %>
-        </ul>
+
     </script>
 
-    <div class="pagination" data-url="/knowledge/list"></div>
+    <div class="pagination" data-url="/knowledge/list?subSection=INVESTOR_EDUCATION"></div>
 </div>
 </@global.main>
