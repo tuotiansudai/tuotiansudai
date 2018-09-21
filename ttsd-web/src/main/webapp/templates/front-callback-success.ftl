@@ -20,7 +20,7 @@
                 <p class="my_pay_tip">申请提交成功</p>
                 <p class="my_pay_tip_sub">换卡申请最快1个工作日内完成</p>
                 <div class="change_card_desc">
-                    如果您的账户有余额、有投资中的项目，需要您提交如下审核资料至kefu@tuotiansudai.com人工审核。<br/>
+                    如果您的账户有余额、有出借中的项目，需要您提交如下审核资料至kefu@tuotiansudai.com人工审核。<br/>
                     需提交资料：<br/>
                     1、手持身份证正反面照片。<br/>
                     2、手持原绑定银行卡正反面照片。<br/>
@@ -30,7 +30,7 @@
                     身份证、银行卡证件信息清晰可见。<br/>
                     如需帮助请致电客服  400-169-1188 （服务时间： 9:00-20:00）<br/>
                 </div>
-                <div class="go_to_invest investBtn" >去投资</div>
+                <div class="go_to_invest investBtn" >去出借</div>
             </div>
         </#if>
 
@@ -40,7 +40,7 @@
             <p class="my_pay_tip">充值成功，充值金额 ${amount} 元</p>
             <div class="handle_btn_container">
                 <div class="see_my_account">查看我的账户</div>
-                <div class="go_to_invest investBtn">去投资</div>
+                <div class="go_to_invest investBtn">去出借</div>
             </div>
         </div>
         </#if>
@@ -48,7 +48,7 @@
         <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
             <div class="callBack_container">
                 <div class="success_tip_icon"></div>
-                <p class="my_pay_tip">支付成功，您已成功投资 ${amount} 元</p>
+                <p class="my_pay_tip">支付成功，您已成功出借 ${amount} 元</p>
                 <div class="handle_btn_container">
                     <div class="see_my_account">查看我的账户</div>
                     <div class="see_other_project" id="toProject">看看其他项目</div>
@@ -100,10 +100,10 @@
         </#if>
 
         <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
-            <p class="pay-tip">支付成功，您已成功投资 ${amount} 元</p>
+            <p class="pay-tip">支付成功，您已成功出借 ${amount} 元</p>
             <p class="pay-text">
                 <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
-                    href="/loan-list">继续投资</a>
+                    href="/loan-list">继续出借</a>
             </p>
         </#if>
 
@@ -111,7 +111,7 @@
             <p class="pay-tip">支付成功，您已成功购买该债权。</p>
             <p class="pay-text">
                 <span class="count-time">5</span>秒后将自动返回“我的账户”。如果页面没有跳转，您可以 <a href="/account">点击这里</a>您还可以<a
-                    href="/loan-list">继续投资</a>
+                    href="/loan-list">继续出借</a>
             </p>
         </#if>
     </#if>

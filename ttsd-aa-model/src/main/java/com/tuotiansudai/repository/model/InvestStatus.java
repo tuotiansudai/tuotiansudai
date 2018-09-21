@@ -4,9 +4,9 @@ public enum InvestStatus {
 
     WAIT_PAY("等待支付"),
 
-    SUCCESS("投资成功"),
+    SUCCESS("出借成功"),
 
-    FAIL("投资失败"),
+    FAIL("出借失败"),
 
     OVER_INVEST_PAYBACK("超投返款"),
 

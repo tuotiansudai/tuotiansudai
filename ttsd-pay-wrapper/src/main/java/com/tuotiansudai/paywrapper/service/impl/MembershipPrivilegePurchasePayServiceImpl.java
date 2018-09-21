@@ -137,7 +137,7 @@ public class MembershipPrivilegePurchasePayServiceImpl implements MembershipPriv
                 endTime));
 
         //Title:恭喜您已成功购买{0}天增值特权！
-        //Content:尊敬的用户，恭喜您已成功购买增值特权，有效期至{0}日，【马上投资】享受增值特权吧！
+        //Content:尊敬的用户，恭喜您已成功购买增值特权，有效期至{0}日，【马上出借】享受增值特权吧！
         String title = MessageFormat.format(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS.getTitleTemplate(), membershipPrivilegePurchaseModel.getPrivilegePriceType().getDuration());
         String content = MessageFormat.format(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS.getContentTemplate(), new DateTime(endTime).toString("yyyy-MM-dd"));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.MEMBERSHIP_PRIVILEGE_BUY_SUCCESS,

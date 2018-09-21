@@ -16,10 +16,10 @@ public class UserMessageDto implements Serializable {
     @ApiModelProperty(value = "消息类型", example = "EVENT,MANUAL")
     private String messageType;
 
-    @ApiModelProperty(value = "标题", example = "投资成功")
+    @ApiModelProperty(value = "标题", example = "出借成功")
     private String title;
 
-    @ApiModelProperty(value = "消息内容", example = "投资成功")
+    @ApiModelProperty(value = "消息内容", example = "出借成功")
     private String content;
 
     @ApiModelProperty(value = "是否已读", example = "true")

@@ -280,7 +280,7 @@ public class PointBillServiceImpl implements PointBillService {
                 }
             case INVEST:
                 LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
-                return MessageFormat.format("投资项目：{0}", loanModel.getName());
+                return MessageFormat.format("出借项目：{0}", loanModel.getName());
             case LOTTERY:
                 return PointBusinessType.LOTTERY.getDescription();
             case ACTIVITY:

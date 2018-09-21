@@ -9,8 +9,8 @@ public enum LotteryPrize {
     MANGO_CARD_100("100元芒果卡", PrizeType.CONCRETE, ActivityCategory.AUTUMN_PRIZE, 0.5),
     LUXURY("奢侈品大奖", PrizeType.CONCRETE, ActivityCategory.AUTUMN_PRIZE, 0),
     PORCELAIN_CUP("青花瓷杯子", PrizeType.CONCRETE, ActivityCategory.AUTUMN_PRIZE, 0.5),
-    RED_ENVELOPE_100("100元投资红包", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 20),
-    RED_ENVELOPE_50("50元投资红包", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 25),
+    RED_ENVELOPE_100("100元出借红包", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 20),
+    RED_ENVELOPE_50("50元出借红包", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 25),
     INTEREST_COUPON_5("0.5%加息券", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 25),
     INTEREST_COUPON_2("0.2%加息券", PrizeType.VIRTUAL, ActivityCategory.AUTUMN_PRIZE, 29.5),
 
@@ -21,7 +21,7 @@ public enum LotteryPrize {
     PORCELAIN_CUP_BY_1000("青花瓷杯子", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_1000, 1.5),
     PHONE_BRACKET("懒人手机支架", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_1000, 4.5),
     PHONE_CHARGE_10("10元话费", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_1000, 3),
-    RED_ENVELOPE_10("10元投资红包", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_1000, 45),
+    RED_ENVELOPE_10("10元出借红包", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_1000, 45),
     INTEREST_COUPON_2_POINT_DRAW("0.2%加息券", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_1000, 40),
 
     //10000积分抽奖
@@ -31,13 +31,13 @@ public enum LotteryPrize {
     PHONE_CHARGE_20("20元话费", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_10000, 15),
     HEADREST("车家两用U型头枕", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_10000, 10),
     IQIYI_MEMBERSHIP_30("爱奇艺会员月卡", PrizeType.CONCRETE, ActivityCategory.POINT_DRAW_10000, 15),
-    RED_ENVELOPE_50_POINT_DRAW("50元投资红包", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_10000, 24),
+    RED_ENVELOPE_50_POINT_DRAW("50元出借红包", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_10000, 24),
     INTEREST_COUPON_5_POINT_DRAW("0.5%加息券", PrizeType.VIRTUAL, ActivityCategory.POINT_DRAW_10000, 30),
 
     //国庆活动
     MEMBERSHIP_V5("一个月V5会员体验", PrizeType.MEMBERSHIP, ActivityCategory.NATIONAL_PRIZE, 25),
-    RED_INVEST_15("15元投资红包", PrizeType.VIRTUAL, ActivityCategory.NATIONAL_PRIZE, 30),
-    RED_INVEST_50("50元投资红包", PrizeType.VIRTUAL, ActivityCategory.NATIONAL_PRIZE, 30),
+    RED_INVEST_15("15元出借红包", PrizeType.VIRTUAL, ActivityCategory.NATIONAL_PRIZE, 30),
+    RED_INVEST_50("50元出借红包", PrizeType.VIRTUAL, ActivityCategory.NATIONAL_PRIZE, 30),
     TELEPHONE_FARE_10("10元话费", PrizeType.CONCRETE, ActivityCategory.NATIONAL_PRIZE, 5),
     IQIYI_MEMBERSHIP("一个月爱奇艺会员", PrizeType.CONCRETE, ActivityCategory.NATIONAL_PRIZE, 4),
     CINEMA_TICKET("电影票一张", PrizeType.CONCRETE, ActivityCategory.NATIONAL_PRIZE, 3),
@@ -72,7 +72,7 @@ public enum LotteryPrize {
     ELK_PILLOW("麋鹿抱枕", PrizeType.CONCRETE, ActivityCategory.CHRISTMAS_ACTIVITY, 10),
     JOHNSON_HAND_CREAM("强生护手霜", PrizeType.CONCRETE, ActivityCategory.CHRISTMAS_ACTIVITY, 10),
     PUMPKIN_PILLOW("南瓜抱枕", PrizeType.CONCRETE, ActivityCategory.CHRISTMAS_ACTIVITY, 10),
-    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元投资红包", PrizeType.VIRTUAL, ActivityCategory.CHRISTMAS_ACTIVITY, 45),
+    RED_ENVELOPE_20_POINT_DRAW_REF_CARNIVAL("20元出借红包", PrizeType.VIRTUAL, ActivityCategory.CHRISTMAS_ACTIVITY, 45),
 
     //今日头条拉新
     T1_PHONE("锤子M1手机(预订)", PrizeType.CONCRETE, ActivityCategory.HEADLINES_TODAY_ACTIVITY, 0),
@@ -85,22 +85,22 @@ public enum LotteryPrize {
     RED_ENVELOPE_50_YUAN_DRAW_REF_CARNIVAL("50元红包", PrizeType.VIRTUAL, ActivityCategory.HEADLINES_TODAY_ACTIVITY, 55),
 
     //元宵节
-    LANTERN_FESTIVAL_RED_ENVELOPE_5("5元投资红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 30),
-    LANTERN_FESTIVAL_RED_ENVELOPE_8("8元投资红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 15),
-    LANTERN_FESTIVAL_RED_ENVELOPE_10("10元投资红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 15),
-    LANTERN_FESTIVAL_RED_ENVELOPE_40("40元投资红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 5),
-    LANTERN_FESTIVAL_RED_ENVELOPE_30("30元投资红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 10),
+    LANTERN_FESTIVAL_RED_ENVELOPE_5("5元出借红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 30),
+    LANTERN_FESTIVAL_RED_ENVELOPE_8("8元出借红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 15),
+    LANTERN_FESTIVAL_RED_ENVELOPE_10("10元出借红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 15),
+    LANTERN_FESTIVAL_RED_ENVELOPE_40("40元出借红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 5),
+    LANTERN_FESTIVAL_RED_ENVELOPE_30("30元出借红包", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 10),
     LANTERN_FESTIVAL_INTEREST_COUPON_5("0.5%加息券", PrizeType.VIRTUAL, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 20),
     LANTERN_FESTIVAL_PHONE_COST_10("10元话费", PrizeType.CONCRETE, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 5),
     LANTERN_FESTIVAL_JD_E_CARD_300("300元京东E卡", PrizeType.CONCRETE, ActivityCategory.LANTERN_FESTIVAL_ACTIVITY, 0),
 
     //春节活动
-    SPRING_FESTIVAL_RED_ENVELOP_68("6.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 6),
-    SPRING_FESTIVAL_RED_ENVELOP_58("5.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 12),
-    SPRING_FESTIVAL_RED_ENVELOP_38("3.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 16),
-    SPRING_FESTIVAL_RED_ENVELOP_18("1.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 20),
-    SPRING_FESTIVAL_RED_ENVELOP_88("8.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 15),
-    SPRING_FESTIVAL_RED_ENVELOP_188("18.8:投资红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 15),
+    SPRING_FESTIVAL_RED_ENVELOP_68("6.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 6),
+    SPRING_FESTIVAL_RED_ENVELOP_58("5.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 12),
+    SPRING_FESTIVAL_RED_ENVELOP_38("3.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 16),
+    SPRING_FESTIVAL_RED_ENVELOP_18("1.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 20),
+    SPRING_FESTIVAL_RED_ENVELOP_88("8.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 15),
+    SPRING_FESTIVAL_RED_ENVELOP_188("18.8:出借红包", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 15),
     SPRING_FESTIVAL_INTEREST_COUPON_5("0.5:加息券", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 10),
     SPRING_FESTIVAL_INTEREST_COUPON_2("0.2:加息券", PrizeType.VIRTUAL, ActivityCategory.SPRING_FESTIVAL_ACTIVITY, 6),
 

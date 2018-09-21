@@ -34,10 +34,10 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360,EXPERIENCE")
     private String productNewType;
 
-    @ApiModelProperty(value = "投资ID", example = "1001")
+    @ApiModelProperty(value = "出借ID", example = "1001")
     private String investId;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investAmount;
 
     @ApiModelProperty(value = "预计收益", example = "10")
@@ -46,7 +46,7 @@ public class UserInvestRepayResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "已收收益", example = "0")
     private String actualInterest;
 
-    @ApiModelProperty(value = "投资时间", example = "2016-11-25 16:12:01")
+    @ApiModelProperty(value = "出借时间", example = "2016-11-25 16:12:01")
     private String investTime;
 
     @ApiModelProperty(value = "起息日", example = "2016-11-25 16:12:01")

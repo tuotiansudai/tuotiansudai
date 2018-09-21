@@ -15,10 +15,10 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "用户", example = "admin")
     private String loginName;
 
-    @ApiModelProperty(value = "最小投资金额", example = "100.00")
+    @ApiModelProperty(value = "最小出借金额", example = "100.00")
     private String minInvestAmount;
 
-    @ApiModelProperty(value = "最大投资金额", example = "10000.00")
+    @ApiModelProperty(value = "最大出借金额", example = "10000.00")
     private String maxInvestAmount;
 
     @ApiModelProperty(value = "保留金额", example = "200.00")

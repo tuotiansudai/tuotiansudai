@@ -36,7 +36,7 @@ public class InvestDailyValidation extends BaseDailyValidation implements DailyV
 
         ValidationReport validationReport = this.generateReport("03", transactions);
         validationReport.setCount(transactions.size());
-        validationReport.setTitle("投资业务统计");
+        validationReport.setTitle("出借业务统计");
         validationReport.setMustacheContext("invest");
 
         return validationReport;

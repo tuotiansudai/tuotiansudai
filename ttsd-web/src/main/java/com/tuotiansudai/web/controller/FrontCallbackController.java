@@ -104,7 +104,7 @@ public class FrontCallbackController {
                 modelAndView.addObject("amount", AmountConverter.convertCentToString(investModel.getAmount()));
                 modelAndView.addObject("loanName", loanModel.getName());
                 modelAndView.addObject("loanId", loanModel.getId());
-                modelAndView.addObject("serviceName", "投资成功");
+                modelAndView.addObject("serviceName", "出借成功");
             }
             if (AsyncUmPayService.CUST_WITHDRAWALS == asyncUmPayService) {
                 WithdrawModel withdrawModel = withdrawService.findById(Long.valueOf(params.get("order_id")));

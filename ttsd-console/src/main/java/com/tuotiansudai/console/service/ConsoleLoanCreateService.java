@@ -352,7 +352,7 @@ public class ConsoleLoanCreateService {
         Date validInvestTime = new DateTime().minusMinutes(30).toDate();
 
         if (investMapper.findWaitingInvestCountAfter(loanId, validInvestTime) > 0) {
-            logger.info("流标失败，存在等待第三方资金托管确认的投资!");
+            logger.info("流标失败，存在等待第三方资金托管确认的出借!");
             return baseDto;
         }
 
@@ -384,19 +384,19 @@ public class ConsoleLoanCreateService {
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "最小投资金额不得大于最大投资金额"));
+            return new BaseDto<>(new BaseDataDto(false, "最小出借金额不得大于最大出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "最大投资金额不得大于预计出借金额"));
+            return new BaseDto<>(new BaseDataDto(false, "最大出借金额不得大于预计出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于预计出借金额"));
+            return new BaseDto<>(new BaseDataDto(false, "出借递增金额不得大于预计出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于最大投资金额"));
+            return new BaseDto<>(new BaseDataDto(false, "出借递增金额不得大于最大出借金额"));
         }
 
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {

@@ -116,7 +116,7 @@ public class QueryAnxinContractMessageConsumer implements MessageConsumer {
 
             logger.info(MessageFormat.format("execute query contract over. businessId:{0}", String.valueOf(businessId)));
 
-            // 没有待处理的 batchNo 了，检查该 businessId 下的投资是否已经全部成功
+            // 没有待处理的 batchNo 了，检查该 businessId 下的出借是否已经全部成功
             if (anxinContractType == AnxinContractType.LOAN_CONTRACT) {
                 List<InvestModel> contractFailList = investService.findContractFailInvest(businessId);
                 if (CollectionUtils.isNotEmpty(contractFailList)) {

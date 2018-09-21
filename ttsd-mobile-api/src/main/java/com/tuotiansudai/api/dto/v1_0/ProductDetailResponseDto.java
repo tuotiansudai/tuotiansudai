@@ -68,10 +68,10 @@ public class ProductDetailResponseDto extends BaseResponseDataDto {
         this.updatedTime = exchangeCouponView.getCouponModel().getUpdatedTime();
         switch (exchangeCouponView.getCouponModel().getCouponType()) {
             case RED_ENVELOPE:
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资红包";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元出借红包";
                 break;
             case INVEST_COUPON:
-                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元投资体验券";
+                this.name = AmountConverter.convertCentToString(exchangeCouponView.getCouponModel().getAmount()) + "元出借体验券";
                 break;
             case INTEREST_COUPON:
                 this.name = exchangeCouponView.getCouponModel().getRate() * 100 + "%加息券";

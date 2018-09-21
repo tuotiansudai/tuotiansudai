@@ -50,7 +50,7 @@ public class InvestStatusValidator {
         InvestModel investModel = investMapper.findById(investId);
 
         if (investModel == null) {
-            dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", "投资不存在").build()));
+            dto.getData().setExtraValues(Maps.newHashMap(ImmutableMap.<String, String>builder().put("transferStatus", "出借不存在").build()));
             return dto;
         }
 

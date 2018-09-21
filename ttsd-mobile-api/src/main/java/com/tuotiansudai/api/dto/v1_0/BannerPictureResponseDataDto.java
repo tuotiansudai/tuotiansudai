@@ -20,7 +20,7 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "图片路径", example = "upload/20160722/4051469181629061.jpg")
     private String picture;
 
-    @ApiModelProperty(value = "内容", example = "投资拿称号，红包奖不停")
+    @ApiModelProperty(value = "内容", example = "出借拿称号，红包奖不停")
     private String content;
 
     @ApiModelProperty(value = "授权", example = "false")
