@@ -26,8 +26,10 @@ public interface LicaiquanArticleMapper {
     List<LicaiquanArticleModel> findCarouselArticle();
 
     List<LicaiquanArticleModel> findArticleByArticleSectionType(@Param("section") ArticleSectionType section,
+                                                                @Param("subSection") SubArticleSectionType subSection,
                                                                 @Param("index") int index,
                                                                 @Param("pageSize") int pageSize);
 
-    int findCountArticleByArticleSectionType(@Param("section") ArticleSectionType section);
+    int findCountArticleByArticleSectionType(@Param("section") ArticleSectionType section,
+                                             @Param("subSection") SubArticleSectionType subSection);
 }
