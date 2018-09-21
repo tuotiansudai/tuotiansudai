@@ -113,7 +113,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
         }
-        List<PledgeType> multiplePledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_PLEDGE);
+        List<PledgeType> multiplePledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_PLEDGE, PledgeType.PERSONAL_CAPITAL_TURNOVER, PledgeType.ENTERPRISE_CAPITAL_TURNOVER);
         if (AppVersionUtil.compareVersion() == AppVersionUtil.low && multiplePledgeTypeList.contains(loanModel.getPledgeType())) {
             if (multiplePledge(loanModel.getPledgeType(), loanModel.getId())){
                 logger.warn("标的详情" + ReturnMessage.APP_VERSION_NOT_LATEST.getCode() + ":" + ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
@@ -226,17 +226,15 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             LoanerDto loanerDto = new LoanerDto(loanerDetailsModel);
             loanerDto.setOverdueRate(MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()));
             dataDto.setLoaner(loanerDto);
-            switch (loanModel.getPledgeType()) {
-                case HOUSE:
-                    List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
-                    if (pledgeHouseModelList.size() > 0) {
-                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModelList.get(0)));
-                    }
-                case VEHICLE:
-                    List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                    if (pledgeVehicleModelList.size() > 0) {
-                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModelList.get(0)));
-                    }
+            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
+                List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
+                if (pledgeHouseModelList.size() > 0) {
+                    dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModelList.get(0)));
+                }
+                List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+                if (pledgeVehicleModelList.size() > 0) {
+                    dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModelList.get(0)));
+                }
             }
         }
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {

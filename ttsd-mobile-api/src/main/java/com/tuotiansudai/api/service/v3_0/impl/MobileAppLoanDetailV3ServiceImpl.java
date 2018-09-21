@@ -215,21 +215,18 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueRate);
             disclosureDtoList.add(loanerDisclosureDto);
 
-            if (loanModel.getPledgeType() == PledgeType.HOUSE) {
+            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
                 List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
                 int seq = 1;
                 for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(seq) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
                     seq++;
                 }
-            }
-
-            if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
+                seq = 1;
                 List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                int seq = 1;
                 for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(seq) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
                     seq++;
                 }
@@ -388,38 +385,35 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         return loanerDisclosureDto;
     }
 
-    private DisclosureDto convertPledgeInfoFromLoan(LoanModel loanModel, PledgeHouseModel pledgeHouseModel, PledgeVehicleModel pledgeVehicleModel, String seq) {
+    private DisclosureDto convertPledgeInfoFromLoan(PledgeHouseModel pledgeHouseModel, PledgeVehicleModel pledgeVehicleModel, String seq) {
         DisclosureDto pledgeDisclosureDto = new DisclosureDto();
-        pledgeDisclosureDto.setTitle("抵押档案" + seq);
         List<ItemDto> itemDtoList = Lists.newArrayList();
 
-        switch (loanModel.getPledgeType()) {
-            case HOUSE:
-                if (pledgeHouseModel != null) {
-                    ItemDto pledgeLocationItemDto = new ItemDto();
-                    pledgeLocationItemDto.setLabel("抵押房屋所在地");
-                    pledgeLocationItemDto.setValue(pledgeHouseModel.getPledgeLocation());
-                    itemDtoList.add(pledgeLocationItemDto);
+        if (pledgeHouseModel != null) {
+            pledgeDisclosureDto.setTitle("房产信息" + seq);
+            ItemDto pledgeLocationItemDto = new ItemDto();
+            pledgeLocationItemDto.setLabel("房产所在地");
+            pledgeLocationItemDto.setValue(pledgeHouseModel.getPledgeLocation());
+            itemDtoList.add(pledgeLocationItemDto);
 
-                    ItemDto squareItemDto = new ItemDto();
-                    squareItemDto.setLabel("房屋面积");
-                    squareItemDto.setValue(pledgeHouseModel.getSquare());
-                    itemDtoList.add(squareItemDto);
-                }
-            case VEHICLE:
-                if (pledgeVehicleModel != null) {
-                    ItemDto brandItemDto = new ItemDto();
-                    brandItemDto.setLabel("抵押车辆品牌");
-                    brandItemDto.setValue(pledgeVehicleModel.getBrand());
-                    itemDtoList.add(brandItemDto);
-
-                    ItemDto modelItemDto = new ItemDto();
-                    modelItemDto.setLabel("车辆型号");
-                    modelItemDto.setValue(pledgeVehicleModel.getModel());
-                    itemDtoList.add(modelItemDto);
-                }
+            ItemDto squareItemDto = new ItemDto();
+            squareItemDto.setLabel("房屋面积");
+            squareItemDto.setValue(pledgeHouseModel.getSquare());
+            itemDtoList.add(squareItemDto);
         }
 
+        if (pledgeVehicleModel != null) {
+            pledgeDisclosureDto.setTitle("车辆信息" + seq);
+            ItemDto brandItemDto = new ItemDto();
+            brandItemDto.setLabel("车辆品牌");
+            brandItemDto.setValue(pledgeVehicleModel.getBrand());
+            itemDtoList.add(brandItemDto);
+
+            ItemDto modelItemDto = new ItemDto();
+            modelItemDto.setLabel("车辆型号");
+            modelItemDto.setValue(pledgeVehicleModel.getModel());
+            itemDtoList.add(modelItemDto);
+        }
         pledgeDisclosureDto.setItems(itemDtoList);
         return pledgeDisclosureDto;
     }
