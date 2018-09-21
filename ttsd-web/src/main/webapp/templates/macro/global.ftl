@@ -52,10 +52,6 @@
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
     ]},
-    {"title":"网贷课堂", "url":"/about/company","category":"23顶部导航", "navigation":"true","leftNavs":[
-    {"title":"公司介绍", "url":"/about/company"},
-    {"title":"网贷知识", "url":"/about/knowledge"}
-    ]},
     {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
         {"title":"注册认证", "url":"/help/account"},
         {"title":"账户管理", "url":"/help/user"},

@@ -91,6 +91,9 @@
         <if test="section == null ">
             AND section != 'KNOWLEDGE'
         </if>
+        <if test="section !=null and subSection !=null">
+            AND sub_section=#{subSection}
+        </if>
         ORDER BY updated_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -104,6 +107,9 @@
         </if>
         <if test="section == null ">
             AND section != 'KNOWLEDGE'
+        </if>
+        <if test="section !=null and subSection !=null">
+            AND sub_section=#{subSection}
         </if>
 
     </select>
