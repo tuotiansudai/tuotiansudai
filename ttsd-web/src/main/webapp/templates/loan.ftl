@@ -751,6 +751,15 @@
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
     </div>
 </div>
+<#--风险等级配置提示书-->
+<div id="riskGradeTip" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button id="cancelRiskBtn" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button id="confirmRiskBtn" class="btn btn-success btn-turn-off" type="button">确认</button>
+    </div>
+</div>
 
 
 <script type="text/template" id="LendTemplate">
