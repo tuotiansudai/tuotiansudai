@@ -12,7 +12,7 @@ public class AdvertisementResponseDataDto extends BaseResponseDataDto{
     private String title;
     @ApiModelProperty(value = "分享链接", example = "https://tuotiansudai.com/activity/share-reward")
     private String sharedUrl;
-    @ApiModelProperty(value = "内容", example = "推荐奖励:0元投资赚收益,呼朋唤友抢佣金")
+    @ApiModelProperty(value = "内容", example = "推荐奖励:0元出借赚收益,呼朋唤友抢佣金")
     private String content;
 
     public String getUrl() {

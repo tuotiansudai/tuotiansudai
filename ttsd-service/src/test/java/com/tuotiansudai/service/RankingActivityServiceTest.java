@@ -142,7 +142,7 @@ public class RankingActivityServiceTest {
         assert (tianDouRecordDtoList != null && tianDouRecordDtoList.size() == 2);
 
         UserTianDouRecordDto userInvestRecord = tianDouRecordDtoList.get(0);
-        assert (userInvestRecord.getType().equals("投资"));
+        assert (userInvestRecord.getType().equals("出借"));
         assert (userInvestRecord.getAmount() == investAmount);
         assert (userInvestRecord.getScore() == tianDouScore);
         assert (userInvestRecord.getDesc().equals(loanId));
@@ -245,25 +245,25 @@ public class RankingActivityServiceTest {
         assert (couponPrizeWinnerCount + cashPrizeWinnerCount + jingdongPrizeWinnerCount == 4);
 
         long totalTiandou = rankingActivityService.getTotalTiandouByLoginName(loginName1);
-        assert (totalTiandou == tianDouScore * 3); // 投资3次
+        assert (totalTiandou == tianDouScore * 3); // 出借3次
 
         List<UserTianDouRecordDto> tianDouRecordDtoList = rankingActivityService.getTianDouRecordsByLoginName(loginName1);
         assert (tianDouRecordDtoList != null && tianDouRecordDtoList.size() == 7);
 
         UserTianDouRecordDto userInvestRecord1_0 = tianDouRecordDtoList.get(0);
-        assert (userInvestRecord1_0.getType().equals("投资"));
+        assert (userInvestRecord1_0.getType().equals("出借"));
         assert (userInvestRecord1_0.getAmount() == investAmount);
         assert (userInvestRecord1_0.getScore() == tianDouScore);
         assert (userInvestRecord1_0.getDesc().equals(loanId));
 
         UserTianDouRecordDto userInvestRecord1_1 = tianDouRecordDtoList.get(1);
-        assert (userInvestRecord1_1.getType().equals("投资"));
+        assert (userInvestRecord1_1.getType().equals("出借"));
         assert (userInvestRecord1_1.getAmount() == investAmount);
         assert (userInvestRecord1_1.getScore() == tianDouScore);
         assert (userInvestRecord1_1.getDesc().equals(loanId));
 
         UserTianDouRecordDto userInvestRecord1_2 = tianDouRecordDtoList.get(2);
-        assert (userInvestRecord1_2.getType().equals("投资"));
+        assert (userInvestRecord1_2.getType().equals("出借"));
         assert (userInvestRecord1_2.getAmount() == investAmount);
         assert (userInvestRecord1_2.getScore() == tianDouScore);
         assert (userInvestRecord1_2.getDesc().equals(loanId));

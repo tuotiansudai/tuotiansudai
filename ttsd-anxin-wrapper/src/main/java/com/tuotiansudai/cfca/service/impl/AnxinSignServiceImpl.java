@@ -339,7 +339,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         LoanModel loanModel = loanMapper.findById(loanId);
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            // 如果 代理人/借款人 未授权安心签，该标的所有投资都使用旧版合同，更新contractNo为OLD
+            // 如果 代理人/借款人 未授权安心签，该标的所有出借都使用旧版合同，更新contractNo为OLD
             investMapper.updateAllContractNoByLoanId(loanId, ContractNoStatus.OLD.name());
             logger.error(MessageFormat.format("[安心签] create contract error, agent has not signed, loanid:{0}, userId:{1}",
                     String.valueOf(loanId), loanModel.getAgentLoginName()));
@@ -440,7 +440,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(transferApplicationModel.getLoginName());
         if (agentAnxinProp == null || Strings.isNullOrEmpty(agentAnxinProp.getProjectCode())) {
-            // 如果转让人未授权安心签，则将该投资的合同号设置为OLD，使用旧版合同：
+            // 如果转让人未授权安心签，则将该出借的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(transferApplicationModel.getInvestId(), ContractNoStatus.OLD.name());
             logger.warn(MessageFormat.format("[安心签] create transfer contract fail, agent has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, transferApplicationModel.getLoginName()));
             return null;
@@ -449,7 +449,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            // 如果承接人未授权安心签，则将该投资的合同号设置为OLD，使用旧版合同：
+            // 如果承接人未授权安心签，则将该出借的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
             logger.warn(MessageFormat.format("[安心签] create transfer contract fail, investor has not signed, transferApplicationId:{0}, userId:{1}", transferApplicationId, investModel.getLoginName()));
             return null;
@@ -510,13 +510,13 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         // 借款人（代理人 or 企业借款人）
         AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
 
-        // 投资人
+        // 出借人
         long investId = investModel.getId();
         String investLoginName = investModel.getLoginName();
         AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
 
         if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            // 如果投资人未授权安心签，则将该笔投资的合同号设置为OLD，使用旧版合同：
+            // 如果出借人未授权安心签，则将该笔出借的合同号设置为OLD，使用旧版合同：
             investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
             logger.warn(MessageFormat.format("[安心签] create contract fail, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
                     String.valueOf(loanId), String.valueOf(investId), investLoginName));

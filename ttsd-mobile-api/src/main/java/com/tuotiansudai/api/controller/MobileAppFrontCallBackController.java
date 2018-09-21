@@ -149,7 +149,7 @@ public class MobileAppFrontCallBackController {
                     .put("loanName", investModel != null ? loanService.findLoanById(investModel.getLoanId()).getName() : "")
                     .put("investAmount", (investModel != null ? AmountConverter.convertCentToString(investModel.getAmount()) : ""))
                     .put("loanId", investModel != null ? String.valueOf(investModel.getLoanId()) : "")
-                    .put("message", Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(service) ? "投资成功" : "债权购买成功")
+                    .put("message", Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(service) ? "出借成功" : "债权购买成功")
                     .build());
         };
 

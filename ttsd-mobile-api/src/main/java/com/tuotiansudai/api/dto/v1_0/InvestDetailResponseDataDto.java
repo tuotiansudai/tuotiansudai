@@ -13,19 +13,19 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto {
      */
     private String loanName;
     /**
-     * 投资ID
+     * 出借ID
      */
     private String investId;
     /**
-     * 投资金额
+     * 出借金额
      */
     private String investMoney;
     /**
-     * 投资状态
+     * 出借状态
      */
     private String investStatus;
     /**
-     * 投资利率
+     * 出借利率
      */
     private String investRate;
     /**

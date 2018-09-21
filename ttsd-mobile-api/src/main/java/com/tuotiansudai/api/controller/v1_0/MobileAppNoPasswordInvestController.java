@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(description = "查询是否开通免密投资功能")
+@Api(description = "查询是否开通免密出借功能")
 public class MobileAppNoPasswordInvestController extends MobileAppBaseController {
     @Autowired
     private MobileAppNoPasswordInvestService mobileAppNoPasswordInvestService;
 
     @RequestMapping(value = "/get/no-password-invest", method = RequestMethod.POST)
-    @ApiOperation("查询是否开通免密投资功能")
+    @ApiOperation("查询是否开通免密出借功能")
     public BaseResponseDto<NoPasswordInvestResponseDataDto> getNoPasswordInvestData(@RequestBody BaseParamDto baseParamDto) {
         baseParamDto.getBaseParam().setUserId(getLoginName());
         return mobileAppNoPasswordInvestService.getNoPasswordInvestData(baseParamDto);

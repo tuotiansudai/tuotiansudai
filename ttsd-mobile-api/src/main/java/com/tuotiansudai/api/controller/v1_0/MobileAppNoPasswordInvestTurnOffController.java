@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(description = "关闭免密投资功能")
+@Api(description = "关闭免密出借功能")
 public class MobileAppNoPasswordInvestTurnOffController extends MobileAppBaseController {
     @Autowired
     private MobileAppNoPasswordInvestTurnOffService mobileAppNoPasswordInvestTurnOffService;
@@ -24,7 +24,7 @@ public class MobileAppNoPasswordInvestTurnOffController extends MobileAppBaseCon
     static Logger logger = Logger.getLogger(MobileAppNoPasswordInvestTurnOffController.class);
 
     @RequestMapping(value = "/no-password-invest/turn-off", method = RequestMethod.POST)
-    @ApiOperation("关闭免密投资功能")
+    @ApiOperation("关闭免密出借功能")
     public BaseResponseDto noPasswordInvestTurnOff(@RequestBody NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         noPasswordInvestTurnOffRequestDto.getBaseParam().setUserId(getLoginName());

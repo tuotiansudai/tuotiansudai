@@ -62,7 +62,7 @@ public class InvestController {
         } else {
             investDto.setSource(Source.WEB);
         }
-        String errorMessage = "投资失败，请联系客服！";
+        String errorMessage = "出借失败，请联系客服！";
         String errorType = "";
         if (bindingResult.hasErrors()) {
             errorMessage = bindingResult.getFieldError().getDefaultMessage();

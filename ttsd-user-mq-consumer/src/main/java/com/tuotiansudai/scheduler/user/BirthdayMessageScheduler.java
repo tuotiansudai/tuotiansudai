@@ -31,7 +31,7 @@ public class BirthdayMessageScheduler {
 //        List<String> birthDayUsers = userMapper.findBirthDayUsers();
 //        //Title:拓天速贷为您送上生日祝福，请查收！
 //        //AppTitle:拓天速贷为您送上生日祝福，请查收！
-//        //Content:尊敬的{0}先生/女士，我猜今天是您的生日，拓天速贷在此送上真诚的祝福，生日当月投资即可享受收益翻倍哦！
+//        //Content:尊敬的{0}先生/女士，我猜今天是您的生日，拓天速贷在此送上真诚的祝福，生日当月出借即可享受收益翻倍哦！
 //        String title = MessageEventType.BIRTHDAY.getTitleTemplate();
 //        birthDayUsers.forEach(loginName -> {
 //            String userName = userMapper.findByLoginName(loginName).getUserName();

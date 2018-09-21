@@ -12,7 +12,7 @@ public class InvestRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "用户id", example = "test")
     private String userId;
 
-    @ApiModelProperty(value = "投资金额", example = "5888800")
+    @ApiModelProperty(value = "出借金额", example = "5888800")
     private String investMoney;
 
     @ApiModelProperty(value = "标的ID", example = "1")

@@ -14,7 +14,7 @@ public enum AsyncUmPayService {
 
 
     /**
-     * 签约免密投资协议
+     * 签约免密出借协议
      */
     NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement", "account", "callback/no_password_invest_ptp_mer_bind_agreement", "no_password_invest_notify", "tuotian://sign/{0}"),
     /**
@@ -36,7 +36,7 @@ public enum AsyncUmPayService {
      */
     LOAN_OUT_PROJECT_TRANSFER("project_transfer", "", "", "loan_out_notify", ""),
     /**
-     * 验密投资标的转账
+     * 验密出借标的转账
      */
     INVEST_PROJECT_TRANSFER("project_transfer", "callback/invest_project_transfer", "callback/invest_project_transfer", "invest_notify", "tuotian://invest/{0}"),
     /**
@@ -56,7 +56,7 @@ public enum AsyncUmPayService {
      */
     ADVANCE_REPAY_PROJECT_TRANSFER("project_transfer", "account", "", "advance_repay_notify", ""),
     /**
-     * 投资正常返款的转账
+     * 出借正常返款的转账
      */
     NORMAL_REPAY_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "normal_repay_payback_notify", ""),
     /**
@@ -64,7 +64,7 @@ public enum AsyncUmPayService {
      */
     NORMAL_REPAY_INVEST_FEE_PROJECT_TRANSFER("project_transfer", "", "", "normal_repay_invest_fee_notify", ""),
     /**
-     * 投资提前返款的转账
+     * 出借提前返款的转账
      */
     ADVANCE_REPAY_PAYBACK_PROJECT_TRANSFER("project_transfer", "", "", "advance_repay_payback_notify", ""),
     /**
@@ -104,7 +104,7 @@ public enum AsyncUmPayService {
 
 
     /**
-     * 无密投资标的转入
+     * 无密出借标的转入
      */
     INVEST_PROJECT_TRANSFER_NOPWD("project_transfer_nopwd", "callback/invest_project_transfer_nopwd", "callback/invest_project_transfer_nopwd", "invest_notify", "tuotian://invest/{0}"),
     /**

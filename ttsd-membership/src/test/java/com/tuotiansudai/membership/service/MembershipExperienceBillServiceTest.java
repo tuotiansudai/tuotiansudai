@@ -38,9 +38,9 @@ public class MembershipExperienceBillServiceTest {
     public void shouldMembershipExperienceBillListByLoginName() throws Exception {
         UserModel fakeUser = createFakeUser();
 
-        MembershipExperienceBillModel membershipExperienceBillModelOne = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "投资了5000.增加5000成长值");
-        MembershipExperienceBillModel membershipExperienceBillModelTwo = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 10000, 20000, "投资了10000.增加10000成长值");
-        MembershipExperienceBillModel membershipExperienceBillModelThree = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 20000, 20000, "投资了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModelOne = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 5000, 10000, "出借了5000.增加5000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModelTwo = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 10000, 20000, "出借了10000.增加10000成长值");
+        MembershipExperienceBillModel membershipExperienceBillModelThree = new MembershipExperienceBillModel(fakeUser.getLoginName(), null, 20000, 20000, "出借了5000.增加5000成长值");
         membershipExperienceBillMapper.create(membershipExperienceBillModelOne);
         membershipExperienceBillMapper.create(membershipExperienceBillModelTwo);
         membershipExperienceBillMapper.create(membershipExperienceBillModelThree);

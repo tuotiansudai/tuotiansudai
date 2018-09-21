@@ -71,15 +71,15 @@ public class LoanModel implements Serializable {
      ***/
     private long loanAmount;
     /***
-     * 最小投资金额
+     * 最小出借金额
      ***/
     private long minInvestAmount;
     /***
-     * 投资递增金额
+     * 出借递增金额
      ***/
     private long investIncreasingAmount;
     /***
-     * 单笔最大投资金额
+     * 单笔最大出借金额
      ***/
     private long maxInvestAmount;
     /***

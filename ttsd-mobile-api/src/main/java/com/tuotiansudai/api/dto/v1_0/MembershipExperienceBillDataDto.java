@@ -12,7 +12,7 @@ public class MembershipExperienceBillDataDto {
     @ApiModelProperty(value = "成长值", example = "1000")
     private long experience;
 
-    @ApiModelProperty(value = "描述", example = "投资奖励")
+    @ApiModelProperty(value = "描述", example = "出借奖励")
     private String desc;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")

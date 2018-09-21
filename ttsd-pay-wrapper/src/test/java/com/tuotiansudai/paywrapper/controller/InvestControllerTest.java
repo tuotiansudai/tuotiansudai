@@ -103,7 +103,7 @@ public class InvestControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    // case1: 正常投资
+    // case1: 正常出借
     @Test
     public void invest() throws Exception {
         long mockLoanId = 11111111L;
@@ -295,7 +295,7 @@ public class InvestControllerTest {
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
         assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3);
 
-        // 第4，5笔投资超投，返款回调
+        // 第4，5笔出借超投，返款回调
         this.overInvestPaybackNotify(orderId4, "0000");
         this.overInvestPaybackNotify(orderId5, "0000");
 
@@ -310,7 +310,7 @@ public class InvestControllerTest {
         assertThat(investModel5.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
     }
 
-    // case5: 超投后，又投资满标
+    // case5: 超投后，又出借满标
     @Test
     @Ignore
     public void investSuccessAfterOverInvest() throws Exception {
@@ -353,7 +353,7 @@ public class InvestControllerTest {
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
         assertEquals(sumSuccessInvestAmount, mockInvestAmount1 + mockInvestAmount3);
 
-        // 第2笔投资超投，返款回调
+        // 第2笔出借超投，返款回调
         this.overInvestPaybackNotify(orderId2, "0000");
 
         List<InvestModel> investModelList2 = investMapper.findPaginationByLoginName(mockInvestLoginName2, 0, Integer.MAX_VALUE);

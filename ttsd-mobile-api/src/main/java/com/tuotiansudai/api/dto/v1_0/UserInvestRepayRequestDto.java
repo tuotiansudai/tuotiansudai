@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 public class UserInvestRepayRequestDto extends BaseParamDto {
 
     @Pattern(regexp = "^\\d+$")
-    @ApiModelProperty(value = "投资ID", example = "")
+    @ApiModelProperty(value = "出借ID", example = "")
     private String investId;
 
     public String getInvestId() {
