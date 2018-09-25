@@ -747,6 +747,7 @@
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，投资需谨慎！</p>
     </div>
 </div>
 
