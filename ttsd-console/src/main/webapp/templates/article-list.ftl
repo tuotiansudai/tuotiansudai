@@ -13,12 +13,23 @@
             </div>
             <div class="form-group">
                 <label for="control-label">类型</label>
-                <select class="selectpicker" name="articleSectionType">
+                <select class="selectpicker" name="articleSectionType" id="section">
                         <option value="">全部</option>
                     <#list articleSectionTypeList as sectionName>
                         <option value="${sectionName}"
                                 <#if (selected?? && selected == sectionName) >selected</#if>
                                 >${sectionName.articleSectionTypeName}</option>
+                    </#list>
+                </select>
+            </div>
+            <div id="subSectionDiv" class="form-group" <#if  !(selected)?? || selected != 'KNOWLEDGE'>style="display: none"</#if>>
+                <label for="control-label">子栏目</label>
+                <select class="selectpicker" name="subArticleSectionType" >
+                    <option value="">全部</option>
+                    <#list subArticleSectionTypeList as subSectionName>
+                        <option value="${subSectionName}"
+                                <#if (subSelected?? && subSelected == subSectionName) >selected</#if>
+                        >${subSectionName.articleSectionTypeName}</option>
                     </#list>
                 </select>
             </div>

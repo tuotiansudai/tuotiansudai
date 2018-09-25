@@ -48,7 +48,7 @@ public class MobileAppMediaCenterServiceTest extends ServiceTestBase {
     public void shouldObtainArticleListIsSuccess() {
         LicaiquanArticleModel licaiquanArticleModel = fakeLiCaiQuanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS, 1, 10);
+        BaseResponseDto<MediaArticleListResponseDataDto> baseResponseDto = mobileAppAgreementService.obtainArticleList(ArticleSectionType.INDUSTRY_NEWS,null, 1, 10);
         assertEquals(1, baseResponseDto.getData().getArticleList().size());
         assertEquals(licaiquanArticleModel.getAuthor(), baseResponseDto.getData().getArticleList().get(0).getAuthor());
         assertEquals(ArticleSectionType.INDUSTRY_NEWS, baseResponseDto.getData().getArticleList().get(0).getSection());

@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +30,12 @@ public class KnowledgeController {
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public BaseDto<BasePaginationDataDto> getKnowledge(@RequestParam(value = "index", defaultValue = "1", required = false) int index) {
+    public BaseDto<BasePaginationDataDto> getKnowledge(@RequestParam(value = "subSection",required = false) SubArticleSectionType subSection,
+            @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
-        int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(ArticleSectionType.KNOWLEDGE);
+        int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(ArticleSectionType.KNOWLEDGE,subSection);
 
-        List<LicaiquanArticleModel> list = licaiquanArticleMapper.findArticleByArticleSectionType(ArticleSectionType.KNOWLEDGE, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<LicaiquanArticleModel> list = licaiquanArticleMapper.findArticleByArticleSectionType(ArticleSectionType.KNOWLEDGE, subSection,PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
         BasePaginationDataDto<LicaiquanArticleModel> dataDto = new BasePaginationDataDto<>(index, pageSize, count, list);
         dataDto.setStatus(true);
