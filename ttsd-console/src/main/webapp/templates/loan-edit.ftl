@@ -364,7 +364,7 @@
             </#if>
 
         </section>
-
+        <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="<#if ['PERSONAL_CAPITAL_TURNOVER', 'ENTERPRISE_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType) && loan.pledgeVehicle?? && (loan.pledgeVehicle?size>0)>true<#else>false</#if>"/>
         <section id="section-three">
             <#if 'HOUSE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-house.ftl'>
@@ -372,6 +372,15 @@
 
             <#if 'VEHICLE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-vehicle.ftl'>
+            </#if>
+
+            <#if ['PERSONAL_CAPITAL_TURNOVER', 'ENTERPRISE_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
+                <#if loan.pledgeHouse?? && (loan.pledgeHouse?size>0) >
+                    <#include 'loan-edit-pledge-house.ftl'>
+                </#if>
+                <#if loan.pledgeVehicle?? && (loan.pledgeVehicle?size>0) >
+                    <#include 'loan-edit-pledge-vehicle.ftl'>
+                </#if>
             </#if>
 
             <#if 'ENTERPRISE_PLEDGE' == loan.loan.pledgeType>
