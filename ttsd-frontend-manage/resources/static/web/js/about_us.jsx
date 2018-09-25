@@ -138,7 +138,7 @@ if($('#knowlegeList').length) {
 if($('#investorList').length) {
     let noticeTpl=$('#noticeListTemplate').html();
     let ListRender = _.template(noticeTpl);
-    let requestData={"index":1,"pageSize":10,"subSeciton":"INVESTOR_EDUCATION"};
+    let requestData={"index":1,"pageSize":10,"subSection":"INVESTOR_EDUCATION"};
     paginationElement.loadPagination(requestData, function (data) {
         let html = ListRender(data);
         $('#investorList').html(html);

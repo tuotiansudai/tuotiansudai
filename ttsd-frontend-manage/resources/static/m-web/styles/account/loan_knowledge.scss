@@ -19,11 +19,34 @@ body {
   background-size: contain;
 }
 .title-section {
-  >span {
-    width: 25%;
-    height: 0.4rem;
+  background: #fff;
+  height: 0.9rem;
+  .wrap {
+    width: 90%;
+    margin: 0 auto;
+  }
+  span {
+    height: 0.9rem;
+    line-height: 0.9rem;
     display: inline-block;
     text-align: center;
+    font-size: 0.14rem;
+    color: #999;
+    cursor: pointer;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    margin-left: 0.22rem;
+    margin-right: 0.22rem;
+    &.active {
+      color: #DA3D28;
+      border-bottom: 0.06rem solid #DA3D28;
+    }
+    &.first {
+      margin-left: 0;
+    }
+    &.last {
+      margin-right: 0;
+    }
   }
 }
 .knowledges-list {
@@ -60,7 +83,7 @@ body {
 
 .knowledge-list-frame {
   position: absolute;
-  top: 3.4rem;
+  top: 4.3rem;
   bottom: 0px;
   width: 100%;
   overflow: hidden;
