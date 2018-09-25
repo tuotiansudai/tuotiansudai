@@ -939,14 +939,8 @@ $riskTips.on('mouseout', function(event) {
 
 $cancelAssessmentFormSubmit.on('click', function(event) {
     event.preventDefault();
-    commonFun.useAjax({
-        url: '/risk-estimate',
-        data: {answers: ['-1']},
-        type: 'POST'
-    },function(data) {
-        layer.closeAll();
-        noPasswordInvest?sendSubmitRequest():$investForm.submit();
-    });
+    layer.closeAll();
+    return false;
 
 });
 $confirmAssessment.on('click', function(event) {

@@ -742,11 +742,12 @@
     <#include "component/login-tip.ftl" />
 <#--风险测评-->
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，投资需谨慎！</p>
     </div>
 </div>
 
