@@ -22,7 +22,7 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","leftNavs":[
+    {"title":"我要出借", "url":"/loan-list","category":"17顶部导航","leftNavs":[
         {"title":"直投项目", "url":"/loan-list"},
         {"title":"转让项目", "url":"/transfer-list"}
     ]},

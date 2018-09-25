@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="积分体系_积分商城_拓天速贷" keywords="会员积分,投资积分,签到积分,邀好友积分,拓天速贷" description="拓天速贷积分体系豪华升级,投资得积分,邀好友送积分,签到攒积分,做任务赢积分,会员积分兑好礼,五大秘籍玩转积分商城.">
+<@global.main pageCss="${css.point_update}" pageJavascript="" activeNav="" activeLeftNav="" title="积分体系_积分商城_拓天速贷" keywords="会员积分,出借积分,签到积分,邀好友积分,拓天速贷" description="拓天速贷积分体系豪华升级,出借得积分,邀好友送积分,签到攒积分,做任务赢积分,会员积分兑好礼,五大秘籍玩转积分商城.">
 <div class="point-update-container">
 	<div class="top-item compliance-banner">
         <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
@@ -11,40 +11,40 @@
 			<ul class="get-point-item">
 				<li>
 					<div class="title-name">
-						<p class="name-text">投资得积分</p>
+						<p class="name-text">出借得积分</p>
 						<p>多投多得更靠谱</p>
 					</div>
 					<table>
 						<thead>
 							<tr>
-								<th>投资类型</th>
+								<th>出借类型</th>
 								<th>获得积分</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>30天抵押类债权</td>
-								<td>投资金额/365*30</td>
+								<td>出借金额/365*30</td>
 							</tr>
 							<tr>
 								<td>90天抵押类债权</td>
-								<td>投资金额/365*90</td>
+								<td>出借金额/365*90</td>
 							</tr>
 							<tr>
 								<td>180天抵押类债权</td>
-								<td>投资金额/365*180</td>
+								<td>出借金额/365*180</td>
 							</tr>
 							<tr>
 								<td>360天抵押类债权</td>
-								<td>投资金额/365*360</td>
+								<td>出借金额/365*360</td>
 							</tr>
 						</tbody>
 					</table>
 					<div class="tip-info">
-						投资指定项目，左手赚收益，右手赚积分。如投资10000元180天债权，可获得4931积分。
+                        出借指定项目，左手赚收益，右手赚积分。如出借10000元180天债权，可获得4931积分。
 					</div>
 					<div class="btn-item">
-						<a href="/loan-list" class="btn-model">马上投资</a>
+						<a href="/loan-list" class="btn-model">马上出借</a>
 					</div>
 				</li>
 				<li>
@@ -69,7 +69,7 @@
 								<td>100积分/人</td>
 							</tr>
 							<tr>
-								<td>好友首次投资</td>
+								<td>好友首次出借</td>
 								<td>200积分/人</td>
 							</tr>
 						</tbody>
@@ -155,7 +155,7 @@
 								<td>200积分</td>
 							</tr>
 							<tr>
-								<td>首次投资</td>
+								<td>首次出借</td>
 								<td>200积分</td>
 							</tr>
 							<tr>
@@ -163,19 +163,19 @@
 								<td>100积分</td>
 							</tr>
 							<tr>
-								<td>累计投资满5000元</td>
+								<td>累计出借满5000元</td>
 								<td>100积分</td>
 							</tr>
 							<tr>
-								<td>单笔投资满10000元</td>
+								<td>单笔出借满10000元</td>
 								<td>200积分</td>
 							</tr>
 							<tr>
-								<td>首次投资180天标的</td>
+								<td>首次出借180天标的</td>
 								<td>100积分</td>
 							</tr>
 							<tr>
-								<td>首次投资360天标的</td>
+								<td>首次出借360天标的</td>
 								<td>200积分</td>
 							</tr>
 						</tbody>
@@ -219,7 +219,7 @@
 								<td>200积分</td>
 							</tr>
 							<tr>
-								<td>首次投资</td>
+								<td>首次出借</td>
 								<td>200积分</td>
 							</tr>
 							<tr>
@@ -239,19 +239,19 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>累计投资满5000元</td>
+								<td>累计出借满5000元</td>
 								<td>100积分</td>
 							</tr>
 							<tr>
-								<td>单笔投资满10000元</td>
+								<td>单笔出借满10000元</td>
 								<td>200积分</td>
 							</tr>
 							<tr>
-								<td>首次投资180天标的</td>
+								<td>首次出借180天标的</td>
 								<td>50积分</td>
 							</tr>
 							<tr>
-								<td>首次投资360天标的</td>
+								<td>首次出借360天标的</td>
 								<td>200积分</td>
 							</tr>
 							<tr>
@@ -344,7 +344,7 @@
 		</div>
 		<dl class="rule-item">
 			<dt>温馨提示：</dt>
-			<dd>1、用户投资30天、90天、180天、360天抵押类债权，根据累计年化投资额，可获得等值的兑换积分。投资体验项目及债权转让不参与积分的累计，积分只保留整数位，小数点后部分直接抹去；</dd>
+			<dd>1、用户出借30天、90天、180天、360天抵押类债权，根据累计年化出借额，可获得等值的兑换积分。出借体验项目及债权转让不参与积分的累计，积分只保留整数位，小数点后部分直接抹去；</dd>
 			<dd>2、拓天速贷将于每年10月21日24时，对所有用户账户内积分进行清零，清零后积分将重新累计，逾期未使用的积分将自动作废；</dd>
 			<dd>3、用户在积分商城中所兑换的红包、加息劵等虚拟奖品实时发放，用户可在电脑端“我的账户-我的宝藏”或App端“我的-优惠券”中查看；</dd>
 			<dd>4、话费、爱奇艺会员、优酷会员、电影票、京东E卡、实物奖品将于兑换成功后7个工作日内由客服联系发放，部分地区邮费自付，请保持注册手机畅通，以便客服人员与您联系；</dd>

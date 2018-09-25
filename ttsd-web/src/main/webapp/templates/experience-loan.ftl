@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_detail_experience}" pageJavascript="${js.loan_detail_experience}" activeNav="我要投资" activeLeftNav="" title="新手体验项目">
+<@global.main pageCss="${css.loan_detail_experience}" pageJavascript="${js.loan_detail_experience}" activeNav="我要出借" activeLeftNav="" title="新手体验项目">
 <div class="loan-detail-content loan-detail-new" id="experienceLoanDetailContent" data-loan-progress="${loan.progress?string.computer}" data-estimate="${estimate?string('true', 'false')}">
 
     <div class="borderBox clearfix no-border">
@@ -50,7 +50,7 @@
                                 <em class="fr account-amount" data-user-balance="${experienceBalance?string.computer}">${(experienceBalance / 100)?string("0.00")} 元</em>
                             </dd>
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
-                                <span class="fl">投资金额(体验金)：</span>
+                                <span class="fl">出借金额(体验金)：</span>
                                 <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}"
                                        placeholder="0.00" value="${(experienceBalance / 100)?string("0.00")}"
                                        class="text-input-amount fr position-width-new"/>
@@ -63,10 +63,10 @@
 
                             <dd>
                                 <@global.isAnonymous>
-                                    <a class="btn-pay btn-normal" href="/login">马上投资</a>
+                                    <a class="btn-pay btn-normal" href="/login">马上出借</a>
                                 </@global.isAnonymous>
                                 <@global.isNotAnonymous>
-                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上投资</button>
+                                    <button id="investSubmit" class="btn-pay btn-normal" type="submit">马上出借</button>
                                 </@global.isNotAnonymous>
 
                                 <div class="error-box" style="display: none"></div>
@@ -83,7 +83,7 @@
             项目期限：${loan.duration}天<br/>
             起息时间：即投即生息<br/>
             还款方式：到期付息,体验金收回。<br/>
-            投资要求：新手体验标仅能使用新手体验券进行投资。<br/>
+            出借要求：新手体验标仅能使用新手体验券进行出借。<br/>
             项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。<br/>
         </div>
         <div class="bg-w borderBox mt-20 project-model">
@@ -96,7 +96,7 @@
                     <li>2、仅拥有平台体验金的用户才能投资拓天体验金项目。</li>
                     <li>3、拓天体验金项目50起投；项目到期后，平台收回本金，体验金产生的收益归用户所有。</li>
                     <li>4、拓天体验金项目不可转让。</li>
-                    <li>5、用户在累计投资直投项目（债权转让项目和拓天体验金项目除外）满1000元后，方可提现体验金产生的收益。</li>
+                    <li>5、用户在累计出借直投项目（债权转让项目和拓天体验金项目除外）满1000元后，方可提现体验金产生的收益。</li>
                     <li>6、如有疑问请联系在线客服或拨打400-169-1188。</li>
                 </ul>
             </div>
@@ -113,7 +113,7 @@
                         <p class="intro-icon icon-one"></p>
 
                         <p class="intro-text">
-                            <span>拓天速贷平台项目都是抵押债权，每笔债权都对应着相应的抵押物。如果投资过程中发生了资金风险，抵押物资将会被处理来为用户的资金提供保障。</span></p>
+                            <span>拓天速贷平台项目都是抵押债权，每笔债权都对应着相应的抵押物。如果出借过程中发生了资金风险，抵押物资将会被处理来为用户的资金提供保障。</span></p>
                     </li>
                     <li>
                         <p class="intro-title">交易保障</p>
@@ -121,7 +121,7 @@
                         <p class="intro-icon icon-two"></p>
 
                         <p class="intro-text">
-                            <span>拓天速贷接入了联动优势电子商务有限公司的资金托管系统。交易过程中的充值、投资、提现都在第三方支付平台进行，保证了资金流转的透明和安全。</span></p>
+                            <span>拓天速贷接入了联动优势电子商务有限公司的资金托管系统。交易过程中的充值、出借、提现都在第三方支付平台进行，保证了资金流转的透明和安全。</span></p>
                     </li>
                     <li>
                         <p class="intro-title">信息保障</p>

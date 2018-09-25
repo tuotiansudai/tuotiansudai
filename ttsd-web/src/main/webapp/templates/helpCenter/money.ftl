@@ -8,7 +8,7 @@
     <div class="problem-list-group">
         <div class="problem-title-item">
             <span class="active">充值</span>
-            <span>投资</span>
+            <span>出借</span>
             <span>回款</span>
             <span>提现</span>
         </div>
@@ -71,7 +71,7 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">4、投资成功后，什么时候开始计算利息？</p>
+                    <p class="single-title">4、出借成功后，什么时候开始计算利息？</p>
 
                     <p class="single-answer">答：标满放款后生息。</p>
                 </li>
@@ -85,21 +85,21 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">6、投资到期后，什么时候回款？</p>
+                    <p class="single-title">6、出借到期后，什么时候回款？</p>
 
                     <p class="single-answer">答：当日回款。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">7、新手体验项目怎么投资？</p>
+                    <p class="single-title">7、新手体验项目怎么出借？</p>
 
-                    <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过投资行为的账户。登录官方网站—新手体验标的—马上投资—立即体验（无须绑卡和实名认证）。</p>
+                    <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过出借行为的账户。登录官方网站—新手体验标的—马上投资—立即体验（无须绑卡和实名认证）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">8、手头资金短缺，如何把投在平台投资项目里的资金快速取出来？</p>
+                    <p class="single-title">8、手头资金短缺，如何把投在平台出借项目里的资金快速取出来？</p>
 
                     <p class="single-answer">答：可以选择债权转让，如有特殊需要，可折价转让。</p>
                 </li>
@@ -108,14 +108,14 @@
 
                     <p class="single-title">9、如何查看电子合同？</p>
 
-                    <p class="single-answer">答：登陆官方网站—我的账户—我的投资—直接项目/转让项目—全部（直接项目/转让项目下一行）—合同（即可看到每笔投资的合同）。</p>
+                    <p class="single-answer">答：登陆官方网站—我的账户—我的出借—直接项目/转让项目—全部（直接项目/转让项目下一行）—合同（即可看到每笔出借的合同）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
                     <p class="single-title">10、如何将电子合同变成纸质合同？</p>
 
-                    <p class="single-answer">答：如您需要纸质合同，在“我的投资”中将电子版合同下载后以电子或文件形式提供到拓天速贷客户服务中心，拓天速贷客服打印并盖章后交于您的手中。</p>
+                    <p class="single-answer">答：如您需要纸质合同，在“我的出借”中将电子版合同下载后以电子或文件形式提供到拓天速贷客户服务中心，拓天速贷客服打印并盖章后交于您的手中。</p>
                 </li>
             </ul>
             <ul class="list-group">
@@ -124,14 +124,14 @@
 
                     <p class="single-title">1、目前有哪几种回款方式？</p>
 
-                    <p class="single-answer">答：1种，先付收益后还投资本金，按天计息，放款后生息。</p>
+                    <p class="single-answer">答：1种，先付收益后还出借本金，按天计息，放款后生息。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">2、投资回款有邮件、短信通知吗？</p>
+                    <p class="single-title">2、出借回款有邮件、短信通知吗？</p>
 
-                    <p class="single-answer">答：投资回款有邮件短信通知的服务。</p>
+                    <p class="single-answer">答：出借回款有邮件短信通知的服务。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -143,14 +143,14 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">4、投资后能不能提前收款？</p>
+                    <p class="single-title">4、出借后能不能提前收款？</p>
 
-                    <p class="single-answer">答：投资人成功投标后是无法申请提前收款的，但可以通过债权转让的方式出让债权，快速实现变现。</p>
+                    <p class="single-answer">答：出借人成功投标后是无法申请提前收款的，但可以通过债权转让的方式出让债权，快速实现变现。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">5、借款者提前还款，投资人实际收益怎么算？</p>
+                    <p class="single-title">5、借款者提前还款，出借人实际收益怎么算？</p>
 
                     <p class="single-answer">答：按照实际的收益天数计算。</p>
                 </li>

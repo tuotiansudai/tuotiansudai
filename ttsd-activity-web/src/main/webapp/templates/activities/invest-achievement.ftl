@@ -17,9 +17,9 @@
                 <div class="actor-content">
                     <dl class="intro-text">
                         <dt>每一个投资项目都会产生<span>三个称号</span>及<span>奖励</span></dt>
-                        <dd>第一位投资的用户，将获得<i class="first-card"></i><span>拓荒先锋</span>的称号；</dd>
-                        <dd>累计投资最高的用户，将获得<i class="max-card"></i><span>拓天标王</span>的称号；</dd>
-                        <dd>最后一位投资的用户，将获得<i class="last-card"></i><span>一锤定音</span>的称号。</dd>
+                        <dd>第一位出借的用户，将获得<i class="first-card"></i><span>拓荒先锋</span>的称号；</dd>
+                        <dd>累计出借最高的用户，将获得<i class="max-card"></i><span>拓天标王</span>的称号；</dd>
+                        <dd>最后一位出借的用户，将获得<i class="last-card"></i><span>一锤定音</span>的称号。</dd>
                     </dl>
                 </div>
             </div>
@@ -74,9 +74,9 @@
             <div class="actor-content">
                 <dl class="intro-text">
                     <dt>每一个投资项目都会产生<span>三个称号</span>及<span>奖励</span></dt>
-                    <dd>第一位投资的用户，将获得<i class="first-card"></i><span>拓荒先锋</span>的称号；</dd>
-                    <dd>累计投资最高的用户，将获得<i class="max-card"></i><span>拓天标王</span>的称号；</dd>
-                    <dd>最后一位投资的用户，将获得<i class="last-card"></i><span>一锤定音</span>的称号。</dd>
+                    <dd>第一位出借的用户，将获得<i class="first-card"></i><span>拓荒先锋</span>的称号；</dd>
+                    <dd>累计出借最高的用户，将获得<i class="max-card"></i><span>拓天标王</span>的称号；</dd>
+                    <dd>最后一位出借的用户，将获得<i class="last-card"></i><span>一锤定音</span>的称号。</dd>
                 </dl>
             </div>
         </div>

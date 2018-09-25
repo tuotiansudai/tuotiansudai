@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="产品类型" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="产品类型" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有出借需求的个人提供规范、安全、专业的互联网金融信息服务.">
 <div class="help-center-group">
     <h3>
         <a href="/help/help-center"><< 返回帮助中心</a>
@@ -19,7 +19,7 @@
 
                     <p class="single-answer">
 
-                        答：拓天速贷主要产品为房屋抵押贷、车辆抵押贷，具体可以细分为：90天、180天、360天的抵押贷，约定年化利率8%-10%；50元起投；还款方式为：先付收益后还投资本金，按天计息，放款后生息。适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
+                        答：拓天速贷主要产品为房屋抵押贷、车辆抵押贷，具体可以细分为：90天、180天、360天的抵押贷，约定年化利率8%-10%；50元起投；还款方式为：先付收益后还出借本金，按天计息，放款后生息。适用于有资金需求的小微企业、个体以及有出借需求的个人及家庭。</p>
 
                 </li>
             </ul>
@@ -29,7 +29,7 @@
 
                     <p class="single-title">1、债权转让在哪里购买？</p>
 
-                    <p class="single-answer">答：登录官方网站—我要投资—转让项目（即可看到可购买的转让项目）。</p>
+                    <p class="single-answer">答：登录官方网站—我要出借—转让项目（即可看到可购买的转让项目）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -63,7 +63,7 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">6、购买投资标的后多久可以债权转让？</p>
+                    <p class="single-title">6、购买出借标的后多久可以债权转让？</p>
 
                     <p class="single-answer">答：标满放款后即可转让。</p>
                 </li>

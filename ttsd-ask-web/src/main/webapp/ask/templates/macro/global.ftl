@@ -22,7 +22,7 @@
 <#macro main pageCss pageJavascript="" activeNav="拓天问答" commonStaticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
     {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
-    {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+    {"title":"我要出借", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
         {"title":"直投项目", "url":"${webServer}/loan-list"},
         {"title":"转让项目", "url":"${webServer}/transfer-list"}
     ]},
