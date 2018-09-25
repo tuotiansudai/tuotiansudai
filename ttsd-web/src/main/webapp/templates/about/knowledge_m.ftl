@@ -4,6 +4,7 @@
    <div class="knowledge-banner">
 
    </div>
+    <div class="title-section"><span>全部</span><span>法律法规</span><span>出款人教育</span><span>基础知识</span></div>
     <div id="wrapperOut"  class="knowledge-list-frame">
         <div class="knowledge-content">
             <div id="knowledgeList" class="knowledges-list">

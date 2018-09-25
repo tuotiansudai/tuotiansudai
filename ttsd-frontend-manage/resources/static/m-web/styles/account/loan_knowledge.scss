@@ -18,6 +18,14 @@ body {
   background: url("../../images/account/knowledge_banner.png") no-repeat;
   background-size: contain;
 }
+.title-section {
+  >span {
+    width: 25%;
+    height: 0.4rem;
+    display: inline-block;
+    text-align: center;
+  }
+}
 .knowledges-list {
 
   dl {
