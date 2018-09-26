@@ -1,14 +1,13 @@
-package com.tuotiansudai.mq.consumer.loan;
+package com.tuotiansudai.mq.consumer.coupon.service;
 
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Component
 public class CouponAssigningMessageConsumer implements MessageConsumer {
@@ -22,7 +21,6 @@ public class CouponAssigningMessageConsumer implements MessageConsumer {
         return MessageQueue.Coupon_Assigning;
     }
 
-    @Transactional
     @Override
     public void consume(String message) {
         logger.info("[MQ] receive message: {}: {}.", this.queue(), message);
