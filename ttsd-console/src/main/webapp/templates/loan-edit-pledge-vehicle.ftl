@@ -1,9 +1,9 @@
 <#list loan.pledgeVehicle as pledgeVehicle>
     <div class='vehicle-pledge'>
         <#if pledgeVehicle_index == 0>
-            <h3><span class='vehicle-title'>抵押物信息<#if (loan.pledgeVehicle?size > 1)>${pledgeVehicle_index+1}</#if></span><button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>
+            <h3><span class='vehicle-title'>车辆信息<#if (loan.pledgeVehicle?size > 1)>${pledgeVehicle_index+1}</#if></span><button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>
         <#else>
-            <h3><span class='vehicle-title'>抵押物信息${pledgeVehicle_index+1}</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>
+            <h3><span class='vehicle-title'>车辆信息${pledgeVehicle_index+1}</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>
         </#if>
 
         <hr class="top-line">
