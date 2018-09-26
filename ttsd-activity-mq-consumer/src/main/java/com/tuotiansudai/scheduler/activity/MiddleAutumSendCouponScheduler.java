@@ -33,8 +33,8 @@ public class MiddleAutumSendCouponScheduler {
     @Value("#{'${activity.middleautum.nationalday.activity.period}'.split('\\~')}")
     private List<String> middleautumNationalDayActivityPeriod = Lists.newArrayList();
 
-
-    @Scheduled(cron = "0 30 22 * * ?", zone = "Asia/Shanghai")
+//  此活动暂不上线
+//    @Scheduled(cron = "0 30 22 * * ?", zone = "Asia/Shanghai")
     public void sendCoupon() {
         Date tradingTime = new Date();
         logger.info("[MiddleAutumSendCouponScheduler start] time:{}",tradingTime.toString());
