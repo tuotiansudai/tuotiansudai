@@ -2,7 +2,7 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要出借</li>
-            <li><a href="${webServer}/loan-list">出借产品</a></li>
+            <li><a href="${webServer}/loan-list">产品介绍</a></li>
             <li><a href="${webServer}/account">我的帐户</a></li>
             <li><a href="${webServer}/about/notice">拓天公告</a></li>
         </ul>

@@ -65,7 +65,7 @@
     </a>
     <a class="menu-invest" href="/m/loan-list">
         <i></i>
-        <span>投资</span>
+        <span>出借</span>
     </a>
     <a class="menu-knowledge" href="/m/about/knowledge">
         <i></i>

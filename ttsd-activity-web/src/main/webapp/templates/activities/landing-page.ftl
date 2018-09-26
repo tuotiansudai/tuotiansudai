@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landing_page_new_2018}" pageJavascript="${js.landing_page_new_2018}" activeNav="" activeLeftNav="" title="拓天速贷_新手注册送1000元投资红包_拓天速贷官网" keywords="拓天速贷,新手注册，1000元投资红包,6888元体验金,3%加息劵" description="拓天速贷新手注册送1000元投资红包,新人独享11%高息新手标,首次投资可获得3%加息券,新用户注册送6888元体验金,为广大投资用户提供多元化的投资选择和优质的综合投资服务.">
+<@global.main pageCss="${css.landing_page_new_2018}" pageJavascript="${js.landing_page_new_2018}" activeNav="" activeLeftNav="" title="拓天速贷_新手注册送1000元出借红包_拓天速贷官网" keywords="拓天速贷,新手注册，1000元出借红包,6888元体验金,3%加息劵" description="拓天速贷新手注册送1000元出借红包,新人独享11%高息新手标,首次出借可获得3%加息券,新用户注册送6888元体验金,为广大出借用户提供多元化的出借选择和优质的综合出借服务.">
 <div class="landing-page-container" id="landingTop">
     <@global.isAnonymous>
     <div class="banner" id="bannerBox">
@@ -11,7 +11,7 @@
                     <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
                         <h2 class="title"><span class="icon-title"></span><span>出借资金全程由联动优势存管</span></h2>
                         <div class="login-con">
-                            <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取投资大礼包</div>
+                            <div class="refer-person-info">您的好友<span class="refer-name"></span>邀请您领取出借大礼包</div>
                             <ul>
                                 <li><span class="mobileIcon icons borderRadiusLeft"></span><input id="mobile"
                                                                                                   class="width100 height100 borderRadiusRight"
@@ -404,7 +404,7 @@
                 </div>
                 <div class="kindly-tips-con">
                     <p>1.活动时间：2018年6月1日起，本活动仅针对活动开始后注册的新用户；</p>
-                    <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，出借周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，出借累计满1000元即可提现（投资债权转让项目除外）；</p>
+                    <p>2.平台新注册用户可使用6888元体验金购买新手体验项目，出借周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，出借累计满1000元即可提现（购买债权转让项目除外）；</p>
                     <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
                     <p>4.1000元新手红包有效期为7天，为方便您分散出借，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端"我的"中查看；</p>
                     <p>5.用户每笔出借仅限使用一张优惠券，用户可在出借时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选，使用红包金额将于所投债权放款后返至您的账户；</p>

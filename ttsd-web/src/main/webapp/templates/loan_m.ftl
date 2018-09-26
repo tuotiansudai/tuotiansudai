@@ -10,9 +10,9 @@
         </#if>
         <div class="collection">
     <#if loan.estimate??>
-            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loan.estimate}</i>的用户<em id="closeRisk"></em></span>
+            <span class="risk-tip">该项目适合出借偏好类型为<i class="risk-type">${loan.estimate}</i>的用户<em id="closeRisk"></em></span>
     <#else>
-        <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">稳健型</i>的用户<em id="closeRisk"></em></span>
+        <span class="risk-tip">该项目适合出借偏好类型为<i class="risk-type">稳健型</i>的用户<em id="closeRisk"></em></span>
     </#if>
             <span class="title">
 
@@ -54,10 +54,10 @@
             <div class="invest-refer-box" style="display: none">
                 <i class="fa fa-caret-up"></i>
                 <ul>
-                    <li><span class="title left-title">投资金额</span><span class="title">投资奖励</span></li>
+                    <li><span class="title left-title">出借金额</span><span class="title">出借奖励</span></li>
 
                     <#list extraLoanRates.items as extraLoanRate>
-                        <li><span class="left-title">投资金额≥<em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
+                        <li><span class="left-title">出借金额≥<em class="money">${extraLoanRate.amountLower?string}</em>元</span><span>${extraLoanRate.rate}%</span>
                         </li>
                     </#list>
                 </ul>
@@ -102,7 +102,7 @@
 
     <ul class="detail-list">
         <li>
-            <label>投资上限</label>
+            <label>出借上限</label>
 
             <span><em class="money">${loan.maxInvestAmount}</em>元</span>
 
@@ -146,10 +146,10 @@
     </ul>
 <br/>
 
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
 
     <#if loan.loanStatus=='RAISING'>
-        <button id="toInvest" class="to-invest-project" type="button">立即投资</button>
+        <button id="toInvest" class="to-invest-project" type="button">立即出借</button>
     <#elseif loan.loanStatus == "PREHEAT">
         <button class="to-invest-project" type="button" disabled>预热中</button>
     <#else>

@@ -124,7 +124,7 @@
 
                     <p class="single-title">1、目前有哪几种回款方式？</p>
 
-                    <p class="single-answer">答：1种，先付收益后还出借本金，按天计息，放款后生息。</p>
+                    <p class="single-answer">答：1种，先付收益后还本金，按天计息，放款后生息。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>

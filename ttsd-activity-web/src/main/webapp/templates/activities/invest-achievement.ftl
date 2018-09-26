@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.invest_achievement}" pageJavascript="${js.invest_achievement}" activeNav="" activeLeftNav="" title="投资称号_拓天称号_拓天速贷" keywords="拓荒先锋,拓天标王,一锤定音,投资称号,拓天称号" description="拓天速贷依据投资用户的投资金额,投资期限,给予相应的投资称号,投资称号可获得相应的称号奖励，">
 <div class="invest-achievement-container clearfix">
     <div class="container-model compliance-banner">
-        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+        <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
     </div>
     <div class="content-list">
         <div class="wp clearfix">
@@ -16,7 +16,7 @@
                 <h3><span><i class="left-icon"></i>活动内容<i class="right-icon"></i></span></h3>
                 <div class="actor-content">
                     <dl class="intro-text">
-                        <dt>每一个投资项目都会产生<span>三个称号</span>及<span>奖励</span></dt>
+                        <dt>每一个借款项目都会产生<span>三个称号</span>及<span>奖励</span></dt>
                         <dd>第一位出借的用户，将获得<i class="first-card"></i><span>拓荒先锋</span>的称号；</dd>
                         <dd>累计出借最高的用户，将获得<i class="max-card"></i><span>拓天标王</span>的称号；</dd>
                         <dd>最后一位出借的用户，将获得<i class="last-card"></i><span>一锤定音</span>的称号。</dd>
@@ -59,7 +59,7 @@
 </div>
 <div class="invest-achievement-phone clearfix">
     <div class="phone-model top-img compliance-banner">
-        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+        <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
 
     </div>
     <div class="phone-model">

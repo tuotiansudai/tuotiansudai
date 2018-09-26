@@ -69,7 +69,7 @@
     <div class="input-amount-box">
         <ul class="input-list">
             <li>
-                <label>投资金额</label>
+                <label>出借金额</label>
                 <input type="text"
                        data-duration="${loan.duration}"
                        data-product-type="${loan.productType}"
@@ -100,7 +100,7 @@
     </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <button id="investSubmit" type="submit" class="immediate-investment btn-wap-normal" >
-   立即投资</button>
+   立即出借</button>
     </form>
     <input id="errorMassage" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
 
@@ -124,7 +124,7 @@
 
 <#include "component/anxin-agreement.ftl" />
     <div class="sectionNone"></div>
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
 </div>
 
 
@@ -137,7 +137,7 @@
     </div>
     <div class="my-account-content anxin-electro-sign" id="anxinAuthorization">
         <div class="cfca-info">
-            安心签是由中国金融认证中心（CFCA）为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
+            安心签是由中国金融认证中心（CFCA）为拓天速贷出借用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
         </div>
 
         <div class="cfca-advantage">

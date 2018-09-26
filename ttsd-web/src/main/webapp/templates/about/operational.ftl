@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="data-model cheat-model marginTop20">
-            <h3 class="font16">平台投资明细</h3>
+            <h3 class="font16">平台交易明细</h3>
             <h4 class="font14 marginBottom10">月度交易金额（近半年）</h4>
             <div class="model-container chart-dom" id="dataRecord">
                 <!--[if gte IE 8]>

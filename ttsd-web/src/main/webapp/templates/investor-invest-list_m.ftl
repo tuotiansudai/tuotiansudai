@@ -1,9 +1,9 @@
 <#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.investor_invest_list}" pageJavascript="${m_js.investor_invest_list}" title="我的投资">
+<@global.main pageCss="${m_css.investor_invest_list}" pageJavascript="${m_js.investor_invest_list}" title="我的出借">
 
 <div class="my-account-content" id="myInvest">
-    <div class="m-header"><em id="iconMyInvest" class="icon-left"><i></i></em>我的投资 </div>
+    <div class="m-header"><em id="iconMyInvest" class="icon-left"><i></i></em>我的出借 </div>
     <div class="menu-category">
         <span class="current" id="repayingBtn"><a href="javascript:;">回款中</a></span>
         <span id="raisingBtn"><a href="javascript:;">投标中</a></span>
@@ -38,7 +38,7 @@
                 <dt><em style="width: {{value.repayProgress}}%"></em> <i>{{value.lastRepayDate}}到期</i></dt>
                 {{/if}}
 
-                <dd>投资金额 <em>{{value.investAmount}}</em>元
+                <dd>出借金额 <em>{{value.investAmount}}</em>元
                 </dd>
             </dl>
         </div>
@@ -61,7 +61,7 @@
                 {{/each}}
                 {{/if}}
                 {{if value.productNewType == 'EXPERIENCE'}}
-                <i class="icon-sign">体验金投资</i>
+                <i class="icon-sign">体验金出借</i>
                 {{/if}}
 
             </dd>

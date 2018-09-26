@@ -97,7 +97,7 @@
             <div class="newer-experience clearfix" data-url="/loan/1">
                 <#--<i class="tag-icon"></i>-->
                 <div class="con-inner">
-                    <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
+                    <b class="newer-title">${experienceLoan.name} <span>限体验金购买</span></b>
                     <ul class="loan-info clearfix">
                         <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>
                         <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
