@@ -755,6 +755,12 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 })
             }
 
-        })
+        });
+        $('#projectName').on('change',function(){
+            var loanerLoginName=$('input[name="agent"]').val();
+            if(loanerLoginName !=''){
+                $('input[name="agent"]').trigger("blur");
+            }
+        });
 
     });

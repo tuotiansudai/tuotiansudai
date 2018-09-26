@@ -21,6 +21,8 @@ public class LoanerLoanRepayDataDto extends BaseDataDto {
 
     private List<LoanerLoanRepayDataItemDto> records = Lists.newArrayList();
 
+    private boolean isHistoryLoan=false;
+
     public long getLoanId() {
         return loanId;
     }
@@ -77,5 +79,13 @@ public class LoanerLoanRepayDataDto extends BaseDataDto {
 
     public void setRecords(List<LoanerLoanRepayDataItemDto> records) {
         this.records = records;
+    }
+
+    public boolean getIsHistoryLoan() {
+        return isHistoryLoan;
+    }
+
+    public void setIsHistoryLoan(boolean isHistoryLoan) {
+        isHistoryLoan = isHistoryLoan;
     }
 }
