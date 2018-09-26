@@ -73,6 +73,7 @@ public class ExportService {
             row.add(String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod()));
             row.add(transferApplicationPaginationItemDataDto.getTransferStatus());
             row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(transferApplicationPaginationItemDataDto.getTransfereeMobile());
             row.add(transferApplicationPaginationItemDataDto.getSource() == null ? "" : transferApplicationPaginationItemDataDto.getSource().name());
             row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferFee()));
