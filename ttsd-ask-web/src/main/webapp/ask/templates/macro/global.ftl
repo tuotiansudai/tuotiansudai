@@ -30,7 +30,7 @@
 
     {"title":"我的账户", "url":"${webServer}/account", "category":"18顶部导航","navigation":"true","leftNavs":[
         {"title":"账户总览", "url":"${webServer}/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的出借", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"${webServer}/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
