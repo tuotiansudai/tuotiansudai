@@ -97,7 +97,63 @@ if($noticeList.length) {
         }
     });
 }
-
+if($('#basicList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"BASIC_KNOWLEDGE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#basicList').html(html);
+        $('#basicList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#basicList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#knowlegeList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"LAW_RULE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#knowlegeList').html(html);
+        $('#knowlegeList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#knowlegeList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#investorList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"INVESTOR_EDUCATION"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#investorList').html(html);
+        $('#investorList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#investorList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
 let $companyPhoto = $('#companyPhoto');
 
 let photoGroup={

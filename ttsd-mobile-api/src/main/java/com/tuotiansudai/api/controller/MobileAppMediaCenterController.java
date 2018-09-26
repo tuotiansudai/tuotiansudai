@@ -6,6 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,9 +35,10 @@ public class MobileAppMediaCenterController {
     @RequestMapping(value = "/article-list", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponseDto obtainArticleList( @RequestParam(name = "section",required = false) ArticleSectionType section,
+                                              @RequestParam(name = "subSection",required = false) SubArticleSectionType subSection,
                                               @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                               @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return mobileAppMediaCenterService.obtainArticleList(section, index, pageValidUtils.validPageSizeLimit(pageSize));
+        return mobileAppMediaCenterService.obtainArticleList(section, subSection,index, pageValidUtils.validPageSizeLimit(pageSize));
 
     }
 

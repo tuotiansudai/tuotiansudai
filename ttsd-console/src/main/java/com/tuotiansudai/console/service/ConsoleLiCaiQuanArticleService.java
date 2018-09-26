@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleCommentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.PaginationUtil;
@@ -81,25 +82,28 @@ public class ConsoleLiCaiQuanArticleService {
         return list;
     }
 
-    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType, ArticleStatus articleStatus) {
+    private List<LiCaiQuanArticleDto> findRedisArticleDto(String title, ArticleSectionType articleSectionType, ArticleStatus articleStatus,SubArticleSectionType subArticleSectionType) {
         List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
         Map<byte[], byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
         for (byte[] key : articleDtoListHkey.keySet()) {
             LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) SerializeUtil.deserialize(articleDtoListHkey.get(key));
-            if (StringUtils.isNotEmpty(title) && !liCaiQuanArticleDto.getTitle().toUpperCase().contains(title.toUpperCase())) {
-                continue;
+            boolean titileFilter=false;
+            boolean sectionFilter=false;
+            boolean subSectionFilter=false;
+            boolean statusFilter=false;
+            if(StringUtils.isEmpty(title) || liCaiQuanArticleDto.getTitle().toUpperCase().contains(title.toUpperCase())){
+                titileFilter=true;
             }
-
-            if (articleSectionType == null && articleStatus == null) {
-                articleDtoList.add(liCaiQuanArticleDto);
-                continue;
+            if(articleSectionType == null || articleSectionType.equals(liCaiQuanArticleDto.getSection())){
+                sectionFilter=true;
             }
-
-            if (liCaiQuanArticleDto.getSection() != null && liCaiQuanArticleDto.getSection().equals(articleSectionType)) {
-                articleDtoList.add(liCaiQuanArticleDto);
+            if(articleStatus == null || articleStatus.equals(liCaiQuanArticleDto.getArticleStatus())){
+                statusFilter=true;
             }
-
-            if (liCaiQuanArticleDto.getArticleStatus() != null && liCaiQuanArticleDto.getArticleStatus() == articleStatus) {
+            if(subArticleSectionType == null || subArticleSectionType.equals(liCaiQuanArticleDto.getSubSection())){
+                subSectionFilter=true;
+            }
+            if(titileFilter && sectionFilter && subSectionFilter && statusFilter){
                 articleDtoList.add(liCaiQuanArticleDto);
             }
         }
@@ -108,14 +112,14 @@ public class ConsoleLiCaiQuanArticleService {
 
     public ArticlePaginationDataDto findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,
                                                             ArticleStatus articleStatus,
-                                                            int pageSize, int index) {
+                                                            int pageSize, int index, SubArticleSectionType subArticleSectionType) {
         int count = 0;
         List<LiCaiQuanArticleDto> list;
         List<LiCaiQuanArticleDto> articleDtoList;
         if (articleStatus != null && articleStatus.equals(ArticleStatus.PUBLISH)) {
             articleDtoList = Lists.newArrayList();
         } else {
-            articleDtoList = findRedisArticleDto(title, articleSectionType, articleStatus);
+            articleDtoList = findRedisArticleDto(title, articleSectionType, articleStatus,subArticleSectionType);
         }
 
         if (CollectionUtils.isNotEmpty(articleDtoList)) {
@@ -123,7 +127,7 @@ public class ConsoleLiCaiQuanArticleService {
         }
 
         if (articleStatus == null || articleStatus.equals(ArticleStatus.PUBLISH)) {
-            List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title, articleSectionType, 1, 10000);
+            List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title, articleSectionType,subArticleSectionType ,1, 10000);
             if (CollectionUtils.isNotEmpty(articleListItemModelList)) {
                 count += articleListItemModelList.size();
                 for (LicaiquanArticleModel model : articleListItemModelList) {
