@@ -95,9 +95,9 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
     @Value("${common.static.server}")
     private String commonStaticServer;
 
-    private String title = "拓天速贷引领投资热，开启互金新概念";
+    private String title = "拓天速贷引领出借热，开启互金新概念";
 
-    private String content = "个人经营借款投资项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
+    private String content = "个人经营借款出借项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto<LoanDetailV2ResponseDataDto> findLoanDetail(LoanDetailV2RequestDto requestDto) {
@@ -113,7 +113,7 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             logger.warn("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
             return new BaseResponseDto<>(ReturnMessage.APP_VERSION_NOT_LATEST.getCode(), ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
         }
-        List<PledgeType> multiplePledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_PLEDGE);
+        List<PledgeType> multiplePledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_PLEDGE, PledgeType.PERSONAL_CAPITAL_TURNOVER, PledgeType.ENTERPRISE_CAPITAL_TURNOVER);
         if (AppVersionUtil.compareVersion() == AppVersionUtil.low && multiplePledgeTypeList.contains(loanModel.getPledgeType())) {
             if (multiplePledge(loanModel.getPledgeType(), loanModel.getId())){
                 logger.warn("标的详情" + ReturnMessage.APP_VERSION_NOT_LATEST.getCode() + ":" + ReturnMessage.APP_VERSION_NOT_LATEST.getMsg());
@@ -226,17 +226,15 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
             LoanerDto loanerDto = new LoanerDto(loanerDetailsModel);
             loanerDto.setOverdueRate(MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()));
             dataDto.setLoaner(loanerDto);
-            switch (loanModel.getPledgeType()) {
-                case HOUSE:
-                    List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
-                    if (pledgeHouseModelList.size() > 0) {
-                        dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModelList.get(0)));
-                    }
-                case VEHICLE:
-                    List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                    if (pledgeVehicleModelList.size() > 0) {
-                        dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModelList.get(0)));
-                    }
+            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
+                List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
+                if (pledgeHouseModelList.size() > 0) {
+                    dataDto.setPledgeHouse(new PledgeHouseDto(pledgeHouseModelList.get(0)));
+                }
+                List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
+                if (pledgeVehicleModelList.size() > 0) {
+                    dataDto.setPledgeVehicle(new PledgeVehicleDto(pledgeVehicleModelList.get(0)));
+                }
             }
         }
         if (loanModel.getPledgeType() == PledgeType.ENTERPRISE_CREDIT || loanModel.getPledgeType() == PledgeType.ENTERPRISE_PLEDGE) {
@@ -269,16 +267,16 @@ public class MobileAppLoanDetailV2ServiceImpl implements MobileAppLoanDetailV2Se
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loanModel.getId());
         StringBuffer marqueeTitle = new StringBuffer();
         if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(com.tuotiansudai.repository.model.LoanStatus.RAISING, com.tuotiansudai.repository.model.LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
-            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+            marqueeTitle.append("第一个出借者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append(investorLoginName + " 以累计出借" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != com.tuotiansudai.repository.model.LoanStatus.RAISING) {
-                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计出借" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");

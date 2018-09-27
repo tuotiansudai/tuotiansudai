@@ -83,7 +83,7 @@ public class WechatLotteryService {
             redisWrapperClient.del(WECHAT_LOTTERY_COUNT_KEY + loginName);
             logger.error("no draw count left, someone is cheating. loginName:{}", loginName);
             dto.setReturnCode(1);
-            dto.setMessage("您的抽奖次数已用完，投资可以获得更多的抽奖机会！");
+            dto.setMessage("您的抽奖次数已用完，出借可以获得更多的抽奖机会！");
             dto.setStatus(false);
             return baseDto;
         }

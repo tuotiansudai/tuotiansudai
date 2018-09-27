@@ -12,7 +12,7 @@ public class ReferrerInvestListResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "推荐人奖励", example = "100")
     private String rewardTotalMoney;
 
-    @ApiModelProperty(value = "推荐人投资记录", example = "list")
+    @ApiModelProperty(value = "推荐人出借记录", example = "list")
     private List<ReferrerInvestResponseDataDto> referrerInvestList;
 
     public String getRewardTotalMoney() {

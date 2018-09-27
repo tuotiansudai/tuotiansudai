@@ -6,7 +6,7 @@ public enum HelpCategory {
     REGISTER_REAL_NAME("register_real_name","注册登录与实名", 3),
     ACCOUNT_BANK_CARD("account_bank_card","账户与银行卡", 4),
     RECHARGE_WITHDRAW("recharge_withdraw","充值与提现", 5),
-    INVEST_REPAY("invest_repay","投资与回款", 6),
+    INVEST_REPAY("invest_repay","出借与回款", 6),
     TRANSFER_SERVICE("transfer_service","债权转让服务", 7),
     RELIEVED_SIGN("relieved_sign","安心签", 8),
     COUPON_REFERRER("coupon_referrer","优惠券与好友推荐", 9),

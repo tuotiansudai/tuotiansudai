@@ -47,7 +47,7 @@
         {"title":"拓天公告", "url":"${webServer}/about/notice"},
         {"title":"媒体报道", "url":"${webServer}/about/media"},
         {"title":"网贷知识", "url":"/about/knowledge"},
-        {"title":"审计报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"/about/audit-report"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
         {"title":"联系我们", "url":"${webServer}/about/contact"},
         {"title":"运营数据", "url":"${webServer}/about/operational"}

@@ -23,7 +23,7 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "状态", example = "REPAYING")
     private String status;
 
-    @ApiModelProperty(value = "投资ID", example = "1000")
+    @ApiModelProperty(value = "出借ID", example = "1000")
     private String investId;
 
     @ApiModelProperty(value = "债权转让", example = "false")

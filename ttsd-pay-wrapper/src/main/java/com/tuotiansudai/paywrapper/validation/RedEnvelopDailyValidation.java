@@ -35,7 +35,7 @@ public class RedEnvelopDailyValidation extends BaseDailyValidation implements Da
 
         ValidationReport validationReport = this.generateReport("04", transactions);
         validationReport.setCount(transactions.size());
-        validationReport.setTitle("投资红包业务统计");
+        validationReport.setTitle("出借红包业务统计");
         validationReport.setMustacheContext("redEnvelop");
 
         return validationReport;

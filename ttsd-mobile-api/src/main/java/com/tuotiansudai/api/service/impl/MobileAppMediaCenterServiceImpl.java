@@ -11,6 +11,7 @@ import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,10 @@ public class MobileAppMediaCenterServiceImpl implements MobileAppMediaCenterServ
     }
 
     @Override
-    public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType, int index, int pageSize) {
-        int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(articleSectionType);
+    public BaseResponseDto<MediaArticleListResponseDataDto> obtainArticleList(ArticleSectionType articleSectionType, SubArticleSectionType subSection,int index, int pageSize) {
+        int count = licaiquanArticleMapper.findCountArticleByArticleSectionType(articleSectionType,subSection);
         List<MediaArticleResponseDataDto> records = Lists.newArrayList();
-        List<LicaiquanArticleModel> liCaiQuanArticleModels = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, (index - 1) * pageSize, pageSize);
+        List<LicaiquanArticleModel> liCaiQuanArticleModels = licaiquanArticleMapper.findArticleByArticleSectionType(articleSectionType, subSection,(index - 1) * pageSize, pageSize);
         if (CollectionUtils.isNotEmpty(liCaiQuanArticleModels)) {
             records = convertModel2Dto(liCaiQuanArticleModels);
         }

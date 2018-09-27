@@ -17,12 +17,12 @@ public class FinanceReportDto {
     private int duration;    //周期 LoanModel.duration
     private String loanAmount;    //标的金额  LoanModel.loanAmount
     private Date verifyTime;   //起标日期  LoanModel.verifyTime
-    private Date investTime;    //投资时间  InvestModel.investTime
+    private Date investTime;    //出借时间  InvestModel.investTime
     private Date recheckTime; //放款时间  LoanModel.recheckTime
-    private String investLoginName; //投资人 InvestModel.loginName
-    private String investRealName;  //投资人姓名 Account.userName
+    private String investLoginName; //出借人 InvestModel.loginName
+    private String investRealName;  //出借人姓名 Account.userName
     private String referrer;  //推荐人 UserModel.referrer
-    private String investAmount;  //投资金额 InvestModel.amount
+    private String investAmount;  //出借金额 InvestModel.amount
     private int benefitDays;    //计息天数 这一期InvestRepayModel.RepayDate-上一期InvestRepayModel.RepayDate 第一期天数是:即
     //投即生息-InvestRepayModel.repayDate-InvestModel.investTime,放款后生息-InvestRepayModel.repayDate-LoanModel.recheckTime
     private Date repayTime; //回款时间  InvestRepayModel.repayDate

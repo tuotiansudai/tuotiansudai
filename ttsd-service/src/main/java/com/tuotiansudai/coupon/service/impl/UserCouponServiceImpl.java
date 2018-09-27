@@ -137,7 +137,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     /**
-     * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、投资体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
+     * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、出借体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
      */
     @Override
     public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, final long amount) {

@@ -65,10 +65,10 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否可投新手体验标", example = "true")
     private boolean isExperienceEnable;
 
-    @ApiModelProperty(value = "投资偏好", example = "进取型")
+    @ApiModelProperty(value = "出借偏好", example = "进取型")
     private String riskEstimate;
 
-    @ApiModelProperty(value = "投资偏好说明", example = "进取型")
+    @ApiModelProperty(value = "出借偏好说明", example = "进取型")
     private String riskEstimateDesc;
 
     @ApiModelProperty(value = "风险评估等级")

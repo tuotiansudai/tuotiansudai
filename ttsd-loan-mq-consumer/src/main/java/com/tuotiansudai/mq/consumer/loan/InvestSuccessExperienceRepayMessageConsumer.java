@@ -71,8 +71,8 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
                 throw new RuntimeException("[新手体验项目收益发放MQ] consume fail. message: " + message);
             }
             if (!baseDto.getData().getStatus()) {
-                logger.error("[新手体验项目收益发放MQ] 新手体验项目收益发放失败. 投资ID:{}", String.valueOf(investId));
-                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("[新手体验项目收益发放MQ]新手体验项目收益发放失败,投资ID:{0}", String.valueOf(investId)));
+                logger.error("[新手体验项目收益发放MQ] 新手体验项目收益发放失败. 出借ID:{}", String.valueOf(investId));
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("[新手体验项目收益发放MQ]新手体验项目收益发放失败,出借ID:{0}", String.valueOf(investId)));
                 return;
             }
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class InvestSuccessExperienceRepayMessageConsumer implements MessageConsu
     private boolean isExperienceInterestConditionAvailable(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null) {
-            logger.info("[新手体验项目收益发放MQ] 投资ID{}不存在", investId);
+            logger.info("[新手体验项目收益发放MQ] 出借ID{}不存在", investId);
             return false;
         }
         long investAmount = investMapper.sumSuccessInvestAmountByLoginName(null, investModel.getLoginName(), false);

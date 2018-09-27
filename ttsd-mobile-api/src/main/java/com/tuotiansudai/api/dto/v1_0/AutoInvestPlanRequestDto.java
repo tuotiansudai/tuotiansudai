@@ -17,12 +17,12 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
     @Pattern(regexp = "^\\d+$",message = "0023")
     private String autoPlanId;
 
-    @ApiModelProperty(value = "最小投资金额", example = "100.00")
+    @ApiModelProperty(value = "最小出借金额", example = "100.00")
     @NotEmpty(message = "0063")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String minInvestAmount;
 
-    @ApiModelProperty(value = "最大投资金额", example = "10000.00")
+    @ApiModelProperty(value = "最大出借金额", example = "10000.00")
     @NotEmpty(message = "0064")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String maxInvestAmount;

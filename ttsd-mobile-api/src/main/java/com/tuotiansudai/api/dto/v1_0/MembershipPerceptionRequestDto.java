@@ -10,7 +10,7 @@ public class MembershipPerceptionRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "loanId", example = "1555")
     private String loanId;
 
-    @ApiModelProperty(value = "投资金额", example = "1000.00")
+    @ApiModelProperty(value = "出借金额", example = "1000.00")
     private String investAmount;
 
     @ApiModelProperty(value = "优惠券Id", example = "[100,101]")

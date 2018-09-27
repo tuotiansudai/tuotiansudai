@@ -381,15 +381,15 @@
                             </div>
                         </#if>
 
-                        <#if "HOUSE" == loan.pledgeType>
+                        <#if ["HOUSE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeHouseDetailList??>
                             <#list loan.pledgeHouseDetailList as pledgeHouseDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
+                                    <h3>房产信息<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
+                                            <#list ['房产所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>
@@ -401,15 +401,15 @@
                             </#list>
                         </#if>
 
-                        <#if "VEHICLE" == loan.pledgeType>
+                        <#if ["VEHICLE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeVehicleDetailList??>
                             <#list loan.pledgeVehicleDetailList as pledgeVehicleDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
+                                    <h3>车辆信息<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeVehicleDetail??>
-                                            <#list ['抵押物所在地', '车辆品牌', '车辆型号'] as key>
+                                            <#list ['车辆所在地', '车辆品牌', '车辆型号'] as key>
                                                 <#if pledgeVehicleDetail[key]?? && pledgeVehicleDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeVehicleDetail[key]}</div>
                                                 </#if>
@@ -744,11 +744,12 @@
     <#include "component/login-tip.ftl" />
 <#--风险测评-->
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，投资需谨慎！</p>
     </div>
 </div>
 

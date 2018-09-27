@@ -6,7 +6,12 @@ require(['jquery', 'csrf','bootstrap', 'bootstrapSelect','bootstrapDatetimepicke
             var title = $('.jq-title').val();
             var articleSectionType = $('form select[name="articleSectionType"]').val();
             var status = $('form select[name="status"]').val();
-            window.location.href = '/announce-manage/article/list?title='+title+'&articleSectionType='+articleSectionType + '&status=' + status;
+            var formUrl='/announce-manage/article/list?title='+title+'&articleSectionType='+articleSectionType + '&status=' + status;
+            if(articleSectionType == 'KNOWLEDGE' ){
+                formUrl=formUrl+'&subArticleSectionType='+$('form select[name="subArticleSectionType"]').val();
+            }
+
+            window.location.href = formUrl;
         });
 
         $('.publishAD').click(function(){
@@ -32,6 +37,14 @@ require(['jquery', 'csrf','bootstrap', 'bootstrapSelect','bootstrapDatetimepicke
                     alert(date.data.message);
                 }
             });
+        });
+        //栏目改变
+        $('#section').on('change',function(){
+            if( $(this).val() == 'KNOWLEDGE'){
+                $('#subSectionDiv').show();
+            }else{
+                $('#subSectionDiv').hide();
+            }
         });
     });
 })

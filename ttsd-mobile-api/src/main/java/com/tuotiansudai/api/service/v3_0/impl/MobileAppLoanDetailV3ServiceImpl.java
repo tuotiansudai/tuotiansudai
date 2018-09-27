@@ -99,9 +99,9 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     @Value("${common.static.server}")
     private String commonStaticServer;
 
-    private String title = "拓天速贷引领投资热，开启互金新概念";
+    private String title = "拓天速贷引领出借热，开启互金新概念";
 
-    private String content = "个人经营借款投资项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
+    private String content = "个人经营借款出借项目，总额{0}元期限{1}天，年化利率{2}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto<LoanDetailV3ResponseDataDto> findLoanDetail(LoanDetailV3RequestDto requestDto) {
@@ -214,21 +214,18 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueRate);
             disclosureDtoList.add(loanerDisclosureDto);
 
-            if (loanModel.getPledgeType() == PledgeType.HOUSE) {
+            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
                 List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
                 int seq = 1;
                 for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(seq) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(pledgeHouseModel, null, pledgeHouseModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
                     seq++;
                 }
-            }
-
-            if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
+                seq = 1;
                 List<PledgeVehicleModel> pledgeVehicleModelList = pledgeVehicleMapper.getByLoanId(loanModel.getId());
-                int seq = 1;
                 for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
-                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(loanModel, null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(seq) : "");
+                    DisclosureDto pledgeDisclosureDto = convertPledgeInfoFromLoan(null, pledgeVehicleModel, pledgeVehicleModelList.size() > 1 ? String.valueOf(seq) : "");
                     disclosureDtoList.add(pledgeDisclosureDto);
                     seq++;
                 }
@@ -282,16 +279,16 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         List<InvestModel> investAchievements = investMapper.findInvestAchievementsByLoanId(loanModel.getId());
         StringBuffer marqueeTitle = new StringBuffer();
         if (CollectionUtils.isEmpty(investAchievements) && Lists.newArrayList(LoanStatus.RAISING, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
-            marqueeTitle.append("第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
+            marqueeTitle.append("第一个出借者将获得“拓荒先锋”称号及0.2％加息券＋50元红包    ");
         } else {
             for (InvestModel investModel : investAchievements) {
                 String investorLoginName = randomUtils.encryptMobile(loginName, investModel.getLoginName(), investModel.getId());
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() == LoanStatus.RAISING) {
-                    marqueeTitle.append(investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
+                    marqueeTitle.append(investorLoginName + " 以累计出借" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元暂居标王，快来争夺吧    ");
                     marqueeTitle.append("目前项目剩余" + AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount) + "元，快来一锤定音获取奖励吧    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT) && loanModel.getStatus() != LoanStatus.RAISING) {
-                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计投资" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
+                    marqueeTitle.append("恭喜" + investorLoginName + " 以累计出借" + AmountConverter.convertCentToString(investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), investModel.getLoginName(), true)) + "元夺得标王，奖励0.5％加息券＋100元红包    ");
                 }
                 if (investModel.getAchievements().contains(InvestAchievement.FIRST_INVEST)) {
                     marqueeTitle.append("恭喜" + investorLoginName + " " + new DateTime(investModel.getTradingTime()).toString("yyyy-MM-dd HH:mm:ss") + "占领先锋，奖励0.2％加息券＋50元红包    ");
@@ -387,38 +384,35 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         return loanerDisclosureDto;
     }
 
-    private DisclosureDto convertPledgeInfoFromLoan(LoanModel loanModel, PledgeHouseModel pledgeHouseModel, PledgeVehicleModel pledgeVehicleModel, String seq) {
+    private DisclosureDto convertPledgeInfoFromLoan(PledgeHouseModel pledgeHouseModel, PledgeVehicleModel pledgeVehicleModel, String seq) {
         DisclosureDto pledgeDisclosureDto = new DisclosureDto();
-        pledgeDisclosureDto.setTitle("抵押档案" + seq);
         List<ItemDto> itemDtoList = Lists.newArrayList();
 
-        switch (loanModel.getPledgeType()) {
-            case HOUSE:
-                if (pledgeHouseModel != null) {
-                    ItemDto pledgeLocationItemDto = new ItemDto();
-                    pledgeLocationItemDto.setLabel("抵押房屋所在地");
-                    pledgeLocationItemDto.setValue(pledgeHouseModel.getPledgeLocation());
-                    itemDtoList.add(pledgeLocationItemDto);
+        if (pledgeHouseModel != null) {
+            pledgeDisclosureDto.setTitle("房产信息" + seq);
+            ItemDto pledgeLocationItemDto = new ItemDto();
+            pledgeLocationItemDto.setLabel("房产所在地");
+            pledgeLocationItemDto.setValue(pledgeHouseModel.getPledgeLocation());
+            itemDtoList.add(pledgeLocationItemDto);
 
-                    ItemDto squareItemDto = new ItemDto();
-                    squareItemDto.setLabel("房屋面积");
-                    squareItemDto.setValue(pledgeHouseModel.getSquare());
-                    itemDtoList.add(squareItemDto);
-                }
-            case VEHICLE:
-                if (pledgeVehicleModel != null) {
-                    ItemDto brandItemDto = new ItemDto();
-                    brandItemDto.setLabel("抵押车辆品牌");
-                    brandItemDto.setValue(pledgeVehicleModel.getBrand());
-                    itemDtoList.add(brandItemDto);
-
-                    ItemDto modelItemDto = new ItemDto();
-                    modelItemDto.setLabel("车辆型号");
-                    modelItemDto.setValue(pledgeVehicleModel.getModel());
-                    itemDtoList.add(modelItemDto);
-                }
+            ItemDto squareItemDto = new ItemDto();
+            squareItemDto.setLabel("房屋面积");
+            squareItemDto.setValue(pledgeHouseModel.getSquare());
+            itemDtoList.add(squareItemDto);
         }
 
+        if (pledgeVehicleModel != null) {
+            pledgeDisclosureDto.setTitle("车辆信息" + seq);
+            ItemDto brandItemDto = new ItemDto();
+            brandItemDto.setLabel("车辆品牌");
+            brandItemDto.setValue(pledgeVehicleModel.getBrand());
+            itemDtoList.add(brandItemDto);
+
+            ItemDto modelItemDto = new ItemDto();
+            modelItemDto.setLabel("车辆型号");
+            modelItemDto.setValue(pledgeVehicleModel.getModel());
+            itemDtoList.add(modelItemDto);
+        }
         pledgeDisclosureDto.setItems(itemDtoList);
         return pledgeDisclosureDto;
     }

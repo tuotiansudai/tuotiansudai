@@ -130,7 +130,7 @@ public class ExportService {
 
     public List<List<String>> buildCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();
@@ -167,7 +167,7 @@ public class ExportService {
 
     public List<List<String>> buildInterestCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();
@@ -203,7 +203,7 @@ public class ExportService {
 
     public List<List<String>> buildRedEnvelopeCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();

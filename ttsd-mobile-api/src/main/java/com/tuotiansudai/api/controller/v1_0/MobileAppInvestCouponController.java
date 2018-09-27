@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@Api(description = "投资优惠券列表")
+@Api(description = "出借优惠券列表")
 public class MobileAppInvestCouponController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppInvestCouponService mobileAppInvestCouponService;
 
     @RequestMapping(value = "/get/investCoupons", method = RequestMethod.POST)
-    @ApiOperation("投资优惠券列表")
+    @ApiOperation("出借优惠券列表")
     public BaseResponseDto<UserCouponListResponseDataDto> getCoupons( @RequestBody InvestRequestDto dto) {
         dto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestCouponService.getInvestCoupons(dto);
