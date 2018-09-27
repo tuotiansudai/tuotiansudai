@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto.v1_0;
 
 
+import com.tuotiansudai.repository.model.RepayStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
@@ -23,6 +24,9 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "状态", example = "REPAYING")
     private String status;
 
+    @ApiModelProperty(value = "状态描述", example = "已完成")
+    private String statusDsc;
+
     @ApiModelProperty(value = "投资ID", example = "1000")
     private String investId;
 
@@ -35,13 +39,14 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
     public RepayCalendarDateResponseDto() {
     }
 
-    public RepayCalendarDateResponseDto(String loanName, String repayAmount, String expectedRepayAmount, String period, String periods, String status, String investId, boolean isTransferred, String transferApplicationId) {
+    public RepayCalendarDateResponseDto(String loanName, String repayAmount, String expectedRepayAmount, String period, String periods, RepayStatus status, String investId, boolean isTransferred, String transferApplicationId) {
         this.loanName = loanName;
         this.repayAmount = repayAmount;
         this.expectedRepayAmount = expectedRepayAmount;
         this.period = period;
         this.periods = periods;
-        this.status = status;
+        this.status = status.name();
+        this.statusDsc = status == RepayStatus.REPAYING ? "待回款" : status == RepayStatus.COMPLETE ? "已回款" : status.getDescription();
         this.investId = investId;
         this.isTransferred = isTransferred;
         this.transferApplicationId = transferApplicationId;
@@ -117,5 +122,13 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
 
     public void setTransferApplicationId(String transferApplicationId) {
         this.transferApplicationId = transferApplicationId;
+    }
+
+    public String getStatusDsc() {
+        return statusDsc;
+    }
+
+    public void setStatusDsc(String statusDsc) {
+        this.statusDsc = statusDsc;
     }
 }

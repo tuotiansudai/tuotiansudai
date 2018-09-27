@@ -193,7 +193,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     AmountConverter.convertCentToString(repayExpectedInterest),
                     investRepayModel.getActualRepayDate() != null && investRepayModel.getCorpus() > 0 ? String.valueOf(periods) : String.valueOf(investRepayModel.getPeriod()),
                     String.valueOf(periods),
-                    investRepayModel.getStatus().name(),
+                    investRepayModel.getStatus(),
                     String.valueOf(investRepayModel.getInvestId()),
                     isTransferred,
                     transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : ""));
@@ -208,7 +208,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()),
                     String.valueOf(periods),
                     String.valueOf(periods),
-                    RepayStatus.COMPLETE.name(),
+                    RepayStatus.COMPLETE,
                     String.valueOf(transferApplicationModel.getTransferInvestId()),
                     false,
                     String.valueOf(transferApplicationModel.getId())));
