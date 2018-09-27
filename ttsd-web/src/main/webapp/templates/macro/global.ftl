@@ -41,13 +41,12 @@
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
-    {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"公司介绍", "url":"/about/company"},
-        {"title":"团队介绍", "url":"/about/team"},
+    {"title":"信息披露", "url":"/about/team","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"组织架构", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
         {"title":"网贷知识", "url":"/about/knowledge"},
-        {"title":"审计报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"/about/audit-report"},
         {"title":"服务费用", "url":"/about/service-fee"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
