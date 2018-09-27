@@ -887,6 +887,14 @@ $gray5:#333333;
     line-height: 50px;
     margin-top: 20px;
   }
+  #reportTitle em {
+    border: none;
+    margin-right: 20px;
+    color: #4c4c4c;
+    &.active {
+      color: #ff7200;
+    }
+  }
   ul {
     li {
       width: 373px;

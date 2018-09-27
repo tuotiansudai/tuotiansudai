@@ -41,8 +41,7 @@
     ]},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
     {"title":"信息纰漏", "url":"/about/company","category":"20顶部导航", "leftNavs":[
-        {"title":"公司介绍", "url":"/about/company"},
-        {"title":"团队介绍", "url":"/about/team"},
+        {"title":"组织架构", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
         {"title":"网贷知识", "url":"/about/knowledge"},
