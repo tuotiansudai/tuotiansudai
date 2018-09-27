@@ -13,20 +13,38 @@ import Carousel from 'mobileJsModule/Carousel';
 const pageSize = 10;
 import bannerUrl from '../../images/knowledge_banner.png';
 
+
+const data = {
+    tabHeader: [{
+        label: '全部',
+        value: 'ALL'
+    }, {
+        label: '法律法规',
+        value: 'LAW_RULE'
+    }, {
+        label: '出借人教育',
+        value: 'INVESTOR_EDUCATION'
+    }, {
+        label: '基础知识',
+        value: 'BASIC_KNOWLEDGE'
+    }]
+};
 class KnowledgeList extends React.Component {
 	state = {
+        active: data.tabHeader[0].value,
 		isShowLoading: false,
 		listData: Immutable([])
 	};
 	listIndex = 1;
-	fetchData(index = 1, section = 'KNOWLEDGE', callback = function() {}) {
+	fetchData(index = 1, section = 'KNOWLEDGE',subSection='ALL', callback = function() {}) {
 		let sendData = {
 			"index": index,//当前页面
 			"pageSize": pageSize,
-			"section": section
+			"section": section,
+			"subSection":subSection
 		};
-		if (section === 'ALL') {
-			delete sendData.section;
+		if (subSection === 'ALL') {
+			delete sendData.subSection;
 		}
 		mobileCommon.ajax({
 			url: '/media-center/article-list',
@@ -55,7 +73,7 @@ class KnowledgeList extends React.Component {
     }
 	pagination() {
 		this.listIndex++;
-		this.fetchData(this.listIndex, this.state.active, (response) => {
+		this.fetchData(this.listIndex,'KNOWLEDGE', this.state.active, (response) => {
 			this.setState((previousState) => {
 				return {
 					listData: previousState.listData.concat(response.data.articleList),
@@ -65,7 +83,7 @@ class KnowledgeList extends React.Component {
 		})
 	}
 	componentDidMount() {
-		mobileCommon.changeTitle('媒体中心');
+		mobileCommon.changeTitle('网贷课堂');
 		let isComplete = 0;
 		let listData = [];
 		let bannerData = [];
@@ -80,7 +98,7 @@ class KnowledgeList extends React.Component {
 				});
 			}
 		};
-		this.fetchData(1, 'KNOWLEDGE', (response) => {
+		this.fetchData(1, 'KNOWLEDGE',this.state.active, (response) => {
 			listData = response.data.articleList;
 			fn(++isComplete);
 		});
@@ -107,7 +125,21 @@ class KnowledgeList extends React.Component {
 
 		});
 	}
-
+    tabHeaderClickHandler(event) {
+        let value = event.target.dataset.value;
+        this.setState({
+            active: value
+        });
+        this.listIndex = 1;
+        this.fetchData(1,'KNOWLEDGE', value, (response) => {
+            this.setState((previousState) => {
+                return {
+                    listData: Immutable(response.data.articleList),
+                    isShowLoading: response.data.articleList.length < pageSize ? false : true
+                };
+            });
+        });
+    }
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);
 	}
@@ -121,6 +153,11 @@ class KnowledgeList extends React.Component {
 				<div className="banner knowledge-banner" ref="banner">
 					<img src={bannerUrl} alt=""/>
 				</div>
+                <ul className="tab-header clearfix" ref="tabHeader">
+                    {data.tabHeader.map((value, index) => {
+                        return <li className={classNames({ 'pull-left': true, active: this.state.active === value.value })} key={index} data-value={value.value} onTouchTap={this.tabHeaderClickHandler.bind(this)}>{value.label}</li>;
+                    })}
+                </ul>
 
 				<div className="tab-body" ref="scroll-wrap">
 					<div className="scroll-wrap" ref="scrollWrap">
