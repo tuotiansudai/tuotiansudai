@@ -44,6 +44,8 @@ public interface UserMapperConsole {
                          @Param(value = "hasStaff") Boolean hasStaff,
                          @Param(value = "staffMobile") String staffMobile);
 
+    int findUserCountByRegisterTime(@Param(value = "startTime") Date startTime);
+
     List<UserView> searchAllUsers(@Param(value = "loginName") String loginName,
                                   @Param(value = "referrerMobile") String referrerMobile,
                                   @Param(value = "mobile") String mobile,
