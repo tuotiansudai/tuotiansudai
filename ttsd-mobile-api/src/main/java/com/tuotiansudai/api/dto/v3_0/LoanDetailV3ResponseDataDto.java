@@ -29,10 +29,10 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;//还款方式代码
 
-    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还出借本金，按天计息，放款后生息")
+    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还本金，按天计息，放款后生息")
     private String repayTypeName;//还款方式名称
 
-    @ApiModelProperty(value = "计息方式", example = "先付收益后还出借本金")
+    @ApiModelProperty(value = "计息方式", example = "先付收益后还本金")
     private String interestPointName;//计息方式
 
     @ApiModelProperty(value = "项目期限", example = "12")
