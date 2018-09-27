@@ -882,17 +882,25 @@ $gray5:#333333;
 //审计报告
 .report-container {
   background: #fff!important;
-  h2 {
-    height: 50px;
-    line-height: 50px;
-    margin-top: 20px;
-  }
+  
   #reportTitle em {
     border: none;
     margin-right: 20px;
-    color: #4c4c4c;
+    color: #a2a2a2;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
     &.active {
       color: #ff7200;
+      border-bottom: 4px solid #ff7200;
+    }
+  }
+  .content {
+    min-height: 500px;
+    .no-data {
+      height: 100%;
+      line-height: 500px;
+      text-align: center;
     }
   }
   ul {
