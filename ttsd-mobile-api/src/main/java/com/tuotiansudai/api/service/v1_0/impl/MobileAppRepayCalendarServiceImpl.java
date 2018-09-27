@@ -137,15 +137,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            //提前还款
-            if (investRepayModel.getActualRepayDate() != null && !formatDate.format(investRepayModel.getActualRepayDate()).equals(repayCalendarRequestDto.getDate())) {
-                continue;
-            }
-
-            if (RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
-                continue;
-            }
-
             if (investRepayModel.getActualRepayDate() != null) {
                 repayActualInterest = investRepayModel.getRepayAmount();
                 totalAmount += repayActualInterest;
@@ -285,11 +276,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            //提前还款
-            if (RepayStatus.COMPLETE == couponRepayModel.getStatus() && couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(new DateTime(couponRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
-                continue;
-            }
-
             if (couponRepayModel.getActualRepayDate() != null && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getActualRepayDate()), couponRepayModel));
                 continue;
@@ -316,10 +302,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
         long experienceLoanId = loanMapper.findByProductType(LoanStatus.RAISING, Lists.newArrayList(ProductType.EXPERIENCE), ActivityType.NEWBIE).get(0).getId();
         for (InvestRepayModel investRepayModel : investRepayModelList) {
             if (investRepayModel.isTransferred()) {
-                continue;
-            }
-
-            if (RepayStatus.COMPLETE == investRepayModel.getStatus() && investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(new DateTime(investRepayModel.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 continue;
             }
 
