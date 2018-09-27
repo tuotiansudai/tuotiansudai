@@ -25,7 +25,7 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
     private String status;
 
     @ApiModelProperty(value = "状态描述", example = "已完成")
-    private String statusDsc;
+    private String statusDes;
 
     @ApiModelProperty(value = "投资ID", example = "1000")
     private String investId;
@@ -46,7 +46,7 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
         this.period = period;
         this.periods = periods;
         this.status = status.name();
-        this.statusDsc = status == RepayStatus.REPAYING ? "待回款" : status == RepayStatus.COMPLETE ? "已回款" : status.getViewText();
+        this.statusDes = status == RepayStatus.REPAYING ? "待回款" : status == RepayStatus.COMPLETE ? "已回款" : status.getViewText();
         this.investId = investId;
         this.isTransferred = isTransferred;
         this.transferApplicationId = transferApplicationId;
@@ -124,11 +124,11 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
         this.transferApplicationId = transferApplicationId;
     }
 
-    public String getStatusDsc() {
-        return statusDsc;
+    public String getStatusDes() {
+        return statusDes;
     }
 
-    public void setStatusDsc(String statusDsc) {
-        this.statusDsc = statusDsc;
+    public void setStatusDes(String statusDes) {
+        this.statusDes = statusDes;
     }
 }
