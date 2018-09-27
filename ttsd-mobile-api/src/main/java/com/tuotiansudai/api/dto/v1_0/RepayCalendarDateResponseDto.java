@@ -46,7 +46,7 @@ public class RepayCalendarDateResponseDto extends BaseResponseDataDto {
         this.period = period;
         this.periods = periods;
         this.status = status.name();
-        this.statusDsc = status == RepayStatus.REPAYING ? "待回款" : status == RepayStatus.COMPLETE ? "已回款" : status.getDescription();
+        this.statusDsc = status == RepayStatus.REPAYING ? "待回款" : status == RepayStatus.COMPLETE ? "已回款" : status.getViewText();
         this.investId = investId;
         this.isTransferred = isTransferred;
         this.transferApplicationId = transferApplicationId;
