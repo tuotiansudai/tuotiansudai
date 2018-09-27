@@ -203,7 +203,7 @@ $organizationalImg.find('li').each(function(key,option) {
     $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
 });
 //审计报告
-let $reportImg = $('.reportImg');
+let $reportImg = $('.report-con');
 let $report2017 = $('.photo2017'),
     $report2016 = $('.photo2016'),
     $report2015 = $('.photo2015');
@@ -228,11 +228,13 @@ let reportImg={
 };
 
 $reportImg.find('li').each(function(key,option) {
-    console.log(option)
     let num = key+1;
     $(option).find('a').attr('href',reportImg[num].big);
     $(option).find('a').append(`<img src="${reportImg[num].small}">`);
 });
+
+
+
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
@@ -271,6 +273,17 @@ fancybox(function() {
         }
     });
 });
+
+//三个报告切换
+let $reportContainer = $('#reportContainer');
+let $reportTitle = $('#reportTitle');
+$reportTitle.find('em').on('click',function () {
+    let _self = $(this);
+    let index = _self.index();
+    _self.siblings().removeClass('active').end().addClass('active');
+    $reportContainer.find('.content').hide().eq(index).show();
+})
+
 //问题列表
 require.ensure([],function() {
     let $problemListFrame=$('#problemListFrame');
@@ -472,7 +485,6 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         url: '/about/operation-data/chart',
         type: 'GET'
     },function(data) {
-        console.log(data);
         var datetime = data.now;
         var dateTimeDOM = '（数据截止到'+dateFomater(datetime)+'）';
         $('#dateTime').text(dateTimeDOM);
