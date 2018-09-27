@@ -15,6 +15,20 @@ var $transferDetailCon = $('#transferDetailCon'),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 let isEstimate = $transferDetailCon.data('estimate');
 
+//风险等级是否超出
+// let avalibableMoney = $transferDetailCon.data('available-invest-money');
+//
+// let investAmount= $transferDetailCon.data('price');
+//
+// let userLevel = $transferDetailCon.data('estimate-level');
+// let loanLevel = $transferDetailCon.data('loan-estimate-level');
+// let isOverLevel = userLevel<loanLevel;
+// // let isOverLevel = false;
+// //可用额度是否超出
+// let isOverQuota = avalibableMoney<investAmount;
+// let isOverQuota = false;
+
+
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -202,8 +216,8 @@ anxinModule.toAuthorForAnxin(function(data) {
 });
 
 var $riskAssessment = $('#riskAssessment');
-var $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment'),
+var $cancelAssessment = $('.cancelAssessment'),
+    $confirmAssessment = $('.confirmAssessment'),
     $riskTips = $('#riskTips');
 
 $cancelAssessment.on('click', function(event) {

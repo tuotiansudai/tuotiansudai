@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate???string('true', 'false')}"
-     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney!''}"
-     data-estimate-limit="${estimateLimit!''}" data-loan-estimate-level="${loan.estimateLevel!''}"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loan.estimateLevel!''}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -127,7 +127,7 @@
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，出借需谨慎！</h5>
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -745,14 +745,43 @@
 <#--风险测评-->
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
     <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
-    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
     <div class="tc person-info-btn" style="margin-top:40px;">
-        <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
-        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，投资需谨慎！</p>
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，出借需谨慎！</p>
     </div>
 </div>
 
+<#--风险等级超出提示-->
+<div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+
+<#--最多借出额度提示-->
+
+<div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为稳健型，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+<div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">市场有风险，出借需谨慎！<br/>
+    点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf">《风险揭示书》</a>
+    </div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn btn-success btn-turn-off confirmInvest" type="button">确定</button>
+    </div>
+</div>
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">
