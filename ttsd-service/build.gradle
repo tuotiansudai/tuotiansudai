@@ -21,7 +21,6 @@ dependencies {
             project(":ttsd-util"),
             project(":ttsd-edxactivity-model"),
             project(":ttsd-aa-repository"),
-            project(":ttsd-cms-repository"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),
             'com.itextpdf:itextpdf:5.5.10',
