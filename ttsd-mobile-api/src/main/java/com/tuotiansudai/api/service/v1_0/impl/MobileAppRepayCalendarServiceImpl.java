@@ -276,10 +276,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (couponRepayModel.getActualRepayDate() != null && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
-                couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getActualRepayDate().after(couponRepayModel.getRepayDate()) ? couponRepayModel.getRepayDate() : couponRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getActualRepayDate()), couponRepayModel));
+            if (couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().after(couponRepayModel.getRepayDate()) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
+                couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
-            } else if (couponRepayModel.getActualRepayDate() == null && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getRepayDate())) == null) {
+            } else if (((couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayDate().after(couponRepayModel.getActualRepayDate())) || couponRepayModel.getActualRepayDate() == null) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
             }
@@ -310,10 +310,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (investRepayModel.getActualRepayDate() != null && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
-                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate().after(investRepayModel.getRepayDate()) ? investRepayModel.getRepayDate() : investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel));
+            if (investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().after(investRepayModel.getRepayDate()) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
+                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel));
                 continue;
-            } else if (investRepayModel.getActualRepayDate() == null && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate())) == null) {
+            } else if (((investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayDate().after(investRepayModel.getActualRepayDate())) || investRepayModel.getActualRepayDate() == null) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate())) == null) {
                 repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getRepayDate()), investRepayModel));
                 continue;
             }
