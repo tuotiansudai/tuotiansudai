@@ -68,6 +68,10 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private PageValidUtils pageValidUtils;
     @Mock
     private LoanDetailsMapper loanDetailsMapper;
+    @Mock
+    private RiskEstimateMapper riskEstimateMapper;
+    @Mock
+    private InvestService investService;
 
     @Mock
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;

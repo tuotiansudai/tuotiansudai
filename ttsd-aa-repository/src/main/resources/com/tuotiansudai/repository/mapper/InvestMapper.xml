@@ -1233,5 +1233,12 @@
         AND invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
     </select>
-
+    <select id="sumUsedFund" parameterType="string" resultType="long">
+        SELECT IFNULL(sum(amount),0) FROM invest JOIN loan ON invest.loan_id = loan.id
+        WHERE invest.status = 'SUCCESS'
+        AND loan.id!='1'
+        AND( loan.status='RAISING' OR loan.status='RECHECK' OR loan.status='REPAYING')
+        AND transfer_status !='SUCCESS'
+        AND login_name=#{loginName}
+    </select>
 </mapper>

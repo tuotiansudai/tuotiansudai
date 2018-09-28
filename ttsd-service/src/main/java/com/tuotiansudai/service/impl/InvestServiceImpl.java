@@ -125,6 +125,12 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserMembershipEvaluator userMembershipEvaluator;
 
+    @Autowired
+    private RiskEstimateMapper riskEstimateMapper;
+
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -209,8 +215,21 @@ public class InvestServiceImpl implements InvestService {
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
-
+        //没有进行风险评估
         LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(investDto.getLoginName());
+        if (riskEstimateModel == null) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_UNUSABLE);
+        }
+        //项目风险等级不适合
+        if (riskEstimateModel.getEstimate().getLower() < loanDetailsModel.getEstimate().getLower()) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_LEVEL_OVER);
+        }
+        //总投资金额超出风险投资限额
+        long amount = investMapper.sumUsedFund(investDto.getLoginName());
+        if ((amount + investAmount) > AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()))) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_AMOUNT_OVER);
+        }
         if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds()) && loanDetailsModel.getDisableCoupon()) {
             throw new InvestException(InvestExceptionType.NOT_USE_COUPON);
         }
@@ -864,5 +883,17 @@ public class InvestServiceImpl implements InvestService {
             return "服务费九折";
         }
         return "暂无优惠";
+    }
+
+    @Override
+    public long availableInvestMoney(String loginName) {
+        RiskEstimateModel riskEstimateModel=riskEstimateMapper.findByLoginName(loginName);
+        //没进行风险评估可用投资额度为0
+        if(riskEstimateModel== null || riskEstimateModel.getEstimate() == null){
+            return 0l;
+        }
+        long usedMoney=investMapper.sumUsedFund(loginName);
+        long estimateLimit=AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()));
+        return estimateLimit-usedMoney>=0?(estimateLimit-usedMoney):0;
     }
 }

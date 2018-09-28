@@ -37,6 +37,19 @@ let loanId = $('input[name="loanId"]',$loanDetailContent).val();
 var viewport = globalFun.browserRedirect();
 let isEstimate = $loanDetailContent.data('estimate');
 
+//风险等级是否超出
+let avalibableMoney = $loanDetailContent.data('available-invest-money');
+amountInputElement.autoNumeric("init");
+let investAmount= getInvestAmount();
+
+let userLevel = $loanDetailContent.data('estimate-level');
+let loanLevel = $loanDetailContent.data('loan-estimate-level');
+let isOverLevel = userLevel<loanLevel;
+// let isOverLevel = false;
+//可用额度是否超出
+let isOverQuota = avalibableMoney<investAmount;
+// let isOverQuota = false;
+
 function showInputErrorTips(message) {
     layer.tips('<i class="fa fa-times-circle"></i>' + message, '.text-input-amount', {
         tips: [1, '#ff7200'],
@@ -133,7 +146,42 @@ function investSubmit(){
                         });
                         return false;
                     }else {
-                        sendSubmitRequest();
+                        if(isOverLevel){
+                            layer.open({
+                                type: 1,
+                                title:'温馨提示',
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskGradeForm')
+
+                            });
+                            return false;
+                        }
+                        if(isOverQuota){
+                            layer.open({
+                                type: 1,
+                                title:'温馨提示',
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskBeyondForm')
+
+                            });
+                            return false;
+                        }
+
+                        layer.open({
+                            type: 1,
+                            title:'风险提示',
+                            closeBtn: 0,
+                            area: ['400px', '250px'],
+                            shadeClose: true,
+                            content: $('#riskTipForm')
+
+                        });
+
+                        // sendSubmitRequest();
                     }
 
                 }else{
@@ -159,7 +207,43 @@ function investSubmit(){
             });
             return false;
         }else {
-            $investForm.submit();
+
+            if(isOverLevel){
+                layer.open({
+                    type: 1,
+                    title:'温馨提示',
+                    closeBtn: 0,
+                    area: ['400px', '250px'],
+                    shadeClose: true,
+                    content: $('#riskGradeForm')
+
+                });
+                return false;
+            }
+            if(isOverQuota){
+                layer.open({
+                    type: 1,
+                    title:'温馨提示',
+                    closeBtn: 0,
+                    area: ['400px', '250px'],
+                    shadeClose: true,
+                    content: $('#riskBeyondForm')
+
+                });
+                return false;
+            }
+
+            layer.open({
+                type: 1,
+                title:'风险提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskTipForm')
+
+            });
+
+            // $investForm.submit();
         }
 
 
@@ -895,9 +979,8 @@ $('.init-checkbox-style').initCheckbox(function(event) {
     }
 });
 
- let   $cancelAssessmentFormSubmit = $('#cancelAssessmentFormSubmit'),
-    $confirmAssessment = $('#confirmAssessment'),
-    $riskAssessmentRequestSubmit = $('#riskAssessmentRequestSubmit');
+ let   $cancelAssessmentFormSubmit = $('.cancelAssessmentFormSubmit'),
+    $confirmAssessment = $('.confirmAssessment');
 anxinModule.toAuthorForAnxin(function(data) {
     $('#isAnxinUser').val('true');
     $('.skip-group').hide();
@@ -919,7 +1002,42 @@ anxinModule.toAuthorForAnxin(function(data) {
         });
         return false;
     }else {
-         noPasswordInvest?sendSubmitRequest():$investForm.submit();
+        if(isOverLevel){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskGradeForm')
+
+            });
+            return false;
+        }
+        if(isOverQuota){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskBeyondForm')
+
+            });
+            return false;
+        }
+
+        layer.open({
+            type: 1,
+            title:'风险提示',
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskTipForm')
+
+        });
+       
+         // noPasswordInvest?sendSubmitRequest():$investForm.submit();
     }
 
 
@@ -949,3 +1067,6 @@ $confirmAssessment.on('click', function(event) {
     location.href = '/risk-estimate'
 });
 
+$('.confirmInvest').on('click',function () {
+    noPasswordInvest?sendSubmitRequest():$investForm.submit();
+})
