@@ -17,7 +17,6 @@ dependencies {
             project(':ttsd-aa-repository'),
             project(':ttsd-user-repository'),
             project(':ttsd-membership'),
-            project(':ttsd-util'),
             project(':ttsd-mq-client')
 
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
