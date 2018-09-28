@@ -226,45 +226,44 @@
     <#include "component/anxin-agreement.ftl" />
     <#include "component/coupon-alert.ftl" />
 </div>
-<#--&lt;#&ndash;风险测评&ndash;&gt;-->
-<#--<div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">-->
-    <#--<div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>-->
-<#--&lt;#&ndash;<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>&ndash;&gt;-->
-    <#--<div class="tc person-info-btn" style="margin-top:40px;">-->
-        <#--<button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;-->
-        <#--<button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>-->
-    <#--</div>-->
-<#--</div>-->
+<#--风险测评-->
+<div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
+    </div>
+</div>
 
-<#--&lt;#&ndash;风险等级超出提示&ndash;&gt;-->
-<#--<div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">-->
-    <#--<div class="tc text-m">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</div>-->
+<#--风险等级超出提示-->
+<div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</div>
 
-    <#--<div class="tc person-info-btn" style="margin-top:40px;">-->
-        <#--<button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;-->
-        <#--<button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>-->
-    <#--</div>-->
-<#--</div>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
 
-<#--&lt;#&ndash;最多借出额度提示&ndash;&gt;-->
+<#--最多借出额度提示-->
 
-<#--<div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">-->
-    <#--<div class="tc text-m">您当前的风险等级为稳健型，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>-->
+<div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为稳健型，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
 
-    <#--<div class="tc person-info-btn" style="margin-top:40px;">-->
-        <#--<button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;-->
-        <#--<button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>-->
-    <#--</div>-->
-<#--</div>-->
-<#--<div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">-->
-    <#--<div class="tc text-m">市场有风险，出借需谨慎！<br/>-->
-        <#--点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf">《风险揭示书》</a>-->
-    <#--</div>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+<div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">市场有风险，出借需谨慎！<br/>
+        点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a>
+    </div>
 
-    <#--<div class="tc person-info-btn" style="margin-top:40px;">-->
-        <#--<button class="btn btn-success btn-turn-off confirmInvest" type="button">确定</button>-->
-    <#--</div>-->
-<#--</div>-->
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn btn-success btn-turn-off confirmInvest" type="button">确定</button>
+    </div>
+</div>
     <#include "component/red-envelope-float.ftl" />
     <#include "component/login-tip.ftl" />
 </@global.main>

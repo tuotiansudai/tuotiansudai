@@ -746,7 +746,6 @@
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
 
     <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
@@ -777,7 +776,7 @@
 </div>
 <div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
     <div class="tc text-m">市场有风险，出借需谨慎！<br/>
-    点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf">《风险揭示书》</a>
+    点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a>
     </div>
 
     <div class="tc person-info-btn" style="margin-top:40px;">
