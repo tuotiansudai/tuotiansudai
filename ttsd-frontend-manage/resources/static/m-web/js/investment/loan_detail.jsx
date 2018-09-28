@@ -103,15 +103,15 @@ $recordTop.find('span').on('click',function() {
     let kindObj = {
         'xianfeng':{
             title:'拓荒先锋',
-            content:'第一位投资的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
+            content:'第一位出借的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
         },
         'biaowang':{
             title:'拓天标王',
-            content:'单标累计投资最高的用户，<br/>获得<i>0.5%加息券，100元红包。</i>'
+            content:'单标累计出借最高的用户，<br/>获得<i>0.5%加息券，100元红包。</i>'
         },
         'dingying':{
             title:'一锤定音',
-            content:'最后一位投资的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
+            content:'最后一位出借的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
         }
     };
     commonFun.CommonLayerTip({
@@ -489,7 +489,7 @@ function testAmount() {
         $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
     }
     else {
-        $btnWapNormal.prop('disabled',false).text('立即投资');
+        $btnWapNormal.prop('disabled',false).text('立即出借');
     }
 
 }
@@ -1082,7 +1082,7 @@ $('#relatedTip').on('click',function () {
     commonFun.CommonLayerTip({
         btn: ['我知道了'],
         area:['280px', '210px'],
-        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${data}%技术服务费。</span></div> `,
+        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>根据会员等级的不同，收取出借应收收益7%-10%的费用。您当前出借可能会收取${data}%技术服务费。</span></div> `,
     },function() {
         layer.closeAll();
     })

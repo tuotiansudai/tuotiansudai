@@ -3,7 +3,7 @@ require('webJs/plugins/autoNumeric');
 require('publicJs/pagination');
 require('webJsModule/coupon_alert');
 require('webJsModule/assign_coupon');
-//投资计算器和意见反馈
+//出借计算器和意见反馈
 require('webJsModule/red_envelope_float');
 
 //安心签协议
@@ -85,7 +85,7 @@ function validateInvestAmount() {
     var amountNeedRaised = parseInt($('#investForm').find('input[name=amount]').data("amount-need-raised")) || 0;
     return amount > 0 && amountNeedRaised >= amount;
 };
-//投资表单请求以及校验
+//出借表单请求以及校验
 function investSubmit(){
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     if ($investForm.attr('action') === '/invest') {
@@ -97,12 +97,12 @@ function investSubmit(){
         var investAmount = getInvestAmount();
 
         if (!validateInvestAmount()) {
-            showInputErrorTips(investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！');
+            showInputErrorTips(investAmount === 0 ? '出借金额不能为0元！' : '出借金额不能大于可投金额！');
             return false;
         }
         var minInvestAmount = parseInt(($minInvestAmount * 100).toFixed(0));
         if(investAmount < minInvestAmount){
-            var tipContent = '投资金额小于标的最小投资金额！';
+            var tipContent = '出借金额小于标的最小出借金额！';
             layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                 tips: [1, '#ff7200'],
                 time: 0,
@@ -118,16 +118,16 @@ function investSubmit(){
         }
     }
     amountInputElement.val(amountInputElement.autoNumeric("get"));
-    if (noPasswordInvest) {//判断是否开启免密投资
+    if (noPasswordInvest) {//判断是否开启免密出借
         layer.open({
             type: 1,
             closeBtn: 0,
             skin: 'layer-tip-loanDetail',
-            title: '免密投资',
+            title: '免密出借',
             shadeClose:false,
             btn:['取消', '确认'],
             area: ['300px'],
-            content: '<p class="pad-m-tb tc">确认投资？</p>',
+            content: '<p class="pad-m-tb tc">确认出借？</p>',
             btn1: function(){
                 layer.closeAll();
             },
@@ -192,7 +192,7 @@ function investSubmit(){
         });
         return;
     }
-    //正常投资
+    //正常出借
     if($isAuthenticationRequired.val()=='false'){//判断是否开启安心签免验
         if(!isEstimate){
             //风险测评
@@ -253,7 +253,7 @@ function investSubmit(){
     }
 }
 
-//发送投资提交请求
+//发送出借提交请求
 function sendSubmitRequest(){
 
     commonFun.useAjax({
@@ -269,7 +269,7 @@ function sendSubmitRequest(){
         let data = response.data;
         if (data.status) {
             location.href = "/callback/invest_project_transfer_nopwd?" + $.param(data.extraValues);
-        } else if (data.message == '新手标投资已超上限') {
+        } else if (data.message == '新手标出借已超上限') {
             showLayer();
         } else {
             showInputErrorTips(data.message);
@@ -291,11 +291,11 @@ function markNoPasswordRemind(){
         type: 1,
         closeBtn: 0,
         skin: 'layer-tip-loanDetail',
-        title: '免密投资',
+        title: '免密出借',
         shadeClose: false,
-        btn: autoInvestOn ? ['继续投资', '开启免密投资'] : ['继续投资', '前往联动优势授权'],
+        btn: autoInvestOn ? ['继续出借', '开启免密出借'] : ['继续出借', '前往联动优势授权'],
         area: ['500px'],
-        content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步！</p>',
+        content: '<p class="pad-m-tb tc">推荐您开通免密出借功能，简化出借过程，理财快人一步！</p>',
         btn1: function () {
             investSubmit();
             layer.closeAll();
@@ -327,7 +327,7 @@ function showAuthorizeAgreementOptions(){
         type: 1,
         skin: 'layer-tip-loanDetail',
         shadeClose:false,
-        title: '登录到联动优势支付平台开通免密投资',
+        title: '登录到联动优势支付平台开通免密出借',
         area: ['500px', '290px'],
         content: $authorizeAgreementOptions,
         end:function(){
@@ -336,7 +336,7 @@ function showAuthorizeAgreementOptions(){
     });
 }
 
-//投资显示错误信息
+//出借显示错误信息
 (function() {
     let $errorTip = $('.errorTip',$loanDetailContent),
         $errorType = $('.errorType',$loanDetailContent);
@@ -344,7 +344,7 @@ function showAuthorizeAgreementOptions(){
     $('.extra-rate .fa-mobile',$loanDetailContent).on('mouseover', function(event) {
         event.preventDefault();
         var $self=$(this);
-        layer.tips('APP投资该项目享受最高0.8%年化收益奖励', $self, {
+        layer.tips('APP出借该项目享受最高0.8%年化收益奖励', $self, {
             tips: 3
         });
     });
@@ -374,7 +374,7 @@ function showAuthorizeAgreementOptions(){
                     second = Math.floor(countdown) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                 } else {
                     $btnLookOther.prop('disabled', false);
-                    $btnLookOther.html('马上投资');
+                    $btnLookOther.html('马上出借');
                     $accountInfo.find('.time-item').remove();
                     $accountInfo.find('.invest-amount').show();
                     $accountInfo.find('.experience-ticket').show();
@@ -695,7 +695,7 @@ function showAuthorizeAgreementOptions(){
     });
 })();
 
-//免密投资
+//免密出借
 (function() {
     let $noPasswordTips=$('#noPasswordTips');
     $noPasswordTips.on('click', function() {
@@ -704,10 +704,10 @@ function showAuthorizeAgreementOptions(){
             closeBtn: 0,
             skin: 'layer-tip-loanDetail',
             shadeClose: false,
-            title: '免密投资',
+            title: '免密出借',
             btn: ['不开启', '开启'],
             area: ['500px'],
-            content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
+            content: '<p class="pad-m-tb tc">您可直接开启免密出借，简化出借过程，理财快人一步，是否开启？</p>',
             btn1: function () {
                 layer.closeAll();
             },
@@ -743,7 +743,7 @@ function showAuthorizeAgreementOptions(){
 
 })();
 
-// 投资加息
+// 出借加息
 (function () {
     var $extraRate = $('#extra-rate');
     if (!$extraRate.length) {
@@ -913,7 +913,7 @@ function showAuthorizeAgreementOptions(){
         if (value > maxInvestAmount) {
             showInputErrorTips('该项目每人限投' + maxInvestAmount + '元');
         } else if (value < minInvestAmount) {
-            showInputErrorTips('单笔最低投资' + minInvestAmount + '元');
+            showInputErrorTips('单笔最低出借' + minInvestAmount + '元');
         }
     }, 300);
 
@@ -968,9 +968,9 @@ function showAuthorizeAgreementOptions(){
 
 
 //**************************安心签*******************************
-//勾选马上投资下方 协议复选框
+//勾选马上出借下方 协议复选框
 $('.init-checkbox-style').initCheckbox(function(event) {
-    //如果安心签协议未勾选，马上投资按钮需要置灰
+    //如果安心签协议未勾选，马上出借按钮需要置灰
     let checkboxBtn = event.children[0];
     let checkBool = $(checkboxBtn).prop('checked');
     if(checkboxBtn.id=='skipCheck') {
