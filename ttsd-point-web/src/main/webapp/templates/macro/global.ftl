@@ -76,7 +76,7 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />

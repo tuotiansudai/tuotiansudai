@@ -48,7 +48,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
 
     @Override
     protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
-        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 出借本金
+        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 当期应还投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
         if (investModel == null) {
@@ -62,12 +62,12 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
                 .filter(defaultInterest -> defaultInterest > 0)
                 .findAny()
                 .orElse(0L) : 0L;
-        return investModel.getAmount() + investRepayModel.getActualInterest() + overdueDefaultInterest;
+        return investRepayModel.getCorpus() + investRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 
     @Override
     protected long calcExpectLoanRepayAmount(LoanRepayModel loanRepayModel) {
-        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 出借本金
+        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 当期应还投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         if (loanModel == null) {
@@ -79,6 +79,6 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
                 .filter(defaultInterest -> defaultInterest > 0)
                 .findAny()
                 .orElse(0L) : 0L;
-        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
+        return loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 }

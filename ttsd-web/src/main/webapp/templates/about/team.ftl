@@ -71,8 +71,8 @@
                 <tr>
                     <td>主要人员</td>
 
-                    <td><div class="main-person">执行董事：李显玉、总经理：杜峥、<br/>
-                        副总经理：张东杰、财务负责人：冯会娜<div></td>
+                    <td><div class="main-person">法定代表人：李显玉、董事长：杜峥<br/>
+                        CEO：张东杰、财务负责人：冯会娜<div></td>
                 </tr>
                 <tr class="scope-operation">
                     <td>从业机构的经营范围</td>
@@ -98,6 +98,16 @@
                 </li>
             </ul>
         </div>
+        <h2 class="column-title"><em>法人承诺书</em></h2>
+        <div class="clear-blank-m">
+        </div>
+        <div class="aptitude-new">
+            <ul id="corporateUndertaking" class="clearfix">
+                <li>
+                    <a title="法人承诺书" rel="groupImg2"></a>
+                </li>
+            </ul>
+        </div>
 
         <h2 class="column-title"><em>组织架构</em></h2>
         <div class="organizational-structure">
@@ -110,7 +120,7 @@
         <div class="team-box com-list clearfix" style="padding-top: 10px;">
             <i class="sign-profile user-one"></i>
             <dl class="company-user">
-                <dt>李显玉先生 <span>董事长</span></dt>
+                <dt>李显玉先生 <span>法定代表人</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
                 <dd>平静时，我们宁静平和；</dd>
@@ -121,25 +131,16 @@
         <div class="team-box com-list clearfix">
             <i class="sign-profile user-two"></i>
             <dl class="company-user"> 
-                <dt>杜峥先生<span>总经理</span></dt>
+                <dt>杜峥先生<span>董事长</span></dt>
                 <dd>我们要做有意义的冒险 我们要梦想</dd>
                 <dd>我们要创造 我们要失败 我们更要成功</dd>
-                <dd>兼任拓天伟业（北京）金融信息服务有限公司总经理职位。在公司运营方面，有着丰富的行业经验及极强的管理技巧和创新才能，从事管理工作多年，擅长客户管理、绩效管理及流程控制，同时也造就了以客户为中心、工作严谨、铁面无私的工作作风。</dd>
-            </dl>
-        </div>
-        <div class="team-box com-list clearfix">
-            <i class="sign-profile user-three"></i>
-            <dl class="company-user">
-                <dt>史磊先生<span>集团研发总监</span></dt>
-                <dd>时代蕴含机遇，创新成就伟业！</dd>
-                <dd>让我们一起努力，在一片蓝海中共筑我们的财富管理之梦！</dd>
-                <dd>曾任职用友，ThoughtWorks等国内外知名企业，翻译并出版过《JAVA设计模式（第二版）》，有海外工作经验，对构建高并发应用、大数据分析、网络安全、敏捷软件开发等领域有着丰富的理论和实践经验。</dd>
+                <dd>在公司运营方面，有着丰富的行业经验及极强的管理技巧和创新才能，从事管理工作多年，擅长客户管理、绩效管理及流程控制，同时也造就了以客户为中心、工作严谨、铁面无私的工作作风。</dd>
             </dl>
         </div>
         <div class="team-box com-list clearfix">
             <i class="sign-profile user-four"></i>
             <dl class="company-user">
-                <dt>张东杰先生<span>副总经理兼运营总监</span></dt>
+                <dt>张东杰先生<span>CEO</span></dt>
                 <dd>世界会向那些有目标和远见的人让路。</dd>
                 <dd>曾在某互联网金融公司负责运营与市场相关管理工作，其本身过硬的计算机技术以及扎实的运营理论知识，强调以用户体验、转化率为基础的运营策划思想以及多元化的操作手法在业内广泛流传。在互联网金融行业有着丰富的实践经验与管理创新能力。</dd>
             </dl>

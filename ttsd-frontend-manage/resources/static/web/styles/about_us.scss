@@ -71,7 +71,12 @@ $gray5:#333333;
      margin-left: -60px;
      li {
        float: left;
+       width: 222px;
+       height: 294px;
        margin-left: 60px;
+       img {
+         width: 100%;
+       }
      }
    }
   }
