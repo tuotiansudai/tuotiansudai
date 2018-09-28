@@ -1,5 +1,5 @@
 <#import "macro/global_m.ftl" as global>
-<@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要投资" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
+<@global.main pageCss="${m_css.experience_loan}" pageJavascript="${m_js.experience_loan}" activeNav="我要出借" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" >
 <div class="my-account-content experience-amount" id="experienceAmount" style="display: none" data-estimate="${estimate?string('true', 'false')}">
     <div class="account-summary">
         <div style="height: 44px;line-height: 44px;font-size: 17px; width: 100%;text-align: center;">
@@ -9,7 +9,7 @@
             <span class="title">${loan.name}</span>
         </div>
         <div class="collection">
-            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">保守型</i>的用户<em id="closeRisk"></em></span>
+            <span class="risk-tip">该项目适合出借偏好类型为<i class="risk-type">保守型</i>的用户<em id="closeRisk"></em></span>
             <span class="summary-box">
                 <b><@percentInteger>${loan.baseRate}</@percentInteger><@percentFraction>${loan.baseRate}</@percentFraction>
                     <i>%</i></b>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="amount-balance">
-            仅限体验金投资 不支持债权转让
+            仅限体验金购买 不支持债权转让
         </div>
     </div>
 
@@ -55,8 +55,8 @@
         </li>
     </ul>
     <br/>
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
-    <button class="to-invest-project" type="button" id="investment_btn">立即投资</button>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
+    <button class="to-invest-project" type="button" id="investment_btn">立即出借</button>
 </div>
 
 <div class="my-account-content apply-transfer" id="applyTransfer" style="display: none">
@@ -101,7 +101,7 @@
             <ul class="input-list">
                 <li class="investmentAmount">
                     <span style="display: none" id="my_experience_balance">${(experienceBalance / 100)}</span>
-                    <label>投资金额</label>
+                    <label>出借金额</label>
                     <input id="experience_balance" type="text" data-start_investment="${loan.minInvestAmount / 100}"
                            data-experience_balance="${(experienceBalance / 100)}"
                            value="${(experienceBalance / 100)?string("0.00")}" name="price" class=""
@@ -115,7 +115,7 @@
                 </li>
             </ul>
         </div>
-        <div class="invest-tips-m exper_buy" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
+        <div class="invest-tips-m exper_buy" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
 
         <button type="submit" class="btn-wap-normal" id="submitBtn">立即体验</button>
         <div class="shade_mine" style="display: none"></div>
@@ -123,7 +123,7 @@
     <div class="transfer-notice" style="font-family: PingFangSC-Light;">
 
         <b>温馨提示:</b>
-        用户首次提现体验金投资所产生的收益时，需要投资其他定期项目（债权转让项目除外）累计满1000元才可以提现。
+        用户首次提现体验金出借所产生的收益时，需要出借其他定期项目（债权转让项目除外）累计满1000元才可以提现。
     </div>
     <div id="freeSuccess" style="display: none">
         <div class="success-info-tip">
@@ -134,17 +134,17 @@
 </div>
 <div id="investmentSuc" style="display: none">
     <div class="goBack_applyTransfer">
-        投资成功
+        出借成功
     </div>
     <div class="my-account-content apply-transfer-success">
         <div class="info">
             <div class="icon-success-wrapper">
                 <i class="icon-success"></i>
-                <div class="investment-success-text">投资成功</div>
+                <div class="investment-success-text">出借成功</div>
             </div>
             <ul class="input-list">
                 <li class="item">
-                    <label>投资金额</label>
+                    <label>出借金额</label>
                     <em id="investment_suc_amount"></em>
                 </li>
                 <li class="item">

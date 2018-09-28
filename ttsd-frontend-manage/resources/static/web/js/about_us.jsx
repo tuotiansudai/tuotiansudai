@@ -202,6 +202,19 @@ $organizationalImg.find('li').each(function(key,option) {
     $(option).find('a').attr('href',organizationalImg[num].big);
     $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
 });
+//法人承诺书
+let $corporateUndertakingImg = $('#corporateUndertaking');
+
+let corporateUndertakingImg={
+    '1': {
+        small:require('../images/sign/aboutus/corporate_undertaking_one_big.jpeg'),
+        big:require('../images/sign/aboutus/corporate_undertaking_one_big.jpeg')
+    }
+};
+
+$corporateUndertakingImg.find('a').attr('href',corporateUndertakingImg[1].big);
+$corporateUndertakingImg.find('a').append(`<img src="${corporateUndertakingImg[1].small}">`);
+
 //审计报告
 let $reportImg = $('.report-con');
 let $report2017 = $('.photo2017'),
@@ -250,6 +263,17 @@ fancybox(function() {
 });
 fancybox(function() {
     $("#organizationalImg li a").fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+        }
+    });
+});
+fancybox(function() {
+    $("#corporateUndertaking li a").fancybox({
         'titlePosition' : 'over',
         'cyclic'        : false,
         'showCloseButton':true,

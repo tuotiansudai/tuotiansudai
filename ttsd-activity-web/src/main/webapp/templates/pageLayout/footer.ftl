@@ -1,8 +1,8 @@
 <div class="footer-container">
     <div class="footer page-width">
         <ul>
-            <li class="f-title">我要投资</li>
-            <li><a href="/loan-list" onclick="cnzzPush.trackClick('47底部导航','投资产品')">投资产品</a></li>
+            <li class="f-title">我要出借</li>
+            <li><a href="/loan-list" onclick="cnzzPush.trackClick('47底部导航','投资产品')">产品介绍</a></li>
             <li><a href="/account" onclick="cnzzPush.trackClick('48底部导航','我的帐户')">我的帐户</a></li>
             <li><a href="/about/notice" onclick="cnzzPush.trackClick('49底部导航','拓天公告')">拓天公告</a></li>
         </ul>

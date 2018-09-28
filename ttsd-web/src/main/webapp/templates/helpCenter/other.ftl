@@ -27,12 +27,12 @@
 
                     <p class="single-title">1、什么是“好友推荐赚奖励”？</p>
 
-                    <p class="single-answer">答：用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金约定年化利率的0.5%，奖励在标的放款时发放到推荐人账户。</p>
+                    <p class="single-answer">答：用户在平台采用2级推荐机制，每级奖励金额为被推荐人出借本金约定年化利率的0.5%，奖励在标的放款时发放到推荐人账户。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">2、怎么推荐好友参与投资？</p>
+                    <p class="single-title">2、怎么推荐好友参与出借？</p>
 
                     <p class="single-answer">答：①手机端：登录官方APP—我的财富—推荐人管理—扫码—保存二维码到手机发送给朋友/或分享至朋友圈；<br/>
                         ②电脑端：登录官方网站—我的账户—推荐管理—推荐链接复制发送给被推荐人即可。</p>
@@ -40,9 +40,9 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">3、如何查询我通过“推荐好友”推荐好友投资后获得的奖励？</p>
+                    <p class="single-title">3、如何查询我通过“推荐好友”推荐好友出借后获得的奖励？</p>
 
-                    <p class="single-answer">答：平台官网：【我的账户】-【推荐管理】-点击【推荐人投资列表】查看。<br/>手机客户端：【我的财富】-【推荐人管理】，查看详细情况。</p>
+                    <p class="single-answer">答：平台官网：【我的账户】-【推荐管理】-点击【推荐人出借列表】查看。<br/>手机客户端：【我的财富】-【推荐人管理】，查看详细情况。</p>
                 </li>
             </ul>
         </div>

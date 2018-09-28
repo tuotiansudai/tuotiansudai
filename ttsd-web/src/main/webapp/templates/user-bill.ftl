@@ -5,7 +5,7 @@
     <div class="money-box borderBox">
             <div class="balance">可用余额：<span>${balance} 元</span></div>
                 <a class="btn-recharge btn-primary" href="/recharge">充值</a>
-                <a class="btn-invest btn-action" href="/loan-list">投资</a>
+                <a class="btn-invest btn-action" href="/loan-list">出借</a>
                 <a class="btn-withdraw btn-normal" href="/withdraw">提现</a>
 
             <p class="clearfix clear-blank-m">累计充值：<span>${rechargeAmount} 元</span></p>
@@ -66,7 +66,7 @@
             <td>编号:<%=item.id%></td>
         </tr>
         <% } %>
-        <%=records.length?'':'<tr><td colspan="7" class="no-data">暂时没有投资记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="7" class="no-data">暂时没有出借记录</td></tr>'%>
         </tbody>
     </table>
 </script>

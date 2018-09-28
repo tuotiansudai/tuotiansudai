@@ -13,10 +13,9 @@
 						转让价格：
 					</div>
 					<div class="info-right">
-						<input type="text" class="int-number" id="transferAmount" name="price" value="${formData.investAmount}">
+						<#--<input type="text" class="int-number" id="transferAmount" name="price" value="${formData.investAmount}">-->
+						<span class="price_transfer" id="transferAmount">${formData.investAmount}</span>元
 						<input type="hidden" id="transferInvestId" value="${formData.transferInvestId?string.computer}">
-						<span>元</span>
-						<span class="tip-text" id="tipText" data-min="${formData.transferAmountLower}" data-max="${formData.investAmount}">转让价格只能设置在${formData.transferAmountLower}～${formData.investAmount}元之间</span>
 					</div>
 				</li>
 				<li class="info-list">
