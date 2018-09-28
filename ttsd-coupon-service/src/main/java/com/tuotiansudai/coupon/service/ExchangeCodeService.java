@@ -60,11 +60,11 @@ public class ExchangeCodeService {
             '9'
     };
 
-    public boolean generateExchangeCode(long couponId, int count) {
+    public void generateExchangeCode(long couponId, int count) {
 
         if (redisWrapperClient.exists(EXCHANGE_CODE_KEY + couponId)) {
             logger.error("generate exchange code failed, redis key already exists:" + EXCHANGE_CODE_KEY + couponId);
-            return false;
+            return;
         }
 
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -73,7 +73,6 @@ public class ExchangeCodeService {
         int lifeSeconds = (int) ((endTime.getTime() - now.getTime()) / 1000 + ONE_MONTH_SECOND * 6); // delay 6 months
 
         genExchangeCode(couponId, count, lifeSeconds);
-        return true;
     }
 
     public List<String> getExchangeCodes(long couponId) {

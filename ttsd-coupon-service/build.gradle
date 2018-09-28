@@ -19,6 +19,8 @@ dependencies {
             project(':ttsd-membership'),
             project(':ttsd-util'),
             project(':ttsd-mq-client')
+
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }
 
 processResources.outputs.upToDateWhen { false }

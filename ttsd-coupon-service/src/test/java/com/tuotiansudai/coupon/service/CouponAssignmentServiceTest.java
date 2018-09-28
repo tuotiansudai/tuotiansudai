@@ -1,9 +1,7 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.coupon.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.membership.repository.mapper.UserMembershipMapper;
 import com.tuotiansudai.membership.repository.model.UserMembershipModel;
