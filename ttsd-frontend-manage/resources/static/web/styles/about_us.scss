@@ -12,6 +12,30 @@ $gray5:#333333;
   background: #fff!important;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
+  .monthly_report {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 20px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+  .operational_data {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 20px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+  .content_monthly {
+    min-height: 500px;
+    .no-data {
+      height: 100%;
+      line-height: 500px;
+      text-align: center;
+    }
+  }
   @media (min-width: 701px) and (max-width: 999px) {
     padding: 0 10px;
   }
