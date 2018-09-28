@@ -105,6 +105,11 @@ $gray5:#333333;
    }
   }
   .notice-list {
+    .no-data {
+      text-align: center;
+      height: 300px;
+      line-height: 300px;
+    }
     li {
       border-bottom: 1px dotted #ccc;
       color: #4c4c4c;

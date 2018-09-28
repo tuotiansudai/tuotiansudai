@@ -6,11 +6,20 @@
 
     <script type="text/template" id="noticeListTemplate">
         <ul class="notice-list">
-            <% for(var i=0,len=records.length; i < len; i++) {
+            <%
+            if(records.length>0){
+            for(var i=0,len=records.length; i < len; i++) {
             var item = records[i];
             %>
             <li><i>●</i><a href="/knowledge/<%=item.id%>"><%=item.title%></a> <span><%=item.updatedTime%></span></li>
-            <% } %>
+            <% }
+
+            }else {
+            %>
+
+            <div class="no-data">暂无内容</div>
+            <%
+            } %>
 
     </script>
 
