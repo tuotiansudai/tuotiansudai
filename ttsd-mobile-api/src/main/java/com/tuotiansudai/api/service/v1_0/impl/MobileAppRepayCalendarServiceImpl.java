@@ -6,16 +6,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppRepayCalendarService;
-import com.tuotiansudai.repository.mapper.CouponRepayMapper;
-import com.tuotiansudai.repository.model.CouponRepayModel;
-import com.tuotiansudai.repository.mapper.InvestExtraRateMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,10 +269,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().after(couponRepayModel.getRepayDate()) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
+            if (couponRepayModel.getActualRepayDate() != null && couponRepayModel.getActualRepayDate().before(couponRepayModel.getRepayDate()) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
-            } else if (((couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayDate().after(couponRepayModel.getActualRepayDate())) || couponRepayModel.getActualRepayDate() == null) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getRepayDate())) == null) {
+            } else if (((couponRepayModel.getActualRepayDate() != null && couponRepayModel.getRepayDate().before(couponRepayModel.getActualRepayDate())) || couponRepayModel.getActualRepayDate() == null) && couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getRepayDate())) == null) {
                 couponRepayCalendarResponseDtoMaps.put(dateFormat.format(couponRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(couponRepayModel.getRepayDate()), couponRepayModel));
                 continue;
             }
@@ -310,10 +303,10 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().after(investRepayModel.getRepayDate()) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
+            if (investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
                 repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel));
                 continue;
-            } else if (((investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayDate().after(investRepayModel.getActualRepayDate())) || investRepayModel.getActualRepayDate() == null) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate())) == null) {
+            } else if (((investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayDate().before(investRepayModel.getActualRepayDate())) || investRepayModel.getActualRepayDate() == null) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate())) == null) {
                 repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getRepayDate()), investRepayModel));
                 continue;
             }
