@@ -15,6 +15,20 @@ var $transferDetailCon = $('#transferDetailCon'),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 let isEstimate = $transferDetailCon.data('estimate');
 
+//风险等级是否超出
+let avalibableMoney = $transferDetailCon.data('available-invest-money');
+
+let investAmount= $transferDetailCon.data('price');
+
+let userLevel = $transferDetailCon.data('estimate-level');
+let loanLevel = $transferDetailCon.data('loan-estimate-level');
+let isOverLevel = userLevel<loanLevel;
+// let isOverLevel = false;
+//可用额度是否超出
+let isOverQuota = avalibableMoney<investAmount;
+// let isOverQuota = true;
+
+
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
         num = $this.index();
@@ -134,7 +148,41 @@ function submitData() {
                             });
                             return false;
                         }else {
-                            $transferForm.submit();
+                            if(isOverLevel){
+                                layer.open({
+                                    type: 1,
+                                    title:'温馨提示',
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskGradeForm')
+
+                                });
+                                return false;
+                            }
+                            if(isOverQuota){
+                                layer.open({
+                                    type: 1,
+                                    title:'温馨提示',
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskBeyondForm')
+
+                                });
+                                return false;
+                            }
+
+                            layer.open({
+                                type: 1,
+                                title:'风险提示',
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskTipForm')
+
+                            });
+                            // $transferForm.submit();
                         }
 
                     }else{
@@ -194,7 +242,41 @@ anxinModule.toAuthorForAnxin(function(data) {
         });
         return false;
     }else {
-        $('#transferForm').submit();
+        if(isOverLevel){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskGradeForm')
+
+            });
+            return false;
+        }
+        if(isOverQuota){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskBeyondForm')
+
+            });
+            return false;
+        }
+
+        layer.open({
+            type: 1,
+            title:'风险提示',
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskTipForm')
+
+        });
+        // $('#transferForm').submit();
     }
 
 
@@ -202,8 +284,8 @@ anxinModule.toAuthorForAnxin(function(data) {
 });
 
 var $riskAssessment = $('#riskAssessment');
-var $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment'),
+var $cancelAssessment = $('.cancelAssessment'),
+    $confirmAssessment = $('.confirmAssessment'),
     $riskTips = $('#riskTips');
 
 $cancelAssessment.on('click', function(event) {
@@ -232,5 +314,7 @@ $riskTips.on('mouseout', function(event) {
     $('.risk-tip-content').hide();
 });
 
-
+$('.confirmInvest').on('click',function () {
+    $('#transferForm').submit();
+})
 

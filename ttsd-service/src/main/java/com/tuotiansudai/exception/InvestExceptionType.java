@@ -15,7 +15,10 @@ public enum InvestExceptionType {
     COUPON_IS_UNUSABLE("优惠券不可用，请重新选择"),
     ANXIN_SIGN_IS_UNUSABLE("安心签电子签章服务未开启"),
     NONE_COUPON_SELECTED("使用优惠券可以增加您的收益，请选择优惠券"),
-    NOT_USE_COUPON("该标的不能使用任何优惠券");
+    NOT_USE_COUPON("该标的不能使用任何优惠券"),
+    RISK_ESTIMATE_UNUSABLE("尚未进行风险等级评测"),
+    RISK_ESTIMATE_LEVEL_OVER("该项目超出用户的风险等级"),
+    RISK_ESTIMATE_AMOUNT_OVER("出借金额超出风险等级金额限制");
 
     private final String description;
 

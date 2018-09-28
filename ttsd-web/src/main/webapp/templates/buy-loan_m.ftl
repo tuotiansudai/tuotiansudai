@@ -4,8 +4,12 @@
      data-has-bank-card="${hasBankCard?c}" data-loan-status="${loan.loanStatus}"
      data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
-     data-estimate="${estimate?string('true', 'false')}"
-     data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+     data-estimate="${estimate???string('true', 'false')}"
+     data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loan.estimateLevel!''}"
+     data-pdf="${commonStaticServer}/images/pdf/risk-disclosure.pdf"
+>
     <div class="m-header"><em id="iconBuy" class="icon-left"><i></i></em>购买详情 </div>
     <#if coupons?has_content>
         <#if maxBenefitUserCoupon??>

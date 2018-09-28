@@ -93,6 +93,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private String estimate;
 
+    private int estimateLevel;
+
     public LoanDetailDto(LoanModel loanModel, LoanDetailsModel loanDetails, long investedAmount, List<LoanTitleModel> loanTitleModels, List<LoanTitleRelationModel> loanTitleRelationModels, InvestorDto investorDto, double maxExtraLoanRate) {
         this.id = loanModel.getId();
         this.name = loanModel.getName();
@@ -127,6 +129,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.deadline = loanModel.getDeadline();
         this.maxExtraLoanRate = new BigDecimal(maxExtraLoanRate).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.estimate = loanDetails != null && loanDetails.getEstimate() != null ? loanDetails.getEstimate().getType() : null;
+        this.estimateLevel=loanDetails != null && loanDetails.getEstimate() != null ? loanDetails.getEstimate().getLower() : 0;
     }
 
     public long getId() {
@@ -351,5 +354,13 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setEstimate(String estimate) {
         this.estimate = estimate;
+    }
+
+    public int getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(int estimateLevel) {
+        this.estimateLevel = estimateLevel;
     }
 }

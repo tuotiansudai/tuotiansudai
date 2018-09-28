@@ -337,4 +337,6 @@ public interface InvestMapper {
     List<String> findInvestorMobileByLoanId(@Param(value = "loanId") long loanId);
 
     List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
+
+    long sumUsedFund(@Param(value = "loginName")String loginName);
 }
