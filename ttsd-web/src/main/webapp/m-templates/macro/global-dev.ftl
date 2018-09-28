@@ -63,7 +63,7 @@
     </a>
     <a class="menu-invest">
         <i ></i>
-        <span>投资</span>
+        <span>出借</span>
     </a>
     <a class="menu-my">
         <i ></i>

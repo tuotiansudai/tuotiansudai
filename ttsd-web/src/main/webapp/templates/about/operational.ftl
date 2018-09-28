@@ -28,13 +28,13 @@
                     </li>
                     <li>
                         <p><em id="investUsersCount"></em>人</p>
-                        <p>累计投资用户数</p>
+                        <p>累计出借用户数</p>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="data-model cheat-model marginTop20">
-            <h3 class="font16">平台投资明细</h3>
+            <h3 class="font16">平台交易明细</h3>
             <h4 class="font14 marginBottom10">月度交易金额（近半年）</h4>
             <div class="model-container chart-dom" id="dataRecord">
                 <!--[if gte IE 8]>
@@ -45,7 +45,7 @@
         <h3 class="font16">平台用户统计</h3>
         <div class="invest-section">
             <div class="invest-wrap clearfix">
-                <h4 class="font14 paddingLeft">投资人基本信息</h4>
+                <h4 class="font14 paddingLeft">出借人基本信息</h4>
                 <div class="data-model cheat-model">
                     <div class="model-container" id="investRecord">
                         <!--[if gte IE 8]>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="data-model region-wrap">
-                <h3 class="font14 paddingLeft">投资人地域分布</h3>
+                <h3 class="font14 paddingLeft">出借人地域分布</h3>
                 <div class="model-container geographical-item" id="investRegionRecord">
                     <ul id="geographicalWrap">
                     </ul>

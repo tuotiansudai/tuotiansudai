@@ -5,7 +5,7 @@
     <div class="top-item compliance-banner">
         <img src="" width="100%" class="media-pc">
         <img src="" width="100%" class="media-phone">
-        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+        <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
     </div>
     <div class="wp clearfix">
         <div class="reg-tag-current" style="display: none">

@@ -16,12 +16,12 @@
     <div class="page-width">
         <dl class="safe-title clearfix">
             <dt class="column-title-ac"><i></i>资金安全<i></i></dt>
-            <dd>为保障投资者的资金安全，拓天速贷采用多管齐下的资金管理措施。</dd>
+            <dd>为保障出借者的资金安全，拓天速贷采用多管齐下的资金管理措施。</dd>
         </dl>
         <div class="safe-info-list">
         <dl>
             <dt class="list01"><em>第三方<br/>资金托管</em></dt>
-            <dd>拓天速贷接入了联动优势的资金托管系统，联动优势为拓天建立专门账户，对所有资金进行监管。拓天只撮合投资项目，不经手资金。</dd>
+            <dd>拓天速贷接入了联动优势的资金托管系统，联动优势为拓天建立专门账户，对所有资金进行监管。拓天只提供信息展示及撮合服务，不经手资金。</dd>
         </dl>
         <dl>
             <dt class="list02"><em>严密风控</em></dt>

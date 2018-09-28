@@ -151,7 +151,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>48.如何将电子合同变成纸质合同？</span></dt>
             <dd><strong>答：</strong>如您需要纸质合同，在“我的投资”中将电子版合同下载后以电子或文件形式提供到拓天速贷客户服务中心，拓天速贷客服打印并盖章后交于您的手中。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>49.目前有哪几种回款方式？</span></dt>
-            <dd><strong>答：</strong>1种，先付收益后还投资本金，按天计息，放款后生息。</dd>
+            <dd><strong>答：</strong>1种，先付收益后还本金，按天计息，放款后生息。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>50.投资回款有邮件、短信通知吗？</span></dt>
             <dd><strong>答：</strong>投资回款有邮件短信通知的服务。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>51.借款人逾期还款怎么办？</span></dt>

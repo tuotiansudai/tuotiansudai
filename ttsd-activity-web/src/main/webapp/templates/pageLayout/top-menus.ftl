@@ -6,7 +6,7 @@
         <div class="login-pop-app" id="iphone-app-pop">
             <em class="img-app-download"></em>
             <a href="javascript:" class="text" onclick="cnzzPush.trackClick('13顶部导航','手机APP')"><i>手机APP</i>
-                投资更便利</a>
+                出借更便利</a>
             <div id="iphone-app-img" class="img-app-pc-top hide"></div>
         </div>
         <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>

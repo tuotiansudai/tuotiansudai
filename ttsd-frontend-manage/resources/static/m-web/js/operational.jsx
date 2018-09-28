@@ -380,9 +380,9 @@ let getPartThreePage = (data) => {
         ageLoanLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
     myChart3.setOption(pieChart([
-        {value: `${maleScale}`, name: `男性投资人 ${maleScale }%`},
-        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`}
-    ], [`男性投资人 ${maleScale }%`, `女性投资人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
+        {value: `${maleScale}`, name: `男性出借人 ${maleScale }%`},
+        {value: `${femaleScale}`, name: `女性出借人 ${femaleScale }%`}
+    ], [`男性出借人 ${maleScale }%`, `女性出借人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
     myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));
