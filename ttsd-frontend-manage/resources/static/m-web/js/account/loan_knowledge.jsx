@@ -88,8 +88,8 @@ $(function () {
                         myScroll.refresh();
 
                     } else {
-                        $knowledgeList.html('');
-                        $('#noData').show();
+                        $knowledgeList.html('<div class="noContent">暂无内容</div>');
+                        $('#noData').hide();
                         myScroll.refresh();
                     }
                 }
@@ -115,7 +115,7 @@ $(function () {
             requestParams = {"index": 1, "pageSize": 10}
         }
         isLastPage = false;
-        console.log(isLastPage)
+        $('#pullUp').hide();
         getMore()
     })
 

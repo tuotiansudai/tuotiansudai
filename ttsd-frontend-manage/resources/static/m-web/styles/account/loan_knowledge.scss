@@ -30,13 +30,13 @@ body {
     line-height: 0.9rem;
     display: inline-block;
     text-align: center;
-    font-size: 0.14rem;
+    font-size: 0.28rem;
     color: #999;
     cursor: pointer;
     padding-left: 0.2rem;
     padding-right: 0.2rem;
-    margin-left: 0.22rem;
-    margin-right: 0.22rem;
+    margin-left: 0.12rem;
+    margin-right: 0.12rem;
     &.active {
       color: #DA3D28;
       border-bottom: 0.06rem solid #DA3D28;
@@ -130,7 +130,11 @@ body {
   height: .6rem;
   line-height: .6rem;
 }
-
+.noContent {
+ height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+}
 .back-link{
   position: fixed;
   top:8px;
