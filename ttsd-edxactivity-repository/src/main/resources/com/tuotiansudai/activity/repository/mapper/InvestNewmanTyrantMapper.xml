@@ -52,5 +52,20 @@
         ORDER BY sumAmount DESC , MAX(nt.created_time)
     </select>
 
+    <select id="findNewmanTyrantByTradingTimeWithEnd" parameterType="map" resultMap="newmanTyrantView">
+        SELECT
+        nt.login_name,
+        SUM(nt.invest_amount) sumAmount,
+        nt.user_name,
+        nt.mobile
+        FROM
+        invest_newman_tyrant nt
+        <where>
+            AND nt.created_time BETWEEN #{activityBeginTime} AND #{activityEndTime}
+            AND nt.created_time BETWEEN #{tradingStartTime} AND #{tradingEndTime}
+        </where>
+        GROUP BY nt.login_name , nt.user_name , nt.mobile
+        ORDER BY sumAmount DESC , MAX(nt.created_time)
+    </select>
 
 </mapper>

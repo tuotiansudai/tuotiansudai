@@ -2,7 +2,7 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要投资</li>
-            <li><a href="/loan-list" >投资产品</a></li>
+            <li><a href="/loan-list" >产品介绍</a></li>
             <li><a href="/account">我的帐户</a></li>
             <li><a href="/about/notice">拓天公告</a></li>
         </ul>

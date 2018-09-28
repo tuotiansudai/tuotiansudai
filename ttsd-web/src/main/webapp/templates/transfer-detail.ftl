@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要投资" activeLeftNav="转让项目" title="标的详情">
+<@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要出借" activeLeftNav="转让项目" title="标的详情">
 <style type="text/css">
 .swiper-container {
     display: none;
@@ -16,7 +16,7 @@
     <#if loanDto.estimate??>
             <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
     </#if>
-            <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
+            <span class="product-tip">拓天速贷提醒您：市场有风险，出借需谨慎！</span>
             </div>
         </div>
         <div class="transfer-info">
@@ -92,7 +92,7 @@
                     <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}"/>
                     <input type="hidden" id="transferApplicationId" name="transferApplicationId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
+                    <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上出借</button></p>
                     <input type="hidden" value="${anxinAuthenticationRequired?c}" id="isAnxinAuthenticationRequired">
                     <input type="hidden" value="${anxinUser?c}" id="isAnxinUser">
                     <@global.role hasRole="'INVESTOR'">
@@ -136,7 +136,7 @@
             <div class="question-list">
                 <dl>
                     <dt>1. 转让项目的优势？<i class="fa fa-chevron-circle-down fr"></i> </dt>
-                    <dd>转让债权和原始债权的约定年化利率、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回投资。同时还可享受到出让人的价格折让。</dd>
+                    <dd>转让债权和原始债权的约定年化利率、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回出借。同时还可享受到出让人的价格折让。</dd>
                 </dl>
 
                 <dl>

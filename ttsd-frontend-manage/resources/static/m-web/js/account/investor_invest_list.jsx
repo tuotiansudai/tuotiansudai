@@ -117,7 +117,7 @@ function getList(index,status) {
                 }else {
                     flagScroll = false;
                     if(index == 1){
-                        let $noListDOM = $('<div class="noList"><div class="img"></div><button>立即投资</button>');
+                        let $noListDOM = $('<div class="noList"><div class="img"></div><button>立即出借</button>');
                         $main.append($noListDOM);
 
                     }else {

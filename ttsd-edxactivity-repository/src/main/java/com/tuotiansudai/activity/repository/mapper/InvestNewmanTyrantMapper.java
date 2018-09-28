@@ -19,5 +19,8 @@ public interface InvestNewmanTyrantMapper {
                                                          @Param(value = "activityEndTime") String activityEndTime,
                                                          @Param(value = "isNewman") boolean isNewman);
 
-
+    List<NewmanTyrantView> findNewmanTyrantByTradingTimeWithEnd(@Param(value = "tradingStartTime") Date tradingStartTime,
+                                                                @Param(value = "tradingEndTime") Date tradingEndTime,
+                                                                @Param(value = "activityBeginTime") String activityBeginTime,
+                                                                @Param(value = "activityEndTime") String activityEndTime);
 }

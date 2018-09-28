@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.transfer_list}" pageJavascript="${js.transfer_list}" activeNav="我要投资" activeLeftNav="转让项目" title="债权转让_转让项目_拓天速贷" keywords="债权转让,债务转移,债权投资,金融债权,债权购买" description="拓天速贷债权转让项目,帮助用户提高投资的流动性,安全的债权转让产品提高用户的信任度,拓天速贷让用户资金灵活,收益最大化.">
+<@global.main pageCss="${css.transfer_list}" pageJavascript="${js.transfer_list}" activeNav="我要出借" activeLeftNav="转让项目" title="债权转让_转让项目_拓天速贷" keywords="债权转让,债务转移,债权投资,金融债权,债权购买" description="拓天速贷债权转让项目,帮助用户提高投资的流动性,安全的债权转让产品提高用户的信任度,拓天速贷让用户资金灵活,收益最大化.">
 <div class="transfer-list-content clearfix">
    <ul class="wrapper-list" id="wrapperList">
             <li class="project-kind">
@@ -80,7 +80,7 @@
                                     <span>截止时间：${transferApplicationItem.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
                                 </div>
                                 <div class="rest-amount">
-                                    <i class="btn-invest btn-normal">马上投资</i>
+                                    <i class="btn-invest btn-normal">马上出借</i>
                                 </div>
                             </#if>
 

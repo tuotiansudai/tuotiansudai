@@ -22,13 +22,13 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","leftNavs":[
+    {"title":"我要出借", "url":"/loan-list","category":"17顶部导航","leftNavs":[
         {"title":"直投项目", "url":"/loan-list"},
         {"title":"转让项目", "url":"/transfer-list"}
     ]},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
         {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的出借", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
@@ -76,7 +76,7 @@
     </#if>
     <meta name="_csrf" content="${(_csrf.token)!}"/>
     <meta name="_csrf_header" content="${(_csrf.headerName)!}"/>
-    <link href="${commonStaticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8" />

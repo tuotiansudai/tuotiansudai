@@ -4,7 +4,7 @@
 <div class="home-page-container" id="homePageContainer">
     <div class="banner-box">
         <div id="bannerBox" class="banner-box-inner compliance-index">
-            <div class="invest-tip-wrap"><div class="invest-tip">市场有风险，投资需谨慎！</div></div>
+            <div class="invest-tip-wrap"><div class="invest-tip">市场有风险，出借需谨慎！</div></div>
             <ul class="banner-img-list">
                 <#list bannerList as banner>
                     <li>
@@ -68,7 +68,7 @@
                     <i class="guide sprite-homepage-icon-guide"></i>
                     <a href="/about/guide" target="_blank">
                         <b class="clearfix">稳健收益 较低门槛</b>
-                        <span>约定年化利率8%~10%，<br>投资门槛50元起投</span>
+                        <span>约定年化利率8%~10%，<br>出借门槛50元起投</span>
                     </a>
                 </dd>
                 <dd>
@@ -81,7 +81,7 @@
                 <dd class="last">
                     <i class="assurance sprite-homepage-icon-assurce"></i>
                     <a href="/about/assurance" target="_blank">
-                        <b class="clearfix">四大保障 投资无忧</b>
+                        <b class="clearfix">四大保障 出借无忧</b>
                         <span>12道保障措施并举，<br>资金、个人信息均安全</span>
                     </a>
                 </dd>
@@ -97,7 +97,7 @@
             <div class="newer-experience clearfix" data-url="/loan/1">
                 <#--<i class="tag-icon"></i>-->
                 <div class="con-inner">
-                    <b class="newer-title">${experienceLoan.name} <span>限体验金投资</span></b>
+                    <b class="newer-title">${experienceLoan.name} <span>限体验金购买</span></b>
                     <ul class="loan-info clearfix">
                         <li><span class="percent-number"> <i>${experienceLoan.baseRate}</i>%</span>约定年化利率</li>
                         <li><em class="duration-day">${experienceLoan.duration}</em>天<br>项目期限</li>
@@ -214,7 +214,7 @@
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元投资红包</a>
+                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元出借红包</a>
                     <time>2016-01-20</time>
                 </li>
                 <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>

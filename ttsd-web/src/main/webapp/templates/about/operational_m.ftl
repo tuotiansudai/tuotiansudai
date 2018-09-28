@@ -1,5 +1,5 @@
 <#import "../macro/global_m.ftl" as global>
-<@global.main pageCss="${m_css.operational}" pageJavascript="${m_js.operational}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计投资金额及平台数据总览,为您提供安全投资的平台运营数据.">
+<@global.main pageCss="${m_css.operational}" pageJavascript="${m_js.operational}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计出借金额及平台数据总览,为您提供安全投资的平台运营数据.">
 <div class="about-us-container">
     <#if !isAppSource>
         <div class="go-back-container" id="goBack_experienceAmount">
@@ -66,7 +66,7 @@
                 <div class="part-3-topBar">
                     <div class="user-statistics">平台用户统计</div>
                 </div>
-                <div class="title-wrap"><h4 class="title-top">投资人基本信息</h4></div>
+                <div class="title-wrap"><h4 class="title-top">出借人基本信息</h4></div>
                 <div id="main_part4"></div>
                 <div id="main_part3"></div>
 
@@ -77,11 +77,11 @@
                 <div class="part-4-topBar">
                     <div class="user-area">平台用户统计</div>
                 </div>
-                <div class="title-wrap"><h4 class="title-top">投资人地域分布</h4></div>
+                <div class="title-wrap"><h4 class="title-top">出借人地域分布</h4></div>
 
                 <div class="count_proportion">
                     <div class="symbol_line"></div>
-                    <div class="count_title">投资人数<span class="title_strong">TOP5占比</span></div>
+                    <div class="count_title">出借人数<span class="title_strong">TOP5占比</span></div>
                 </div>
                 <div id="main_part5" class="geographical-item">
                     <ul id="geographicalWrap">
