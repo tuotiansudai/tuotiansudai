@@ -56,7 +56,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource" />
         <property name="typeAliasesPackage"
-                  value="com.tuotiansudai.repository.model,com.tuotiansudai.membership.repository.model"/>
+                  value="com.tuotiansudai.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
