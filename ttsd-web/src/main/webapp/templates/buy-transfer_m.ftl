@@ -6,6 +6,7 @@
      data-estimate="${estimate???string('true', 'false')}"
      data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
      data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loanDto.estimateLevel!''}"
+     data-pdf="${commonStaticServer}/images/pdf/risk-disclosure.pdf"
      style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
     <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
