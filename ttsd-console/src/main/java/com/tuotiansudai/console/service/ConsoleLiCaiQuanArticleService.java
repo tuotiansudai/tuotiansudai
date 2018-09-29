@@ -137,7 +137,7 @@ public class ConsoleLiCaiQuanArticleService {
         }
 
         articleDtoList.sort((o1, o2) -> {
-            int compare = Longs.compare(o1.getCreateTime().getTime(), o2.getCreateTime().getTime());
+            int compare = Longs.compare(o2.getCreateTime().getTime(),o1.getCreateTime().getTime());
             if (compare == 0) {
                 return Long.compare(o1.getArticleId(), o2.getArticleId());
             }
