@@ -277,7 +277,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 continue;
             }
 
-            if (couponRepayModel.getActualRepayDate() != null && ) {
+            if (couponRepayModel.getActualRepayDate() != null) {
                 couponRepayCalendarYearResponseDto = couponRepayCalendarResponseDtoMaps.get(dateFormat.format(couponRepayModel.getActualRepayDate().before(couponRepayModel.getRepayDate()) ? couponRepayModel.getActualRepayDate() : couponRepayModel.getRepayDate()));
                 couponRepayCalendarYearResponseDto.setRepayAmount(addMoney(couponRepayCalendarYearResponseDto.getRepayAmount(), String.valueOf(couponRepayModel.getRepayAmount())));
             } else {
