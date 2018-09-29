@@ -19,7 +19,6 @@ dependencies {
             project(':ttsd-log-service'),
             project(":ttsd-membership"),
             project(":ttsd-util"),
-            project(":ttsd-edxactivity-model"),
             project(":ttsd-aa-repository"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),
