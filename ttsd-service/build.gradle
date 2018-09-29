@@ -16,7 +16,6 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(":ttsd-client"),
             project(":ttsd-user-service"),
-            project(':ttsd-log-service'),
             project(":ttsd-membership"),
             project(":ttsd-util"),
             project(":ttsd-aa-repository"),
