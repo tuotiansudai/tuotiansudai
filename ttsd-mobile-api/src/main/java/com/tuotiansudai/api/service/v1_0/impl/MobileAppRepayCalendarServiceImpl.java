@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -304,37 +305,40 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
             }
 
             if (investRepayModel.getActualRepayDate() != null && investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate())) == null) {
-                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel));
+                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getActualRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getActualRepayDate()), investRepayModel, getInvestExtraRateAmountByInvestRepay(investRepayModel)));
                 continue;
             } else if (((investRepayModel.getActualRepayDate() != null && investRepayModel.getRepayDate().before(investRepayModel.getActualRepayDate())) || investRepayModel.getActualRepayDate() == null) && repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate())) == null) {
-                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getRepayDate()), investRepayModel));
+                repayCalendarResponseDtoMaps.put(dateFormat.format(investRepayModel.getRepayDate()), new RepayCalendarYearResponseDto(dateFormat.format(investRepayModel.getRepayDate()), investRepayModel, getInvestExtraRateAmountByInvestRepay(investRepayModel)));
                 continue;
             }
 
             if (investRepayModel.getActualRepayDate() != null) {
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? investRepayModel.getActualRepayDate() : investRepayModel.getRepayDate()));
-                repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investRepayModel.getRepayAmount())));
+                repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investRepayModel.getRepayAmount() + getInvestExtraRateAmountByInvestRepay(investRepayModel).get("repayAmount"))));
             } else {
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
-                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest())));
-            }
-
-            int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
-
-            if (periods == investRepayModel.getPeriod()) {
-                InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
-                if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
-                    if (investExtraRateModel.getActualRepayDate() != null) {
-                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(dateFormat.format(investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? investRepayModel.getActualRepayDate() : investRepayModel.getRepayDate())));
-                        repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
-                    } else {
-                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
-                        repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee())));
-                    }
-                }
+                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest() + + getInvestExtraRateAmountByInvestRepay(investRepayModel).get("expectedRepayAmount"))));
             }
         }
         return repayCalendarResponseDtoMaps;
+    }
+
+    private Map<String, Long> getInvestExtraRateAmountByInvestRepay(InvestRepayModel investRepayModel){
+        Map<String, Long> map = new HashMap<>();
+        map.put("repayAmount", 0L);
+        map.put("expectedRepayAmount", 0L);
+        int periods = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId()).size();
+        if (periods == investRepayModel.getPeriod()) {
+            InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
+            if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
+                if (investExtraRateModel.getActualRepayDate() != null) {
+                    map.put("repayAmount", investExtraRateModel.getRepayAmount());
+                } else {
+                    map.put("expectedRepayAmount", investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee());
+                }
+            }
+        }
+        return map;
     }
 
     private boolean validQueryYearIsCorrect(String year) {
