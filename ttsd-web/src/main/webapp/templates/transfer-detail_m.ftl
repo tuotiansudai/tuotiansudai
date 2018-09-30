@@ -76,6 +76,7 @@
         <a id="lookOld" data-url="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
     </div>
     <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
+    <div style="text-align: center;color: #A2A2A2">点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></div>
 
     <#if (transferApplication.transferStatus.name() == "SUCCESS")>
         <button class="to-invest-project" type="button" disabled>已转让</button>
