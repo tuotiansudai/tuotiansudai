@@ -325,7 +325,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investRepayModel.getInvestId());
                 if (investExtraRateModel != null && !investExtraRateModel.isTransfer()) {
                     if (investExtraRateModel.getActualRepayDate() != null) {
-                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getActualRepayDate()));
+                        repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(dateFormat.format(investRepayModel.getActualRepayDate().before(investRepayModel.getRepayDate()) ? investRepayModel.getActualRepayDate() : investRepayModel.getRepayDate())));
                         repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investExtraRateModel.getRepayAmount())));
                     } else {
                         repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
