@@ -75,7 +75,7 @@
                 <span class="img-status transfercancel"></span>
                 <p class="status-text"></p>
             <#else>
-                <form action="/transfer/purchase" method="post" id="transferForm">
+                <form action="/transfer/purchase" method="post" id="transferForm" class="clearfix">
                     <p class="get-money">
                         <span class="name-text" id="tipLayer">认购金额：</span>
                         <span class="money-text">
@@ -110,7 +110,13 @@
                     </@global.role>
                 </form>
             </#if>
+            <div class="clearfix" style="width: 290px;">
+                <div style="color:#949494;">拓天速贷提醒您：市场有风险，出借需谨慎！</div>
+                <div style="padding-bottom: 10px;">点击查看<a style="color: #ff7200;" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a></div>
+            </div>
         </div>
+
+
     </div>
     <div class="detail-record">
         <div class="transfer-top">

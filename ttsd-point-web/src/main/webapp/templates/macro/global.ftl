@@ -44,7 +44,6 @@
         {"title":"组织架构", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"网贷知识", "url":"/about/knowledge"},
         {"title":"合规报告", "url":"/about/audit-report"},
         {"title":"服务费用", "url":"/about/service-fee"},
         {"title":"常见问题", "url":"/about/qa"},

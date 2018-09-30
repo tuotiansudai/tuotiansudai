@@ -127,7 +127,16 @@
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，出借需谨慎！</h5>
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if> <@global.role hasRole="'INVESTOR'">
+                        <#if !loan.investor.noPasswordInvest>
+
+                                        <a class="fr open-no-password-invest" style="margin-right: 5px;" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
+                                            推荐您开通免密出借
+                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化出借过程，出借快人一步"></i>
+                                        </a>
+
+                        </#if>
+                    </@global.role></h5>
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -295,16 +304,7 @@
                                     <#if loan.loanStatus == "RAISING">马上出借</#if>
                                 </button>
                             </dd>
-                            <@global.role hasRole="'INVESTOR'">
-                                <#if !loan.investor.noPasswordInvest>
-                                    <dd>
-                                        <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
-                                            推荐您开通免密出借
-                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化出借过程，出借快人一步"></i>
-                                        </a>
-                                    </dd>
-                                </#if>
-                            </@global.role>
+
 
                             <input type="hidden" value="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
@@ -337,6 +337,9 @@
                         </dl>
                     </form>
                 </#if>
+                <div style="color:#949494">拓天速贷提醒您：市场有风险，出借需谨慎！</div>
+                <div style="padding-bottom: 10px;">点击查看<a style="color: #ff7200;" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a></div>
+
             </div>
         </div>
         <div class="bg-w clear-blank borderBox loan-detail" id="loanDetailSwitch">
