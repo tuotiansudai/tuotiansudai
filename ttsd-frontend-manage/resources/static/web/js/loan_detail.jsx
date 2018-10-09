@@ -47,7 +47,7 @@ let loanLevel = $loanDetailContent.data('loan-estimate-level');
 let isOverLevel = userLevel<loanLevel;
 // let isOverLevel = false;
 //可用额度是否超出
-let isOverQuota = avalibableMoney<investAmount;
+    // AQ`````````````````
 // let isOverQuota = false;
 
 function showInputErrorTips(message) {
@@ -88,13 +88,15 @@ function validateInvestAmount() {
 //出借表单请求以及校验
 function investSubmit(){
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
+    var investAmount = getInvestAmount();
+    var isOverQuota = avalibableMoney<investAmount;
     if ($investForm.attr('action') === '/invest') {
         if (!isInvestor) {
             location.href = '/login?redirect=' + encodeURIComponent(location.href);
             return false;
         }
 
-        var investAmount = getInvestAmount();
+
 
         if (!validateInvestAmount()) {
             showInputErrorTips(investAmount === 0 ? '出借金额不能为0元！' : '出借金额不能大于可投金额！');

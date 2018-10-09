@@ -509,14 +509,15 @@ let $investForm = $('#investForm');//立即投资表单
 //风险等级是否超出
 let avalibableMoney = $buyDetail.data('available-invest-money');
 $amountInputElement.autoNumeric("init");
-let investAmount= getInvestAmount();
+let limitMoney =  $buyDetail.data('estimate-limit')/100;
+
 
 let userLevel = $buyDetail.data('estimate-level');
 let loanLevel = $buyDetail.data('loan-estimate-level');
 let isOverLevel = userLevel<loanLevel;
 // let isOverLevel = false;
 //可用额度是否超出
-let isOverQuota = avalibableMoney<investAmount;
+
 // let isOverQuota = false;
 let userEstimateType = $buyDetail.data('estimate-type');
 let pdfUrl = $buyDetail.data('pdf');
@@ -526,6 +527,7 @@ $('#investSubmit').on('click', function(event) {
     event.preventDefault();
     let investAmount = getInvestAmount()/100;
     $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
+    let isOverQuota = avalibableMoney<investAmount*100;
     $.when(commonFun.isUserLogin())
         .done(function() {
             if (isInvestor) {
@@ -589,7 +591,7 @@ $('#investSubmit').on('click', function(event) {
                             commonFun.CommonLayerTip({
                                 btn: ['重新评测','取消'],
                                 area:['280px', '230px'],
-                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateType}，最多出借金额为${avalibableMoney/100}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateType}，最多出借金额为${limitMoney}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                             },function() {
                                 layer.closeAll();
                                 location.href = '/m/risk-estimate'
@@ -726,6 +728,7 @@ let isOverLevelTransfer = userLevelTransfer<loanLevelTransfer;
     // let isOverLevelTransfer = false;
 //可用额度是否超出
 let isOverQuotaTransfer = avalibableMoneyTransfer<investAmountTransfer;
+let limitMoneyTransfer = $transferDetail.data('estimate-limit')/100;
 //     let isOverQuotaTransfer = true;
     let userEstimateTypeTransfer = $transferDetail.data('estimate-type');
     let pdfUrlTransfer = $transferDetail.data('pdf');
@@ -845,7 +848,7 @@ let isOverQuotaTransfer = avalibableMoneyTransfer<investAmountTransfer;
                         commonFun.CommonLayerTip({
                             btn: ['重新评测','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateTypeTransfer}，最多出借金额为${avalibableMoneyTransfer/100}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateTypeTransfer}，最多出借金额为${limitMoneyTransfer}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'

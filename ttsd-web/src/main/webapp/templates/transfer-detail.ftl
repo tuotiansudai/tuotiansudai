@@ -7,7 +7,9 @@
 </style>
 <div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate???string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
      data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
-     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loanDto.estimateLevel!''}" >
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loanDto.estimateLevel!''}"
+     data-price="${transferApplication.transferAmount!}"
+>
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
