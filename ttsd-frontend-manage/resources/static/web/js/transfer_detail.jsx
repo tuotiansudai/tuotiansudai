@@ -22,8 +22,8 @@ let investAmount= $transferDetailCon.data('price');
 
 let userLevel = $transferDetailCon.data('estimate-level');
 let loanLevel = $transferDetailCon.data('loan-estimate-level');
-let isOverLevel = userLevel<loanLevel;
-// let isOverLevel = false;
+// let isOverLevel = userLevel<loanLevel;
+let isOverLevel = true;
 //可用额度是否超出
 let isOverQuota = avalibableMoney<investAmount*100;
 
@@ -291,14 +291,8 @@ var $cancelAssessment = $('.cancelAssessment'),
 
 $cancelAssessment.on('click', function(event) {
     event.preventDefault();
-    commonFun.useAjax({
-        url: '/risk-estimate',
-        data: {answers: ['-1']},
-        type: 'POST'
-    },function(data) {
-        layer.closeAll();
-        $transferForm.submit();
-    });
+    layer.closeAll();
+    return false;
 
 });
 $confirmAssessment.on('click', function(event) {

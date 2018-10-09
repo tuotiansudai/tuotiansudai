@@ -245,7 +245,7 @@
 
 <#--风险等级超出提示-->
 <div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">您当前的风险等级为稳健型，此项目已超<br/>出您的风险等级，是否重新评测？</div>
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，此项目已超<br/>出您的风险等级，是否重新评测？</div>
 
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
@@ -256,7 +256,7 @@
 <#--最多借出额度提示-->
 
 <div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">您当前的风险等级为稳健型，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
 
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
