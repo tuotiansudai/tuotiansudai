@@ -71,8 +71,8 @@
             <tr>
                 <td>主要人员</td>
 
-                <td><div class="main-person">执行董事：李显玉、总经理：杜峥、<br/>
-                    副总经理：张东杰、财务负责人：冯会娜<div></td>
+                <td><div class="main-person">法定代表人：李显玉、董事长：杜峥<br/>
+                    CEO：张东杰、财务负责人：冯会娜<div></td>
             </tr>
             <tr class="scope-operation">
                 <td>从业机构的经营范围</td>
@@ -95,6 +95,16 @@
             </li>
             <li>
                 <a title="许可证" rel="groupImg"></a>
+            </li>
+        </ul>
+    </div>
+    <h2 class="column-title"><em>法人承诺书</em></h2>
+    <div class="clear-blank-m">
+    </div>
+    <div class="aptitude-new">
+        <ul id="corporateUndertaking" class="clearfix">
+            <li>
+                <a title="法人承诺书" rel="groupImg2"></a>
             </li>
         </ul>
     </div>
