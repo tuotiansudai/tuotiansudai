@@ -22,8 +22,8 @@ let investAmount= $transferDetailCon.data('price');
 
 let userLevel = $transferDetailCon.data('estimate-level');
 let loanLevel = $transferDetailCon.data('loan-estimate-level');
-// let isOverLevel = userLevel<loanLevel;
-let isOverLevel = true;
+let isOverLevel = userLevel<loanLevel;
+// let isOverLevel = true;
 //可用额度是否超出
 let isOverQuota = avalibableMoney<investAmount*100;
 
