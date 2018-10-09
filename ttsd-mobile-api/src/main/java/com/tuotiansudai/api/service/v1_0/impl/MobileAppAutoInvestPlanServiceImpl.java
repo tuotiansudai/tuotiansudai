@@ -1,13 +1,20 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPlanService {
@@ -25,8 +34,7 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
-    private UserOpLogService userOpLogService;
-
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -65,8 +73,12 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
 
         // 发送用户行为日志 MQ
         BaseParam baseParam = dto.getBaseParam();
-        userOpLogService.sendUserOpLogMQ(baseParam.getUserId(), dto.getIp(), baseParam.getPlatform(), baseParam.getDeviceId(),
-                UserOpType.AUTO_INVEST, dto.isEnabled() ? "Turn On" : "Turn Off");
+        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), baseParam.getUserId(), baseParam.getPhoneNum(), UserOpType.AUTO_INVEST, dto.getIp(), baseParam.getDeviceId(), baseParam.getPlatform() == null ? null : Source.valueOf(baseParam.getPlatform().toUpperCase(Locale.ENGLISH)), dto.isEnabled() ? "Turn On" : "Turn Off");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[MobileAppAutoInvestPlanService] " + "buildAutoInvestPlan" + ", send UserOperateLog fail.", e);
+        }
         return baseDto;
     }
 }

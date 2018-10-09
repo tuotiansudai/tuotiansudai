@@ -1,24 +1,32 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOnRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestTurnOnService;
 import com.tuotiansudai.api.util.AppVersionUtil;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Locale;
 
 @Service
 public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPasswordInvestTurnOnService {
@@ -35,7 +43,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
     private UserMapper userMapper;
 
     @Autowired
-    private UserOpLogService userOpLogService;
+    private MQWrapperClient mqWrapperClient;
 
     @Override
     @Transactional
@@ -60,8 +68,13 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 
         BaseParam baseParam = dto.getBaseParam();
-        userOpLogService.sendUserOpLogMQ(loginName, ip, baseParam.getPlatform(), baseParam.getDeviceId(),
-                UserOpType.INVEST_NO_PASSWORD, "Turn On");
+        // 发送用户行为日志 MQ
+        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), baseParam.getUserId(), baseParam.getPhoneNum(), UserOpType.INVEST_NO_PASSWORD, ip, baseParam.getDeviceId(), baseParam.getPlatform() == null ? null : Source.valueOf(baseParam.getPlatform().toUpperCase(Locale.ENGLISH)), "Turn On");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[MobileAppNoPasswordInvestTurnOffService] " + "noPasswordInvestTurnOff" + ", send UserOperateLog fail.", e);
+        }
         return baseResponseDto;
     }
 }

@@ -1,20 +1,20 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.EMailMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BindEmailService;
-import com.tuotiansudai.util.RedisWrapperClient;
-import com.tuotiansudai.util.SendCloudTemplate;
-import com.tuotiansudai.util.UUIDGenerator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class BindEmailServiceImpl implements BindEmailService {
@@ -34,9 +36,6 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private UserOpLogService userOpLogService;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -99,10 +98,14 @@ public class BindEmailServiceImpl implements BindEmailService {
         }
         userMapper.updateEmail(loginName, email);
         redisWrapperClient.del(bindEmailKey);
-
         //发送用户行为日志 MQ
-        userOpLogService.sendUserOpLogMQ(loginName, ip, platform, deviceId, UserOpType.BIND_CHANGE_EMAIL,
-                email != null ? "Success, Email: " + email : "Fail");
+        String mobile= Optional.ofNullable(userMapper.findByLoginName(loginName)).orElse(new UserModel()).getMobile();
+        UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),loginName,mobile,UserOpType.BIND_CHANGE_EMAIL,ip,deviceId,platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)),email != null ? "Success, Email: " + email : "Fail");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[BindEmailService] " +"verifyEmail"+ ", send UserOperateLog fail.", e);
+        }
 
         return email;
     }

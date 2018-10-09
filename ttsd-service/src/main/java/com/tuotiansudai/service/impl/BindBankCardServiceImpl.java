@@ -1,22 +1,31 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserFundMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserFundView;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BindBankCardServiceImpl implements BindBankCardService {
@@ -33,10 +42,13 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserOpLogService userOpLogService;
+    private UserFundMapper userFundMapper;
 
     @Autowired
-    private UserFundMapper userFundMapper;
+    private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Override
@@ -60,21 +72,28 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
         baseDto = payWrapperClient.bindBankCard(dto);
 
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(dto.getLoginName(), dto.getIp(), dto.getSource().name(), dto.getDeviceId(),
-                UserOpType.BIND_CARD, null);
-
+        //发送用户行为日志 MQ
+        String mobile= Optional.ofNullable(userMapper.findByLoginName(dto.getLoginName())).orElse(new UserModel()).getMobile();
+        UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),dto.getLoginName(),mobile,UserOpType.BIND_CARD,dto.getIp(),dto.getDeviceId(),dto.getSource(),null);
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[BindBankCardService] " +"bindBankCard"+ ", send UserOperateLog fail.", e);
+        }
         return baseDto;
     }
 
     @Override
     public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
         BaseDto<PayFormDataDto> retDto = payWrapperClient.replaceBankCard(dto);
-
-        // 发送用户行为日志 MQ消息
-        userOpLogService.sendUserOpLogMQ(dto.getLoginName(), dto.getIp(), dto.getSource().name(), dto.getDeviceId(),
-                UserOpType.REPLACE_CARD, null);
-
+        //发送用户行为日志 MQ
+        String mobile= Optional.ofNullable(userMapper.findByLoginName(dto.getLoginName())).orElse(new UserModel()).getMobile();
+        UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),dto.getLoginName(),mobile,UserOpType.REPLACE_CARD,dto.getIp(),dto.getDeviceId(),dto.getSource(),null);
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[BindBankCardService] " +"replaceBankCard"+ ", send UserOperateLog fail.", e);
+        }
         return retDto;
     }
 

@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,8 +10,8 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.AgreementNotifyMapper;
@@ -23,7 +24,10 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AgreementServiceImpl implements AgreementService {
@@ -51,9 +56,6 @@ public class AgreementServiceImpl implements AgreementService {
     private MQWrapperClient mqWrapperClient;
 
     @Autowired
-    private UserOpLogService userOpLogService;
-
-    @Autowired
     private UserMapper userMapper;
 
     @Override
@@ -65,9 +67,16 @@ public class AgreementServiceImpl implements AgreementService {
 
         // 发送用户行为日志 MQ消息
         UserOpType opType = getUserOpType(dto);
-        if (opType != null)
-            userOpLogService.sendUserOpLogMQ(dto.getLoginName(), dto.getIp(), dto.getSource().name(), dto.getDeviceId(), opType, null);
-
+        if (opType != null){
+            //发送用户行为日志 MQ
+            String mobile= Optional.ofNullable(userMapper.findByLoginName(dto.getLoginName())).orElse(new UserModel()).getMobile();
+            UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),dto.getLoginName(),mobile,opType,dto.getIp(),dto.getDeviceId(),dto.getSource(),null);
+            try {
+                mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+            } catch (JsonProcessingException e) {
+                logger.error("[AgreementService] " +"agreement"+ ", send UserOperateLog fail.", e);
+            }
+        }
         try {
             return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
         } catch (PayException e) {
@@ -84,7 +93,7 @@ public class AgreementServiceImpl implements AgreementService {
             return UserOpType.NO_PASSWORD_AGREEMENT; // 开通免密支付协议
         } else if (dto.isFastPay()) {
             return UserOpType.FAST_PAY_AGREEMENT; // 开通快捷支付协议
-        }else if(dto.isHuizuAutoRepay()){
+        } else if (dto.isHuizuAutoRepay()) {
             return UserOpType.HUIZU_AUTO_REPAY;  //开通慧租自动还款
         }
         return null;
