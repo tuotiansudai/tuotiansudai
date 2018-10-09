@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class BlacklistServiceImpl implements BlacklistService {
 
     @Autowired
-    BlacklistMapper blacklistMapper;
+    private BlacklistMapper blacklistMapper;
 
     @Override
     public boolean userIsInBlacklist(String loginName) {

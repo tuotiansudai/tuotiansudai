@@ -9,9 +9,5 @@ import java.util.List;
 public interface BlacklistMapper {
     boolean userIsInBlacklist(String loginName);
 
-    void updateBlacklist(BlacklistModel blacklistModel);
-
     void massInsertBlacklist(List<BlacklistModel> blacklistModels);
-
-    BlacklistModel findBlacklistModelByLoginName(String loginName);
 }
