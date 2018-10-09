@@ -358,6 +358,20 @@ sms-mq-consumer:
   links:
     - "redis-server"
 
+coupon-mq-consumer:
+  image: "anapsix/alpine-java:8_jdk"
+  environment:
+    - "TZ=Asia/Shanghai"
+    - "TTSD_ETCD_ENV=${TTSD_ETCD_ENV}"
+    - "JAVA_OPTS=-Xmx1024m"
+  volumes:
+    - ./ttsd-coupon-mq-consumer/build/distributions:/opt/worker
+    - /var/log/tuotian/ttsd-coupon-mq-consumer:/var/log/job-worker
+  command: bash -c "/opt/worker/ttsd-coupon-mq-consumer/bin/ttsd-coupon-mq-consumer"
+  links:
+    - "redis-server"
+    - "user-rest-service"
+
 ask-rest-service:
   image: "anapsix/alpine-java:8_jdk"
   environment:

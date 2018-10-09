@@ -20,8 +20,4 @@ public interface UserPointPrizeMapper {
     List<UserPointPrizeModel> findAllDescCreatedTime();
 
     long findAllNotReal();
-
-    List<PointPrizeWinnerViewDto> findAllPointPrizeGroupPrize();
-
-    List<PointPrizeWinnerViewDto> findByPointPrizeId(long pointPrizeId);
 }

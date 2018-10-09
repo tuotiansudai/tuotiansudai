@@ -8,11 +8,11 @@ import com.tuotiansudai.console.dto.ImportExcelDto;
 import com.tuotiansudai.console.service.ConsoleCouponService;
 import com.tuotiansudai.console.service.ConsoleUserService;
 import com.tuotiansudai.console.service.CouponActivationService;
+import com.tuotiansudai.coupon.exception.CreateCouponException;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.repository.model.*;
@@ -411,21 +411,6 @@ public class CouponController {
             list.add(redisWrapperClient.hget(redisKey, "success"));
         }
         return list;
-    }
-
-
-    @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
-    public ModelAndView pointPrize() {
-        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize");
-        modelAndView.addObject("pointPrizeWinnerGroups", userPointPrizeMapper.findAllPointPrizeGroupPrize());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/point-prize-detail", method = RequestMethod.GET)
-    public ModelAndView pointPrizeDetail(@RequestParam(value = "pointPrizeId") long pointPrizeId) {
-        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize-detail");
-        modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
-        return modelAndView;
     }
 
     @RequestMapping(value = "/coupons-list",method=RequestMethod.GET)
