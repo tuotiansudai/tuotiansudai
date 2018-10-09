@@ -61,7 +61,8 @@
 </#if>
 
 <#include "component/anxin-agreement.ftl" />
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 40px">市场有风险，出借需谨慎！</div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 10px">市场有风险，出借需谨慎！</div>
+    <div style="text-align: center;color: #A2A2A2">点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></div>
 </div>
 
 <div id="authorization_message" style="display: none">

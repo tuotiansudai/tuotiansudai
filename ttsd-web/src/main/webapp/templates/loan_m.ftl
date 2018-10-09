@@ -147,7 +147,6 @@
 <br/>
 
     <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
-    <div style="text-align: center;color: #A2A2A2">点击查看<a class="riskBook" style="color: #FF473C" >《风险揭示书》</a></div>
 
     <#if loan.loanStatus=='RAISING'>
         <button id="toInvest" class="to-invest-project" type="button">立即出借</button>

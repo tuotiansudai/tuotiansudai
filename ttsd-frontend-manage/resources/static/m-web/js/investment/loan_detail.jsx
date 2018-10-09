@@ -607,7 +607,7 @@ $('#investSubmit').on('click', function(event) {
                         commonFun.CommonLayerTip({
                             btn: ['确定'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBook" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center;margin-top: 20px;">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBook" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
                         },function() {
                             layer.closeAll();
                             noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
@@ -864,7 +864,7 @@ let limitMoneyTransfer = $transferDetail.data('estimate-limit')/100;
                     commonFun.CommonLayerTip({
                         btn: ['确定'],
                         area:['280px', '230px'],
-                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center;margin-top: 20px;">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
                     },function() {
                         layer.closeAll();
                         $transferForm.submit();
