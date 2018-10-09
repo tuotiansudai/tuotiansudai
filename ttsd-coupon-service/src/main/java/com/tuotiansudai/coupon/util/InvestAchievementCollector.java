@@ -1,12 +1,12 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Iterators;
-import com.tuotiansudai.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.UserGroup;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,10 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.coupon.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
+import com.tuotiansudai.coupon.exception.CreateCouponException;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.ExchangeCouponDto;
 import com.tuotiansudai.enums.CouponType;
-import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
@@ -103,11 +101,11 @@ public class ExchangeCodeServiceTest {
         CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "0", 1000000);
+        redisWrapperClient.hset(ExchangeCodeService.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已过期"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
+        redisWrapperClient.del(ExchangeCodeService.EXCHANGE_CODE_KEY + couponModel.getId());
     }
 
     @Test
@@ -121,11 +119,11 @@ public class ExchangeCodeServiceTest {
         CouponModel couponModel = this.createCoupon("couponTest", exchangeCouponDto);
 
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponModel.getId()) + "SDRFUJTHEG";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "1", 1000000);
+        redisWrapperClient.hset(ExchangeCodeService.EXCHANGE_CODE_KEY + couponModel.getId(), exchangeCode, "1", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已被使用"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
+        redisWrapperClient.del(ExchangeCodeService.EXCHANGE_CODE_KEY + couponModel.getId());
     }
 
     @Test
@@ -141,7 +139,7 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
         long couponId = this.createCoupon("couponTest", exchangeCouponDto).getId();
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId, exchangeCode, "0", 1000000);
+        redisWrapperClient.hset(ExchangeCodeService.EXCHANGE_CODE_KEY + couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
@@ -149,7 +147,7 @@ public class ExchangeCodeServiceTest {
         assertThat(couponModel.getIssuedCount(), is(1L));
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
         assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
-        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
+        redisWrapperClient.del(ExchangeCodeService.EXCHANGE_CODE_KEY + couponId);
     }
 
     @Test
@@ -164,7 +162,7 @@ public class ExchangeCodeServiceTest {
 
         exchangeCodeService.generateExchangeCode(couponModel.getId(), 100);
 
-        long codeCount = redisWrapperClient.hlen(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponModel.getId());
+        long codeCount = redisWrapperClient.hlen(ExchangeCodeService.EXCHANGE_CODE_KEY + couponModel.getId());
         assert (codeCount == 100);
     }
 

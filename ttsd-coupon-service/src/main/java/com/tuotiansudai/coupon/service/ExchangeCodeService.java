@@ -1,12 +1,10 @@
-package com.tuotiansudai.coupon.service.impl;
+package com.tuotiansudai.coupon.service;
 
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseWrapperDataDto;
 import com.tuotiansudai.dto.UserCouponDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
@@ -25,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ExchangeCodeServiceImpl implements ExchangeCodeService {
+public class ExchangeCodeService {
 
-    private static Logger logger = Logger.getLogger(ExchangeCodeServiceImpl.class);
+    private static Logger logger = Logger.getLogger(ExchangeCodeService.class);
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -62,12 +60,11 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             '9'
     };
 
-    @Override
-    public boolean generateExchangeCode(long couponId, int count) {
+    public void generateExchangeCode(long couponId, int count) {
 
         if (redisWrapperClient.exists(EXCHANGE_CODE_KEY + couponId)) {
             logger.error("generate exchange code failed, redis key already exists:" + EXCHANGE_CODE_KEY + couponId);
-            return false;
+            return;
         }
 
         CouponModel couponModel = couponMapper.findById(couponId);
@@ -76,12 +73,10 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         int lifeSeconds = (int) ((endTime.getTime() - now.getTime()) / 1000 + ONE_MONTH_SECOND * 6); // delay 6 months
 
         genExchangeCode(couponId, count, lifeSeconds);
-        return true;
     }
 
-    @Override
     public List<String> getExchangeCodes(long couponId) {
-        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
+        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeService.EXCHANGE_CODE_KEY + couponId);
         if (map == null) {
             return Lists.newArrayList();
         }
@@ -141,7 +136,6 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return new String(cs);
     }
 
-    @Override
     public BaseWrapperDataDto<UserCouponDto> exchange(String loginName, String exchangeCode) {
         BaseWrapperDataDto<UserCouponDto> baseDataDto = new BaseWrapperDataDto<>();
         long couponId = getValueBase31(exchangeCode);
@@ -174,7 +168,6 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return baseDataDto;
     }
 
-    @Override
     public boolean checkExchangeCodeDailyCount(String loginName) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
@@ -186,17 +179,14 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return Iterators.size(filter) >= DAILY_EXCHANGE_LIMIT;
     }
 
-    @Override
     public boolean checkExchangeCodeUsed(long couponId, String exchangeCode) {
         return redisWrapperClient.hget(EXCHANGE_CODE_KEY + couponId, exchangeCode).equals("1");
     }
 
-    @Override
     public boolean checkExchangeCodeExpire(CouponModel couponModel) {
         return couponModel.getEndTime().before(new Date());
     }
 
-    @Override
     public boolean checkExchangeCodeCorrect(String exchangeCode, long couponId, CouponModel couponModel) {
         return couponModel != null && exchangeCode.length() == EXCHANGE_CODE_LENGTH && redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode);
     }

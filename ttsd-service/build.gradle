@@ -21,6 +21,7 @@ dependencies {
             project(":ttsd-aa-repository"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),
+            project(":ttsd-coupon-service"),
             'com.itextpdf:itextpdf:5.5.10',
             'com.itextpdf:itext-asian:5.2.0'
 

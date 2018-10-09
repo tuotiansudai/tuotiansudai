@@ -29,6 +29,5 @@ include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
 include 'ttsd-sms-mq-consumer'
-include 'ttsd-cms-repository'
-include 'ttsd-cms-service'
-
+include 'ttsd-coupon-mq-consumer', 'ttsd-coupon-service'
+include 'ttsd-cms-repository', 'ttsd-cms-service'

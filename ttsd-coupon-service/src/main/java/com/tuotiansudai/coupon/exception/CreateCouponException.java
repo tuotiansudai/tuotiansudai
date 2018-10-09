@@ -1,4 +1,6 @@
-package com.tuotiansudai.exception;
+package com.tuotiansudai.coupon.exception;
+
+import com.tuotiansudai.exception.BaseException;
 
 public class CreateCouponException extends BaseException {
 

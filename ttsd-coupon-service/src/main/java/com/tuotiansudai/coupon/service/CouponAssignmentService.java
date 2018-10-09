@@ -1,21 +1,19 @@
-package com.tuotiansudai.coupon.service.impl;
+package com.tuotiansudai.coupon.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.InvestAchievementUserCollector;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.enums.CouponType;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
-import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
@@ -34,9 +32,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CouponAssignmentServiceImpl implements CouponAssignmentService {
+public class CouponAssignmentService {
 
-    private static Logger logger = Logger.getLogger(CouponAssignmentServiceImpl.class);
+    private static Logger logger = Logger.getLogger(CouponAssignmentService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -101,7 +99,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     @Resource(name = "investAchievementCollector")
     private InvestAchievementUserCollector investAchievementCollector;
 
-    @Override
     public UserCouponModel assignUserCoupon(String loginNameOrMobile, String exchangeCode) {
         String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
@@ -132,7 +129,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         return userCouponModel;
     }
 
-    @Override
     public void assignUserCoupon(String loginNameOrMobile, long couponId) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
 
@@ -178,7 +174,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         }
 
         if (isAssignableCoupon) {
-            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            UserCouponModel userCouponModel = this.assign(loginName, couponModel.getId(), null);
             if (userCouponModel == null) {
                 return;
             }
@@ -193,7 +189,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
      * @param loginNameOrMobile 指定的用户
      * @param userGroups        指定的userGroup
      */
-    @Override
     public List<CouponModel> asyncAssignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
         final String loginName = userModel.getLoginName();
@@ -249,7 +244,6 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
     }
 
     @Transactional
-    @Override
     public UserCouponModel assign(String loginName, long couponId, String exchangeCode) {
         CouponModel couponModel = couponMapper.lockById(couponId);
 
@@ -280,39 +274,37 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         return userCouponModel;
     }
 
-    @Override
-    public boolean assignInvestAchievementUserCoupon(String loginNameOrMobile, long loanId, long couponId) {
+    public void assignInvestAchievementUserCoupon(String loginNameOrMobile, long loanId, long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         CouponModel couponModel = couponMapper.findById(couponId);
 
         if (couponModel == null) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is not exist", String.valueOf(couponId)));
-            return false;
+            return;
         }
 
         if (!couponModel.isActive() || couponModel.getEndTime().before(new Date())) {
             logger.error(MessageFormat.format("[Coupon Assignment] coupon({0}) is inactive", String.valueOf(couponId)));
-            return false;
+            return;
         }
 
         boolean contains = investAchievementCollector.contains(couponModel.getId(), loanId, loginName, couponModel.getUserGroup());
 
         if (!contains) {
             logger.error(MessageFormat.format("[Coupon Assignment] user({0}) is not coupon({1}) user group({2})", loginName, String.valueOf(couponId), couponModel.getUserGroup()));
-            return false;
+            return;
         }
 
         if (couponModel.isMultiple()) {
-            UserCouponModel userCouponModel = ((CouponAssignmentService) AopContext.currentProxy()).assign(loginName, couponModel.getId(), null);
+            UserCouponModel userCouponModel = this.assign(loginName, couponModel.getId(), null);
             if (userCouponModel == null) {
-                return false;
+                return;
             }
             userCouponModel.setAchievementLoanId(loanId);
             userCouponMapper.update(userCouponModel);
             logger.info(MessageFormat.format("[Coupon Assignment] assign user({0}) coupon({1})", loginName, String.valueOf(couponId)));
         }
-        return true;
     }
 
     private UserCollector getCollector(UserGroup userGroup) {
