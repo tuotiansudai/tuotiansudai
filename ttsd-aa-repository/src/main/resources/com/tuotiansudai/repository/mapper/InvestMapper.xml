@@ -1237,7 +1237,7 @@
         SELECT IFNULL(sum(amount),0) FROM invest JOIN loan ON invest.loan_id = loan.id
         WHERE invest.status = 'SUCCESS'
         AND loan.id!='1'
-        AND( loan.status='RAISING' OR loan.status='RECHECK' OR loan .status='REPAYING',OR loan .status='OVERDUE')
+        AND( loan.status='RAISING' OR loan.status='RECHECK' OR loan.status='REPAYING' OR loan.status='OVERDUE')
         AND transfer_status !='SUCCESS'
         AND login_name=#{loginName}
     </select>
