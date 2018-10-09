@@ -5,7 +5,7 @@ import com.tuotiansudai.activity.repository.model.DragonBoatFestivalModel;
 import com.tuotiansudai.activity.repository.model.DragonBoatPunchCardPrize;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.ExperienceBillBusinessType;
 import com.tuotiansudai.enums.ExperienceBillOperationType;
 import com.tuotiansudai.message.ExperienceAssigningMessage;
@@ -116,7 +116,7 @@ public class DragonBoatFestivalService {
             prize = DragonBoatPunchCardPrize.InterestCoupon5;
         }
 
-        String exchangeCode = redisWrapperClient.lpop(ExchangeCodeServiceImpl.EXCHANGE_CODE_LIST_KEY + prize.getCouponId());
+        String exchangeCode = redisWrapperClient.lpop(ExchangeCodeService.EXCHANGE_CODE_LIST_KEY + prize.getCouponId());
         if (exchangeCode == null) {
             logger.error("[Dragon boat festival] exchange code is used done, coupon id:{}", prize.getCouponId());
             return null;

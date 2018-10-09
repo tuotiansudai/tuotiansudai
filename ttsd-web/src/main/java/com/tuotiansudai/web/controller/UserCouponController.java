@@ -2,9 +2,8 @@ package com.tuotiansudai.web.controller;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponAssignmentService;
-import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

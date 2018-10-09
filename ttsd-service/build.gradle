@@ -16,12 +16,12 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(":ttsd-client"),
             project(":ttsd-user-service"),
-            project(':ttsd-log-service'),
             project(":ttsd-membership"),
             project(":ttsd-util"),
             project(":ttsd-aa-repository"),
             project(":ttsd-quartz-extension"),
             project(":ttsd-job"),
+            project(":ttsd-coupon-service"),
             'com.itextpdf:itextpdf:5.5.10',
             'com.itextpdf:itext-asian:5.2.0'
 
