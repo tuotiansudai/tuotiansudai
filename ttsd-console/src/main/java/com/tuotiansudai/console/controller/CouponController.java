@@ -413,21 +413,6 @@ public class CouponController {
         return list;
     }
 
-
-    @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
-    public ModelAndView pointPrize() {
-        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize");
-        modelAndView.addObject("pointPrizeWinnerGroups", userPointPrizeMapper.findAllPointPrizeGroupPrize());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/point-prize-detail", method = RequestMethod.GET)
-    public ModelAndView pointPrizeDetail(@RequestParam(value = "pointPrizeId") long pointPrizeId) {
-        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize-detail");
-        modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
-        return modelAndView;
-    }
-
     @RequestMapping(value = "/coupons-list",method=RequestMethod.GET)
     public ModelAndView CouponsList(@RequestParam(value = "couponType",required = false,defaultValue = "RED_ENVELOPE") String couponType,
                                     @RequestParam(value = "couponSource",required = false) String couponSource,

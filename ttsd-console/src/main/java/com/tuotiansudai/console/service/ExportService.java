@@ -273,18 +273,6 @@ public class ExportService {
         return rows;
     }
 
-    public List<List<String>> buildPointPrize(List<PointPrizeWinnerViewDto> records) {
-        List<List<String>> rows = Lists.newArrayList();
-        for (PointPrizeWinnerViewDto record : records) {
-            List<String> row = Lists.newArrayList();
-            row.add(record.getDescription());
-            row.add(String.valueOf(record.getNum()));
-            row.add(record.isActive() ? "已生效" : "未生效");
-            rows.add(row);
-        }
-        return rows;
-    }
-
     public List<List<String>> buildConsoleLoanList(List<LoanListDto> records) {
         List<List<String>> rows = Lists.newArrayList();
         for (LoanListDto loanListDto : records) {
