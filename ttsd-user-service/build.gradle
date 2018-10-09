@@ -14,7 +14,6 @@ dependencies {
     compile project(':ttsd-dependency'),
             project(":ttsd-user-repository"),
             project(":ttsd-membership"),
-            project(":ttsd-log-service"),
             project(":ttsd-util"),
             project(":ttsd-client")
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')

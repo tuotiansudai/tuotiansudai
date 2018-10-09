@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
@@ -11,12 +12,13 @@ import com.tuotiansudai.dto.response.UserRestUserInfo;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
 import com.tuotiansudai.enums.SmsCaptchaType;
 import com.tuotiansudai.enums.UserOpType;
-import com.tuotiansudai.log.service.UserOpLogService;
 import com.tuotiansudai.message.WeChatBoundMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.repository.mapper.ExperienceAccountMapper;
 import com.tuotiansudai.repository.mapper.PrepareUserMapper;
 import com.tuotiansudai.repository.model.PrepareUserModel;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.UserRestClient;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -24,12 +26,16 @@ import com.tuotiansudai.rest.support.client.exceptions.RestException;
 import com.tuotiansudai.service.RegisterUserService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,9 +59,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RegisterUserService registerUserService;
-
-    @Autowired
-    private UserOpLogService userOpLogService;
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
@@ -167,7 +170,13 @@ public class UserServiceImpl implements UserService {
         }
 
         // 发送用户行为日志 MQ
-        userOpLogService.sendUserOpLogMQ(loginName, ip, platform, deviceId, UserOpType.CHANGE_PASSWORD, returnValue ? "Success" : "Fail");
+        String mobile= Optional.ofNullable(userMapper.findByLoginName(loginName)).orElse(new UserModel()).getMobile();
+        UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),loginName,mobile,UserOpType.CHANGE_PASSWORD,ip,deviceId,platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)),returnValue ? "Success" : "Fail");
+        try {
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
+        } catch (JsonProcessingException e) {
+            logger.error("[UserServiceImpl] " +"changePassword"+ ", send UserOperateLog fail.", e);
+        }
         return returnValue;
     }
 

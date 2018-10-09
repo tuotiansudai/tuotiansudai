@@ -4,6 +4,7 @@ import com.tuotiansudai.log.repository.mapper.UserOpLogMapper;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,8 @@ public class UserOperateLogMessageConsumer implements MessageConsumer {
         if (!StringUtils.isEmpty(message)) {
             UserOpLogModel userOpLogModel;
             try {
-                userOpLogModel = JsonConverter.readValue(message, UserOpLogModel.class);
+                UserOpLogMessage userOpLogMessage = JsonConverter.readValue(message, UserOpLogMessage.class);
+                userOpLogModel=new UserOpLogModel(userOpLogMessage.getId(),userOpLogMessage.getLoginName(),userOpLogMessage.getOpType(),userOpLogMessage.getIp(),userOpLogMessage.getDeviceId(),userOpLogMessage.getSource(),userOpLogMessage.getDescription());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -48,4 +50,5 @@ public class UserOperateLogMessageConsumer implements MessageConsumer {
         }
         logger.info("[MQ] consume message success.");
     }
+
 }

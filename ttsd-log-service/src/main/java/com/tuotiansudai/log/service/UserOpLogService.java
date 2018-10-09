@@ -5,6 +5,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.UserOpType;
 import com.tuotiansudai.log.repository.model.UserOpLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.UserOpLogMessage;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -29,19 +30,19 @@ public class UserOpLogService {
     private UserMapper userMapper;
 
     public void sendUserOpLogMQ(String loginName, String ip, String platform, String deviceId, UserOpType userOpType, String description) {
-        UserOpLogModel logModel = new UserOpLogModel();
-        logModel.setId(IdGenerator.generate());
-        logModel.setLoginName(loginName);
-        logModel.setMobile(getMobile(loginName));
-        logModel.setIp(ip);
-        logModel.setDeviceId(deviceId);
-        logModel.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
-        logModel.setOpType(userOpType);
-        logModel.setCreatedTime(new Date());
-        logModel.setDescription(description);
+        UserOpLogMessage logMessage = new UserOpLogMessage();
+        logMessage.setId(IdGenerator.generate());
+        logMessage.setLoginName(loginName);
+        logMessage.setMobile(getMobile(loginName));
+        logMessage.setIp(ip);
+        logMessage.setDeviceId(deviceId);
+        logMessage.setSource(platform == null ? null : Source.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+        logMessage.setOpType(userOpType);
+        logMessage.setCreatedTime(new Date());
+        logMessage.setDescription(description);
 
         try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logModel));
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(logMessage));
         } catch (JsonProcessingException e) {
             logger.error("[MQ] " + userOpType.getDesc() + ", send UserOperateLog fail.", e);
         }
