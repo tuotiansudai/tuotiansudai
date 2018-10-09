@@ -1,7 +1,11 @@
 <#list loan.pledgeVehicle as pledgeVehicle>
     <div class='vehicle-pledge'>
         <#if pledgeVehicle_index == 0>
-            <h3><span class='vehicle-title'>车辆信息<#if (loan.pledgeVehicle?size > 1)>${pledgeVehicle_index+1}</#if></span><button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>
+            <#if ['PERSONAL_CAPITAL_TURNOVER', 'ENTERPRISE_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType) && loan.loan.status == "WAITING_VERIFY">
+                <h3><input type='radio' id='vehicleRadio' checked><span class='vehicle-title'>车辆信息<#if (loan.pledgeVehicle?size > 1)>${pledgeVehicle_index+1}</#if></span><button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button><input type='radio' id='houseRadio' style='margin-left: 150px;'>房产信息</h3>
+            <#else>
+                <h3><span class='vehicle-title'>车辆信息<#if (loan.pledgeVehicle?size > 1)>${pledgeVehicle_index+1}</#if></span><button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>
+            </#if>
         <#else>
             <h3><span class='vehicle-title'>车辆信息${pledgeVehicle_index+1}</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button> <button type='button' class='jq-del-vehicle-pledge btn btn-info'>-</button></h3>
         </#if>
