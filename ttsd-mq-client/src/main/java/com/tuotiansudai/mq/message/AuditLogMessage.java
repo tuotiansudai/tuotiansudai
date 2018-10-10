@@ -127,18 +127,31 @@ public class AuditLogMessage implements Serializable {
         this.description = description;
     }
 
-    public static AuditLogMessage createUserActiveLogMessage(String loginName, String operatorLoginName,        n  userStatus, String userIp){
-        String operation = userStatus == UserStatus.ACTIVE ? " 解禁" : " 禁止";
-        String description = operatorLoginName + operation + "了用户［" + getRealName(loginName) + "］。";
-
+    public static AuditLogMessage createUserActiveLogMessage(String loginName, String operatorLoginName, String userStatus, String userIp, String userName, String operatorMobile) {
+        String operation = "ACTIVE".equalsIgnoreCase(userStatus) ? " 解禁" : " 禁止";
+        String description = operatorLoginName + operation + "了用户［" + userName == null ? loginName : userName + "］。";
         AuditLogMessage log = new AuditLogMessage();
         log.setId(IdGenerator.generate());
         log.setTargetId(loginName);
         log.setOperatorLoginName(operatorLoginName);
-        log.setOperatorMobile(this.getMobile(operatorLoginName));
+        log.setOperatorMobile(operatorMobile);
         log.setOperationType(OperationType.USER);
         log.setIp(userIp);
         log.setDescription(description);
-        return  log;
+        return log;
+    }
+
+    public static AuditLogMessage createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp, String operatorMobile, String auditorMobile) {
+        AuditLogMessage log = new AuditLogMessage();
+        log.setId(IdGenerator.generate());
+        log.setOperatorLoginName(operatorLoginName);
+        log.setOperatorMobile(operatorMobile);
+        log.setAuditorLoginName(auditorLoginName);
+        log.setAuditorMobile(auditorMobile);
+        log.setTargetId(targetId);
+        log.setOperationType(operationType);
+        log.setIp(auditorIp);
+        log.setDescription(description);
+        return log;
     }
 }

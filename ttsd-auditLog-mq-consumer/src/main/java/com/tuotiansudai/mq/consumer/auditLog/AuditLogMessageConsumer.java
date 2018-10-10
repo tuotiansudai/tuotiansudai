@@ -4,9 +4,11 @@ import com.tuotiansudai.log.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.consumer.MessageConsumer;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.util.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,7 @@ public class AuditLogMessageConsumer implements MessageConsumer {
         if (!StringUtils.isEmpty(message)) {
             AuditLogModel auditLogModel;
             try {
-                auditLogModel = JsonConverter.readValue(message, AuditLogModel.class);
+                auditLogModel=convertToLog(JsonConverter.readValue(message, AuditLogMessage.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -49,4 +51,11 @@ public class AuditLogMessageConsumer implements MessageConsumer {
         }
         logger.info("[MQ] consume message success.");
     }
+
+    private AuditLogModel convertToLog(AuditLogMessage auditLogMessage){
+        AuditLogModel auditLogModel=new AuditLogModel();
+        BeanUtils.copyProperties(auditLogMessage,auditLogModel);
+        return auditLogModel;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.dto.RemainUserDto;
 import com.tuotiansudai.console.dto.UserItemDataDto;
@@ -83,6 +84,9 @@ public class UserController {
 
     @Autowired
     private ConsoleRiskEstimateService consoleRiskEstimateService;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     private final static long MEMBERSHIP_V0 = 0;
     private final static long MEMBERSHIP_V1 = 1;
@@ -249,6 +253,8 @@ public class UserController {
         String mobile = userService.getMobile(loginName);
         signInClient.unlockUser(loginName, mobile);
         auditLogService.createUserActiveLog(loginName, LoginUserInfo.getLoginName(), UserStatus.ACTIVE, ip);
+        //
+
         return "OK";
     }
 

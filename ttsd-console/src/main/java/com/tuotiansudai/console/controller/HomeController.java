@@ -1,17 +1,21 @@
 package com.tuotiansudai.console.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.SerializeUtil;
@@ -46,7 +50,7 @@ public class HomeController {
     UserService userService;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private MQWrapperClient mqWrapperClient;
 
     private final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
@@ -151,8 +155,13 @@ public class HomeController {
             String operator = task.getSender();
             String operatorRealName = userService.getRealName(operator);
             String description = senderRealName + " 拒绝了 " + operatorRealName + " " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
-            auditLogService.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip);
-
+            AuditLogMessage auditLogMessage = AuditLogMessage.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip, userService.getMobile(operator), userService.getMobile(senderLoginName));
+            try {
+                String message = JsonConverter.writeValueAsString(auditLogMessage);
+                mqWrapperClient.sendMessage(MessageQueue.AuditLog, message);
+            } catch (JsonProcessingException e) {
+                logger.error("[MQ] send audit log message fail.", e);
+            }
             baseDto.setSuccess(true);
             baseDataDto.setStatus(true);
         } else {
