@@ -16,15 +16,6 @@
         SELECT COUNT(1) FROM `aa`.`blacklist` WHERE login_name = #{loginName} AND deleted = 0;
     </select>
 
-    <update id="updateBlacklist" parameterType="com.tuotiansudai.repository.model.BlacklistModel">
-        UPDATE `aa`.`blacklist` SET
-        created_time = #{createdTime},
-        updated_time = #{updatedTime},
-        deleted = #{deleted}
-        WHERE
-        login_name = #{loginName}
-    </update>
-
     <insert id="massInsertBlacklist" parameterType="java.util.List">
         INSERT INTO `aa`.`blacklist`
         (login_name, created_time, updated_time, deleted)
@@ -33,14 +24,5 @@
             (#{item.loginName}, #{item.createdTime}, #{item.updatedTime}, #{item.deleted})
         </foreach>
     </insert>
-
-    <select id="findBlacklistModelByLoginName" resultMap="blacklistResultMap">
-        SELECT
-        id, login_name, created_time, updated_time, deleted
-        FROM
-        `aa`.`blacklist`
-        WHERE
-        login_name = #{loginName}
-    </select>
 
 </mapper>
