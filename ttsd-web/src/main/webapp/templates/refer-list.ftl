@@ -94,10 +94,10 @@
         <tr>
             <th>被推荐人</th>
             <th>层级</th>
-            <th>投资标的</th>
-            <th class="tr">投资金额(元)</th>
+            <th>出借标的</th>
+            <th class="tr">出借金额(元)</th>
             <th>期数</th>
-            <th>投资时间</th>
+            <th>出借时间</th>
             <th class="tr">奖励金额(元)</th>
             <th>奖励时间</th>
         </tr>
@@ -118,7 +118,7 @@
         </tr>
         <% } %>
 
-        <%=records.length?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人投资记录</td></tr>'%>
+        <%=records.length?'':'<tr><td colspan="8" class="no-data">暂时没有推荐人出借记录</td></tr>'%>
         <tr>
             <td colspan="8" align="center">
                 推荐奖励总收益：<%=totalReward%>元

@@ -810,20 +810,14 @@ let limitMoneyTransfer = $transferDetail.data('estimate-limit')/100;
                     commonFun.CommonLayerTip({
                         btn: ['确定','取消'],
                         area:['280px', '230px'],
-                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
                     },function() {
                         layer.closeAll();
                         location.href = '/m/risk-estimate'
 
                     },function () {
-                        commonFun.useAjax({
-                            url: '/risk-estimate',
-                            data: {answers: ['-1']},
-                            type: 'POST'
-                        },function(data) {
-                            layer.closeAll();
-                            $transferForm.submit();
-                        });
+                        layer.closeAll();
+                        return false;
                     })
                     $('.layui-layer-content').css('height','180px')
                     return false;
@@ -967,20 +961,14 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
 
                         },function () {
-                            commonFun.useAjax({
-                                url: '/risk-estimate',
-                                data: {answers: ['-1']},
-                                type: 'POST'
-                            },function(data) {
-                                layer.closeAll();
-                                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
-                            });
+                            layer.closeAll();
+                            return false;
                         })
                         $('.layui-layer-content').css('height','180px')
                         return false;
@@ -994,20 +982,14 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
 
                         },function () {
-                            commonFun.useAjax({
-                                url: '/risk-estimate',
-                                data: {answers: ['-1']},
-                                type: 'POST'
-                            },function(data) {
-                                layer.closeAll();
-                                $('#transferForm').submit();
-                            });
+                            layer.closeAll();
+                            return false;
                         })
                         $('.layui-layer-content').css('height','180px')
                         return false;

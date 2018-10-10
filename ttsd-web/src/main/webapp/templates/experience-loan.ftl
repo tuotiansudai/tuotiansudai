@@ -40,7 +40,7 @@
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
-                <h5 class="l-title"><span id="riskTips" class="risk-tips">保守型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为保守型的用户</i></span>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+                <h5 class="l-title"><span id="riskTips" class="risk-tips">保守型<em></em><i class="risk-tip-content extra-rate-popup">该项目适合出借偏好类型为保守型的用户</i></span>拓天速贷提醒您：市场有风险，出借需谨慎！</h5>
                     <form action="/experience-invest" method="post" id="investForm">
                         <dl class="account-list new-text account-list-new">
                             <input type="hidden" name="loanId" value="1"/>
@@ -84,7 +84,7 @@
             起息时间：即投即生息<br/>
             还款方式：到期付息,体验金收回。<br/>
             出借要求：新手体验标仅能使用新手体验券进行出借。<br/>
-            项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行投资体验的虚拟项目。<br/>
+            项目简介：此项目为拓天速贷体验项目，是由拓天速贷设立的专门提供给新注册客户，进行出借体验的虚拟项目。<br/>
         </div>
         <div class="bg-w borderBox mt-20 project-model">
             <div class="model-nav">
@@ -139,8 +139,8 @@
             <i class="icon-tip"></i>
             <#--没有实名认证-->
             <div class="detail-word">
-                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元 <br/>
-                收益到账后后，需要实名认证并投资方可提现 <a href="/register/account" class="key">立即认证>></a>
+                <h2>出借成功！</h2> 您已成功出借体验金<span class="finish-amount"></span>元 <br/>
+                收益到账后后，需要实名认证并出借方可提现 <a href="/register/account" class="key">立即认证>></a>
                 <div class="pad-m-tb" style="padding-left:50px;">
                     <button type="button" class="btn-normal close-free">确认</button>
                 </div>
@@ -148,7 +148,7 @@
 
             <#--已经实名认证-->
             <div class="detail-word" style="display: none;">
-                <h2>投资成功！</h2> 您已成功投资体验金<span class="finish-amount"></span>元
+                <h2>出借成功！</h2> 您已成功出借体验金<span class="finish-amount"></span>元
                 <div class="pad-m-tb" style="padding-left:50px;">
                     <button type="button" class="btn-normal close-free">确认</button>
                 </div>
@@ -160,7 +160,7 @@
     <#include "component/red-envelope-float.ftl" />
 <#--风险测评-->
 <div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行出借偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>

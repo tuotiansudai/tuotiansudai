@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="资金相关" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="资金相关" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有出借需求的个人提供规范、安全、专业的互联网金融信息服务.">
 <div class="help-center-group">
     <h3>
         <a href="/help/help-center"><< 返回帮助中心</a>
@@ -94,7 +94,7 @@
 
                     <p class="single-title">7、新手体验项目怎么出借？</p>
 
-                    <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过出借行为的账户。登录官方网站—新手体验标的—马上投资—立即体验（无须绑卡和实名认证）。</p>
+                    <p class="single-answer">答：新手体验项目仅适用于从未在平台进行过出借行为的账户。登录官方网站—新手体验标的—马上出借—立即体验（无须绑卡和实名认证）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>

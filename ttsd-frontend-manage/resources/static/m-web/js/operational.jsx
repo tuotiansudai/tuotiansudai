@@ -360,7 +360,7 @@ let getPartThreePage = (data) => {
     let ageLoanLegendArr = [];
     let maleScale = data.maleScale;//投资人男性
     let femaleScale = data.femaleScale;//投资人女性
-    let loanerMaleScale = data.loanerMaleScale;//借款人男性
+    let loanerMaleScale = data.loanerMaleScale.toFixed(1);//借款人男性
     let loanerFemaleScale = data.loanerFemaleScale;//借款人女性
     let ageDistribution = data.ageDistribution;
     var loanerAgeDistribution = data.loanerAgeDistribution;

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
+<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要出借" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate???string('true', 'false')}"
      data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
      data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loan.estimateLevel!''}"
@@ -127,7 +127,7 @@
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if> <@global.role hasRole="'INVESTOR'">
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合出借偏好类型为${loan.estimate}的用户</i></span>  </#if> <@global.role hasRole="'INVESTOR'">
                         <#if !loan.investor.noPasswordInvest>
 
                                         <a class="fr open-no-password-invest" style="margin-right: 5px;" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
@@ -748,7 +748,7 @@
 <#--风险测评-->
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
 
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>

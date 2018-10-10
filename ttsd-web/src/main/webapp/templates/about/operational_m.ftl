@@ -1,5 +1,5 @@
 <#import "../macro/global_m.ftl" as global>
-<@global.main pageCss="${m_css.operational}" pageJavascript="${m_js.operational}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计出借金额及平台数据总览,为您提供安全投资的平台运营数据.">
+<@global.main pageCss="${m_css.operational}" pageJavascript="${m_js.operational}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台出借明细、注册出借用户、累计出借金额及平台数据总览,为您提供安全出借的平台运营数据.">
 <div class="about-us-container">
     <#if !isAppSource>
         <div class="go-back-container" id="goBack_experienceAmount">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="earn_total fourPart">
                     <div class="earn_total_icon register-user"></div>
-                    <div class="earn_total_text">注册投资用户数</div>
+                    <div class="earn_total_text">注册出借用户数</div>
                     <div class="text_underLine"></div>
                     <div class="earn_total_amount"><span id="total_trade_person"></span>人</div>
                 </div>

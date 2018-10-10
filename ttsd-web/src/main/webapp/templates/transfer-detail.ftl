@@ -16,7 +16,7 @@
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
             <div class="tips-wrap">
     <#if loanDto.estimate??>
-            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
+            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合出借偏好类型为${loanDto.estimate}的用户</i></span>
     </#if>
             <span class="product-tip">拓天速贷提醒您：市场有风险，出借需谨慎！</span>
             </div>
@@ -236,7 +236,7 @@
 </div>
 <#--风险测评-->
 <div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <div class="tc person-info-btn" style="margin-top:40px;">
         <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
         <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
