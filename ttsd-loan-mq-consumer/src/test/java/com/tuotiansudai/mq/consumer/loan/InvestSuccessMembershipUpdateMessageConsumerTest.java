@@ -1,4 +1,4 @@
-package com.tuotiansudai.mq.consumer.user;
+package com.tuotiansudai.mq.consumer.loan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.membership.service.MembershipInvestService;

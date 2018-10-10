@@ -1,7 +1,6 @@
-package com.tuotiansudai.scheduler.user;
+package com.tuotiansudai.scheduler.loan;
 
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.UserRegisterInfo;
@@ -16,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
