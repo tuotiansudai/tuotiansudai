@@ -30,7 +30,7 @@ UPDATE user_coupon
           JOIN invest i ON uc.invest_id = i.id
           JOIN loan l ON i.loan_id = l.id
           JOIN coupon c ON c.id = uc.coupon_id
-        WHERE l.id IN ('30497451731632')) temp ON user_coupon.id = temp.id
+        WHERE l.id IN ('112963360205872')) temp ON user_coupon.id = temp.id
 SET user_coupon.expected_interest = floor(temp.amount * temp.rate / 365 * temp.period),
   user_coupon.expected_fee        = floor(temp.amount * temp.rate / 365 * temp.period * temp.fee_rate);
 
