@@ -39,8 +39,7 @@ let isEstimate = $loanDetailContent.data('estimate');
 
 //风险等级是否超出
 let avalibableMoney = $loanDetailContent.data('available-invest-money');
-amountInputElement.autoNumeric("init");
-let investAmount= getInvestAmount();
+
 
 let userLevel = $loanDetailContent.data('estimate-level');
 let loanLevel = $loanDetailContent.data('loan-estimate-level');
@@ -87,6 +86,7 @@ function validateInvestAmount() {
 };
 //出借表单请求以及校验
 function investSubmit(){
+    amountInputElement.autoNumeric("init");
     let $minInvestAmount = amountInputElement.data('min-invest-amount')
     var investAmount = getInvestAmount();
     var isOverQuota = avalibableMoney<investAmount;
