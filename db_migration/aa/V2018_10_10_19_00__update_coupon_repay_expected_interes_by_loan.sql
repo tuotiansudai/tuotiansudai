@@ -13,7 +13,9 @@ UPDATE coupon_repay
           JOIN invest i ON cr.invest_id = i.id
           JOIN loan l ON i.loan_id = l.id
           JOIN coupon c ON c.id = cr.coupon_id
-        WHERE l.id IN ('112963360205872')) temp ON coupon_repay.id = temp.id
+        WHERE
+          l.id IN ('112946676244640', '112130438885536', '112048445759504', '112048286784528', '112047742185488')) temp
+    ON coupon_repay.id = temp.id
 SET coupon_repay.expected_interest = floor(temp.amount * temp.rate / 365 * temp.period),
   coupon_repay.expected_fee        = floor(temp.amount * temp.rate / 365 * temp.period * temp.fee_rate);
 
@@ -30,7 +32,9 @@ UPDATE user_coupon
           JOIN invest i ON uc.invest_id = i.id
           JOIN loan l ON i.loan_id = l.id
           JOIN coupon c ON c.id = uc.coupon_id
-        WHERE l.id IN ('112963360205872')) temp ON user_coupon.id = temp.id
+        WHERE
+          l.id IN ('112946676244640', '112130438885536', '112048445759504', '112048286784528', '112047742185488')) temp
+    ON user_coupon.id = temp.id
 SET user_coupon.expected_interest = floor(temp.amount * temp.rate / 365 * temp.period),
   user_coupon.expected_fee        = floor(temp.amount * temp.rate / 365 * temp.period * temp.fee_rate);
 
