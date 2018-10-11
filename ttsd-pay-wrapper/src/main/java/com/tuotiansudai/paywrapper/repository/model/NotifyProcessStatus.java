@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model;
 
 /**
- * 投资回调处理状态
+ * 出借回调处理状态
  */
 public enum NotifyProcessStatus {
     /**

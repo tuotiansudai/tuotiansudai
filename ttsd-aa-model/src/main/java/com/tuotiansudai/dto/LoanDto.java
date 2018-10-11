@@ -79,21 +79,21 @@ public class LoanDto extends BaseDataDto implements Serializable {
     private PledgeType pledgeType;
 
     /***
-     * 最小投资金额
+     * 最小出借金额
      ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String minInvestAmount;
 
     /***
-     * 投资递增金额
+     * 出借递增金额
      ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String investIncreasingAmount;
 
     /***
-     * 单笔最大投资金额
+     * 单笔最大出借金额
      ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
@@ -218,6 +218,8 @@ public class LoanDto extends BaseDataDto implements Serializable {
     private List<Long> extraRateIds;
 
     private String estimate;
+
+    private int estimateLevel;
 
     public LoanDto() {
     }
@@ -557,5 +559,13 @@ public class LoanDto extends BaseDataDto implements Serializable {
 
     public void setEstimate(String estimate) {
         this.estimate = estimate;
+    }
+
+    public int getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(int estimateLevel) {
+        this.estimateLevel = estimateLevel;
     }
 }

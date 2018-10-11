@@ -8,22 +8,22 @@
             <h3><span>使用规则</span></h3>
             <dl>
                 <dt>体验券使用规则：</dt>
-                <dd>1. 体验券仅适用于标的投资；</dd>
+                <dd>1. 体验券仅适用于标的出借；</dd>
                 <dd>2. 体验结束后系统自动收回本金，收益转回用户账户内，详见“我的账户”-->“资金管理”；</dd>
                 <dd>3. 如体验券中有限制条件， 用户必须按照限制条件使用。</dd>
             </dl>
             <dl>
                 <dt>加息券使用规则：</dt>
-                <dd>1. 加息券仅适用于标的投资；</dd>
+                <dd>1. 加息券仅适用于标的出借；</dd>
                 <dd>2. 标的回款后，加息券所得收益转回用户账户内，详见“我的账户”-->“资金管理”；</dd>
                 <dd>3. 如加息券中有限制条件， 用户必须按照限制条件使用；</dd>
-                <dd>4. 使用方式：在“我要投资”-->“标的详情”页面选择使用加息券。</dd>
+                <dd>4. 使用方式：在“我要出借”-->“标的详情”页面选择使用加息券。</dd>
             </dl>
             <dl>
                 <dt>红包使用规则：</dt>
-                <dd>1. 在投资过程中使用红包，投资成功放款后即可返现；</dd>
-                <dd>2. 投资红包不可与平台其他优惠券同时使用（3元投资红包除外）；</dd>
-                <dd>3. 投资成功放款后用户获得的现金可在“我的账户”中查询，提现；</dd>
+                <dd>1. 在出借过程中使用红包，出借成功放款后即可返现；</dd>
+                <dd>2. 出借红包不可与平台其他优惠券同时使用（3元出借红包除外）；</dd>
+                <dd>3. 出借成功放款后用户获得的现金可在“我的账户”中查询，提现；</dd>
                 <dd>4. 如红包有使用条件，用户需要按照条件使用。</dd>
             </dl>
             <div class="close-text">
@@ -97,9 +97,9 @@
                                     <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||
                                     coupon.couponType == 'INVEST_COUPON' || coupon.couponType == 'INTEREST_COUPON'>
                                         <#if coupon.investLowerLimit != 0>
-                                            ［投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元即可使用］
+                                            ［出借满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元即可使用］
                                         <#else>
-                                            ［投资即可使用］
+                                            ［出借即可使用］
                                         </#if>
                                     </#if>
                                 </p>
@@ -181,13 +181,13 @@
 
                                 <p>
                                     <#if record.couponType == 'RED_ENVELOPE'>
-                                        ［投资成功放款返现］
+                                        ［出借成功放款返现］
                                     <#elseif record.couponType == 'NEWBIE_COUPON'>
-                                        ［在拓天平台投资可用］
+                                        ［在拓天平台出借可用］
                                     <#elseif record.couponType == 'INVEST_COUPON'>
-                                        ［单笔投资满 <@amount>${record.investLowerLimit?string(0)}</@amount> 元可用］
+                                        ［单笔出借满 <@amount>${record.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif record.couponType == 'INTEREST_COUPON'>
-                                        ［投资即可使用］
+                                        ［出借即可使用］
                                     <#elseif record.couponType == 'BIRTHDAY_COUPON'>
                                         ［仅限发券当月使用］
                                     </#if>
@@ -222,7 +222,7 @@
 
                             <p>
                                 <span class="left-text">所投标的： ${record.loanName!}</span>
-                                <span class="right-text">投资金额： ${(record.investAmount/100)?float}元</span>
+                                <span class="right-text">出借金额： ${(record.investAmount/100)?float}元</span>
                             </p>
 
                             <p>
@@ -263,13 +263,13 @@
 
                                 <p>
                                     <#if coupon.couponType == 'RED_ENVELOPE'>
-                                        ［投资成功放款返现］
+                                        ［出借成功放款返现］
                                     <#elseif coupon.couponType == 'NEWBIE_COUPON'>
-                                        ［在拓天平台投资可用］
+                                        ［在拓天平台出借可用］
                                     <#elseif coupon.couponType == 'INVEST_COUPON'>
-                                        ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                        ［单笔出借满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［投资即可使用］
+                                        ［出借即可使用］
                                     </#if>
                                 </p>
 

@@ -54,14 +54,14 @@
 
     <div class="target-category-box newer-experience" data-url="/m/loan/1">
         <b class="newer-title"><span class="exper-title">${experienceLoan.name} </span><i
-                class="icon-sign exper <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(experienceLoan.status)>sold</#if>">体验金投资</i></b>
+                class="icon-sign exper <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(experienceLoan.status)>sold</#if>">体验金出借</i></b>
         <ul class="loan-info clearfix">
             <li>
                 <span class="percent-number"><i>${experienceLoan.baseRate}</i>%</span>
                 <em class="note">约定年化利率</em>
             </li>
             <li><em class="duration-day">${experienceLoan.duration}</em> 天 <em class="note">项目期限</em></li>
-            <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即投资</a></li>
+            <li><a class="btn-invest btn-normal goToExDetail" data-url="/m/loan/1">立即出借</a></li>
         </ul>
     </div>
 <#--新手专享-->
@@ -84,7 +84,7 @@
                 <li>
                     <#if newbieLoan.status== 'RAISING'>
                         <a href="javascript:void(0)" class="btn-invest btn-normal goToDetail"
-                           data-url="/m/loan/${newbieLoan.id?c}">立即投资</a>
+                           data-url="/m/loan/${newbieLoan.id?c}">立即出借</a>
                     <#elseif newbieLoan.status == 'PREHEAT'>
                         <a href="javascript:void(0)" class="btn-invest btn-normal preheat-status preheat-btn"
                            style="opacity: 0.6" data-url="/m/loan/${newbieLoan.id?c}">预热中</a>
@@ -158,7 +158,7 @@
                     <li>
                         <#if loan.status== 'RAISING'>
                             <a href="javascript:void(0)" data-url="/m/loan/${loan.id?c}"
-                               class="btn-invest btn-normal goToDetail">立即投资</a>
+                               class="btn-invest btn-normal goToDetail">立即出借</a>
                         <#elseif loan.status == 'PREHEAT'>
                             <a href="javascript:void(0)" data-url="/m/loan/${loan.id?c}"
                                class="btn-invest btn-normal preheat-status preheat-btn" style="opacity: 0.6">预热中</a>

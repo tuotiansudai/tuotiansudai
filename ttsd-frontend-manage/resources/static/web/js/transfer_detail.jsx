@@ -1,6 +1,6 @@
 require('webStyle/investment/transfer_detail.scss');
 require('webJsModule/coupon_alert');
-//投资计算器和意见反馈
+//出借计算器和意见反馈
 require('webJsModule/red_envelope_float');
 require('publicJs/login_tip');
 let commonFun= require('publicJs/commonFun');
@@ -14,6 +14,21 @@ var $transferDetailCon = $('#transferDetailCon'),
     $detailRecord = $('.detail-record', $transferDetailCon),
     $isAnxinAuthenticationRequired = $('#isAnxinAuthenticationRequired');
 let isEstimate = $transferDetailCon.data('estimate');
+
+//风险等级是否超出
+let avalibableMoney = $transferDetailCon.data('available-invest-money');
+
+let investAmount= $transferDetailCon.data('price');
+
+let userLevel = $transferDetailCon.data('estimate-level');
+let loanLevel = $transferDetailCon.data('loan-estimate-level');
+let isOverLevel = userLevel<loanLevel;
+// let isOverLevel = true;
+//可用额度是否超出
+let isOverQuota = avalibableMoney<investAmount*100;
+
+// let isOverQuota = true;
+
 
 $detailRecord.find('li').on('click', function() {
     var $this = $(this),
@@ -96,11 +111,11 @@ function submitData() {
             layer.open({
                 type: 1,
                 closeBtn: 0,
-                title: '投资提示',
+                title: '出借提示',
                 shadeClose: false,
                 btn: ['取消', '确认'],
                 area: ['300px'],
-                content: '<p class="pad-m-tb tc">确认投资？</p>',
+                content: '<p class="pad-m-tb tc">确认出借？</p>',
                 btn1: function() {
                     layer.closeAll();
                 },
@@ -134,7 +149,41 @@ function submitData() {
                             });
                             return false;
                         }else {
-                            $transferForm.submit();
+                            if(isOverLevel){
+                                layer.open({
+                                    type: 1,
+                                    title:'温馨提示',
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskGradeForm')
+
+                                });
+                                return false;
+                            }
+                            if(isOverQuota){
+                                layer.open({
+                                    type: 1,
+                                    title:'温馨提示',
+                                    closeBtn: 0,
+                                    area: ['400px', '250px'],
+                                    shadeClose: true,
+                                    content: $('#riskBeyondForm')
+
+                                });
+                                return false;
+                            }
+
+                            layer.open({
+                                type: 1,
+                                title:'风险提示',
+                                closeBtn: 0,
+                                area: ['400px', '250px'],
+                                shadeClose: true,
+                                content: $('#riskTipForm')
+
+                            });
+                            // $transferForm.submit();
                         }
 
                     }else{
@@ -163,9 +212,9 @@ $questionList.find('dt').on('click', function(index) {
 
 //**************************安心签*******************************
 
-//勾选马上投资下方 协议复选框
+//勾选马上出借下方 协议复选框
 $('.init-checkbox-style').initCheckbox(function(event) {
-    //如果安心签协议未勾选，马上投资按钮需要置灰
+    //如果安心签协议未勾选，马上出借按钮需要置灰
     let checkboxBtn = event.children[0];
     let checkBool = $(checkboxBtn).prop('checked');
     if(checkboxBtn.id=='skipCheck') {
@@ -194,7 +243,41 @@ anxinModule.toAuthorForAnxin(function(data) {
         });
         return false;
     }else {
-        $('#transferForm').submit();
+        if(isOverLevel){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskGradeForm')
+
+            });
+            return false;
+        }
+        if(isOverQuota){
+            layer.open({
+                type: 1,
+                title:'温馨提示',
+                closeBtn: 0,
+                area: ['400px', '250px'],
+                shadeClose: true,
+                content: $('#riskBeyondForm')
+
+            });
+            return false;
+        }
+
+        layer.open({
+            type: 1,
+            title:'风险提示',
+            closeBtn: 0,
+            area: ['400px', '250px'],
+            shadeClose: true,
+            content: $('#riskTipForm')
+
+        });
+        // $('#transferForm').submit();
     }
 
 
@@ -202,20 +285,14 @@ anxinModule.toAuthorForAnxin(function(data) {
 });
 
 var $riskAssessment = $('#riskAssessment');
-var $cancelAssessment = $('#cancelAssessment'),
-    $confirmAssessment = $('#confirmAssessment'),
+var $cancelAssessment = $('.cancelAssessment'),
+    $confirmAssessment = $('.confirmAssessment'),
     $riskTips = $('#riskTips');
 
 $cancelAssessment.on('click', function(event) {
     event.preventDefault();
-    commonFun.useAjax({
-        url: '/risk-estimate',
-        data: {answers: ['-1']},
-        type: 'POST'
-    },function(data) {
-        layer.closeAll();
-        $transferForm.submit();
-    });
+    layer.closeAll();
+    return false;
 
 });
 $confirmAssessment.on('click', function(event) {
@@ -232,5 +309,7 @@ $riskTips.on('mouseout', function(event) {
     $('.risk-tip-content').hide();
 });
 
-
+$('.confirmInvest').on('click',function () {
+    $('#transferForm').submit();
+})
 

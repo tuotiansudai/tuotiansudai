@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@Api(description = "投资回款")
+@Api(description = "出借回款")
 public class MobileAppUserInvestRepayController extends MobileAppBaseController {
     @Autowired
     private MobileAppUserInvestRepayService mobileAppUserInvestRepayService;
 
     @RequestMapping(value = "/get/user-invest-repay", method = RequestMethod.POST)
-    @ApiOperation("投资回款")
+    @ApiOperation("出借回款")
     public BaseResponseDto<UserInvestRepayResponseDataDto> userInvestRepay(@RequestBody UserInvestRepayRequestDto userInvestRepayRequestDto) {
 
         return mobileAppUserInvestRepayService.userInvestRepay(userInvestRepayRequestDto);

@@ -14,7 +14,7 @@ public class UserInvestListResponseDataDto extends BaseResponseDataDto{
 
     private Integer totalCount;
 
-    @ApiModelProperty(value = "用户投资列表(包含直投项目和债券转让项目)", example = "list")
+    @ApiModelProperty(value = "用户出借列表(包含直投项目和债券转让项目)", example = "list")
     private List<UserInvestRecordResponseDataDto> investList;
 
     public Integer getIndex() {

@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手投资_拓天速贷" keywords="拓天速贷,新手投资,新手投资福利,新手指引" description="拓天速贷为广大投资用户提供多元化的投资选择和优质的金融信息服务,拓天速贷投资用户可通过新手专区领取现金588元红包大奖进行投资,获得稳定收益.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手出借_拓天速贷" keywords="拓天速贷,新手出借,新手出借福利,新手指引" description="拓天速贷为广大出借用户提供多元化的出借选择和优质的金融信息服务,拓天速贷出借用户可通过新手专区领取现金588元红包大奖进行出借,获得稳定收益.">
 
 <div class="new-guide-container" id="pageGuide">
     <ul class="quick-top-link page-width">
@@ -18,7 +18,7 @@
      </div>
 
     <div class="section-box-two clearfix pad-box page-width">
-        <div class="column-title-ac"><i></i>为什么选择拓天速贷投资<i></i> </div>
+        <div class="column-title-ac"><i></i>为什么选择拓天速贷出借<i></i> </div>
         <dl>
             <dt><span>01</span>高收益＋稳定</dt>
             <dd>可选择不同期限产品，约定年化利率最高可达<em>8%~10%</em></dd>
@@ -64,7 +64,7 @@
         <div class="line"></div>
         <dl class="box-03 fl">
             <dt><span>03</span>高效便捷＋门槛低</dt>
-            <dd>手机APP随时随地便捷投资，只需50元。</dd>
+            <dd>手机APP随时随地便捷出借，只需50元。</dd>
             <dd class="benefit-img ">
             </dd>
          </dl>
@@ -98,7 +98,7 @@
                     约定年化利率10%</span></li>
             </ul>
     <div class="tc">
-        <a href="/loan-list" class="btn-guide">立刻投资</a>
+        <a href="/loan-list" class="btn-guide">立刻出借</a>
     </div>
             <div class="sub-title-two">
                 <div class="line-align"></div>
@@ -118,10 +118,10 @@
     </div>
 
     <div class="section-box-four clearfix pad-box page-width">
-        <div class="column-title-ac"><i></i>如何投资<i></i> </div>
+        <div class="column-title-ac"><i></i>如何出借<i></i> </div>
         <div class="assure-steps"></div>
         <div class="tc">
-            <a href="/register/user" class="btn-guide">注册投资</a>
+            <a href="/register/user" class="btn-guide">注册出借</a>
         </div>
     </div>
 

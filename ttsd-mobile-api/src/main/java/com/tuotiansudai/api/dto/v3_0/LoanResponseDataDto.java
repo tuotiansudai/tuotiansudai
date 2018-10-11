@@ -33,7 +33,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "标的金额", example = "100")
     private String loanAmount;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investAmount;
 
     @ApiModelProperty(value = "项目状态代码", example = "recheck,repaying,raising,complete")
@@ -54,7 +54,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     private String cardinalNumber;
 
-    @ApiModelProperty(value = "投资上限", example = "100")
+    @ApiModelProperty(value = "出借上限", example = "100")
     private String maxInvestMoney;
 
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360")
@@ -69,10 +69,10 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     public String cardinalNumberCent;
 
-    @ApiModelProperty(value = "投资上限", example = "100")
+    @ApiModelProperty(value = "出借上限", example = "100")
     public String maxInvestMoneyCent;
 
-    @ApiModelProperty(value = "投资总额", example = "10000")
+    @ApiModelProperty(value = "出借总额", example = "10000")
     public String investedMoneyCent;
 
     @ApiModelProperty(value = "借款总额", example = "10000")
@@ -84,7 +84,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "阶梯加息", example = "list")
     private List<ExtraRateListResponseDataDto> extraRates;
 
-    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通投资),NEWBIE(新手专享),EXCLUSIVE(定向投资),PROMOTION(加息投资)")
+    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通出借),NEWBIE(新手专享),EXCLUSIVE(定向出借),PROMOTION(加息出借)")
     private String activityDesc;
 
     @ApiModelProperty(value = "抵押", example = "HOUSE,VEHICLE,ENTERPRISE,NONE")

@@ -110,7 +110,7 @@ public class SuperScholarActivityRewardScheduler {
             logger.error("[SUPER_SCHOLAR_ACTIVITY] invest:{}, user:{}, cash:{} send:error:{}", investId, loginName, reward, e.getMessage());
         }
         redisWrapperClient.setex(key, lifeSecond, "fail");
-        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【学霸加薪季活动】用户:{0}, 投资Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward)));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("【学霸加薪季活动】用户:{0}, 出借Id:{1}, 获得现金:{2}, 发送现金失败, 业务处理异常", loginName, String.valueOf(investId), String.valueOf(reward)));
     }
 
 }

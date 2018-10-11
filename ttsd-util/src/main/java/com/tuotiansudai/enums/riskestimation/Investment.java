@@ -1,6 +1,6 @@
 package com.tuotiansudai.enums.riskestimation;
 
-//可用于金融投资的比例
+//可用于金融出借的比例
 public enum Investment {
     LESS_THAN_10(1, "小于10%", 0.1),
     _10_25(2, "10%至25%", 0.25),

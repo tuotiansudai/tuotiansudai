@@ -2,9 +2,9 @@ package com.tuotiansudai.enums;
 
 public enum CouponType {
 
-    RED_ENVELOPE("投资红包", "红包", 1),
+    RED_ENVELOPE("出借红包", "红包", 1),
     NEWBIE_COUPON("新手体验金", "新手", 2),
-    INVEST_COUPON("投资体验券", "投资", 3),
+    INVEST_COUPON("出借体验券", "出借", 3),
     INTEREST_COUPON("加息券", "加息", 4),
     BIRTHDAY_COUPON("生日福利券", "生日", 5);
 

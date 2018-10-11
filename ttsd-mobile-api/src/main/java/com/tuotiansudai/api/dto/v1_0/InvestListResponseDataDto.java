@@ -15,7 +15,7 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "总计", example = "20")
     private Integer totalCount;
 
-    @ApiModelProperty(value = "投资记录", example = "list")
+    @ApiModelProperty(value = "出借记录", example = "list")
     private List<InvestRecordResponseDataDto> investRecord;
 
     @ApiModelProperty(value = "标王信息", example = "list")

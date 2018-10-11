@@ -60,12 +60,12 @@ public class LoanOutSuccessSendCouponMessageConsumer implements MessageConsumer 
             result = payWrapperClient.sendRedEnvelopeAfterLoanOut(loanId).isSuccess();
         } catch (Exception e) {
             logger.error("[标的放款MQ] LoanOutSuccess_AssignCoupon json convert LoanOutSuccessMessage is fail, message:{}", message);
-            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "发送投资红包失败, 业务处理异常");
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "发送出借红包失败, 业务处理异常");
             return;
         }
 
         if (!result) {
-            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("发送投资红包失败,标的ID:{0}", String.valueOf(loanId)));
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("发送出借红包失败,标的ID:{0}", String.valueOf(loanId)));
             logger.error(MessageFormat.format("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail. loanId:{0}", String.valueOf(loanId)));
             throw new RuntimeException("[标的放款MQ] LoanOutSuccess_AssignCoupon is fail. loanOutInfo: " + message);
         }

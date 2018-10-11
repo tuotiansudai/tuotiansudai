@@ -8,7 +8,7 @@
     <div class="main-content">
         <div class="box-column">
             <h2>
-                邀请好友投资，拿<em class="key">0.5%奖励</em>
+                邀请好友出借，拿<em class="key">0.5%奖励</em>
             </h2>
             <div class="box-in">
             <span class="man-col">
@@ -30,8 +30,8 @@
         </div>
 
         <div class="recommend-note">
-            1、好友所投项目放款后，奖励即发放至您的账户；<br/>
-            2、推荐奖励=<em class="key"> 好友投资金额×0.5%×<i class="period">项目期限</i></em>；
+            1、好友出借项目放款后，奖励即发放至您的账户；<br/>
+            2、推荐奖励=<em class="key"> 好友出借金额×0.5%×<i class="period">项目期限</i></em>；
         </div>
 
         <div class="learn-more">
@@ -44,8 +44,8 @@
             <b>如何获得奖励？</b>
 
             1、分享链接发送给好友或发朋友圈； <br/>
-            2、好友通过此链接注册并投资；<br/>
-            3、好友投资项目放款后，奖金即发放至您的账户；<br/>
+            2、好友通过此链接注册并出借；<br/>
+            3、好友出借项目放款后，奖金即发放至您的账户；<br/>
         </div>
 
         <div class="share-box">
@@ -75,7 +75,7 @@
     <div class="main-content">
         <div class="box-column">
             <h2>
-                邀请好友投资，拿<em class="key">0.5%奖励</em>
+                邀请好友出借，拿<em class="key">0.5%奖励</em>
             </h2>
             <div class="box-in">
             <span class="man-col">
@@ -98,7 +98,7 @@
 
         <div class="box-column">
             <h2>
-                好友<em class="key">再邀人</em>投资，<em class="key">再拿0.5%</em>奖励
+                好友<em class="key">再邀人</em>出借，<em class="key">再拿0.5%</em>奖励
             </h2>
             <div class="box-in">
             <span class="man-col">
@@ -130,14 +130,14 @@
             <b>奖励规则</b>
 
             1、好友所投项目放款后，奖励即发放至您的账户；<br/>
-            2、推荐奖励=<em class="key">好友投资金额×0.5%× <i class="period">项目期限</i> </em> ；<br/>
-            3、好友投资以及好友邀请的好友投资，您均可获得奖励；好友的好友再邀请人投资，您不再获得奖励；<br/>
-            4、好友注册可得6888体验金和668元投资红包。<br/>
+            2、推荐奖励=<em class="key">好友出借金额×0.5%× <i class="period">项目期限</i> </em> ；<br/>
+            3、好友出借以及好友邀请的好友出借，您均可获得奖励；好友的好友再邀请人出借，您不再获得奖励；<br/>
+            4、好友注册可得6888体验金和668元出借红包。<br/>
 
         </div>
 
         <table>
-            <caption>好友投资五万元</caption>
+            <caption>好友出借五万元</caption>
             <tr>
                 <th>项目期限</th>
                 <th>30天</th>
@@ -155,7 +155,7 @@
         </table>
 
         <table>
-            <caption>好友的好友投资五万元</caption>
+            <caption>好友的好友出借五万元</caption>
             <tr>
                 <th>项目期限</th>
                 <th>30天</th>
@@ -196,7 +196,7 @@
         <dl class="info-item">
             <dt>扫码说明:</dt>
             <dd>1、好友扫描二维码成功，打开注册链接；</dd>
-            <dd>2、好友按照提示完成注册并成功投资，您就可以获得奖励啦！</dd>
+            <dd>2、好友按照提示完成注册并成功出借，您就可以获得奖励啦！</dd>
         </dl>
     </div>
 </div>

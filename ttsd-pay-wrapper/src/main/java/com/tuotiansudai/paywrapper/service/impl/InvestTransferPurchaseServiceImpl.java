@@ -229,8 +229,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         baseDataDto.setStatus(true);
 
         if (model == null) {
-            logger.error(MessageFormat.format("债权转让投资回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
-            sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
+            logger.error(MessageFormat.format("债权转让出借回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
+            sendFatalNotify(MessageFormat.format("债权转让出借回调处理错误。{0},{1} 发送请求记录不存在", environment, String.valueOf(notifyRequestId)));
             return new BaseDto<>(baseDataDto);
         }
 
@@ -242,7 +242,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 } catch (Exception e) {
                     String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
                     logger.error(errMsg, e);
-                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
+                    sendFatalNotify(MessageFormat.format("债权转让出借回调处理错误。{0},{1}", environment, errMsg));
                 }
             }
         }
@@ -473,7 +473,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return true;
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update request status is failed", model.getOrderId()), e);
-            this.sendFatalNotify(MessageFormat.format("债权转让投资({0})回调状态更新错误", model.getOrderId()));
+            this.sendFatalNotify(MessageFormat.format("债权转让出借({0})回调状态更新错误", model.getOrderId()));
         }
 
         return false;
@@ -494,7 +494,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
 
         if (!callbackRequestModel.isSuccess()) {
-            // 失败的话：更新 invest 状态为投资失败
+            // 失败的话：更新 invest 状态为出借失败
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback is failed", String.valueOf(investId)));
             investModel.setStatus(InvestStatus.FAIL);
             investMapper.update(investModel);
@@ -524,7 +524,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
 
     /**
-     * 超投处理：返款、更新投资状态为失败
+     * 超投处理：返款、更新出借状态为失败
      *
      * @param transferApplicationModel
      * @param investId
@@ -554,9 +554,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
+        // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行出借成功处理
         logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer over invest payback({1}) is failed", String.valueOf(investId), String.valueOf(transferAmount)));
-        // 如果返款失败，则记录本次投资为 超投返款失败
+        // 如果返款失败，则记录本次出借为 超投返款失败
         investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK_FAIL);
         investMapper.update(investModel);
         sendFatalNotify(MessageFormat.format("债权转让购买({0})超投返款失败", String.valueOf(investId)));

@@ -358,10 +358,10 @@ let getPartThreePage = (data) => {
     let ageLegendArr = [];
     let ageLoanArr = [];
     let ageLoanLegendArr = [];
-    let maleScale = data.maleScale;//投资人男性
-    let femaleScale = data.femaleScale;//投资人女性
-    let loanerMaleScale = data.loanerMaleScale;//借款人男性
-    let loanerFemaleScale = data.loanerFemaleScale;//借款人女性
+    let maleScale = Number(data.maleScale).toFixed(1);//投资人男性
+    let femaleScale = Number(data.femaleScale).toFixed(1);//投资人女性
+    let loanerMaleScale = Number(data.loanerMaleScale).toFixed(1);//借款人男性
+    let loanerFemaleScale = Number(data.loanerFemaleScale).toFixed(1);//借款人女性
     let ageDistribution = data.ageDistribution;
     var loanerAgeDistribution = data.loanerAgeDistribution;
     $('#total_trade_person').html(toThousands(data.usersCount));
@@ -380,9 +380,9 @@ let getPartThreePage = (data) => {
         ageLoanLegendArr[i] = item.name + ' ' + item.scale + '%';
     }
     myChart3.setOption(pieChart([
-        {value: `${maleScale}`, name: `男性投资人 ${maleScale }%`},
-        {value: `${femaleScale}`, name: `女性投资人 ${femaleScale }%`}
-    ], [`男性投资人 ${maleScale }%`, `女性投资人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
+        {value: `${maleScale}`, name: `男性出借人 ${maleScale }%`},
+        {value: `${femaleScale}`, name: `女性出借人 ${femaleScale }%`}
+    ], [`男性出借人 ${maleScale }%`, `女性出借人 ${femaleScale }%`], ['#84a2ff', '#ff6ecb']));
 
 
     myChart4.setOption(circularChart(ageArr, ageLegendArr, ['#ff7e50', '#86cffa', '#da70d6', '#32cd32']));

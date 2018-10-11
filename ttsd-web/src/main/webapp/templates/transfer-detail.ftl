@@ -1,20 +1,24 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要投资" activeLeftNav="转让项目" title="标的详情">
+<@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要出借" activeLeftNav="转让项目" title="标的详情">
 <style type="text/css">
 .swiper-container {
     display: none;
 }
 </style>
-<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate?string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+<div class="transfer-detail-content" id="transferDetailCon" data-estimate="${estimate???string('true', 'false')}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loanDto.estimateLevel!''}"
+     data-price="${transferApplication.transferAmount!}"
+>
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
             <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
             <div class="tips-wrap">
     <#if loanDto.estimate??>
-            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loanDto.estimate}的用户</i></span>
+            <span id="riskTips" class="risk-tips">${loanDto.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合出借偏好类型为${loanDto.estimate}的用户</i></span>
     </#if>
-            <span class="product-tip">拓天速贷提醒您：市场有风险，投资需谨慎！</span>
+            <span class="product-tip">拓天速贷提醒您：市场有风险，出借需谨慎！</span>
             </div>
         </div>
         <div class="transfer-info">
@@ -73,7 +77,7 @@
                 <span class="img-status transfercancel"></span>
                 <p class="status-text"></p>
             <#else>
-                <form action="/transfer/purchase" method="post" id="transferForm">
+                <form action="/transfer/purchase" method="post" id="transferForm" class="clearfix">
                     <p class="get-money">
                         <span class="name-text" id="tipLayer">认购金额：</span>
                         <span class="money-text">
@@ -90,7 +94,7 @@
                     <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}"/>
                     <input type="hidden" id="transferApplicationId" name="transferApplicationId" value="${transferApplication.id?string.computer}"/>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
+                    <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上出借</button></p>
                     <input type="hidden" value="${anxinAuthenticationRequired?c}" id="isAnxinAuthenticationRequired">
                     <input type="hidden" value="${anxinUser?c}" id="isAnxinUser">
                     <@global.role hasRole="'INVESTOR'">
@@ -108,7 +112,13 @@
                     </@global.role>
                 </form>
             </#if>
+            <div class="clearfix" style="width: 290px;">
+                <div style="color:#949494;">拓天速贷提醒您：市场有风险，出借需谨慎！</div>
+                <div style="padding-bottom: 10px;">点击查看<a style="color: #ff7200;" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a></div>
+            </div>
         </div>
+
+
     </div>
     <div class="detail-record">
         <div class="transfer-top">
@@ -134,7 +144,7 @@
             <div class="question-list">
                 <dl>
                     <dt>1. 转让项目的优势？<i class="fa fa-chevron-circle-down fr"></i> </dt>
-                    <dd>转让债权和原始债权的约定年化利率、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回投资。同时还可享受到出让人的价格折让。</dd>
+                    <dd>转让债权和原始债权的约定年化利率、还款方式（按月付息，到期还本）是一样的。与普通债权相比，购买转让债权时间短，可以更快的收回出借。同时还可享受到出让人的价格折让。</dd>
                 </dl>
 
                 <dl>
@@ -226,11 +236,41 @@
 </div>
 <#--风险测评-->
 <div id="riskAssessment" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
-<#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <div class="tc person-info-btn" style="margin-top:40px;">
-        <button id="cancelAssessment" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，出借需谨慎！</p>
+    </div>
+</div>
+
+<#--风险等级超出提示-->
+<div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，此项目已超<br/>出您的风险等级，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+
+<#--最多借出额度提示-->
+
+<div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessment" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+<div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">市场有风险，出借需谨慎！<br/>
+        点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a>
+    </div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn btn-success btn-turn-off confirmInvest" type="button">确定</button>
     </div>
 </div>
     <#include "component/red-envelope-float.ftl" />

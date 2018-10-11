@@ -118,7 +118,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                         .put("keyword1", convertCentToTenThousandString(loanModel.getLoanAmount()))
                         .put("keyword2", "已满标")
                         .put("keyword3", new DateTime(loanModel.getRaisingCompleteTime()).toString("yyyy-MM-dd HH:mm"))
-                        .put("remark", String.format("%s上线的%s天投资项目已满，30分钟内将完成复核。",
+                        .put("remark", String.format("%s上线的%s天出借项目已满，30分钟内将完成复核。",
                                 new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm"),
                                 loanModel.getDuration()))
                         .build())));
@@ -138,7 +138,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
                 .filter(s -> fetchOpenId(s.getLoginName()) != null)
                 .forEach(investModel -> weChatClient.sendTemplateMessage(WeChatMessageType.LOAN_OUT_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                         .put("openid", fetchOpenId(investModel.getLoginName()))
-                        .put("first", String.format("您投资的”%s”已经满标放款了，具体详情如下：", loanModel.getName()))
+                        .put("first", String.format("您出借的”%s”已经满标放款了，具体详情如下：", loanModel.getName()))
                         .put("keyword1", loanModel.getName())
                         .put("keyword2", convertCentToTenThousandString(loanModel.getLoanAmount()))
                         .put("keyword3", convertCentToTenThousandString(investModel.getAmount()))
@@ -161,7 +161,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
         weChatClient.sendTemplateMessage(WeChatMessageType.INVEST_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
-                .put("first", String.format("您已成功投资: %s", loanModel.getName()))
+                .put("first", String.format("您已成功出借: %s", loanModel.getName()))
                 .put("keyword1", loanModel.getName())
                 .put("keyword2", String.format("%s元", AmountConverter.convertCentToString(investModel.getAmount())))
                 .put("remark", commonRemark)
@@ -183,7 +183,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
         weChatClient.sendTemplateMessage(WeChatMessageType.NORMAL_REPAY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
-                .put("first", String.format("您投资的”%s”回款已到账", loanModel.getName()))
+                .put("first", String.format("您出借的”%s”回款已到账", loanModel.getName()))
                 .put("keyword1", loanModel.getName())
                 .put("keyword2", investRepayModel.getActualRepayDate() != null ? new DateTime(investRepayModel.getActualRepayDate()).toString("yyyy-MM-dd HH:mm") : "")
                 .put("keyword3", String.format("%s元", AmountConverter.convertCentToString(investRepayModel.getRepayAmount())))
@@ -198,7 +198,7 @@ public class WeChatMessageNotifyConsumer implements MessageConsumer {
 
         weChatClient.sendTemplateMessage(WeChatMessageType.ADVANCE_REPAY_SUCCESS, Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("openid", openId)
-                .put("first", String.format("由于您投资的%s，因借款方有充分的还款能力和还款意愿，特提前还款", loanModel.getName()))
+                .put("first", String.format("由于您出借的%s，因借款方有充分的还款能力和还款意愿，特提前还款", loanModel.getName()))
                 .put("keyword1", investRepayModel.getRepayDate() != null ? new DateTime(investRepayModel.getRepayDate()).toString("yyyy-MM-dd") : "")
                 .put("keyword2", investRepayModel.getActualRepayDate() != null ? new DateTime(investRepayModel.getActualRepayDate()).toString("yyyy-MM-dd") : "")
                 .put("remark", "请注意查收并提前做好资金安排，如有疑问，可随时致电客服400-169-1188（客服时间：工作日9:00-20:00）。")

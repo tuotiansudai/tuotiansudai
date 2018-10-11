@@ -1,8 +1,8 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="网贷知识" title="网贷知识详情">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="网贷课堂" activeLeftNav="" title="网贷课堂">
     <div class="about-us-container" id="noticeDetail">
         <div class="crumb-lead" id="WhetherApp">
-            <a href="/about/company">关于我们</a> > <a href="/about/knowledge">网贷知识</a>
+            <a href="/about/knowledge">网贷课堂</a> > <span id="knowledgeTitle"></span>
         </div>
         <h2 class="column-title article">
             <em class="title">${knowledge.title}</em>

@@ -11,7 +11,7 @@ public class ReferrerStatisticsResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "已推荐人数", example = "10")
     public String referrersSum;
 
-    @ApiModelProperty(value = "推荐人投资总额", example = "1000")
+    @ApiModelProperty(value = "推荐人出借总额", example = "1000")
     public String referrersInvestAmount;
 
     @ApiModelProperty(value = "banner列表", example = "list")
