@@ -6,7 +6,7 @@ let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
-
+var sourceKind = globalFun.parseURL(location.href);
 
 (function(){
     let browser = $(window).width();
@@ -153,6 +153,29 @@ if($('#investorList').length) {
             });
         }
     });
+}
+if($noticeDetail.length){
+    var title = $('#knowledgeTitleH2').text();
+    switch (sourceKind.params.subSection) {
+        case 'base':
+            $('#knowledgeTitle').text('基础知识');
+            $('.left-nav').find('li').eq(2).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'law':
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'investor':
+            $('#knowledgeTitle').text('出借人教育');
+            $('.left-nav').find('li').eq(1).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        default :
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
+
+
+
+    }
 }
 let $companyPhoto = $('#companyPhoto');
 

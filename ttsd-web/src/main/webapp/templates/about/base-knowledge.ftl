@@ -11,7 +11,7 @@
             for(var i=0,len=records.length; i < len; i++) {
             var item = records[i];
             %>
-            <li><i>●</i><a href="/knowledge/<%=item.id%>"><%=item.title%></a> <span><%=item.updatedTime%></span></li>
+            <li><i>●</i><a href="/knowledge/<%=item.id%>?subSection=base"><%=item.title%></a> <span><%=item.updatedTime%></span></li>
             <% }
 
             }else {
