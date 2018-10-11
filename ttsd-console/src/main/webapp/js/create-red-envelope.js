@@ -105,15 +105,24 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     return false;
                 }
                 var deadline = parseInt($('.coupon-deadline', curform).val());
-                if (deadline <= 0) {
+                var isCheckDeadline = $("input[name='deadlineTypeRadio']:checked").val() === '0';
+                if (isCheckDeadline && deadline <= 0) {
                     showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
                     return false;
                 }
+
+                var expireTime = $("input[name='expireTime']").val();
+                if (!isCheckDeadline && (expireTime ==null || expireTime=='')) {
+                    showErrorMessage('截止时间不能为空', $('.coupon-deadline', curform));
+                    return false;
+                }
+
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('发放数量最小为1', $('.give-number', curform));
                     return false;
                 }
+
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
                     return $(option).is(':checked');
                 }).length;
