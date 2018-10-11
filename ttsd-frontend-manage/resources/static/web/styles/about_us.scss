@@ -564,6 +564,12 @@ $gray5:#333333;
       }
       p {
         margin-bottom: 0;
+        span {
+          max-width:100%;
+          img {
+            max-width: 100%!important;
+          }
+        }
         img {
           max-width: 100%!important;
         }
