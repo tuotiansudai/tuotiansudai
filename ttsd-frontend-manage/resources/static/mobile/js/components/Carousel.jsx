@@ -30,7 +30,10 @@ class Carousel extends React.Component {
 		}
 	}
 	componentDidMount() {
-		this.initialSwiper.call(this);
+
+        setTimeout(function(){
+            this.initialSwiper.call(this);
+        },1000);
 	}
 	componentDidUpdate() {
 		this.initialSwiper.call(this);
