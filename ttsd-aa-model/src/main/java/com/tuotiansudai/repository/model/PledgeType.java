@@ -8,7 +8,6 @@ public enum PledgeType {
     ENTERPRISE_FACTORING("企业经营性借款—保理"),
     ENTERPRISE_BILL("企业经营性借款—票据"),
     PERSONAL_CAPITAL_TURNOVER("个人资金周转"),
-    ENTERPRISE_CAPITAL_TURNOVER("企业资金周转"),
     NONE("无抵押物");
 
     final private String description;
