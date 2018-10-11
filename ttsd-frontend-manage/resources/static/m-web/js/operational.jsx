@@ -358,10 +358,10 @@ let getPartThreePage = (data) => {
     let ageLegendArr = [];
     let ageLoanArr = [];
     let ageLoanLegendArr = [];
-    let maleScale = data.maleScale;//投资人男性
-    let femaleScale = data.femaleScale;//投资人女性
-    let loanerMaleScale = data.loanerMaleScale.toFixed(1);//借款人男性
-    let loanerFemaleScale = data.loanerFemaleScale;//借款人女性
+    let maleScale = Number(data.maleScale).toFixed(1);//投资人男性
+    let femaleScale = Number(data.femaleScale).toFixed(1);//投资人女性
+    let loanerMaleScale = Number(data.loanerMaleScale).toFixed(1);//借款人男性
+    let loanerFemaleScale = Number(data.loanerFemaleScale).toFixed(1);//借款人女性
     let ageDistribution = data.ageDistribution;
     var loanerAgeDistribution = data.loanerAgeDistribution;
     $('#total_trade_person').html(toThousands(data.usersCount));
