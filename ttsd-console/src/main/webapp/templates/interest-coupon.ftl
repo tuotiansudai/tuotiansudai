@@ -60,10 +60,20 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">优惠券有效天数(天): </label>
-            <div class="col-sm-8">
-                <div class="item-invest">用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            <div class="col-sm-7">
+                <div class="item-invest"><input type="radio" name="useDeadline" value="0" checked>用户收到优惠券后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" id="deadline" placeholder="" value="0" datatype="n"><div class="item-invest">天内有效</div>
+            </div>
+            <div class="col-sm-5">
+                <div class="item-invest" style="margin-left: 220px"><input type="radio" name="useDeadline" value="1" >截止日期</div>
+                <div class='input-group date' id='failureTimeSelectpicker'>
+                    <input type='text' class="form-control coupon-failureTime" name="failureTime" id='failureTime' readonly/>
+                    <span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                </div>
             </div>
         </div>
 

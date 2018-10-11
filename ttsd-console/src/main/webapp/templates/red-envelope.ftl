@@ -68,7 +68,7 @@
             <div class="col-sm-5">
                 <div class="item-invest" style="margin-left: 220px"><input type="radio" name="useDeadline" value="1" >截止日期</div>
                 <div class='input-group date' id='failureTimeSelectpicker'>
-                    <input type='text' class="form-control coupon-failureTime" name="failureTime" id='failureTime' disabled/>
+                    <input type='text' class="form-control coupon-failureTime" name="failureTime" id='failureTime' readonly/>
                     <span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>

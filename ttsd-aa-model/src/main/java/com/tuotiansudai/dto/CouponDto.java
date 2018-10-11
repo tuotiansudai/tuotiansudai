@@ -319,6 +319,7 @@ public class CouponDto implements Serializable {
         this.startTime = couponModel.getStartTime();
         this.endTime = couponModel.getEndTime();
         this.deadline = couponModel.getDeadline();
+        this.failureTime = couponModel.getFailureTime();
         this.totalCount = couponModel.getTotalCount();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.productTypes = couponModel.getProductTypes();

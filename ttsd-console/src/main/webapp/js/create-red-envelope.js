@@ -43,7 +43,8 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         //截止时间绑定插件
         $dateFailure.datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: 'YYYY-MM-DD',
+            minDate: $('input[type=radio][name="useDeadline"]:checked').val() === '1' ? $("input[name='endTime']").val() : null
         });
 
         /**
@@ -66,12 +67,12 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         $('input[type=radio][name="useDeadline"]').change(function() {
             var isUseDeadline = $('input[type=radio][name="useDeadline"]:checked').val() === '0';
             if(isUseDeadline){
-                $failureTime.attr("disabled", true);
+                $failureTime.attr("readonly", true);
                 $failureTime.val('');
-                $deadline.attr("disabled", false);
+                $deadline.attr("readonly", false);
             }else{
-                $failureTime.attr("disabled", false);
-                $deadline.attr("disabled", true);
+                $failureTime.attr("readonly", false);
+                $deadline.attr("readonly", true);
                 $deadline.val('0');
             }
         });
