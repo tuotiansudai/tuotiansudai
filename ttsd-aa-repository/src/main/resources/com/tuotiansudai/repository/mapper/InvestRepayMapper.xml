@@ -417,18 +417,24 @@
     <select id="findInvestRepayByLoginNameAndRepayTime" parameterType="map" resultMap="investRepayResultMap">
         SELECT r.* FROM invest_repay r LEFT JOIN invest i ON r.invest_id = i.id
         WHERE i.login_name = #{loginName}
-        AND r.status IN ('REPAYING','COMPLETE')
+        AND r.status IN ('REPAYING','COMPLETE', 'OVERDUE')
         <if test="year != null and year != ''">
-            AND (DATE_FORMAT(repay_date, '%Y') = #{year} AND actual_repay_date is null or (actual_repay_date is not null
-            and DATE_FORMAT(actual_repay_date, '%Y') = #{year}))
+            AND if (r.actual_repay_date is not null and r.actual_repay_date > r.repay_date,
+            DATE_FORMAT(repay_date, '%Y') = #{year},
+            (DATE_FORMAT(repay_date, '%Y') = #{year} AND actual_repay_date is null or (actual_repay_date is not null
+            and DATE_FORMAT(actual_repay_date, '%Y') = #{year})))
         </if>
         <if test="month != null and month != ''">
-            AND (DATE_FORMAT(repay_date, '%m') = #{month} AND actual_repay_date is null or (actual_repay_date is not
-            null and DATE_FORMAT(actual_repay_date, '%m') = #{month}))
+            AND if (r.actual_repay_date is not null and r.actual_repay_date > r.repay_date,
+            DATE_FORMAT(repay_date, '%m') = #{month},
+            (DATE_FORMAT(repay_date, '%m') = #{month} AND actual_repay_date is null or (actual_repay_date is not
+            null and DATE_FORMAT(actual_repay_date, '%m') = #{month})))
         </if>
         <if test="day != null and day != ''">
-            AND (DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day} AND actual_repay_date IS NULL or (actual_repay_date is not
-            null and DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day}))
+            AND if (r.actual_repay_date is not null and r.actual_repay_date > r.repay_date,
+            DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day},
+            (DATE_FORMAT(repay_date, '%Y-%m-%d') = #{day} AND actual_repay_date IS NULL or (actual_repay_date is not
+            null and DATE_FORMAT(actual_repay_date, '%Y-%m-%d') = #{day})))
         </if>
         ORDER BY r.repay_date
     </select>
