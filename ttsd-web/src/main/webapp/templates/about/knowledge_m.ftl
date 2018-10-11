@@ -6,7 +6,7 @@
     </div>
     <div class="title-section" id="knowledgeTitle">
         <div class="wrap"><span class="active first" data-category="ALL">全部</span><span
-                data-category="LAW_RULE">法律法规</span><span data-category="INVESTOR_EDUCATION">出款人教育</span><span
+                data-category="LAW_RULE">法律法规</span><span data-category="INVESTOR_EDUCATION">出借人教育</span><span
                 class="last" data-category="BASIC_KNOWLEDGE">基础知识</span></div>
     </div>
     <div id="wrapperOut" class="knowledge-list-frame">

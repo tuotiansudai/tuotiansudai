@@ -103,6 +103,8 @@ $(function () {
     $knowledgeTitle.find('span').on('click', function () {
         let _self = $(this);
         let params = _self.data('category');
+        let spanIndex = _self.index();
+        _self.addClass('active').siblings().removeClass('active');
         requestParams.index = 1;
         titleBar = params;
         if(titleBar){

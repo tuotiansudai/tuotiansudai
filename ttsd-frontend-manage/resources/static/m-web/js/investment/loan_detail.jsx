@@ -810,7 +810,7 @@ let limitMoneyTransfer = $transferDetail.data('estimate-limit')/100;
                     commonFun.CommonLayerTip({
                         btn: ['确定','取消'],
                         area:['280px', '230px'],
-                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                     },function() {
                         layer.closeAll();
                         location.href = '/m/risk-estimate'
@@ -961,7 +961,7 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
@@ -982,7 +982,7 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
