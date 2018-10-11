@@ -2,7 +2,7 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="网贷课堂" activeLeftNav="" title="网贷课堂">
     <div class="about-us-container" id="noticeDetail">
         <div class="crumb-lead" id="WhetherApp">
-            <a href="/about/company">网贷课堂</a> > <a href="/about/knowledge" id="knowledgeTitle"></a>
+            <a href="/about/knowledge">网贷课堂</a> > <span id="knowledgeTitle"></span>
         </div>
         <h2 class="column-title article">
             <em class="title">${knowledge.title}</em>
