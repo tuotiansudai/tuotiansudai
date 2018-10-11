@@ -36,6 +36,26 @@ $gray5:#333333;
       text-align: center;
     }
   }
+  .detail-content {
+    img {
+      max-width: 100%;
+    }
+    p {
+      margin-bottom: 0;
+      img {
+        max-width: 100%!important;
+      }
+      span {
+        max-width:100%;
+        img {
+          max-width: 100%!important;
+        }
+      }
+      img {
+        max-width: 100%!important;
+      }
+    }
+  }
   @media (min-width: 701px) and (max-width: 999px) {
     padding: 0 10px;
   }
