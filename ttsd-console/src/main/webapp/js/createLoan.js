@@ -55,8 +55,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 sectionThreeElement.html("<div class='vehicle-pledge'><h3><span class='vehicle-title'>车辆信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
             }
 
-            if ('个人资金周转' === loanName || '企业资金周转' === loanName) {
-                pledgeTypeElement.val('个人资金周转' === loanName ? "PERSONAL_CAPITAL_TURNOVER" : "ENTERPRISE_CAPITAL_TURNOVER");
+            if ('个人资金周转' === loanName) {
+                pledgeTypeElement.val("PERSONAL_CAPITAL_TURNOVER");
                 pledgeRadioCheckVehicle = true;
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
                 sectionThreeElement.html("<div class='vehicle-pledge'><h3><input type='radio' id='vehicleRadio' checked><span class='vehicle-title'>车辆信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button><input type='radio' id='houseRadio' style='margin-left: 150px;'>房产信息</h3>"  + Mustache.render(pledgeVehicleTemplate) + '</div>');
@@ -215,7 +215,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         $('body').on('click', '#vehicleRadio', function(){
             pledgeRadioCheckVehicle = true;
-            pledgeTypeElement.val(loanNameElement.val() === '个人资金周转'? "PERSONAL_CAPITAL_TURNOVER" : "ENTERPRISE_CAPITAL_TURNOVER");
+            pledgeTypeElement.val("PERSONAL_CAPITAL_TURNOVER");
             sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
             sectionThreeElement.html("<div class='vehicle-pledge'><h3><input type='radio' id='vehicleRadio' checked><span class='vehicle-title'>车辆信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button><input type='radio' id='houseRadio' style='margin-left: 150px;'>房产信息</h3>"  + Mustache.render(pledgeVehicleTemplate) + '</div>');
             $('.selectpicker').selectpicker();
@@ -223,7 +223,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         $('body').on('click', '#houseRadio',function(){
             pledgeRadioCheckVehicle = false;
-            pledgeTypeElement.val(loanNameElement.val() === '个人资金周转'? "PERSONAL_CAPITAL_TURNOVER" : "ENTERPRISE_CAPITAL_TURNOVER");
+            pledgeTypeElement.val("PERSONAL_CAPITAL_TURNOVER");
             sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
             sectionThreeElement.html("<div class='house-pledge'><h3><input type='radio' id='vehicleRadio'>车辆信息<input type='radio' id='houseRadio' checked style='margin-left: 150px'><span class='house-title'>房产信息</span> <button type='button' class='jq-add-house-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
             $('.selectpicker').selectpicker();
@@ -496,7 +496,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             var value = loanNameElement.val();
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
-            if ("房产抵押借款" == value || (['个人资金周转', '企业资金周转'].includes(value) && !pledgeRadioCheckVehicle)) {
+            if ("房产抵押借款" == value || ('个人资金周转' == value && !pledgeRadioCheckVehicle)) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
@@ -504,7 +504,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     'pledgeHouse': pledgeHouseParam
                 });
             }
-            if ("车辆抵押借款" == value || (['个人资金周转', '企业资金周转'].includes(value) && pledgeRadioCheckVehicle)) {
+            if ("车辆抵押借款" == value || ('个人资金周转' == value && pledgeRadioCheckVehicle)) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,

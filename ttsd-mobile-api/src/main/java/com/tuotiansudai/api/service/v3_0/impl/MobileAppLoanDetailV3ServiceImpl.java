@@ -214,7 +214,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueRate);
             disclosureDtoList.add(loanerDisclosureDto);
 
-            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
+            if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
                 List<PledgeHouseModel> pledgeHouseModelList = pledgeHouseMapper.getByLoanId(loanModel.getId());
                 int seq = 1;
                 for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {

@@ -244,7 +244,7 @@ public class ConsoleLoanCreateService {
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
-        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.ENTERPRISE_CAPITAL_TURNOVER, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
+        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE,PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
             loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
                     .map(LoanCreatePledgeHouseRequestDto::new).collect(Collectors.toList());
