@@ -329,8 +329,8 @@ public class CouponModel implements Serializable {
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
-        this.deadline = couponDto.getUseDeadline() ? couponDto.getDeadline() : 0;
-        this.failureTime = couponDto.getUseDeadline() ? null : new DateTime(couponDto.getFailureTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        this.deadline = couponDto.getDeadline();
+        this.failureTime = couponDto.getFailureTime()==null ? null : new DateTime(couponDto.getFailureTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
         this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();

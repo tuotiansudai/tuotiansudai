@@ -3,13 +3,16 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
             $dateEnd = $('#endTime'), //结束时间
-            $failureTime = $('#failureTime'), //结束时间
+            $dateFailure = $('#failureTimeSelectpicker'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
             $businessType = $('#businessType'),  // 业务类型
             $couponForm = $('.form-list'),
             boolFlag = false, //校验布尔变量值
+            $deadline = $('#deadline'),
+            $failureTime = $('#failureTime'),
             currentErrorObj = null;
+
 
         // 业务类型切换
         $businessType.on('change', function() {
@@ -35,11 +38,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         $dateEnd.datetimepicker({
             format: 'YYYY-MM-DD'
         }).on('dp.change', function(e) {
-            $failureTime.data("DateTimePicker").minDate(e.date);
+            $dateFailure.data("DateTimePicker").minDate($('input[type=radio][name="useDeadline"]:checked').val() === '1' ? e.date : null);
         });
 
         //截止时间绑定插件
-        $failureTime.datetimepicker({
+        $dateFailure.datetimepicker({
             format: 'YYYY-MM-DD'
         });
 
@@ -60,6 +63,18 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $errorDom.append(html);
         }
 
+        $('input[type=radio][name="useDeadline"]').change(function() {
+            var isUseDeadline = $('input[type=radio][name="useDeadline"]:checked').val() === '0';
+            if(isUseDeadline){
+                $failureTime.attr("disabled", true);
+                $failureTime.val('');
+                $deadline.attr("disabled", false);
+            }else{
+                $failureTime.attr("disabled", false);
+                $deadline.attr("disabled", true);
+                $deadline.val('0');
+            }
+        });
 
         var number_reg = /^\d+(\.\d+)?$/;
 
@@ -111,8 +126,8 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     return false;
                 }
 
-                var failureTime = $("input[name='failureTime']").val();
-                if (!isCheckDeadline && (failureTime ==null || failureTime=='')) {
+                var failureTime = $failureTime.val();
+                if (!isCheckDeadline && (failureTime === null || failureTime === '')) {
                     showErrorMessage('截止时间不能为空', $('.coupon-deadline', curform));
                     return false;
                 }

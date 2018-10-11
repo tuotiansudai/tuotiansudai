@@ -26,16 +26,14 @@ public class CouponDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date activatedTime;
 
     private Long totalCount;
 
-    private boolean useDeadline;
-
     private Integer deadline;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date failureTime;
 
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
@@ -301,14 +299,6 @@ public class CouponDto implements Serializable {
 
     public void setActivatedTime(Date activatedTime) {
         this.activatedTime = activatedTime;
-    }
-
-    public boolean getUseDeadline() {
-        return useDeadline;
-    }
-
-    public void setUseDeadline(boolean useDeadline) {
-        this.useDeadline = useDeadline;
     }
 
     public Date getFailureTime() {
