@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.sign_check}" pageJavascript="${js.sign_check}" activeNav="" activeLeftNav="" title="会员签到_积分商城_拓天速贷" keywords="签到赢积分,签到领红包,红包大奖,拓天速贷" description="拓天速贷会员每日签到赢积分,连续签到积分阶梯递增,累计签到领红包,连续签到365天,可额外获得365元出借红包大奖.">
 <div class="sign-check-container">
 	<div class="top-item compliance-banner">
-        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+        <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
 	</div>
 	<div class="wp clearfix">
 		<div class="content-item">

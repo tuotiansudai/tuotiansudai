@@ -6,7 +6,7 @@
     <form class="form-horizontal showForm" >
         <div class="form-group">
             <label class="col-sm-1 control-label">保守型</label>
-            <div class="col-sm-2">
+            <div class="col-sm-2">以下问题根据您的财务状况、出借经验、出借风格、风险偏好和风险承受能力等对您进
                 <span class="form-control">${CONSERVATIVE!}元</span>
             </div>
         </div>
