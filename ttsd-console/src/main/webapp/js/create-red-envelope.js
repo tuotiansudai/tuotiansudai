@@ -3,6 +3,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
             $dateEnd = $('#endTime'), //结束时间
+            $expireTime = $('#expireTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
             $businessType = $('#businessType'),  // 业务类型
@@ -32,6 +33,13 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         //结束时间绑定插件
         $dateEnd.datetimepicker({
+            format: 'YYYY-MM-DD'
+        }).on('dp.change', function(e) {
+            $expireTime.data("DateTimePicker").minDate(e.date);
+        });
+
+        //截止时间绑定插件
+        $expireTime.datetimepicker({
             format: 'YYYY-MM-DD'
         });
 
