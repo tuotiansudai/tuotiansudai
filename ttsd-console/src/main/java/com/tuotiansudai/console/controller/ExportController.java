@@ -165,14 +165,6 @@ public class ExportController {
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BirthdayCouponsHeader, birthdayCoupons, response.getOutputStream());
     }
 
-    @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
-    public void exportPointPrize(HttpServletResponse response) throws IOException {
-        fillExportResponse(response, CsvHeaderType.PointPrizeHeader.getDescription());
-        List<PointPrizeWinnerViewDto> records = userPointPrizeMapper.findAllPointPrizeGroupPrize();
-        List<List<String>> pointPrize = exportService.buildPointPrize(records);
-        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.PointPrizeHeader, pointPrize, response.getOutputStream());
-    }
-
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
     public void exportCouponExchange(HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.CouponExchangeHeader.getDescription());

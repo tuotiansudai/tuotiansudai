@@ -1,0 +1,25 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+}
+
+dependencies {
+    compile project(':ttsd-dependency'),
+            project(':ttsd-aa-repository'),
+            project(':ttsd-user-repository'),
+            project(':ttsd-membership'),
+            project(':ttsd-mq-client')
+
+    testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
+}
+
+processResources.outputs.upToDateWhen { false }
