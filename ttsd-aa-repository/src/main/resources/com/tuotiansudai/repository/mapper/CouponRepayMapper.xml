@@ -69,7 +69,7 @@
     <select id="findCouponRepayByInvestIdAndRepayDate" resultMap="couponRepayResultMap" parameterType="map">
         select * from coupon_repay
         WHERE login_name = #{loginName}
-        AND status IN ('REPAYING','COMPLETE')
+        AND status IN ('REPAYING','COMPLETE', 'OVERDUE')
         <if test="investId != null and investId > 0">
             AND invest_id = #{investId}
         </if>
