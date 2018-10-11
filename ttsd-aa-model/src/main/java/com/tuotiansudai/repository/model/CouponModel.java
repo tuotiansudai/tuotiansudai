@@ -21,6 +21,7 @@ public class CouponModel implements Serializable {
     private Date startTime;
     private Date endTime;
     private Integer deadline;
+    private Date failureTime;
     private long usedCount;
     private Long totalCount;
     private boolean active;
@@ -314,12 +315,22 @@ public class CouponModel implements Serializable {
         this.comment = comment;
     }
 
+
+    public Date getFailureTime() {
+        return failureTime;
+    }
+
+    public void setFailureTime(Date failureTime) {
+        this.failureTime = failureTime;
+    }
+
     public CouponModel(CouponDto couponDto) {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
-        this.deadline = couponDto.getDeadline() != null ? couponDto.getDeadline() : 0;
+        this.deadline = couponDto.getUseDeadline() ? couponDto.getDeadline() : 0;
+        this.failureTime = couponDto.getUseDeadline() ? null : new DateTime(couponDto.getFailureTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
         this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();

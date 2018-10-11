@@ -31,7 +31,12 @@ public class CouponDto implements Serializable {
 
     private Long totalCount;
 
+    private boolean useDeadline;
+
     private Integer deadline;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    private Date failureTime;
 
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
@@ -298,10 +303,25 @@ public class CouponDto implements Serializable {
         this.activatedTime = activatedTime;
     }
 
+    public boolean getUseDeadline() {
+        return useDeadline;
+    }
+
+    public void setUseDeadline(boolean useDeadline) {
+        this.useDeadline = useDeadline;
+    }
+
+    public Date getFailureTime() {
+        return failureTime;
+    }
+
+    public void setFailureTime(Date failureTime) {
+        this.failureTime = failureTime;
+    }
+
     public CouponDto(){
 
     }
-
 
     public CouponDto(CouponModel couponModel){
         this.id = couponModel.getId();
