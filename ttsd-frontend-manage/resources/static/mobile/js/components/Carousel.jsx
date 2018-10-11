@@ -20,20 +20,20 @@ class Carousel extends React.Component {
 	}
 	initialSwiper() {
 		if (this.props.data.length) {
-			imagesLoaded(this.refs.scrollWrap).on('always', () => {
+			// imagesLoaded(this.refs.scrollWrap).on('always', () => {
 				this.destroySwiper.call(this);
 				this.swiper = new Swiper(this.refs.scrollWrap, {
 			       pagination: '.swiper-pagination',
 			       paginationClickable: true
 			   	});
-			});
+			// });
 		}
 	}
 	componentDidMount() {
 
         setTimeout(function(){
             this.initialSwiper.call(this);
-        },1000);
+        },2000);
 	}
 	componentDidUpdate() {
 		this.initialSwiper.call(this);
