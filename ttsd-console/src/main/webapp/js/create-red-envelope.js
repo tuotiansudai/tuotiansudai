@@ -38,14 +38,18 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
         $dateEnd.datetimepicker({
             format: 'YYYY-MM-DD'
         }).on('dp.change', function(e) {
-            $dateFailure.data("DateTimePicker").minDate($('input[type=radio][name="useDeadline"]:checked').val() === '1' ? e.date : null);
+            initDateFailureMinDate();
         });
 
         //截止时间绑定插件
         $dateFailure.datetimepicker({
-            format: 'YYYY-MM-DD',
-            minDate: $('input[type=radio][name="useDeadline"]:checked').val() === '1' ? $("input[name='endTime']").val() : null
+            format: 'YYYY-MM-DD'
         });
+
+        initDateFailureMinDate();
+        function initDateFailureMinDate() {
+            $dateFailure.data("DateTimePicker").minDate($('input[type=radio][name="useDeadline"]:checked').val() === '1' ? $("input[name='endTime']").val() : null);
+        }
 
         /**
          * @msg  {[string]} //文字信息
@@ -66,15 +70,11 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         $('input[type=radio][name="useDeadline"]').change(function() {
             var isUseDeadline = $('input[type=radio][name="useDeadline"]:checked').val() === '0';
-            if(isUseDeadline){
-                $failureTime.attr("readonly", true);
-                $failureTime.val('');
-                $deadline.attr("readonly", false);
-            }else{
-                $failureTime.attr("readonly", false);
-                $deadline.attr("readonly", true);
-                $deadline.val('0');
-            }
+            $failureTime.attr("readonly", isUseDeadline);
+            $deadline.attr("readonly", !isUseDeadline);
+            initDateFailureMinDate();
+            $failureTime.val('');
+            $deadline.val('0');
         });
 
         var number_reg = /^\d+(\.\d+)?$/;
