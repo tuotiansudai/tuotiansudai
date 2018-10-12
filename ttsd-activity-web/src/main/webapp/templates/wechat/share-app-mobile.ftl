@@ -1,10 +1,10 @@
 <#import "wechat-global.ftl" as global>
 
-<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}"  title="新手福利_拓天新手投资_拓天速贷" >
+<@global.main pageCss="${css.share_app}" pageJavascript="${js.share_app}"  title="新手福利_拓天新手出借_拓天速贷" >
 <#--<#include "../pageLayout/header.ftl" />-->
 <div class="landing-page-container" id="landingTop">
     <div class="login-wrap" id="registerContainer">
-        <div class="refer-person-info"><span class="refer-name">${referrerInfo!}</span><br/>送你<strong>1000元</strong>投资红包</div>
+        <div class="refer-person-info"><span class="refer-name">${referrerInfo!}</span><br/>送你<strong>1000元</strong>出借红包</div>
 
         <form action="/register/user" method="post" id="registerUserForm" autocomplete="off">
             <div class="login-con">
@@ -58,10 +58,10 @@
             </div>
         </form>
         <div class="refer-info-other">
-            <p>好友<strong class="refer-name">${referrerInfo!}</strong>邀请你来拓天速贷投资</p>
-            <p>私享2%加息标，再赠1000元投资红包！</p>
+            <p>好友<strong class="refer-name">${referrerInfo!}</strong>邀请你来拓天速贷出借</p>
+            <p>私享2%加息标，再赠1000元出借红包！</p>
         </div>
-        <div class="risk-tip">市场有风险，投资需谨慎！</div>
+        <div class="risk-tip">市场有风险，出借需谨慎！</div>
     </div>
     <div class="landing-main">
         <div class="star-content">
@@ -106,7 +106,7 @@
                          <@global.isNotAnonymous>
 
                           <div class="swiper-slide item1 coupon-btn5">
-                              <a class="get-btn" href="/loan-list">立即投资</a>
+                              <a class="get-btn" href="/loan-list">立即出借</a>
                           </div>
                          </@global.isNotAnonymous>
                         <@global.isAnonymous>
@@ -117,7 +117,7 @@
                          <@global.isNotAnonymous>
 
                           <div class="swiper-slide item2 coupon-btn5">
-                                  <a class="get-btn" href="/loan-list">立即投资</a>
+                                  <a class="get-btn" href="/loan-list">立即出借</a>
                           </div>
                          </@global.isNotAnonymous>
                         <@global.isAnonymous>
@@ -128,7 +128,7 @@
                          <@global.isNotAnonymous>
 
                          <div class="swiper-slide item3 coupon-btn5">
-                             <a class="get-btn" href="/loan-list">立即投资</a>
+                             <a class="get-btn" href="/loan-list">立即出借</a>
                          </div>
                          </@global.isNotAnonymous>
                     </div>
@@ -144,7 +144,7 @@
                             <a class="red-ware-btn coupon-btn" href="javascript:;">立即领取</a>
                         </@global.isAnonymous>
                         <@global.isNotAnonymous>
-                            <a class="red-ware-btn" href="/loan-list">立即投资</a>
+                            <a class="red-ware-btn" href="/loan-list">立即出借</a>
                         </@global.isNotAnonymous>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
 
                 </div>
                 <div class="to-loan textCenter">
-                    <a class="gold-btn" href="/loan-list">马上投资</a>
+                    <a class="gold-btn" href="/loan-list">马上出借</a>
                 </div>
                 <div class="loan-wrap">
                     <div class="desc-container">
@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="split"></div>
                                 <div class="third">
-                                    <p><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                    <p><a href="/loan-list" class="btn-red">马上出借</a></p>
                                     <p class="bank"><span class="checkbox-red"></span><span>资金存管</span></p>
                                 </div>
                             </div>
@@ -205,14 +205,14 @@
                                             <p class="rate">约定年化利率</p>
                                             <p class="other"><span class="icon1"></span><span>资金存管</span> <span
                                                     class="icon2"></span><span>按天计息 即投即生息</span></p>
-                                            <p class="loan-link"><a href="/loan-list" class="btn-red">马上投资</a></p>
+                                            <p class="loan-link"><a href="/loan-list" class="btn-red">马上出借</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="right-bot border-section fr count-form">
                                     <form id="countForm" action="" class="clearfix">
                                         <ul>
-                                            <li><label>投资金额：</label>
+                                            <li><label>出借金额：</label>
                                                 <div class="border-section"><input type="text" name="money" id="moneyNum"><span>元</span></div>
                                             </li>
                                             <li><label>项目期限：</label>
@@ -273,7 +273,7 @@
                     <dl>
                         <dt class="icon-advance5"></dt>
                         <dd><p class="profile">携手CFCA权威认证</p>
-                            <p class="font">投资合同受法律保护</p></dd>
+                            <p class="font">出借合同受法律保护</p></dd>
                     </dl>
                 </div>
                 <div class="gift-link textCenter">
@@ -284,10 +284,10 @@
             <div class="good-project-wap">
                 <h2 class="title"></h2>
                 <ul class="project-list">
-                    <li><div class="pro-item item1"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                    <li><div class="pro-item item2"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                    <li><div class="pro-item item3"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
-                    <li><div class="pro-item item4"><a class="btn-red" href="/loan-list">马上投资</a></div></li>
+                    <li><div class="pro-item item1"><a class="btn-red" href="/loan-list">马上出借</a></div></li>
+                    <li><div class="pro-item item2"><a class="btn-red" href="/loan-list">马上出借</a></div></li>
+                    <li><div class="pro-item item3"><a class="btn-red" href="/loan-list">马上出借</a></div></li>
+                    <li><div class="pro-item item4"><a class="btn-red" href="/loan-list">马上出借</a></div></li>
                 </ul>
             </div>
             <div class="link-bottom textCenter">
@@ -295,7 +295,7 @@
                     <a class="gold-btn coupon-btn-bottom" href="javascript:;">注册领取新手大礼包</a>
                 </@global.isAnonymous>
                 <@global.isNotAnonymous>
-                    <a class="gold-btn" href="/loan-list">马上投资</a>
+                    <a class="gold-btn" href="/loan-list">马上出借</a>
                 </@global.isNotAnonymous>
             </div>
             <div class="kindly-tips-wrap">
@@ -303,11 +303,11 @@
                 </div>
                 <div class="kindly-tips-con">
                     <p>1.活动时间：2018年6月1日起，本活动仅针对活动开始后注册的新用户；</p>
-                    <p>2.平台新注册用户可使用6888元体验金投资新手体验项目，投资周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，投资累计满1000元即可提现（投资债权转让项目除外）；</p>
-                    <p>3.2%新手私享加息项目每个注册用户限投一次，每次限投50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
-                    <p>4.1000元新手红包有效期为7天，为方便您分散投资，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端"我的"中查看；</p>
-                    <p>5.用户每笔投资仅限使用一张优惠券，用户可在投资时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选，使用红包金额将于所投债权放款后返至您的账户；</p>
-                    <p>6.投资时产生的提现费用及手续费由用户自理；</p>
+                    <p>2.平台新注册用户可使用6888元体验金出借新手体验项目，出借周期为3天，到期可获得收益，该笔收益可在 "我的账户" 中查看，出借累计满1000元即可提现（出借债权转让项目除外）；</p>
+                    <p>3.2%新手私享加息项目每个注册用户限出借一次，每次限出借50元-10万元，新手私享项目不参与阶梯加息，且不与平台其他优惠活动同享；</p>
+                    <p>4.1000元新手红包有效期为7天，为方便您分散出借，将以红包组的形式发放到用户账户，您可在pc端 "我的账户-我的宝藏" 或APP端"我的"中查看；</p>
+                    <p>5.用户每笔出借仅限使用一张优惠券，用户可在出借时优先选择收益最高的优惠券使用，并在 "优惠券" 一栏中进行勾选，使用红包金额将于所投债权放款后返至您的账户；</p>
+                    <p>6.出借时产生的提现费用及手续费由用户自理；</p>
                     <p>7.每个身份证仅限参加一次，刷奖、冒用他人身份证、银行卡者一经核实，取消活动资格，所得奖励不予承兑；</p>
                     <p>8.活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
                 </div>

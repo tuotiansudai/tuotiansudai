@@ -43,15 +43,15 @@
 
         <ul class="detail-list">
             <li>提现冻结中：<span>${((withdrawFrozeAmount/100)?string('0.00'))!}</span>元</li>
-            <li>投资冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
+            <li>出借冻结中：<span>${((investFrozeAmount/100)?string('0.00'))!}</span>元</li>
         </ul>
     </div>
 
     <div class="column-box bg-w clearfix amount-sum ">
         <h3><b>累计收益：</b><span>${(((totalIncome)/100)?string('0.00'))!}</span>元  <i class="icon-has-con"></i></h3>
         <ul class="detail-list">
-            <li>已收投资收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
-            <li>已收投资奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
+            <li>已收出借收益：<span>${((actualTotalInterest)/100)?string('0.00')!}</span>元</li>
+            <li>已收出借奖励：<span>${((actualTotalExtraInterest)/100)?string('0.00')!}</span>元</li>
             <li>已收推荐奖励：<span>${((referRewardAmount/100)?string('0.00'))!}</span>元</li>
             <li>已收优惠券奖励：<span>${((actualCouponInterest/100)?string('0.00'))!}</span>元</li>
             <li>已收体验金奖励：<span>${((actualExperienceInterest/100)?string('0.00'))!}</span>元</li>
@@ -61,9 +61,9 @@
     <div class="column-box bg-w clearfix amount-sum ">
         <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
         <ul class="detail-list">
-            <li>待收投资本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
+            <li>待收出借本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
             <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
-            <li>待收投资奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
+            <li>待收出借奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>
             </ul>
@@ -205,7 +205,7 @@
     </div>
     <div class="new-projects bg-w">
         <div class="payment-switch">
-            <em class="current">最新投资项目</em>
+            <em class="current">最新出借项目</em>
          </div>
         <table class="table">
 
@@ -215,7 +215,7 @@
                 <th>交易详情</th>
                 <th>交易状态</th>
                 <th>下次回款(元)</th>
-                <th>我的投资(元)</th>
+                <th>我的出借(元)</th>
             </tr>
             </thead>
             <tbody>
@@ -230,7 +230,7 @@
 
                             <a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a>
                         </td>
-                        <td>投资成功</td>
+                        <td>出借成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
                         ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>

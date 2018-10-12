@@ -215,7 +215,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             List<Map<String, String>> pledgeHouseDetail = Lists.newArrayList();
             for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
                 Map<String, String> stringMap = ImmutableMap.<String, String>builder()
-                        .put("抵押物所在地", pledgeHouseModel.getPledgeLocation())
+                        .put("房产所在地", pledgeHouseModel.getPledgeLocation())
                         .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
                         .put("房屋面积", pledgeHouseModel.getSquare())
                         .put("房产证编号", pledgeHouseModel.getPropertyCardId())
@@ -234,7 +234,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             List<Map<String, String>> pledgeVehicleDetail = Lists.newArrayList();
             for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
                 Map<String, String> stringMap = ImmutableMap.<String, String>builder()
-                        .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
+                        .put("车辆所在地", pledgeVehicleModel.getPledgeLocation())
                         .put("车辆品牌", pledgeVehicleModel.getBrand())
                         .put("车辆型号", pledgeVehicleModel.getModel())
                         .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())

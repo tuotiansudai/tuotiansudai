@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto.v1_0;
 
 public enum InvestStatus {
     WAIT_AFFIRM("wait_affirm", "等待付款"),
-    BID_SUCCESS("bid_success", "投资成功"),
+    BID_SUCCESS("bid_success", "出借成功"),
     WAIT_LOANING_VERIFY("wait_loaning_verify", "放款后等待第三方确认"),
     CANCEL("cancel", "流标"),
     REPAYING("repaying", "还款中"),

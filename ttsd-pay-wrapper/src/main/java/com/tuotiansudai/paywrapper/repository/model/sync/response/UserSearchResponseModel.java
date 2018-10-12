@@ -26,7 +26,7 @@ public class UserSearchResponseModel extends BaseSyncResponseModel {
 
     private static final Map<String, String> HUMAN_READABLE_AGREEMENT = Maps.newHashMap(ImmutableMap.<String, String>builder()
             .put("ZCZP0800", "无密快捷协议")
-            .put("ZTBB0G00", "无密投资协议")
+            .put("ZTBB0G00", "无密出借协议")
             .put("ZHKB0H01", "无密还款协议")
             .put("ZKJP0700", "借记卡快捷协议")
             .build());

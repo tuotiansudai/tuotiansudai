@@ -19,12 +19,15 @@ import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.impl.InvestServiceImpl;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateLeftDays;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -71,6 +74,15 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private double defaultFee;
     @Value("${mobile.server}")
     private String mobileServer;
+    @Autowired
+    private InvestService investService;
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+    @Autowired
+    private RiskEstimateMapper riskEstimateMapper;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
 
     @Autowired
     private PageValidUtils pageValidUtils;
@@ -234,7 +246,20 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
+        //
+        LoanDetailsModel loanDetailsModel=loanDetailsMapper.getByLoanId(transferApplicationModel.getLoanId());
+        RiskEstimateModel userEstimate=riskEstimateMapper.findByLoginName(requestDto.getBaseParam().getUserId());
 
+        transferPurchaseResponseDataDto.setAvailableEstimateMoney(investService.availableInvestMoney(requestDto.getBaseParam().getUserId()));
+        if(loanDetailsModel!=null && loanDetailsModel.getEstimate()!=null){
+            transferPurchaseResponseDataDto.setEstimateLevel(loanDetailsModel.getEstimate().getLower());
+            transferPurchaseResponseDataDto.setRiskEstimate(loanDetailsModel.getEstimate().getType());
+        }
+        if(userEstimate !=null && userEstimate.getEstimate()!=null){
+            transferPurchaseResponseDataDto.setUserRiskEstimate(userEstimate.getEstimate().getType());
+            transferPurchaseResponseDataDto.setUserRstimateLevel(userEstimate.getEstimate().getLower());
+            transferPurchaseResponseDataDto.setUserEstimateLimit(AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey,userEstimate.getEstimate().name())));
+        }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferPurchaseResponseDataDto);

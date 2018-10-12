@@ -4,7 +4,7 @@ import com.google.common.base.Splitter;
 
 public enum LoanType {
 
-    INVEST_INTEREST_MONTHLY_REPAY("先付收益后还投资本金，按天计息，即投即生息", InterestInitiateType.INTEREST_START_AT_INVEST, LoanPeriodUnit.MONTH),
+    INVEST_INTEREST_MONTHLY_REPAY("先付收益后还本金，按天计息，即投即生息", InterestInitiateType.INTEREST_START_AT_INVEST, LoanPeriodUnit.MONTH),
 
     INVEST_INTEREST_LUMP_SUM_REPAY("到期还本付息，按天计息，即投即生息", InterestInitiateType.INTEREST_START_AT_INVEST, LoanPeriodUnit.DAY),
 
@@ -12,7 +12,7 @@ public enum LoanType {
     LOAN_INTEREST_LUMP_SUM_REPAY("到期还本付息，按天计息，放款后生息", InterestInitiateType.INTEREST_START_AT_LOAN, LoanPeriodUnit.DAY),
 
     //Deprecated
-    LOAN_INTEREST_MONTHLY_REPAY("先付收益后还投资本金，按天计息，放款后生息", InterestInitiateType.INTEREST_START_AT_LOAN, LoanPeriodUnit.MONTH);
+    LOAN_INTEREST_MONTHLY_REPAY("先付收益后还本金，按天计息，放款后生息", InterestInitiateType.INTEREST_START_AT_LOAN, LoanPeriodUnit.MONTH);
 
     private InterestInitiateType interestInitiateType;
     private String name;

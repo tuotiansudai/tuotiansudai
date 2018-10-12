@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.transfer_list}" pageJavascript="${js.transfer_list}" activeNav="我要投资" activeLeftNav="转让项目" title="债权转让_转让项目_拓天速贷" keywords="债权转让,债务转移,债权投资,金融债权,债权购买" description="拓天速贷债权转让项目,帮助用户提高投资的流动性,安全的债权转让产品提高用户的信任度,拓天速贷让用户资金灵活,收益最大化.">
+<@global.main pageCss="${css.transfer_list}" pageJavascript="${js.transfer_list}" activeNav="我要出借" activeLeftNav="转让项目" title="债权转让_转让项目_拓天速贷" keywords="债权转让,债务转移,债权出借,金融债权,债权购买" description="拓天速贷债权转让项目,帮助用户提高出借的流动性,安全的债权转让产品提高用户的信任度,拓天速贷让用户资金灵活,收益最大化.">
 <div class="transfer-list-content clearfix">
    <ul class="wrapper-list" id="wrapperList">
             <li class="project-kind">
@@ -14,7 +14,7 @@
                 </#list>
                 <div class="safety-notification">出借人适当性管理告知<i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i></div>
                 <div class="notice-tips extra-rate-popup" style="display: none">
-                    参与网络借贷的出借人，应当具备投资风险意识、风险识别能力，拥有非保本类金融产品投资的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。
+                    参与网络借贷的出借人，应当具备出借风险意识、风险识别能力，拥有非保本类金融产品出借的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。
                 </div>
                 <em class="show-more">更多 <i class="fa fa-angle-down"></i> </em>
             </li>
@@ -80,7 +80,7 @@
                                     <span>截止时间：${transferApplicationItem.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
                                 </div>
                                 <div class="rest-amount">
-                                    <i class="btn-invest btn-normal">马上投资</i>
+                                    <i class="btn-invest btn-normal">马上出借</i>
                                 </div>
                             </#if>
 

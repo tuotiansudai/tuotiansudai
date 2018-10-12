@@ -2,9 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum UserGroup {
     ALL_USER("全部用户"),
-    INVESTED_USER("已投资用户"),
-    REGISTERED_NOT_INVESTED_USER("已实名未投资用户"),
-    NOT_ACCOUNT_NOT_INVESTED_USER("已注册未投资用户"),
+    INVESTED_USER("已出借用户"),
+    REGISTERED_NOT_INVESTED_USER("已实名未出借用户"),
+    NOT_ACCOUNT_NOT_INVESTED_USER("已注册未出借用户"),
     STAFF("业务员"),
     STAFF_RECOMMEND_LEVEL_ONE("业务员一代用户"),
     AGENT("代理商"),
@@ -21,7 +21,7 @@ public enum UserGroup {
     MEMBERSHIP_V3("会员V3"),
     MEMBERSHIP_V4("会员V4"),
     MEMBERSHIP_V5("会员V5"),
-    EXPERIENCE_INVEST_SUCCESS("新手体验标投资用户"),
+    EXPERIENCE_INVEST_SUCCESS("新手体验标出借用户"),
     EXPERIENCE_REPAY_SUCCESS("新手体验标收益用户"),
     FIRST_INVEST_ACHIEVEMENT("拓荒先锋"),
     MAX_AMOUNT_ACHIEVEMENT("拓天标王"),

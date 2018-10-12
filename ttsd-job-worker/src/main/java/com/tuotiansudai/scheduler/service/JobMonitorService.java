@@ -45,7 +45,7 @@ public class JobMonitorService {
 
     public void onJobToBeExecuted(JobExecutionContext context) {
         JobDetail jobDetail = context.getJobDetail();
-        // 排除投资回调的job (执行太频繁，不适合记录执行情况)
+        // 排除出借回调的job (执行太频繁，不适合记录执行情况)
         if (ignoredJobClasses.contains(jobDetail.getJobClass())) {
             return;
         }

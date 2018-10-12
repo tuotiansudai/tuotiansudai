@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.*;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.membership.service.UserMembershipEvaluator;
 import com.tuotiansudai.repository.mapper.*;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
@@ -76,7 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.09);
         when(couponService.findExperienceInvestAmount(any(List.class))).thenReturn(1000l);
         when(extraLoanRateMapper.findByLoanId(anyLong())).thenReturn(null);
-        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(null);
+        when(loanDetailsMapper.getByLoanId(anyLong())).thenReturn(getDefaultLoanDetail());
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setEndTime(DateTime.now().toDate());
@@ -95,6 +97,12 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         assertEquals(String.valueOf(0.09), dto.getData().getLoanList().get(0).getInvestFeeRate());
 
         assertEquals(String.valueOf(0.0), dto.getData().getLoanList().get(1).getInvestFeeRate());
+        //新增风险评估字段
+        assertEquals(dto.getData().getLoanList().get(0).getEstimateLevel(),Integer.valueOf(Estimate.CONSERVATIVE.getLower()));
+        assertEquals(dto.getData().getLoanList().get(0).getRiskEstimate(),Estimate.CONSERVATIVE.getType());
+        assertEquals(dto.getData().getLoanList().get(1).getEstimateLevel(),Integer.valueOf(Estimate.CONSERVATIVE.getLower()));
+        assertEquals(dto.getData().getLoanList().get(1).getRiskEstimate(),Estimate.CONSERVATIVE.getType());
+
     }
 
 
@@ -127,6 +135,8 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppLoanListService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), dto.getCode());
         assertEquals(ProductType.EXPERIENCE.name(), dto.getData().getLoanList().get(0).getProductNewType());
+        //新增风险评估字段
+        assertNull(dto.getData().getLoanList().get(0).getRiskEstimate());
     }
 
     private LoanModel getFakeLoanModel(String fakeUserName, ProductType productType) {
@@ -160,5 +170,9 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase {
 
         return loanModel;
     }
-
+    public LoanDetailsModel getDefaultLoanDetail(){
+        LoanDetailsModel loanDetailsModel=new LoanDetailsModel();
+        loanDetailsModel.setEstimate(Estimate.CONSERVATIVE);
+        return loanDetailsModel;
+    }
 }

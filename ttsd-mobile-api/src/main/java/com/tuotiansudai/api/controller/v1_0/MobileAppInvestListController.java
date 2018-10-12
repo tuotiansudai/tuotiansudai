@@ -20,7 +20,7 @@ public class MobileAppInvestListController extends MobileAppBaseController {
     private MobileAppInvestListService mobileAppInvestListService;
 
     @RequestMapping(value = "/get/invests", method = RequestMethod.POST)
-    @ApiOperation("出借管理-个人投资详情")
+    @ApiOperation("出借管理-个人出借详情")
     public BaseResponseDto<InvestListResponseDataDto> queryInvestList(@Valid @RequestBody InvestListRequestDto investListRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();

@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.divide_money}" pageJavascript="${js.divide_money}" activeNav="" activeLeftNav="" title="瓜分体验金活动_活动中心_拓天速贷" keywords="拓天速贷,体验金奖励,邀请好友,新手注册" description="拓天速贷瓜分体验金活动,活动期间投资并邀请好友注册即可获得投资额等额体验金奖励,新注册用户可获得体验金翻倍奖励,体验金收益可提现.">
 
 <div class="tour-slide compliance-banner">
-    <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+    <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
 </div>
 
 <div class="share-reward-container page-width" id="shareRewardContainer">

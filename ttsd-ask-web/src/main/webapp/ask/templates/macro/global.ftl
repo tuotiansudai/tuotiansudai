@@ -22,7 +22,7 @@
 <#macro main pageCss pageJavascript="" activeNav="拓天问答" commonStaticServer="${commonStaticServer}" title="拓天速贷" keywords="" activeLeftNav=""  description="">
     <#local mainMenus=[
     {"title":"首页", "url":"${webServer}","category":"16顶部导航","navigation":"true"},
-    {"title":"我要投资", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+    {"title":"我要出借", "url":"${webServer}/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
         {"title":"直投项目", "url":"${webServer}/loan-list"},
         {"title":"转让项目", "url":"${webServer}/transfer-list"}
     ]},
@@ -30,7 +30,7 @@
 
     {"title":"我的账户", "url":"${webServer}/account", "category":"18顶部导航","navigation":"true","leftNavs":[
         {"title":"账户总览", "url":"${webServer}/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的出借", "url":"${webServer}/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"${webServer}/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"${webServer}/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"${webServer}/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
@@ -46,11 +46,15 @@
         {"title":"团队介绍", "url":"${webServer}/about/team"},
         {"title":"拓天公告", "url":"${webServer}/about/notice"},
         {"title":"媒体报道", "url":"${webServer}/about/media"},
-        {"title":"网贷知识", "url":"/about/knowledge"},
-        {"title":"审计报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"/about/audit-report"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
         {"title":"联系我们", "url":"${webServer}/about/contact"},
         {"title":"运营数据", "url":"${webServer}/about/operational"}
+    ]},
+    {"title":"网贷课堂", "url":"/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
+    {"title":"法律法规", "url":"/about/knowledge"},
+    {"title":"出借人教育", "url":"/about/investor-knowledge"},
+    {"title":"基础知识", "url":"/about/base-knowledge"}
     ]},
     {"title":"帮助中心", "url":"${webServer}/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
         {"title":"注册认证", "url":"${webServer}/help/account"},

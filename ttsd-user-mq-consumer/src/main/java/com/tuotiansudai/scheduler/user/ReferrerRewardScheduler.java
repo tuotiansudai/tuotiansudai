@@ -40,7 +40,7 @@ public class ReferrerRewardScheduler {
     private String activityStartTimeStr;
 
 
-    //执行时间需为每月15号，因为涉及到注册后15天内有效投资才算有效推荐
+    //执行时间需为每月15号，因为涉及到注册后15天内有效出借才算有效推荐
     @Scheduled(cron = "0 0 8 15 1/1 ?", zone = "Asia/Shanghai")
     public void referrerReward() {
         logger.info("[ReferrerRewardScheduler] is start ...");

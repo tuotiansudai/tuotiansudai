@@ -33,20 +33,20 @@ public class RepaySuccessInvestRepayCallbackMessageConsumer implements MessageCo
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[还款发放投资人收益回调MQ] receive message: {}: {}.", this.queue(), message);
+        logger.info("[还款发放出借人收益回调MQ] receive message: {}: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[还款发放投资人收益回调MQ] RepaySuccessInvestRepayCallback receive message is empty");
+            logger.error("[还款发放出借人收益回调MQ] RepaySuccessInvestRepayCallback receive message is empty");
             return;
         }
         RepaySuccessAsyncCallBackMessage repaySuccessAsyncCallBackMessage;
         try {
             repaySuccessAsyncCallBackMessage = JsonConverter.readValue(message, RepaySuccessAsyncCallBackMessage.class);
         } catch (IOException e) {
-            logger.error("[还款发放投资人收益回调MQ] RepaySuccessInvestRepayCallback json convert RepaySuccessMessage is fail, message:{}", message);
+            logger.error("[还款发放出借人收益回调MQ] RepaySuccessInvestRepayCallback json convert RepaySuccessMessage is fail, message:{}", message);
             return;
         }
         try {
-            logger.info("[还款发放投资人收益回调MQ] RepaySuccessInvestRepayCallback ready to consume message: repay callback.");
+            logger.info("[还款发放出借人收益回调MQ] RepaySuccessInvestRepayCallback ready to consume message: repay callback.");
             BaseDto<PayDataDto> result = payWrapperClient.repayInvestPayback(repaySuccessAsyncCallBackMessage);
             if (!result.isSuccess()) {
                 logger.error("RepaySuccessInvestRepayCallback invest repay callback consume fail. notifyRequestId: " + message);
@@ -54,10 +54,10 @@ public class RepaySuccessInvestRepayCallbackMessageConsumer implements MessageCo
             }
 
         } catch (Exception e) {
-            logger.error("[还款发放投资人收益回调MQ] RepaySuccessInvestRepayCallback  is fail, message:{}", message);
-            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "还款发放投资人收益回调失败, 业务处理异常");
+            logger.error("[还款发放出借人收益回调MQ] RepaySuccessInvestRepayCallback  is fail, message:{}", message);
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, "还款发放出借人收益回调失败, 业务处理异常");
             return;
         }
-        logger.info("[还款发放投资人收益回调MQ] RepaySuccessInvestRepayCallback consume message success.");
+        logger.info("[还款发放出借人收益回调MQ] RepaySuccessInvestRepayCallback consume message success.");
     }
 }

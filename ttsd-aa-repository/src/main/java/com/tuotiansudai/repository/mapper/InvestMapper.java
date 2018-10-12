@@ -13,14 +13,14 @@ import java.util.Set;
 @Repository
 public interface InvestMapper {
     /**
-     * 创建投资记录
+     * 创建出借记录
      *
      * @param investModel
      */
     void create(InvestModel investModel);
 
     /**
-     * 更新投资记录
+     * 更新出借记录
      */
     void update(InvestModel investModel);
 
@@ -33,7 +33,7 @@ public interface InvestMapper {
     void updateTransferStatus(@Param(value = "id") long id, @Param(value = "transferStatus") TransferStatus transferStatus);
 
     /**
-     * 根据ID查找对应的投资
+     * 根据ID查找对应的出借
      *
      * @param id
      * @return
@@ -43,7 +43,7 @@ public interface InvestMapper {
     InvestModel lockById(@Param(value = "id") Long id);
 
     /**
-     * 查找用户的投资记录
+     * 查找用户的出借记录
      *
      * @param loginName
      * @return
@@ -62,7 +62,7 @@ public interface InvestMapper {
     long findCountByLoginNameExceptTransfer(@Param(value = "loginName") String loginName);
 
     /**
-     * 计算标的的投资总额
+     * 计算标的的出借总额
      *
      * @param loanId
      * @return
@@ -70,7 +70,7 @@ public interface InvestMapper {
     long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
 
     /**
-     * 分页获取投资记录
+     * 分页获取出借记录
      *
      * @param loanId
      * @param index
@@ -84,7 +84,7 @@ public interface InvestMapper {
                                    @Param(value = "status") InvestStatus status);
 
     /**
-     * 获取标的的投资记录数
+     * 获取标的的出借记录数
      *
      * @param loanId
      * @param status
@@ -94,7 +94,7 @@ public interface InvestMapper {
                            @Param(value = "status") InvestStatus status);
 
     /**
-     * 获取所有投资成功的记录
+     * 获取所有出借成功的记录
      *
      * @param loanId
      * @return
@@ -102,14 +102,14 @@ public interface InvestMapper {
     List<InvestModel> findSuccessInvestsByLoanId(@Param(value = "loanId") long loanId);
 
     /**
-     * 将目前仍处于waiting状态的投资记录标记为失败
+     * 将目前仍处于waiting状态的出借记录标记为失败
      *
      * @param loanId
      */
     void cleanWaitingInvest(@Param(value = "loanId") long loanId);
 
     /**
-     * 获取标的是否存在在指定时间后创建，目前仍处于waiting状态的投资记录
+     * 获取标的是否存在在指定时间后创建，目前仍处于waiting状态的出借记录
      *
      * @param loanId
      * @param afterTime
@@ -337,4 +337,6 @@ public interface InvestMapper {
     List<String> findInvestorMobileByLoanId(@Param(value = "loanId") long loanId);
 
     List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
+
+    long sumUsedFund(@Param(value = "loginName")String loginName);
 }

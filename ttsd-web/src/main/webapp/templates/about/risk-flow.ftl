@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="" activeLeftNav="" title="风控流程_风控保障_拓天速贷" keywords="拓天速贷,风控流程,风控系统,资金保障" description="拓天速贷六重风控系统、22道风控手续、严谨的风控审核机制,全方位保障用户的资金安全,为投资者提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.about_assurance}" pageJavascript="${js.about_assurance}" activeNav="" activeLeftNav="" title="风控流程_风控保障_拓天速贷" keywords="拓天速贷,风控流程,风控系统,资金保障" description="拓天速贷六重风控系统、22道风控手续、严谨的风控审核机制,全方位保障用户的资金安全,为出借者提供规范、安全、专业的互联网金融信息服务.">
 
 <div class="risk-flow-container" id="riskFlow">
     <ul class="quick-top-link page-width">
@@ -154,7 +154,7 @@
                 </dl>
                 <dl>
                     <dt><em></em>回款提示</dt>
-                    <dd>财务部定期提醒客户交投资人收益，到期回本金</dd>
+                    <dd>财务部定期提醒客户交出借人收益，到期回本金</dd>
                 </dl>
                 <dl>
                     <dt><em></em>催收转单</dt>

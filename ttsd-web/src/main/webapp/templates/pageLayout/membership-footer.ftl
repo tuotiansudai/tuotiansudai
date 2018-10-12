@@ -13,7 +13,7 @@
         </dl>
         <dl class="list-normal">
             <dt>赚取积分</dt>
-            <dd><a href="/loan-list">我要投资</a></dd>
+            <dd><a href="/loan-list">我要出借</a></dd>
             <dd><a href="/point-shop/task">积分任务</a></dd>
         </dl>
         <dl class="list-contact">

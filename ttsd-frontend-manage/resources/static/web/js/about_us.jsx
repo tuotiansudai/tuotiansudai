@@ -6,7 +6,7 @@ let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
-
+var sourceKind = globalFun.parseURL(location.href);
 
 (function(){
     let browser = $(window).width();
@@ -97,7 +97,86 @@ if($noticeList.length) {
         }
     });
 }
+if($('#basicList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"BASIC_KNOWLEDGE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#basicList').html(html);
+        $('#basicList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#basicList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#knowlegeList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"LAW_RULE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#knowlegeList').html(html);
+        $('#knowlegeList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#knowlegeList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#investorList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"INVESTOR_EDUCATION"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#investorList').html(html);
+        $('#investorList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#investorList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($noticeDetail.length){
+    var title = $('#knowledgeTitleH2').text();
+    switch (sourceKind.params.subSection) {
+        case 'base':
+            $('#knowledgeTitle').text('基础知识');
+            $('.left-nav').find('li').eq(2).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'law':
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'investor':
+            $('#knowledgeTitle').text('出借人教育');
+            $('.left-nav').find('li').eq(1).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        default :
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
 
+
+
+    }
+}
 let $companyPhoto = $('#companyPhoto');
 
 let photoGroup={
@@ -160,7 +239,7 @@ $corporateUndertakingImg.find('a').attr('href',corporateUndertakingImg[1].big);
 $corporateUndertakingImg.find('a').append(`<img src="${corporateUndertakingImg[1].small}">`);
 
 //审计报告
-let $reportImg = $('.reportImg');
+let $reportImg = $('.report-con');
 let $report2017 = $('.photo2017'),
     $report2016 = $('.photo2016'),
     $report2015 = $('.photo2015');
@@ -185,11 +264,13 @@ let reportImg={
 };
 
 $reportImg.find('li').each(function(key,option) {
-    console.log(option)
     let num = key+1;
     $(option).find('a').attr('href',reportImg[num].big);
     $(option).find('a').append(`<img src="${reportImg[num].small}">`);
 });
+
+
+
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
@@ -239,6 +320,17 @@ fancybox(function() {
         }
     });
 });
+
+//三个报告切换
+let $reportContainer = $('#reportContainer');
+let $reportTitle = $('#reportTitle');
+$reportTitle.find('em').on('click',function () {
+    let _self = $(this);
+    let index = _self.index();
+    _self.siblings().removeClass('active').end().addClass('active');
+    $reportContainer.find('.content').hide().eq(index).show();
+})
+
 //问题列表
 require.ensure([],function() {
     let $problemListFrame=$('#problemListFrame');
@@ -440,7 +532,6 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         url: '/about/operation-data/chart',
         type: 'GET'
     },function(data) {
-        console.log(data);
         var datetime = data.now;
         var dateTimeDOM = '（数据截止到'+dateFomater(datetime)+'）';
         $('#dateTime').text(dateTimeDOM);

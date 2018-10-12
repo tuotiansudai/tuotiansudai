@@ -11,7 +11,7 @@
     <div class="account-summary">
         <div class="collection">
     <#if loanDto.estimate??>
-            <span class="risk-tip">该项目适合投资偏好类型为<i class="risk-type">${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
+            <span class="risk-tip">该项目适合出借偏好类型为<i class="risk-type">${loanDto.estimate}</i>的用户<em id="closeRisk"></em></span>
     </#if>
             <span class="summary-box">
                  <b>
@@ -75,14 +75,14 @@
     <div class="history-record">
         <a id="lookOld" data-url="/m/loan/${transferApplication.loanId?string.computer}">查看原始项目</a>
     </div>
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，投资需谨慎！</div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2">市场有风险，出借需谨慎！</div>
 
     <#if (transferApplication.transferStatus.name() == "SUCCESS")>
         <button class="to-invest-project" type="button" disabled>已转让</button>
     <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
         <button class="to-invest-project" type="button" disabled>已取消</button>
     <#else>
-        <button id="to_buy_transfer" class="to-invest-project" type="button">立即投资</button>
+        <button id="to_buy_transfer" class="to-invest-project" type="button">立即出借</button>
     </#if>
 
 </div>

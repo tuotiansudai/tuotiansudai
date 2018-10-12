@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(description = "我的推荐人投资列表")
+@Api(description = "我的推荐人出借列表")
 public class MobileAppReferrerInvestListController extends MobileAppBaseController {
     @Autowired
     private MobileAppReferrerInvestService mobileAppReferrerInvestService;
 
     @RequestMapping(value = "/get/referrerinvests", method = RequestMethod.POST)
-    @ApiOperation("我的推荐人投资列表")
+    @ApiOperation("我的推荐人出借列表")
     public BaseResponseDto<ReferrerInvestListResponseDataDto> queryInvestList(@RequestBody ReferrerInvestListRequestDto referrerInvestListRequestDto) {
         referrerInvestListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppReferrerInvestService.generateReferrerInvestList(referrerInvestListRequestDto);

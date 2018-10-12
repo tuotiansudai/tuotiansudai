@@ -7,7 +7,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "资产总额", dataType = "10000")
     private String totalAssets;
 
-    @ApiModelProperty(value = "累计投资额", dataType = "10000")
+    @ApiModelProperty(value = "累计出借额", dataType = "10000")
     private String totalInvestment;
 
     @ApiModelProperty(value = "累计收益", dataType = "1000")

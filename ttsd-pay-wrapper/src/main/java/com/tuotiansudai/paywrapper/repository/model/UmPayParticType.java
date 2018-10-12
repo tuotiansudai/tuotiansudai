@@ -5,7 +5,7 @@ package com.tuotiansudai.paywrapper.repository.model;
  */
 public enum UmPayParticType {
     /**
-     * 投资者
+     * 出借者
      */
     INVESTOR("01"),
     /**

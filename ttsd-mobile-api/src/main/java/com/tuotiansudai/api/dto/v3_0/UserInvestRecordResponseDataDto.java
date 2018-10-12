@@ -20,19 +20,19 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
 
-    @ApiModelProperty(value = "投资ID", example = "1001")
+    @ApiModelProperty(value = "出借ID", example = "1001")
     private String investId;
 
     @ApiModelProperty(value = "申请债权转让ID", example = "201")
     private String transferApplicationId;
 
-    @ApiModelProperty(value = "投资金额", example = "1000")
+    @ApiModelProperty(value = "出借金额", example = "1000")
     private String investAmount;
 
-    @ApiModelProperty(value = "投资时间", example = "2016-11-25 18:10:01")
+    @ApiModelProperty(value = "出借时间", example = "2016-11-25 18:10:01")
     private String investTime;
 
-    @ApiModelProperty(value = "投资状态", example = "BID_SUCCESS")
+    @ApiModelProperty(value = "出借状态", example = "BID_SUCCESS")
     private InvestStatus investStatus;
 
     @ApiModelProperty(value = "预计利息", example = "100")
@@ -59,7 +59,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360,EXPERIENCE")
     private String productNewType;
 
-    @ApiModelProperty(value = "投资加息", example = "10")
+    @ApiModelProperty(value = "出借加息", example = "10")
     private String extraRate;
 
     @ApiModelProperty(value = "抵押类型", example = "HOUSE:房标,车标:VEHICLE,无抵押物:NONE")

@@ -1,6 +1,6 @@
 <#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.loan_list}" pageJavascript="${m_js.loan_list}" title="投资列表_投资产品_拓天速贷">
+<@global.main pageCss="${m_css.loan_list}" pageJavascript="${m_js.loan_list}" title="出借列表_出借产品_拓天速贷">
 
 <div class="my-loan-content" id="loanList">
     <div class="menu-category">
@@ -23,7 +23,7 @@
                         <#if (transferApplicationItem.transferStatus == "SUCCESS")>
                             <li><a href="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="tranfered"></a></li>
                         <#else>
-                            <li><a data-url="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="btn-invest btn-normal goToTranDetail">立即投资</a></li>
+                            <li><a data-url="/m/transfer/${(transferApplicationItem.transferApplicationId)!}" class="btn-invest btn-normal goToTranDetail">立即出借</a></li>
                         </#if>
 
                     </ul>
@@ -47,7 +47,7 @@
                 </a>
                 <a class="menu-invest current" href="/m/loan-list">
                     <i></i>
-                    <span>投资</span>
+                    <span>出借</span>
                 </a>
                 <a class="menu-knowledge" href="/m/about/knowledge">
                     <i></i>

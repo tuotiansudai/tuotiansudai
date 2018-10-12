@@ -267,7 +267,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         // update invest repay actual interest fee status
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
                 logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
@@ -305,16 +305,16 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     /**
-     * 借款人还款后Job回调，返款投资人
+     * 借款人还款后Job回调，返款出借人
      *
      * @param loanRepayId 标的还款计划id
-     * @return 处理结果(true 所有投资人返款已成功发放)
+     * @return 处理结果(true 所有出借人返款已成功发放)
      */
     @Override
     public boolean paybackInvest(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
-        //投资人实收利息总计
+        //出借人实收利息总计
         long interestWithoutFee = 0;
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -322,7 +322,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
 
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
@@ -429,7 +429,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(), false));
-        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放投资人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
+        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放出借人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
@@ -519,10 +519,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(currentLoanRepay.getLoanId());
 
-        //投资人实收利息总和
+        //出借人实收利息总和
         long interestWithoutFee = 0;
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
         }
@@ -547,9 +547,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     /**
-     * 投资人收到返款处理
+     * 出借人收到返款处理
      *
-     * @param currentInvestRepay 投资人还款计划
+     * @param currentInvestRepay 出借人还款计划
      * @throws AmountTransferException
      */
     private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws AmountTransferException {
@@ -598,8 +598,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
 
-        //Title:您投资的{0}已回款{1}元，请前往账户查收！
-        //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
+        //Title:您出借的{0}已回款{1}元，请前往账户查收！
+        //Content:尊敬的用户，您出借的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
         long repayAmount = currentInvestRepay.getRepayAmount();
         CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(currentInvestRepay.getInvestId(), currentInvestRepay.getPeriod());
         if (couponRepayModel != null) {

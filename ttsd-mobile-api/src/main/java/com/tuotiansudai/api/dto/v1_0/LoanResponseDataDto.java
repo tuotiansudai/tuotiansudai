@@ -24,7 +24,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;
 
-    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还投资本金，按天计息，放款后生息")
+    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还出借本金，按天计息，放款后生息")
     private String repayTypeName;
 
     @ApiModelProperty(value = "期数", example = "12")
@@ -60,7 +60,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     private String cardinalNumber;
 
-    @ApiModelProperty(value = "投资上限", example = "100")
+    @ApiModelProperty(value = "出借上限", example = "100")
     private String maxInvestMoney;
 
     @ApiModelProperty(value = "起投时间", example = "2016-11-24 12:00:00")
@@ -93,10 +93,10 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     public String cardinalNumberCent;
 
-    @ApiModelProperty(value = "投资上限", example = "100")
+    @ApiModelProperty(value = "出借上限", example = "100")
     public String maxInvestMoneyCent;
 
-    @ApiModelProperty(value = "投资总额", example = "10000")
+    @ApiModelProperty(value = "出借总额", example = "10000")
     public String investedMoneyCent;
 
     @ApiModelProperty(value = "借款总额", example = "10000")
@@ -108,7 +108,7 @@ public class LoanResponseDataDto {
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String extraSource;
 
-    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通投资),NEWBIE(新手专享),EXCLUSIVE(定向投资),PROMOTION(加息投资)")
+    @ApiModelProperty(value = "标的类型", example = "NORMAL(普通出借),NEWBIE(新手专享),EXCLUSIVE(定向出借),PROMOTION(加息出借)")
     private String activityDesc;
 
     @ApiModelProperty(value = "抵押", example = "HOUSE")
@@ -116,6 +116,12 @@ public class LoanResponseDataDto {
 
     @ApiModelProperty(value = "万元收益", example = "1000")
     private String interestPerTenThousands;
+
+    @ApiModelProperty(value = "风险评估等级，默认为Estimate.lower")
+    private Integer estimateLevel;
+
+    @ApiModelProperty(value = "投资偏好", example = "进取型")
+    private String riskEstimate;
 
     public String getLoanId() {
         return loanId;
@@ -402,5 +408,21 @@ public class LoanResponseDataDto {
 
     public void setInterestPerTenThousands(String interestPerTenThousands) {
         this.interestPerTenThousands = interestPerTenThousands;
+    }
+
+    public Integer getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(Integer estimateLevel) {
+        this.estimateLevel = estimateLevel;
+    }
+
+    public String getRiskEstimate() {
+        return riskEstimate;
+    }
+
+    public void setRiskEstimate(String riskEstimate) {
+        this.riskEstimate = riskEstimate;
     }
 }

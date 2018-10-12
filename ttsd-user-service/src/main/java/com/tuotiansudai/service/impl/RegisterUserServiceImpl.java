@@ -92,7 +92,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         if (!Strings.isNullOrEmpty(userModel.getReferrer())) {
             //Title:您推荐的好友 {0} 已成功注册
             //AppTitle:您推荐的好友 {0} 已成功注册
-            //Content:尊敬的用户，您推荐的好友 {0} 已成功注册，【邀请好友投资】您还能再拿1%现金奖励哦！
+            //Content:尊敬的用户，您推荐的好友 {0} 已成功注册，【邀请好友出借】您还能再拿1%现金奖励哦！
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_SUCCESS,
                     Lists.newArrayList(userModel.getReferrer()),
                     MessageFormat.format(MessageEventType.RECOMMEND_SUCCESS.getTitleTemplate(), userModel.getMobile()),

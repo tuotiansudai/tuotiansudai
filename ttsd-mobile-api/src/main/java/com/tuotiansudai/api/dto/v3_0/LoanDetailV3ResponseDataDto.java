@@ -29,10 +29,10 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "还款方式代码", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String repayTypeCode;//还款方式代码
 
-    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还投资本金，按天计息，放款后生息")
+    @ApiModelProperty(value = "还款方式名称", example = "先付收益后还本金，按天计息，放款后生息")
     private String repayTypeName;//还款方式名称
 
-    @ApiModelProperty(value = "计息方式", example = "先付收益后还投资本金")
+    @ApiModelProperty(value = "计息方式", example = "先付收益后还本金")
     private String interestPointName;//计息方式
 
     @ApiModelProperty(value = "项目期限", example = "12")
@@ -89,8 +89,8 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     private String cardinalNumber;//递增金额
 
-    @ApiModelProperty(value = "投资上限", example = "100")
-    private String maxInvestMoney;//投资上限
+    @ApiModelProperty(value = "出借上限", example = "100")
+    private String maxInvestMoney;//出借上限
 
     @ApiModelProperty(value = "已投人数", example = "100")
     private Long investedCount;//已投人数
@@ -101,13 +101,13 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "手续费比例", example = "10")
     private String investFeeRate;//手续费比例
 
-    @ApiModelProperty(value = "跑马灯内容", example = "第一个投资者将获得“拓荒先锋”称号及0.2％加息券＋50元红包")
+    @ApiModelProperty(value = "跑马灯内容", example = "第一个出借者将获得“拓荒先锋”称号及0.2％加息券＋50元红包")
     private String marqueeTitle;
 
-    @ApiModelProperty(value = "分享标题", example = "拓天速贷引领投资热，开启互金新概念")
+    @ApiModelProperty(value = "分享标题", example = "拓天速贷引领出借热，开启互金新概念")
     private String title;
 
-    @ApiModelProperty(value = "分享内容", example = "个人经营借款投资项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！")
+    @ApiModelProperty(value = "分享内容", example = "个人经营借款出借项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！")
     private String content;
 
     @ApiModelProperty(value = "借款天数", example = "360")
@@ -128,7 +128,7 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "递增金额", example = "50")
     public String cardinalNumberCent;
 
-    @ApiModelProperty(value = "投资上限", example = "100")
+    @ApiModelProperty(value = "出借上限", example = "100")
     public String maxInvestMoneyCent;
 
     @ApiModelProperty(value = "已投金额", example = "100")
@@ -143,13 +143,13 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "申请材料", example = "list")
     private List<EvidenceResponseDataDto> evidence;
 
-    @ApiModelProperty(value = "投资来源", example = "WEB，MOBILE")
+    @ApiModelProperty(value = "出借来源", example = "WEB，MOBILE")
     private String extraSource;
 
     @ApiModelProperty(value = "标的类型", example = "NORMAL")
     private ActivityType activityType;
 
-    @ApiModelProperty(value = "标的类型描述", example = "普通投资")
+    @ApiModelProperty(value = "标的类型描述", example = "普通出借")
     private String activityDesc;
 
     @ApiModelProperty(value = "抵押类型", example = "HOUSE:房标,车标:VEHICLE,无抵押物:NONE")
@@ -166,6 +166,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "用户分级", example = "CONSERVATIVE STEADY POSITIVE")
     private String estimate;
+
+    @ApiModelProperty(value = "风险评估等级")
+    private Integer estimateLevel;
 
     public Long getLoanId() {
         return loanId;
@@ -574,4 +577,13 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     public void setNonTransferable(boolean nonTransferable) {
         this.nonTransferable = nonTransferable;
     }
+
+    public Integer getEstimateLevel() {
+        return estimateLevel;
+    }
+
+    public void setEstimateLevel(Integer estimateLevel) {
+        this.estimateLevel = estimateLevel;
+    }
+
 }

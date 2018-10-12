@@ -58,8 +58,19 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Autowired
+    private LoanDetailsMapper loanDetailsMapper;
+
+    @Autowired
+    private RiskEstimateMapper riskEstimateMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
+
+    private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
 
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException {
@@ -98,6 +109,22 @@ public class TransferServiceImpl implements TransferService {
 
         if (LoanStatus.REPAYING != loan.getStatus()) {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
+        }
+
+        //没有进行风险评估
+        LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
+        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(investDto.getLoginName());
+        if (riskEstimateModel == null) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_UNUSABLE);
+        }
+        //项目风险等级不适合
+        if (riskEstimateModel.getEstimate().getLower() < loanDetailsModel.getEstimate().getLower()) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_LEVEL_OVER);
+        }
+        //总投资金额超出风险投资限额
+        long amount = investMapper.sumUsedFund(investDto.getLoginName());
+        if ((amount + investAmount) > AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()))) {
+            throw new InvestException(InvestExceptionType.RISK_ESTIMATE_AMOUNT_OVER);
         }
 
     }
