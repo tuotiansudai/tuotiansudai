@@ -14,7 +14,7 @@
         <h2 class="cash-title">
             资金安全
         </h2>
-        <div class="cash-fonts">为保障投资者的资金安全<br/>
+        <div class="cash-fonts">为保障出借者的资金安全<br/>
             拓天速贷采用多管齐下的资金管理措施</div>
 
         <div class="safe-info-list">

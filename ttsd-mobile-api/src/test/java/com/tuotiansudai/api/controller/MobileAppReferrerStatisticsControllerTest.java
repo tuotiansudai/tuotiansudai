@@ -35,7 +35,7 @@ public class MobileAppReferrerStatisticsControllerTest extends ControllerTestBas
         referrerStatisticsResponseDataDto.setRewardAmount("1");
         BannerPictureResponseDataDto bannerPictureResponseDataDto = new BannerPictureResponseDataDto();
         bannerPictureResponseDataDto.setTitle("拓天速贷");
-        bannerPictureResponseDataDto.setContent("0元投资赚收益，呼朋唤友抢佣金");
+        bannerPictureResponseDataDto.setContent("0元出借赚收益，呼朋唤友抢佣金");
         bannerPictureResponseDataDto.setPicture("{static}/images/app-banner/app-banner-referrer.jpg");
         bannerPictureResponseDataDto.setUrl("{web}/activity/rank-list-app?source=app");
         bannerPictureResponseDataDto.setSharedUrl("{web}/activity/rank-list");

@@ -8,7 +8,7 @@ public enum PointBusinessType {
     SIGN_IN("签到奖励", PointBillOperationType.IN),
     TASK("任务奖励", PointBillOperationType.IN),
     POINT_LOTTERY_AWARD("积分抽奖奖励", PointBillOperationType.IN),
-    INVEST("投资奖励", PointBillOperationType.IN),
+    INVEST("出借奖励", PointBillOperationType.IN),
     ACTIVITY("活动奖励", PointBillOperationType.IN),
     CHANNEL_IMPORT("人工导入", PointBillOperationType.IN),
     EXCHANGE("积分兑换", PointBillOperationType.OUT),

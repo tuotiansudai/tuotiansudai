@@ -36,9 +36,9 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
     @Transactional
     @Override
     public void consume(String message) {
-        logger.info("[投资红包MQ] {} receive message: {}.", this.queue(), message);
+        logger.info("[出借红包MQ] {} receive message: {}.", this.queue(), message);
         if (Strings.isNullOrEmpty(message)) {
-            logger.error("[投资红包MQ] receive message is empty");
+            logger.error("[出借红包MQ] receive message is empty");
             return;
         }
 
@@ -50,11 +50,11 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
                     || Strings.isNullOrEmpty(transferRedEnvelopCallbackMessage.getLoginName())
                     || transferRedEnvelopCallbackMessage.getUserCouponId() == null) {
 
-                logger.error("[投资红包MQ] message {} is invalid ", message);
+                logger.error("[出借红包MQ] message {} is invalid ", message);
                 return;
             }
         } catch (IOException e) {
-            logger.error("[投资红包MQ] message can not convert to transferRedEnvelopCallbackMessage, message: {}", message);
+            logger.error("[出借红包MQ] message can not convert to transferRedEnvelopCallbackMessage, message: {}", message);
             return;
         }
 
@@ -62,16 +62,16 @@ public class TransferRedEnvelopCallbackMessageConsumer implements MessageConsume
             BaseDto<PayDataDto> result = payWrapperClient.transferRedEnvelopForCallback(transferRedEnvelopCallbackMessage.getUserCouponId());
 
             if (!result.isSuccess()) {
-                logger.error("[投资红包MQ] callback consume is failed. message: {}", message);
-                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("投资红包MQ错误: 消息处理失败, message: {0}", message));
+                logger.error("[出借红包MQ] callback consume is failed. message: {}", message);
+                mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("出借红包MQ错误: 消息处理失败, message: {0}", message));
                 return;
             }
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[投资红包MQ] message consume is exception. message: {0}", message), e);
-            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("投资红包MQ错误: 消息处理异常, message: {0}", message));
+            logger.error(MessageFormat.format("[出借红包MQ] message consume is exception. message: {0}", message), e);
+            mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("出借红包MQ错误: 消息处理异常, message: {0}", message));
             return;
         }
 
-        logger.info("[投资红包MQ] consume message success, message: {}", message);
+        logger.info("[出借红包MQ] consume message success, message: {}", message);
     }
 }

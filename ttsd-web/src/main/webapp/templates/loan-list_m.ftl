@@ -1,6 +1,6 @@
 <#import "macro/global_m.ftl" as global>
 
-<@global.main pageCss="${m_css.loan_list}" pageJavascript="${m_js.loan_list}" title="投资列表_投资产品_拓天速贷">
+<@global.main pageCss="${m_css.loan_list}" pageJavascript="${m_js.loan_list}" title="出借列表_出借产品_拓天速贷">
 
 <div class="my-loan-content" id="loanList">
     <div class="menu-category">
@@ -33,7 +33,7 @@
 
                         <b class="newer-title">${loanItem.name}
                         <#if loanItem.productType == 'EXPERIENCE'>
-                            <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">体验金投资</i>
+                            <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">体验金出借</i>
                         </#if>
                         <#if loanItem.productType != 'EXPERIENCE' && loanItem.activityType == 'NEWBIE'>
                             <i class="icon-sign <#if ['RECHECK', 'REPAYING', 'OVERDUE', 'COMPLETE']?seq_contains(loanItem.status)>sold</#if>">新手专享</i>
@@ -63,7 +63,7 @@
                             </li>
                             <li>
                             <#if ['RAISING']?seq_contains(loanItem.status)>
-                                <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即投资</a>
+                                <a class="btn-invest btn-normal <#if loanItem.productType != 'EXPERIENCE'>goToDetail</#if> <#if loanItem.productType == 'EXPERIENCE'>goToExDetail</#if>" data-url="/m/loan/${loanItem.id?c}">立即出借</a>
                             <#elseif ['PREHEAT']?seq_contains(loanItem.status)>
                                 <a class="btn-invest btn-normal preheat-status preheat-btn" data-url="/m/loan/${loanItem.id?c}" >预热中</a>
                             <#else>
@@ -141,7 +141,7 @@
         </a>
         <a class="menu-invest current" href="/m/loan-list">
             <i></i>
-            <span>投资</span>
+            <span>出借</span>
         </a>
         <a class="menu-knowledge" href="/m/about/knowledge">
             <i></i>

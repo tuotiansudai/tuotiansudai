@@ -18,34 +18,10 @@ let $tipText=$('#tipText'),
 
 let $getSkipPhone = $('#getSkipPhone');
 
-validator.add(createForm.price, [{
-    strategy: 'isNonEmpty',
-    errorMsg: '转让价格'
-},{
-    strategy: 'minValue:'+minTip,
-    errorMsg: '转让价格最小为'+minTip
-},{
-    strategy: 'maxValue:'+maxTip,
-    errorMsg: '转让价格最大为'+maxTip
-}]);
-
-$(createForm.price).on('keyup',function(event) {
-
-    let errorMsg = validator.start(this);
-    if(errorMsg) {
-
-    }
-});
-
 createForm.onsubmit = function(event) {
     event.preventDefault();
-    let errorMsg;
-    errorMsg = validator.start(createForm.price);
-    if(errorMsg) {
-        return;
-    }
     applyTip();
-}
+};
 
 function applyTip(){
     layer.open({
@@ -69,7 +45,7 @@ function applyTip(){
                         if($('#isAnxinUser').val() == 'true'){
                             anxinModule.getSkipPhoneTip();
                         }else{
-                            $('#skipCheck').val() == 'true'?anxinModule.getSkipPhoneTip():$agreement.next('span.error').show();;
+                            $('#skipCheck').val() == 'true'?anxinModule.getSkipPhoneTip():$agreement.next('span.error').show();
                         }
                         return false;
                     }
@@ -92,14 +68,14 @@ function sendData() {
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify({
-            'transferAmount': parseFloat($('#transferAmount').val()) * 100,
+            'transferAmount': parseFloat($('#transferAmount').html()) * 100,
             'transferInvestId': $('#transferInvestId').val()
         }),
         beforeSend: function (data) {
-            $(createForm).find('button[type="submit"]').prop('disabled', true);
+            // $(createForm).find('button[type="submit"]').prop('disabled', true);
         }
     },function(data) {
-        $(createForm).find('button[type="submit"]').prop('disabled', false);
+        // $(createForm).find('button[type="submit"]').prop('disabled', false);
         if (data == true) {
             let $successTip = $('#successTip');
             layer.open({

@@ -19,19 +19,19 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
 
-    @ApiModelProperty(value = "投资ID", example = "1001")
+    @ApiModelProperty(value = "出借ID", example = "1001")
     private String investId;
 
-    @ApiModelProperty(value = "投资金额", example = "1000")
+    @ApiModelProperty(value = "出借金额", example = "1000")
     private String investAmount;
 
-    @ApiModelProperty(value = "投资时间", example = "2016-11-25 18:10:01")
+    @ApiModelProperty(value = "出借时间", example = "2016-11-25 18:10:01")
     private String investTime;
 
-    @ApiModelProperty(value = "投资状态", example = "BID_SUCCESS")
+    @ApiModelProperty(value = "出借状态", example = "BID_SUCCESS")
     private InvestStatus investStatus;
 
-    @ApiModelProperty(value = "投资状态描述", example = "投资成功")
+    @ApiModelProperty(value = "出借状态描述", example = "出借成功")
     private String investStatusDesc;
 
     @ApiModelProperty(value = "预计利息", example = "100")
@@ -49,7 +49,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "称号", example = "FIRST_INVEST(首投),MAX_AMOUNT(标王),LAST_INVEST(尾投)")
     private List<InvestAchievement> achievements;
 
-    @ApiModelProperty(value = "红包类型", example = "RED_ENVELOPE(投资红包),NEWBIE_COUPON(新手体验券),INVEST_COUPON(投资体验券),INTEREST_COUPON(加息券),BIRTHDAY_COUPON(生日福利)")
+    @ApiModelProperty(value = "红包类型", example = "RED_ENVELOPE(出借红包),NEWBIE_COUPON(新手体验券),INVEST_COUPON(出借体验券),INTEREST_COUPON(加息券),BIRTHDAY_COUPON(生日福利)")
     private List<CouponType> userCoupons;
 
     @ApiModelProperty(value = "是否使用券", example = "true")
@@ -61,10 +61,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto{
     @ApiModelProperty(value = "标的类型", example = "_30,_90,_180,_360,EXPERIENCE")
     private String productNewType;
 
-    @ApiModelProperty(value = "投资加息", example = "10")
+    @ApiModelProperty(value = "出借加息", example = "10")
     private String extraRate;
 
-    @ApiModelProperty(value = "活动描述", example = "普通投资")
+    @ApiModelProperty(value = "活动描述", example = "普通出借")
     private String activityDesc;
 
     @ApiModelProperty(value = "抵押类型", example = "HOUSE:房标,车标:VEHICLE,无抵押物:NONE")

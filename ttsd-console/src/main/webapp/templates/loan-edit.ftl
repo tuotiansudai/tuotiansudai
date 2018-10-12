@@ -35,6 +35,7 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE" <#if loan.loan.pledgeType == "ENTERPRISE_PLEDGE">selected</#if>>税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
+                            <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER" <#if loan.loan.pledgeType == "PERSONAL_CAPITAL_TURNOVER">selected</#if>>个人资金周转</option>
                         </select>
                     </div>
                 </div>
@@ -349,7 +350,7 @@
         </section>
 
         <section id="section-two">
-            <#if ['HOUSE', 'VEHICLE']?seq_contains(loan.loan.pledgeType)>
+            <#if ['HOUSE', 'VEHICLE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
@@ -362,7 +363,7 @@
             </#if>
 
         </section>
-
+        <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="<#if 'PERSONAL_CAPITAL_TURNOVER' == loan.loan.pledgeType && loan.pledgeVehicle?? && (loan.pledgeVehicle?size>0)>true<#else>false</#if>"/>
         <section id="section-three">
             <#if 'HOUSE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-house.ftl'>
@@ -370,6 +371,15 @@
 
             <#if 'VEHICLE' == loan.loan.pledgeType>
                 <#include 'loan-edit-pledge-vehicle.ftl'>
+            </#if>
+
+            <#if 'PERSONAL_CAPITAL_TURNOVER' == loan.loan.pledgeType>
+                <#if loan.pledgeHouse?? && (loan.pledgeHouse?size>0) >
+                    <#include 'loan-edit-pledge-house.ftl'>
+                </#if>
+                <#if loan.pledgeVehicle?? && (loan.pledgeVehicle?size>0) >
+                    <#include 'loan-edit-pledge-vehicle.ftl'>
+                </#if>
             </#if>
 
             <#if 'ENTERPRISE_PLEDGE' == loan.loan.pledgeType>

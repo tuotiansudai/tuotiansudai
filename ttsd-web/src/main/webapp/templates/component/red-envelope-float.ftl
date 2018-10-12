@@ -1,16 +1,16 @@
 <div id="redEnvelopFloatFrame">
 <div class="count-form">
 	<h3 class="hander">
-		<span>投资计算器</span>
+		<span>出借计算器</span>
 		<i class="close-count"></i>
 	</h3>
 	<form id="countForm" action="" class="clearfix">
 		<div class="form-text">
-			<input type="text" placeholder="投资金额" class="int-text" name="money" id="moneyNum">
+			<input type="text" placeholder="出借金额" class="int-text" name="money" id="moneyNum">
 			<span class="unit-text">元</span>
 		</div>
 		<div class="form-text">
-			<input type="text" placeholder="投资期限" class="int-text" name="day" id="dayNum">
+			<input type="text" placeholder="出借期限" class="int-text" name="day" id="dayNum">
 			<span class="unit-text">天</span>
 		</div>
 		<div class="form-text">
@@ -44,7 +44,7 @@
 
     <li class="cal-btn">
             <i class="icon-calculator"></i>
-            <span class="nav-text">投资<br/>计算器</span>
+            <span class="nav-text">出借<br/>计算器</span>
         </li>
 	<li>
 		<i class="icon-phone"></i>

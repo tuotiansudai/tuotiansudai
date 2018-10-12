@@ -14,10 +14,10 @@ public class SignInResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "下次可获得积分", example = "40")
     private int nextSignInPoint;
 
-    @ApiModelProperty(value = "当前获得签到奖励", example = "获得XX元投资红包")
+    @ApiModelProperty(value = "当前获得签到奖励", example = "获得XX元出借红包")
     private String currentRewardDesc;
 
-    @ApiModelProperty(value = "下次获得签到奖励", example = "再签到10天可再获得10元投资红包哦")
+    @ApiModelProperty(value = "下次获得签到奖励", example = "再签到10天可再获得10元出借红包哦")
     private String nextRewardDesc;
 
     @ApiModelProperty(value = "是否获得全勤奖", example = "true")

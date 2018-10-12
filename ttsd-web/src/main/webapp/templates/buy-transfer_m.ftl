@@ -3,11 +3,14 @@
 <div class="my-account-content apply-transfer buy-transfer" id="transfer_details"
      data-has-bank-card="${hasBankCard?c}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>"
-     data-estimate="${estimate?string('true', 'false')}"
+     data-estimate="${estimate???string('true', 'false')}"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loanDto.estimateLevel!''}"
+     data-pdf="${commonStaticServer}/images/pdf/risk-disclosure.pdf"
      style="display: none">
     <input type="hidden" class="bind-data" data-is-anxin-user="${anxinUser?c}">
     <input type="hidden" data-is-authentication-required="${anxinAuthenticationRequired?c}" id="isAuthenticationRequired" data-page="transfer">
-    <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i></i></em>立即投资 </div>
+    <div class="m-header"><em id="iconTransferDetail" class="icon-left"><i></i></em>立即出借 </div>
     <div class="benefit-box transfer-box">
         <div class="target-category-box transfer" data-url="loan-transfer-detail.ftl">
             <div class="newer-title transfer-title">
@@ -39,7 +42,7 @@
         <input type="hidden" value="${anxinAuthenticationRequired?c}" id="isAnxinAuthenticationRequired">
         <input type="hidden" value="${anxinUser?c}" id="isAnxinUser">
 
-        <button id="transferSubmit" type="submit" class="btn-wap-normal">立即投资</button>
+        <button id="transferSubmit" type="submit" class="btn-wap-normal">立即出借</button>
     </form>
     <input id="errorMassageTransfer" type="hidden" value="<#if errorMessage?has_content>${errorMessage!}</#if>">
 
@@ -58,7 +61,8 @@
 </#if>
 
 <#include "component/anxin-agreement.ftl" />
-    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 40px">市场有风险，投资需谨慎！</div>
+    <div class="invest-tips-m" style="text-align: center;color: #A2A2A2;margin-top: 10px">市场有风险，出借需谨慎！</div>
+    <div style="text-align: center;color: #A2A2A2">点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></div>
 </div>
 
 <div id="authorization_message" style="display: none">
@@ -70,7 +74,7 @@
     </div>
     <div class="my-account-content anxin-electro-sign" id="anxinAuthorization">
         <div class="cfca-info">
-            安心签是由中国金融认证中心（CFCA）为拓天速贷投资用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
+            安心签是由中国金融认证中心（CFCA）为拓天速贷出借用户提供的一种电子缔约文件在线签署、存储和管理服务的平台功能。它形成的电子缔约文件符合中国法律规定，与纸质文件具有同样的法律效力。
         </div>
 
         <div class="cfca-advantage">

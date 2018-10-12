@@ -12,6 +12,50 @@ $gray5:#333333;
   background: #fff!important;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
+  .monthly_report {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 20px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+  .operational_data {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 20px;
+    font-size: 18px;
+    color: #A2A2A2;
+  }
+  .content_monthly {
+    min-height: 500px;
+    .no-data {
+      height: 100%;
+      line-height: 500px;
+      text-align: center;
+    }
+  }
+  .detail-content {
+    img {
+      max-width: 100%;
+    }
+    p {
+      margin-bottom: 0;
+      img {
+        max-width: 100%!important;
+      }
+      span {
+        max-width:100%;
+        img {
+          max-width: 100%!important;
+        }
+      }
+      img {
+        max-width: 100%!important;
+      }
+    }
+  }
   @media (min-width: 701px) and (max-width: 999px) {
     padding: 0 10px;
   }
@@ -71,11 +115,21 @@ $gray5:#333333;
      margin-left: -60px;
      li {
        float: left;
+       width: 222px;
+       height: 294px;
        margin-left: 60px;
+       img {
+         width: 100%;
+       }
      }
    }
   }
   .notice-list {
+    .no-data {
+      text-align: center;
+      height: 300px;
+      line-height: 300px;
+    }
     li {
       border-bottom: 1px dotted #ccc;
       color: #4c4c4c;
@@ -526,10 +580,22 @@ $gray5:#333333;
     }
     .detail-content {
       img {
-        width: 100%;
+        max-width: 100%;
       }
       p {
         margin-bottom: 0;
+        img {
+          max-width: 100%!important;
+        }
+        span {
+          max-width:100%;
+          img {
+            max-width: 100%!important;
+          }
+        }
+        img {
+          max-width: 100%!important;
+        }
       }
     }
     .com-place{
@@ -882,10 +948,26 @@ $gray5:#333333;
 //审计报告
 .report-container {
   background: #fff!important;
-  h2 {
-    height: 50px;
-    line-height: 50px;
-    margin-top: 20px;
+  
+  #reportTitle em {
+    border: none;
+    margin-right: 20px;
+    color: #a2a2a2;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    &.active {
+      color: #ff7200;
+      border-bottom: 4px solid #ff7200;
+    }
+  }
+  .content {
+    min-height: 500px;
+    .no-data {
+      height: 100%;
+      line-height: 500px;
+      text-align: center;
+    }
   }
   ul {
     li {

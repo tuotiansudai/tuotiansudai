@@ -174,7 +174,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
         long transferFee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), investModel.getAmount(),
                 transferFee, getDeadlineFromNow(), leftPeriod, transferApplicationDto.getSource());
 
         transferApplicationMapper.create(transferApplicationModel);

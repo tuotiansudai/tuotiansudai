@@ -98,12 +98,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     }
                     Role role = this.getReferrerPriorityRole(referrerLoginName);
                     if (role == null) {
-                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 推荐人角色检查失败", referrerLoginName, String.valueOf(invest.getId())));
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 出借ID:{1} 推荐人角色检查失败", referrerLoginName, String.valueOf(invest.getId())));
                         continue;
                     }
 
                     if (invest.getTradingTime() == null) {
-                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 投资ID:{1} 交易时间为空", referrerLoginName, String.valueOf(invest.getId())));
+                        logger.warn(MessageFormat.format("[标的放款] 发送推荐人奖励, 推荐人:{0}, 出借ID:{1} 交易时间为空", referrerLoginName, String.valueOf(invest.getId())));
                         continue;
                     }
 
@@ -235,13 +235,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         try {
             if (investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
                 investReferrerRewardMapper.update(investReferrerRewardModel);
-                logger.info(MessageFormat.format("[标的放款-发送消息进队列]:发送推荐人奖励,推荐人:{0},投资ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
+                logger.info(MessageFormat.format("[标的放款-发送消息进队列]:发送推荐人奖励,推荐人:{0},出借ID:{1},推荐人奖励:{2}", referrerLoginName, orderId, amount));
 
                 AmountTransferMessage atm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
                 InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
                 String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(investReferrerRewardModel.getInvestId()));
-                logger.info(MessageFormat.format("[标的放款-发送消息进队列]:记录系统奖励,投资ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
+                logger.info(MessageFormat.format("[标的放款-发送消息进队列]:记录系统奖励,出借ID:{0},推荐人奖励:{1},奖励类型:{2}", orderId, amount, SystemBillBusinessType.REFERRER_REWARD));
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_OUT, orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
                 mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
@@ -309,7 +309,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     private void sendMessage(String loginName, String referrerLoginName, long reward, long businessId) {
         //Title:{0}元推荐奖励已存入您的账户，请查收！
-        //Content:尊敬的用户，您推荐的好友{0}投资成功，您已获得{1}元现金奖励。
+        //Content:尊敬的用户，您推荐的好友{0}出借成功，您已获得{1}元现金奖励。
         String title = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(reward));
         String content = MessageFormat.format(MessageEventType.RECOMMEND_AWARD_SUCCESS.getContentTemplate(), userMapper.findByLoginName(loginName).getMobile(), AmountConverter.convertCentToString(reward));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.RECOMMEND_AWARD_SUCCESS,

@@ -34,7 +34,7 @@ public class TransferApplicationDetailResponseDataDto extends BaseResponseDataDt
     @ApiModelProperty(value = "利率类型", example = "LOAN_INTEREST_MONTHLY_REPAY")
     private String loanType;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investAmount;
 
     @ApiModelProperty(value = "债权转让金额", example = "1")

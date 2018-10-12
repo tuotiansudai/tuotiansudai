@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(description = "出借管理-个人投资详情")
+@Api(description = "出借管理-个人出借详情")
 public class MobileAppInvestDetailController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppInvestDetailService mobileAppMyInvestDetailService;
 
     @RequestMapping(value = "/get/userinvest", method = RequestMethod.POST)
-    @ApiOperation("出借管理-个人投资详情")
+    @ApiOperation("出借管理-个人出借详情")
     public BaseResponseDto queryUserInvestList(@RequestBody InvestDetailRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppMyInvestDetailService.generateUserInvestDetail(requestDto);

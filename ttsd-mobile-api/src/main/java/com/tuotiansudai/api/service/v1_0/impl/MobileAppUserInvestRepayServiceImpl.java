@@ -68,11 +68,11 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
     @Value("${mobile.server}")
     private String mobileServer;
 
-    private final static String RED_ENVELOPE_TEMPLATE = "{0}元投资红包";
+    private final static String RED_ENVELOPE_TEMPLATE = "{0}元出借红包";
 
     private final static String NEWBIE_COUPON_TEMPLATE = "{0}元新手体验金";
 
-    private final static String INVEST_COUPON_TEMPLATE = "{0}元投资体验券";
+    private final static String INVEST_COUPON_TEMPLATE = "{0}元出借体验券";
 
     private final static String INTEREST_COUPON_TEMPLATE = "{0}%加息券";
 

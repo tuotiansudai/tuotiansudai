@@ -10,6 +10,7 @@
                 <input name="pledgeType" type="hidden" value="NONE">
                 <input name="contractId" type="hidden" value="${contractId}"/><!-- 默认合同ID -->
                 <input name="status" type="hidden" value="WAITING_VERIFY"/>
+                <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="true"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称: </label>
@@ -22,6 +23,7 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE">税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL">企业经营性借款—票据</option>
+                            <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER">个人资金周转</option>
                         </select>
                     </div>
                 </div>

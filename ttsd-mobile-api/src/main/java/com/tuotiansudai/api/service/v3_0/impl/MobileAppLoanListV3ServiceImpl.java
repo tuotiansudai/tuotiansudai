@@ -72,7 +72,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
 
         List<PledgeType> pledgeTypeList = Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE);
 
-        //没登录 or 没投资过任何标
+        //没登录 or 没出借过任何标
         if (StringUtils.isEmpty(loginName) ||
                 investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, allProductTypesCondition) == 0) {
 
@@ -91,7 +91,7 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 logger.warn("[MobileAppLoanListV3ServiceImpl][generateIndexLoan]新手体验标不存在!");
             }
         } else {
-            //登录 && 投资过标
+            //登录 && 出借过标
             //目前同一时间可投标不超过100个
             List<LoanModel> raisingLoanModels = loanMapper.findByProductType(LoanStatus.RAISING, noContainExperienceLoans, null);
             //有可投标的,版本号小于4.3过滤掉经营性借款
@@ -123,10 +123,10 @@ public class MobileAppLoanListV3ServiceImpl implements MobileAppLoanListV3Servic
                 });
 
                 if (0 == investMapper.findCountSuccessByLoginNameAndProductTypes(loginName, noContainExperienceLoans)) {
-                    //登录 && 投资过标 && 没投资过体验标外的任何标 = 登录 && 只投资过体验标
+                    //登录 && 出借过标 && 没出借过体验标外的任何标 = 登录 && 只出借过体验标
                     loanModel = raisingLoanModels.get(0);
                 } else {
-                    //登录 && 投资过其它标
+                    //登录 && 出借过其它标
                     Collections.reverse(raisingLoanModels);
                     loanModel = raisingLoanModels.get(0);
                     if (raisingLoanModels.size() > 1) {

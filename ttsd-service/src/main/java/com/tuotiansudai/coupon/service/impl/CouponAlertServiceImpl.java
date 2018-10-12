@@ -16,12 +16,15 @@ import com.tuotiansudai.repository.model.UserGroup;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponAlertServiceImpl implements CouponAlertService {
@@ -58,7 +61,11 @@ public class CouponAlertServiceImpl implements CouponAlertService {
             CouponAlertDto redEnvelopeCouponAlertDto = new CouponAlertDto();
             redEnvelopeCouponAlertDto.setCouponType(CouponType.RED_ENVELOPE);
 
-            List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE));
+            List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.RED_ENVELOPE))
+                    .stream()
+                    // 2018-09-30 00:00:00 误删redis
+                    .filter(model -> model.getCreatedTime().after(DateTime.parse("2018-09-30 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate()))
+                    .collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 for (UserCouponModel userCouponModel : userCouponModels) {
                     if (!userCouponIds.contains(userCouponModel.getCouponId())) {

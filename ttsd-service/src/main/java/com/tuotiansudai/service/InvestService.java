@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface InvestService {
     /**
-     * 进行一次投资
+     * 进行一次出借
      *
      * @param investDto
      */
@@ -60,4 +60,6 @@ public interface InvestService {
     InvestorInvestDetailDto getInvestDetailById(long investId);
 
     boolean isUserContractNo(String loginName, String contractNo);
+
+    long availableInvestMoney(String loginName);
 }

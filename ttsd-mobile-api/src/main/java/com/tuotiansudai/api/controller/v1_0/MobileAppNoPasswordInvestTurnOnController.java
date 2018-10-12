@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(description = "开启免密投资功能")
+@Api(description = "开启免密出借功能")
 public class MobileAppNoPasswordInvestTurnOnController extends MobileAppBaseController {
     @Autowired
     private MobileAppNoPasswordInvestTurnOnService mobileAppNoPasswordInvestTurnOnService;
 
     @RequestMapping(value = "/no-password-invest/turn-on", method = RequestMethod.POST)
-    @ApiOperation("开启免密投资功能")
+    @ApiOperation("开启免密出借功能")
     public BaseResponseDto noPasswordInvestTurnOn(@RequestBody NoPasswordInvestTurnOnRequestDto noPasswordInvestTurnOnRequestDto, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
         noPasswordInvestTurnOnRequestDto.getBaseParam().setUserId(getLoginName());
