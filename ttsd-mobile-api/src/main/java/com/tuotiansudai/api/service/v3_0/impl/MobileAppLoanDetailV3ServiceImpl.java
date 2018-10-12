@@ -139,6 +139,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         dataDto.setNonTransferable(loanDetailsModelActivity != null && loanDetailsModelActivity.getNonTransferable());
         if (loanDetailsModelActivity != null && loanDetailsModelActivity.getEstimate() != null) {
             dataDto.setEstimateLevel(loanDetailsModelActivity.getEstimate().getLower());
+            dataDto.setEstimate(loanDetailsModelActivity.getEstimate().getType());
         }
         double investFeeRate = ProductType.EXPERIENCE == loanModel.getProductType() ? this.defaultFee : membershipPrivilegePurchaseService.obtainServiceFee(loginName);
 
