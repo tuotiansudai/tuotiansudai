@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -29,7 +30,7 @@ public class LiCaiQuanArticleDto implements Serializable{
     private boolean original = false;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date timingTime;
-
+    private SubArticleSectionType subSection;
     public LiCaiQuanArticleDto(){}
 
     public LiCaiQuanArticleDto(LicaiquanArticleModel model){
@@ -48,6 +49,7 @@ public class LiCaiQuanArticleDto implements Serializable{
         this.checker = model.getCheckerLoginName();
         this.creator = model.getCreatorLoginName();
         this.timingTime = model.getTimingTime();
+        this.subSection=model.getSubSection();
     }
 
     public Long getArticleId() {
@@ -188,5 +190,13 @@ public class LiCaiQuanArticleDto implements Serializable{
 
     public void setTimingTime(Date timingTime) {
         this.timingTime = timingTime;
+    }
+
+    public SubArticleSectionType getSubSection() {
+        return subSection;
+    }
+
+    public void setSubSection(SubArticleSectionType subSection) {
+        this.subSection = subSection;
     }
 }

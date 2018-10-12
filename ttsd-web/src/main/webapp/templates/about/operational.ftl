@@ -1,13 +1,13 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="运营数据" title="运营数据_信息安全数据_拓天速贷" keywords="安全信息,安全平台,数据信息,信息披露,拓天速贷" description="拓天速贷运营数据全景展示,平台投资明细、注册投资用户、累计投资金额及平台数据总览,为您提供安全投资的平台运营数据.">
     <div class="about-us-container operational-wrap">
-        <h2 class="column-title"><em>运营数据</em></h2>
+        <h2 class="column-title"><em class="active">运营数据</em><a href="/about/report-monthly" class="monthly_report">运营月报</a></h2>
         <div class="operater-days-wrap section-wrap">
             <div class="operater-day clearfix" id="operationDays">
             </div>
         </div>
         <div class="data-model">
-            <h3 class="total-view">平台数据总览 <span class="font-right" id="dateTime"></span> </h3>
+            <h3 class="total-view">平台数据总览 <span class="font-right" id="dateTime"></span></h3>
             <div class="data-wrap">
                 <ul class="clearfix">
                     <li>
@@ -28,13 +28,13 @@
                     </li>
                     <li>
                         <p><em id="investUsersCount"></em>人</p>
-                        <p>累计投资用户数</p>
+                        <p>累计出借用户数</p>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="data-model cheat-model marginTop20">
-            <h3 class="font16">平台投资明细</h3>
+            <h3 class="font16">平台交易明细</h3>
             <h4 class="font14 marginBottom10">月度交易金额（近半年）</h4>
             <div class="model-container chart-dom" id="dataRecord">
                 <!--[if gte IE 8]>
@@ -45,7 +45,7 @@
         <h3 class="font16">平台用户统计</h3>
         <div class="invest-section">
             <div class="invest-wrap clearfix">
-                <h4 class="font14 paddingLeft">投资人基本信息</h4>
+                <h4 class="font14 paddingLeft">出借人基本信息</h4>
                 <div class="data-model cheat-model">
                     <div class="model-container" id="investRecord">
                         <!--[if gte IE 8]>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="data-model region-wrap">
-                <h3 class="font14 paddingLeft">投资人地域分布</h3>
+                <h3 class="font14 paddingLeft">出借人地域分布</h3>
                 <div class="model-container geographical-item" id="investRegionRecord">
                     <ul id="geographicalWrap">
                     </ul>

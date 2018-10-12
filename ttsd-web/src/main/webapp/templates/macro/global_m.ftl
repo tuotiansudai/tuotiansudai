@@ -44,7 +44,7 @@
 
         gtag('config', 'UA-115616275-1');
     </script>
-    <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="${(css.globalFun_page)!}" charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="${m_css.wap_global}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
@@ -65,7 +65,7 @@
     </a>
     <a class="menu-invest" href="/m/loan-list">
         <i></i>
-        <span>投资</span>
+        <span>出借</span>
     </a>
     <a class="menu-knowledge" href="/m/about/knowledge">
         <i></i>

@@ -222,7 +222,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
                 logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
@@ -262,10 +262,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     }
 
     /**
-     * 借款人还款后，返款投资人
+     * 借款人还款后，返款出借人
      *
      * @param loanRepayId 标的还款计划id
-     * @return 处理结果(true 所有投资人返款已成功发放)
+     * @return 处理结果(true 所有出借人返款已成功发放)
      */
     @Override
     @Transactional
@@ -273,7 +273,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
 
-        //投资人实收利息总计
+        //出借人实收利息总计
         long interestWithoutFee = 0;
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -281,7 +281,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
 
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
             if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
@@ -386,7 +386,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(), true));
-        logger.info(MessageFormat.format("[Advance Repay] 提前还款发放投资人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
+        logger.info(MessageFormat.format("[Advance Repay] 提前还款发放出借人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
@@ -477,10 +477,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(currentLoanRepay.getLoanId());
 
-        //投资人实收利息总和
+        //出借人实收利息总和
         long interestWithoutFee = 0;
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
         }
@@ -504,9 +504,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     }
 
     /**
-     * 投资人收到返款处理
+     * 出借人收到返款处理
      *
-     * @param currentInvestRepay 投资人还款计划
+     * @param currentInvestRepay 出借人还款计划
      * @throws AmountTransferException
      */
     private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws Exception {
@@ -547,8 +547,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                     String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
         });
 
-        //Title:您投资的{0}提前还款，{1}元已返还至您的账户！
-        //Content:尊敬的用户，您在{0}投资的房产/车辆抵押借款因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，您可以【看看其他优质项目】
+        //Title:您出借的{0}提前还款，{1}元已返还至您的账户！
+        //Content:尊敬的用户，您在{0}出借的房产/车辆抵押借款因借款人放弃借款而提前终止，您的收益与本金已返还至您的账户，您可以【看看其他优质项目】
         String title = MessageFormat.format(MessageEventType.ADVANCED_REPAY.getTitleTemplate(), loanModel.getName(), AmountConverter.convertCentToString(currentInvestRepay.getRepayAmount()));
         String content = MessageFormat.format(MessageEventType.ADVANCED_REPAY.getContentTemplate(), loanModel.getName());
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.ADVANCED_REPAY,

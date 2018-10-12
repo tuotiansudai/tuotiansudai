@@ -120,17 +120,17 @@ public class PointTaskServiceImpl implements PointTaskService {
             long firstInvestAmount;
             switch (pointTask) {
                 case EACH_SUM_INVEST:
-                    //累计投资满5000元返100积分，只能完成一次
+                    //累计出借满5000元返100积分，只能完成一次
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, FIRST_TASK_LEVEL));
-                    pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
+                    pointBillNote = MessageFormat.format("累计出借满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
                     pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, pointBillNote);
                     break;
                 case FIRST_SINGLE_INVEST:
-                    //首次投资满10000元返200积分，只能完成一次
+                    //首次出借满10000元返200积分，只能完成一次
                     firstInvestAmount = investMapper.findLatestSuccessInvest(loginName).getAmount();
                     if (firstInvestAmount >= FIRST_INVEST_10000_AMOUNT) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), FIRST_INVEST_10000_POINT, FIRST_TASK_LEVEL));
-                        pointBillNote = MessageFormat.format("单笔投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT), String.valueOf(FIRST_INVEST_10000_POINT));
+                        pointBillNote = MessageFormat.format("单笔出借满{0}元奖励{1}积分", AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT), String.valueOf(FIRST_INVEST_10000_POINT));
                         pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), FIRST_INVEST_10000_POINT, pointBillNote);
                     }
                     break;

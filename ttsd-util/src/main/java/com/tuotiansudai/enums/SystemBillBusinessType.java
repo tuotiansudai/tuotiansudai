@@ -30,7 +30,7 @@ public enum SystemBillBusinessType {
 
     LOTTERY_CASH("抽奖现金"),
 
-    EXTRA_RATE("投资奖励"),
+    EXTRA_RATE("出借奖励"),
 
     EXPERIENCE_INTEREST("体验金项目回款"),
 

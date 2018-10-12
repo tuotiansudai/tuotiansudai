@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.MessageFormat;
 
 @RestController
-@Api(description = "投资新手体验标")
+@Api(description = "出借新手体验标")
 public class MobileAppExperienceInvestController extends MobileAppBaseController {
 
     static Logger logger = Logger.getLogger(MobileAppExperienceInvestController.class);
@@ -26,7 +26,7 @@ public class MobileAppExperienceInvestController extends MobileAppBaseController
     private MobileAppExperienceInvestService mobileAppExperienceInvestService;
 
     @RequestMapping(value = "/experience-invest", method = RequestMethod.POST)
-    @ApiOperation("投资新手体验标")
+    @ApiOperation("出借新手体验标")
     public BaseResponseDto<InvestExperienceResponseDto> experienceInvest(@RequestBody InvestRequestDto investRequestDto) {
         investRequestDto.getBaseParam().setUserId(getLoginName());
         logger.info(MessageFormat.format("[Experience Invest] the investRequestDto baseParam:{0} , loginName:{1} , investMoney:{2} , loanId:{3} , userCouponIds:{4}",

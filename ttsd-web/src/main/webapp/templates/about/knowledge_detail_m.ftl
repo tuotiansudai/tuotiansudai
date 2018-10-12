@@ -4,8 +4,6 @@
         <#if isAppSource>
             <a class="back-link" href="/m/about/knowledge"></a>
             </#if>
-
-
         <h4 class="title">
         ${knowledge.title}
         </h4>
@@ -13,6 +11,9 @@
             <span class="origin">来源：&nbsp;中新网</span>
             <span class="time">发表时间：${(knowledge.updatedTime?string("yyyy-MM-dd"))!} </span>
         </div>
+        <#if knowledge.showPicture??>
+            <img style="margin-top: 5px;" width="100%" src="${knowledge.showPicture}" alt="">
+        </#if>
         <div class="detail-content-m">
         ${knowledge.content}
         </div>

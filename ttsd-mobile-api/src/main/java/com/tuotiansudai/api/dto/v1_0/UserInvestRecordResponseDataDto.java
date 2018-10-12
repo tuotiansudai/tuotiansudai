@@ -21,26 +21,26 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /*** 标的状态描述 */
     @ApiModelProperty(value = "标的状态描述", example = "还款中")
     private String loanStatusDesc;
-    /*** 投资ID */
-    @ApiModelProperty(value = "投资ID", example = "1111")
+    /*** 出借ID */
+    @ApiModelProperty(value = "出借ID", example = "1111")
     private String investId;
-    /*** 投资金额 */
-    @ApiModelProperty(value = "投资金额", example = "11")
+    /*** 出借金额 */
+    @ApiModelProperty(value = "出借金额", example = "11")
     private String investMoney;
-    /*** 投资时间 */
-    @ApiModelProperty(value = "投资时间", example = "2016-11-23")
+    /*** 出借时间 */
+    @ApiModelProperty(value = "出借时间", example = "2016-11-23")
     private String investTime;
-    /*** 投资状态 */
-    @ApiModelProperty(value = "投资状态", example = "bid_success")
+    /*** 出借状态 */
+    @ApiModelProperty(value = "出借状态", example = "bid_success")
     private String investStatus;
-    /*** 投资状态描述 */
-    @ApiModelProperty(value = "投资状态描述", example = "投资成功")
+    /*** 出借状态描述 */
+    @ApiModelProperty(value = "出借状态描述", example = "出借成功")
     private String investStatusDesc;
-    /*** 投资利率 */
-    @ApiModelProperty(value = "投资利率", example = "10")
+    /*** 出借利率 */
+    @ApiModelProperty(value = "出借利率", example = "10")
     private String investRate;
-    /*** 投资总收益 */
-    @ApiModelProperty(value = "投资总收益", example = "1000")
+    /*** 出借总收益 */
+    @ApiModelProperty(value = "出借总收益", example = "1000")
     private String investInterest;
 
     @ApiModelProperty(value = "产品线", example = "360天")

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权_会员中心_拓天速贷" keywords="拓天会员,拓天福利,拓天顾问,拓天速贷特权,拓天速贷" description="拓天速贷会员特权为投资用户提供贵宾专线,会员特权,多重保障,为您提供安全、专业、便捷的互联网金融投资服务." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="会员特权" activeLeftNav="" title="会员特权_会员中心_拓天速贷" keywords="拓天会员,拓天福利,拓天顾问,拓天速贷特权,拓天速贷" description="拓天速贷会员特权为出借用户提供贵宾专线,会员特权,多重保障,为您提供安全、专业、便捷的互联网金融出借服务." site="membership">
 
 <div class="global-member-ship">
     <div class="levels">
@@ -24,7 +24,7 @@
                 <li class="membership-giftbag">
                     <h3>会员礼包</h3>
 
-                    <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                    <p>每月发放出借红包，588、688、788、888元随机派送</p>
                 </li>
                 <li class="service-fee-discount">
                     <h3>技术服务费</h3>
@@ -34,12 +34,12 @@
                 <li class="vip-service">
                     <h3>贵宾专线</h3>
 
-                    <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                    <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                 </li>
                 <li class="spec-financial-advisor">
-                    <h3>专享投资顾问</h3>
+                    <h3>专享出借顾问</h3>
 
-                    <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                    <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                 </li>
                 <li class="birthday-benefits">
                     <h3>生日福利</h3>
@@ -115,7 +115,7 @@
                     <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                 </tr>
                 <tr>
-                    <td>专享投资顾问</td>
+                    <td>专享出借顾问</td>
                     <td></td>
                     <td></td>
                     <td></td>

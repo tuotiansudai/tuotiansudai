@@ -62,7 +62,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private CouponService couponService;
 
-    private static String RED_ENVELOPE_DESCRIPTION = "%s元投资红包";
+    private static String RED_ENVELOPE_DESCRIPTION = "%s元出借红包";
 
     private static String INVEST_COUPON_DESCRIPTION = "%s加息券";
 

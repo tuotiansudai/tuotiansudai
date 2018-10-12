@@ -19,7 +19,7 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     private List<OperationDataInvestByProductTypeResponseDataDto> investListByProductType;
     @ApiModelProperty(value = "近半年每月累计交易金额，单位为分", example = "5月:10088343,4月:203834843,3月:343434343,2月:14343242,1月:3423423342,12月:343434343")
     private List<OperationDataLatestSixMonthResponseDataDto> latestSixMonthDetail;
-    @ApiModelProperty(value = "累计注册投资用户", example = "23843")
+    @ApiModelProperty(value = "累计注册出借用户", example = "23843")
     private String totalInvestUserCount;
     @ApiModelProperty(value = "男性比例", example = "60.5")
     private String maleScale;
@@ -34,9 +34,9 @@ public class OperationDataResponseDataDto extends BaseResponseDataDto {
     private List<OperationDataAgeResponseDataDto> ageDistribution;
     @ApiModelProperty(value = "借款人各用户年龄段分布", example = "20岁以下:20%,20~30岁:30")
     private List<OperationDataLoanerAgeResponseDataDto> loanerAgeDistribution;
-    @ApiModelProperty(value = "投资人数top3", example = "北京:60,上海:30,济南:10")
+    @ApiModelProperty(value = "出借人数top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestCityResponseDataDto> investCityScaleTop3;
-    @ApiModelProperty(value = "投资金额top3", example = "北京:60,上海:30,济南:10")
+    @ApiModelProperty(value = "出借金额top3", example = "北京:60,上海:30,济南:10")
     private List<OperationDataInvestAmountResponseDataDto> investAmountScaleTop3;
 
     @ApiModelProperty(value = "借款人数top5", example = "北京:60,上海:30,济南:10")

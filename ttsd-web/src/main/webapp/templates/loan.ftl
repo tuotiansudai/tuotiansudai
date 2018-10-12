@@ -1,6 +1,8 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate?string('true', 'false')}"
+<@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要出借" activeLeftNav="" title="标的详情">
+<div class="loan-detail-content" id="loanDetailContent" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.countdown?string.computer}" data-estimate="${estimate???string('true', 'false')}"
+     data-estimate-type="${(estimate.type)!''}" data-estimate-level="${(estimate.lower)!''}"  data-available-invest-money="${availableInvestMoney?c}"
+     data-estimate-limit="${estimateLimit?c}" data-loan-estimate-level="${loan.estimateLevel!''}"
      data-authentication="<@global.role hasRole="'USER'">USER</@global.role>" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>" >
     <div class="borderBox clearfix no-border">
         <div class="loan-model bg-w">
@@ -21,7 +23,7 @@
                         </div>
                     <#else>
                         <#if extraLoanRates??>
-                            <div class="fl orange extra-rate" id="extra-rate">投资奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
+                            <div class="fl orange extra-rate" id="extra-rate">出借奖励+${extraLoanRates.minExtraRate}%~${extraLoanRates.maxExtraRate}%<i class="fa fa-question-circle" aria-hidden="true"></i>
                             </div>
                             <script>
                                 var __extraRate = [
@@ -37,8 +39,8 @@
                         <script type="text/template" id="extra-rate-popup-tpl">
                             <div class="extra-rate-popup" id="extra-rate-popup">
                                 <div class="header clearfix">
-                                    <div class="td fl">投资金额</div>
-                                    <div class="td fl">投资奖励</div>
+                                    <div class="td fl">出借金额</div>
+                                    <div class="td fl">出借奖励</div>
                                 </div>
                                 <% _.each(__extraRate, function(value){
                                 var text;
@@ -50,7 +52,7 @@
                                 }
                                 %>
                                 <div class="clearfix">
-                                    <div class="td fl"><%= value.minInvestAmount %>元 ≤ 投资额 <%=text %></div>
+                                    <div class="td fl"><%= value.minInvestAmount %>元 ≤ 出借额 <%=text %></div>
                                     <div class="td fl"><%= value.rate %>%</div>
                                 </div>
                                 <% }) %>
@@ -85,7 +87,7 @@
                         </div>
                         <div class="row loan-active-detail">
                             <div class="col-md-6">
-                                <span class="title">投资进度：</span>
+                                <span class="title">出借进度：</span>
                                 <div class="progress-bar">
                                     <div class="progress-inner" style="width: ${loan.progress?string("0.00")}%"></div>
                                 </div>
@@ -119,13 +121,22 @@
                 </div> <#-- .container-block end tag -->
                 <div class="row related-expenses clearfix">
                     <span class="title">相关费用：</span>
-                    <span class="related-desc">根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${investFeeRate*100}%技术服务费。</span>
+                    <span class="related-desc">根据会员等级的不同，收取出借应收收益7%-10%的费用。您当前出借可能会收取${investFeeRate*100}%技术服务费。</span>
                 </div>
             </div>
             <div class="blank-middle"></div>
             <div class="account-info bg-w">
 
-                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合投资偏好类型为${loan.estimate}的用户</i></span>  </#if>拓天速贷提醒您：市场有风险，投资需谨慎！</h5>
+                    <h5 class="l-title"> <#if loan.estimate??><span id="riskTips" class="risk-tips">${loan.estimate}<em></em><i class="risk-tip-content extra-rate-popup">该项目适合出借偏好类型为${loan.estimate}的用户</i></span>  </#if> <@global.role hasRole="'INVESTOR'">
+                        <#if !loan.investor.noPasswordInvest>
+
+                                        <a class="fr open-no-password-invest" style="margin-right: 5px;" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
+                                            推荐您开通免密出借
+                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化出借过程，出借快人一步"></i>
+                                        </a>
+
+                        </#if>
+                    </@global.role></h5>
 
                 <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                     <form action="/invest" method="post" id="investForm">
@@ -137,7 +148,7 @@
                                 <em class="fr account-amount" data-user-balance="${loan.investor.balance?string.computer}">${(loan.investor.balance / 100)?string("0.00")} 元</em>
                             </dd>
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
-                                <span class="fl">投资金额：</span>
+                                <span class="fl">出借金额：</span>
                                 <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}" data-max-invest-amount="${loan.maxInvestAmount}"
                                        placeholder="0.00" value="${loan.investor.maxAvailableInvestAmount}"
                                        data-no-password-remind="${loan.investor.remindNoPassword?c}"
@@ -230,10 +241,10 @@
                                                                 <br/>
                                                                 <#if coupon.investLowerLimit!=0>
                                                                     <i class="ticket-term lower-limit"
-                                                                       data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元即可使用]</i>
+                                                                       data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[出借满${(coupon.investLowerLimit / 100)?string("0.00")}元即可使用]</i>
                                                                 </#if>
                                                                 <#if coupon.investLowerLimit==0>
-                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[投资即可使用]</#if>
+                                                                    <i class="ticket-term"><#if coupon.couponType=='BIRTHDAY_COUPON'>[首月享${1 + coupon.birthdayBenefit}倍收益]<#else>[出借即可使用]</#if>
                                                                     </i>
                                                                 </#if>
                                                             </#if>
@@ -249,7 +260,7 @@
                                                        data-coupon-id="${coupon.couponId?string.computer}"/>
                                                 <p class="red-tiptext clearfix">
                                                     <i class="icon-redbag"></i>
-                                                    <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>
+                                                    <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（即可返现）</span>
                                                 </p>
                                             </#if>
                                         </#list>
@@ -279,7 +290,7 @@
 
                             <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
                                 <#if loan.countdown lte 1800>
-                                    <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
+                                    <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可出借
                                 <#else>
                                 ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                                 </#if>
@@ -290,19 +301,10 @@
                                 <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
                                 <button id="investSubmit" class="btn-pay btn-normal" type="button" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
                                     <#if loan.loanStatus == "PREHEAT">预热中</#if>
-                                    <#if loan.loanStatus == "RAISING">马上投资</#if>
+                                    <#if loan.loanStatus == "RAISING">马上出借</#if>
                                 </button>
                             </dd>
-                            <@global.role hasRole="'INVESTOR'">
-                                <#if !loan.investor.noPasswordInvest>
-                                    <dd>
-                                        <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.investor.autoInvest?c}">
-                                            推荐您开通免密投资
-                                            <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，投资快人一步"></i>
-                                        </a>
-                                    </dd>
-                                </#if>
-                            </@global.role>
+
 
                             <input type="hidden" value="${loan.investor.authenticationRequired?c}" id="isAuthenticationRequired">
                             <input type="hidden" value="${loan.investor.anxinUser?c}" id="isAnxinUser">
@@ -335,6 +337,9 @@
                         </dl>
                     </form>
                 </#if>
+                <div style="color:#949494">拓天速贷提醒您：市场有风险，出借需谨慎！</div>
+                <div style="padding-bottom: 10px;">点击查看<a style="color: #ff7200;" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a></div>
+
             </div>
         </div>
         <div class="bg-w clear-blank borderBox loan-detail" id="loanDetailSwitch">
@@ -379,15 +384,15 @@
                             </div>
                         </#if>
 
-                        <#if "HOUSE" == loan.pledgeType>
+                        <#if ["HOUSE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeHouseDetailList??>
                             <#list loan.pledgeHouseDetailList as pledgeHouseDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
+                                    <h3>房产信息<#if (loan.pledgeHouseDetailList?size > 1)>${pledgeHouseDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeHouseDetail??>
-                                            <#list ['抵押物所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
+                                            <#list ['房产所在地', '房屋面积', '房产证编号', '房权证编号', '不动产登记证明', '公证书编号'] as key>
                                                 <#if pledgeHouseDetail[key]?? && pledgeHouseDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeHouseDetail[key]}</div>
                                                 </#if>
@@ -399,15 +404,15 @@
                             </#list>
                         </#if>
 
-                        <#if "VEHICLE" == loan.pledgeType>
+                        <#if ["VEHICLE", "PERSONAL_CAPITAL_TURNOVER", "ENTERPRISE_CAPITAL_TURNOVER"]?seq_contains(loan.pledgeType) && loan.pledgeVehicleDetailList??>
                             <#list loan.pledgeVehicleDetailList as pledgeVehicleDetail>
                                 <div class="subtitle">
-                                    <h3>抵押档案<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
+                                    <h3>车辆信息<#if (loan.pledgeVehicleDetailList?size > 1)>${pledgeVehicleDetail_index+1}</#if></h3>
                                 </div>
                                 <div class="container-fluid list-block clearfix">
                                     <div class="row">
                                         <#if pledgeVehicleDetail??>
-                                            <#list ['抵押物所在地', '车辆品牌', '车辆型号'] as key>
+                                            <#list ['车辆所在地', '车辆品牌', '车辆型号'] as key>
                                                 <#if pledgeVehicleDetail[key]?? && pledgeVehicleDetail[key] != ''>
                                                     <div class="col-md-4">${key}：${pledgeVehicleDetail[key]}</div>
                                                 </#if>
@@ -678,7 +683,7 @@
                                         <#if (loan.achievement.firstInvestAchievementMobile)??>
                                             <p>
                                                 恭喜${loan.achievement.firstInvestAchievementMobile} <#if (loan.achievement.firstInvestAchievementDate)??>${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
-                                                拔得头筹 奖励0.2％加息券＋50元投资红包</p>
+                                                拔得头筹 奖励0.2％加息券＋50元出借红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -690,8 +695,8 @@
                                     <div class="item">
                                         <h4 class="king"><span><a href="/activity/invest-achievement" target="_blank">拓天标王 >></a></span></h4>
                                         <#if (loan.achievement.maxAmountAchievementMobile)??>
-                                            <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计投资${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span
-                                                    class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元投资红包</p>
+                                            <p>恭喜${loan.achievement.maxAmountAchievementMobile} 以累计出借${loan.achievement.maxAmountAchievementAmount}元 <#if loan.loanStatus == 'RAISING'><span
+                                                    class="text-lighter">(待定)</span></#if>夺得标王 奖励0.5％加息券＋100元出借红包</p>
                                         <#else>
                                             <p>虚位以待</p>
                                         </#if>
@@ -705,7 +710,7 @@
                                         <#if (loan.achievement.lastInvestAchievementMobile)??>
                                             <p>
                                                 恭喜${loan.achievement.lastInvestAchievementMobile} <#if (loan.achievement.lastInvestAchievementDate)??>${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")}</#if>
-                                                终结此标 奖励0.2％加息券＋50元投资红包</p>
+                                                终结此标 奖励0.2％加息券＋50元出借红包</p>
                                         <#else>
                                             <p>目前项目剩余${(loan.amountNeedRaised / 100)?string("0.00")}元快来一锤定音吧</p>
                                         </#if>
@@ -726,8 +731,8 @@
     </div>
     <div id="authorizeAgreementOptions" class="pad-s-tb tl fl hide">
         <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
-        <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
-        <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
+        <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续出借</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
+        <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续出借</span></p>
         <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
     </div>
     <form action="/agreement" id="goAuthorize" method="post" target="_blank">
@@ -742,14 +747,45 @@
     <#include "component/login-tip.ftl" />
 <#--风险测评-->
 <div id="riskAssessmentFormSubmit" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
-    <div class="tc text-m">根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</div>
-    <#--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+
+    <div class="tc text-m">根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</div>
     <div class="tc person-info-btn" style="margin-top:40px;">
-        <button id="cancelAssessmentFormSubmit" class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>&nbsp;&nbsp;&nbsp;
-        <button id="confirmAssessment" class="btn btn-success btn-turn-off" type="button">确认</button>
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">确认</button>
+
+        <p style="margin-top: 20px;color: #A2A2A2">拓天速贷提醒您：市场有风险，出借需谨慎！</p>
     </div>
 </div>
 
+<#--风险等级超出提示-->
+<div id="riskGradeForm" class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，此项目已超<br/>出您的风险等级，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+
+<#--最多借出额度提示-->
+
+<div id="riskBeyondForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">您当前的风险等级为${(estimate.type)!''}，最多出借金<br/>额为${(estimateLimit/100)?c}元，是否重新评测？</div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn  btn-cancel btn-close btn-close-turn-on cancelAssessmentFormSubmit" type="button">取消</button>&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success btn-turn-off confirmAssessment" type="button">重新测评</button>
+    </div>
+</div>
+<div id="riskTipForm"  class="pad-m popLayer" style="display: none; padding-top:50px;padding-bottom: 0">
+    <div class="tc text-m">市场有风险，出借需谨慎！<br/>
+    点击查看<a style="color: #ff7200" href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank">《风险揭示书》</a>
+    </div>
+
+    <div class="tc person-info-btn" style="margin-top:40px;">
+        <button class="btn btn-success btn-turn-off confirmInvest" type="button">确定</button>
+    </div>
+</div>
 
 <script type="text/template" id="LendTemplate">
     <table class="invest-list table-striped">

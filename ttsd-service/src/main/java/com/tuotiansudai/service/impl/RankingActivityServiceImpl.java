@@ -98,7 +98,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         if (tianDouScore == null || tianDouScore < DRAW_SCORE) {
             logger.info(loginName + "'s tianDou is not enough. tianDouScore:" + tianDouScore);
 
-            drawLotteryDto.setMessage("您的天豆不足，投资赚取更多天豆再来抽奖吧！");
+            drawLotteryDto.setMessage("您的天豆不足，出借赚取更多天豆再来抽奖吧！");
             drawLotteryDto.setReturnCode(1);
             drawLotteryDto.setStatus(false);
             baseDto.setSuccess(false);
@@ -108,7 +108,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         TianDouPrize prize = getPrize(loginName);
 
         if (prize == null) {
-            drawLotteryDto.setMessage("您的天豆不足，投资赚取更多天豆再来抽奖吧！");
+            drawLotteryDto.setMessage("您的天豆不足，出借赚取更多天豆再来抽奖吧！");
             drawLotteryDto.setReturnCode(1);
             drawLotteryDto.setStatus(false);
             baseDto.setSuccess(false);
@@ -298,7 +298,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 // amount+score+desc+time
                 String[] ss = input.split("\\+");
-                return new UserTianDouRecordDto(loginName, "投资", Long.parseLong(ss[0]), Long.parseLong(ss[1]), ss[2], ss[3]);
+                return new UserTianDouRecordDto(loginName, "出借", Long.parseLong(ss[0]), Long.parseLong(ss[1]), ss[2], ss[3]);
             }
         });
 

@@ -8,16 +8,16 @@ import java.util.List;
 
 public class InvestModel implements Serializable {
     /**
-     * 投资ID
+     * 出借ID
      */
     private long id;
 
     /**
-     * 转让人投资id
+     * 转让人出借id
      */
     private Long transferInvestId;
     /**
-     * 投资人ID
+     * 出借人ID
      */
     private String loginName;
     /**
@@ -28,11 +28,11 @@ public class InvestModel implements Serializable {
 
     private String contractNo;
     /**
-     * 投资金额
+     * 出借金额
      */
     private long amount;
     /**
-     * 投资状态
+     * 出借状态
      */
     private InvestStatus status;
 
@@ -41,11 +41,11 @@ public class InvestModel implements Serializable {
      */
     private TransferStatus transferStatus;
     /**
-     * 投资来源
+     * 出借来源
      */
     private Source source;
     /**
-     * 是否为自动投资
+     * 是否为自动出借
      */
     private boolean isAutoInvest;
     /**
@@ -53,7 +53,7 @@ public class InvestModel implements Serializable {
      */
     private String channel;
     /**
-     * 是否为无密投资
+     * 是否为无密出借
      */
     private boolean isNoPasswordInvest;
     /**
@@ -67,7 +67,7 @@ public class InvestModel implements Serializable {
     private Date tradingTime;
 
     /**
-     * 投资时间
+     * 出借时间
     */
     private Date investTime;
 

@@ -130,7 +130,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         getFakeUserCoupon(user, fakeNewbieCoupon);
         //数据库中默认有新手体验标
         final long experienceLoanId = 1L;
-        //没有投资过的
+        //没有出借过的
         BaseResponseDto baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
         LoanListResponseDataDto loanListResponseDataDto = (LoanListResponseDataDto) baseResponseDto.getData();
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
@@ -156,7 +156,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ActivityType.NEWBIE.name(), loanResponseDataDto.getActivityType());
 
         Date now = DateTime.now().toDate();
-        //没有可投标 && 只投资过体验标
+        //没有可投标 && 只出借过体验标
         createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.COMPLETE, now);
         createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.COMPLETE, now);
         createLoan("loaner", ActivityType.NORMAL, ProductType._180, LoanStatus.COMPLETE, now);
@@ -169,7 +169,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertNotEquals(ProductType.EXPERIENCE.name(), loanResponseDataDto.getProductNewType());
-        //没有可投标 && 投资过其它标
+        //没有可投标 && 出借过其它标
         investModel.setLoanId(loanModel.getId());
         investMapper.update(investModel);
         baseResponseDto = mobileAppLoanListV3Service.generateIndexLoan(user.getLoginName());
@@ -177,7 +177,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         assertEquals(ReturnMessage.SUCCESS.getMsg(), baseResponseDto.getMessage());
 
         Date newDate = DateTime.now().toDate();
-        //有可投标 && 投资过其它标
+        //有可投标 && 出借过其它标
         createLoan("loaner", ActivityType.NORMAL, ProductType._30, LoanStatus.RAISING, newDate);
         createLoan("loaner", ActivityType.NORMAL, ProductType._90, LoanStatus.RAISING, newDate);
         createLoan("loaner", ActivityType.NORMAL, ProductType._360, LoanStatus.RAISING, newDate);
@@ -189,7 +189,7 @@ public class MobileAppLoanListV3ServiceTest extends ServiceTestBase {
         loanResponseDataDto = loanListResponseDataDto.getLoanList().get(0);
         assertEquals(ProductType._360.name(), loanResponseDataDto.getProductNewType());
         assertEquals(LoanStatus.RAISING.name().toLowerCase(), loanResponseDataDto.getLoanStatus());
-        //有可投标 && 只投资过体验标
+        //有可投标 && 只出借过体验标
         investModel.setLoanId(experienceLoanId);
         investMapper.update(investModel);
 

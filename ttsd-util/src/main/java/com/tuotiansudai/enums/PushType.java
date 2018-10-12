@@ -7,7 +7,7 @@ public enum PushType {
     WITHDRAW_SUCCESS("AUTO", "提现到账"),
     RECOMMEND_SUCCESS("AUTO", "推荐成功"),
     RECOMMEND_AWARD_SUCCESS("AUTO", "推荐获得奖励"),
-    INVEST_SUCCESS("AUTO", "投资成功"),
+    INVEST_SUCCESS("AUTO", "出借成功"),
     LOAN_OUT_SUCCESS("AUTO", "放款成功"),
     REPAY_SUCCESS("AUTO", "正常回款"),
     ADVANCED_REPAY("AUTO", "提前还款"),

@@ -58,7 +58,7 @@ public class LoanDetailServiceTest {
         String mockUserName = "loginUser";
         createMockUser(mockUserName);
         long loanId = createLoanService();
-        // 虽然这里创建了10条投资记录，但是在上个方法里，已经创建了三条投资记录，其中已经包含了一个success的记录
+        // 虽然这里创建了10条出借记录，但是在上个方法里，已经创建了三条出借记录，其中已经包含了一个success的记录
         createTestInvests(loanId, mockUserName, 10);
 
         BaseDto<BasePaginationDataDto> baseDto = loanDetailService.getInvests(null, loanId, 1, 3);

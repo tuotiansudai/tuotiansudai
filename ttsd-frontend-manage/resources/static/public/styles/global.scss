@@ -411,35 +411,35 @@
     position: absolute;
     bottom: 10px;
     left: 20px;
-    width: 170px;
-    height: 20px;
-    line-height: 20px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
    text-align: center;
     background: rgba(0,0,0,0.25);
     color: #fff;
-    border-radius: 10px;
-    font-size: 12px;
+    border-radius: 15px;
+    font-size: 14px;
   }
 }
 .compliance-index {
   .invest-tip-wrap {
     position: absolute;
     width: 1000px;
-    height: 20px;
-    bottom: 20px;
+    height: 30px;
+    bottom: 30px;
     left: 50%;
     margin-left: -480px;
     z-index: 1000;
 
     .invest-tip {
-      width: 180px;
-      height: 20px;
-      line-height: 20px;
+      width: 200px;
+      height: 30px;
+      line-height: 30px;
       text-align: center;
       background: rgba(0,0,0,0.25);
       color: #fff;
-      border-radius: 10px;
-      font-size: 12px;
+      border-radius: 15px;
+      font-size: 14px;
     }
   }
 }

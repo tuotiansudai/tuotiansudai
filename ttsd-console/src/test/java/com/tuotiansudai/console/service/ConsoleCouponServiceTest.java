@@ -111,7 +111,7 @@ public class ConsoleCouponServiceTest {
         try {
             consoleCouponService.createCoupon("couponTest", exchangeCouponDto);
         } catch (CreateCouponException e) {
-            assertEquals("投资体验券金额应大于0!", e.getMessage());
+            assertEquals("出借体验券金额应大于0!", e.getMessage());
         }
 
     }

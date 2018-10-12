@@ -95,7 +95,7 @@ public class RepaySuccessController {
             isSuccess = repaySuccessMessage.isAdvanced()?advanceRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId())
                     :normalRepayService.paybackInvest(repaySuccessMessage.getLoanRepayId());
         } catch (Exception e) {
-            logger.error("还款发放投资人收益失败", e);
+            logger.error("还款发放出借人收益失败", e);
             isSuccess = false;
         }
         BaseDto<PayDataDto> dto = new BaseDto<>();

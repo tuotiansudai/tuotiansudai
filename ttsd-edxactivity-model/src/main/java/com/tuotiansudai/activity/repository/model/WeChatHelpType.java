@@ -3,7 +3,7 @@ package com.tuotiansudai.activity.repository.model;
 
 public enum WeChatHelpType {
 
-    INVEST_HELP("投资助力"),
+    INVEST_HELP("出借助力"),
     EVERYONE_HELP("人人助力"),
     ;
 

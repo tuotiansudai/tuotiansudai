@@ -38,7 +38,7 @@ public class AdvanceRepayDiagnosis extends NormalRepayDiagnosis {
 
     @Override
     protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
-        // 提前还款实际交易金额 = 当期利息 + 投资本金
+        // 提前还款实际交易金额 = 当期利息 + 出借本金
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
         if (investModel == null) {
             return -2;

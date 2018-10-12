@@ -5,7 +5,7 @@ package com.tuotiansudai.paywrapper.repository.model;
  */
 public enum UmPayServType {
     /**
-     * 投资
+     * 出借
      */
     TRANSFER_IN_INVEST("01"),
 

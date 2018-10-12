@@ -1,10 +1,10 @@
 package com.tuotiansudai.repository.model;
 
 public enum ActivityType {
-    NORMAL("普通投资"),
+    NORMAL("普通出借"),
     NEWBIE("新手专享"),
-    EXCLUSIVE("定向投资"),
-    PROMOTION("加息投资");
+    EXCLUSIVE("定向出借"),
+    PROMOTION("加息出借");
 
     private String activityTypeName;
 

@@ -363,8 +363,8 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         keyValueModels.add(new KeyValueModel("已开通", String.valueOf(totalUserCount), null));
         keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通且免验")).collect(Collectors.toList()));
         keyValueModels.addAll(keyValueModels1.stream().filter(n -> n.getName().equals("已开通未免验")).collect(Collectors.toList()));
-        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资且生成合同")).collect(Collectors.toList()));
-        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已投资未生成合同")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已出借且生成合同")).collect(Collectors.toList()));
+        keyValueModels.addAll(keyValueModels2.stream().filter(n -> n.getName().equals("已出借未生成合同")).collect(Collectors.toList()));
         return keyValueModels;
     }
 

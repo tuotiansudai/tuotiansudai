@@ -9,7 +9,7 @@ public enum SendCloudTemplate {
 
     //使用中的模板
     ACTIVE_EMAIL("邮箱激活","尊敬的用户{loginName}:<br>恭喜您，已经进入邮箱绑定流程：<br>请点击下面的链接<a href='{activeUrl}'>验证并绑定</a>该邮箱:<br><a href='{activeUrl}'>{activeUrl}</a> 【拓天速贷】"),
-    LOAN_OUT_SUCCESSFUL_EMAIL("标的放款成功邮件提醒","尊敬的拓天速贷客户，您在平台的项目借款 “{loanName}” 已成功放款，您的投资金额为{amount}元。【拓天速贷】"),
+    LOAN_OUT_SUCCESSFUL_EMAIL("标的放款成功邮件提醒","尊敬的拓天速贷客户，您在平台的项目借款 “{loanName}” 已成功放款，您的出借金额为{amount}元。【拓天速贷】"),
 
     USER_BALANCE_CHECK_RESULT_HEADER("用户账户对账结果",
             "<div>开始时间：{startTime}</div></br>" +

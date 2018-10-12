@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class AgreementOperateRequestDto extends BaseParamDto {
 
-    @ApiModelProperty(value = "自动投资类型", example = "//AUTO_INVEST：自动投标 ，NO_PASSWORD_INVEST：免密投资")
+    @ApiModelProperty(value = "自动出借类型", example = "//AUTO_INVEST：自动投标 ，NO_PASSWORD_INVEST：免密出借")
     private AgreementBusinessType type;
 
     public AgreementBusinessType getType() {

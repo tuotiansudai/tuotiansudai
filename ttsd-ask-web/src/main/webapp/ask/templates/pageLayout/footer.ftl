@@ -1,8 +1,8 @@
 <div class="footer-container">
     <div class="footer page-width">
         <ul>
-            <li class="f-title">我要投资</li>
-            <li><a href="${webServer}/loan-list">投资产品</a></li>
+            <li class="f-title">我要出借</li>
+            <li><a href="${webServer}/loan-list">产品介绍</a></li>
             <li><a href="${webServer}/account">我的帐户</a></li>
             <li><a href="${webServer}/about/notice">拓天公告</a></li>
         </ul>

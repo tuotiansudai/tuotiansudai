@@ -21,13 +21,13 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     @ApiModelProperty(value = "债权转让金额", example = "1")
     private String transferAmount;
 
-    @ApiModelProperty(value = "投资id", example = "2")
+    @ApiModelProperty(value = "出借id", example = "2")
     private Long investId;
 
-    @ApiModelProperty(value = "债权转让投资id", example = "3")
+    @ApiModelProperty(value = "债权转让出借id", example = "3")
     private Long transferInvestId;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investAmount;
 
     @ApiModelProperty(value = "转让时间", example = "2016-11-25 15:12:34")

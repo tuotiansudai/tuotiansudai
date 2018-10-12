@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(description = "V3.0我的投资")
+@Api(description = "V3.0我的出借")
 public class MobileAppInvestListsV3Controller extends MobileAppBaseController{
 
     @Autowired
     private MobileAppInvestListsV3Service mobileAppInvestListsService;
 
     @RequestMapping(value = "/get/user-invests", method = RequestMethod.POST)
-    @ApiOperation("我的投资")
+    @ApiOperation("我的出借")
     public BaseResponseDto<UserInvestListResponseDataDto> queryUserInvestLists(@RequestBody UserInvestListRequestDto userInvestListRequestDto) {
         userInvestListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestListsService.generateUserInvestList(userInvestListRequestDto);

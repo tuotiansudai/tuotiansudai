@@ -21,13 +21,13 @@ public class ReferrerInvestResponseDataDto {
     @ApiModelProperty(value = "投标标的", example = "房屋抵押")
     private String loanName;
 
-    @ApiModelProperty(value = "投资金额", example = "100")
+    @ApiModelProperty(value = "出借金额", example = "100")
     private String investMoney;
 
     @ApiModelProperty(value = "期数", example = "3")
     private String deadline;
 
-    @ApiModelProperty(value = "投资时间", example = "2016-11-25 14:32:01")
+    @ApiModelProperty(value = "出借时间", example = "2016-11-25 14:32:01")
     private String investTime;
 
     @ApiModelProperty(value = "奖励金额", example = "100")

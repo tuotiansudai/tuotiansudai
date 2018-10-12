@@ -1,0 +1,2 @@
+update message set title = replace(title, '投资', '出借'), template = replace(template, '投资', '出借'), template_txt = replace(template_txt, '投资', '出借');
+update user_message set title = replace(title, '投资', '出借'), content = replace(content, '投资', '出借');
