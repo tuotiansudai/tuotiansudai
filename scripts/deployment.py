@@ -8,7 +8,7 @@ class Deployment(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
     _gradle = '/opt/gradle/latest/bin/gradle'
     _dockerCompose = '/usr/local/bin/docker-compose'
-    _paver = '/usr/bin/paver'
+    _paver = 'paver'
 
     def __init__(self, env='DEV', pay_fake=None):
         self.env = env
