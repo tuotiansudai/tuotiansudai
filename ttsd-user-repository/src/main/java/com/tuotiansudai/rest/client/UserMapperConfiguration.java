@@ -67,6 +67,11 @@ class UserMapperDBShadow implements UserMapper {
     }
 
     @Override
+    public void updateStaffReferrerMobile(String loginName, String staffReferrerMobile) {
+        mapper.updateStaffReferrerMobile(loginName, staffReferrerMobile);
+    }
+
+    @Override
     public BasePaginationDataDto<UserRegisterInfo> findUsersByRegisterTimeAndReferrer(Date startTime, Date endTime, String referrer, int page, int pageSize) {
         int rowIndex = (page - 1) * pageSize;
         List<UserModel> userModels = mapper.findUsersByRegisterTimeOrReferrer(startTime, endTime, referrer, rowIndex, pageSize);

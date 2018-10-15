@@ -25,9 +25,6 @@ public class InvestRequestDto extends BaseParamDto {
     @ApiModelProperty(value = "优惠券集合", example = "1,2,3")
     private List<Long> userCouponIds;
 
-    @ApiModelProperty(value = "0元购奖品", example = "Iphone_X")
-    private String zeroShoppingPrize;
-
     public String getUserId() {
         return userId;
     }
@@ -71,14 +68,6 @@ public class InvestRequestDto extends BaseParamDto {
         this.userCouponIds = userCouponIds;
     }
 
-    public String getZeroShoppingPrize() {
-        return zeroShoppingPrize;
-    }
-
-    public void setZeroShoppingPrize(String zeroShoppingPrize) {
-        this.zeroShoppingPrize = zeroShoppingPrize;
-    }
-
     public InvestDto convertToInvestDto(){
         InvestDto investDto = new InvestDto();
         investDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
@@ -86,10 +75,6 @@ public class InvestRequestDto extends BaseParamDto {
         investDto.setLoginName(this.getBaseParam().getUserId());
         investDto.setLoanId(this.getLoanId());
         investDto.setUserCouponIds(this.userCouponIds);
-        investDto.setZeroShoppingPrize(this.getZeroShoppingPrize());
         return investDto;
-
     }
-
-
 }

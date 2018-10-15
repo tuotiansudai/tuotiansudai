@@ -96,9 +96,6 @@ public class LoanDetailController {
         }
         modelAndView.addObject("membershipLevel", membershipLevel);
         modelAndView.addObject("investFeeRate", investFeeRate);
-
-        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
-        modelAndView.addObject("zeroShoppingPrize", map == null ? null : map.containsKey("zeroShoppingPrize") ? map.get("zeroShoppingPrize") : null);
         modelAndView.addObject("availableInvestMoney", investService.availableInvestMoney(LoginUserInfo.getLoginName()));
         Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
         modelAndView.addObject("estimate", estimate);

@@ -27,4 +27,6 @@ public interface ReferrerRelationMapper {
 
     int findReferrerCountByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
 
+    String findStaffReferrerMobileByLoginName(@Param(value = "loginName") String loginName);
+
 }
