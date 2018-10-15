@@ -7,18 +7,18 @@ def flush_prod_properties(etcd):
     file_names = file_name('./prod-properties')
     print file_names
     for file in file_names:
-        print '123123123'.format(etcd.get(file))
+        print '123123123:{0}'.format(etcd.get(file))
+        print not etcd.get(file)
         if not etcd.get(file):
-            etcd.put(file, 'SUCCESS')
-            deploy_prop = load_properties('./prod-properties/{0}.properties'.format(file))
+            deploy_prop = load_properties('./prod-properties/{0}'.format(file))
             print 'put etcd file:{0}'.format(file)
             for props in deploy_prop:
                 for key, value in props.items():
                     etcd.put(key, value)
                     print 'put {0}={1}'.format(key, value)
+            etcd.put(file, 'SUCCESS')
 
     print '---------------------------------------end'
-
 
 
 def file_name(file_dir):
@@ -26,8 +26,8 @@ def file_name(file_dir):
     for root, dirs, files in os.walk(file_dir):
         for file in files:
             if os.path.splitext(file)[1] == '.properties':
-                file_names.append(os.path.splitext(file)[0])
-                print os.path.splitext(file)[0]
+                file_names.append(os.path.splitext(file))
+                print os.path.splitext(file)
     return file_names
 
 
