@@ -20,7 +20,7 @@ def flush_qa_properties(etcd):
     # 如果存在 qa与prod value 不同,则添加一个qa文件覆盖prod值
     file_names = file_name('./config-properties/qa')
     for file in file_names:
-        deploy_prop = load_properties('./config-properties/dev/{0}.properties'.format(file))
+        deploy_prop = load_properties('./config-properties/qa/{0}.properties'.format(file))
         for key, value in deploy_prop.items():
             etcd.put(key, value)
 
