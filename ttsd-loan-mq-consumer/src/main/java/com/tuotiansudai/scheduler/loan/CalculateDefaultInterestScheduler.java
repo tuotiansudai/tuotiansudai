@@ -41,7 +41,8 @@ public class CalculateDefaultInterestScheduler {
     @Autowired
     private CouponRepayMapper couponRepayMapper;
 
-    @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
+//    @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/30 * * * ?", zone = "Asia/Shanghai")
     public void calculateDefaultInterest() {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
