@@ -4,13 +4,13 @@ from scripts import etcd_client
 
 def flush_prod_properties(etcd):
     print '---------------------------------------start'
-    file_names = file_name('../prod-properties')
+    file_names = file_name('./prod-properties')
     print file_names
     for file in file_names:
         print '123123123'.format(etcd.get(file))
         if not etcd.get(file):
             etcd.put(file, 'SUCCESS')
-            deploy_prop = load_properties('../prod-properties/{0}'.format(file))
+            deploy_prop = load_properties('./prod-properties/{0}'.format(file))
             print 'put etcd file:{0}'.format(file)
             for props in deploy_prop:
                 for key, value in props.items():
