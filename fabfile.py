@@ -5,7 +5,7 @@ from fabric.api import *
 from fabric.contrib.project import upload_project
 from scripts import migrate_db
 from scripts import etcd_client
-from scripts import prod_properties_deploy
+from scripts import config_properties_deploy
 
 config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
@@ -37,7 +37,7 @@ def migrate():
 
 
 def flush_prod_properties():
-    prod_properties_deploy.flush_prod_properties(etcd3)
+    config_properties_deploy.flush_prod_properties(etcd3)
 
 
 def mk_war(targets=None):

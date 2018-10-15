@@ -2,7 +2,7 @@ import os
 from paver.shell import sh
 import config_deploy
 import etcd_client
-import prod_properties_deploy
+import config_properties_deploy
 
 
 class Deployment(object):
@@ -46,9 +46,8 @@ class Deployment(object):
 
     def only_console(self):
 
-        prod_properties_deploy.flush_prod_properties(self.etcd)
-
-        print 'put prod properties success'
+        config_properties_deploy.flush_qa_properties(self.etcd)
+        print 'successssssssssssssss'
 
         self.clean()
         self.config_file()

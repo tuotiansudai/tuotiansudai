@@ -1,24 +1,28 @@
+# coding=utf-8
 import os
 from scripts import etcd_client
 
 
 def flush_prod_properties(etcd):
-    print '---------------------------------------start'
-    file_names = file_name('./prod-properties')
-    print file_names
+    file_names = file_name('./config-properties/prod')
     for file in file_names:
-        print '123123123:{0}'.format(etcd.get(file))
-        print not etcd.get(file)
         if not etcd.get(file):
-            deploy_prop = load_properties('./prod-properties/{0}.properties'.format(file))
-            print 'put etcd file:{0}'.format(file)
-            print deploy_prop
+            deploy_prop = load_properties('./config-properties/prod/{0}.properties'.format(file))
             for key, value in deploy_prop.items():
                 etcd.put(key, value)
-                print 'put {0}={1}'.format(key, value)
             etcd.put(file, 'SUCCESS')
 
-    print '---------------------------------------end'
+
+def flush_qa_properties(etcd):
+    # 先刷新prod配置
+    flush_prod_properties(etcd)
+
+    # 如果存在 qa与prod value 不同,则添加一个qa文件覆盖prod值
+    file_names = file_name('./config-properties/qa')
+    for file in file_names:
+        deploy_prop = load_properties('./config-properties/dev/{0}.properties'.format(file))
+        for key, value in deploy_prop.items():
+            etcd.put(key, value)
 
 
 def file_name(file_dir):
@@ -45,4 +49,4 @@ def load_properties(file_path):
 
 
 if __name__ == '__main__':
-  flush_prod_properties(None)
+    flush_prod_properties(None)
