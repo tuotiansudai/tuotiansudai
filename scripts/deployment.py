@@ -2,6 +2,7 @@ import os
 from paver.shell import sh
 import config_deploy
 import etcd_client
+import prod_properties_deploy
 
 
 class Deployment(object):
@@ -44,6 +45,11 @@ class Deployment(object):
         self.init_docker(('static-server', 'web', 'nginx-server_web'))
 
     def only_console(self):
+
+        prod_properties_deploy.flush_prod_properties(self.etcd)
+
+        print 'put prod properties success'
+
         self.clean()
         self.config_file()
         self.clean_class(('ttsd-console', 'ttsd-activity-console'))
