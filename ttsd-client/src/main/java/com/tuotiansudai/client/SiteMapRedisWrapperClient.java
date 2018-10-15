@@ -41,6 +41,9 @@ public class SiteMapRedisWrapperClient {
         try {
             jedis = getJedis(this.sitemapRedisDb);
             return jedisAction.action(jedis);
+        }catch (Exception ex) {
+            logger.error(ex.getLocalizedMessage(), ex);
+            return null;
         } finally {
             closeResource(jedis);
         }
