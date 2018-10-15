@@ -63,6 +63,9 @@
             有效天数
         </th>
         <th>
+            截止日期
+        </th>
+        <th>
             发放对象
         </th>
         <th>
@@ -117,6 +120,9 @@
         </td>
         <td>
         ${coupon.deadline?string('0')}天
+        </td>
+        <td>
+            <#if (coupon.failureTime)??>${coupon.failureTime?string('yyyy-MM-dd')}</#if>
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>
