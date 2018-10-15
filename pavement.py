@@ -86,6 +86,14 @@ def ut():
 
 def fab_command(command, skip_package):
     from paver.shell import sh
+    from scripts import etcd_client
+
+    etcd = etcd_client.client('prod')
+    deploy_prop = [load_properties("./ttsd-config/src/main/resources/ttsd-biz.properties")]
+
+    for props in deploy_prop:
+        for key, value in props.items():
+            etcd.put(key, value)
 
     try:
         ci_file = open('/workspace/ci/def', 'rb')
@@ -94,6 +102,19 @@ def fab_command(command, skip_package):
         ci_file.close()
     except IOError as e:
         print e
+
+
+def load_properties(file_path):
+    props = {}
+    with open(file_path, "r") as f:
+        for line in f:
+            striped_line = line.strip()
+            if striped_line and not striped_line.startswith('#'):
+                key_value = striped_line.split('=')
+                key = key_value[0].strip()
+                value = '='.join(key_value[1:]).strip()
+                props[key] = value
+    return props
 
 
 @task
