@@ -10,7 +10,7 @@ def flush_prod_properties(etcd):
         print '123123123'.format(etcd.get(file))
         if not etcd.get(file):
             etcd.put(file, 'SUCCESS')
-            deploy_prop = load_properties('./prod-properties/{0}'.format(file))
+            deploy_prop = load_properties('./prod-properties/{0}.properties'.format(file))
             print 'put etcd file:{0}'.format(file)
             for props in deploy_prop:
                 for key, value in props.items():
