@@ -30,9 +30,6 @@ public class ReferrerRelationService {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Value("#{'${pay.user.reward}'.split('\\|')}")
     private List<Double> referrerUserRoleReward;
 
@@ -95,11 +92,6 @@ public class ReferrerRelationService {
                 }
             }
         }
-
-        String staffReferrerMobile = referrerRelationMapper.findStaffReferrerMobileByLoginName(loginName);
-        if (!Strings.isNullOrEmpty(staffReferrerMobile)){
-            userMapper.updateStaffReferrerMobile(loginName, staffReferrerMobile);
-        }
     }
 
     private Map<String, Integer> findAllUpperRelations(String loginName) {
@@ -148,5 +140,9 @@ public class ReferrerRelationService {
             }
         }
         return relations;
+    }
+
+    public String findStaffReferrerMobileByLoginName(String loginName){
+        return referrerRelationMapper.findStaffReferrerMobileByLoginName(loginName);
     }
 }
