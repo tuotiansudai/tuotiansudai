@@ -38,4 +38,11 @@
          select count(1) from referrer_relation  where referrer_login_name = #{referrerLoginName}
     </select>
 
+    <select id="findStaffReferrerMobileByLoginName" parameterType="map" resultType="string">
+        SELECT (select user.mobile from user where user.login_name = temp1.referrer_login_name) from referrer_relation temp1
+                where level = (select max(level) from referrer_relation temp2 where temp1.login_name = temp2.login_name)
+                and exists (select 1 from user_role where user_role.login_name = temp1.referrer_login_name and user_role.role in ('SD_STAFF', 'ZC_STAFF'))
+                and temp1.login_name = #{loginName}
+    </select>
+
 </mapper>

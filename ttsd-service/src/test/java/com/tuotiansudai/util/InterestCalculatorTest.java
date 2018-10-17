@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@ActiveProfiles("test")
 public class InterestCalculatorTest {
 
     @Test
@@ -43,16 +45,16 @@ public class InterestCalculatorTest {
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
         DateTime currentRepayDate = lastRepayDate.plusDays(daysOfPerPeriod.get(0));
 
-        // 共12期, 第一期 28天
+        // 共12期, 第一期 30天
         long amount = InterestCalculator.estimateCouponRepayExpectedInterest(investModel, loanModel, couponModel, currentRepayDate, lastRepayDate);
 
-        assertThat(amount, is(1534L));
+        assertThat(amount, is(1643L));
     }
 
     private InvestModel createInvest() {
         InvestModel model = new InvestModel();
         model.setAmount(1000000);
-        model.setTradingTime(new Date());
+        model.setTradingTime(DateTime.parse("2018-10-10 10:10:10", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         return model;
     }
 
@@ -80,7 +82,7 @@ public class InterestCalculatorTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
         loanModel.setRecheckTime(recheckTime);
-        loanModel.setDeadline(DateTime.now().plusDays(357).toDate());
+        loanModel.setDeadline(DateTime.parse("2019-10-04 10:10:10", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
         return loanModel;
     }
 

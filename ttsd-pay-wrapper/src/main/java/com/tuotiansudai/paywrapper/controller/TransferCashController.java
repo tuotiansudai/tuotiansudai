@@ -25,10 +25,4 @@ public class TransferCashController extends BaseController{
     public BaseDto<PayDataDto> transferCash(@Valid @RequestBody TransferCashDto transferCashDto) {
         return transferCashService.transferCash(transferCashDto);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/transfer-cash/invite-help-activity", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> transferCash(@Valid @RequestBody InviteHelpActivityPayCashDto dto) {
-        return transferCashService.transferCashInviteHelpActivity(dto);
-    }
 }

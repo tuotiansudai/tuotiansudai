@@ -159,7 +159,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds, String prize) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -350,7 +350,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds(), dto.getZeroShoppingPrize());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
     }
 
     @Override
@@ -394,7 +394,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null, null);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
                 if (!baseDto.isSuccess()) {
                     logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }

@@ -165,7 +165,7 @@ public class CouponAssignmentServiceTest {
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
         assertThat(userCouponModels.size(), is(1));
-        assertThat(userCouponModels.get(0).getEndTime().toString(), is(fakeCoupon.getFailureTime().toString()));
+        assertThat(new DateTime(userCouponModels.get(0).getEndTime()).getDayOfYear(), is(new DateTime(fakeCoupon.getFailureTime()).getDayOfYear()));
     }
 
     @Test
