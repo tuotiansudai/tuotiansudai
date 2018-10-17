@@ -19,6 +19,9 @@ public interface UserMapperDB {
     int updateEmail(@Param("loginName") String loginName,
                     @Param("email") String email);
 
+    void updateStaffReferrerMobile(@Param("loginName") String loginName,
+                                   @Param("staffReferrerMobile") String staffReferrerMobile);
+
     List<UserModel> findUsersByRegisterTimeOrReferrer(@Param("startTime") Date startTime,
                                                       @Param("endTime") Date endTime,
                                                       @Param("referrer") String referrer,
