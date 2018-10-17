@@ -512,7 +512,47 @@ public class CouponRepayServiceTest {
 
     }
 
+    @Test
+    public void allOverdueUpdateCompleteTest() throws PayException {
+        ArgumentCaptor<CouponRepayModel> couponRepayModelArgumentCaptor = ArgumentCaptor.forClass(CouponRepayModel.class);
 
+        UserModel userModel = mockUser("testCouponRepay", "13900880000", "12311@abc");
+        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
+        LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 1, 0, 100000, new DateTime().minusDays(90).toDate(), new Date(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 2, 0, 100000, new DateTime().minusDays(60).toDate(), new Date(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay3 = this.getFakeLoanRepayModel(IdGenerator.generate(), loanModel.getId(), 3, 0, 100000, new DateTime().minusDays(30).toDate(), new Date(), RepayStatus.COMPLETE);
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList(loanRepay1, loanRepay2, loanRepay3);
+        when(loanRepayMapper.findById(loanRepay3.getId())).thenReturn(loanRepay3);
+        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepay3.getLoanId())).thenReturn(loanRepayModels);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
+        InvestModel investModel = mockInvest(IdGenerator.generate(), userModel.getLoginName(), 0);
+        CouponModel couponModel1 = mockCoupon(userModel.getLoginName(), 200000L);
+        couponModel1.setPeriod(3);
+        UserCouponModel userCouponModel1 = mockUserCoupon(userModel.getLoginName(), couponModel1.getId(), loanModel.getId(), investModel.getId());
+        when(userCouponMapper.findByLoanId(loanModel.getId(), Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON))).thenReturn(Lists.newArrayList(userCouponModel1));
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel1);
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        CouponRepayModel couponRepayModel1 = mockCouponRepayModel(userModel.getLoginName(), couponModel1.getId(), userCouponModel1.getId(), 1, new DateTime().minusDays(90).toDate(), RepayStatus.OVERDUE);
+        CouponRepayModel couponRepayModel2 = mockCouponRepayModel(userModel.getLoginName(), couponModel1.getId(), userCouponModel1.getId(), 2, new DateTime().minusDays(60).toDate(), RepayStatus.OVERDUE);
+        CouponRepayModel couponRepayModel3 = mockCouponRepayModel(userModel.getLoginName(), couponModel1.getId(), userCouponModel1.getId(), 3, new DateTime().minusDays(30).toDate(), RepayStatus.OVERDUE);
+        List<CouponRepayModel> couponRepayModels = Lists.newArrayList(couponRepayModel1, couponRepayModel2, couponRepayModel3);
+        when(couponRepayMapper.findByUserCouponIdAndPeriod(userCouponModel1.getId(), couponRepayModel3.getPeriod())).thenReturn(couponRepayModel3);
+        when(couponRepayMapper.findByUserCouponByInvestId(investModel.getId())).thenReturn(couponRepayModels);
+
+        when(couponRepayMapper.update(any(CouponRepayModel.class))).thenReturn(1L);
+
+        couponRepayService.repay(loanRepay3.getId(), false);
+
+        verify(couponRepayMapper, times(4)).update(couponRepayModelArgumentCaptor.capture());
+
+        assertThat(couponRepayModelArgumentCaptor.getAllValues().size(), is(4));
+        assertThat(couponRepayModelArgumentCaptor.getAllValues().get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(couponRepayModelArgumentCaptor.getAllValues().get(2).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(couponRepayModelArgumentCaptor.getAllValues().get(3).getStatus(), is(RepayStatus.COMPLETE));
+    }
 
     protected LoanRepayModel getFakeLoanRepayModel(long loanRepayId, long loanId, int period, long corpus, long expectedInterest, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
         LoanRepayModel fakeLoanRepay = new LoanRepayModel(loanRepayId, loanId, period, corpus, expectedInterest, expectedRepayDate, repayStatus);
@@ -601,5 +641,14 @@ public class CouponRepayServiceTest {
         return model;
     }
 
-
+    private CouponRepayModel mockCouponRepayModel(String loginName, long couponId, long userCouponId, int period, Date repayDate, RepayStatus status){
+        CouponRepayModel couponRepayModel = new CouponRepayModel();
+        couponRepayModel.setLoginName(loginName);
+        couponRepayModel.setCouponId(couponId);
+        couponRepayModel.setUserCouponId(userCouponId);
+        couponRepayModel.setPeriod(period);
+        couponRepayModel.setRepayDate(repayDate);
+        couponRepayModel.setStatus(status);
+        return couponRepayModel;
+    }
 }
