@@ -45,10 +45,6 @@ class Deployment(object):
         self.init_docker(('static-server', 'web', 'nginx-server_web'))
 
     def only_console(self):
-
-        config_properties_deploy.flush_qa_properties(self.etcd)
-        print 'successssssssssssssss'
-
         self.clean()
         self.config_file()
         self.clean_class(('ttsd-console', 'ttsd-activity-console'))
@@ -139,6 +135,7 @@ class Deployment(object):
     def config_file(self):
         print "Generate config file..."
         config_deploy.deploy(self.etcd, self.env, self.pay_fake)
+        config_properties_deploy.flush_qa_properties(self.etcd)
 
     def migrate(self):
         from scripts import migrate_db

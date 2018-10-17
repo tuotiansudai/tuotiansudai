@@ -23,6 +23,7 @@ def flush_qa_properties(etcd):
         deploy_prop = load_properties('./config-properties/qa/{0}.properties'.format(file))
         for key, value in deploy_prop.items():
             etcd.put(key, value)
+            print '{}={}'.format(key, value)
 
 
 def file_name(file_dir):
@@ -46,7 +47,3 @@ def load_properties(file_path):
                 value = '='.join(key_value[1:]).strip()
                 props[key] = value
     return props
-
-
-if __name__ == '__main__':
-    flush_prod_properties(None)
