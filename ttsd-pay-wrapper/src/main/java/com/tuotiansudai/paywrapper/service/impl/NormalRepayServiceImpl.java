@@ -32,8 +32,10 @@ import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -274,7 +276,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 continue;
             }
             //实际利息
-            long actualInterest = this.calculateInvestRepayActualInterest(investModel.getId(), investRepayModel);
+            long actualInterest = this.calculateInvestRepayActualInterest(investModel, investRepayModel,loanModel);
             //实际手续费
             long actualFee = this.calculateInvestRepayActualFee(investModel.getId(), investRepayModel);
             //实收金额
@@ -620,15 +622,22 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(investModel.getLoginName(), WeChatMessageType.NORMAL_REPAY_SUCCESS, currentInvestRepay.getId()));
     }
 
-    private long calculateInvestRepayActualInterest(long investId, InvestRepayModel enabledInvestRepay) {
+    private long calculateInvestRepayActualInterest(InvestModel investModel, InvestRepayModel enabledInvestRepay,LoanModel loanModel) {
         if (enabledInvestRepay.getStatus() == RepayStatus.REPAYING) {
             return enabledInvestRepay.getExpectedInterest();
         }
 
         long actualInterest = 0;
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
-        for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() : 0;
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+        for (int i=0;i<investRepayModels.size();i++) {
+            if(investRepayModels.get(i).getStatus() != RepayStatus.OVERDUE){
+                continue;
+            }
+            actualInterest+=(investRepayModels.get(i).getExpectedInterest() + investRepayModels.get(i).getDefaultInterest());
+            //如果是最后一期,实际利息要增加逾期天数
+            if(enabledInvestRepay.getPeriod() == investRepayModels.get(investRepayModels.size()-1).getPeriod() && i==(investRepayModels.size()-1)){
+                actualInterest+=InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),investModel.getAmount(),new DateTime(enabledInvestRepay.getRepayDate()),new DateTime());
+            }
         }
         return actualInterest;
     }
@@ -650,11 +659,18 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         if (enabledLoanRepay.getStatus() == RepayStatus.REPAYING) {
             return enabledLoanRepay.getExpectedInterest();
         }
-
         long actualInterest = 0;
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
-        for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0;
+        for (int i=0;i<loanRepayModels.size();i++) {
+            if(loanRepayModels.get(i).getStatus() != RepayStatus.OVERDUE){
+                continue;
+            }
+            actualInterest+=(loanRepayModels.get(i).getExpectedInterest() + loanRepayModels.get(i).getDefaultInterest());
+            //如果是最后一期,实际利息要增加逾期天数
+            if(enabledLoanRepay.getPeriod() == loanRepayModels.get(loanRepayModels.size()-1).getPeriod() && i == (loanRepayModels.size()-1)){
+                LoanModel loanModel=loanMapper.findById(loanId);
+                actualInterest+=InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),loanModel.getLoanAmount(),new DateTime(enabledLoanRepay.getRepayDate()),new DateTime());
+            }
         }
         return actualInterest;
     }

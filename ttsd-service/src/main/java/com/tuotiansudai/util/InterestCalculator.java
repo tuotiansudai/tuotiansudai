@@ -256,7 +256,11 @@ public class InterestCalculator {
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
-
+    public static long calculateLoanInterest(double rate,long amount,DateTime lastRepayDate,DateTime currentDate){
+        BigDecimal loanRate = BigDecimal.valueOf(rate);
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentDate.withTimeAtStartOfDay()).getDays();
+        return BigDecimal.valueOf(amount).multiply(new BigDecimal(periodDuration)).multiply(loanRate).divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
     public static long calculateTransferInterest(TransferApplicationModel transferApplicationModel, List<InvestRepayModel> investRepayModels) {
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {

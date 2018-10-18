@@ -13,6 +13,7 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.hamcrest.CoreMatchers;
@@ -500,7 +501,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepay2.getId());
-        assertThat(actualInvestRepay2.getActualInterest(), is(investRepay1.getExpectedInterest() + investRepay1.getDefaultInterest() + investRepay2.getExpectedInterest()));
+        assertThat(actualInvestRepay2.getActualInterest(), is(investRepay1.getExpectedInterest() + investRepay1.getDefaultInterest() + investRepay2.getExpectedInterest()+ InterestCalculator.calculateLoanInterest(loan.getBaseRate(),loan.getLoanAmount(),new DateTime(actualInvestRepay2.getRepayDate()),new DateTime())));
         assertThat(actualInvestRepay2.getActualFee(), is(investRepay1.getExpectedFee() + investRepay2.getExpectedFee()));
         assertThat(actualInvestRepay2.getActualRepayDate(), is(loanRepay2.getActualRepayDate()));
         assertThat(actualInvestRepay2.getStatus(), is(RepayStatus.WAIT_PAY));
@@ -572,7 +573,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
         InvestRepayModel actualInvestRepayTransferrer2 = investRepayMapper.findById(investRepayTransferee2.getId());
-        assertThat(actualInvestRepayTransferrer2.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest() + investRepayTransferee2.getExpectedInterest()));
+        assertThat(actualInvestRepayTransferrer2.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest() + investRepayTransferee2.getExpectedInterest()+InterestCalculator.calculateLoanInterest(loan.getBaseRate(),invest.getAmount(),new DateTime(investRepayTransferee2.getRepayDate()),new DateTime())));
         assertThat(actualInvestRepayTransferrer2.getActualFee(), is(investRepayTransferee1.getExpectedFee() + investRepayTransferee2.getExpectedFee()));
         assertThat(actualInvestRepayTransferrer2.getActualRepayDate(), is(loanRepay2.getActualRepayDate()));
         assertThat(actualInvestRepayTransferrer2.getStatus(), is(RepayStatus.WAIT_PAY));

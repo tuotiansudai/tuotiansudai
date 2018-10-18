@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -147,7 +148,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
 
         BaseDto<PayFormDataDto> formData = normalRepayService.generateRepayFormData(loan.getId());
 
-        long actualInterest = loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest() + loanRepay2.getExpectedInterest();
+        long actualInterest = loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest() + loanRepay2.getExpectedInterest()+ InterestCalculator.calculateLoanInterest(loan.getBaseRate(),loan.getLoanAmount(),new DateTime(loanRepay2.getRepayDate()),new DateTime());
         assertThat(Long.parseLong(formData.getData().getFields().get("amount")), is(loanRepay2.getCorpus() + actualInterest));
         assertThat(Long.parseLong(formData.getData().getFields().get("order_id").split("X")[0]), is(loanRepay2.getId()));
 
