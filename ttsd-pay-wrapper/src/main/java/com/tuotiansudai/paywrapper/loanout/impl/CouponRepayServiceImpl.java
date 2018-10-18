@@ -321,6 +321,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         model.setActualRepayDate(new Date());
                         model.setStatus(RepayStatus.COMPLETE);
                         couponRepayMapper.update(model);
+                        logger.info(MessageFormat.format("invest:{0}, currentCouponRepay:{1} update overdue coupon repay:{2} status to COMPLETE",
+                                String.valueOf(investId), String.valueOf(couponRepayModel.getId()), String.valueOf(model.getId())));
                     });
 
             if (isAdvanced) {
@@ -435,4 +437,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("还款时优惠券发放业务错误。详细信息：{0}", errMsg));
     }
 
+
+    public static void main(String args[]){
+        List<Integer> list = Lists.newArrayList(1, 2, 3, 4);
+        list.stream().filter(i -> i > 2).forEach(i -> System.out.print(i));
+    }
 }
