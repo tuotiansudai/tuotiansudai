@@ -961,7 +961,7 @@ public class InvestMapperTest {
         Date startDate = DateTime.parse("2014-10-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
         Date endDate = DateTime.parse("2014-10-01 23:59:59", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
-        long investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null);
+        long investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null, null);
         assertEquals(investAmount, 0);
 
         InvestModel investModel2 = this.getFakeInvestModel();
@@ -974,7 +974,7 @@ public class InvestMapperTest {
         investModel2.setAmount(100);
         investMapper.create(investModel2);
 
-        investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null);
+        investAmount = investMapper.sumInvestAmountConsole(null, null, null, null, null, startDate, endDate, null, null, null, null);
         assertEquals(investAmount, investModel2.getAmount());
 
     }
@@ -1037,13 +1037,13 @@ public class InvestMapperTest {
         investModel2.setInvestTime(DateTime.now().toDate());
         investMapper.create(investModel2);
 
-        long sum = investMapper.sumInvestAmountConsole(null, User_ID2, null, null, null, null, null, null, null, null);
+        long sum = investMapper.sumInvestAmountConsole(null, User_ID2, null, null, null, null, null, null, null, null, null);
         assertEquals(sum, 1000000L);
 
-        long count = investMapper.findCountInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null);
+        long count = investMapper.findCountInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null, null);
         assertEquals(count, 1L);
 
-        List<InvestPaginationItemView> list = investMapper.findInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
+        List<InvestPaginationItemView> list = investMapper.findInvestPagination(null, User_ID2, null, null, null, null, null, null, null, null, null, 0, Integer.MAX_VALUE);
         assertEquals(list.size(), 1);
     }
 
