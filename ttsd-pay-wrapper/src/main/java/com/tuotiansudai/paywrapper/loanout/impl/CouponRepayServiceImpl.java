@@ -291,13 +291,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             couponRepayModel.setActualInterest(actualInterest);
             couponRepayModel.setActualFee(actualFee);
             couponRepayModel.setRepayAmount(actualInterest - actualFee);
-            couponRepayModel.setActualRepayDate(new Date());
             couponRepayMapper.update(couponRepayModel);
             if (isAdvanced) {
                 List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
                 for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
                     if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
-                        advancedCouponRepayModel.setActualRepayDate(new Date());
                         couponRepayMapper.update(advancedCouponRepayModel);
                         logger.info(MessageFormat.format("[Advance Repay] update other ActualRepayDate coupon repay({0})",
                                 String.valueOf(advancedCouponRepayModel.getId())));
@@ -313,12 +311,26 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private void updateCouponRepayAfterCallback(long investId, final CouponRepayModel couponRepayModel, boolean isAdvanced) {
         try {
             couponRepayModel.setStatus(RepayStatus.COMPLETE);
+            couponRepayModel.setActualRepayDate(new Date());
             couponRepayMapper.update(couponRepayModel);
+
+            //更新 所有逾期的还款为 COMPLETE
+            couponRepayMapper.findByUserCouponByInvestId(investId).stream()
+                    .filter(model->model.getStatus() == RepayStatus.OVERDUE)
+                    .forEach(model -> {
+                        model.setActualRepayDate(new Date());
+                        model.setStatus(RepayStatus.COMPLETE);
+                        couponRepayMapper.update(model);
+                        logger.info(MessageFormat.format("invest:{0}, currentCouponRepay:{1} update overdue coupon repay:{2} status to COMPLETE",
+                                String.valueOf(investId), String.valueOf(couponRepayModel.getId()), String.valueOf(model.getId())));
+                    });
+
             if (isAdvanced) {
                 List<CouponRepayModel> advancedCouponRepayModels = Lists.newArrayList(couponRepayMapper.findByUserCouponByInvestId(investId).stream().filter(input -> input.getPeriod() > couponRepayModel.getPeriod()).collect(Collectors.toList()));
                 for (CouponRepayModel advancedCouponRepayModel : advancedCouponRepayModels) {
                     if (advancedCouponRepayModel.getStatus() == RepayStatus.REPAYING) {
                         advancedCouponRepayModel.setStatus(RepayStatus.COMPLETE);
+                        advancedCouponRepayModel.setActualRepayDate(new Date());
                         couponRepayMapper.update(advancedCouponRepayModel);
                         logger.info(MessageFormat.format("[Advance Repay] update other REPAYING coupon repay({0}) status to COMPLETE",
                                 String.valueOf(advancedCouponRepayModel.getId())));
@@ -425,4 +437,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("还款时优惠券发放业务错误。详细信息：{0}", errMsg));
     }
 
+
+    public static void main(String args[]){
+        List<Integer> list = Lists.newArrayList(1, 2, 3, 4);
+        list.stream().filter(i -> i > 2).forEach(i -> System.out.print(i));
+    }
 }
