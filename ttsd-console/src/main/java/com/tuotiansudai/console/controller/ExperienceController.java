@@ -126,7 +126,7 @@ public class ExperienceController {
         InvestPaginationDataDto dataDto = consoleInvestService.getInvestPagination(loanId, investorMobile, null, source, null,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? CalculateUtil.calculateMaxDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
-                null, null, ProductType.EXPERIENCE, index, pageSize);
+                null, null, ProductType.EXPERIENCE, null, index, pageSize);
         List<String> channelList = consoleInvestService.findAllChannel();
         ModelAndView mv = new ModelAndView("/experience-record-list");
         mv.addObject("data", dataDto);

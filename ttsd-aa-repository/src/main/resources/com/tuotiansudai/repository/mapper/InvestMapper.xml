@@ -53,6 +53,7 @@
         <result column="city" property="city"/>
         <result column="identity_number" property="identityNumber"/>
         <result column="transfer_status" property="transferStatus"/>
+        <result column="last_period_repay_status" property="lastPeriodRepayStatus"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -307,7 +308,8 @@
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS
         extra_actual_interest,
         invest.status AS invest_status,
-        invest.transfer_status as transfer_status
+        invest.transfer_status as transfer_status,
+        (select invest_repay.status from invest_repay where invest_repay.invest_id =invest.id and invest_repay.period = loan.periods) AS last_period_repay_status
         FROM
         invest join loan on invest.loan_id = loan.id
         <where>
@@ -350,6 +352,12 @@
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
+            </if>
+            <if test="transferStatus != null and transferStatus.name() == 'TRANSFERABLE'">
+                and invest.transfer_status not in ('NONTRANSFERABLE', 'OVERDUE_TRANSFERABLE')
+            </if>
+            <if test="transferStatus != null and transferStatus.name() == 'OVERDUE_TRANSFERABLE'">
+                and invest.transfer_status = 'OVERDUE_TRANSFERABLE'
             </if>
         </where>
         ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
@@ -451,6 +459,12 @@
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
+            <if test="transferStatus != null and transferStatus.name() == 'TRANSFERABLE'">
+                and invest.transfer_status not in ('NONTRANSFERABLE', 'OVERDUE_TRANSFERABLE')
+            </if>
+            <if test="transferStatus != null and transferStatus.name() == 'OVERDUE_TRANSFERABLE'">
+                and invest.transfer_status = 'OVERDUE_TRANSFERABLE'
+            </if>
         </where>
     </select>
 
@@ -530,6 +544,12 @@
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
+            </if>
+            <if test="transferStatus != null and transferStatus.name() == 'TRANSFERABLE'">
+                and invest.transfer_status not in ('NONTRANSFERABLE', 'OVERDUE_TRANSFERABLE')
+            </if>
+            <if test="transferStatus != null and transferStatus.name() == 'OVERDUE_TRANSFERABLE'">
+                and invest.transfer_status = 'OVERDUE_TRANSFERABLE'
             </if>
         </where>
     </select>

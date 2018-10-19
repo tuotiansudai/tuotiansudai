@@ -35,7 +35,8 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String province;
     private String city;
     private String identityNumber;
-    private boolean allowTransfer;
+    private TransferStatus transferStatus;
+    private RepayStatus lastPeriodRepayStatus;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -61,7 +62,8 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.province = view.getProvince();
         this.city = view.getCity();
         this.identityNumber = view.getIdentityNumber();
-        this.allowTransfer = view.getTransferStatus() != TransferStatus.NONTRANSFERABLE;
+        this.transferStatus = view.getTransferStatus();
+        this.lastPeriodRepayStatus = view.getLastPeriodRepayStatus();
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -295,11 +297,19 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.identityNumber = identityNumber;
     }
 
-    public boolean isAllowTransfer() {
-        return allowTransfer;
+    public TransferStatus getTransferStatus() {
+        return transferStatus;
     }
 
-    public void setAllowTransfer(boolean allowTransfer) {
-        this.allowTransfer = allowTransfer;
+    public void setTransferStatus(TransferStatus transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
+    public RepayStatus getLastPeriodRepayStatus() {
+        return lastPeriodRepayStatus;
+    }
+
+    public void setLastPeriodRepayStatus(RepayStatus lastPeriodRepayStatus) {
+        this.lastPeriodRepayStatus = lastPeriodRepayStatus;
     }
 }
