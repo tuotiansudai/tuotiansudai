@@ -175,7 +175,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ? loanRepayMapper.findLastLoanRepay(investModel.getLoanId()) : loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
         long transferFee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
@@ -205,7 +205,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         transferApplicationModel.setStatus(TransferStatus.CANCEL);
         transferApplicationMapper.update(transferApplicationModel);
-        investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
+
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
+        boolean isOverdueTransfer = investRepayModels.get(investRepayModels.size() - 1).getRepayDate().before(transferApplicationModel.getApplicationTime());
+        investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), isOverdueTransfer ? TransferStatus.OVERDUE_TRANSFERABLE : TransferStatus.TRANSFERABLE);
 
         return true;
     }
@@ -353,7 +356,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
         List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
             TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-            if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.OVERDUE_TRANSFERABLE).contains(input.getTransferStatus())) {
+            if (TransferStatus.TRANSFERABLE == input.getTransferStatus()) {
                 transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? TransferStatus.TRANSFERABLE.getDescription() : "--");
             } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
                 transferApplicationPaginationItemDataDto.setTransferStatus("--");

@@ -213,10 +213,21 @@ public class TransferServiceImpl implements TransferService {
         }
         List<TransferableInvestPaginationItemDataView> records = Lists.transform(items, input -> {
             TransferableInvestPaginationItemDataView transferableInvestPaginationItemDataView = new TransferableInvestPaginationItemDataView(input);
-            transferableInvestPaginationItemDataView.setTransferStatus(input.getTransferStatus().getDescription());
+            transferableInvestPaginationItemDataView.setTransferStatus(input.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ? TransferStatus.TRANSFERABLE.getDescription() : input.getTransferStatus().getDescription());
             transferableInvestPaginationItemDataView.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
+            if (input.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE){
+                List<InvestRepayModel> overdueInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getInvestId()).stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
+                transferableInvestPaginationItemDataView.setLeftPeriod(1);
+                transferableInvestPaginationItemDataView.setLeftDays("0");
+                transferableInvestPaginationItemDataView.setNextRepayDate(overdueInvestRepayModels.get(overdueInvestRepayModels.size() - 1).getRepayDate());
+                long overdueAmount = 0L;
+                for (InvestRepayModel model : overdueInvestRepayModels){
+                    overdueAmount += model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee();
+                }
+                transferableInvestPaginationItemDataView.setNextRepayAmount(AmountConverter.convertCentToString(overdueAmount));
+            }
             LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
-            if (loanRepayModel != null) {
+            if (input.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanRepayModel != null) {
                 int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
                 transferableInvestPaginationItemDataView.setLeftPeriod(leftPeriod);
                 LoanModel loanModel = loanMapper.findById(input.getLoanId());

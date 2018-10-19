@@ -832,7 +832,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            (invest.transfer_status = 'OVERDUE_TRANSFERABLE'
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -866,7 +866,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            (invest.transfer_status = 'OVERDUE_TRANSFERABLE'
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -908,7 +908,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            (invest.transfer_status = 'OVERDUE_TRANSFERABLE'
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -942,7 +942,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            (invest.transfer_status = 'OVERDUE_TRANSFERABLE'
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'

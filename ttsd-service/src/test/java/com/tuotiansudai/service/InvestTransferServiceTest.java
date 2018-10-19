@@ -161,7 +161,8 @@ public class InvestTransferServiceTest {
         InvestModel investModel = createInvest("testuser", loanId);
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date(), 3, Source.WEB);
         transferApplicationMapper.create(transferApplicationModel);
-
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayMapper.create(Lists.newArrayList(new InvestRepayModel(IdGenerator.generate(), investModel.getId(), loanModel.getPeriods(), 1L, 0L, 0L, new Date(), RepayStatus.REPAYING)));
         assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
         TransferApplicationModel transferApplicationModel1 = transferApplicationMapper.findById(transferApplicationModel.getId());
         assertThat(transferApplicationModel1.getStatus(), is(TransferStatus.CANCEL));
