@@ -96,6 +96,11 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return dto;
         }
 
+        if (investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE){
+            dto.getData().setStatus(true);
+            return dto;
+        }
+
         long loanId = investModel.getLoanId();
         LoanRepayModel currentLoanRepay = loanRepayMapper.findCurrentLoanRepayByLoanId(loanId);
         int transferDaysLimit = transferRuleMapper.find().getDaysLimit();
@@ -149,7 +154,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (loanMapper.findById(investModel.getLoanId()).getStatus() != LoanStatus.REPAYING) {
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanModel.getStatus() != LoanStatus.REPAYING) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] loan status is not REPAYING", String.valueOf(investModel.getId())));
             return false;
         }
@@ -169,7 +175,6 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
@@ -258,6 +263,10 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
+        if (investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE){
+            return true;
+        }
+
         if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE){
             return false;
         }
@@ -344,8 +353,8 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
         List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, input -> {
             TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-            if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+            if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.OVERDUE_TRANSFERABLE).contains(input.getTransferStatus())) {
+                transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? TransferStatus.TRANSFERABLE.getDescription() : "--");
             } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
                 transferApplicationPaginationItemDataDto.setTransferStatus("--");
             } else {

@@ -142,11 +142,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
         }
 
-        if(loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE){
+        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), ReturnMessage.TRANSFER_IS_OVERDUE.getMsg());
         }
 
-        if(!investTransferService.validTransferIsDayLimit(investModel.getLoanId())){
+        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && !investTransferService.validTransferIsDayLimit(investModel.getLoanId())) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), ReturnMessage.TRANSFER_IMPEND_REPAYING.getMsg());
         }
 
