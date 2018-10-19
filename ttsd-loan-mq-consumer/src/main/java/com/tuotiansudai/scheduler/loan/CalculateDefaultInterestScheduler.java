@@ -62,7 +62,7 @@ public class CalculateDefaultInterestScheduler {
     //计算逾期罚息
     public void calculateOverdueInterestEveryLoan(LoanRepayModel loanRepayModel) {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
-        if(loanModel.getPeriods() == loanRepayModel.getPeriod() && loanModel.getLoanerIdentityNumber().equals("111111111111111111")){
+        if(loanModel.getPeriods() == loanRepayModel.getPeriod()){
             List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
             for(InvestRepayModel investRepayModel : investRepayModels){
                 long overdueInterest= InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),investMapper.findById(investRepayModel.getInvestId()).getAmount(),new DateTime(investRepayModel.getRepayDate()),new DateTime());
