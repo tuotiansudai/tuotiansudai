@@ -42,7 +42,7 @@ public class LoanerLoanRepayDataItemDto {
         this.period = loanRepayModel.getPeriod();
         this.corpus = AmountConverter.convertCentToString(loanRepayModel.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(loanRepayModel.getExpectedInterest());
-        this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest());
+        this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
         this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         if (Lists.newArrayList(RepayStatus.WAIT_PAY, RepayStatus.COMPLETE).contains(loanRepayModel.getStatus())) {
             this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());

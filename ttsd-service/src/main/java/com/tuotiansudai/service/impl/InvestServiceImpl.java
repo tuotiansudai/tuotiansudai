@@ -717,7 +717,7 @@ public class InvestServiceImpl implements InvestService {
         long corpus = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(investModel.getLoginName(), investModel.getId());
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest()- investRepayModel.getExpectedFee();
             totalExpectedInterest += expectedInterest;
             totalActualInterest += investRepayModel.getRepayAmount();
             corpus += investRepayModel.getCorpus();
@@ -780,7 +780,7 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
             CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest()- investRepayModel.getExpectedFee();
             long actualInterest = investRepayModel.getRepayAmount();
             if (couponRepayModel != null) {
                 expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();

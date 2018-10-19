@@ -299,7 +299,7 @@ public class TransferServiceImpl implements TransferService {
         }
 
         long nextExpectedFee = new BigDecimal(investRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investFeeRate)).longValue();
-        long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee;
+        long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest() - nextExpectedFee;
         if (transferApplicationModel.getPeriod() == loanModel.getPeriods()) {
             nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId, transferApplicationModel.getPeriod()).getCorpus();
         }

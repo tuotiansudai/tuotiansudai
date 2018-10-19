@@ -135,7 +135,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 repayActualInterest = investRepayModel.getRepayAmount();
                 totalAmount += repayActualInterest;
             } else {
-                repayExpectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
+                repayExpectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest();
                 totalAmount += repayExpectedInterest;
             }
 
@@ -317,7 +317,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 repayCalendarYearResponseDto.setRepayAmount(addMoney(repayCalendarYearResponseDto.getRepayAmount(), String.valueOf(investRepayModel.getRepayAmount() + getInvestExtraRateAmountByInvestRepay(investRepayModel).get("repayAmount"))));
             } else {
                 repayCalendarYearResponseDto = repayCalendarResponseDtoMaps.get(dateFormat.format(investRepayModel.getRepayDate()));
-                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest() + + getInvestExtraRateAmountByInvestRepay(investRepayModel).get("expectedRepayAmount"))));
+                repayCalendarYearResponseDto.setExpectedRepayAmount(addMoney(repayCalendarYearResponseDto.getExpectedRepayAmount(), String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest() +investRepayModel.getOverdueInterest()+ getInvestExtraRateAmountByInvestRepay(investRepayModel).get("expectedRepayAmount"))));
             }
         }
         return repayCalendarResponseDtoMaps;

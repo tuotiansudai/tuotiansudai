@@ -264,7 +264,7 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
             assert false;
         }
 
-        assertThat(actualInvestRepay1.getActualInterest(), is(actualInvestRepay1.getExpectedInterest() + actualInvestRepay1.getDefaultInterest()));
+        assertThat(actualInvestRepay1.getActualInterest(), is(actualInvestRepay1.getExpectedInterest() + actualInvestRepay1.getDefaultInterest()+actualInvestRepay1.getOverdueInterest()));
         assertThat(actualInvestRepay1.getActualFee(), is(actualInvestRepay1.getExpectedFee()));
         assertThat(actualInvestRepay1.getStatus(), is(RepayStatus.COMPLETE));
         assertNotNull(actualInvestRepay1.getActualRepayDate());
@@ -336,7 +336,7 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         assertThat(actualInvestRepay1.getStatus(), is(RepayStatus.COMPLETE));
         assertNotNull(actualInvestRepay1.getActualRepayDate());
 
-        assertThat(actualInvestRepay2.getActualInterest(), is(actualInvestRepay1.getExpectedInterest() + actualInvestRepay2.getExpectedInterest() + actualInvestRepay1.getDefaultInterest()));
+        assertThat(actualInvestRepay2.getActualInterest(), is(actualInvestRepay1.getExpectedInterest() + actualInvestRepay2.getExpectedInterest() + actualInvestRepay1.getDefaultInterest()+actualInvestRepay1.getOverdueInterest()));
         assertThat(actualInvestRepay2.getActualFee(), is(actualInvestRepay1.getActualFee() + actualInvestRepay2.getActualFee()));
         assertThat(actualInvestRepay2.getStatus(), is(RepayStatus.COMPLETE));
         assertNotNull(actualInvestRepay1.getActualRepayDate());

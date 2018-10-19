@@ -121,7 +121,7 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setNormalRepayEnabled(true);
             long defaultInterest = 0;
             for (LoanRepayModel loanRepayModel : loanRepayModels) {
-                defaultInterest += loanRepayModel.getDefaultInterest();
+                defaultInterest += (loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
             }
             dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
         }
