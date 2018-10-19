@@ -48,19 +48,19 @@ public class ConsoleInvestService {
     private UserMapper userMapper;
 
     @Autowired
-    private LoanDetailsMapper loanDetailsMapper;
+    private InvestRepayMapper investRepayMapper;
 
     public InvestPaginationDataDto getInvestPagination(Long loanId, String investorMobile, String channel, Source source,
                                                        Role role, Date startTime, Date endTime, InvestStatus investStatus,
-                                                       PreferenceType preferenceType, ProductType productType, int index, int pageSize) {
+                                                       PreferenceType preferenceType, ProductType productType, TransferStatus transferStatus, int index, int pageSize) {
         UserModel investor = userMapper.findByLoginNameOrMobile(investorMobile);
         String investorLoginName = investor != null ? investor.getLoginName() : null;
 
         endTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().plusSeconds(-1).toDate();
-        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
-        long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType);
+        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, transferStatus);
+        long investAmountSum = investMapper.sumInvestAmountConsole(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, transferStatus);
         index = PaginationUtil.validateIndex(index, pageSize, count);
-        List<InvestPaginationItemView> items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
+        List<InvestPaginationItemView> items = investMapper.findInvestPagination(loanId, investorLoginName, channel, source, role, startTime, endTime, investStatus, preferenceType, productType, transferStatus, PaginationUtil.calculateOffset(index, pageSize, count), pageSize);
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, view -> {
             InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
@@ -103,10 +103,10 @@ public class ConsoleInvestService {
 
     public boolean updateInvestTransferStatus(long investId){
         InvestModel investModel = investMapper.findById(investId);
-        if (investModel == null || investModel.getTransferStatus() != TransferStatus.NONTRANSFERABLE){
-            return false;
-        }
-        investMapper.updateTransferStatus(investId, TransferStatus.TRANSFERABLE);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+        RepayStatus lastPeriodRepayStatus = investRepayModels.get(investRepayModels.size() - 1).getStatus();
+        investMapper.updateTransferStatus(investId, investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE ?
+                TransferStatus.TRANSFERABLE : investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && lastPeriodRepayStatus == RepayStatus.OVERDUE ? TransferStatus.OVERDUE_TRANSFERABLE : investModel.getTransferStatus());
         return true;
     }
 }

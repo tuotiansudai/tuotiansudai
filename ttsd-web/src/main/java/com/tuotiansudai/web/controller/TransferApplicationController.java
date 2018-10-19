@@ -110,7 +110,6 @@ public class TransferApplicationController {
         Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
         modelAndView.addObject("estimate", estimate);
         modelAndView.addObject("estimateLimit", estimate == null?0:AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey,estimate.name())));
-        //modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
         modelAndView.addObject("investFeeRate", membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName()));
         return modelAndView;
     }

@@ -27,6 +27,7 @@ public class TransferApplicationRecordView implements Serializable {
     private Date deadLine;
     private Date applicationTime;
     private Source source;
+    private Date transferInvestTime;
 
     public String getSumRatePercent() {
         return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
@@ -200,5 +201,11 @@ public class TransferApplicationRecordView implements Serializable {
         this.source = source;
     }
 
+    public Date getTransferInvestTime() {
+        return transferInvestTime;
+    }
 
+    public void setTransferInvestTime(Date transferInvestTime) {
+        this.transferInvestTime = transferInvestTime;
+    }
 }
