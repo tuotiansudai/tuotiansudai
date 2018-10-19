@@ -22,6 +22,7 @@ import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -262,7 +263,9 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
         couponMapper.updateCoupon(couponModel);
 
         Date startTime = new DateTime().withTimeAtStartOfDay().toDate();
-        Date endTime = couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
+        Date endTime = couponModel.getFailureTime() == null ?
+                couponModel.getDeadline() == 0 ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate() :
+                couponModel.getFailureTime();
         DateTime userBirthday = UserBirthdayUtil.getUserBirthday(userMapper.findByLoginName(loginName).getIdentityNumber());
         if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && userBirthday != null) {
             startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
@@ -275,8 +278,7 @@ public class CouponAssignmentServiceImpl implements CouponAssignmentService {
 
         String mobile = userMapper.findByLoginName(loginName).getMobile();
         String couponName = couponModel.getCouponType() == CouponType.INTEREST_COUPON ? String.format("%.1f", couponModel.getRate() * 100) + "%加息券" : AmountConverter.convertCentToString(couponModel.getAmount()) + "元" + couponModel.getCouponType().getName();
-        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(couponModel.getDeadline()))));
-
+        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_COUPON_ASSIGN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(couponName, String.valueOf(Days.daysBetween(new DateTime(startTime), new DateTime(endTime)).getDays()))));
         return userCouponModel;
     }
 
