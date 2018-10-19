@@ -58,7 +58,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         long overdueDefaultInterest = investRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ?
                 investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId())
                 .stream()
-                .map(InvestRepayModel::getDefaultInterest)
+                .map(item->{return  item.getOverdueInterest()+item.getDefaultInterest();})
                 .filter(defaultInterest -> defaultInterest > 0)
                 .findAny()
                 .orElse(0L) : 0L;
@@ -75,7 +75,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
         }
         long overdueDefaultInterest = loanRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ? loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanRepayModel.getLoanId())
                 .stream()
-                .map(LoanRepayModel::getDefaultInterest)
+                .map(item->{return item.getDefaultInterest()+item.getOverdueInterest();})
                 .filter(defaultInterest -> defaultInterest > 0)
                 .findAny()
                 .orElse(0L) : 0L;

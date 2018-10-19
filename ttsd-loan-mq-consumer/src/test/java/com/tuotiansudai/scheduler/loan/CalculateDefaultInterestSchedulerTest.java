@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -149,38 +150,47 @@ public class CalculateDefaultInterestSchedulerTest {
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel1.getDefaultInterest(), is(12L));
+        assertThat(loanRepayModel1.getOverdueInterest(),is(0l));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.REPAYING));
         assertThat(loanRepayModel2.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel2.getOverdueInterest(),is(0l));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.REPAYING));
         assertThat(loanRepayModel3.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel3.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel11 = investRepayMapper.findById(fakeInvest1RepayModel1.getId());
         assertThat(investRepayModel11.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel11.getDefaultInterest(), is(1L));
+        assertThat(investRepayModel11.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel12 = investRepayMapper.findById(fakeInvest1RepayModel2.getId());
         assertThat(investRepayModel12.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel12.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel12.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel13 = investRepayMapper.findById(fakeInvest1RepayModel3.getId());
         assertThat(investRepayModel13.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel13.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel13.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel21 = investRepayMapper.findById(fakeInvest2RepayModel1.getId());
         assertThat(investRepayModel21.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel21.getDefaultInterest(), is(10L));
+        assertThat(investRepayModel21.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel22 = investRepayMapper.findById(fakeInvest2RepayModel2.getId());
         assertThat(investRepayModel22.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel22.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel21.getOverdueInterest(),is(0l));
 
         InvestRepayModel investRepayModel23 = investRepayMapper.findById(fakeInvest2RepayModel3.getId());
         assertThat(investRepayModel23.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel23.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel23.getOverdueInterest(),is(0l));
     }
 
     @Test
@@ -224,38 +234,49 @@ public class CalculateDefaultInterestSchedulerTest {
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel1.getDefaultInterest(), is(72L));
+        assertThat(loanRepayModel1.getOverdueInterest(), is(0L));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel2.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel2.getOverdueInterest(), is(0L));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.REPAYING));
         assertThat(loanRepayModel3.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel3.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel11 = investRepayMapper.findById(fakeInvest1RepayModel1.getId());
         assertThat(investRepayModel11.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel11.getDefaultInterest(), is(7L));
+        assertThat(investRepayModel11.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel12 = investRepayMapper.findById(fakeInvest1RepayModel2.getId());
         assertThat(investRepayModel12.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel12.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel12.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel13 = investRepayMapper.findById(fakeInvest1RepayModel3.getId());
         assertThat(investRepayModel13.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel13.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel13.getOverdueInterest(), is(0l));
 
         InvestRepayModel investRepayModel21 = investRepayMapper.findById(fakeInvest2RepayModel1.getId());
         assertThat(investRepayModel21.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel21.getDefaultInterest(), is(64L));
+        assertThat(investRepayModel21.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel22 = investRepayMapper.findById(fakeInvest2RepayModel2.getId());
         assertThat(investRepayModel22.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel22.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel22.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel23 = investRepayMapper.findById(fakeInvest2RepayModel3.getId());
         assertThat(investRepayModel23.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel23.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel23.getOverdueInterest(), is(0l));
+        //
+        assertThat(loanRepayModel3.getOverdueInterest(),is(investRepayModel23.getOverdueInterest()+investRepayModel13.getOverdueInterest()));
     }
 
     @Test
@@ -299,38 +320,50 @@ public class CalculateDefaultInterestSchedulerTest {
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel1.getDefaultInterest(), is(132L));
+        assertThat(loanRepayModel1.getOverdueInterest(), is(0l));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel2.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel2.getOverdueInterest(), is(0L));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel3.getDefaultInterest(), is(0L));
+        //最后一期逾期需要加上额外加罚息
+        assertThat(loanRepayModel3.getOverdueInterest(), is(InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),loanAmount,new DateTime(loanRepayModel3.getRepayDate()),new DateTime())));
 
         InvestRepayModel investRepayModel11 = investRepayMapper.findById(fakeInvest1RepayModel1.getId());
         assertThat(investRepayModel11.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel11.getDefaultInterest(), is(13L));
+        assertThat(investRepayModel11.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel12 = investRepayMapper.findById(fakeInvest1RepayModel2.getId());
         assertThat(investRepayModel12.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel12.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel12.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel13 = investRepayMapper.findById(fakeInvest1RepayModel3.getId());
         assertThat(investRepayModel13.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel13.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel13.getOverdueInterest(), is(InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),fakeInvestModel1.getAmount(),new DateTime(investRepayModel13.getRepayDate()),new DateTime())));
 
         InvestRepayModel investRepayModel21 = investRepayMapper.findById(fakeInvest2RepayModel1.getId());
         assertThat(investRepayModel21.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel21.getDefaultInterest(), is(118L));
+        assertThat(investRepayModel21.getOverdueInterest(), is(0l));
 
         InvestRepayModel investRepayModel22 = investRepayMapper.findById(fakeInvest2RepayModel2.getId());
         assertThat(investRepayModel22.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel22.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel22.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel23 = investRepayMapper.findById(fakeInvest2RepayModel3.getId());
         assertThat(investRepayModel23.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel23.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel23.getOverdueInterest(), is(InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),fakeInvestModel2.getAmount(),new DateTime(investRepayModel23.getRepayDate()),new DateTime())));
+
+        assertThat(loanRepayModel3.getOverdueInterest(),is(investRepayModel23.getOverdueInterest()+investRepayModel13.getOverdueInterest()));
     }
 
     @Test
@@ -374,37 +407,46 @@ public class CalculateDefaultInterestSchedulerTest {
         LoanRepayModel loanRepayModel1 = loanRepayMapper.findById(fakeLoanRepayModel1.getId());
         assertThat(loanRepayModel1.getStatus(), is(RepayStatus.COMPLETE));
         assertThat(loanRepayModel1.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel1.getOverdueInterest(), is(0L));
 
         LoanRepayModel loanRepayModel2 = loanRepayMapper.findById(fakeLoanRepayModel2.getId());
         assertThat(loanRepayModel2.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(loanRepayModel2.getDefaultInterest(), is(32L));
+        assertThat(loanRepayModel2.getOverdueInterest(), is(0L));
 
         LoanRepayModel loanRepayModel3 = loanRepayMapper.findById(fakeLoanRepayModel3.getId());
         assertThat(loanRepayModel3.getStatus(), is(RepayStatus.REPAYING));
         assertThat(loanRepayModel3.getDefaultInterest(), is(0L));
+        assertThat(loanRepayModel3.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel11 = investRepayMapper.findById(fakeInvest1RepayModel1.getId());
         assertThat(investRepayModel11.getStatus(), is(RepayStatus.COMPLETE));
         assertThat(investRepayModel11.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel11.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel12 = investRepayMapper.findById(fakeInvest1RepayModel2.getId());
         assertThat(investRepayModel12.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel12.getDefaultInterest(), is(3L));
+        assertThat(investRepayModel12.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel13 = investRepayMapper.findById(fakeInvest1RepayModel3.getId());
         assertThat(investRepayModel13.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel13.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel13.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel21 = investRepayMapper.findById(fakeInvest2RepayModel1.getId());
         assertThat(investRepayModel21.getStatus(), is(RepayStatus.COMPLETE));
         assertThat(investRepayModel21.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel21.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel22 = investRepayMapper.findById(fakeInvest2RepayModel2.getId());
         assertThat(investRepayModel22.getStatus(), is(RepayStatus.OVERDUE));
         assertThat(investRepayModel22.getDefaultInterest(), is(28L));
+        assertThat(investRepayModel22.getOverdueInterest(), is(0L));
 
         InvestRepayModel investRepayModel23 = investRepayMapper.findById(fakeInvest2RepayModel3.getId());
         assertThat(investRepayModel23.getStatus(), is(RepayStatus.REPAYING));
         assertThat(investRepayModel23.getDefaultInterest(), is(0L));
+        assertThat(investRepayModel23.getOverdueInterest(), is(0L));
     }
 }

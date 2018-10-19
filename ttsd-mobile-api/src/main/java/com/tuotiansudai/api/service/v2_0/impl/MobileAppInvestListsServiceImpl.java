@@ -115,8 +115,8 @@ public class MobileAppInvestListsServiceImpl implements MobileAppInvestListsServ
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
                     CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(),investRepayModel.getPeriod());
-                    actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest();
-                    expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest();
+                    actualInterest += investRepayModel.getActualInterest() - investRepayModel.getActualFee() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest();
+                    expectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest();
                     if(couponRepayModel != null){
                         actualInterest += couponRepayModel.getRepayAmount();
                         expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();

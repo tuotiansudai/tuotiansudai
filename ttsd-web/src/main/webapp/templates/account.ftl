@@ -232,7 +232,7 @@
                         </td>
                         <td>出借成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
-                        ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
+                        ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.overdueInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>
                         <td>
                             ￥${((latestInvest.investAmount/100)?string('0.00'))!}

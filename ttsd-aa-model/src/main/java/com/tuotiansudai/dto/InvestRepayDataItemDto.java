@@ -77,7 +77,7 @@ public class InvestRepayDataItemDto {
 
 
         if (model.getDefaultInterest() > 0) {
-            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest()+model.getOverdueInterest());
         }
         if (model.getRepayAmount() > 0) {
             this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());

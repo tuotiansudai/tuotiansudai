@@ -117,13 +117,13 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
 
         BaseDto<PayFormDataDto> formData = normalRepayService.generateRepayFormData(loan.getId());
 
-        assertThat(Long.parseLong(formData.getData().getFields().get("amount")), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()));
+        assertThat(Long.parseLong(formData.getData().getFields().get("amount")), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()+loanRepay1.getOverdueInterest()));
         assertThat(Long.parseLong(formData.getData().getFields().get("order_id").split("X")[0]), is(loanRepay1.getId()));
 
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay1.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
-        assertThat(enabledLoanRepay.getActualInterest(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()));
-        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()));
+        assertThat(enabledLoanRepay.getActualInterest(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()+loanRepay1.getOverdueInterest()));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()+loanRepay1.getOverdueInterest()));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 
@@ -147,7 +147,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
 
         BaseDto<PayFormDataDto> formData = normalRepayService.generateRepayFormData(loan.getId());
 
-        long actualInterest = loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest() + loanRepay2.getExpectedInterest();
+        long actualInterest = loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()+loanRepay1.getOverdueInterest() + loanRepay2.getExpectedInterest();
         assertThat(Long.parseLong(formData.getData().getFields().get("amount")), is(loanRepay2.getCorpus() + actualInterest));
         assertThat(Long.parseLong(formData.getData().getFields().get("order_id").split("X")[0]), is(loanRepay2.getId()));
 
