@@ -3,7 +3,9 @@ package com.tuotiansudai.scheduler.loan;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +49,29 @@ public class CalculateDefaultInterestScheduler {
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             try {
                 calculateDefaultInterestEveryLoan(loanRepayModel);
-
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
+        }
+        //最后一期逾期额外计算罚息
+        List<LoanRepayModel> overdueLoanRepays = loanRepayMapper.findOverdueLoanRepay();
+        for(LoanRepayModel loanRepayModel:overdueLoanRepays){
+            calculateOverdueInterestEveryLoan(loanRepayModel);
+        }
+    }
+    //计算逾期罚息
+    public void calculateOverdueInterestEveryLoan(LoanRepayModel loanRepayModel) {
+        LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        if(loanModel.getPeriods() == loanRepayModel.getPeriod() && loanModel.getLoanerIdentityNumber().equals("111111111111111111")){
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+            for(InvestRepayModel investRepayModel : investRepayModels){
+                long overdueInterest= InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),investMapper.findById(investRepayModel.getInvestId()).getAmount(),new DateTime(investRepayModel.getRepayDate()),new DateTime());
+                investRepayModel.setOverdueInterest(overdueInterest);
+                investRepayMapper.update(investRepayModel);
+            }
+            long repayOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(),loanModel.getLoanAmount(),new DateTime(loanRepayModel.getRepayDate()),new DateTime());
+            loanRepayModel.setOverdueInterest(repayOverdueInterest);
+            loanRepayMapper.update(loanRepayModel);
         }
     }
 
