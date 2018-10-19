@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,9 @@ public class OssUploadController {
 
     @Autowired
     private OssWrapperClient ossWrapperClient;
+
+    @Value("${common.static.server}")
+    private String domainName;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -138,6 +142,7 @@ public class OssUploadController {
         jsonObject.put("url", url);
         jsonObject.put("title", title);
         jsonObject.put("state", state);
+        jsonObject.put("domain",domainName);
         return jsonObject;
     }
 

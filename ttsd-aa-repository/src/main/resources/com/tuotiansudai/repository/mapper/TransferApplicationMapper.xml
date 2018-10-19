@@ -45,6 +45,7 @@
         <result column="deadline" property="deadLine"/>
         <result column="application_time" property="applicationTime"/>
         <result column="source" property="source"/>
+        <result column="transfer_invest_time" property="transferInvestTime"/>
     </resultMap>
 
     <resultMap id="transferableInvestPaginationItemDataDtoMap" type="TransferableInvestPaginationItemDataView">
@@ -155,12 +156,14 @@
         ta.loan_id, u1.mobile
         AS transferrer_mobile,
         ta.transfer_fee, ta.transfer_invest_id, ta.period, ta.left_period, ta.deadline, ta.application_time, u2.mobile
-        AS transferee_mobile, ta.source AS source
+        AS transferee_mobile, ta.source AS source,
+        transfer_invest.created_time as transfer_invest_time
         FROM
-        (transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name)
+        transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name
         left JOIN
         (invest i JOIN aa.user u2 ON i.login_name = u2.login_name)
         ON ta.invest_id = i.id
+        join invest transfer_invest on transfer_invest.id = ta.transfer_invest_id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
