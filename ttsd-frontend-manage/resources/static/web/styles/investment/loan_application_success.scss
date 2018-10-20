@@ -1,0 +1,40 @@
+.main-frame {
+  width: 100%;
+  background: #fff;
+}
+.success-tip {
+  margin: 0 auto;
+  width: 1000px;
+  .success-tip-icon {
+    margin: 100px auto 20px auto;
+    width: 60px;
+    height: 60px;
+    background: url("../../images/icons/success-tip.png") no-repeat;
+    background-size: contain;
+  }
+  .tip-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+  }
+  .tip-text {
+    font-size: 15px;
+    color: #666;
+    text-align: center;
+    &.tel {
+      color: #999;
+    }
+  }
+  .confirm_btn {
+    margin: 30px auto 50px auto;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #ff7200;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}

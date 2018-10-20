@@ -148,11 +148,6 @@
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
         <p><a href="/register/account#loan">实名认证</a></p>
     </div>
-    <div class="success-tip" id="successTip">
-        <p class="tip-text">提交成功！</p>
-        <p>亲的借款申请已经提交，我们会尽快处理，<br />请您保持电话畅通哦~</p>
-        <p><a href="javascript:void(0)" class="close-btn">确定</a></p>
-    </div>
     <div class="risk-tip" id="riskTip">
         <p class="tip-text">风险提示！</p>
         <p>您将通过拓天速贷平台进行借款，平台仅提供<br/>信息中介服务，借款过程中的风险由您自行承担。</p>
