@@ -8,7 +8,7 @@ INSERT INTO edxmessage.`message` (`title`
   , `created_by`, `created_time`
   , `updated_by`, `updated_time`, `deleted`)
 VALUES ('债券转让成功'
-  , '您的借款项目有出借人进行了债权转让，请查看', '尊敬的用户，您的借款项目【{0}】的出借人【{1}】转让了{2}元的债权，接收人为【{3}】，此短信为系统自动发送，请勿回复。'
+  , '您的借款项目有出借人进行了债权转让，请查看', '尊敬的用户，您的借款项目【{0}】的出借人【{1}】转让了{2}元，承接人为【{3}】，请知晓。'
   , 'EVENT', 'TRANSFER_SUCCESS_LOANER', 'ALL_USER', 'WEBSITE,APP_MESSAGE', 'SYSTEM'
   , 'https://tuotiansudai.com/loan-list', 'INVEST_NORMAL'
   , 'APPROVED', 0, NULL
