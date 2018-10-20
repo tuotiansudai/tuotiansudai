@@ -9,7 +9,8 @@ ALTER TABLE `loan_application`
   sesame_credit        int(11)     unsigned  DEFAULT '0'           COMMENT '芝麻信用积分',
   home_income          int(11)      unsigned NOT NULL              COMMENT '家庭年收入，单位(万)',
   loan_usage           varchar(200)          NOT NULL              COMMENT '借款用途',
-  else_pledge          varchar(200)          DEFAULT NULL          COMMENT '其他资产'
+  else_pledge          varchar(200)          DEFAULT NULL          COMMENT '其他资产',
+  sex                  varchar(10)           DEFAULT NULL
   );
 
 ALTER TABLE `loan_application`

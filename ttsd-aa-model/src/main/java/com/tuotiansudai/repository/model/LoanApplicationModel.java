@@ -37,6 +37,8 @@ public class LoanApplicationModel implements Serializable {
     private String loanUsage;
     //其他资产
     private String elsePledge;
+    //性别
+    private String sex;
 
 
     public LoanApplicationModel() {
@@ -238,5 +240,13 @@ public class LoanApplicationModel implements Serializable {
 
     public void setElsePledge(String elsePledge) {
         this.elsePledge = elsePledge;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }
