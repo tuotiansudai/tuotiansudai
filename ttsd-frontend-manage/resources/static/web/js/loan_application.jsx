@@ -21,7 +21,7 @@ $loanTip.on('click', function(event) {
         location.href = '/login?redirect=' + location.href;
         return;
     }
-    pageTitle = $(this).data('title');
+    pageTitle = $(this).data('type');
 	$.when(commonFun.isUserLogin())
 		.done(function() {
 			if ($('#userName').val() != '') {
