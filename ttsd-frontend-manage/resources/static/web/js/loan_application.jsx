@@ -25,7 +25,14 @@ $loanTip.on('click', function(event) {
 	$.when(commonFun.isUserLogin())
 		.done(function() {
 			if ($('#userName').val() != '') {
-				layerTip(_title, _holder, _type);
+                layer.open({
+                    type: 1,
+                    btn: 0,
+                    area: ['auto', 'auto'],
+                    title: '温馨提示',
+                    content: $('#riskTip')
+                });
+				// layerTip(_title, _holder, _type);
 			} else {
 				layer.open({
 					type: 1,
@@ -161,6 +168,7 @@ $('body').on('click', '.area-bg', function(event) {
 	$parent.slideUp('fast');
 }).on('click', '.close-btn', function(event) {
 	event.preventDefault();
+	if ($(this).hasClass('disabled')) return;
 	layer.closeAll();
 	$('#loanForm').find('.input-box').val('');
 });
@@ -181,3 +189,11 @@ function layerTip(title, holder, type) {
 		}
 	});
 }
+
+$('.risk-checkbox').on("click",function(){
+    if($(this).prop("checked")){
+        $('#risk-confirm-btn').removeClass('disabled');
+    }else{
+        $('#risk-confirm-btn').addClass('disabled');
+    }
+});

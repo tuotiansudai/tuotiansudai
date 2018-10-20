@@ -187,6 +187,12 @@
         <p>亲的借款申请已经提交，我们会尽快处理，<br />请您保持电话畅通哦~</p>
         <p><a href="javascript:void(0)" class="close-btn">确定</a></p>
     </div>
+    <div class="risk-tip" id="riskTip">
+        <p class="tip-text">风险提示！</p>
+        <p>您将通过拓天速贷平台进行借款，平台仅提供<br/>信息中介服务，借款过程中的风险由您自行承担。</p>
+        <p class="risk-revelation-wrapper"><input type="checkbox" class="risk-checkbox"/><span class="risk-text">我已查看<a href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank" class="risk-revelation">《风险揭示书》</a></span></p>
+        <p><a href="/loan-application/borrow-apply" class="close-btn disabled" id="risk-confirm-btn">确定</a></p>
+    </div>
 </div>
 <#include "component/login-tip.ftl" />
 </@global.main>

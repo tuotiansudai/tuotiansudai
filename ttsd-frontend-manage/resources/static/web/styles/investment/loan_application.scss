@@ -583,7 +583,7 @@ $width: 700px;
 			}
 		}
 	}
-  .success-tip {
+  .success-tip, .risk-tip{
     float: left;
     width: 400px;
     display: none;
@@ -613,4 +613,23 @@ $width: 700px;
 			}
 		}
 	}
+}
+#riskTip {
+  a.risk-revelation {
+    display: inline!important;
+    color: #ff752a!important;
+    background: #fff;
+  }
+  .close-btn {
+    margin-top: 0;
+    &.disabled {
+      background: #ccc;
+    }
+  }
+  .risk-checkbox {
+    vertical-align: middle;
+  }
+  .risk-text {
+    vertical-align: middle;
+  }
 }

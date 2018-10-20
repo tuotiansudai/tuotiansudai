@@ -1,0 +1,1 @@
+require('webStyle/investment/loan_borrow_apply.scss');
