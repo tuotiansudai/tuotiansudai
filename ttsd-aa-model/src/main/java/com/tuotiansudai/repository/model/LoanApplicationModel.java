@@ -56,6 +56,18 @@ public class LoanApplicationModel implements Serializable {
         this.createdTime = new Date();
         this.updatedBy = loanApplicationDto.getLoginName();
         this.updatedTime = new Date();
+        //合规审查新增字段
+        this.identityNumber=loanApplicationDto.getIdentityNumber();
+        this.address=loanApplicationDto.getAddress();
+        this.age=loanApplicationDto.getAge();
+        this.isMarried=loanApplicationDto.getIsMarried();
+        this.haveCreditRreport=loanApplicationDto.getHaveCreditRreport();
+        this.workPosition=loanApplicationDto.getWorkPosition();
+        this.sesameCredit=loanApplicationDto.getSesameCredit();
+        this.homeIncome=loanApplicationDto.getHomeIncome();
+        this.loanUsage=loanApplicationDto.getLoanUsage();
+        this.elsePledge=loanApplicationDto.getElsePledge();
+        this.sex=loanApplicationDto.getSex();
     }
 
     public long getId() {
@@ -194,7 +206,7 @@ public class LoanApplicationModel implements Serializable {
         isMarried = married;
     }
 
-    public boolean isHaveCreditRreport() {
+    public boolean getHaveCreditRreport() {
         return haveCreditRreport;
     }
 

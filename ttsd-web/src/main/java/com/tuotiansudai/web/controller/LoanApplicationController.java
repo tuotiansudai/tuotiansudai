@@ -10,6 +10,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +55,13 @@ public class LoanApplicationController {
     @RequestMapping(value = "/borrow-apply", method = RequestMethod.GET)
     public ModelAndView loanApplication() {
         ModelAndView modelAndView = new ModelAndView("loan-borrow-apply", "responsive", true);
-        modelAndView.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()));
+        UserModel userModel=userService.findByMobile(LoginUserInfo.getMobile());
+        modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
+        modelAndView.addObject("age", IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(),18));
+        modelAndView.addObject("sex", "MALE".equalsIgnoreCase(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"))?"男":"女");
+        modelAndView.addObject("mobile", userModel.getMobile());
+        modelAndView.addObject("address", userModel.getCity());
+        modelAndView.addObject("userName", userModel.getUserName());
         return modelAndView;
     }
 
