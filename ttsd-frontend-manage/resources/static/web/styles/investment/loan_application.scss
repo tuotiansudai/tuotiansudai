@@ -620,8 +620,16 @@ $width: 700px;
     color: #ff752a!important;
     background: #fff;
   }
-  .close-btn {
-    margin-top: 0;
+  .risk-confirm-btn {
+    margin: 0 auto;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    background: #ff752a;
+    cursor: pointer;
     &.disabled {
       background: #ccc;
     }

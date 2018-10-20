@@ -56,14 +56,14 @@
                     <h3>抵押房产借款</h3>
                     <i class="icon-home"></i>
 
-                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="房抵" data-type="HOUSE">
+                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="house" data-type="HOUSE">
                         我要借款</p>
                 </li>
                 <li class="car-loan-item">
                     <h3>抵押车辆借款</h3>
                     <i class="icon-car"></i>
 
-                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="车抵" data-type="VEHICLE">
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="car" data-type="VEHICLE">
                         我要借款</p>
                 </li>
             </ul>
@@ -191,7 +191,7 @@
         <p class="tip-text">风险提示！</p>
         <p>您将通过拓天速贷平台进行借款，平台仅提供<br/>信息中介服务，借款过程中的风险由您自行承担。</p>
         <p class="risk-revelation-wrapper"><input type="checkbox" class="risk-checkbox"/><span class="risk-text">我已查看<a href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank" class="risk-revelation">《风险揭示书》</a></span></p>
-        <p><a href="/loan-application/borrow-apply" class="close-btn disabled" id="risk-confirm-btn">确定</a></p>
+        <p><div class="risk-confirm-btn disabled" id="risk-confirm-btn">确定</div></p>
     </div>
 </div>
 <#include "component/login-tip.ftl" />
