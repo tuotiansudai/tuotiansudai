@@ -36,10 +36,13 @@ public class LoanApplicationService {
         if (loanApplicationDto.getPeriod() <= 0) {
             return new BaseDto<>(new BaseDataDto(false, "借款期限必须是大于等于1的整数"));
         }
+
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
         UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
         loanApplicationModel.setMobile(userModel.getMobile());
         loanApplicationModel.setUserName(userModel.getUserName());
+        loanApplicationModel.setIdentityNumber(userModel.getIdentityNumber());
+
         try {
             loanApplicationMapper.create(loanApplicationModel);
         } catch (Exception e) {

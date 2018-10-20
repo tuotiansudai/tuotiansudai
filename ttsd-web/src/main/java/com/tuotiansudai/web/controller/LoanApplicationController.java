@@ -51,6 +51,13 @@ public class LoanApplicationController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/borrow-apply", method = RequestMethod.GET)
+    public ModelAndView loanApplication() {
+        ModelAndView modelAndView = new ModelAndView("loan-borrow-apply", "responsive", true);
+        modelAndView.addObject("userName", userService.findByMobile(LoginUserInfo.getMobile()));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> create(@RequestBody LoanApplicationDto loanApplicationDto) {
