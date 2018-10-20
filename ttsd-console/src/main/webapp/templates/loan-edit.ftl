@@ -41,11 +41,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户:</label>
+                    <label class="col-sm-2 control-label">权证人:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="代理用户不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="权证人不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
 
