@@ -17,7 +17,7 @@ public class LoanApplicationDto {
     //是否结婚
     private boolean isMarried;
     //是否有信用报告
-    private boolean haveCreditRreport;
+    private boolean haveCreditReport;
     //工作职位
     private String workPosition;
     //蚂蚁积分
@@ -111,12 +111,12 @@ public class LoanApplicationDto {
         isMarried = married;
     }
 
-    public boolean getHaveCreditRreport() {
-        return haveCreditRreport;
+    public boolean getHaveCreditReport() {
+        return haveCreditReport;
     }
 
-    public void setHaveCreditRreport(boolean haveCreditRreport) {
-        this.haveCreditRreport = haveCreditRreport;
+    public void setHaveCreditReport(boolean haveCreditReport) {
+        this.haveCreditReport = haveCreditReport;
     }
 
     public String getWorkPosition() {
