@@ -1,4 +1,5 @@
 require('webStyle/investment/loan_borrow.scss');
+let commonFun= require('publicJs/commonFun');
 
 $(function () {
     let married, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
