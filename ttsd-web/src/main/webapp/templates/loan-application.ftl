@@ -144,40 +144,6 @@
         </div>
     </div>
     <input type="hidden" value="" id="pledgeType">
-    <div class="home-tip-group" id="homeTip">
-        <form action="#" method="post" class="loan-form" id="loanForm">
-            <div class="form-input-item">
-                <input type="text" class="int-item" name="userName" id="userName" value="${userName!}" readonly/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile!}" readonly/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京"
-                       placeholder="请选择城市" data-value="BEI_JING" readonly/>
-                <ul class="area-list-group">
-                    <#list regions as region>
-                        <li data-value="${region}">${region.description}</li>
-                    </#list>
-                </ul>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item input-box" name="moneyText" id="moneyText"
-                       placeholder="请输入借款金额（万元）"/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item input-box" name="monthText" id="monthText" placeholder="请输入借款周期（月）"/>
-            </div>
-            <div class="form-input-item">
-                <textarea class="int-item input-box" placeholder="请填写房产信息（200字以内）" id="infoText"
-                          name="infoText"></textarea>
-            </div>
-            <div class="error-box"></div>
-            <div class="form-input-item text-c">
-                <input type="submit" class="submit-btn" value="提交申请" />
-            </div>
-        </form>
-    </div>
     <div class="is-user" id="isUser">
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
         <p><a href="/register/account#loan">实名认证</a></p>
