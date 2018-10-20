@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import cn.jpush.api.utils.StringUtils;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
@@ -8,6 +9,7 @@ import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
+import com.tuotiansudai.util.IdentityNumberValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +38,20 @@ public class LoanApplicationService {
         if (loanApplicationDto.getPeriod() <= 0) {
             return new BaseDto<>(new BaseDataDto(false, "借款期限必须是大于等于1的整数"));
         }
-
+        if(StringUtils.isEmpty(loanApplicationDto.getLoanUsage())){
+            return new BaseDto<>(new BaseDataDto(false, "借款用途不能为空"));
+        }
+        if(StringUtils.isEmpty(loanApplicationDto.getLoanUsage())){
+            return new BaseDto<>(new BaseDataDto(false, "抵押物信息不能为空"));
+        }
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
         UserModel userModel = userMapper.findByLoginName(loanApplicationDto.getLoginName());
         loanApplicationModel.setMobile(userModel.getMobile());
         loanApplicationModel.setUserName(userModel.getUserName());
         loanApplicationModel.setIdentityNumber(userModel.getIdentityNumber());
-
+        loanApplicationModel.setAge((short)IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(),18));
+        loanApplicationModel.setAddress(userModel.getCity());
+        loanApplicationModel.setSex("MALE".equalsIgnoreCase(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"))?"男":"女");
         try {
             loanApplicationMapper.create(loanApplicationModel);
         } catch (Exception e) {
