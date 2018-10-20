@@ -207,7 +207,7 @@
                         <div class='input-group date' id='fundraisingEndTime'>
                             <input name="fundraisingEndTime" type='text' class="form-control" datatype="date" errormsg="筹款截止时间需要正确填写"
                                    value="${(loan.loan.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["WAITING_VERIFY", "PREHEAT", "RAISING", "RECHECK"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
