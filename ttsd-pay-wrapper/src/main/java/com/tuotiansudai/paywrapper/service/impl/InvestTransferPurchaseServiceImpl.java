@@ -616,7 +616,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         try{
             String title = MessageEventType.TRANSFER_SUCCESS_LOANER.getTitleTemplate();
             LoanModel loanModel=loanMapper.findById(investModel.getLoanId());
-            String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS_LOANER.getContentTemplate(), loanModel.getName(),userMapper.findByLoginName(investModel.getLoginName()).getUserName(),AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()),userMapper.findByLoginName(transferApplicationModel.getLoginName()).getUserName());
+            String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS_LOANER.getContentTemplate(), loanModel.getName(),userMapper.findByLoginName(transferApplicationModel.getLoginName()).getUserName(),AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()),userMapper.findByLoginName(investModel.getLoginName()).getUserName());
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.TRANSFER_SUCCESS_LOANER,
                     Lists.newArrayList(loanModel.getAgentLoginName()),
                     title,
