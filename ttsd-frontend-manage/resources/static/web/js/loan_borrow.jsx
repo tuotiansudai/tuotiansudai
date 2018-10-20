@@ -2,13 +2,14 @@ require('webStyle/investment/loan_borrow.scss');
 let commonFun= require('publicJs/commonFun');
 
 $(function () {
-    let married, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
+    let isMarried, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
     let workPosition = '';
+    let pledgeType = $('#pledgeType').val();
     let sesameCredit = 0;
     let isFillInSesame = false;
 
     $('input:radio[name="isMarried"]').on('click',function () {
-        married = $('input:radio[name="isMarried"]:checked').val();
+        isMarried = $('input:radio[name="isMarried"]:checked').val();
         btnLightUp();
     });
 
@@ -75,7 +76,7 @@ $(function () {
     });
 
     function btnLightUp() {
-        if (married && haveCreditReport && amount && period && homeIncome && loanUsage && pledgeInfo) {
+        if (isMarried && haveCreditReport && amount && period && homeIncome && loanUsage && pledgeInfo) {
             if (isFillInSesame && sesameCredit > 1000) {
                 $('.confirm_btn').addClass('disabled');
             }
@@ -94,18 +95,19 @@ $(function () {
     }
 
     function submitFormData() {
-        let data = { married, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, workPosition, elsePledge, sesameCredit};
+        let data = { isMarried, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, workPosition, elsePledge, sesameCredit, pledgeType};
         console.log(data);
         commonFun.useAjax({
             type: 'POST',
             url: '/loan-application/create',
-            data: data
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=UTF-8'
         }, function (data) {
-            if (data.status) {
+            if (data.data.status) {
                 location.href = '/loan-application/success';
             }
             else {
-                layer.msg(data.message);
+                layer.msg(data.data.message);
             }
         });
     }
