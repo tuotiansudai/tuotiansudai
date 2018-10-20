@@ -16,4 +16,4 @@ ALTER TABLE `loan_application`
 ALTER TABLE `loan_application`
        MODIFY COLUMN region varchar(15)  DEFAULT NULL ;
 
-UPDATE  loan_application  set address = region;
+UPDATE  loan_application  set address = (case  WHEN region='BEI_JING' THEN  '北京' WHEN region='SHI_JIA_ZHUANG' THEN '石家庄' WHEN region='CHENG_DE' THEN '承德' WHEN region='JI_NING' THEN '济宁' ELSE '其他' END );
