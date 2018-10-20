@@ -95,14 +95,17 @@ $(function () {
     function submitFormData() {
         let data = { married, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, workPosition, elsePledge, sesameCredit};
         console.log(data);
-        $.ajax({
-            url: '/loan-application/create',
+        commonFun.useAjax({
             type: 'POST',
-            dataType: 'json',
-            data: data,
-            contentType: 'application/json; charset=UTF-8'
-        }).done(function () {
-
+            url: '/loan-application/create',
+            data: data
+        }, function (data) {
+            if (data.status) {
+                location.href = '/loan-application/success';
+            }
+            else {
+                layer.msg(data.message);
+            }
         });
     }
 

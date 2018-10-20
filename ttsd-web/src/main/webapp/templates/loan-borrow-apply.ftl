@@ -29,8 +29,8 @@
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
                 <span class="item_text">提供个人征信报告：</span>
-                <input type="radio" name="haveCreditReport" class="check_radio" id="creditReport"/><label for="creditReport" class="check_label">提供</label>
-                <input type="radio" name="haveCreditReport" class="check_radio" id="noCreditReport"/><label for="noCreditReport" class="check_label">不提供</label>
+                <input type="radio" name="haveCreditReport" class="check_radio" id="creditReport" value="true" /><label for="creditReport" class="check_label">提供</label>
+                <input type="radio" name="haveCreditReport" class="check_radio" id="noCreditReport" value="false" /><label for="noCreditReport" class="check_label">不提供</label>
             </div>
             <div class="supplement_info_item">
                 <span class="required-icon required-icon-none">*</span>
