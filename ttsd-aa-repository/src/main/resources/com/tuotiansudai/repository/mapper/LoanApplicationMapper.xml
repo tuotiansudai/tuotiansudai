@@ -25,7 +25,7 @@
         <result column="address" property="address"/>
         <result column="age" property="age"/>
         <result column="is_married" property="isMarried"/>
-        <result column="have_credit_report" property="haveCreditRreport"/>
+        <result column="have_credit_report" property="haveCreditReport"/>
         <result column="work_position" property="workPosition"/>
         <result column="sesame_credit" property="sesameCredit"/>
         <result column="home_income" property="homeIncome"/>
@@ -42,7 +42,7 @@
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
         #{comment}, #{createdTime},
-        #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},#{haveCreditRreport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex})
+        #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},#{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex})
     </insert>
 
     <update id="update" parameterType="LoanApplicationModel">
@@ -89,8 +89,8 @@
         <if test="isMarried != null">
             is_married = #{isMarried},
         </if>
-        <if test="haveCreditRreport != null">
-            have_credit_report = #{haveCreditRreport},
+        <if test="haveCreditReport != null">
+            have_credit_report = #{haveCreditReport},
         </if>
         <if test="workPosition != null">
             work_position = #{workPosition},

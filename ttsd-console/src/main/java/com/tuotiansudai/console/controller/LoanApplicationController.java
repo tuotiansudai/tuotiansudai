@@ -28,6 +28,13 @@ public class LoanApplicationController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/{applyId:^\\d+$}", method = RequestMethod.GET)
+    ModelAndView detail(@PathVariable long applyId) {
+        ModelAndView modelAndView = new ModelAndView("/loan-application-detail");
+        modelAndView.addObject("data", consoleLoanApplicationService.detail(applyId));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     @ResponseBody
     BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationModel) {
