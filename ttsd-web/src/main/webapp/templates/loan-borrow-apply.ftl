@@ -23,8 +23,8 @@
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
                 <span class="item_text">婚姻状况：</span>
-                <input type="radio" name="isMarried" class="check_radio" id="married"/><label for="married" class="check_label">已婚</label>
-                <input type="radio" name="isMarried" class="check_radio" id="noMarried"/><label for="noMarried" class="check_label">未婚</label>
+                <input type="radio" name="isMarried" class="check_radio" id="married" value="true"/><label for="married" class="check_label">已婚</label>
+                <input type="radio" name="isMarried" class="check_radio" id="noMarried" value="false"/><label for="noMarried" class="check_label">未婚</label>
             </div>
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
@@ -40,7 +40,7 @@
             <div class="supplement_info_item">
                 <span class="required-icon required-icon-none">*</span>
                 <span class="item_text sesameCredit-text">芝麻信用分：</span>
-                <input type="text" placeholder="请输入（选填）" class="sesameCredit item-input" />
+                <input type="text" placeholder="请输入（选填）" class="sesameCredit item-input" maxlength="4"/>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
                 <span class="item_text amount_text">借款金额：</span>
-                <input type="text" placeholder="请输入（万元）" class="amount item-input" />
+                <input type="text" placeholder="请输入（万元）" class="amount item-input" maxlength="4"/>
             </div>
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
@@ -79,6 +79,6 @@
             </div>
         </div>
     </div>
-    <div class="confirm_btn">确认申请</div>
+    <div class="confirm_btn disabled">确认申请</div>
 </div>
 </@global.main>
