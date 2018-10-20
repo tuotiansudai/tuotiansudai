@@ -60,7 +60,7 @@ public class LoanApplicationController {
         modelAndView.addObject("mobile", userModel.getMobile());
         modelAndView.addObject("address", userModel.getCity());
         modelAndView.addObject("userName", userModel.getUserName());
-        modelAndView.addObject("pledgeType", pledgeType.equals(PledgeType.HOUSE)?"房抵":"车抵");
+        modelAndView.addObject("pledgeType", pledgeType);
         return modelAndView;
     }
 
