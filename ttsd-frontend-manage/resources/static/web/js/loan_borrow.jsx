@@ -99,7 +99,8 @@ $(function () {
             url: '/loan-application/create',
             type: 'POST',
             dataType: 'json',
-            data: data
+            data: data,
+            contentType: 'application/json; charset=UTF-8'
         }).done(function () {
 
         });
