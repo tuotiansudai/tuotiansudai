@@ -74,4 +74,9 @@ public class LoanApplicationController {
         loanApplicationDto.setLoginName(null == loginName ? "" : loginName);
         return loanApplicationService.create(loanApplicationDto);
     }
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView success() {
+        return new ModelAndView("loan-application-success");
+    }
 }

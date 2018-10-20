@@ -2,6 +2,7 @@
 <@global.main pageCss="${css.loan_borrow}" pageJavascript="${js.loan_borrow}" activeNav="我要借款" activeLeftNav="" title="我要借款_抵押借款_拓天速贷" keywords="抵押房产借款,抵押车辆借款,拓天借款,拓天速贷" description="拓天速贷为借款用户提供抵押房产借款和抵押车辆借款服务,拓天借款额度高,门槛低,速度快,利息低,24H放款,借款轻松还.">
 <div class="loan_apply_wrapper">
     <h2 class="loan_title">借款申请-<#if (pledgeType?? && pledgeType.name() == 'HOUSE' )>房抵<#else>车抵</#if></h2>
+    <input type="hidden" value="${pledgeType.name()}" id="pledgeType"></input>
     <div class="base_info_wrapper">
         <h3 class="info_title">申请人基础信息</h3>
         <div class="info_wrapper">
@@ -29,8 +30,8 @@
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
                 <span class="item_text">提供个人征信报告：</span>
-                <input type="radio" name="haveCreditReport" class="check_radio" id="creditReport"/><label for="creditReport" class="check_label">提供</label>
-                <input type="radio" name="haveCreditReport" class="check_radio" id="noCreditReport"/><label for="noCreditReport" class="check_label">不提供</label>
+                <input type="radio" name="haveCreditReport" class="check_radio" id="creditReport" value="true" /><label for="creditReport" class="check_label">提供</label>
+                <input type="radio" name="haveCreditReport" class="check_radio" id="noCreditReport" value="false" /><label for="noCreditReport" class="check_label">不提供</label>
             </div>
             <div class="supplement_info_item">
                 <span class="required-icon required-icon-none">*</span>
