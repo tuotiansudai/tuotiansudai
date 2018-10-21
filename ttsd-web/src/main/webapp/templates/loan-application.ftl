@@ -152,7 +152,7 @@
     <div class="risk-tip" id="riskTip">
         <p class="tip-text">风险提示！</p>
         <p>您将通过拓天速贷平台进行借款，平台仅提供<br/>信息中介服务，借款过程中的风险由您自行承担。</p>
-        <p class="risk-revelation-wrapper"><input type="checkbox" class="risk-checkbox"/><span class="risk-text">我已查看<a href="${commonStaticServer}/images/pdf/risk-disclosure.pdf" target="_blank" class="risk-revelation">《风险揭示书》</a></span></p>
+        <p class="risk-revelation-wrapper"><input type="checkbox" class="risk-checkbox"/><span class="risk-text">我已查看<a href="${commonStaticServer}/images/pdf/loaner-risk-disclosure.pdf" target="_blank" class="risk-revelation">《风险揭示书》</a></span></p>
         <p><div class="risk-confirm-btn disabled" id="risk-confirm-btn">确定</div></p>
     </div>
 </div>
