@@ -56,12 +56,12 @@
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
                 <span class="item_text period_text">借款周期：</span>
-                <input type="text" placeholder="请输入（月）" class="period item-input" />
+                <input type="text" placeholder="请输入（月）" class="period item-input" maxlength="3"/>
             </div>
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
                 <span class="item_text homeIncome_text">家庭年收入：</span>
-                <input type="text" placeholder="请输入（万元）" class="homeIncome item-input" />
+                <input type="text" placeholder="请输入（万元）" class="homeIncome item-input" maxlength="4" />
             </div>
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
