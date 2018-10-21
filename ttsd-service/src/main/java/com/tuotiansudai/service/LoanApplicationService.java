@@ -41,7 +41,7 @@ public class LoanApplicationService {
         if(StringUtils.isEmpty(loanApplicationDto.getLoanUsage())){
             return new BaseDto<>(new BaseDataDto(false, "借款用途不能为空"));
         }
-        if(StringUtils.isEmpty(loanApplicationDto.getLoanUsage())){
+        if(StringUtils.isEmpty(loanApplicationDto.getPledgeInfo())){
             return new BaseDto<>(new BaseDataDto(false, "抵押物信息不能为空"));
         }
         LoanApplicationModel loanApplicationModel = new LoanApplicationModel(loanApplicationDto);
