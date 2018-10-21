@@ -41,7 +41,7 @@
             <div class="supplement_info_item">
                 <span class="required-icon required-icon-none">*</span>
                 <span class="item_text sesameCredit-text">芝麻信用分：</span>
-                <input type="text" placeholder="请输入（选填）" class="sesameCredit item-input" maxlength="4"/>
+                <input type="text" placeholder="请输入（选填）" class="sesameCredit item-input" maxlength="3"/>
             </div>
         </div>
     </div>
