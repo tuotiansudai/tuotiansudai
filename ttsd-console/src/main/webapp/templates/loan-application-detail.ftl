@@ -32,8 +32,8 @@
         <hr>
         <div style="text-align: left">
             <div>
-                <span style="display: inline-block; width: 49%">婚姻状况：<#if data.isMarried?? && data.isMarried>已婚<#elseif data.isMarried?? && !data.isMarried>未婚</#if></span>
-                <span style="display: inline-block; width: 50%">提供个人征信报告：<#if data.haveCreditReport?? && data.haveCreditReport>提供<#elseif data.haveCreditReport?? && !data.haveCreditReport>未提供</#if></span>
+                <span style="display: inline-block; width: 49%">婚姻状况：<#if !(data.region)?? && data.isMarried?? && data.isMarried>已婚<#elseif !(data.region)?? && data.isMarried?? && !data.isMarried>未婚</#if></span>
+                <span style="display: inline-block; width: 50%">提供个人征信报告：<#if !(data.region)?? && data.haveCreditReport?? && data.haveCreditReport>提供<#elseif !(data.region)?? && data.haveCreditReport?? && !data.haveCreditReport>未提供</#if></span>
             </div>
             <div>
                 <span style="display: inline-block; width: 49%">职位：${(data.workPosition)!""}</span>

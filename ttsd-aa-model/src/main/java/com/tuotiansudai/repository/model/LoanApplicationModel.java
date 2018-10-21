@@ -30,7 +30,7 @@ public class LoanApplicationModel implements Serializable {
     //工作职位
     private String workPosition;
     //蚂蚁积分
-    private Integer sesameCredit;
+    private String sesameCredit;
     //家庭年收入(万)
     private int homeIncome;
     //借款用途
@@ -219,11 +219,11 @@ public class LoanApplicationModel implements Serializable {
         this.workPosition = workPosition;
     }
 
-    public int getSesameCredit() {
+    public String getSesameCredit() {
         return sesameCredit;
     }
 
-    public void setSesameCredit(int sesameCredit) {
+    public void setSesameCredit(String sesameCredit) {
         this.sesameCredit = sesameCredit;
     }
 

@@ -7,7 +7,7 @@
         <h3 class="info_title">申请人基础信息</h3>
         <div class="info_wrapper">
             <div>
-                <span class="name item">${userName!}</span>
+                <span class="name item">姓名：${userName!}</span>
                 <span class="cardId item">身份证：${identityNumber!}</span>
                 <span class="address item">地址：${address}</span>
             </div>
