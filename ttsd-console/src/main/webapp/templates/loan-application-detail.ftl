@@ -5,7 +5,7 @@
 <div class="col-md-7" style="text-align: center">
     <h3>借款申请-<#if (data.pledgeType)?? && data.pledgeType='VEHICLE'>车抵<#elseif (data.pledgeType)?? && data.pledgeType='HOUSE'>房抵<#else></#if></h3>
     <br/>
-    <div>
+    <div style="line-height: 30px">
         <div style="text-align: left">
             <span style="display: inline-block; width: 50%"><h4>申请人基础信息</h4></span>
             <span style="display: inline-block; width: 49%"><h4>申请时间：<#if (data.createdTime)??>${data.createdTime?datetime!}</#if></h4></span>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <br/>
-    <div>
+    <div style="line-height: 30px">
         <div style="text-align: left">
             <span><h4>补充信息</h4></span>
         </div>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <br/>
-    <div>
+    <div style="line-height: 30px">
         <div style="text-align: left">
             <span><h4>借款申请信息</h4></span>
         </div>
@@ -65,7 +65,7 @@
         </div>
     </div>
     <br/>
-    <div>
+    <div style="line-height: 30px">
         <hr>
         <div>
             <div style="text-align: left">
