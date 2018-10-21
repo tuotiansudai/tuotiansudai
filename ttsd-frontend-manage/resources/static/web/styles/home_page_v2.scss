@@ -623,6 +623,10 @@ $pointColor: #ff5400;
     background: #fff;
     .partner-list {
       margin-top: 30px;
+      #logo-zhhgj {
+        display: block;
+        background: url("../images/homepage/logo-zhhgj.png") center center no-repeat;
+      }
       li {
         float: left;
         margin-right:80px;
