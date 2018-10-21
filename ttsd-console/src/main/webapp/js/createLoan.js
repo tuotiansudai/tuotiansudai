@@ -114,16 +114,19 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         });
         fundraisingStartTimeElement.on("dp.change", function (e) {
-            var start = new Date();
-            start.setDate(start.getDate()-7);
-            $(this).data("DateTimePicker").minDate(start);
-
             var end = new Date(e.date);
             end.setDate(end.getDate()+7);
             fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
             fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(e.date).getTime() ? new Date() : e.date );
             $("input[name='fundraisingEndTime']").val("");
         });
+
+        setFundraisingStartTime();
+        function setFundraisingStartTime(){
+            var start = new Date();
+            start.setDate(start.getDate()-7);
+            fundraisingStartTimeElement.data("DateTimePicker").minDate(start);
+        }
 
         var deadlineElement = $('#deadline');
         deadlineElement.datetimepicker({

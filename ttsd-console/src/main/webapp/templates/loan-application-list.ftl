@@ -75,7 +75,9 @@
                             <input type="button" class="loanApplication-comment" value="添加备注"
                                    data-loanApplication-id="${loanApplicationView.id?c}">
                         </@security.authorize>
-                        <a href="/loan-application/${loanApplicationView.id?c}">查看详情</a>
+                        <#if !(loanApplicationView.region)??>
+                            <a href="/loan-application/${loanApplicationView.id?c}">查看详情</a>
+                        </#if>
                     </td>
                 </tr>
                 </#list>
