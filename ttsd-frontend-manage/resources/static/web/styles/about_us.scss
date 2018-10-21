@@ -395,6 +395,10 @@ $gray5:#333333;
             box-sizing: border-box;
           }
         }
+        &.logo-one {
+          background: url("../images/homepage/logo-zhhgj.png") center center no-repeat;
+        }
+
         &.logo-two {
           background: url("../images/homepage/logo-lian.png") center center no-repeat;
         }
