@@ -6,7 +6,6 @@ $(function () {
     let workPosition = '';
     let pledgeType = $('#pledgeType').val();
     let sesameCredit = 0;
-    let isFillInSesame = false;
 
     $('input:radio[name="isMarried"]').on('click',function () {
         isMarried = $('input:radio[name="isMarried"]:checked').val();
@@ -56,18 +55,7 @@ $(function () {
     $('.sesameCredit').on('input',function (e) {
         let obj = e.currentTarget;
         obj.value = obj.value.replace(/[^\d]/g,"");
-        if (obj.value != '') {
-            isFillInSesame = true;
-        }
-        else {
-            sesameCredit = 0;
-            isFillInSesame = false;
-        }
         sesameCredit =  obj.value;
-        if (sesameCredit > 1000) {
-            layer.msg('请输入0-1000之间的分数');
-        }
-        btnLightUp();
     });
 
     $('.confirm_btn').on('click',function () {
@@ -77,12 +65,7 @@ $(function () {
 
     function btnLightUp() {
         if (isMarried && haveCreditReport && amount && period && homeIncome && loanUsage && pledgeInfo) {
-            if (isFillInSesame && sesameCredit > 1000) {
-                $('.confirm_btn').addClass('disabled');
-            }
-            else {
-                $('.confirm_btn').removeClass('disabled');
-            }
+            $('.confirm_btn').removeClass('disabled');
         }
         else {
             $('.confirm_btn').addClass('disabled');
