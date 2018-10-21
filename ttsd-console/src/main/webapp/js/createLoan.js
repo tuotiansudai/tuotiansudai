@@ -116,8 +116,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         fundraisingStartTimeElement.on("dp.change", function (e) {
             var end = new Date(e.date);
             end.setDate(end.getDate()+7);
-            fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
             fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(e.date).getTime() ? new Date() : e.date );
+            fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
             $("input[name='fundraisingEndTime']").val("");
         });
 
@@ -136,8 +136,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             if (startTime !== null && startTime !=='') {
                 var end = new Date(startTime);
                 end.setDate(end.getDate()+7);
-                fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
                 fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(startTime).getTime() ? new Date() : startTime );
+                fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
             }
         }
 
