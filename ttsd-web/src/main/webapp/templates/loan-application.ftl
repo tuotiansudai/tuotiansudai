@@ -144,7 +144,7 @@
         </div>
     </div>
     <input type="hidden" value="" id="pledgeType">
-    <input type="hidden"  name="userName" id="userName" value="${userName!}" />
+    <input type="hidden" name="userName" id="userName" value="${userName!}" />
     <div class="is-user" id="isUser">
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
         <p><a href="/register/account#loan">实名认证</a></p>

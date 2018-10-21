@@ -5,7 +5,7 @@ $(function () {
     let isMarried, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
     let workPosition = '';
     let pledgeType = $('#pledgeType').val();
-    let sesameCredit = 0;
+    let sesameCredit = '';
 
     $('input:radio[name="isMarried"]').on('click',function () {
         isMarried = $('input:radio[name="isMarried"]:checked').val();
