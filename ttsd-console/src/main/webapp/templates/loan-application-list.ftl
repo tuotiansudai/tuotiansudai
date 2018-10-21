@@ -53,7 +53,7 @@
                     ${loanApplicationView.mobile!}
                     </td>
                     <td>
-                    ${loanApplicationView.region.description!}
+                    ${(loanApplicationView.address)!""}
                     </td>
                     <td>
                     ${loanApplicationView.amount!}
