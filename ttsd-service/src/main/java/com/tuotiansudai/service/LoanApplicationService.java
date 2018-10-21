@@ -50,7 +50,7 @@ public class LoanApplicationService {
         loanApplicationModel.setUserName(userModel.getUserName());
         loanApplicationModel.setIdentityNumber(userModel.getIdentityNumber());
         loanApplicationModel.setAge((short)IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(),18));
-        loanApplicationModel.setAddress(userModel.getCity());
+        loanApplicationModel.setAddress(IdentityNumberValidator.getCityByIdentityCard(userModel.getIdentityNumber()));
         loanApplicationModel.setSex("MALE".equalsIgnoreCase(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"))?"男":"女");
         try {
             loanApplicationMapper.create(loanApplicationModel);

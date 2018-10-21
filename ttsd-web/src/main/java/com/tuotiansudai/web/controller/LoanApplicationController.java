@@ -58,7 +58,7 @@ public class LoanApplicationController {
         modelAndView.addObject("age", IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(),18));
         modelAndView.addObject("sex", "MALE".equalsIgnoreCase(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"))?"男":"女");
         modelAndView.addObject("mobile", userModel.getMobile());
-        modelAndView.addObject("address", userModel.getCity());
+        modelAndView.addObject("address", IdentityNumberValidator.getCityByIdentityCard(userModel.getIdentityNumber()));
         modelAndView.addObject("userName", userModel.getUserName());
         modelAndView.addObject("pledgeType", pledgeType);
         return modelAndView;
