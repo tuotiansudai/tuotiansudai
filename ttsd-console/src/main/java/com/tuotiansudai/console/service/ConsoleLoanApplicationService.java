@@ -44,6 +44,10 @@ public class ConsoleLoanApplicationService {
         return new BaseDto<>(new BaseDataDto(true));
     }
 
+    public LoanApplicationModel detail(long id){
+        return loanApplicationMapper.findById(id);
+    }
+
     public BasePaginationDataDto<LoanApplicationModel> getPagination(int index, int pageSize) {
         long count = loanApplicationMapper.findCount();
         List<LoanApplicationModel> loanApplicationModels = loanApplicationMapper.findPagination(PaginationUtil.calculateOffset(index, pageSize, count), pageSize);

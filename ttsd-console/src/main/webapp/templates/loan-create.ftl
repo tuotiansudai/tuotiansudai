@@ -29,12 +29,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户: </label>
+                    <label class="col-sm-2 control-label">权证人: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="代理用户不能为空">
+                               errormsg="权证人不能为空">
                     </div>
                 </div>
 

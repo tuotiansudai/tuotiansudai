@@ -72,7 +72,11 @@ public class LoanApplicationMapperTest {
         loanApplicationModel.setCreatedTime(DateTime.parse("2011-1-1").toDate());
         loanApplicationModel.setUpdatedBy("user1");
         loanApplicationModel.setUpdatedTime(DateTime.parse("2011-2-1").toDate());
-
+        loanApplicationModel.setAddress("address");
+        loanApplicationModel.setAge((short) 10);
+        loanApplicationModel.setHaveCreditReport(true);
+        loanApplicationModel.setHomeIncome(100);
+        loanApplicationModel.setLoanUsage("loanUsage");
         loanApplicationMapper.create(loanApplicationModel);
         return loanApplicationModel;
     }

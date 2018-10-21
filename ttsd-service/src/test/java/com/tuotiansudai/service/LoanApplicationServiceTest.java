@@ -70,11 +70,15 @@ public class LoanApplicationServiceTest {
     private LoanApplicationDto fakeLoanApplicationDto(String loginName, int amount, int period) {
         LoanApplicationDto loanApplicationDto = new LoanApplicationDto();
         loanApplicationDto.setLoginName(loginName);
-        loanApplicationDto.setRegion(LoanApplicationRegion.BEI_JING);
         loanApplicationDto.setAmount(amount);
         loanApplicationDto.setPeriod(period);
         loanApplicationDto.setPledgeType(PledgeType.HOUSE);
         loanApplicationDto.setPledgeInfo("testInfo");
+        loanApplicationDto.setAddress("address");
+        loanApplicationDto.setAge((short) 10);
+        loanApplicationDto.setHaveCreditReport(true);
+        loanApplicationDto.setHomeIncome(100);
+        loanApplicationDto.setLoanUsage("loanUsage");
         return loanApplicationDto;
     }
 

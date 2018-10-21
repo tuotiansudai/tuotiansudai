@@ -20,16 +20,29 @@
         <result column="created_time" property="createdTime"/>
         <result column="updated_by" property="updatedBy"/>
         <result column="updated_time" property="updatedTime"/>
+
+        <result column="identity_number" property="identityNumber"/>
+        <result column="address" property="address"/>
+        <result column="age" property="age"/>
+        <result column="is_married" property="isMarried"/>
+        <result column="have_credit_report" property="haveCreditReport"/>
+        <result column="work_position" property="workPosition"/>
+        <result column="sesame_credit" property="sesameCredit"/>
+        <result column="home_income" property="homeIncome"/>
+        <result column="loan_usage" property="loanUsage"/>
+        <result column="else_pledge" property="elsePledge"/>
+        <result column="sex" property="sex"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanApplicationModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application`
         (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
-        updated_by, updated_time)
+        updated_by, updated_time,identity_number,address,age,is_married,have_credit_report,work_position,sesame_credit,
+        home_income,loan_usage,else_pledge,sex)
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
         #{comment}, #{createdTime},
-        #{updatedBy}, #{updatedTime})
+        #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},#{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex})
     </insert>
 
     <update id="update" parameterType="LoanApplicationModel">
@@ -63,6 +76,41 @@
         <if test="updatedTime != null">
             updated_time = #{updatedTime},
         </if>
+
+        <if test="identityNumber != null">
+            identity_number = #{identityNumber},
+        </if>
+        <if test="address != null">
+            address = #{address},
+        </if>
+        <if test="age != null">
+            age = #{age},
+        </if>
+        <if test="isMarried != null">
+            is_married = #{isMarried},
+        </if>
+        <if test="haveCreditReport != null">
+            have_credit_report = #{haveCreditReport},
+        </if>
+        <if test="workPosition != null">
+            work_position = #{workPosition},
+        </if>
+        <if test="sesameCredit != null">
+            sesame_credit = #{sesameCredit},
+        </if>
+        <if test="homeIncome != null">
+            home_income = #{homeIncome},
+        </if>
+        <if test="loanUsage != null">
+            loan_usage = #{loanUsage},
+        </if>
+        <if test="elsePledge != null">
+            else_pledge = #{elsePledge},
+        </if>
+        <if test="sex != null">
+            sex = #{sex},
+        </if>
+
         comment = #{comment},
         amount = #{amount},
         period = #{period}
