@@ -22,7 +22,7 @@ public class LoanApplicationModel implements Serializable {
 
     private String identityNumber;
     private String address;
-    private short  age;
+    private short age;
     //是否结婚
     private boolean isMarried;
     //是否有信用报告
@@ -30,9 +30,9 @@ public class LoanApplicationModel implements Serializable {
     //工作职位
     private String workPosition;
     //蚂蚁积分
-    private int  sesameCredit;
+    private Integer sesameCredit;
     //家庭年收入(万)
-    private int  homeIncome;
+    private int homeIncome;
     //借款用途
     private String loanUsage;
     //其他资产
@@ -45,29 +45,26 @@ public class LoanApplicationModel implements Serializable {
     }
 
     public LoanApplicationModel(LoanApplicationDto loanApplicationDto) {
-//        id
         this.loginName = loanApplicationDto.getLoginName();
         this.region = loanApplicationDto.getRegion();
         this.amount = loanApplicationDto.getAmount();
         this.period = loanApplicationDto.getPeriod();
         this.pledgeType = loanApplicationDto.getPledgeType();
         this.pledgeInfo = loanApplicationDto.getPledgeInfo();
-//        comment
         this.createdTime = new Date();
         this.updatedBy = loanApplicationDto.getLoginName();
         this.updatedTime = new Date();
-        //合规审查新增字段
-        this.identityNumber=loanApplicationDto.getIdentityNumber();
-        this.address=loanApplicationDto.getAddress();
-        this.age=loanApplicationDto.getAge();
-        this.isMarried=loanApplicationDto.getIsMarried();
-        this.haveCreditReport=loanApplicationDto.getHaveCreditReport();
-        this.workPosition=loanApplicationDto.getWorkPosition();
-        this.sesameCredit=loanApplicationDto.getSesameCredit();
-        this.homeIncome=loanApplicationDto.getHomeIncome();
-        this.loanUsage=loanApplicationDto.getLoanUsage();
-        this.elsePledge=loanApplicationDto.getElsePledge();
-        this.sex=loanApplicationDto.getSex();
+        this.identityNumber = loanApplicationDto.getIdentityNumber();
+        this.address = loanApplicationDto.getAddress();
+        this.age = loanApplicationDto.getAge();
+        this.isMarried = loanApplicationDto.getIsMarried();
+        this.haveCreditReport = loanApplicationDto.getHaveCreditReport();
+        this.workPosition = loanApplicationDto.getWorkPosition();
+        this.sesameCredit = loanApplicationDto.getSesameCredit();
+        this.homeIncome = loanApplicationDto.getHomeIncome();
+        this.loanUsage = loanApplicationDto.getLoanUsage();
+        this.elsePledge = loanApplicationDto.getElsePledge();
+        this.sex = loanApplicationDto.getSex();
     }
 
     public long getId() {

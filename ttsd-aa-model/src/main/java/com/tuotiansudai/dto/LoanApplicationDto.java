@@ -21,7 +21,7 @@ public class LoanApplicationDto {
     //工作职位
     private String workPosition;
     //蚂蚁积分
-    private int sesameCredit;
+    private Integer sesameCredit;
     //家庭年收入(万)
     private int homeIncome;
     //借款用途
