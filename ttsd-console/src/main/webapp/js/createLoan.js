@@ -121,17 +121,25 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             $("input[name='fundraisingEndTime']").val("");
         });
 
+        var deadlineElement = $('#deadline');
+        deadlineElement.datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
         setFundraisingStartTime();
         function setFundraisingStartTime(){
             var start = new Date();
             start.setDate(start.getDate()-7);
             fundraisingStartTimeElement.data("DateTimePicker").minDate(start);
-        }
 
-        var deadlineElement = $('#deadline');
-        deadlineElement.datetimepicker({
-            format: 'YYYY-MM-DD'
-        });
+            var startTime = $("input[name='fundraisingStartTime']").val();
+            if (startTime !== null && startTime !=='') {
+                var end = new Date(startTime);
+                end.setDate(end.getDate()+7);
+                fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
+                fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(startTime).getTime() ? new Date() : startTime );
+            }
+        }
 
         //初始化数据
         $.get("/project-manage/loan/titles", function (data) {
