@@ -41,7 +41,7 @@
         invest_repay.period, invest_repay.actual_interest, invest_repay.actual_fee, invest_repay.repay_amount,
         coupon.coupon_id, invest_extra_rate.extra_rate, invest_extra_rate.actual_interest AS extra_amount,
 
-        invest_repay.corpus + invest_repay.expected_interest +invest_repay.overdue_interest- invest_repay.expected_fee +
+        invest_repay.corpus + invest_repay.expected_interest - invest_repay.expected_fee +
         if(loan.periods = invest_repay.period , ifnull(invest_extra_rate.expected_interest - invest_extra_rate.expected_fee, 0), 0) +
         if(coupon.coupon_type = 'RED_ENVELOPE', 0, ifnull(coupon_repay.expected_interest - coupon_repay.expected_fee, 0)) as expect_interest
 
