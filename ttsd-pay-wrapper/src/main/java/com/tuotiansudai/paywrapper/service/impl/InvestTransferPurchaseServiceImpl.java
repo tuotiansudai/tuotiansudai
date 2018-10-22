@@ -456,7 +456,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     expectedFee,
                     transferrerTransferredInvestRepayModel.getRepayDate(),
                     transferrerTransferredInvestRepayModel.getStatus());
-
+            //新增逾期罚息
+            transfereeInvestRepayModel.setOverdueInterest(transferrerTransferredInvestRepayModel.getOverdueInterest());
             transferrerTransferredInvestRepayModel.setExpectedInterest(0);
             transferrerTransferredInvestRepayModel.setExpectedFee(0);
             transferrerTransferredInvestRepayModel.setCorpus(0);
