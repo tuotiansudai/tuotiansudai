@@ -18,6 +18,8 @@ public class TransferApplyQueryResponseDataDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "折价下限", example = "9000")
     private String discountLower;
+    @ApiModelProperty(value = "转让价格,单位(元)", example = "9000")
+    private String transferAmount;
 
     public String getInvestAmount() {
         return investAmount;
@@ -58,5 +60,13 @@ public class TransferApplyQueryResponseDataDto extends BaseResponseDataDto {
 
     public void setDiscountLower(String discountLower) {
         this.discountLower = discountLower;
+    }
+
+    public String getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(String transferAmount) {
+        this.transferAmount = transferAmount;
     }
 }

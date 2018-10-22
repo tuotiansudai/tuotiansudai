@@ -135,7 +135,18 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
                 anxinProp != null && anxinProp.isAnxinUser(),
-                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus());
+                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus(),calcultorTransferAmount(investId));
+    }
+
+    @Override
+    public long calcultorTransferAmount(long investId){
+        InvestModel investModel = investMapper.findById(investId);
+        List<InvestRepayModel> investRepayModelList=investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+        //如果是最后一期逾期
+        if(investRepayModelList.size() !=0 && investRepayModelList.get(investRepayModelList.size()-1).getStatus() == RepayStatus.OVERDUE){
+            return investModel.getAmount()+ investRepayModelList.stream().filter(item->{return item.getStatus() == RepayStatus.OVERDUE;}).mapToLong((item)->{return item.getExpectedInterest()+item.getDefaultInterest()+item.getOverdueInterest(); }).sum();
+        }
+        return investModel.getAmount();
     }
 
     @Override
@@ -147,12 +158,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest status({1}) is not SUCCESS", String.valueOf(investModel.getId()), investModel.getStatus()));
             return false;
         }
-
-        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
-                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
-            return false;
-        }
+        //新的转让价格可能大于本金
+//        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
+//            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
+//                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
+//            return false;
+//        }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanModel.getStatus() != LoanStatus.REPAYING) {
