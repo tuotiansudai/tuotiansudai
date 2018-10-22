@@ -146,6 +146,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     alert("筹款启动时间与筹款截止时间不能超过7天");
                     $("input[name='fundraisingEndTime']").val("");
                 }
+                if (new Date().getTime() > new Date(endTime).getTime()){
+                    alert("筹款截止时间不能小于当前时间");
+                    $("input[name='fundraisingEndTime']").val("");
+                }
             }
         });
 
