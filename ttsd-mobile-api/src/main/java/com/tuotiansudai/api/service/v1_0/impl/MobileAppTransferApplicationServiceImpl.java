@@ -138,7 +138,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
         }
 
-        if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
+        if (transferAmount < discountLower) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
         }
 
@@ -184,6 +184,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
         transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel)));
+        //新增转让价格
+        transferApplyQueryResponseDataDto.setTransferAmount(AmountConverter.convertCentToString(investTransferService.calcultorTransferAmount(Long.parseLong(investId))));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

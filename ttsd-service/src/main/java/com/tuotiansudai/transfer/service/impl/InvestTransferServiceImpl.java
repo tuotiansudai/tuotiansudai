@@ -153,12 +153,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest status({1}) is not SUCCESS", String.valueOf(investModel.getId()), investModel.getStatus()));
             return false;
         }
-
-        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
-                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
-            return false;
-        }
+        //新的转让价格可能大于本金
+//        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
+//            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
+//                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
+//            return false;
+//        }
 
         if (loanMapper.findById(investModel.getLoanId()).getStatus() != LoanStatus.REPAYING) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] loan status is not REPAYING", String.valueOf(investModel.getId())));
