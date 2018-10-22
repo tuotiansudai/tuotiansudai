@@ -73,16 +73,16 @@ public class CalculateDefaultInterestScheduler {
                 long overdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investMapper.findById(investRepayModel.getInvestId()).getAmount(), new DateTime(investRepayModel.getRepayDate()), new DateTime());
                 investRepayModel.setOverdueInterest(overdueInterest);
                 //罚息+新增年华利率罚息  都要收取手续费
-                InvestModel investModel=investMapper.findById(investRepayModel.getInvestId());
-                long overdueFeeValue=new BigDecimal(investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+                InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+                long overdueFeeValue = new BigDecimal(investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
                 //如果是转让项目，需要从转让日开始计算
-                if(investModel.getTransferInvestId() != null){
-                    TransferApplicationModel transferApplicationModel=transferApplicationMapper.findByInvestId(investModel.getId());
+                if (investModel.getTransferInvestId() != null) {
+                    TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                     long tranfeeOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investModel.getAmount(), new DateTime(transferApplicationModel.getTransferTime()), new DateTime());
-                    long defaultInterest=new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(overdueFee))
+                    long defaultInterest = new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(Days.daysBetween(new DateTime(transferApplicationModel.getTransferTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays()))
                             .setScale(0, BigDecimal.ROUND_DOWN).longValue();
-                    overdueFeeValue=new BigDecimal(tranfeeOverdueInterest+defaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+                    overdueFeeValue = new BigDecimal(tranfeeOverdueInterest + defaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
 
                 }
                 investRepayModel.setOverdueFee(overdueFeeValue);
@@ -153,8 +153,4 @@ public class CalculateDefaultInterestScheduler {
         return CollectionUtils.isEmpty(investRepayModels) || investRepayModels.stream().noneMatch(input -> input.getStatus() == RepayStatus.OVERDUE);
     }
 
-    public static void main(String[] args) {
-        System.out.println(DateUtil.differenceDay(new DateTime(2018,10,20,12,4).toDate(), new Date()) + 1L);
-        System.out.println(Days.daysBetween(new DateTime(2018,10,20,12,4).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays());
-    }
 }
