@@ -222,7 +222,7 @@ public class TransferServiceImpl implements TransferService {
                 transferableInvestPaginationItemDataView.setNextRepayDate(overdueInvestRepayModels.get(overdueInvestRepayModels.size() - 1).getRepayDate());
                 long overdueAmount = 0L;
                 for (InvestRepayModel model : overdueInvestRepayModels){
-                    overdueAmount += model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee();
+                    overdueAmount += model.getCorpus() + model.getExpectedInterest() + model.getOverdueInterest() - model.getExpectedFee();
                 }
                 transferableInvestPaginationItemDataView.setNextRepayAmount(AmountConverter.convertCentToString(overdueAmount));
             }

@@ -812,7 +812,7 @@
         where ir.invest_id = invest.id and ir.status in ('REPAYING')
         ) as next_repay_date,
 
-        (select ir.expected_interest + ir.corpus - ir.expected_fee
+        (select ir.expected_interest + ir.corpus + ir.overdue_interest - ir.expected_fee
         from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING')
         and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = invest.id and ir.status in
         ('REPAYING'))
