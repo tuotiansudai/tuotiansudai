@@ -812,7 +812,7 @@
         where ir.invest_id = invest.id and ir.status in ('REPAYING')
         ) as next_repay_date,
 
-        (select ir.expected_interest + ir.corpus - ir.expected_fee
+        (select ir.expected_interest + ir.corpus + ir.overdue_interest - ir.expected_fee
         from invest_repay ir where ir.invest_id = invest.id and ir.status in ('REPAYING')
         and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = invest.id and ir.status in
         ('REPAYING'))
@@ -825,21 +825,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
         ORDER BY invest.created_time DESC
         limit #{index}, #{pageSize}
     </select>
@@ -856,21 +859,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
     </select>
 
     <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap"
@@ -895,22 +901,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND ld.non_transferable = 0
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
         ORDER BY invest.created_time DESC
         limit #{index}, #{pageSize}
     </select>
@@ -927,22 +935,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND ld.non_transferable = 0
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
     </select>
 
     <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">

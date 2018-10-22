@@ -349,7 +349,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void sholudTransferApplicationListIsSuccess(){
+    public void shouldTransferApplicationListIsSuccess(){
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
         List<TransferApplicationPaginationItemDataDto> transferApplicationRecordDtos = new ArrayList<>();
         transferApplicationRecordDtos.add(createTransferApplicationRecordView(transferApplicationModel1));
@@ -382,7 +382,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void sholudTransferApplicationDetailIsSuccess(){
+    public void shouldTransferApplicationDetailIsSuccess(){
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
         TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
         transferApplicationDetailRequestDto.setTransferApplicationId(transferApplicationModel1.getId());
