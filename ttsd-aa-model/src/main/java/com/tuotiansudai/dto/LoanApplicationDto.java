@@ -10,6 +10,26 @@ public class LoanApplicationDto {
     private int period;
     private PledgeType pledgeType;
     private String pledgeInfo;
+    //合规审查新增字段
+    private String identityNumber;
+    private String address;
+    private short age;
+    //是否结婚
+    private boolean isMarried;
+    //是否有信用报告
+    private boolean haveCreditReport;
+    //工作职位
+    private String workPosition;
+    //蚂蚁积分
+    private String sesameCredit;
+    //家庭年收入(万)
+    private int homeIncome;
+    //借款用途
+    private String loanUsage;
+    //其他资产
+    private String elsePledge;
+    //性别
+    private String sex;
 
     public String getLoginName() {
         return loginName;
@@ -57,5 +77,93 @@ public class LoanApplicationDto {
 
     public void setPledgeInfo(String pledgeInfo) {
         this.pledgeInfo = pledgeInfo;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public short getAge() {
+        return age;
+    }
+
+    public void setAge(short age) {
+        this.age = age;
+    }
+
+    public boolean getIsMarried() {
+        return isMarried;
+    }
+
+    public void setIsMarried(boolean married) {
+        isMarried = married;
+    }
+
+    public boolean getHaveCreditReport() {
+        return haveCreditReport;
+    }
+
+    public void setHaveCreditReport(boolean haveCreditReport) {
+        this.haveCreditReport = haveCreditReport;
+    }
+
+    public String getWorkPosition() {
+        return workPosition;
+    }
+
+    public void setWorkPosition(String workPosition) {
+        this.workPosition = workPosition;
+    }
+
+    public String getSesameCredit() {
+        return sesameCredit;
+    }
+
+    public void setSesameCredit(String sesameCredit) {
+        this.sesameCredit = sesameCredit;
+    }
+
+    public int getHomeIncome() {
+        return homeIncome;
+    }
+
+    public void setHomeIncome(int homeIncome) {
+        this.homeIncome = homeIncome;
+    }
+
+    public String getLoanUsage() {
+        return loanUsage;
+    }
+
+    public void setLoanUsage(String loanUsage) {
+        this.loanUsage = loanUsage;
+    }
+
+    public String getElsePledge() {
+        return elsePledge;
+    }
+
+    public void setElsePledge(String elsePledge) {
+        this.elsePledge = elsePledge;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

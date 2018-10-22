@@ -583,7 +583,7 @@ $width: 700px;
 			}
 		}
 	}
-  .success-tip {
+  .success-tip, .risk-tip{
     float: left;
     width: 400px;
     display: none;
@@ -613,4 +613,31 @@ $width: 700px;
 			}
 		}
 	}
+}
+#riskTip {
+  a.risk-revelation {
+    display: inline!important;
+    color: #ff752a!important;
+    background: #fff;
+  }
+  .risk-confirm-btn {
+    margin: 0 auto;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    background: #ff752a;
+    cursor: pointer;
+    &.disabled {
+      background: #ccc;
+    }
+  }
+  .risk-checkbox {
+    vertical-align: middle;
+  }
+  .risk-text {
+    vertical-align: middle;
+  }
 }

@@ -41,20 +41,19 @@
         {"title":"我的宝藏", "url":"${webServer}/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
-    {"title":"信息披露", "url":"${webServer}/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"公司介绍", "url":"${webServer}/about/company"},
-        {"title":"团队介绍", "url":"${webServer}/about/team"},
+    {"title":"信息披露", "url":"${webServer}/about/team","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"组织架构", "url":"${webServer}/about/team"},
         {"title":"拓天公告", "url":"${webServer}/about/notice"},
         {"title":"媒体报道", "url":"${webServer}/about/media"},
-        {"title":"合规报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"${webServer}/about/audit-report"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
         {"title":"联系我们", "url":"${webServer}/about/contact"},
         {"title":"运营数据", "url":"${webServer}/about/operational"}
     ]},
-    {"title":"网贷课堂", "url":"/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
-    {"title":"法律法规", "url":"/about/knowledge"},
-    {"title":"出借人教育", "url":"/about/investor-knowledge"},
-    {"title":"基础知识", "url":"/about/base-knowledge"}
+    {"title":"网贷课堂", "url":"${webServer}/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
+        {"title":"法律法规", "url":"${webServer}/about/knowledge"},
+        {"title":"出借人教育", "url":"${webServer}/about/investor-knowledge"},
+        {"title":"基础知识", "url":"${webServer}/about/base-knowledge"}
     ]},
     {"title":"帮助中心", "url":"${webServer}/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
         {"title":"注册认证", "url":"${webServer}/help/account"},

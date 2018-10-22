@@ -95,6 +95,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -352,7 +355,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         this.transferFee(transferInvestModel, transferApplicationModel);
 
         this.sendMessage(transferApplicationModel);
+        this.sendLoanerMessage(investModel,transferApplicationModel);
     }
+
 
     private void transferFee(InvestModel transferInvestModel, TransferApplicationModel transferApplicationModel) {
         long transferApplicationId = transferApplicationModel.getId();
@@ -604,5 +609,21 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
+    }
+
+    private void sendLoanerMessage(InvestModel investModel, TransferApplicationModel transferApplicationModel) {
+        //转让成功，发送给借款人消息
+        try{
+            String title = MessageEventType.TRANSFER_SUCCESS_LOANER.getTitleTemplate();
+            LoanModel loanModel=loanMapper.findById(investModel.getLoanId());
+            String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS_LOANER.getContentTemplate(), loanModel.getName(),userMapper.findByLoginName(transferApplicationModel.getLoginName()).getUserName(),AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()),userMapper.findByLoginName(investModel.getLoginName()).getUserName());
+            mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.TRANSFER_SUCCESS_LOANER,
+                    Lists.newArrayList(loanModel.getAgentLoginName()),
+                    title,
+                    content,
+                    transferApplicationModel.getId()));
+        }catch(Exception e){
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 }
