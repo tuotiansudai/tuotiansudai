@@ -21,7 +21,7 @@ public class InvestorInvestRepayDto implements Serializable {
             this.repayDate = investRepayModel.getRepayDate();
         }
 
-        long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+        long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest() - investRepayModel.getExpectedFee();
         if (couponRepayModel != null) {
             expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
         }

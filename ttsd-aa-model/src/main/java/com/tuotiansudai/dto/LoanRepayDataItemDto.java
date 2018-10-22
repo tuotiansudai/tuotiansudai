@@ -50,14 +50,14 @@ public class LoanRepayDataItemDto {
         this.period = loanRepayModel.getPeriod();
         this.corpus = AmountConverter.convertCentToString(loanRepayModel.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(loanRepayModel.getExpectedInterest());
-        this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest());
+        this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
         this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.actualInterest = AmountConverter.convertCentToString(loanRepayModel.getActualInterest());
         this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         this.loanRepayStatus = loanRepayModel.getStatus();
-        this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
+        this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
         this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
     }
 

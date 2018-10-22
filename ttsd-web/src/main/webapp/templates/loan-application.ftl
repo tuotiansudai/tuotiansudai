@@ -56,14 +56,14 @@
                     <h3>抵押房产借款</h3>
                     <i class="icon-home"></i>
 
-                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="房抵" data-type="HOUSE">
+                    <p class="loan-btn loan-tip" data-holder="请填写房产信息（200字以内）" data-title="house" data-type="HOUSE">
                         我要借款</p>
                 </li>
                 <li class="car-loan-item">
                     <h3>抵押车辆借款</h3>
                     <i class="icon-car"></i>
 
-                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="车抵" data-type="VEHICLE">
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="car" data-type="VEHICLE">
                         我要借款</p>
                 </li>
             </ul>
@@ -144,48 +144,16 @@
         </div>
     </div>
     <input type="hidden" value="" id="pledgeType">
-    <div class="home-tip-group" id="homeTip">
-        <form action="#" method="post" class="loan-form" id="loanForm">
-            <div class="form-input-item">
-                <input type="text" class="int-item" name="userName" id="userName" value="${userName!}" readonly/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item" name="userPhone" id="userPhone" value="${mobile!}" readonly/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item area-bg" name="placeText" id="placeText" value="北京"
-                       placeholder="请选择城市" data-value="BEI_JING" readonly/>
-                <ul class="area-list-group">
-                    <#list regions as region>
-                        <li data-value="${region}">${region.description}</li>
-                    </#list>
-                </ul>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item input-box" name="moneyText" id="moneyText"
-                       placeholder="请输入借款金额（万元）"/>
-            </div>
-            <div class="form-input-item">
-                <input type="text" class="int-item input-box" name="monthText" id="monthText" placeholder="请输入借款周期（月）"/>
-            </div>
-            <div class="form-input-item">
-                <textarea class="int-item input-box" placeholder="请填写房产信息（200字以内）" id="infoText"
-                          name="infoText"></textarea>
-            </div>
-            <div class="error-box"></div>
-            <div class="form-input-item text-c">
-                <input type="submit" class="submit-btn" value="提交申请" />
-            </div>
-        </form>
-    </div>
+    <input type="hidden" name="userName" id="userName" value="${userName!}" />
     <div class="is-user" id="isUser">
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
         <p><a href="/register/account#loan">实名认证</a></p>
     </div>
-    <div class="success-tip" id="successTip">
-        <p class="tip-text">提交成功！</p>
-        <p>亲的借款申请已经提交，我们会尽快处理，<br />请您保持电话畅通哦~</p>
-        <p><a href="javascript:void(0)" class="close-btn">确定</a></p>
+    <div class="risk-tip" id="riskTip">
+        <p class="tip-text">风险提示！</p>
+        <p>您将通过拓天速贷平台进行借款，平台仅提供<br/>信息中介服务，借款过程中的风险由您自行承担。</p>
+        <p class="risk-revelation-wrapper"><input type="checkbox" class="risk-checkbox"/><span class="risk-text">我已查看<a href="${commonStaticServer}/images/pdf/loaner-risk-disclosure.pdf" target="_blank" class="risk-revelation">《风险揭示书》</a></span></p>
+        <p><div class="risk-confirm-btn disabled" id="risk-confirm-btn">确定</div></p>
     </div>
 </div>
 <#include "component/login-tip.ftl" />

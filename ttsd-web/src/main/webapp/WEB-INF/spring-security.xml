@@ -116,6 +116,7 @@
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
+        <intercept-url pattern="/loan-application/borrow-apply" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
         <intercept-url pattern="/contract/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>

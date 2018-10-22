@@ -2,10 +2,14 @@ package com.tuotiansudai.util;
 
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 public class IdentityNumberValidator {
 
@@ -31,6 +35,44 @@ public class IdentityNumberValidator {
      */
     private static String[] Wi = {
             "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"};
+
+    private static final Map<String, String> IDENTITY_CARD_CITY = Maps.newHashMap(ImmutableMap.<String, String>builder()
+            .put("11", "北京")
+            .put("12", "天津")
+            .put("13", "河北")
+            .put("14", "山西")
+            .put("15", "内蒙古")
+            .put("21", "辽宁")
+            .put("22", "吉林")
+            .put("23", "黑龙江")
+            .put("31", "上海")
+            .put("32", "江苏")
+            .put("33", "浙江")
+            .put("34", "安徽")
+            .put("35", "福建")
+            .put("36", "江西")
+            .put("37", "山东")
+            .put("41", "河南")
+            .put("42", "湖北")
+            .put("43", "湖南")
+            .put("44", "广东")
+            .put("45", "广西")
+            .put("46", "海南")
+            .put("50", "重庆")
+            .put("51", "四川")
+            .put("52", "贵州")
+            .put("53", "云南")
+            .put("54", "西藏")
+            .put("61", "陕西")
+            .put("62", "甘肃")
+            .put("63", "青海")
+            .put("64", "宁夏")
+            .put("65", "新疆")
+            .put("71", "台湾")
+            .put("81", "香港")
+            .put("82", "澳门")
+            .put("91", "国外")
+            .build());
 
     public static boolean validateIdentity(String idCard) {
         if (idCard.length() != CHINA_ID_MIN_LENGTH && idCard.length() != CHINA_ID_MAX_LENGTH) {
@@ -112,5 +154,59 @@ public class IdentityNumberValidator {
             String code18 = idCard.substring(0, 6) + sYear + idCard.substring(8);
             return code18 + countCode18(code18);
         }
+    }
+
+    /**
+     * 根据18位身份证 和15位身份证号 获取年龄
+     *
+     * @param cardNumber
+     * @param defaultValue
+     * @return
+     */
+    public static int getAgeByIdentityCard(String cardNumber, int defaultValue) {
+        if (cardNumber == null) {
+            return defaultValue;
+        }
+        int length = cardNumber.trim().length();
+        Calendar calendar = Calendar.getInstance();
+        if (length == 18) {
+            String bornYear = cardNumber.substring(6, 10);
+            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
+        }
+        if (length == 15) {
+            String bornYear = "19" + cardNumber.substring(6, 8);
+            return calendar.get(Calendar.YEAR) - Integer.parseInt(bornYear);
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 根据18位和15位身份证号获取性别
+     *
+     * @param cardNumber
+     * @param defaultValue
+     * @return
+     */
+    public static String getSexByIdentityCard(String cardNumber, String defaultValue) {
+        if (cardNumber == null) {
+            return defaultValue;
+        }
+        int length = cardNumber.trim().length();
+        if (length == 18) {
+            String sexNum = cardNumber.substring(16, 17);
+            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
+        }
+        if (length == 15) {
+            String sexNum = cardNumber.substring(14);
+            return Integer.parseInt(sexNum) % 2 == 0 ? "FEMALE" : "MALE";
+        }
+        return defaultValue;
+    }
+
+    public static String getCityByIdentityCard(String cardNumber){
+        if (Strings.isNullOrEmpty(cardNumber)){
+            return null;
+        }
+        return IDENTITY_CARD_CITY.get(cardNumber.substring(0, 2));
     }
 }

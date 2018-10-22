@@ -50,7 +50,7 @@ public class InvestorInvestPaginationItemDataDto {
         this.status = investModel.getStatus().getDescription();
         this.nextRepayDate = investRepayModel != null ? investRepayModel.getRepayDate() : null;
         this.nextRepayAmount = AmountConverter.convertCentToString(investRepayModel != null ?
-                investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee() : 0);
+                investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest() - investRepayModel.getExpectedFee() : 0);
         this.userCoupons = userCouponDtoList;
         if (investModel.getAchievements() != null && investModel.getAchievements().size() > 0) {
             this.achievement =  new Ordering<InvestAchievement>() {

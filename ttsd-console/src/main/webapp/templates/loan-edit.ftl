@@ -41,11 +41,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户:</label>
+                    <label class="col-sm-2 control-label">权证人:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="代理用户不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="权证人不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -207,7 +207,7 @@
                         <div class='input-group date' id='fundraisingEndTime'>
                             <input name="fundraisingEndTime" type='text' class="form-control" datatype="date" errormsg="筹款截止时间需要正确填写"
                                    value="${(loan.loan.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["WAITING_VERIFY", "PREHEAT", "RAISING", "RECHECK"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
