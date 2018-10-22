@@ -113,25 +113,37 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             useCurrent: false
 
         });
+
         fundraisingStartTimeElement.on("dp.change", function (e) {
-            fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date());
-            var end = new Date(e.date);
-            end.setDate(end.getDate()+7);
-            fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
-            fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(e.date).getTime() ? new Date() : e.date );
-            $("input[name='fundraisingEndTime']").val("");
+            fundraisingEndTimeElement.data("DateTimePicker").minDate(e.date);
+        });
+        fundraisingEndTimeElement.on("dp.change", function (e) {
+            fundraisingStartTimeElement.data("DateTimePicker").maxDate(e.date);
+        });
+
+        $("input[name='fundraisingStartTime']").on('blur', function(){
+            var startTime = $("input[name='fundraisingStartTime']").val();
+            var endTime = $("input[name='fundraisingEndTime']").val();
+
+            if ($("input[name='status']").val() === 'WAITING_VERIFY' && startTime && endTime) {
+                var startPlusSeven = new Date(startTime);
+                startPlusSeven.setDate(startPlusSeven.getDate()+7);
+                if (new Date(endTime).getTime() > startPlusSeven.getTime()){
+                    alert("筹款启动时间与筹款截止时间不能超过7天");
+                    $("input[name='fundraisingStartTime']").val("");
+                }
+            }
         });
 
         $("input[name='fundraisingEndTime']").on('blur', function(){
             var startTime = $("input[name='fundraisingStartTime']").val();
             var endTime = $("input[name='fundraisingEndTime']").val();
-            if (startTime !== null && startTime !==''){
-                var afterSevenDay = new Date(startTime);
-                afterSevenDay.setDate(afterSevenDay.getDate()+7);
-                if (new Date(endTime).getTime() - afterSevenDay.getTime() > 0){
-                    $("input[name='fundraisingEndTime']").val("");
-                }
-                if (new Date(endTime).getTime() < new Date(startTime).getTime()){
+
+            if ($("input[name='status']").val() === 'WAITING_VERIFY' && startTime && endTime) {
+                var startPlusSeven = new Date(startTime);
+                startPlusSeven.setDate(startPlusSeven.getDate()+7);
+                if (new Date(endTime).getTime() > startPlusSeven.getTime()){
+                    alert("筹款启动时间与筹款截止时间不能超过7天");
                     $("input[name='fundraisingEndTime']").val("");
                 }
             }
@@ -141,22 +153,6 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         deadlineElement.datetimepicker({
             format: 'YYYY-MM-DD'
         });
-
-        setFundraisingStartTime();
-        function setFundraisingStartTime(){
-            if ($("input[name='status']").val() === 'WAITING_VERIFY'){
-                var start = new Date();
-                start.setDate(start.getDate()-7);
-                fundraisingStartTimeElement.data("DateTimePicker").minDate(start);
-                var startTime = $("input[name='fundraisingStartTime']").val();
-                if (startTime !== null && startTime !=='') {
-                    var end = new Date(startTime);
-                    end.setDate(end.getDate()+7);
-                    fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(startTime).getTime() ? new Date() : startTime );
-                    fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
-                }
-            }
-        }
 
         //初始化数据
         $.get("/project-manage/loan/titles", function (data) {
