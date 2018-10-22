@@ -144,16 +144,17 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         setFundraisingStartTime();
         function setFundraisingStartTime(){
-            var start = new Date();
-            start.setDate(start.getDate()-7);
-            fundraisingStartTimeElement.data("DateTimePicker").minDate(start);
-
-            var startTime = $("input[name='fundraisingStartTime']").val();
-            if (startTime !== null && startTime !=='') {
-                var end = new Date(startTime);
-                end.setDate(end.getDate()+7);
-                fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(startTime).getTime() ? new Date() : startTime );
-                fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
+            if ($("input[name='status']").val() === 'WAITING_VERIFY'){
+                var start = new Date();
+                start.setDate(start.getDate()-7);
+                fundraisingStartTimeElement.data("DateTimePicker").minDate(start);
+                var startTime = $("input[name='fundraisingStartTime']").val();
+                if (startTime !== null && startTime !=='') {
+                    var end = new Date(startTime);
+                    end.setDate(end.getDate()+7);
+                    fundraisingEndTimeElement.data("DateTimePicker").minDate(new Date().getTime() > new Date(startTime).getTime() ? new Date() : startTime );
+                    fundraisingEndTimeElement.data("DateTimePicker").maxDate(end);
+                }
             }
         }
 

@@ -403,10 +403,6 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
         }
 
-        if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(new Date())) {
-            return new BaseDto<>(new BaseDataDto(false, "筹款截止时间不得晚于当前时间"));
-        }
-
         if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanCreateRequestDto.getLoan().getPledgeType())) {
             if (loanCreateRequestDto.getLoanerDetails() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "借款人信息不完整"));
