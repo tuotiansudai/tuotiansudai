@@ -628,7 +628,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() : 0;
+            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest() : 0;
         }
         return actualInterest;
     }
@@ -654,7 +654,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0;
+            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest(): 0;
         }
         return actualInterest;
     }
