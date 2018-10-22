@@ -108,8 +108,10 @@
                 <th>回款时间</th>
                 <th>期限</th>
                 <th>预期回款(元)</th>
+                <th>逾期收益(元)</th>
                 <th>实际收益(元)</th>
-                <th>服务费(元)</th>
+                <th>逾期服务费(元)</th>
+                <th>实际服务费(元)</th>
                 <th>实际回款(元)</th>
                 <th>推荐奖励</th>
                 <th>使用优惠(使用优惠信息／实际返款)</th>
@@ -138,7 +140,9 @@
                     <td>${(financeReportDto.repayTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${(financeReportDto.period)!}</td>
                     <td>${(financeReportDto.expectInterest)!}</td>
+                    <td>${(financeReportDto.overdueInterest)!}</td>
                     <td>${(financeReportDto.actualInterest)!}</td>
+                    <td>${(financeReportDto.overdueFee)!}</td>
                     <td>${(financeReportDto.fee)!}</td>
                     <td>${(financeReportDto.actualRepayAmount)!}</td>
                     <td>${(financeReportDto.recommendAmount)!}</td>

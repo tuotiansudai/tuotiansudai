@@ -28,7 +28,9 @@ public class FinanceReportDto {
     private Date repayTime; //回款时间  InvestRepayModel.repayDate
     private int period;  //期限    InvestRepayModel.period
     private String expectInterest; //预期收益
+    private String overdueInterest; //逾期收益
     private String actualInterest; //实际收益 InvestRepayModel.actualInterest
+    private String overdueFee;   //逾期服务费   InvestRepayModel.overdueFee
     private String fee;   //服务费   InvestRepayModel.actualFee
     private String actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
     private String recommendAmount;   //推荐奖励 InvestReferrerRewardModel.amount and InvestReferrerRewardModel.status = SUCCESS
@@ -64,6 +66,8 @@ public class FinanceReportDto {
         this.extraDetail = MessageFormat.format("{0,number,#.##}%", financeReportItemView.getExtraRate() * 100);
         this.extraActualInterest = AmountConverter.convertCentToString(financeReportItemView.getExtraAmount());
         this.expectInterest = AmountConverter.convertCentToString(financeReportItemView.getExpectInterest());
+        this.overdueInterest = AmountConverter.convertCentToString(financeReportItemView.getOverdueInterest());
+        this.overdueFee = AmountConverter.convertCentToString(financeReportItemView.getOverdueFee());
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -299,5 +303,21 @@ public class FinanceReportDto {
 
     public void setExpectInterest(String expectInterest) {
         this.expectInterest = expectInterest;
+    }
+
+    public String getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(String overdueInterest) {
+        this.overdueInterest = overdueInterest;
+    }
+
+    public String getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(String overdueFee) {
+        this.overdueFee = overdueFee;
     }
 }
