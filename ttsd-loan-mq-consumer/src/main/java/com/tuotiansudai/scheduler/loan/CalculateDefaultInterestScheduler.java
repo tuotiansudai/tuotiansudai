@@ -80,7 +80,7 @@ public class CalculateDefaultInterestScheduler {
                     TransferApplicationModel transferApplicationModel=transferApplicationMapper.findByInvestId(investModel.getId());
                     long tranfeeOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investModel.getAmount(), new DateTime(transferApplicationModel.getTransferTime()), new DateTime());
                     long defaultInterest=new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(overdueFee))
-                            .multiply(new BigDecimal(DateUtil.differenceDay(transferApplicationModel.getTransferTime(), new Date()) + 1L))
+                            .multiply(new BigDecimal(Days.daysBetween(new DateTime(transferApplicationModel.getTransferTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays()))
                             .setScale(0, BigDecimal.ROUND_DOWN).longValue();
                     overdueFeeValue=new BigDecimal(tranfeeOverdueInterest+defaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
 
