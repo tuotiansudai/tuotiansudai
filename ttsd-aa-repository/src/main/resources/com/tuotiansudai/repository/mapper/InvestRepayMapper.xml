@@ -21,6 +21,7 @@
         <result column="status" property="status"></result>
         <result column="product_type" property="productType"></result>
         <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
     </resultMap>
 
     <resultMap id="investRepayResultMap" type="InvestRepayModel">
@@ -40,6 +41,7 @@
         <result column="is_transferred" property="isTransferred"></result>
         <result column="transfer_status" property="transferStatus"></result>
         <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -57,6 +59,7 @@
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
         <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
         <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
             <id column="loan_id" property="id"/>
             <result column="name" property="name"></result>
@@ -89,7 +92,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time,overdue_interest
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time,overdue_interest,overdue_fee
     </sql>
 
     <insert id="create" parameterType="java.util.List">
@@ -99,7 +102,7 @@
             (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest},
             #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period},
             #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime},
-            now(),#{item.overdueInterest})
+            now(),#{item.overdueInterest},#{item.overdueFee})
         </foreach>
     </insert>
 
@@ -149,7 +152,8 @@
             repay_amount = #{repayAmount},
             status = #{status},
             updated_time = now(),
-            overdue_interest=#{overdueInterest}
+            overdue_interest=#{overdueInterest},
+            overdue_fee=#{overdueFee}
         where id = #{id}
     </update>
 

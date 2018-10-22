@@ -37,17 +37,19 @@ public class InvestRepayModel implements Serializable {
     private Date createdTime = new Date();
 
     private TransferStatus transferStatus;
-
+    //逾期罚息利息
     private long overdueInterest;
+    //逾期手续费
+    private long overdueFee;
 
     @Override
     public String toString() {
         return MessageFormat.format("id:{0} investId:{1} period:{2} corpus:{3} expectedInterest:{4} actualInterest:{5} " +
                         "defaultInterest:{6} expectedFee:{7} actualFee:{8} repayAmount:{9} repayDate:{10} actualRepayDate:{11} " +
-                        "status: {12} isTransferred:{13} createdTime:{14} transferStatus:{15} overdueInterest:{16}", this.id, this.investId,
+                        "status: {12} isTransferred:{13} createdTime:{14} transferStatus:{15} overdueInterest:{16} overdueFee:{17}", this.id, this.investId,
                 this.period, this.corpus, this.expectedInterest, this.actualInterest, this.defaultInterest, this.expectedFee,
                 this.actualFee, this.repayAmount, this.repayDate, this.actualRepayDate, this.status, this.isTransferred,
-                this.createdTime, this.transferStatus,this.overdueInterest);
+                this.createdTime, this.transferStatus,this.overdueInterest,this.overdueFee);
     }
 
     public InvestRepayModel() {
@@ -208,5 +210,13 @@ public class InvestRepayModel implements Serializable {
 
     public void setOverdueInterest(long overdueInterest) {
         this.overdueInterest = overdueInterest;
+    }
+
+    public long getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(long overdueFee) {
+        this.overdueFee = overdueFee;
     }
 }

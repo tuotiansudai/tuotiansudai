@@ -36,6 +36,8 @@ public class LatestInvestView implements Serializable{
 
     private long overdueInterest;
 
+    private long overdueFee;
+
     public Date getInvestTime() {
         return investTime;
     }
@@ -154,5 +156,13 @@ public class LatestInvestView implements Serializable{
 
     public void setOverdueInterest(long overdueInterest) {
         this.overdueInterest = overdueInterest;
+    }
+
+    public long getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(long overdueFee) {
+        this.overdueFee = overdueFee;
     }
 }
