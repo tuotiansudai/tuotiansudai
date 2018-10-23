@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.sumRate = transferApplicationRecordView.getSumRatePercent();
         this.baseRate = transferApplicationRecordView.getBaseRate()*100;
         this.activityRate = transferApplicationRecordView.getActivityRate()*100;
-        this.transferStatus = transferApplicationRecordView.getTransferStatus().name();
+        this.transferStatus = TransferStatus.getTransferStatus(transferApplicationRecordView.getTransferStatus()).name();
         this.applicationTime = transferApplicationRecordView.getApplicationTime();
         this.source = transferApplicationRecordView.getSource();
         this.transferInvestTime = transferApplicationRecordView.getTransferInvestTime();

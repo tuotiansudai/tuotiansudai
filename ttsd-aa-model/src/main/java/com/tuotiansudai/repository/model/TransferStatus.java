@@ -1,5 +1,10 @@
 package com.tuotiansudai.repository.model;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
+import java.util.HashMap;
+
 public enum TransferStatus {
     TRANSFERABLE("申请转让"),
     OVERDUE_TRANSFERABLE("逾期申请转让"),
@@ -22,6 +27,19 @@ public enum TransferStatus {
 
     TransferStatus(String description) {
         this.description = description;
+    }
+
+    public static TransferStatus getTransferStatus(TransferStatus transferStatus){
+        HashMap transferStatusMap =  Maps.newHashMap(ImmutableMap.<TransferStatus, TransferStatus>builder()
+                .put(TransferStatus.OVERDUE_TRANSFERABLE, TransferStatus.TRANSFERABLE)
+                .put(TransferStatus.OVERDUE_TRANSFERRING, TransferStatus.TRANSFERABLE)
+                .put(TransferStatus.OVERDUE_SUCCESS, TransferStatus.SUCCESS)
+                .build());
+
+        if (transferStatusMap.containsKey(transferStatus)){
+            return (TransferStatus) transferStatusMap.get(transferStatus);
+        }
+        return transferStatus;
     }
 
 }
