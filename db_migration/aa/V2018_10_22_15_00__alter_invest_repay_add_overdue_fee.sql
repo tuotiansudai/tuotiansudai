@@ -1,1 +1,2 @@
 ALTER table `invest_repay` ADD COLUMN `overdue_fee` BIGINT UNSIGNED  DEFAULT  0 after `expected_fee`;
+ALTER table `invest_repay` ADD COLUMN `default_fee` BIGINT UNSIGNED  DEFAULT  0 after `overdue_fee`;
