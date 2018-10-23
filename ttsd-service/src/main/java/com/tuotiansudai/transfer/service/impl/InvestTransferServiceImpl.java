@@ -139,12 +139,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     }
 
     @Override
-    public long calcultorTransferAmount(long investId){
+    public long calcultorTransferAmount(long investId) {
         InvestModel investModel = investMapper.findById(investId);
-        List<InvestRepayModel> investRepayModelList=investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+        List<InvestRepayModel> investRepayModelList = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         //如果是最后一期逾期
-        if(investRepayModelList.size() !=0 && investRepayModelList.get(investRepayModelList.size()-1).getStatus() == RepayStatus.OVERDUE){
-            return investModel.getAmount()+ investRepayModelList.stream().filter(item->{return item.getStatus() == RepayStatus.OVERDUE;}).mapToLong((item)->{return item.getExpectedInterest()+item.getDefaultInterest()+item.getOverdueInterest(); }).sum();
+        if (investRepayModelList.size() != 0 && investRepayModelList.get(investRepayModelList.size() - 1).getStatus() == RepayStatus.OVERDUE) {
+            return investModel.getAmount() + investRepayModelList.stream().filter(item -> item.getStatus() == RepayStatus.OVERDUE).mapToLong((item) -> item.getExpectedInterest() + item.getDefaultInterest() + item.getOverdueInterest()).sum();
         }
         return investModel.getAmount();
     }
@@ -158,12 +158,12 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest status({1}) is not SUCCESS", String.valueOf(investModel.getId()), investModel.getStatus()));
             return false;
         }
-        //新的转让价格可能大于本金
-//        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-//            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
-//                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
-//            return false;
-//        }
+        //转让价格大于等于本金
+        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
+            logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
+                    String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
+            return false;
+        }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanModel.getStatus() != LoanStatus.REPAYING) {
@@ -189,16 +189,16 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         LoanRepayModel loanRepayModel = investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ? loanRepayMapper.findLastLoanRepay(investModel.getLoanId()) : loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
+        long transferAmount = this.calcultorTransferAmount(investModel.getId());
         long transferFee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), investModel.getAmount(),
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferAmount,
                 transferFee, getDeadlineFromNow(), leftPeriod, transferApplicationDto.getSource());
 
         long interestFee = investRepayMapper.findByInvestId(investModel.getId())
                 .stream()
                 .filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE)
-                .mapToLong(model -> {
-                    return model.getExpectedFee() + model.getOverdueFee();
-                }).sum();
+                .mapToLong(model -> model.getExpectedFee() + model.getDefaultFee() + model.getOverdueFee()).sum();
+
         transferApplicationModel.setInterestFee(interestFee);
 
         transferApplicationMapper.create(transferApplicationModel);

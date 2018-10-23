@@ -197,7 +197,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         baseParam.setPlatform("Android");
         transferApplyRequestDto.setBaseParam(baseParam);
         transferApplyRequestDto.setTransferInvestId("123");
-        transferApplyRequestDto.setTransferAmount("99.50");
+        transferApplyRequestDto.setTransferAmount("100.00");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
@@ -236,7 +236,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         baseParam.setPlatform("Android");
         transferApplyRequestDto.setBaseParam(baseParam);
         transferApplyRequestDto.setTransferInvestId("123");
-        transferApplyRequestDto.setTransferAmount("99.50");
+        transferApplyRequestDto.setTransferAmount("100.00");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.TRANSFER_ALREADY_CANCELED_TODAY.getCode(), baseResponseDto.getCode());
 
