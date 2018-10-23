@@ -37,6 +37,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String identityNumber;
     private TransferStatus transferStatus;
     private RepayStatus lastPeriodRepayStatus;
+    private boolean isOverdueTransfer;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getInvestId();
@@ -64,6 +65,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.identityNumber = view.getIdentityNumber();
         this.transferStatus = view.getTransferStatus();
         this.lastPeriodRepayStatus = view.getLastPeriodRepayStatus();
+        this.isOverdueTransfer = view.isOverdueTransfer();
     }
 
     public void setCouponDetail(CouponModel couponModel) {
@@ -311,5 +313,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setLastPeriodRepayStatus(RepayStatus lastPeriodRepayStatus) {
         this.lastPeriodRepayStatus = lastPeriodRepayStatus;
+    }
+
+    public boolean isOverdueTransfer() {
+        return isOverdueTransfer;
+    }
+
+    public void setOverdueTransfer(boolean overdueTransfer) {
+        isOverdueTransfer = overdueTransfer;
     }
 }

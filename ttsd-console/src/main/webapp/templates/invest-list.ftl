@@ -92,10 +92,10 @@
 
         <div class="form-group">
             <label>是否允许转让</label>
-            <select class="selectpicker" name="transferStatus">
-                <option value="" <#if !transferStatus?? >selected</#if>>全部</option>
-                <option value="TRANSFERABLE" <#if transferStatus?? && transferStatus=='TRANSFERABLE' >selected</#if>>正常转让</option>
-                <option value="OVERDUE_TRANSFERABLE" <#if transferStatus?? && transferStatus=='OVERDUE_TRANSFERABLE' >selected</#if>>逾期转让</option>
+            <select class="selectpicker" name="transferType">
+                <option value="" <#if !transferType?? >selected</#if>>全部</option>
+                <option value="normalTransfer" <#if transferType?? && transferType=='normalTransfer' >selected</#if>>正常转让</option>
+                <option value="overdueTransfer" <#if transferType?? && transferType=='overdueTransfer' >selected</#if>>逾期转让</option>
             </select>
         </div>
 
@@ -158,9 +158,9 @@
                     <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
                     <td>${invest.investStatus}</td>
-                    <td><#if invest.transferStatus == 'OVERDUE_TRANSFERABLE'>
+                    <td><#if invest.overdueTransfer>
                             逾期转让
-                        <#elseif invest.transferStatus != 'NONTRANSFERABLE'>
+                        <#elseif !invest.overdueTransfer && invest.transferStatus != 'NONTRANSFERABLE'>
                             正常转让
                         <#else>
                             否
@@ -169,7 +169,7 @@
                             <#if invest.transferStatus == 'NONTRANSFERABLE'>
                                 <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
                                         data-investid="${invest.investId?string.computer}" data-warmprompt="是否确认允许该笔投资进行正常转让?">允许正常转让</button>
-                            <#elseif invest.transferStatus == 'TRANSFERABLE' && invest.lastPeriodRepayStatus?? && invest.lastPeriodRepayStatus == 'OVERDUE'>
+                            <#elseif !invest.overdueTransfer && invest.transferStatus == 'TRANSFERABLE' && invest.lastPeriodRepayStatus?? && invest.lastPeriodRepayStatus == 'OVERDUE'>
                                 <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
                                         data-investid="${invest.investId?string.computer}" data-warmprompt="是否确认允许该笔投资进行逾期转让?">允许逾期转让</button>
                             </#if>

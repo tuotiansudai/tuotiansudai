@@ -128,7 +128,7 @@ public interface InvestMapper {
                                    @Param(value = "investStatus") InvestStatus investStatus,
                                    @Param(value = "preferenceType") PreferenceType preferenceType,
                                    @Param(value = "productType") ProductType productType,
-                                   @Param(value = "transferStatus") TransferStatus transferStatus);
+                                   @Param(value = "transferType") String transferType);
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
@@ -140,7 +140,7 @@ public interface InvestMapper {
                                                         @Param(value = "investStatus") InvestStatus investStatus,
                                                         @Param(value = "preferenceType") PreferenceType preferenceType,
                                                         @Param(value = "productType") ProductType productType,
-                                                        @Param(value = "transferStatus") TransferStatus transferStatus,
+                                                        @Param(value = "transferType") String transferType,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize);
 
@@ -164,7 +164,7 @@ public interface InvestMapper {
                                 @Param(value = "investStatus") InvestStatus investStatus,
                                 @Param(value = "preferenceType") PreferenceType preferenceType,
                                 @Param(value = "productType") ProductType productType,
-                                @Param(value = "transferStatus") TransferStatus transferStatus);
+                                @Param(value = "transferType") String transferType);
 
     long sumInvestAmountRanking(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);

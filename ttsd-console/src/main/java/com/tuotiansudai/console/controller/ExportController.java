@@ -293,13 +293,13 @@ public class ExportController {
                               @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                              @RequestParam(name = "transferStatus", required = false) TransferStatus transferStatus,
+                              @RequestParam(name = "transferType", required = false) String transferType,
                               @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
-                role, startTime, endTime, investStatus, preferenceType, null, transferStatus, index, pageSize);
+                role, startTime, endTime, investStatus, preferenceType, null, transferType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());

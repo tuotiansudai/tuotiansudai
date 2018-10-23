@@ -36,6 +36,7 @@ public class InvestPaginationItemView implements Serializable {
     private String city;
     private String identityNumber;
     private TransferStatus transferStatus;
+    private boolean isOverdueTransfer;
     private RepayStatus lastPeriodRepayStatus;
 
     public List<Role> getInvestorRoleList() {
@@ -266,5 +267,13 @@ public class InvestPaginationItemView implements Serializable {
 
     public void setLastPeriodRepayStatus(RepayStatus lastPeriodRepayStatus) {
         this.lastPeriodRepayStatus = lastPeriodRepayStatus;
+    }
+
+    public boolean isOverdueTransfer() {
+        return isOverdueTransfer;
+    }
+
+    public void setOverdueTransfer(boolean overdueTransfer) {
+        isOverdueTransfer = overdueTransfer;
     }
 }
