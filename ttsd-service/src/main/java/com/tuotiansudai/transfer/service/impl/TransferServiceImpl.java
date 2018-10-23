@@ -220,7 +220,7 @@ public class TransferServiceImpl implements TransferService {
                 transferableInvestPaginationItemDataView.setLeftPeriod(1);
                 transferableInvestPaginationItemDataView.setLeftDays("0");
                 transferableInvestPaginationItemDataView.setNextRepayDate(overdueInvestRepayModels.get(overdueInvestRepayModels.size() - 1).getRepayDate());
-                transferableInvestPaginationItemDataView.setNextRepayAmount(AmountConverter.convertCentToString(overdueInvestRepayModels.stream().mapToLong(model-> model.getCorpus() + model.getExpectedInterest() + model.getOverdueInterest() - model.getExpectedFee()).sum()));
+                transferableInvestPaginationItemDataView.setNextRepayAmount(AmountConverter.convertCentToString(overdueInvestRepayModels.stream().mapToLong(model-> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
             }
             LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
             if (input.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanRepayModel != null) {

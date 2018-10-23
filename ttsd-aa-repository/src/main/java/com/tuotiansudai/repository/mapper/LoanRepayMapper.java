@@ -68,4 +68,6 @@ public interface LoanRepayMapper {
 
 
     List<LoanRepayModel> findOverdueLoanRepay();
+
+    LoanRepayModel findFirstOverdueRepayByLoanId(@Param(value = "loanId") long loanId);
 }

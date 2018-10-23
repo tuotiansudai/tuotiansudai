@@ -328,4 +328,13 @@
     <select id="findOverdueLoanRepay" resultMap="loanRepayResultMap">
         select * from loan_repay where status = 'OVERDUE' and loan_id != 1
     </select>
+
+    <select id="findFirstOverdueRepayByLoanId" resultMap="loanRepayResultMap" parameterType="map">
+        select * from loan_repay
+        where status = 'OVERDUE'
+              and loan_id = #{loanId}
+              and loan_repay.period = (select min(period)
+                                       from loan_repay future_repay
+                                       where future_repay.loan_id = #{loanId} and future_repay.status = 'OVERDUE')
+    </select>
 </mapper>
