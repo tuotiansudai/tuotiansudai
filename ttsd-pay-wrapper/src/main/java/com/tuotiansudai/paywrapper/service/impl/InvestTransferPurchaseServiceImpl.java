@@ -33,8 +33,10 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,9 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchaseService {
@@ -97,6 +97,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Value("${pay.overdue.fee}")
+    private double overdueFee;
 
     @Override
     public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
@@ -355,7 +358,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         this.transferFee(transferInvestModel, transferApplicationModel);
 
         this.sendMessage(transferApplicationModel);
-        this.sendLoanerMessage(investModel,transferApplicationModel);
+        this.sendLoanerMessage(investModel, transferApplicationModel);
     }
 
 
@@ -450,7 +453,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }));
 
         List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
-        for (InvestRepayModel transferrerTransferredInvestRepayModel : transferrerTransferredInvestRepayModels) {
+        //
+        Collections.sort(transferrerTransferredInvestRepayModels, (o1, o2) -> {
+            return o1.getPeriod() - o2.getPeriod();
+        });
+        for (int i = 0; i < transferrerTransferredInvestRepayModels.size(); i++) {
+            InvestRepayModel transferrerTransferredInvestRepayModel = transferrerTransferredInvestRepayModels.get(i);
             long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(IdGenerator.generate(),
                     investId,
@@ -460,9 +468,20 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     expectedFee,
                     transferrerTransferredInvestRepayModel.getRepayDate(),
                     transferrerTransferredInvestRepayModel.getStatus());
-            //新增逾期罚息
-            transfereeInvestRepayModel.setOverdueInterest(transferrerTransferredInvestRepayModel.getOverdueInterest());
-            transfereeInvestRepayModel.setDefaultInterest(transferrerTransferredInvestRepayModel.getDefaultInterest());
+            //不是最后一期逾期不让转让，因为每天定时任务计算罚息，如果申请项目 多天没有转出来，利息属于最终承让人
+            if (i == (transferrerTransferredInvestRepayModels.size() - 1) && transferrerTransferredInvestRepayModel.getStatus() == RepayStatus.OVERDUE) {
+                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+                //逾期利息
+                long overdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investModel.getAmount(), new DateTime(transferApplicationModel.getApplicationTime()), new DateTime());
+                long overdueFeeValue = new BigDecimal(overdueInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+                transfereeInvestRepayModel.setOverdueInterest(overdueInterest);
+                transfereeInvestRepayModel.setOverdueFee(overdueFeeValue);
+                //逾期罚息，罚息和手续费要计算到第一期中
+                long investRepayDefaultInterest = InterestCalculator.calculateLoanInterest(overdueFee, investModel.getAmount(), new DateTime(transferApplicationModel.getApplicationTime()), new DateTime());
+                long investRepayDefaultFee = new BigDecimal(investRepayDefaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+                transfereeInvestRepayModels.get(0).setDefaultInterest(investRepayDefaultInterest);
+                transfereeInvestRepayModels.get(0).setDefaultFee(investRepayDefaultFee);
+            }
             //
             transferrerTransferredInvestRepayModel.setExpectedInterest(0);
             transferrerTransferredInvestRepayModel.setExpectedFee(0);
@@ -620,17 +639,29 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     private void sendLoanerMessage(InvestModel investModel, TransferApplicationModel transferApplicationModel) {
         //转让成功，发送给借款人消息
-        try{
+        try {
             String title = MessageEventType.TRANSFER_SUCCESS_LOANER.getTitleTemplate();
-            LoanModel loanModel=loanMapper.findById(investModel.getLoanId());
-            String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS_LOANER.getContentTemplate(), loanModel.getName(),userMapper.findByLoginName(transferApplicationModel.getLoginName()).getUserName(),AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()),userMapper.findByLoginName(investModel.getLoginName()).getUserName());
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            String content = MessageFormat.format(MessageEventType.TRANSFER_SUCCESS_LOANER.getContentTemplate(), loanModel.getName(), userMapper.findByLoginName(transferApplicationModel.getLoginName()).getUserName(), AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()), userMapper.findByLoginName(investModel.getLoginName()).getUserName());
             mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.TRANSFER_SUCCESS_LOANER,
                     Lists.newArrayList(loanModel.getAgentLoginName()),
                     title,
                     content,
                     transferApplicationModel.getId()));
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        Collections.sort(list, (o1, o2) -> {
+            return o1 - o2;
+        });
+        list.forEach(item -> {
+            System.out.println(item);
+        });
     }
 }
