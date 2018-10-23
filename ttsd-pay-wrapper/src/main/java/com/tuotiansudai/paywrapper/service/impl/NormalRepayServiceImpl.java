@@ -641,7 +641,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualFee = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedFee() : 0;
+            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? (investRepayModel.getExpectedFee()+investRepayModel.getOverdueFee()+investRepayModel.getDefaultFee()) : 0;
         }
         return actualFee;
     }
