@@ -209,7 +209,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         transferApplicationMapper.create(transferApplicationModel);
 
-        investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
+        investMapper.updateTransferStatus(investModel.getId(), investModel.getTransferStatus() == TransferStatus.TRANSFERABLE ? TransferStatus.TRANSFERRING : TransferStatus.OVERDUE_TRANSFERRING);
 
         this.investTransferApplyJob(transferApplicationModel);
 

@@ -3,6 +3,8 @@ package com.tuotiansudai.repository.model;
 public enum TransferStatus {
     TRANSFERABLE("申请转让"),
     OVERDUE_TRANSFERABLE("逾期申请转让"),
+    OVERDUE_TRANSFERRING("逾期转让中"),
+    OVERDUE_SUCCESS("逾期已转让"),
     TRANSFERRING("转让中"),
     SUCCESS("已转让"),
     CANCEL("取消转让"),

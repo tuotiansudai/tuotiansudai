@@ -110,7 +110,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+        if (transferApplicationModel == null || Lists.newArrayList(TransferStatus.TRANSFERRING, TransferStatus.OVERDUE_TRANSFERRING).contains(transferApplicationModel.getStatus())) {
             payDataDto.setMessage("该项目已转让，请购买其他项目");
             return baseDto;
         }
@@ -173,7 +173,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         dto.setData(payFormDataDto);
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferApplicationId()));
 
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+        if (transferApplicationModel == null || Lists.newArrayList(TransferStatus.TRANSFERRING, TransferStatus.OVERDUE_TRANSFERRING).contains(transferApplicationModel.getStatus())) {
             payFormDataDto.setMessage("该项目已转让，请购买其他项目");
             return dto;
         }
@@ -328,7 +328,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferee balance and user bill", String.valueOf(investId)));
 
         // update transferrer invest transfer status
-        investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
+        investMapper.updateTransferStatus(transferInvestModel.getId(), transferInvestModel.getTransferStatus() == TransferStatus.TRANSFERRING ? TransferStatus.SUCCESS : TransferStatus.OVERDUE_SUCCESS);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferrer invest transfer status to SUCCESS", String.valueOf(investId)));
 
         // update extra invest rate
@@ -340,7 +340,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
         // update transfer application
         transferApplicationModel.setInvestId(investModel.getId());
-        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setStatus(transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING ? TransferStatus.SUCCESS : TransferStatus.OVERDUE_SUCCESS);
         transferApplicationModel.setTransferTime(investModel.getCreatedTime());
         transferApplicationMapper.update(transferApplicationModel);
         logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transfer application", String.valueOf(investId)));
@@ -532,14 +532,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             return;
         }
 
-        List<TransferApplicationModel> transferredTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS));
+        List<TransferApplicationModel> transferredTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.OVERDUE_SUCCESS));
         if (!transferredTransferApplications.isEmpty() && transferredTransferApplications.get(0).getInvestId() != investId) {
             logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
             this.overInvestPaybackProcess(transferredTransferApplications.get(0), investId);
             return;
         }
 
-        List<TransferApplicationModel> transferringTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
+        List<TransferApplicationModel> transferringTransferApplications = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING, TransferStatus.OVERDUE_TRANSFERRING));
         if (CollectionUtils.isEmpty(transferringTransferApplications)) {
             logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer(transferring) is not exist", String.valueOf(investId)));
             return;
