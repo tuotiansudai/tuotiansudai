@@ -127,13 +127,17 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         Date expiredDate = new DateTime().plusDays(transferRuleModel.getDaysLimit() + 1).withTimeAtStartOfDay().toDate();
         long transferFee = TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel);
+        long interestFee = investRepayMapper.findByInvestId(investModel.getId())
+                .stream()
+                .filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE)
+                .mapToLong(model -> model.getExpectedFee() + model.getDefaultFee() + model.getOverdueFee()).sum();
         double transferFeeRate = TransferRuleUtil.getTransferFeeRate(loanModel.getType(), loanModel.getRecheckTime(), investModel.getCreatedTime(), transferRuleModel);
         long transferAmountLower = new BigDecimal(1 - transferRuleModel.getDiscount()).multiply(new BigDecimal(investModel.getAmount())).setScale(0, BigDecimal.ROUND_UP).longValue();
         int holdDays = TransferRuleUtil.getInvestHoldDays(loanModel.getType(), loanModel.getRecheckTime(), investModel.getCreatedTime());
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(investModel.getLoginName());
 
-        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
+        return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee + interestFee, expiredDate, holdDays,
                 anxinProp != null && anxinProp.isAnxinUser(),
                 anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus(),calcultorTransferAmount(investId));
     }
@@ -159,7 +163,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
         //转让价格大于等于本金
-        if (investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
+        if (investModel.getAmount() > transferApplicationDto.getTransferAmount()) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] invest amount({1}) is less than transfer amount({2})",
                     String.valueOf(investModel.getId()), String.valueOf(investModel.getAmount()), String.valueOf(transferApplicationDto.getTransferAmount())));
             return false;
