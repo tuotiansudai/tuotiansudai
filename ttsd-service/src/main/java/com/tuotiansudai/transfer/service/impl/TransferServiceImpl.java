@@ -293,7 +293,7 @@ public class TransferServiceImpl implements TransferService {
         }
         transferApplicationDetailDto.setCountdown(countdown);
         transferApplicationDetailDto.setBeforeDeadLine(beforeDeadLine);
-        transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
+        transferApplicationDetailDto.setTransferStatus(TransferStatus.getTransferStatus(transferApplicationModel.getStatus()));
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId()));
         long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
