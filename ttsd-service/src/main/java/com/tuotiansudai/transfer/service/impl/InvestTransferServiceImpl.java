@@ -96,7 +96,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return dto;
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE){
+        if (investModel.isOverdueTransfer()){
             dto.getData().setStatus(true);
             return dto;
         }
@@ -170,7 +170,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERABLE && loanModel.getStatus() != LoanStatus.REPAYING) {
+        if (!investModel.isOverdueTransfer() && loanModel.getStatus() != LoanStatus.REPAYING) {
             logger.error(MessageFormat.format("[Transfer Apply {0}] loan status is not REPAYING", String.valueOf(investModel.getId())));
             return false;
         }
@@ -190,7 +190,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        LoanRepayModel loanRepayModel = investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ?
+        LoanRepayModel loanRepayModel = investModel.isOverdueTransfer() ?
                 loanRepayMapper.findFirstOverdueRepayByLoanId(investModel.getLoanId())
                 : loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
@@ -209,7 +209,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         transferApplicationMapper.create(transferApplicationModel);
 
-        investMapper.updateTransferStatus(investModel.getId(), investModel.getTransferStatus() == TransferStatus.TRANSFERABLE ? TransferStatus.TRANSFERRING : TransferStatus.OVERDUE_TRANSFERRING);
+        investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
 
         this.investTransferApplyJob(transferApplicationModel);
 
@@ -224,16 +224,14 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     @Override
     public boolean cancelTransferApplicationManually(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (transferApplicationModel == null || Lists.newArrayList(TransferStatus.TRANSFERRING, TransferStatus.OVERDUE_TRANSFERRING).contains(transferApplicationModel.getStatus())) {
+        if (transferApplicationModel == null || TransferStatus.TRANSFERRING != transferApplicationModel.getStatus()) {
             return false;
         }
 
         transferApplicationModel.setStatus(TransferStatus.CANCEL);
         transferApplicationMapper.update(transferApplicationModel);
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
-        boolean isOverdueTransfer = investRepayModels.get(investRepayModels.size() - 1).getRepayDate().before(transferApplicationModel.getApplicationTime());
-        investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), isOverdueTransfer ? TransferStatus.OVERDUE_TRANSFERABLE : TransferStatus.TRANSFERABLE);
+        investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
 
         return true;
     }
@@ -291,7 +289,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE){
+        if (investModel.isOverdueTransfer()){
             return true;
         }
 

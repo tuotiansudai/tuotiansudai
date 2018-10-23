@@ -105,8 +105,12 @@ public class ConsoleInvestService {
         InvestModel investModel = investMapper.findById(investId);
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         RepayStatus lastPeriodRepayStatus = investRepayModels.get(investRepayModels.size() - 1).getStatus();
-        investMapper.updateTransferStatus(investId, investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE ?
-                TransferStatus.TRANSFERABLE : investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && lastPeriodRepayStatus == RepayStatus.OVERDUE ? TransferStatus.OVERDUE_TRANSFERABLE : investModel.getTransferStatus());
+        if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE){
+            investMapper.updateTransferStatus(investId, TransferStatus.TRANSFERABLE);
+        }
+        if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && lastPeriodRepayStatus == RepayStatus.OVERDUE){
+
+        }
         return true;
     }
 }

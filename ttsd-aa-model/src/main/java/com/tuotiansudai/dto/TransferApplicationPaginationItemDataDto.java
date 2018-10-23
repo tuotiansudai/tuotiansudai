@@ -51,7 +51,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.sumRate = transferApplicationRecordView.getSumRatePercent();
         this.baseRate = transferApplicationRecordView.getBaseRate()*100;
         this.activityRate = transferApplicationRecordView.getActivityRate()*100;
-        this.transferStatus = TransferStatus.getTransferStatus(transferApplicationRecordView.getTransferStatus()).name();
+        this.transferStatus = transferApplicationRecordView.getTransferStatus().name();
         this.applicationTime = transferApplicationRecordView.getApplicationTime();
         this.source = transferApplicationRecordView.getSource();
         this.transferInvestTime = transferApplicationRecordView.getTransferInvestTime();

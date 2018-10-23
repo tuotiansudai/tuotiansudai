@@ -131,11 +131,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationDto.getTransferInvestId());
 
-        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERRING && transferAmount != investModel.getAmount()){
+        if (!investModel.isOverdueTransfer() && transferAmount != investModel.getAmount()){
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_IS_CORPUS);
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERRING && transferAmount <= investModel.getAmount()){
+        if (!investModel.isOverdueTransfer() && transferAmount <= investModel.getAmount()){
             return new BaseResponseDto(ReturnMessage.TRANSFER_UPGRADE_APP);
         }
 
@@ -143,11 +143,11 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
         }
 
-        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERRING && loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE) {
+        if (!investModel.isOverdueTransfer() && loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), ReturnMessage.TRANSFER_IS_OVERDUE.getMsg());
         }
 
-        if (investModel.getTransferStatus() != TransferStatus.OVERDUE_TRANSFERRING && !investTransferService.validTransferIsDayLimit(investModel.getLoanId())) {
+        if (!investModel.isOverdueTransfer() && !investTransferService.validTransferIsDayLimit(investModel.getLoanId())) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), ReturnMessage.TRANSFER_IMPEND_REPAYING.getMsg());
         }
 

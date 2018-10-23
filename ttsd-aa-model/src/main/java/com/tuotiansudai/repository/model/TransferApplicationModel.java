@@ -52,7 +52,7 @@ public class TransferApplicationModel implements Serializable {
         this.investAmount = transferInvestModel.getAmount();
         this.transferAmount = transferAmount;
         this.transferFee = transferFee;
-        this.status = transferInvestModel.getTransferStatus() == TransferStatus.TRANSFERABLE ? TransferStatus.TRANSFERRING : TransferStatus.OVERDUE_TRANSFERRING;
+        this.status = transferInvestModel.getTransferStatus();
         this.deadline = deadline;
         this.applicationTime = new Date();
         this.leftPeriod = leftPeriod;

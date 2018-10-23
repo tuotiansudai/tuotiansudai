@@ -1,0 +1,1 @@
+ALTER table `invest` ADD COLUMN `is_overdue_transfer` TINYINT(1)  DEFAULT 0 ;

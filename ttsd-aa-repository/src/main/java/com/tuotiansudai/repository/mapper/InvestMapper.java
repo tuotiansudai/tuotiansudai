@@ -342,4 +342,6 @@ public interface InvestMapper {
     List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
 
     long sumUsedFund(@Param(value = "loginName")String loginName);
+
+    void updateIsOverdueTransfer(@Param(value = "investId") long investId);
 }

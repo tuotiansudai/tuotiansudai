@@ -25,6 +25,7 @@
         <result column="achievements" property="achievements"
                 typeHandler="com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler"/>
         <result column="invest_fee_rate" property="investFeeRate"/>
+        <result column="is_overdue_transfer" property="isOverdueTransfer"/>
     </resultMap>
 
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView">
@@ -81,6 +82,7 @@
         <result column="base_rate" property="baseRate"></result>
         <result column="activity_rate" property="activityRate"></result>
         <result column="transfer_status" property="transferStatus"></result>
+        <result column="is_overdue_transfer" property="isOverdueTransfer"></result>
 
     </resultMap>
 
@@ -803,6 +805,7 @@
         invest.amount ,
         invest.created_time,
         invest.transfer_status,
+        invest.is_overdue_transfer,
         loan.name as loan_name,
         loan.base_rate,
         loan.activity_rate,
@@ -832,7 +835,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -866,7 +869,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -889,6 +892,7 @@
         invest.amount,
         invest.status,
         invest.transfer_status,
+        invest.is_overdue_transfer,
         invest.source,
         invest.is_auto_invest,
         invest.created_time,
@@ -908,7 +912,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -942,7 +946,7 @@
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
         AND
-            ((invest.transfer_status = 'OVERDUE_TRANSFERABLE' and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
             OR
             (loan.status = 'REPAYING'
             AND invest.transfer_status = 'TRANSFERABLE'
@@ -1271,4 +1275,8 @@
         AND transfer_status !='SUCCESS'
         AND login_name=#{loginName}
     </select>
+
+    <update id="updateIsOverdueTransfer" parameterType="map">
+        update invest set is_overdue_transfer = 1 where id = #{investId}
+    </update>
 </mapper>
