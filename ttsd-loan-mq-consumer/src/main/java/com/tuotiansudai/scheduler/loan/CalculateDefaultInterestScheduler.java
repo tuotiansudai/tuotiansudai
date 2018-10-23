@@ -83,6 +83,7 @@ public class CalculateDefaultInterestScheduler {
             }
             long overdueFeeValue = new BigDecimal(overdueInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
             investRepayModel.setOverdueFee(overdueFeeValue);
+            logger.info(MessageFormat.format("[calculate overdue interest]investRepayModelId:{0},overdueInterest:{1},overdueFeeValue:{2}", investRepayModel.getId(),overdueFeeValue,overdueFeeValue));
             investRepayMapper.update(investRepayModel);
         }
         long repayOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), loanModel.getLoanAmount(), new DateTime(loanRepayModel.getRepayDate()), new DateTime());
