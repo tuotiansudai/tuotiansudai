@@ -135,7 +135,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_IS_CORPUS);
         }
 
-        if (!investModel.isOverdueTransfer() && transferAmount <= investModel.getAmount()){
+        if (investModel.isOverdueTransfer() && transferAmount <= investModel.getAmount()){
             return new BaseResponseDto(ReturnMessage.TRANSFER_UPGRADE_APP);
         }
 
