@@ -208,7 +208,7 @@
         loan l on ta.loan_id = l.id
         <where>
             <if test="transferStatus == null || transferStatus.size == 0">
-                and ta.status in ('SUCCESS','TRANSFERRING')
+                and ta.status in ('SUCCESS','TRANSFERRING','OVERDUE_TRANSFERRING')
             </if>
             <if test="transferStatus != null and transferStatus.size != 0">
                 and ta.status in
@@ -231,8 +231,8 @@
             </if>
         </where>
         order by
-        CASE ta.status WHEN 'TRANSFERRING' THEN '1' WHEN 'SUCCESS' THEN '2' ELSE '3' END,
-        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time ELSE ta.transfer_time END desc
+        CASE ta.status WHEN 'TRANSFERRING' THEN '1' WHEN 'OVERDUE_TRANSFERRING' THEN '1' WHEN 'SUCCESS' THEN '2' ELSE '3' END,
+        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time WHEN 'OVERDUE_TRANSFERRING' THEN ta.application_time ELSE ta.transfer_time END desc
         limit #{index}, #{pageSize}
     </select>
 
@@ -243,7 +243,7 @@
         <where>
 
             <if test="transferStatus == null || transferStatus.size == 0">
-                and ta.status in ('SUCCESS','TRANSFERRING')
+                and ta.status in ('SUCCESS','TRANSFERRING','OVERDUE_TRANSFERRING')
             </if>
             <if test="transferStatus != null and transferStatus.size != 0">
                 and ta.status in

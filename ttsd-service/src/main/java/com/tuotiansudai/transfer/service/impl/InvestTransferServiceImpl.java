@@ -224,7 +224,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
     @Override
     public boolean cancelTransferApplicationManually(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+        if (transferApplicationModel == null || Lists.newArrayList(TransferStatus.TRANSFERRING, TransferStatus.OVERDUE_TRANSFERRING).contains(transferApplicationModel.getStatus())) {
             return false;
         }
 
