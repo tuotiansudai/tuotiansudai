@@ -364,16 +364,18 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         // transfer fee
         long transferFee = transferApplicationModel.getTransferFee();
 
+        long interestFee = transferApplicationModel.getInterestFee();
+
         try {
             ProjectTransferRequestModel feeRequestModel = ProjectTransferRequestModel.newRepayTransferFeeRequest(String.valueOf(transferInvestModel.getLoanId()),
                     MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(transferApplicationId), String.valueOf(new Date().getTime())),
-                    String.valueOf(transferFee));
+                    String.valueOf(transferFee + interestFee));
 
             ProjectTransferResponseModel feeResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, feeRequestModel, ProjectTransferResponseModel.class);
             if (feeResponseModel.isSuccess()) {
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
-                        transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
+                        transferApplicationId, transferFee + interestFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
                 mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
@@ -391,8 +393,10 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         // transfer fee
         long transferFee = transferApplicationModel.getTransferFee();
 
+        long interestFee = transferApplicationModel.getInterestFee();
+
         // transferrer payback amount
-        long paybackAmount = transferApplicationModel.getTransferAmount() - transferFee;
+        long paybackAmount = transferApplicationModel.getTransferAmount() - transferFee - interestFee;
 
         try {
             ProjectTransferRequestModel paybackRequestModel = ProjectTransferRequestModel.newInvestTransferPaybackRequest(String.valueOf(transferInvestModel.getLoanId()),
@@ -403,7 +407,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
                 AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
+                AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee + interestFee, UserBillBusinessType.TRANSFER_FEE, null, null);
                 inAtm.setNext(outAtm);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
