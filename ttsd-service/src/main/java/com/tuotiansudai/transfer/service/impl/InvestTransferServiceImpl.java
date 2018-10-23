@@ -193,6 +193,14 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), investModel.getAmount(),
                 transferFee, getDeadlineFromNow(), leftPeriod, transferApplicationDto.getSource());
 
+        long interestFee = investRepayMapper.findByInvestId(investModel.getId())
+                .stream()
+                .filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE)
+                .mapToLong(model -> {
+                    return model.getExpectedFee() + model.getOverdueFee();
+                }).sum();
+        transferApplicationModel.setInterestFee(interestFee);
+
         transferApplicationMapper.create(transferApplicationModel);
 
         investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);

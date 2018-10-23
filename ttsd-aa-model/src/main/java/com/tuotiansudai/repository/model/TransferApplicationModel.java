@@ -25,6 +25,8 @@ public class TransferApplicationModel implements Serializable {
 
     private long transferFee;
 
+    private long interestFee;
+
     private TransferStatus status;
 
     private Date deadline;
@@ -185,4 +187,11 @@ public class TransferApplicationModel implements Serializable {
         this.source = source;
     }
 
+    public long getInterestFee() {
+        return interestFee;
+    }
+
+    public void setInterestFee(long interestFee) {
+        this.interestFee = interestFee;
+    }
 }
