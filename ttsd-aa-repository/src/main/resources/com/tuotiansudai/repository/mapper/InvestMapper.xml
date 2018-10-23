@@ -108,7 +108,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no, is_overdue_transfer
     </sql>
 
     <insert id="create" parameterType="InvestModel">
