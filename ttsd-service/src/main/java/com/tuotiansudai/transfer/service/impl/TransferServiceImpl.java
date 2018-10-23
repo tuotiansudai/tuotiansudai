@@ -113,7 +113,7 @@ public class TransferServiceImpl implements TransferService {
         }
 
         InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        if (transferInvestModel.getTransferStatus() == TransferStatus.TRANSFERRING && LoanStatus.REPAYING != loan.getStatus()) {
+        if (!transferInvestModel.isOverdueTransfer() && LoanStatus.REPAYING != loan.getStatus()) {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
