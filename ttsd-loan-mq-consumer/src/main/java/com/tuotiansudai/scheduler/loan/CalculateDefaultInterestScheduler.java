@@ -6,7 +6,6 @@ import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,43 +56,45 @@ public class CalculateDefaultInterestScheduler {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        //最后一期逾期额外计算罚息
+        //最后一期逾期额外计算利息
         List<LoanRepayModel> overdueLoanRepays = loanRepayMapper.findOverdueLoanRepay();
         for (LoanRepayModel loanRepayModel : overdueLoanRepays) {
             calculateOverdueInterestEveryLoan(loanRepayModel);
         }
     }
 
-    //计算逾期利息
+    //计算最后一期逾期利息
     public void calculateOverdueInterestEveryLoan(LoanRepayModel loanRepayModel) {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
-        if (loanModel.getPeriods() == loanRepayModel.getPeriod()) {
-            List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
-            for (InvestRepayModel investRepayModel : investRepayModels) {
-                long overdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investMapper.findById(investRepayModel.getInvestId()).getAmount(), new DateTime(investRepayModel.getRepayDate()), new DateTime());
-                investRepayModel.setOverdueInterest(overdueInterest);
-                //罚息+新增年华利率罚息  都要收取手续费
-                InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
-                long overdueFeeValue = new BigDecimal(investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
-                //如果是转让项目，需要从转让日开始计算
-                if (investModel.getTransferInvestId() != null) {
-                    TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
-                    long tranfeeOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investModel.getAmount(), new DateTime(transferApplicationModel.getTransferTime()), new DateTime());
-                    long defaultInterest = new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(overdueFee))
-                            .multiply(new BigDecimal(Days.daysBetween(new DateTime(transferApplicationModel.getTransferTime()).withTimeAtStartOfDay(), new DateTime().withTimeAtStartOfDay()).getDays()))
-                            .setScale(0, BigDecimal.ROUND_DOWN).longValue();
-                    overdueFeeValue = new BigDecimal(tranfeeOverdueInterest + defaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
-
-                }
-                investRepayModel.setOverdueFee(overdueFeeValue);
-                investRepayMapper.update(investRepayModel);
-            }
-            long repayOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), loanModel.getLoanAmount(), new DateTime(loanRepayModel.getRepayDate()), new DateTime());
-            loanRepayModel.setOverdueInterest(repayOverdueInterest);
-            loanRepayMapper.update(loanRepayModel);
+        if (loanModel.getPeriods() != loanRepayModel.getPeriod()) {
+            return;
         }
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            long overdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investMapper.findById(investRepayModel.getInvestId()).getAmount(), new DateTime(investRepayModel.getRepayDate()), new DateTime());
+            investRepayModel.setOverdueInterest(overdueInterest);
+            //计算逾期利息 和逾期利息手续费
+            InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+            //如果是转让项目，需要从转让日开始计算
+            if (investModel.getTransferInvestId() != null) {
+                TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+                overdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), investModel.getAmount(), new DateTime(transferApplicationModel.getTransferTime()), new DateTime());
+            }
+            long overdueFeeValue = new BigDecimal(overdueInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+            investRepayModel.setOverdueFee(overdueFeeValue);
+            investRepayMapper.update(investRepayModel);
+        }
+        long repayOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), loanModel.getLoanAmount(), new DateTime(loanRepayModel.getRepayDate()), new DateTime());
+        loanRepayModel.setOverdueInterest(repayOverdueInterest);
+        loanRepayMapper.update(loanRepayModel);
     }
 
+    /**
+     * 计算罚息
+     *
+     * @param loanRepayModel
+     * @throws Exception
+     */
     private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
@@ -101,10 +102,18 @@ public class CalculateDefaultInterestScheduler {
             if (investRepayModel.getRepayDate().before(new Date())) {
                 investRepayModel.setStatus(RepayStatus.OVERDUE);
                 if (isNeedCalculateDefaultInterestInvestRepay(investRepayModel)) {
-                    long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
+                    InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
+                    long investRepayDefaultInterest = new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
                             .setScale(0, BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
+                    //如果是债券转让,罚息手续费需要从转让日计算
+                    if (investModel.getTransferInvestId() != null) {
+                        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
+                        investRepayDefaultInterest = InterestCalculator.calculateLoanInterest(overdueFee, investModel.getAmount(), new DateTime(transferApplicationModel.getTransferTime()), new DateTime());
+                    }
+                    long investRepayDefaultFee = new BigDecimal(investRepayDefaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
+                    investRepayModel.setDefaultFee(investRepayDefaultFee);
                 }
                 investRepayMapper.update(investRepayModel);
             }
