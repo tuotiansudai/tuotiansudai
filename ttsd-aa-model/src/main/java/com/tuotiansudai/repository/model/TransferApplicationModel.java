@@ -52,7 +52,7 @@ public class TransferApplicationModel implements Serializable {
         this.investAmount = transferInvestModel.getAmount();
         this.transferAmount = transferAmount;
         this.transferFee = transferFee;
-        this.status = transferInvestModel.getTransferStatus();
+        this.status = TransferStatus.TRANSFERRING;
         this.deadline = deadline;
         this.applicationTime = new Date();
         this.leftPeriod = leftPeriod;
