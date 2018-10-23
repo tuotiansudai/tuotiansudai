@@ -186,7 +186,9 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        LoanRepayModel loanRepayModel = investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ? loanRepayMapper.findLastLoanRepay(investModel.getLoanId()) : loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = investModel.getTransferStatus() == TransferStatus.OVERDUE_TRANSFERABLE ?
+                loanRepayMapper.findFirstOverdueRepayByLoanId(investModel.getLoanId())
+                : loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(), loanRepayModel.getPeriod());
 
         long transferAmount = this.calcultorTransferAmount(investModel.getId());
