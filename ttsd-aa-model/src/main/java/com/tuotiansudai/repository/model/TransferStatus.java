@@ -1,10 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-
-import java.util.HashMap;
-
 public enum TransferStatus {
     TRANSFERABLE("申请转让"),
     TRANSFERRING("转让中"),

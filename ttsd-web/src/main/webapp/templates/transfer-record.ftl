@@ -7,8 +7,8 @@
     </h4>
     <ul class="filters-list">
         <li <#if transferStatus?? && transferStatus == "TRANSFERABLE">class="active"</#if> data-status="TRANSFERABLE"><a href="/transferrer/transfer-application-list/TRANSFERABLE">可转让债权</a></li>
-        <li <#if transferStatus?? && transferStatus == ("TRANSFERRING")>class="active"</#if> data-status="TRANSFERRING, OVERDUE_TRANSFERRING"><a href="/transferrer/transfer-application-list/TRANSFERRING">转让中债权</a></li>
-        <li <#if !(transferStatus??) >class="active"</#if> data-status="SUCCESS,CANCEL,OVERDUE_SUCCESS"><a href="/transferrer/transfer-application-list">转让记录</a></li>
+        <li <#if transferStatus?? && transferStatus == ("TRANSFERRING")>class="active"</#if> data-status="TRANSFERRING"><a href="/transferrer/transfer-application-list/TRANSFERRING">转让中债权</a></li>
+        <li <#if !(transferStatus??) >class="active"</#if> data-status="SUCCESS,CANCEL"><a href="/transferrer/transfer-application-list">转让记录</a></li>
     </ul>
     <div class="list-container">
         <div class="record-list active">
