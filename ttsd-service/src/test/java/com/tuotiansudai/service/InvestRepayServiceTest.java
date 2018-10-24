@@ -130,7 +130,7 @@ public class InvestRepayServiceTest {
         assertThat(notSuccessInvestRepay, is(400L));
 
         long successInvestRepay = investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay("testuser123", startTime, endTime);
-        assertThat(successInvestRepay, is(200L));
+        assertThat(successInvestRepay, is(100l));
     }
 
     @Test
