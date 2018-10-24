@@ -402,6 +402,14 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
         }
+        if(loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.WAITING_VERIFY)){
+            if((loanCreateRequestDto.getLoan().getFundraisingEndTime().getTime()-loanCreateRequestDto.getLoan().getFundraisingStartTime().getTime())> 7*24*60*60*1000){
+                return new BaseDto<>(new BaseDataDto(false, "筹款启动时间与筹款截止时间不能超过7天"));
+            }
+            if(new Date().after(loanCreateRequestDto.getLoan().getFundraisingEndTime())){
+                return new BaseDto<>(new BaseDataDto(false, "筹款截止时间不能小于当前时间"));
+            }
+        }
 
         if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanCreateRequestDto.getLoan().getPledgeType())) {
             if (loanCreateRequestDto.getLoanerDetails() == null) {
