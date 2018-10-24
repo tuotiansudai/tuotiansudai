@@ -164,7 +164,7 @@
     <select id="findByLoginNameAndTimeAndSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`corpus` + ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
+            ir.`corpus` + ir.`actual_interest`  - ir.`actual_fee`
           ),0)
         FROM
           invest_repay ir
@@ -190,7 +190,7 @@
     <select id="findByLoginNameAndTimeAndNotSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+            ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`-ir.`default_fee`+ir.`overdue_interest`-ir.`overdue_fee`
           ),0)
         FROM
           invest_repay ir
@@ -300,7 +300,10 @@
           temp2.`corpus`,
           temp2.`expected_interest`,
           temp2.`default_interest`,
+          temp2.`overdue_interest`
           temp2.`expected_fee`,
+          temp2.`default_fee`,
+          temp2.`overdue_fee`,
           temp.`amount`,
         temp2.`status`,
         product_type
@@ -325,7 +328,10 @@
               t.`corpus`,
               t.`expected_interest`,
               t.`default_interest`,
+              t.`overdue_interest`,
               t.`expected_fee`,
+              t.`default_fee`,
+              t.`overdue_fee`,
               t.`repay_date`,
               t.`status`
             FROM

@@ -202,7 +202,7 @@
     <select id="findByLoginNameAndTimeSuccessRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            t.`corpus` + t.`default_interest` + t.`expected_interest`
+            t.`corpus` + t.`default_interest` + t.`overdue_interest` + t.`expected_interest`
           ),0)
         FROM
           loan_repay t
@@ -233,6 +233,7 @@
           n.`actual_interest`,
           n.`expected_interest`,
           n.`default_interest`,
+          n.`overdue_interest`,
           n.`repay_amount`,
           n.`actual_repay_date`,
           n.`repay_date`,
@@ -250,6 +251,7 @@
               t.`actual_interest`,
               t.`expected_interest`,
               t.`default_interest`,
+              t.`overdue_interest`,
               t.`repay_amount`,
               t.`actual_repay_date`,
               t.`repay_date`,
@@ -294,7 +296,7 @@
 
     <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
-            lr.corpus + lr.expected_interest + lr.default_interest as repay_amount,
+            lr.corpus + lr.expected_interest + lr.default_interest + lr.overdue_interest as repay_amount,
             l.name as loan_name,
             u.mobile,
             l.id as loan_id,

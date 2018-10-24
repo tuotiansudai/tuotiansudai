@@ -492,12 +492,12 @@
                 AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt; #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee-ir.default_fee+ir.overdue_interest-ir.overdue_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) >= #{repayingAmountStart}
             </if>
             <if test="repayingAmountEnd != null and repayingAmountEnd >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee-ir.default_fee+ir.overdue_interest-ir.overdue_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) &lt;= #{repayingAmountEnd}
             </if>
@@ -537,7 +537,7 @@
             (select created_time from invest i where i.login_name=u.login_name and i.status='SUCCESS' and i.loan_id != 1 order by i.created_time desc limit 1) as last_invest_time,
             (select max(ir.repay_date) from invest_repay ir join invest i on i.id=ir.invest_id where i.login_name=u.login_name) as last_repay_time,
             (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') as last_withdraw_time,
-            (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
+            (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee-ir.default_fee+ir.overdue_interest-ir.overdue_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
             IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
             IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) as total_repaying_amount,
             u.last_login_time,
@@ -641,12 +641,12 @@
                 AND (select max(created_time) from withdraw where login_name=u.login_name and status='SUCCESS') &lt; #{lastWithdrawTimeEnd}
             </if>
             <if test="repayingAmountStart != null and repayingAmountStart >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee-ir.default_fee+ir.overdue_interest-ir.overdue_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) >= #{repayingAmountStart}
             </if>
             <if test="repayingAmountEnd != null and repayingAmountEnd >= 0 ">
-                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
+                AND (IFNULL((select sum(ir.corpus+ir.expected_interest+ir.default_interest-ir.expected_fee-ir.default_fee+ir.overdue_interest-ir.overdue_fee) from invest_repay ir, invest i where i.login_name=u.login_name and i.id=ir.invest_id and ir.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(cr.expected_interest-cr.expected_fee) from coupon_repay cr, invest i where i.login_name=u.login_name and i.id=cr.invest_id and cr.status='REPAYING' and i.status='SUCCESS'),0) +
                 IFNULL((select sum(ier.expected_interest-ier.expected_fee) from invest_extra_rate ier, invest i where i.login_name=u.login_name and i.id=ier.invest_id and ier.status='REPAYING' and i.status='SUCCESS'),0)) &lt;= #{repayingAmountEnd}
             </if>
