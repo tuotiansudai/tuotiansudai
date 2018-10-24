@@ -457,7 +457,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         Collections.sort(transferrerTransferredInvestRepayModels, (o1, o2) -> {
             return o1.getPeriod() - o2.getPeriod();
         });
-        boolean isOverdue=investMapper.findById(transferInvestId).isOverdueTransfer();
+        boolean isOverdue = investMapper.findById(transferInvestId).isOverdueTransfer();
         for (int i = 0; i < transferrerTransferredInvestRepayModels.size(); i++) {
             InvestRepayModel transferrerTransferredInvestRepayModel = transferrerTransferredInvestRepayModels.get(i);
             long expectedFee = new BigDecimal(transferrerTransferredInvestRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
@@ -472,7 +472,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             transfereeInvestRepayModel.setOverdueInterest(transferrerTransferredInvestRepayModel.getOverdueInterest());
             transfereeInvestRepayModel.setDefaultInterest(transferrerTransferredInvestRepayModel.getDefaultInterest());
             //如果是逾期转让，转让后的投资不收取预期手续费
-            if(isOverdue){
+            if (isOverdue) {
                 transfereeInvestRepayModel.setExpectedFee(0l);
             }
             //不是最后一期逾期不让转让，因为每天定时任务计算罚息，如果申请项目 多天没有转出来，利息属于最终承让人
@@ -485,12 +485,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 //逾期手续费需要计算到第一期中
                 long investRepayDefaultInterest = InterestCalculator.calculateLoanInterest(overdueFee, investModel.getAmount(), new DateTime(transferApplicationModel.getApplicationTime()), new DateTime());
                 long investRepayDefaultFee = new BigDecimal(investRepayDefaultInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investModel.getInvestFeeRate())).longValue();
-                if(i == 0){
+                if (i == 0) {
                     transfereeInvestRepayModel.setDefaultFee(investRepayDefaultFee);
-                }else{
+                } else {
                     transfereeInvestRepayModels.get(0).setDefaultFee(investRepayDefaultFee);
                 }
-
             }
             //
             transferrerTransferredInvestRepayModel.setExpectedInterest(0);
