@@ -363,6 +363,9 @@
             <if test="transferType != null and transferType == 'overdueTransfer'">
                 and invest.is_overdue_transfer = 1
             </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
+            </if>
         </where>
         ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
         invest.id ASC
@@ -469,6 +472,9 @@
             <if test="transferType != null and transferType == 'overdueTransfer'">
                 and invest.is_overdue_transfer = 1
             </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
+            </if>
         </where>
     </select>
 
@@ -554,6 +560,9 @@
             </if>
             <if test="transferType != null and transferType == 'overdueTransfer'">
                 and invest.is_overdue_transfer = 1
+            </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
             </if>
         </where>
     </select>

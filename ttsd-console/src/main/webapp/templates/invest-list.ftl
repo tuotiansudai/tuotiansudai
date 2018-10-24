@@ -94,6 +94,7 @@
             <label>是否允许转让</label>
             <select class="selectpicker" name="transferType">
                 <option value="" <#if !transferType?? >selected</#if>>全部</option>
+                <option value="no" <#if transferType?? && transferType=='no' >selected</#if>>否</option>
                 <option value="normalTransfer" <#if transferType?? && transferType=='normalTransfer' >selected</#if>>正常转让</option>
                 <option value="overdueTransfer" <#if transferType?? && transferType=='overdueTransfer' >selected</#if>>逾期转让</option>
             </select>
