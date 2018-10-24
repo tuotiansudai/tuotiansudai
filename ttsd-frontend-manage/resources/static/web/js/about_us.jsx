@@ -218,6 +218,10 @@ let organizationalImg={
     '2':{
         small:require('../images/sign/aboutus/aptitude_two_small.png'),
         big:require('../images/sign/aboutus/aptitude_two_big.png')
+    },
+    '3':{
+        small:require('../images/sign/aboutus/aptitude_three_small.jpg'),
+        big:require('../images/sign/aboutus/aptitude_three_big.jpg')
     }
 };
 $organizationalImg.find('li').each(function(key,option) {
