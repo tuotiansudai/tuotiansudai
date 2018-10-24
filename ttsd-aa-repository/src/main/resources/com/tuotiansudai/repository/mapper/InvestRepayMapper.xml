@@ -300,7 +300,7 @@
           temp2.`corpus`,
           temp2.`expected_interest`,
           temp2.`default_interest`,
-          temp2.`overdue_interest`
+          temp2.`overdue_interest`,
           temp2.`expected_fee`,
           temp2.`default_fee`,
           temp2.`overdue_fee`,
