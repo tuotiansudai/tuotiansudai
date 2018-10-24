@@ -43,7 +43,8 @@ public class LoanerLoanRepayDataItemDto {
         this.corpus = AmountConverter.convertCentToString(loanRepayModel.getCorpus());
         this.expectedInterest = AmountConverter.convertCentToString(loanRepayModel.getExpectedInterest());
         this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
-        this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
+        //还款计划应还总额需要加上罚息
+        this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest()+loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
         if (Lists.newArrayList(RepayStatus.WAIT_PAY, RepayStatus.COMPLETE).contains(loanRepayModel.getStatus())) {
             this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         }
