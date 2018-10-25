@@ -391,7 +391,7 @@ public class InvestServiceImpl implements InvestService {
             if (allOverdueInvestRepayModels.size() > 0) {
                 dataDto.setNextRepayDate(allOverdueInvestRepayModels.get(0).getRepayDate());
                 dataDto.setNextRepayAmount(AmountConverter.convertCentToString(allOverdueInvestRepayModels.stream()
-                        .mapToLong(model -> model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
+                        .mapToLong(model -> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
             }
 
             if (investModel.getTransferInvestId() != null){
