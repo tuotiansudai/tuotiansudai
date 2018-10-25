@@ -168,7 +168,7 @@
                 </td>
                 <td class="tr spec-bg">
                 <%=item.actualAmount ? item.actualAmount : '--'%>
-                <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元, 已收服务费'+item.defaultFee+'元"></i>':'' %>
+                <%=(item.actualAmount && item.sumDefaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.sumDefaultInterest+'元, 已收服务费'+item.sumDefaultFee+'元"></i>':'' %>
                 
                 </td>
                 <td class="tr spec-bg">
