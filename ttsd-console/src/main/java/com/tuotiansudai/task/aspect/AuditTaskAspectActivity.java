@@ -2,9 +2,11 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.activity.repository.dto.ActivityDto;
 import com.tuotiansudai.activity.repository.model.ActivityStatus;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
@@ -28,8 +30,7 @@ public class AuditTaskAspectActivity {
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Autowired
-    private AuditLogService auditLogService;
-
+    private MQWrapperClient mqWrapperClient;
     @Autowired
     private UserService userService;
 
@@ -75,7 +76,7 @@ public class AuditTaskAspectActivity {
                     } else {
                         description = realName + " 编辑了活动［" + activityDto.getTitle() + "］。";
                     }
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
+                    mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip, userService.getMobile(loginName), ""));
                     break;
                 case REJECTION:
 
@@ -92,7 +93,7 @@ public class AuditTaskAspectActivity {
                     }
 
                     description = realName + " 驳回了 " + operatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
+                    mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip, userService.getMobile(loginName), ""));
                     break;
                 case APPROVED:
                     if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -108,7 +109,7 @@ public class AuditTaskAspectActivity {
                     }
 
                     description = realName + " 审核通过了 " + operatorRealName + " 创建的活动［" + activityDto.getTitle() + "］。";
-                    auditLogService.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip);
+                    mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(null, loginName, OperationType.ACTIVITY, String.valueOf(activityDto.getActivityId()), description, ip, userService.getMobile(loginName), ""));
                     break;
                 default:
                     throw new Exception("illegal activity status.");

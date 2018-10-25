@@ -34,7 +34,6 @@ dependencies {
     compile project(":ttsd-edxactivity-repository")
     compile project(":ttsd-membership")
     compile project(":ttsd-service")
-    compile project(":ttsd-log-service")
     compile project(":ttsd-edxpoint-repository")
     compile project(':ttsd-util')
     compile 'org.springframework.boot:spring-boot-starter-mail'

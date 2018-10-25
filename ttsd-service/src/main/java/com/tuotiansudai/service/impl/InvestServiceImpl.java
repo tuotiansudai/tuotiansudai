@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.*;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -403,12 +402,7 @@ public class InvestServiceImpl implements InvestService {
         }
         //发送用户行为日志 MQ
         String mobile = java.util.Optional.ofNullable(userMapper.findByLoginName(loginName)).orElse(new UserModel()).getMobile();
-        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn On.");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
-        } catch (JsonProcessingException e) {
-            logger.error("[InvestService] " + "turnOnAutoInvest" + ", send UserOperateLog fail.", e);
-        }
+        mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn On."));
         return true;
     }
 
@@ -421,12 +415,7 @@ public class InvestServiceImpl implements InvestService {
         autoInvestPlanMapper.disable(loginName);
         //发送用户行为日志 MQ
         String mobile = java.util.Optional.ofNullable(userMapper.findByLoginName(loginName)).orElse(new UserModel()).getMobile();
-        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn Off.");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
-        } catch (JsonProcessingException e) {
-            logger.error("[InvestService] " + "turnOffAutoInvest" + ", send UserOperateLog fail.", e);
-        }
+        mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.AUTO_INVEST, ip, "", Source.WEB, "Turn Off."));
         return true;
     }
 
@@ -461,12 +450,7 @@ public class InvestServiceImpl implements InvestService {
         }
         //发送用户行为日志 MQ
         String mobile = java.util.Optional.ofNullable(userMapper.findByLoginName(loginName)).orElse(new UserModel()).getMobile();
-        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.INVEST_NO_PASSWORD, ip, "", Source.WEB, isTurnOn ? "Turn On" : "Turn Off");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
-        } catch (JsonProcessingException e) {
-            logger.error("[InvestService] " + "turnOnAutoInvest" + ", send UserOperateLog fail.", e);
-        }
+        mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, new UserOpLogMessage(IdGenerator.generate(), loginName, mobile, UserOpType.INVEST_NO_PASSWORD, ip, "", Source.WEB, isTurnOn ? "Turn On" : "Turn Off"));
         return true;
     }
 

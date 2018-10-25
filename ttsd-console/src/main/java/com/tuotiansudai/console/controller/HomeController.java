@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -15,7 +14,6 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
-import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.SerializeUtil;
@@ -155,13 +153,7 @@ public class HomeController {
             String operator = task.getSender();
             String operatorRealName = userService.getRealName(operator);
             String description = senderRealName + " 拒绝了 " + operatorRealName + " " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
-            AuditLogMessage auditLogMessage = AuditLogMessage.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip, userService.getMobile(operator), userService.getMobile(senderLoginName));
-            try {
-                String message = JsonConverter.writeValueAsString(auditLogMessage);
-                mqWrapperClient.sendMessage(MessageQueue.AuditLog, message);
-            } catch (JsonProcessingException e) {
-                logger.error("[MQ] send audit log message fail.", e);
-            }
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip, userService.getMobile(operator), userService.getMobile(senderLoginName)));
             baseDto.setSuccess(true);
             baseDataDto.setStatus(true);
         } else {

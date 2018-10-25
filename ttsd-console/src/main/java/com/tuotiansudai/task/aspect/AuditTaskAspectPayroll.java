@@ -1,11 +1,13 @@
 package com.tuotiansudai.task.aspect;
 
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.dto.PayrollDataDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.mapper.PayrollMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.PayrollModel;
@@ -34,11 +36,11 @@ public class AuditTaskAspectPayroll {
     @Autowired
     private UserService userService;
     @Autowired
-    private AuditLogService auditLogService;
-    @Autowired
     private UserRoleMapper userRoleMapper;
     @Autowired
     private PayrollMapper payrollMapper;
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsolePayrollService.createPayroll(..)) || execution(* com.tuotiansudai.console.service.ConsolePayrollService.updatePayroll(..))")
     public void afterReturnCreatePayroll(JoinPoint joinPoint) {
@@ -119,7 +121,7 @@ public class AuditTaskAspectPayroll {
                         description, String.format("/finance-manage/payroll-manage/%s/detail", String.valueOf(payrollId)));
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.FINANCE_ADMIN, String.valueOf(taskId), task);
             }
-            auditLogService.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress, userService.getMobile(loginName), ""));
         }
     };
 
@@ -145,7 +147,7 @@ public class AuditTaskAspectPayroll {
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
 
-            auditLogService.createAuditLog(null, operatorRealName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(null, loginName, OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress, userService.getMobile(loginName), ""));
         }
     };
 
@@ -164,10 +166,9 @@ public class AuditTaskAspectPayroll {
                         task.getSender(), task.getObjId(), task.getObjName(),
                         description, null);
 
-
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
+                mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress, userService.getMobile(task.getSender()), userService.getMobile(operatorRealName)));
             }
         }
     };
@@ -198,7 +199,7 @@ public class AuditTaskAspectPayroll {
                             String.format("你提交的发放现金申请被运营管理员%s驳回", operatorRealName), null);
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + creator, taskId, creatorNotify);
                 }
-                auditLogService.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress);
+                mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(operatorRealName, task.getSender(), OperationType.PAYROLL, String.valueOf(payrollId), description, ipAddress, userService.getMobile(task.getSender()), userService.getMobile(operatorRealName)));
             }
         }
     };

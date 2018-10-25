@@ -3,10 +3,12 @@ package com.tuotiansudai.task.aspect;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
@@ -45,7 +47,7 @@ public class AuditTaskAspectUser {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private MQWrapperClient mqWrapperClient;
 
     private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
@@ -89,8 +91,7 @@ public class AuditTaskAspectUser {
             String receiverRealName = userService.getRealName(receiverLoginName);
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
             description += task.getDescription().split("的信息。")[1];
-            auditLogService.createAuditLog(operatorLoginName, receiverLoginName, OperationType.USER, task.getObjId(), description, ip);
-
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(operatorLoginName, receiverLoginName, OperationType.USER, task.getObjId(), description, ip, userService.getMobile(receiverLoginName), userService.getMobile(operatorLoginName)));
             return proceedingJoinPoint.proceed();
         } else {
             OperationTask<EditUserDto> task = new OperationTask<>();

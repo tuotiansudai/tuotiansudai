@@ -3,10 +3,12 @@ package com.tuotiansudai.task.aspect;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.TransferRuleDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.TransferRuleModel;
@@ -42,7 +44,7 @@ public class AuditTaskAspectTransfer {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private MQWrapperClient mqWrapperClient;
 
     private final static String AUDIT_LOG_TEMPLATE = "持有30天以内转让手续费:{0}, 持有30天-90天转让手续费:{1}, 持有90天以上转让手续费:{2}, 转让折价金额:{3}, 回款前不可转让天数:{4}, 允许多次转让:{5}";
 
@@ -67,7 +69,7 @@ public class AuditTaskAspectTransfer {
         String taskKey = TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN;
         String taskId = OperationType.TRANSFER_RULE.name();
 
-        if (!redisWrapperClient.hexistsSeri(taskKey,  taskId)) {
+        if (!redisWrapperClient.hexistsSeri(taskKey, taskId)) {
             OperationTask<TransferRuleDto> task = new OperationTask<>();
             task.setId(taskId);
             task.setTaskType(TaskType.TASK);
@@ -116,8 +118,7 @@ public class AuditTaskAspectTransfer {
             String senderRealName = userService.getRealName(operator);
             notify.setDescription(MessageFormat.format("{0} 通过了您修改债权转让规则的申请。", senderRealName));
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
-            auditLogService.createAuditLog(operator, task.getSender(), OperationType.TRANSFER_RULE, task.getObjId(),
-                    MessageFormat.format("{0} 通过了 {1}", senderRealName, task.getDescription()), ip);
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(operator, task.getSender(), OperationType.TRANSFER_RULE, task.getObjId(), MessageFormat.format("{0} 通过了 {1}", senderRealName, task.getDescription()), ip, userService.getMobile(task.getSender()), userService.getMobile(operator)));
         }
 
         return true;

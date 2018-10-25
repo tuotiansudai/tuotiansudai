@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,7 +26,6 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,15 +65,10 @@ public class AgreementServiceImpl implements AgreementService {
 
         // 发送用户行为日志 MQ消息
         UserOpType opType = getUserOpType(dto);
-        if (opType != null){
+        if (opType != null) {
             //发送用户行为日志 MQ
-            String mobile= Optional.ofNullable(userMapper.findByLoginName(dto.getLoginName())).orElse(new UserModel()).getMobile();
-            UserOpLogMessage userOpLogMessage=new UserOpLogMessage(IdGenerator.generate(),dto.getLoginName(),mobile,opType,dto.getIp(),dto.getDeviceId(),dto.getSource(),null);
-            try {
-                mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
-            } catch (JsonProcessingException e) {
-                logger.error("[AgreementService] " +"agreement"+ ", send UserOperateLog fail.", e);
-            }
+            String mobile = Optional.ofNullable(userMapper.findByLoginName(dto.getLoginName())).orElse(new UserModel()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, new UserOpLogMessage(IdGenerator.generate(), dto.getLoginName(), mobile, opType, dto.getIp(), dto.getDeviceId(), dto.getSource(), null));
         }
         try {
             return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);

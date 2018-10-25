@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.NoPasswordInvestTurnOnRequestDto;
@@ -20,7 +19,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,12 +67,7 @@ public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPa
 
         BaseParam baseParam = dto.getBaseParam();
         // 发送用户行为日志 MQ
-        UserOpLogMessage userOpLogMessage = new UserOpLogMessage(IdGenerator.generate(), baseParam.getUserId(), baseParam.getPhoneNum(), UserOpType.INVEST_NO_PASSWORD, ip, baseParam.getDeviceId(), baseParam.getPlatform() == null ? null : Source.valueOf(baseParam.getPlatform().toUpperCase(Locale.ENGLISH)), "Turn On");
-        try {
-            mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, JsonConverter.writeValueAsString(userOpLogMessage));
-        } catch (JsonProcessingException e) {
-            logger.error("[MobileAppNoPasswordInvestTurnOffService] " + "noPasswordInvestTurnOff" + ", send UserOperateLog fail.", e);
-        }
+        mqWrapperClient.sendMessage(MessageQueue.UserOperateLog, new UserOpLogMessage(IdGenerator.generate(), baseParam.getUserId(), baseParam.getPhoneNum(), UserOpType.INVEST_NO_PASSWORD, ip, baseParam.getDeviceId(), baseParam.getPlatform() == null ? null : Source.valueOf(baseParam.getPlatform().toUpperCase(Locale.ENGLISH)), "Turn On"));
         return baseResponseDto;
     }
 }

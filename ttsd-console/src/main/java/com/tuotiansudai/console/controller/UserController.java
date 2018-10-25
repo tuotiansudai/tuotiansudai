@@ -18,8 +18,9 @@ import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.enums.riskestimation.*;
 import com.tuotiansudai.exception.BaseException;
-import com.tuotiansudai.log.service.AuditLogService;
 import com.tuotiansudai.membership.service.UserMembershipService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.BindBankCardService;
@@ -33,6 +34,7 @@ import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -52,6 +54,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping(value = "/user-manage")
 public class UserController {
+
+    static Logger logger = Logger.getLogger(AccountBalanceController.class);
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -75,9 +79,6 @@ public class UserController {
 
     @Autowired
     private SignInClient signInClient;
-
-    @Autowired
-    private AuditLogService auditLogService;
 
     @Autowired
     private UserMembershipService userMembershipService;
@@ -250,11 +251,10 @@ public class UserController {
     @ResponseBody
     public String enableUser(@PathVariable String loginName, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
-        String mobile = userService.getMobile(loginName);
-        signInClient.unlockUser(loginName, mobile);
-        auditLogService.createUserActiveLog(loginName, LoginUserInfo.getLoginName(), UserStatus.ACTIVE, ip);
-        //
-
+        //String mobile = userService.getMobile(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        signInClient.unlockUser(loginName, userModel == null ? null : userModel.getMobile());
+        mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createUserActiveLogMessage(loginName, LoginUserInfo.getLoginName(), UserStatus.ACTIVE.name(), ip, userModel == null ? "" : userModel.getUserName(), LoginUserInfo.getMobile()));
         return "OK";
     }
 

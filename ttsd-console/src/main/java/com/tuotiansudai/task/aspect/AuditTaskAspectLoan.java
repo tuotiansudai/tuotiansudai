@@ -1,13 +1,15 @@
 package com.tuotiansudai.task.aspect;
 
 import com.google.common.base.Strings;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanCreateRequestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -44,7 +46,7 @@ public class AuditTaskAspectLoan {
     private LoanService loanService;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private MQWrapperClient mqWrapperClient;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
@@ -120,7 +122,7 @@ public class AuditTaskAspectLoan {
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanService.findLoanById(loanId).getCreatedLoginName(), taskId, notify);
 
                     String description = senderRealName + " 审核通过了标的［" + task.getObjName() + "］。";
-                    auditLogService.createAuditLog(senderLoginName, receiverLoginName, OperationType.PROJECT, task.getObjId(), description, ip);
+                    mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(senderLoginName, receiverLoginName, OperationType.PROJECT, task.getObjId(), description, ip, userService.getMobile(receiverLoginName), userService.getMobile(senderLoginName)));
                 }
             }
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.log.repository.model.AuditLogModel;
 import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -32,7 +33,7 @@ public class AuditLogService {
         String operation = userStatus == UserStatus.ACTIVE ? " 解禁" : " 禁止";
         String description = operatorLoginName + operation + "了用户［" + getRealName(loginName) + "］。";
 
-        AuditLogModel log = new AuditLogModel();
+        AuditLogMessage log = new AuditLogMessage();
         log.setId(IdGenerator.generate());
         log.setTargetId(loginName);
         log.setOperatorLoginName(operatorLoginName);
@@ -44,7 +45,7 @@ public class AuditLogService {
     }
 
     public void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
-        AuditLogModel log = new AuditLogModel();
+        AuditLogMessage log = new AuditLogMessage();
         log.setId(IdGenerator.generate());
         log.setOperatorLoginName(operatorLoginName);
         log.setOperatorMobile(this.getMobile(operatorLoginName));
@@ -57,7 +58,7 @@ public class AuditLogService {
         sendAuditLogMessage(log);
     }
 
-    private void sendAuditLogMessage(AuditLogModel log) {
+    private void sendAuditLogMessage(AuditLogMessage log) {
         try {
             String message = JsonConverter.writeValueAsString(log);
             mqWrapperClient.sendMessage(MessageQueue.AuditLog, message);

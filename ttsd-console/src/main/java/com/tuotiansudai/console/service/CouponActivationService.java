@@ -3,7 +3,8 @@ package com.tuotiansudai.console.service;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.enums.OperationType;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.UserGroup;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CouponActivationService {
@@ -27,9 +29,6 @@ public class CouponActivationService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private AuditLogService auditLogService;
 
     @Autowired
     private ExchangeCodeService exchangeCodeService;
@@ -55,7 +54,7 @@ public class CouponActivationService {
         String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         String description = MessageFormat.format("{0} 撤销了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());
-        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
+        mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip, Optional.ofNullable(userMapper.findByLoginName(couponModel.getCreatedBy())).orElse(new UserModel()).getMobile(), auditor == null ? "" : auditor.getMobile()));
     }
 
     @Transactional
@@ -90,6 +89,6 @@ public class CouponActivationService {
         }
 
         String description = MessageFormat.format("{0} 激活了 {1} 创建的 {2}", auditorRealName, operatorRealName, couponModel.getCouponType().getName());
-        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
+        mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip, Optional.ofNullable(userMapper.findByLoginName(couponModel.getCreatedBy())).orElse(new UserModel()).getMobile(), auditor == null ? "" : auditor.getMobile()));
     }
 }

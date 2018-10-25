@@ -2,10 +2,12 @@ package com.tuotiansudai.task.aspect;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.enums.OperationType;
 import com.tuotiansudai.enums.Role;
-import com.tuotiansudai.log.service.AuditLogService;
+import com.tuotiansudai.mq.client.model.MessageQueue;
+import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserService;
@@ -37,10 +39,10 @@ public class AuditTaskAspectBandCard {
     private UserService userService;
 
     @Autowired
-    private AuditLogService auditLogService;
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
+    private MQWrapperClient mqWrapperClient;
 
     public final String BAND_CARD_ACTIVE_STATUS_TEMPLATE = "bank_card_active_status";
 
@@ -59,7 +61,7 @@ public class AuditTaskAspectBandCard {
         boolean isAdmin = Iterators.any(userRoleModelList.iterator(), input -> Role.OPERATOR_ADMIN.equals(input.getRole()) || Role.ADMIN.equals(input.getRole()));
 
         if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) && isAdmin) {
-            logger.info(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}",loginName, bankCardId));
+            logger.info(MessageFormat.format("check bank card task aspect. user:{0}, bankCard:{1}", loginName, bankCardId));
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
@@ -80,7 +82,7 @@ public class AuditTaskAspectBandCard {
 
             String receiverRealName = userService.getRealName(receiverLoginName);
             String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
-            auditLogService.createAuditLog(loginName, receiverLoginName, OperationType.BAND_CARD, task.getObjId(), description, ip);
+            mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(loginName, receiverLoginName, OperationType.BAND_CARD, task.getObjId(), description, ip, userService.getMobile(receiverLoginName), userService.getMobile(loginName)));
             redisWrapperClient.hdel(BAND_CARD_ACTIVE_STATUS_TEMPLATE, String.valueOf(bankCardId));
 
             return proceedingJoinPoint.proceed();

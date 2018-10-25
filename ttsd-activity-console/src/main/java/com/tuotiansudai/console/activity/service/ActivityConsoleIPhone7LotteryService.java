@@ -1,6 +1,5 @@
 package com.tuotiansudai.console.activity.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryStatDto;
 import com.tuotiansudai.activity.repository.dto.IPhone7InvestLotteryWinnerDto;
@@ -18,7 +17,6 @@ import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.mq.message.AuditLogMessage;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.util.JsonConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,17 +121,7 @@ public class ActivityConsoleIPhone7LotteryService {
         String description = MessageFormat.format("{0}{1}了{2}在“{3}”活动中修改的中奖配置({4}万：{5}, 手机号:{6})",
                 auditor, operation, operator, activityName, configModel.getInvestAmount(),
                 configModel.getLotteryNumber(), configModel.getMobile());
-        createAuditLog(loginName, configModel.getCreatedBy(),
-                OperationType.ACTIVITY, activityName, description, ip, operatorUser.getMobile(), auditorUser.getMobile());
+        mqWrapperClient.sendMessage(MessageQueue.AuditLog, AuditLogMessage.createAuditLog(loginName, configModel.getCreatedBy(), OperationType.ACTIVITY, activityName, description, ip, operatorUser.getMobile(), auditorUser.getMobile()));
     }
 
-    private void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp, String operatorMobile, String auditorMobile) {
-        AuditLogMessage auditLogMessage=AuditLogMessage.createAuditLog(auditorLoginName, operatorLoginName, operationType, targetId, description, auditorIp, operatorMobile, auditorMobile);
-        try {
-            String message = JsonConverter.writeValueAsString(auditLogMessage);
-            mqWrapperClient.sendMessage(MessageQueue.AuditLog, message);
-        } catch (JsonProcessingException e) {
-            logger.error("[MQ] send audit log message fail.", e);
-        }
-    }
 }

@@ -9,7 +9,6 @@ dependencies {
             project(':ttsd-point-service'),
             project(':ttsd-message-service'),
             project(':ttsd-activity-service'),
-            project(':ttsd-log-service'),
             project(':ttsd-util'),
             project(':ttsd-edxactivity-repository'),
             'commons-httpclient:commons-httpclient:3.1',
