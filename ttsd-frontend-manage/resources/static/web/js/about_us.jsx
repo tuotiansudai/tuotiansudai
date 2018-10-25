@@ -558,11 +558,11 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         //
         // $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
         // $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
-        $('#sumOverDueAmount').text(formatNumber('"6889800.00"',2));
-        $('#loanOverDueRate').text(formatNumber(0.0198*100,2));
-        $('#amountOverDueRate').text(formatNumber(0.0465*100,2));
-        $('#loanerOverDueCount').text(toThousands('18'));
-        $('#loanerOverDueAmount').text(formatNumber('6889800.00',2));
+        $('#sumOverDueAmount').text(formatNumber('"5297800.00"',2));
+        $('#loanOverDueRate').text(formatNumber(0.0121*100,2));
+        $('#amountOverDueRate').text(formatNumber(0.0357*100,2));
+        $('#loanerOverDueCount').text(toThousands('11'));
+        $('#loanerOverDueAmount').text(formatNumber('5297800.00',2));
 
         let barChartArr = [];
         let num = 0;
