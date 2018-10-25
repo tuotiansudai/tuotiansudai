@@ -466,15 +466,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     transferrerTransferredInvestRepayModel.getPeriod(),
                     transferrerTransferredInvestRepayModel.getCorpus(),
                     transferrerTransferredInvestRepayModel.getExpectedInterest(),
-                    expectedFee,
+                    isOverdue ? 0: expectedFee,
                     transferrerTransferredInvestRepayModel.getRepayDate(),
                     transferrerTransferredInvestRepayModel.getStatus());
             transfereeInvestRepayModel.setOverdueInterest(transferrerTransferredInvestRepayModel.getOverdueInterest());
             transfereeInvestRepayModel.setDefaultInterest(transferrerTransferredInvestRepayModel.getDefaultInterest());
-            //如果是逾期转让，转让后的投资不收取预期手续费
-            if (isOverdue) {
-                transfereeInvestRepayModel.setExpectedFee(0l);
-            }
             //不是最后一期逾期不让转让，因为每天定时任务计算罚息，如果申请项目 多天没有转出来，利息属于最终承让人
             if (i == (transferrerTransferredInvestRepayModels.size() - 1) && transferrerTransferredInvestRepayModel.getStatus() == RepayStatus.OVERDUE) {
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
@@ -491,7 +487,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     transfereeInvestRepayModels.get(0).setDefaultFee(investRepayDefaultFee);
                 }
             }
-            //
             transferrerTransferredInvestRepayModel.setExpectedInterest(0);
             transferrerTransferredInvestRepayModel.setExpectedFee(0);
             transferrerTransferredInvestRepayModel.setCorpus(0);
@@ -660,17 +655,5 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-    }
-
-    public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        Collections.sort(list, (o1, o2) -> {
-            return o1 - o2;
-        });
-        list.forEach(item -> {
-            System.out.println(item);
-        });
     }
 }

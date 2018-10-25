@@ -383,9 +383,13 @@ public class InvestServiceImpl implements InvestService {
 
             InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
 
-            items.add(new InvestorInvestPaginationItemDataDto(loanModel, investModel,
+            InvestorInvestPaginationItemDataDto dataDto = new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     nextInvestRepayOptional.isPresent() ? nextInvestRepayOptional.get() : null,
-                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel));
+                    userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel);
+            if (investModel.getTransferInvestId() != null){
+                dataDto.setAmount(AmountConverter.convertCentToString(transferApplicationMapper.findByInvestId(investModel.getId()).getTransferAmount()));
+            }
+            items.add(dataDto);
         }
 
         BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, items);
