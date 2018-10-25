@@ -57,6 +57,12 @@ public class InvestRepayDataItemDto {
 
     private String investExperienceAmount;
 
+    private String overdueInterest;
+
+    private String defaultFee;
+
+    private String overdueFee;
+
     public InvestRepayDataItemDto() {
     }
 
@@ -77,8 +83,14 @@ public class InvestRepayDataItemDto {
 
 
         if (model.getDefaultInterest() > 0) {
-            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest()+model.getOverdueInterest());
+            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+            this.defaultFee = AmountConverter.convertCentToString(model.getDefaultFee());
         }
+        if (model.getOverdueInterest() > 0) {
+            this.overdueInterest = AmountConverter.convertCentToString(model.getOverdueInterest());
+            this.overdueFee = AmountConverter.convertCentToString(model.getOverdueFee());
+        }
+
         if (model.getRepayAmount() > 0) {
             this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
         }
