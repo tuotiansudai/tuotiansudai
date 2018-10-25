@@ -355,7 +355,7 @@
     <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+            ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`-ir.`default_fee`+ir.`overdue_interest`-ir.`overdue_fee`
           ),0)
         FROM
           invest_repay ir
