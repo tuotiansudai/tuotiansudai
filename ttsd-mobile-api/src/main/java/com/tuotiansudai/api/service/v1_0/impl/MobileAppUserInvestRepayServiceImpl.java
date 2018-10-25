@@ -83,6 +83,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         long totalExpectedInterest = 0;
         long completeTotalActualInterest = 0;
         long unPaidTotalRepay = 0;
+        boolean isOverdueTransfer = false;
 
         try {
             InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
@@ -100,6 +101,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
                 userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
                         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()) : userInvestRepayResponseDataDto.getInvestTime());
+                isOverdueTransfer = investService.findById(investModel.getTransferInvestId()).isOverdueTransfer();
+                userInvestRepayResponseDataDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
@@ -155,7 +158,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
             }
 
 
-            userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+            userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(isOverdueTransfer ? 0 : totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);

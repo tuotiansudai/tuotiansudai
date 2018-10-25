@@ -109,8 +109,8 @@ public class CalculateDefaultInterestScheduler {
                             .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
                             .setScale(0, BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
-                    //如果是债券转让,罚息手续费需要从转让日计算
-                    if (investModel.getTransferInvestId() != null) {
+                    //如果是逾期债券转让,罚息需要从转让日计算
+                    if (investModel.isOverdueTransfer() && investModel.getTransferInvestId() != null) {
                         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investModel.getId());
                         investRepayDefaultInterest = InterestCalculator.calculateLoanInterest(overdueFee, investModel.getAmount(), new DateTime(transferApplicationModel.getApplicationTime()), new DateTime());
                     }

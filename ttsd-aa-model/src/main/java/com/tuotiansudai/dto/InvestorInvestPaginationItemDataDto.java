@@ -138,4 +138,12 @@ public class InvestorInvestPaginationItemDataDto {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public void setNextRepayAmount(String nextRepayAmount) {
+        this.nextRepayAmount = nextRepayAmount;
+    }
 }

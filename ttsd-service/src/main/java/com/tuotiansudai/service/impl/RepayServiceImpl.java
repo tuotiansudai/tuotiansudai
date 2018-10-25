@@ -183,7 +183,8 @@ public class RepayServiceImpl implements RepayService {
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto(investRepayModel);
 
-                long expectedTotalAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee(); //当期应收回款
+                long expectedTotalAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()
+                        - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee(); //当期应收回款
                 long expectedTotalFee = investRepayModel.getExpectedFee(); // 当期应缴服务费
                 long actualTotalAmount = investRepayModel.getRepayAmount(); // 当期实收回款
                 long actualTotalFee = investRepayModel.getActualFee(); // 当期实缴服务费

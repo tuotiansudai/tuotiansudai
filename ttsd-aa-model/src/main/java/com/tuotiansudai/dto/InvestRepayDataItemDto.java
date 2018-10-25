@@ -37,6 +37,8 @@ public class InvestRepayDataItemDto {
 
     private String defaultInterest;
 
+    private String defaultFee;
+
     private String actualFee;
 
     private String status;
@@ -75,9 +77,9 @@ public class InvestRepayDataItemDto {
             this.actualRepayDate = model.getActualRepayDate();
         }
 
-
-        if (model.getDefaultInterest() > 0) {
-            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest()+model.getOverdueInterest());
+        if (!model.isTransferred() &&  model.getDefaultInterest() > 0) {
+            this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest() + model.getOverdueInterest());
+            this.defaultFee = AmountConverter.convertCentToString(model.getDefaultFee() + model.getOverdueFee());
         }
         if (model.getRepayAmount() > 0) {
             this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
@@ -275,5 +277,13 @@ public class InvestRepayDataItemDto {
 
     public void setInvestExperienceAmount(String investExperienceAmount) {
         this.investExperienceAmount = investExperienceAmount;
+    }
+
+    public String getDefaultFee() {
+        return defaultFee;
+    }
+
+    public void setDefaultFee(String defaultFee) {
+        this.defaultFee = defaultFee;
     }
 }
