@@ -4,6 +4,7 @@ import config_deploy
 import etcd_client
 
 
+
 class Deployment(object):
     _config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
     _gradle = '/opt/gradle/latest/bin/gradle'
