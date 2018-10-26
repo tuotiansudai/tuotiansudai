@@ -123,7 +123,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     repayDate = transferApplicationModels.get(0).getTransferTime();
                 }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-                long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
+                long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                long overdueInterest = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
                 long actualInterest = investRepayModel.getRepayAmount();
                 if (couponRepayModel != null) {
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
@@ -152,11 +153,10 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
                     completeTotalActualInterest += actualInterest;
                 } else {
-                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus();
+                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest;
                 }
                 totalExpectedInterest += expectedInterest;
             }
-
 
             userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(isOverdueTransfer ? 0 : totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));

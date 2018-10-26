@@ -35,7 +35,7 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
             this.expectedRepayAmount = "0";
         } else {
             this.repayAmount = "0";
-            this.expectedRepayAmount = String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest() + investExtraRateAmount.get("expectedRepayAmount"));
+            this.expectedRepayAmount = String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investExtraRateAmount.get("expectedRepayAmount"));
         }
     }
 

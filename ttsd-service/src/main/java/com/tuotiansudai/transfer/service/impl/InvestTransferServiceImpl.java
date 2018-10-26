@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvestTransferServiceImpl implements InvestTransferService {
@@ -432,6 +433,16 @@ public class InvestTransferServiceImpl implements InvestTransferService {
         }
 
         items.forEach(transferInvestDetailView -> {
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestDetailView.getInvestId());
+            List<InvestRepayModel> allOverdueInvestRepays = investRepayModels.stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
+            if (allOverdueInvestRepays.size() > 0) {
+                transferInvestDetailView.setNextRepayAmount(allOverdueInvestRepays.stream().mapToLong(model -> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest()
+                        - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum());
+            } else {
+                InvestRepayModel investRepayModel = investRepayModels.stream().filter(model -> model.getStatus() == RepayStatus.REPAYING).findFirst().orElse(null);
+                transferInvestDetailView.setNextRepayAmount(investRepayModel == null ? 0 : investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()
+                        - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee());
+            }
             if (ContractNoStatus.OLD.name().equals(transferInvestDetailView.getContractNo())) {
                 transferInvestDetailView.setContractOld("1");
             } else if (StringUtils.isNotEmpty(transferInvestDetailView.getContractNo())) {

@@ -41,16 +41,13 @@ public class InvestorInvestPaginationItemDataDto {
 
     private String contractNo;
 
-    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
+    public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
         this.loanName = loanModel.getName();
         this.amount = AmountConverter.convertCentToString(investModel.getAmount());
         this.createdTime = investModel.getCreatedTime();
         this.status = investModel.getStatus().getDescription();
-        this.nextRepayDate = investRepayModel != null ? investRepayModel.getRepayDate() : null;
-        this.nextRepayAmount = AmountConverter.convertCentToString(investRepayModel != null ?
-                investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee() : 0);
         this.userCoupons = userCouponDtoList;
         if (investModel.getAchievements() != null && investModel.getAchievements().size() > 0) {
             this.achievement =  new Ordering<InvestAchievement>() {
