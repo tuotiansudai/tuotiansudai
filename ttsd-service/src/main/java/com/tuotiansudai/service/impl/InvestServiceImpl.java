@@ -1,7 +1,8 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.*;
-import com.google.common.collect.Iterators;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -376,23 +377,23 @@ public class InvestServiceImpl implements InvestService {
             }
 
             InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-            long extraInterest = investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee();
+            long extraInterest = investExtraRateModel == null ? 0l : (investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee());
 
             InvestorInvestPaginationItemDataDto dataDto = new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel);
 
-            if (investModel.getTransferInvestId() != null){
+            if (investModel.getTransferInvestId() != null) {
                 dataDto.setAmount(AmountConverter.convertCentToString(transferApplicationMapper.findByInvestId(investModel.getId()).getTransferAmount()));
             }
 
             List<InvestRepayModel> allOverdueInvestRepayModels = investRepayModels.stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
-            if (allOverdueInvestRepayModels.size() > 0){
+            if (allOverdueInvestRepayModels.size() > 0) {
                 extraInterest = investRepayModels.get(investRepayModels.size() - 1).getStatus() == RepayStatus.OVERDUE ? extraInterest : 0;
                 dataDto.setNextRepayDate(allOverdueInvestRepayModels.get(0).getRepayDate());
                 dataDto.setNextRepayAmount(AmountConverter.convertCentToString(extraInterest + allOverdueInvestRepayModels.stream()
                         .mapToLong(model -> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
 
-            }else{
+            } else {
                 InvestRepayModel model = investRepayModels.stream().filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.REPAYING).findFirst().orElse(null);
                 extraInterest = model != null && model.getPeriod() == investRepayModels.size() ? extraInterest : 0;
                 dataDto.setNextRepayDate(model == null ? null : model.getRepayDate());
@@ -698,7 +699,7 @@ public class InvestServiceImpl implements InvestService {
             dto.setProductNewType(loanModel.getProductType().name());
             dto.setRepayProgress(generateRepayProgress(loanStatus, loanModel));
 
-            if (isOverdueTransfer){
+            if (isOverdueTransfer) {
                 dto.setExpectedInterest("0");
             }
 
@@ -906,13 +907,13 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public long availableInvestMoney(String loginName) {
-        RiskEstimateModel riskEstimateModel=riskEstimateMapper.findByLoginName(loginName);
+        RiskEstimateModel riskEstimateModel = riskEstimateMapper.findByLoginName(loginName);
         //没进行风险评估可用投资额度为0
-        if(riskEstimateModel== null || riskEstimateModel.getEstimate() == null){
+        if (riskEstimateModel == null || riskEstimateModel.getEstimate() == null) {
             return 0l;
         }
-        long usedMoney=investMapper.sumUsedFund(loginName);
-        long estimateLimit=AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()));
-        return estimateLimit-usedMoney>=0?(estimateLimit-usedMoney):0;
+        long usedMoney = investMapper.sumUsedFund(loginName);
+        long estimateLimit = AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()));
+        return estimateLimit - usedMoney >= 0 ? (estimateLimit - usedMoney) : 0;
     }
 }
