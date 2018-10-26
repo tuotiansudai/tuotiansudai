@@ -377,7 +377,7 @@ public class InvestServiceImpl implements InvestService {
             }
 
             InvestExtraRateModel investExtraRateModel = investExtraRateMapper.findByInvestId(investModel.getId());
-            long extraInterest = investExtraRateModel == null ? 0l : (investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee());
+            long extraInterest = investExtraRateModel == null ? 0L : (investExtraRateModel.getExpectedInterest() - investExtraRateModel.getExpectedFee());
 
             InvestorInvestPaginationItemDataDto dataDto = new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel);
@@ -388,16 +388,23 @@ public class InvestServiceImpl implements InvestService {
 
             List<InvestRepayModel> allOverdueInvestRepayModels = investRepayModels.stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
             if (allOverdueInvestRepayModels.size() > 0) {
+                long sumNextRepayAmount = 0;
+                for (InvestRepayModel model : allOverdueInvestRepayModels){
+                    CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investModel.getId(), model.getPeriod());
+                    sumNextRepayAmount += model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()
+                            + (couponRepayModel == null ? 0 : (couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee()));
+                }
                 extraInterest = investRepayModels.get(investRepayModels.size() - 1).getStatus() == RepayStatus.OVERDUE ? extraInterest : 0;
                 dataDto.setNextRepayDate(allOverdueInvestRepayModels.get(0).getRepayDate());
-                dataDto.setNextRepayAmount(AmountConverter.convertCentToString(extraInterest + allOverdueInvestRepayModels.stream()
-                        .mapToLong(model -> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
+                dataDto.setNextRepayAmount(AmountConverter.convertCentToString(extraInterest + sumNextRepayAmount));
 
             } else {
                 InvestRepayModel model = investRepayModels.stream().filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.REPAYING).findFirst().orElse(null);
+                CouponRepayModel couponRepayModel = model == null ? null : couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investModel.getId(), model.getPeriod());
+                long couponInterest = couponRepayModel == null ? 0 : couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
                 extraInterest = model != null && model.getPeriod() == investRepayModels.size() ? extraInterest : 0;
                 dataDto.setNextRepayDate(model == null ? null : model.getRepayDate());
-                dataDto.setNextRepayAmount(model == null ? null : AmountConverter.convertCentToString(extraInterest + model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()));
+                dataDto.setNextRepayAmount(model == null ? null : AmountConverter.convertCentToString(extraInterest + couponInterest + model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()));
             }
             items.add(dataDto);
         }
