@@ -1,7 +1,5 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
@@ -12,18 +10,15 @@ import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.*;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -204,6 +199,11 @@ public class TransferServiceImpl implements TransferService {
     public List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         return transferApplicationMapper.findByTransferInvestId(transferApplicationModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
+    }
+
+    @Override
+    public TransferApplicationModel findTransferSuccessByInvestId(long investId) {
+        return transferApplicationMapper.findByInvestId(investId);
     }
 
     @Override

@@ -10,6 +10,8 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
 import org.apache.log4j.Logger;
@@ -45,9 +47,12 @@ public class FrontCallbackController {
 
     private final BankCardMapper bankCardMapper;
 
+    private final TransferService transferService;
+
     @Autowired
     public FrontCallbackController(PayWrapperClient payWrapperClient,
                                    InvestService investService,
+                                   TransferService transferService,
                                    LoanService loanService,
                                    WithdrawService withdrawService,
                                    RechargeService rechargeService,
@@ -55,6 +60,7 @@ public class FrontCallbackController {
                                    BankCardMapper bankCardMapper) {
         this.payWrapperClient = payWrapperClient;
         this.investService = investService;
+        this.transferService = transferService;
         this.loanService = loanService;
         this.withdrawService = withdrawService;
         this.rechargeService = rechargeService;
@@ -105,6 +111,10 @@ public class FrontCallbackController {
                 modelAndView.addObject("loanName", loanModel.getName());
                 modelAndView.addObject("loanId", loanModel.getId());
                 modelAndView.addObject("serviceName", "出借成功");
+                if (Lists.newArrayList(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)){
+                    TransferApplicationModel transferApplicationModel = transferService.findTransferSuccessByInvestId(investModel.getId());
+                    modelAndView.addObject("amount", AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
+                }
             }
             if (AsyncUmPayService.CUST_WITHDRAWALS == asyncUmPayService) {
                 WithdrawModel withdrawModel = withdrawService.findById(Long.valueOf(params.get("order_id")));
