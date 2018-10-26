@@ -79,7 +79,6 @@ public class InvestRepayServiceImpl implements InvestRepayService {
 
     @Override
     public List<InvestorInvestPaginationItemDataDto> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
-        //List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
         List<InvestorInvestPaginationItemDataDto> latestInvestViews=investService.getInvestPagination(loginName,1,6,null,null,null).getRecords();
         for (InvestorInvestPaginationItemDataDto latestInvestView : latestInvestViews) {
             List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, latestInvestView.getInvestId());

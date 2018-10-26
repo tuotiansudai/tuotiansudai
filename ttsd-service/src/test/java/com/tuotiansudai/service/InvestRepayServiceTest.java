@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
+import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -144,8 +145,7 @@ public class InvestRepayServiceTest {
         List<InvestRepayDataItemDto> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
         assertThat(investRepayModelList.size(), is(1));
 
-        List<LatestInvestView> latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
+        List<InvestorInvestPaginationItemDataDto>  latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
         assertThat(latestInvestViews.size(), is(2));
-        assertThat(latestInvestViews.get(0).getCorpus(), is(100L));
     }
 }
