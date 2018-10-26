@@ -827,8 +827,11 @@ public class InvestServiceImpl implements InvestService {
 
             InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, couponRepayModel);
             investRepayList.add(investRepayDataDto);
-            completeTotalActualInterest += actualInterest;
-            unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest - actualInterest;
+            if (investRepayModel.getStatus() == RepayStatus.COMPLETE){
+                completeTotalActualInterest += actualInterest;
+            } else {
+                unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest;
+            }
             totalExpectedInterest += expectedInterest;
         }
 
