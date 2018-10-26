@@ -731,12 +731,15 @@ public class InvestServiceImpl implements InvestService {
         InvestorInvestDetailDto investorInvestDetailDto = new InvestorInvestDetailDto(loanModel, transferApplicationModel, userInvestAmountTotal);
 
         long totalExpectedInterest = 0;
+        long totalOverdueInterest = 0;
         long totalActualInterest = 0;
         long corpus = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(investModel.getLoginName(), investModel.getId());
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee() ;
+            long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+            long overdueInterest = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
             totalExpectedInterest += expectedInterest;
+            totalOverdueInterest += overdueInterest;
             totalActualInterest += investRepayModel.getRepayAmount();
             corpus += investRepayModel.getCorpus();
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
@@ -749,7 +752,7 @@ public class InvestServiceImpl implements InvestService {
 
         investorInvestDetailDto.setExpectedInterest(originInvestModel.isOverdueTransfer() ? 0 : totalExpectedInterest);
         investorInvestDetailDto.setActualInterest(totalActualInterest);
-        investorInvestDetailDto.setUnPaidRepay(totalExpectedInterest + corpus - totalActualInterest);
+        investorInvestDetailDto.setUnPaidRepay(totalExpectedInterest + totalOverdueInterest + corpus - totalActualInterest);
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(investModel.getLoginName(), transferApplicationModel.getTransferTime());
         investorInvestDetailDto.setMembershipLevel(membershipModel.getLevel());
@@ -816,11 +819,8 @@ public class InvestServiceImpl implements InvestService {
 
             InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, couponRepayModel);
             investRepayList.add(investRepayDataDto);
-            if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
-                completeTotalActualInterest += actualInterest;
-            } else {
-                unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest;
-            }
+            completeTotalActualInterest += actualInterest;
+            unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest - actualInterest;
             totalExpectedInterest += expectedInterest;
         }
 

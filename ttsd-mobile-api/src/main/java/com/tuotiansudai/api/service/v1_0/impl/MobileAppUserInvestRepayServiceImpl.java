@@ -124,7 +124,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
                 long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-                long overdueInterest = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
+                long overdueInterest = investRepayModel.getStatus() == RepayStatus.COMPLETE ? 0 : investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
                 long actualInterest = investRepayModel.getRepayAmount();
                 if (couponRepayModel != null) {
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
@@ -146,7 +146,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
-                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus + overdueInterest));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
