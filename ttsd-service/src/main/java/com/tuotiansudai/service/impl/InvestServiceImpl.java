@@ -750,8 +750,7 @@ public class InvestServiceImpl implements InvestService {
             totalOverdueInterest += overdueInterest;
             totalActualInterest += investRepayModel.getRepayAmount();
             corpus += investRepayModel.getCorpus();
-            CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-            InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, couponRepayModel);
+            InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, investRepayModel.getStatus() == RepayStatus.COMPLETE ? investRepayModel.getRepayAmount() : expectedInterest + overdueInterest);
             investorInvestDetailDto.getInvestRepays().add(investRepayDataDto);
             if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
                 investorInvestDetailDto.setLastRepayDate(investRepayModel.getRepayDate());
@@ -825,7 +824,7 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
 
-            InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, couponRepayModel);
+            InvestorInvestRepayDto investRepayDataDto = new InvestorInvestRepayDto(investRepayModel, investRepayModel.getStatus() == RepayStatus.COMPLETE ? actualInterest : expectedInterest + overdueInterest);
             investRepayList.add(investRepayDataDto);
             if (investRepayModel.getStatus() == RepayStatus.COMPLETE){
                 completeTotalActualInterest += actualInterest;
