@@ -7,9 +7,9 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -49,10 +49,7 @@ public class MobileAppFrontCallBackController {
     private LoanService loanService;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private TransferApplicationMapper transferApplicationMapper;
+    private TransferService transferService;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -154,8 +151,7 @@ public class MobileAppFrontCallBackController {
                     .build());
         };
         Function<Long, Map<String, String>> transferValuesGenerator = (Long investId) -> {
-            TransferApplicationModel transferApplicationModel = investId != null ? transferApplicationMapper.findByInvestId(investId) : null;
-
+            TransferApplicationModel transferApplicationModel = investId != null ? transferService.findTransferSuccessByInvestId(investId) : null;
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("loanName", transferApplicationModel != null ? loanService.findLoanById(transferApplicationModel.getLoanId()).getName() : "")
                     .put("investAmount", (transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()) : ""))
