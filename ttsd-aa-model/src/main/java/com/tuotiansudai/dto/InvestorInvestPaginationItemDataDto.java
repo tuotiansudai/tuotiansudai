@@ -41,6 +41,10 @@ public class InvestorInvestPaginationItemDataDto {
 
     private String contractNo;
 
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public InvestorInvestPaginationItemDataDto(LoanModel loanModel, InvestModel investModel, InvestRepayModel investRepayModel, List<UserCouponDto> userCouponDtoList, boolean investRepayExist, InvestExtraRateModel investExtraRateModel) {
         this.investId = investModel.getId();
         this.loanId = investModel.getLoanId();
@@ -145,5 +149,21 @@ public class InvestorInvestPaginationItemDataDto {
 
     public void setNextRepayAmount(String nextRepayAmount) {
         this.nextRepayAmount = nextRepayAmount;
+    }
+
+    public boolean getBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }
