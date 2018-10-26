@@ -144,8 +144,5 @@ public class InvestRepayServiceTest {
 
         List<InvestRepayDataItemDto> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
         assertThat(investRepayModelList.size(), is(1));
-
-        List<InvestorInvestPaginationItemDataDto>  latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
-        assertThat(latestInvestViews.size(), is(2));
     }
 }
