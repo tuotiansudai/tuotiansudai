@@ -7,10 +7,8 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
@@ -52,6 +50,9 @@ public class MobileAppFrontCallBackController {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -152,6 +153,16 @@ public class MobileAppFrontCallBackController {
                     .put("message", Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(service) ? "出借成功" : "债权购买成功")
                     .build());
         };
+        Function<Long, Map<String, String>> transferValuesGenerator = (Long investId) -> {
+            TransferApplicationModel transferApplicationModel = investId != null ? transferApplicationMapper.findByInvestId(investId) : null;
+
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("loanName", transferApplicationModel != null ? loanService.findLoanById(transferApplicationModel.getLoanId()).getName() : "")
+                    .put("investAmount", (transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()) : ""))
+                    .put("loanId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getLoanId()) : "")
+                    .put("message", "债权购买成功")
+                    .build());
+        };
 
         Function<Long, Map<String, String>> memberPrivilegePurchaseValuesGenerator = (Long replaceCardOrderId) -> Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("message", "成功购买增值特权")
@@ -168,8 +179,8 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.CUST_WITHDRAWALS, withdrawValuesGenerator)
                 .put(AsyncUmPayService.INVEST_PROJECT_TRANSFER, investValuesGenerator)
                 .put(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, investValuesGenerator)
-                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, investValuesGenerator)
-                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, investValuesGenerator)
+                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, transferValuesGenerator)
+                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, transferValuesGenerator)
                 .put(AsyncUmPayService.MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN, memberPrivilegePurchaseValuesGenerator)
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
