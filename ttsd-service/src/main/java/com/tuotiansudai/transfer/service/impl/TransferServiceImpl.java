@@ -298,7 +298,8 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId()));
         long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
-        transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(transferInvestModel.isOverdueTransfer() ? 0 : InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
