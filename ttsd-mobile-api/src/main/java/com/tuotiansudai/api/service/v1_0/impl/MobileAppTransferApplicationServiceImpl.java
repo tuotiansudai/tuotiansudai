@@ -248,7 +248,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(transferInvestModel.isOverdueTransfer() ? 0 : InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         //
         LoanDetailsModel loanDetailsModel=loanDetailsMapper.getByLoanId(transferApplicationModel.getLoanId());
         RiskEstimateModel userEstimate=riskEstimateMapper.findByLoginName(requestDto.getBaseParam().getUserId());
