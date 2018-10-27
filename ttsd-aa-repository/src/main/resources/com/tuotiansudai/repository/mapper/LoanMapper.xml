@@ -279,10 +279,10 @@
         (select max(loan_repay.actual_repay_date)
         from loan_repay
         where loan.id=loan_repay.loan_id) as completed_date,
-        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest)
+        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)+sum(loan_repay.overdue_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id) as expected_repay_amount,
-        (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest) + sum(loan_repay.default_interest)+sum(loan_repay.overdue_interest)
+        (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id) as actual_repay_amount
         from loan
