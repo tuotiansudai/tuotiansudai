@@ -34,6 +34,6 @@ public interface TransferService {
 
     List<TransferApplicationModel> getTransferApplicaationByTransferInvestId(long transferApplicationId);
 
-    TransferApplicationModel findTransferSuccessByInvestId(long investId);
+    TransferApplicationModel findLastTransfersByTransferInvestId(long transferInvestId);
 
 }

@@ -151,7 +151,8 @@ public class MobileAppFrontCallBackController {
                     .build());
         };
         Function<Long, Map<String, String>> transferValuesGenerator = (Long investId) -> {
-            TransferApplicationModel transferApplicationModel = investId != null ? transferService.findTransferSuccessByInvestId(investId) : null;
+            InvestModel investModel=investService.findById(investId);
+            TransferApplicationModel transferApplicationModel = transferService.findLastTransfersByTransferInvestId(investModel == null?0l:investModel.getTransferInvestId());
             return Maps.newHashMap(ImmutableMap.<String, String>builder()
                     .put("loanName", transferApplicationModel != null ? loanService.findLoanById(transferApplicationModel.getLoanId()).getName() : "")
                     .put("investAmount", (transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()) : ""))
