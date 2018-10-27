@@ -252,49 +252,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     @Test
-    public void shouldTransferPurchaseIsSuccess() throws Exception {
-        long transferApplicationId = IdGenerator.generate();
-        long investId = IdGenerator.generate();
-
-        AccountModel accountModel = createAccountByUserId("testuser");
-        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
-        BaseParam baseParam = new BaseParam();
-        baseParam.setUserId("testuser");
-        transferPurchaseRequestDto.setBaseParam(baseParam);
-        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(transferApplicationId));
-
-
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
-        transferApplicationModel.setTransferAmount(90000);
-        transferApplicationModel.setInvestAmount(100000);
-        transferApplicationModel.setLoginName("testuser");
-        transferApplicationModel.setInvestId(investId);
-        transferApplicationModel.setPeriod(2);
-        transferApplicationModel.setId(transferApplicationId);
-
-        InvestRepayModel investRepayModel1 = createInvestRepay("testuser", investId, 0, 1);
-        InvestRepayModel investRepayModel2 = createInvestRepay("testuser", investId, 0, 2);
-        InvestRepayModel investRepayModel3 = createInvestRepay("testuser", investId, 100000, 3);
-        List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
-        investRepayModels.add(investRepayModel1);
-        investRepayModels.add(investRepayModel2);
-        investRepayModels.add(investRepayModel3);
-
-        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
-        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
-        when(membershipPrivilegePurchaseService.obtainServiceFee(anyString())).thenReturn(0.4);
-
-        BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
-
-        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
-
-        assertEquals("1000.00", baseResponseDto.getData().getBalance());
-        assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
-        assertEquals("0.15", baseResponseDto.getData().getExpectedInterestAmount());
-    }
-
-    @Test
     public void shouldTransferApplicationCancelIsSuccess() throws Exception {
         TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
         transferCancelRequestDto.setTransferApplicationId(100000L);
