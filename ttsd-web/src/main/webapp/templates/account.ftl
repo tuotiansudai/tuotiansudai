@@ -222,7 +222,7 @@
                 <#if (latestInvestList?size>0)>
                     <#list latestInvestList as latestInvest>
                     <tr>
-                        <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
+                        <td>${(latestInvest.createdTime?string('yyyy-MM-dd'))!}</td>
                         <td>
                             <#if latestInvest.productType != 'EXPERIENCE'>
                             <i <#if latestInvest.birthdayCoupon>class="birth-icon" data-benefit="${latestInvest.birthdayBenefit}"</#if>></i>
@@ -230,12 +230,12 @@
 
                             <a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a>
                         </td>
-                        <td>出借成功</td>
-                        <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
-                        ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
+                        <td>${latestInvest.status}</td>
+                        <td><#if latestInvest.nextRepayDate??>${(latestInvest.nextRepayDate?string('yyyy-MM-dd'))!} /
+                        ${latestInvest.nextRepayAmount}<#else>-/-</#if>
                         </td>
                         <td>
-                            ￥${((latestInvest.investAmount/100)?string('0.00'))!}
+                            ￥${latestInvest.amount!}
                             <#if latestInvest.productType == 'EXPERIENCE'>
                                 (体验金)
                             </#if>

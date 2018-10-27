@@ -128,25 +128,26 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
-        BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
-        BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
-        long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationDto.getTransferInvestId());
+
+        if (!investModel.isOverdueTransfer() && transferAmount != investModel.getAmount()){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_IS_CORPUS);
+        }
+
+        if (investModel.isOverdueTransfer() && transferAmount <= investModel.getAmount()){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_UPGRADE_APP);
+        }
 
         if(CollectionUtils.isEmpty(investRepayModels)){
             return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
         }
 
-        if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
-            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
-        }
-
-        if(loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE){
+        if (!investModel.isOverdueTransfer() && loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), ReturnMessage.TRANSFER_IS_OVERDUE.getMsg());
         }
 
-        if(!investTransferService.validTransferIsDayLimit(investModel.getLoanId())){
+        if (!investModel.isOverdueTransfer() && !investTransferService.validTransferIsDayLimit(investModel.getLoanId())) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), ReturnMessage.TRANSFER_IMPEND_REPAYING.getMsg());
         }
 
@@ -184,6 +185,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
         transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel)));
+        //新增转让价格
+        transferApplyQueryResponseDataDto.setTransferAmount(AmountConverter.convertCentToString(investTransferService.calcultorTransferAmount(Long.parseLong(investId))));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

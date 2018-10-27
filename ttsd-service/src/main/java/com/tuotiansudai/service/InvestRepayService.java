@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
+import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LatestInvestView;
 
 import java.util.Date;
@@ -17,5 +18,5 @@ public interface InvestRepayService {
 
     List<InvestRepayDataItemDto> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit);
 
-    List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit);
+    List<InvestorInvestPaginationItemDataDto> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit);
 }

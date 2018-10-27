@@ -83,6 +83,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
         long totalExpectedInterest = 0;
         long completeTotalActualInterest = 0;
         long unPaidTotalRepay = 0;
+        boolean isOverdueTransfer = false;
 
         try {
             InvestModel investModel = investService.findById(Long.parseLong(userInvestRepayRequestDto.getInvestId().trim()));
@@ -100,6 +101,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 userInvestRepayResponseDataDto.setLoanName(transferApplicationModel != null ? transferApplicationModel.getName() : loanModel.getName());
                 userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
                         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()) : userInvestRepayResponseDataDto.getInvestTime());
+                isOverdueTransfer = investService.findById(investModel.getTransferInvestId()).isOverdueTransfer();
+                userInvestRepayResponseDataDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
@@ -120,7 +123,8 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                     repayDate = transferApplicationModels.get(0).getTransferTime();
                 }
                 CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-                long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee();
+                long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                long overdueInterest = investRepayModel.getStatus() == RepayStatus.COMPLETE ? 0 : investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
                 long actualInterest = investRepayModel.getRepayAmount();
                 if (couponRepayModel != null) {
                     expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
@@ -142,20 +146,19 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 investRepayDataDto.setPeriod(investRepayModel.getPeriod());
                 investRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
                 investRepayDataDto.setActualRepayDate(repayDate == null ? "" : sdf.format(repayDate));
-                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus));
+                investRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(expectedInterest + corpus + overdueInterest));
                 investRepayDataDto.setActualInterest(AmountConverter.convertCentToString(actualInterest));
                 investRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 investRepayList.add(investRepayDataDto);
                 if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
                     completeTotalActualInterest += actualInterest;
                 } else {
-                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus();
+                    unPaidTotalRepay += expectedInterest + investRepayModel.getCorpus() + overdueInterest;
                 }
                 totalExpectedInterest += expectedInterest;
             }
 
-
-            userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+            userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(isOverdueTransfer ? 0 : totalExpectedInterest));
             userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(completeTotalActualInterest));
             userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(unPaidTotalRepay));
             userInvestRepayResponseDataDto.setInvestRepays(investRepayList);

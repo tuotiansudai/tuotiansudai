@@ -20,5 +20,4 @@ public enum TransferStatus {
     TransferStatus(String description) {
         this.description = description;
     }
-
 }

@@ -29,8 +29,11 @@
                 <th>实收金额(元)</th>
                 <th>实收利息(元)</th>
                 <th>实收奖励(元)</th>
-                <th>实收罚息(元)</th>
-                <th>实扣利息管理费(元)</th>
+                <th>正常罚息(元)</th>
+                <th>最后一期逾期罚息(元)</th>
+                <th>正常罚息管理费(元)</th>
+                <th>最后一期逾期罚息管理费(元)</th>
+                <th>实扣管理费(元)</th>
                 <th>状态</th>
             </tr>
             </thead>
@@ -50,6 +53,9 @@
                     <td>${repay.actualInterest!'--'}</td>
                     <td>${repay.couponActualInterest!'--'}</td>
                     <td>${repay.defaultInterest!'--'}</td>
+                    <td>${repay.overdueInterest!'--'}</td>
+                    <td>${repay.defaultFee!'--'}</td>
+                    <td>${repay.overdueFee!'--'}</td>
                     <td>${repay.actualFee!'--'}</td>
                     <td>${repay.status}</td>
                 </tr>
@@ -59,7 +65,7 @@
     </div>
     <div class="table-responsive">
         <p>应回款金额 = 应收本金 + 应收利息 + 应收奖励 - 利息管理费</p>
-        <p>实收金额 = 应收本金 + 实收利息 + 实收奖励 + 实收罚息 - 实扣利息管理费</p>
+        <p>实收金额 = 应收本金 + 实收利息 + 实收奖励  - 实扣管理费</p>
     </div>
     <div class="table-responsive">
         <a href="javascript:history.back();" class="btn btn-sm btn-default btnSearch">返回</a>

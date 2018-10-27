@@ -74,7 +74,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
         $('.updateTransferStatus').on('click', function () {
             var investId = $(this).data('investid');
 
-            if (confirm('确认修改?')) {
+            if (confirm($(this).data('warmprompt'))) {
                 $.ajax({
                     url: '/finance-manage/update/invest/'+ investId +'/transfer-status',
                     type: 'POST',

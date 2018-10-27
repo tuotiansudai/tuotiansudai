@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
@@ -57,11 +56,11 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
 
         long overdueDefaultInterest = investRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ?
                 investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId())
-                .stream()
-                .map(InvestRepayModel::getDefaultInterest)
-                .filter(defaultInterest -> defaultInterest > 0)
-                .findAny()
-                .orElse(0L) : 0L;
+                        .stream()
+                        .map(InvestRepayModel::getDefaultInterest)
+                        .filter(defaultInterest -> defaultInterest > 0)
+                        .findAny()
+                        .orElse(0L) : 0L;
         return investRepayModel.getCorpus() + investRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 

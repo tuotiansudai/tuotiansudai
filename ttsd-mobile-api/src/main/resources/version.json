@@ -1,10 +1,10 @@
 {
   "android": {
-    "version": "4.7.4",
-    "versionCode": 67,
+    "version": "4.7.6",
+    "versionCode": 69,
     "forceUpgrade": true,
     "url": "http://192.168.80.49:9999/app/tuotiansudai.apk",
-    "message": "1，拓天助手修改为个人中心；\n2，新增账户信息模块；\n3，新增服务费用、常见问题、意见反馈；\n4，合并密码修改，优化修改流程；\n5，交互优化；\n6，新增8家银行快捷支付；\n7，推荐人二维码扫描注册。"
+    "message": "1，优化了债权转让规则；\n2，修复了所有已知的bug。"
   },
   "ios": {
     "version": "2.5.5",

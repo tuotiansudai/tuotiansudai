@@ -81,6 +81,8 @@ public class InvestModel implements Serializable {
      * */
     private double investFeeRate;
 
+    private boolean isOverdueTransfer;
+
     public InvestModel() {
     }
 
@@ -234,5 +236,13 @@ public class InvestModel implements Serializable {
 
     public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
+    }
+
+    public boolean isOverdueTransfer() {
+        return isOverdueTransfer;
+    }
+
+    public void setOverdueTransfer(boolean overdueTransfer) {
+        isOverdueTransfer = overdueTransfer;
     }
 }

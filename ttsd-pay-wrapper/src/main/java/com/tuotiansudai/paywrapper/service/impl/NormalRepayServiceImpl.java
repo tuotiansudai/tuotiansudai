@@ -2,10 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.*;
@@ -31,6 +28,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -95,6 +93,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -251,6 +255,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         currentLoanRepay.setStatus(RepayStatus.COMPLETE);
         loanRepayMapper.update(currentLoanRepay);
         logger.info(MessageFormat.format("[Normal Repay {0}] loan repay callback update current loan repay status to COMPLETE", String.valueOf(loanRepayId)));
+
+        if (currentLoanRepay.getPeriod() == loanModel.getPeriods()){
+            lastLoanRepaySendTransferCancelMessage(loanModel.getId());
+        }
 
         // update all overdue loan repay status
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
@@ -628,7 +636,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() : 0;
+            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() : 0;
         }
         return actualInterest;
     }
@@ -641,7 +649,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualFee = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedFee() : 0;
+            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? (investRepayModel.getExpectedFee()+investRepayModel.getOverdueFee()+investRepayModel.getDefaultFee()) : 0;
         }
         return actualFee;
     }
@@ -654,7 +662,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0;
+            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest(): 0;
         }
         return actualInterest;
     }
@@ -692,5 +700,14 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("正常还款业务错误。详细信息：{0}", errMsg));
     }
 
-
+    private void lastLoanRepaySendTransferCancelMessage(long loanId){
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanId);
+        for (TransferApplicationModel transferApplicationModel : transferApplicationModels) {
+            transferApplicationModel.setStatus(TransferStatus.CANCEL);
+            transferApplicationMapper.update(transferApplicationModel);
+            logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of loan repay over.", transferApplicationModel.getId()));
+            String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_COMPLETE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
+        }
+    }
 }

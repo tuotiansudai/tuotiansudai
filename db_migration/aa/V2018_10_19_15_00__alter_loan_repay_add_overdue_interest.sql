@@ -1,0 +1,2 @@
+ALTER table `invest_repay` ADD COLUMN `overdue_interest` BIGINT UNSIGNED  DEFAULT  0 after `default_interest`;
+ALTER table `loan_repay`   ADD COLUMN `overdue_interest` BIGINT UNSIGNED  DEFAULT  0 after `default_interest`;

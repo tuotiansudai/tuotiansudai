@@ -20,6 +20,9 @@
         <result column="repay_amount" property="repayAmount"></result>
         <result column="status" property="status"></result>
         <result column="product_type" property="productType"></result>
+        <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
+        <result column="default_fee" property="defaultFee"/>
     </resultMap>
 
     <resultMap id="investRepayResultMap" type="InvestRepayModel">
@@ -38,6 +41,9 @@
         <result column="status" property="status"></result>
         <result column="is_transferred" property="isTransferred"></result>
         <result column="transfer_status" property="transferStatus"></result>
+        <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
+        <result column="default_fee" property="defaultFee"/>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -54,6 +60,9 @@
         <result column="repay_date" property="repayDate"></result>
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
+        <result column="overdue_interest" property="overdueInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
+        <result column="default_fee" property="defaultFee"/>
         <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
             <id column="loan_id" property="id"/>
             <result column="name" property="name"></result>
@@ -86,7 +95,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, repay_amount, period, repay_date, actual_repay_date, status, is_transferred, created_time, updated_time,overdue_interest,overdue_fee,default_fee
     </sql>
 
     <insert id="create" parameterType="java.util.List">
@@ -96,7 +105,7 @@
             (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest},
             #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period},
             #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime},
-            now())
+            now(),#{item.overdueInterest},#{item.overdueFee},#{item.defaultFee})
         </foreach>
     </insert>
 
@@ -145,14 +154,17 @@
             is_transferred = #{isTransferred},
             repay_amount = #{repayAmount},
             status = #{status},
-            updated_time = now()
+            updated_time = now(),
+            overdue_interest=#{overdueInterest},
+            overdue_fee=#{overdueFee},
+            default_fee=#{defaultFee}
         where id = #{id}
     </update>
 
     <select id="findByLoginNameAndTimeAndSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`corpus` + ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
+            ir.`corpus` + ir.`actual_interest`  - ir.`actual_fee`
           ),0)
         FROM
           invest_repay ir
@@ -178,7 +190,7 @@
     <select id="findByLoginNameAndTimeAndNotSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+            ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`-ir.`default_fee`+ir.`overdue_interest`-ir.`overdue_fee`
           ),0)
         FROM
           invest_repay ir
@@ -288,7 +300,10 @@
           temp2.`corpus`,
           temp2.`expected_interest`,
           temp2.`default_interest`,
+          temp2.`overdue_interest`,
           temp2.`expected_fee`,
+          temp2.`default_fee`,
+          temp2.`overdue_fee`,
           temp.`amount`,
         temp2.`status`,
         product_type
@@ -313,7 +328,10 @@
               t.`corpus`,
               t.`expected_interest`,
               t.`default_interest`,
+              t.`overdue_interest`,
               t.`expected_fee`,
+              t.`default_fee`,
+              t.`overdue_fee`,
               t.`repay_date`,
               t.`status`
             FROM
@@ -337,7 +355,7 @@
     <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+            ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`-ir.`default_fee`+ir.`overdue_interest`-ir.`overdue_fee`
           ),0)
         FROM
           invest_repay ir
@@ -361,9 +379,7 @@
     </select>
 
     <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
-        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest,
-        ir.expected_fee, ir.actual_fee, ir.repay_amount, ir.period, ir.repay_date, ir.actual_repay_date, ir.status,
-        ir.created_time
+        select ir.*
         from invest_repay ir
         inner join invest on invest.id = ir.invest_id
         where invest.login_name = #{loginName}
@@ -439,4 +455,11 @@
         ORDER BY r.repay_date
     </select>
 
+    <update id="updateOverdueAndFee" parameterType="map">
+        update invest_repay
+        set
+        overdue_interest=#{overdueInterest},
+        overdue_fee=#{overdueFee}
+        where id = #{id}
+    </update>
 </mapper>

@@ -67,4 +67,9 @@ public interface LoanRepayMapper {
     long findSumActualInterest(@Param(value = "endDate") Date endDate);
 
 
+    List<LoanRepayModel> findOverdueLoanRepay();
+
+    LoanRepayModel findFirstOverdueRepayByLoanId(@Param(value = "loanId") long loanId);
+
+    void updateOverdueInterest(@Param(value = "id")long id, @Param(value = "overdueInterest")long overdueInterest);
 }

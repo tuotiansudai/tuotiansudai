@@ -89,6 +89,17 @@
                 </#list>
             </select>
         </div>
+
+        <div class="form-group">
+            <label>是否允许转让</label>
+            <select class="selectpicker" name="transferType">
+                <option value="" <#if !transferType?? >selected</#if>>全部</option>
+                <option value="no" <#if transferType?? && transferType=='no' >selected</#if>>否</option>
+                <option value="normalTransfer" <#if transferType?? && transferType=='normalTransfer' >selected</#if>>正常转让</option>
+                <option value="overdueTransfer" <#if transferType?? && transferType=='overdueTransfer' >selected</#if>>逾期转让</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
         <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
     </form>
@@ -148,11 +159,20 @@
                     <td>${invest.couponDetail!'-'} / ${invest.couponActualInterest!'-'}</td>
                     <td>${invest.extraDetail!'-'} / ${invest.extraActualInterest!'-'}</td>
                     <td>${invest.investStatus}</td>
-                    <td>${invest.allowTransfer?then('是','否')}
+                    <td><#if invest.overdueTransfer>
+                            逾期转让
+                        <#elseif !invest.overdueTransfer && invest.transferStatus != 'NONTRANSFERABLE'>
+                            正常转让
+                        <#else>
+                            否
+                        </#if>
                         <@security.authorize access="hasAnyAuthority('ADMIN','OPERATOR_ADMIN')">
-                            <#if !invest.allowTransfer>
+                            <#if invest.transferStatus == 'NONTRANSFERABLE'>
                                 <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
-                                        data-investid="${invest.investId?string.computer}">修改</button>
+                                        data-investid="${invest.investId?string.computer}" data-warmprompt="是否确认允许该笔投资进行正常转让?">允许正常转让</button>
+                            <#elseif !invest.overdueTransfer && invest.transferStatus == 'TRANSFERABLE' && invest.lastPeriodRepayStatus?? && invest.lastPeriodRepayStatus == 'OVERDUE'>
+                                <button type="button" class="btn btn-sm btn-primary updateTransferStatus"
+                                        data-investid="${invest.investId?string.computer}" data-warmprompt="是否确认允许该笔投资进行逾期转让?">允许逾期转让</button>
                             </#if>
                         </@security.authorize>
                     </td>
@@ -177,7 +197,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if transferType??>transferType=${transferType}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -188,7 +208,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if mobile??>mobile=${mobile}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if><#if transferType??>transferType=${transferType}&</#if><#if selectedPreferenceType??>usedPreferenceType=${selectedPreferenceType.name()}</#if>"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

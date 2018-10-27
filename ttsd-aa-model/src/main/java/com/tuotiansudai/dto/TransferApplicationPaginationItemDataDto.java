@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;

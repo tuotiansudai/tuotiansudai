@@ -90,7 +90,7 @@ public class InvestorInvestDetailDto implements Serializable {
         this.interestInitiateType = loanModel.getType().getInterestInitiateType();
         this.productNewType = loanModel.getProductType();
         this.investId = transferApplicationModel.getInvestId();
-        this.investAmount = transferApplicationModel.getInvestAmount();
+        this.investAmount = transferApplicationModel.getTransferAmount();
         this.investTime = transferApplicationModel.getTransferTime();
         this.recheckTime = loanModel.getRecheckTime();
         this.interestBeginDate = loanModel.getRecheckTime();

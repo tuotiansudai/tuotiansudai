@@ -34,6 +34,12 @@ public class LatestInvestView implements Serializable{
 
     private ProductType productType;
 
+    private long overdueInterest;
+
+    private long overdueFee;
+
+    private long defaultFee;
+
     public Date getInvestTime() {
         return investTime;
     }
@@ -144,5 +150,29 @@ public class LatestInvestView implements Serializable{
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public long getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(long overdueInterest) {
+        this.overdueInterest = overdueInterest;
+    }
+
+    public long getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(long overdueFee) {
+        this.overdueFee = overdueFee;
+    }
+
+    public long getDefaultFee() {
+        return defaultFee;
+    }
+
+    public void setDefaultFee(long defaultFee) {
+        this.defaultFee = defaultFee;
     }
 }
