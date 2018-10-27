@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 
@@ -14,20 +13,13 @@ public class InvestorInvestRepayDto implements Serializable {
     private String statusDesc;
     private boolean isTransferred;
 
-    public InvestorInvestRepayDto(InvestRepayModel investRepayModel, CouponRepayModel couponRepayModel) {
+    public InvestorInvestRepayDto(InvestRepayModel investRepayModel, long amount) {
         if (null != investRepayModel.getActualRepayDate()) {
             this.repayDate = investRepayModel.getActualRepayDate();
         } else {
             this.repayDate = investRepayModel.getRepayDate();
         }
-
-        long expectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()
-                - investRepayModel.getExpectedFee() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
-        if (couponRepayModel != null) {
-            expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-        }
-
-        this.amount = expectedInterest + investRepayModel.getCorpus();
+        this.amount = amount + investRepayModel.getCorpus();
         this.status = investRepayModel.getStatus();
         this.isTransferred = investRepayModel.isTransferred();
         this.statusDesc = investRepayModel.getStatus().getViewText();
