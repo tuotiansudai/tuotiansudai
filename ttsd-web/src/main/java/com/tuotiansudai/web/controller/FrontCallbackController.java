@@ -112,7 +112,7 @@ public class FrontCallbackController {
                 modelAndView.addObject("loanId", loanModel.getId());
                 modelAndView.addObject("serviceName", "出借成功");
                 if (Lists.newArrayList(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD).contains(asyncUmPayService)){
-                    TransferApplicationModel transferApplicationModel = transferService.findTransferSuccessByInvestId(investModel.getId());
+                    TransferApplicationModel transferApplicationModel = transferService.findLastTransfersByTransferInvestId(investModel.getTransferInvestId());
                     modelAndView.addObject("amount", AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
                 }
             }

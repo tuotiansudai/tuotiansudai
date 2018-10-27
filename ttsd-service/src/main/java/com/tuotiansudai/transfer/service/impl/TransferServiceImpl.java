@@ -202,8 +202,9 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public TransferApplicationModel findTransferSuccessByInvestId(long investId) {
-        return transferApplicationMapper.findByInvestId(investId);
+    public TransferApplicationModel findLastTransfersByTransferInvestId(long transferInvestId) {
+        List<TransferApplicationModel> list=transferApplicationMapper.findLastTransfersByTransferInvestId(transferInvestId);
+        return (list == null || list.size() == 0)?null:list.get(0) ;
     }
 
     @Override

@@ -430,4 +430,8 @@
           loan_id = #{loanId} AND
           status = 'TRANSFERRING'
     </select>
+
+    <select id="findLastTransfersByTransferInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where transfer_invest_id = #{transferInvestId}  order by application_time DESC ;
+    </select>
 </mapper>
