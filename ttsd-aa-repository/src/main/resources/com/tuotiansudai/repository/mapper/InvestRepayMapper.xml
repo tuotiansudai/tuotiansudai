@@ -455,4 +455,11 @@
         ORDER BY r.repay_date
     </select>
 
+    <update id="updateOverdueAndFee" parameterType="map">
+        update invest_repay
+        set
+        overdue_interest=#{overdueInterest},
+        overdue_fee=#{overdueFee}
+        where id = #{id}
+    </update>
 </mapper>

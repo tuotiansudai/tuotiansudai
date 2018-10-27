@@ -339,4 +339,11 @@
                                        from loan_repay future_repay
                                        where future_repay.loan_id = #{loanId} and future_repay.status = 'OVERDUE')
     </select>
+
+    <update id="updateOverdueInterest" parameterType="map">
+        update loan_repay
+        set
+          overdue_interest = #{overdueInterest}
+        where id = #{id}
+    </update>
 </mapper>

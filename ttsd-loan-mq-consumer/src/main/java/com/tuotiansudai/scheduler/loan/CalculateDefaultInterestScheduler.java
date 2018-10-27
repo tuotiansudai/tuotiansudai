@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -46,8 +47,7 @@ public class CalculateDefaultInterestScheduler {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
-    //    @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
-    @Scheduled(cron = "0 0/10 * * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
     public void calculateDefaultInterest() {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
@@ -83,12 +83,13 @@ public class CalculateDefaultInterestScheduler {
             }
             long overdueFeeValue = new BigDecimal(overdueInterest).multiply(new BigDecimal(investModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             investRepayModel.setOverdueFee(overdueFeeValue);
-            logger.info(MessageFormat.format("[calculate overdue interest]investRepayModelId:{0},overdueInterest:{1},overdueFeeValue:{2}", investRepayModel.getId(), overdueFeeValue, overdueFeeValue));
-            investRepayMapper.update(investRepayModel);
+            logger.info(MessageFormat.format("[calculate overdue interest]investRepayModelId:{0},overdueInterest:{1},overdueFeeValue:{2},amount:{3},rate:{4}", investRepayModel.getId(), overdueInterest, overdueFeeValue, investModel.getAmount(), loanModel.getBaseRate()));
+            investRepayMapper.updateOverdueAndFee(investRepayModel.getId(), investRepayModel.getOverdueInterest(), investRepayModel.getOverdueFee());
         }
         long repayOverdueInterest = InterestCalculator.calculateLoanInterest(loanModel.getBaseRate(), loanModel.getLoanAmount(), new DateTime(loanRepayModel.getRepayDate()), new DateTime());
         loanRepayModel.setOverdueInterest(repayOverdueInterest);
-        loanRepayMapper.update(loanRepayModel);
+        logger.info(MessageFormat.format("[calculate overdue interest]loanRepayModelId:{0},overdueInterest:{1},overdueFeeValue:{2},amount:{3},rate:{4}", loanRepayModel.getId(), repayOverdueInterest, 0, loanModel.getLoanAmount(), loanModel.getBaseRate()));
+        loanRepayMapper.updateOverdueInterest(loanRepayModel.getId(), loanRepayModel.getOverdueInterest());
     }
 
     /**
@@ -162,6 +163,13 @@ public class CalculateDefaultInterestScheduler {
         int period = investRepayModel.getPeriod();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
         return CollectionUtils.isEmpty(investRepayModels) || investRepayModels.stream().noneMatch(input -> input.getStatus() == RepayStatus.OVERDUE);
+    }
+
+    @PostConstruct
+    public void initScheduler() {
+        logger.info("=================计算罚息初始化=======================");
+        calculateDefaultInterest();
+        logger.info("=================计算罚息初jieshu=======================");
     }
 
 }
