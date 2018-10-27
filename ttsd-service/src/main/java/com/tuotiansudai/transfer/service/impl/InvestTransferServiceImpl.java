@@ -287,22 +287,22 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && investModel.isOverdueTransfer()){
-            return true;
-        }
-
         if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE){
-            return false;
-        }
-
-        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        if (loanModel.getStatus() != LoanStatus.REPAYING) {
-            logger.info(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
             return false;
         }
 
         if (!validTransferIsCanceled(investId)) {
             logger.debug(MessageFormat.format("{0} is transferred", investModel.getLoanId()));
+            return false;
+        }
+
+        if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && investModel.isOverdueTransfer()){
+            return true;
+        }
+
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        if (loanModel.getStatus() != LoanStatus.REPAYING) {
+            logger.info(MessageFormat.format("{0} is not REPAYING", investModel.getLoanId()));
             return false;
         }
 
