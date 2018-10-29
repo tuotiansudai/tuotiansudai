@@ -382,7 +382,7 @@ public class InvestServiceImpl implements InvestService {
             InvestorInvestPaginationItemDataDto dataDto = new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel);
 
-            if (investModel.getTransferInvestId() != null) {
+            if (investModel.getTransferInvestId() != null && investModel.getStatus() == InvestStatus.SUCCESS) {
                 dataDto.setAmount(AmountConverter.convertCentToString(transferApplicationMapper.findByInvestId(investModel.getId()).getTransferAmount()));
             }
 
