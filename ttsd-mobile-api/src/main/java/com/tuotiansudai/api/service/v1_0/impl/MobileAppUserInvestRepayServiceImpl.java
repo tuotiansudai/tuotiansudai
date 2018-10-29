@@ -102,7 +102,7 @@ public class MobileAppUserInvestRepayServiceImpl implements MobileAppUserInvestR
                 userInvestRepayResponseDataDto.setInvestTime(transferApplicationModel != null ?
                         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(transferApplicationModel.getTransferTime()) : userInvestRepayResponseDataDto.getInvestTime());
                 isOverdueTransfer = investService.findById(investModel.getTransferInvestId()).isOverdueTransfer();
-                userInvestRepayResponseDataDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
+                userInvestRepayResponseDataDto.setInvestAmount(transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()) : userInvestRepayResponseDataDto.getInvestAmount());
             }
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             List<InvestRepayDataDto> investRepayList = new ArrayList<>();
