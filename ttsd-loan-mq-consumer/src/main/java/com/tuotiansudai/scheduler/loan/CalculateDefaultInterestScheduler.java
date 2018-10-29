@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler.loan;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.Environment;
@@ -9,7 +10,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.InterestCalculator;
-import com.tuotiansudai.util.MapBuilder;
 import com.tuotiansudai.util.SendCloudTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -60,9 +60,6 @@ public class CalculateDefaultInterestScheduler {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    @Value("#{'${check.user.balance.notify.email}'.split('\\|')}")
-    private List<String> notifyEmailAddressList;
-
     //@Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
     @Scheduled(cron = "0 0/15 * * * ?", zone = "Asia/Shanghai")
     public void calculateDefaultInterest() {
@@ -88,9 +85,13 @@ public class CalculateDefaultInterestScheduler {
         }
         String endTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
         //发送邮件通知数据更新
-        mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(Lists.newArrayList(notifyEmailAddressList),
+        mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(ImmutableMap.<Environment, List<String>>builder()
+                .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
+                .put(Environment.QA, Lists.newArrayList("zhangfengxiao@tuotiansudai.com", "zhangkunlong@tuotiansudai.com","liujiangshan@tuotiansudai.com"))
+                .put(Environment.DEV, Lists.newArrayList("liujiangshan@tuotiansudai.com","zhukun@tuotiansudai.com"))
+                .build().get(environment),
                 SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.getTitle(),
-                SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.generateContent(new MapBuilder<String, String>()
+                SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.generateContent(ImmutableMap.<String, String>builder()
                         .put("startTime", startTime)
                         .put("endTime", endTime)
                         .put("env", environment.name())
@@ -208,10 +209,8 @@ public class CalculateDefaultInterestScheduler {
     }
 
     @PostConstruct
-    public void initScheduler() {
-        logger.info("=================计算罚息初始化=======================");
+    public void init() {
         calculateDefaultInterest();
-        logger.info("=================计算罚息初jieshu=======================");
     }
 
 }
