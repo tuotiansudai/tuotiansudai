@@ -203,8 +203,8 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public TransferApplicationModel findLastTransfersByTransferInvestId(long transferInvestId) {
-        List<TransferApplicationModel> list=transferApplicationMapper.findLastTransfersByTransferInvestId(transferInvestId);
-        return (list == null || list.size() == 0)?null:list.get(0) ;
+        List<TransferApplicationModel> list=transferApplicationMapper.findTransfersDescByTransferInvestId(transferInvestId);
+        return (list == null || list.size() == 0) ? null : list.get(0);
     }
 
     @Override
