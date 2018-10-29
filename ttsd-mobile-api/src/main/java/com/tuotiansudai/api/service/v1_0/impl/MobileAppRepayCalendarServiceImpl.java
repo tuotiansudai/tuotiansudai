@@ -135,7 +135,8 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                 repayActualInterest = investRepayModel.getRepayAmount();
                 totalAmount += repayActualInterest;
             } else {
-                repayExpectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest()+investRepayModel.getOverdueInterest();
+                repayExpectedInterest = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() +
+                        investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
                 totalAmount += repayExpectedInterest;
             }
 
@@ -171,7 +172,6 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     }
                 }
             }
-            boolean isTransferred = investModel.getTransferInvestId() != null ? true : false;
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investRepayModel.getInvestId());
             repayCalendarDateResponseDtoList.add(new RepayCalendarDateResponseDto(loanMapper.findById(investMapper.findById(investRepayModel.getInvestId()).getLoanId()).getName(),
                     AmountConverter.convertCentToString(repayActualInterest),
@@ -180,7 +180,7 @@ public class MobileAppRepayCalendarServiceImpl implements MobileAppRepayCalendar
                     String.valueOf(periods),
                     investRepayModel.getStatus(),
                     String.valueOf(investRepayModel.getInvestId()),
-                    isTransferred,
+                    investModel.getTransferInvestId() != null,
                     transferApplicationModel != null ? String.valueOf(transferApplicationModel.getId()) : ""));
         }
 
