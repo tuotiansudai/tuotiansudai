@@ -33,7 +33,7 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
     public InvestRepayDataDto() {
     }
 
-    public InvestRepayDataDto(InvestRepayModel investRepayModel, long totalExpectedInterest, long totalActualInterest) {
+    public InvestRepayDataDto(InvestRepayModel investRepayModel, long expectedInterest, long actualInterest) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.period = investRepayModel.getPeriod();
         this.repayDate = simpleDateFormat.format(investRepayModel.getRepayDate());
@@ -42,8 +42,8 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
         } else {
             this.actualRepayDate = "";
         }
-        this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getCorpus() + totalExpectedInterest);
-        this.actualInterest = AmountConverter.convertCentToString(totalActualInterest);
+        this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getCorpus() + expectedInterest);
+        this.actualInterest = AmountConverter.convertCentToString(actualInterest);
         this.status = investRepayModel.getStatus().name();
         this.isTransferred = investRepayModel.isTransferred();
     }

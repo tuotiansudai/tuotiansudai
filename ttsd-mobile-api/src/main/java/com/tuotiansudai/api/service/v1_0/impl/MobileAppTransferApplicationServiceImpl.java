@@ -363,20 +363,24 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
                 investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            totalExpectedInterest += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
-            totalOverdueInterest += investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
-            totalActualInterest += investRepayModel.getRepayAmount();
+            long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+            long overdueInterest = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
+            long actualInterest = investRepayModel.getRepayAmount();
+
             corpus += investRepayModel.getCorpus();
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
             if (couponRepayModel != null) {
-                totalExpectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
-                totalActualInterest += couponRepayModel.getRepayAmount();
+                expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                actualInterest += couponRepayModel.getRepayAmount();
             }
-            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, totalExpectedInterest + totalOverdueInterest, totalActualInterest);
+            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, expectedInterest + overdueInterest, actualInterest);
             userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
             if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
                 userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
             }
+            totalExpectedInterest += expectedInterest;
+            totalOverdueInterest += overdueInterest;
+            totalActualInterest += actualInterest;
         }
 
         InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
