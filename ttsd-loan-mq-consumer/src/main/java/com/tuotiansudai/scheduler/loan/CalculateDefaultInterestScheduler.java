@@ -88,7 +88,7 @@ public class CalculateDefaultInterestScheduler {
         mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(ImmutableMap.<Environment, List<String>>builder()
                 .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
                 .put(Environment.QA, Lists.newArrayList("zhangfengxiao@tuotiansudai.com", "zhangkunlong@tuotiansudai.com","liujiangshan@tuotiansudai.com"))
-                .put(Environment.DEV, Lists.newArrayList("liujiangshan@tuotiansudai.com","zhukun@tuotiansudai.com"))
+                .put(Environment.DEV, Lists.newArrayList("qduljs2011@163.com"))
                 .build().get(environment),
                 SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.getTitle(),
                 SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.generateContent(ImmutableMap.<String, String>builder()
