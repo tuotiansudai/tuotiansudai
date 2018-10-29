@@ -33,7 +33,7 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
     public InvestRepayDataDto() {
     }
 
-    public InvestRepayDataDto(InvestRepayModel investRepayModel, CouponRepayModel couponRepayModel) {
+    public InvestRepayDataDto(InvestRepayModel investRepayModel, long expectedInterest, long actualInterest) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         this.period = investRepayModel.getPeriod();
         this.repayDate = simpleDateFormat.format(investRepayModel.getRepayDate());
@@ -42,14 +42,8 @@ public class InvestRepayDataDto extends BaseResponseDataDto {
         } else {
             this.actualRepayDate = "";
         }
-        if (null != couponRepayModel) {
-            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() + couponRepayModel.getExpectedInterest());
-            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount() + couponRepayModel.getRepayAmount());
-        } else {
-            this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus());
-            this.actualInterest = AmountConverter.convertCentToString(investRepayModel.getRepayAmount());
-        }
-
+        this.expectedInterest = AmountConverter.convertCentToString(investRepayModel.getCorpus() + expectedInterest);
+        this.actualInterest = AmountConverter.convertCentToString(actualInterest);
         this.status = investRepayModel.getStatus().name();
         this.isTransferred = investRepayModel.isTransferred();
     }

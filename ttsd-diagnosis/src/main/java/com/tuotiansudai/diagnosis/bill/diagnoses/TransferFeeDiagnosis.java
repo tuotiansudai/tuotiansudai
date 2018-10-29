@@ -45,8 +45,8 @@ public class TransferFeeDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectId(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == m.getTransferFee(),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getTransferFee()))
+                .check(m -> userBillModel.getAmount() == m.getTransferFee() + m.getInterestFee(),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getTransferFee() + m.getInterestFee()))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));
