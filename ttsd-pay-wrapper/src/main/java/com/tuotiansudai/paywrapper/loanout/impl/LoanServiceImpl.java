@@ -208,7 +208,7 @@ public class LoanServiceImpl implements LoanService {
             }
 
             if (updateSuccess) {
-                if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
+                if (loanModel.getStatus() != LoanStatus.OVERDUE && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
                     loanModel.setRecheckTime(new Date());
                     loanModel.setPeriods(LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType()));
                 }
