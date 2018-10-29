@@ -382,8 +382,11 @@ public class InvestServiceImpl implements InvestService {
             InvestorInvestPaginationItemDataDto dataDto = new InvestorInvestPaginationItemDataDto(loanModel, investModel,
                     userCouponDtoList, CollectionUtils.isNotEmpty(investRepayModels), investExtraRateModel);
 
-            if (investModel.getTransferInvestId() != null && investModel.getStatus() == InvestStatus.SUCCESS) {
-                dataDto.setAmount(AmountConverter.convertCentToString(transferApplicationMapper.findByInvestId(investModel.getId()).getTransferAmount()));
+            if (investModel.getTransferInvestId() != null) {
+                TransferApplicationModel currentInvestTransferModel = transferApplicationMapper.findTransfersDescByTransferInvestId(investModel.getTransferInvestId())
+                        .stream()
+                        .filter(transferApplicationModel -> investModel.getCreatedTime().after(transferApplicationModel.getApplicationTime())).findFirst().orElse(null);
+                dataDto.setAmount(currentInvestTransferModel == null ? dataDto.getAmount() : AmountConverter.convertCentToString(currentInvestTransferModel.getTransferAmount()));
             }
 
             List<InvestRepayModel> allOverdueInvestRepayModels = investRepayModels.stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
