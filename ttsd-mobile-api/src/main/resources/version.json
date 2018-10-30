@@ -1,8 +1,8 @@
 {
   "android": {
-    "version": "4.7.6",
-    "versionCode": 69,
-    "forceUpgrade": true,
+    "version": "4.7.5",
+    "versionCode": 68,
+    "forceUpgrade": false,
     "url": "http://192.168.80.49:9999/app/tuotiansudai.apk",
     "message": "1，优化了债权转让规则；\n2，修复了所有已知的bug。"
   },
