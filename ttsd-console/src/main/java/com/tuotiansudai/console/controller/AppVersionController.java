@@ -1,10 +1,12 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tuotiansudai.client.OssApkWrapperClient;
+import com.tuotiansudai.console.dto.AppVersionValueDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseWrapperDataDto;
 import com.tuotiansudai.util.HttpClientUtil;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,10 +74,10 @@ public class AppVersionController {
     public BaseDataDto uploadVersionJson(MultipartHttpServletRequest request) {
         MultipartFile versionFile = request.getFile("versionFile");
         try {
-
-            String uploadVersion = inputStreamToString(versionFile.getInputStream());
-            JsonObject json = (JsonObject) new JsonParser().parse(uploadVersion);
-
+            String errorMessage = checkVersion(inputStreamToString(versionFile.getInputStream()));
+            if (!Strings.isNullOrEmpty(errorMessage)){
+                return new BaseDataDto(false, errorMessage);
+            }
             ossApkWrapperClient.upload("tuotiansudai_version.json", versionFile.getInputStream());
             redisWrapperClient.del(APP_VERSION_INFO_REDIS_KEY);
         } catch (Exception e) {
@@ -95,10 +98,17 @@ public class AppVersionController {
 
     private String checkVersion(String uploadVersionString){
         try{
-            JsonObject uploadVersionJson = (JsonObject) new JsonParser().parse(uploadVersionString);
+            JsonObject newVersionJson = (JsonObject) new JsonParser().parse(uploadVersionString);
             JsonObject oldVersionJson = (JsonObject) new JsonParser().parse(HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8"));
 
+            AppVersionValueDto newVersionValue = getVersionValue(newVersionJson);
+            AppVersionValueDto oldVersionValue = getVersionValue(oldVersionJson);
 
+            if (oldVersionValue.getAndroidVersion() >= newVersionValue.getAndroidVersion()
+                    || oldVersionValue.getAndroidVersionCode() >= newVersionValue.getAndroidVersionCode()
+                    || !oldVersionValue.getAndroidUrl().equals(newVersionValue.getAndroidUrl())){
+                return MessageFormat.format("上传version.json参数值有误,当前版本参数:{0}", oldVersionValue.toString());
+            }
 
         }catch (Exception e){
             return "上传version.json失败";
@@ -106,11 +116,10 @@ public class AppVersionController {
         return null;
     }
 
-    private Map<String, String> getVersionValue(JsonObject versionJson) {
-        return Maps.newHashMap(ImmutableMap.<String, String>builder()
-                .put("android-version", versionJson.get("android").getAsJsonObject().get("version").getAsString().replace(".", ""))
-                .put("android-versionCode", versionJson.get("android").getAsJsonObject().get("versionCode").getAsString())
-                .put("android-url", versionJson.get("android").getAsJsonObject().get("url").getAsString())
-                .build());
+    private AppVersionValueDto getVersionValue(JsonObject versionJson) {
+        return new AppVersionValueDto(
+                versionJson.get("android").getAsJsonObject().get("version").getAsString(),
+                versionJson.get("android").getAsJsonObject().get("versionCode").getAsString(),
+                versionJson.get("android").getAsJsonObject().get("url").getAsString());
     }
 }
