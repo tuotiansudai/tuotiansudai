@@ -1,9 +1,16 @@
 package com.tuotiansudai.scheduler.loan;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.MQWrapperClient;
+import com.tuotiansudai.dto.Environment;
+import com.tuotiansudai.message.EMailMessage;
+import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.SendCloudTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -47,12 +54,22 @@ public class CalculateDefaultInterestScheduler {
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
 
-    @Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
+    @Value("${common.environment}")
+    private Environment environment;
+
+    @Autowired
+    private MQWrapperClient mqWrapperClient;
+
+    //@Scheduled(cron = "0 0 1 * * ?", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0/15 * * * ?", zone = "Asia/Shanghai")
     public void calculateDefaultInterest() {
+        String startTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+        int defaultUpdateCount = 0;
+        int overdueUpdateCount = 0;
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             try {
-                calculateDefaultInterestEveryLoan(loanRepayModel);
+                defaultUpdateCount += calculateDefaultInterestEveryLoan(loanRepayModel);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -60,15 +77,37 @@ public class CalculateDefaultInterestScheduler {
         //最后一期逾期额外计算利息
         List<LoanRepayModel> overdueLoanRepays = loanRepayMapper.findOverdueLoanRepay();
         for (LoanRepayModel loanRepayModel : overdueLoanRepays) {
-            calculateOverdueInterestEveryLoan(loanRepayModel);
+            try {
+                overdueUpdateCount += calculateOverdueInterestEveryLoan(loanRepayModel);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
         }
+        String endTime = new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+        //发送邮件通知数据更新
+        mqWrapperClient.sendMessage(MessageQueue.EMailMessage, new EMailMessage(ImmutableMap.<Environment, List<String>>builder()
+                .put(Environment.PRODUCTION, Lists.newArrayList("dev@tuotiansudai.com"))
+                .put(Environment.QA, Lists.newArrayList("zhangfengxiao@tuotiansudai.com", "zhangkunlong@tuotiansudai.com","liujiangshan@tuotiansudai.com"))
+                .put(Environment.DEV, Lists.newArrayList("qduljs2011@163.com"))
+                .build().get(environment),
+                SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.getTitle(),
+                SendCloudTemplate.EVERY_DAY_CHECK_DEFAULT_INTEREST.generateContent(ImmutableMap.<String, String>builder()
+                        .put("startTime", startTime)
+                        .put("endTime", endTime)
+                        .put("env", environment.name())
+                        .put("defaultQueryCount", String.valueOf(loanRepayModels.size()))
+                        .put("defaultUpdateCount", String.valueOf(defaultUpdateCount))
+                        .put("overdueQueryCount", String.valueOf(overdueLoanRepays.size()))
+                        .put("overdueUpdateCount", String.valueOf(overdueUpdateCount)).build())));
+
+
     }
 
     //计算最后一期逾期利息
-    public void calculateOverdueInterestEveryLoan(LoanRepayModel loanRepayModel) {
+    public int calculateOverdueInterestEveryLoan(LoanRepayModel loanRepayModel) {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         if (loanModel.getPeriods() != loanRepayModel.getPeriod()) {
-            return;
+            return 0;
         }
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -90,6 +129,7 @@ public class CalculateDefaultInterestScheduler {
         loanRepayModel.setOverdueInterest(repayOverdueInterest);
         logger.info(MessageFormat.format("[calculate overdue interest]loanRepayModelId:{0},overdueInterest:{1},overdueFeeValue:{2},amount:{3},rate:{4}", loanRepayModel.getId(), repayOverdueInterest, 0, loanModel.getLoanAmount(), loanModel.getBaseRate()));
         loanRepayMapper.updateOverdueInterest(loanRepayModel.getId(), loanRepayModel.getOverdueInterest());
+        return 1;
     }
 
     /**
@@ -98,7 +138,8 @@ public class CalculateDefaultInterestScheduler {
      * @param loanRepayModel
      * @throws Exception
      */
-    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception {
+    private int calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception {
+        int updateResult = 0;
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -140,6 +181,7 @@ public class CalculateDefaultInterestScheduler {
                 });
                 logger.info("investExtraRate status to overdue");
             }
+            updateResult = 1;
         }
         logger.info(MessageFormat.format("loanRepayId:{0} couponRepay status to overdue", loanRepayModel.getId()));
         List<CouponRepayModel> couponRepayModels = couponRepayMapper.findCouponRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
@@ -149,6 +191,7 @@ public class CalculateDefaultInterestScheduler {
                 couponRepayMapper.update(couponRepayModel);
             }
         }
+        return updateResult;
     }
 
     private boolean isNeedCalculateDefaultInterestLoanRepay(LoanRepayModel loanRepayModel) {
@@ -166,10 +209,8 @@ public class CalculateDefaultInterestScheduler {
     }
 
     @PostConstruct
-    public void initScheduler() {
-        logger.info("=================计算罚息初始化=======================");
+    public void init() {
         calculateDefaultInterest();
-        logger.info("=================计算罚息初jieshu=======================");
     }
 
 }

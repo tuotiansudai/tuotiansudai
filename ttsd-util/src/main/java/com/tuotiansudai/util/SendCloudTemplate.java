@@ -19,8 +19,14 @@ public enum SendCloudTemplate {
             "<div>其中 {mismatchUserCount} 个用户的帐户余额错误。</div></br>" +
             "<table border=\"1\"><thead><tr><th>用户名</th><th>拓天账户余额</th><th>联动优势账户余额</th></tr></thead><tbody>"),
     USER_BALANCE_CHECK_RESULT_BODY("用户账户对账结果", "<tr><td>{loginName}</td><td>{ttsdBalance}</td><td>{umpayBalance}</td></tr>"),
-    USER_BALANCE_CHECK_RESULT_TAIL("用户账户对账结果", "</tbody></table>");
-
+    USER_BALANCE_CHECK_RESULT_TAIL("用户账户对账结果", "</tbody></table>"),
+    EVERY_DAY_CHECK_DEFAULT_INTEREST("每天计算罚息",
+            "<div>开始时间：{startTime}</div></br>" +
+            "<div>结束时间：{endTime}</div></br>" +
+            "<div>环境：{env}</div></br>" +
+            "<table border=\"1\"><thead><tr><th>类型</th><th>查询还款计划数目</th><th>修改还款计划数目</th></tr></thead><tbody>" +
+                    "<tr><td>逾期罚息</td><td>{defaultQueryCount}</td><td>{defaultUpdateCount}</td></tr>" +
+                    "<tr><td>逾期利息</td><td>{overdueQueryCount}</td><td>{overdueUpdateCount}</td></tr></tbody></table>");
     private String title;
     private String template;
 
