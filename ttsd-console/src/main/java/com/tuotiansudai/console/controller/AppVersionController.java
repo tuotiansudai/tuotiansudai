@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by qduljs2011 on 2018/10/29.
@@ -92,18 +93,24 @@ public class AppVersionController {
         return byteArrayOutputStream.toString("utf-8");
     }
 
-    private String checkVersion(JsonObject uploadVersionJson){
+    private String checkVersion(String uploadVersionString){
         try{
-            String oldVersion = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
-            JsonObject oldVersionJson = (JsonObject) new JsonParser().parse(oldVersion);
-            HashMap checkResult = Maps.newHashMap(ImmutableMap.<String, String>builder()
-                    .put("android-version", uploadVersionJson.get("android").getAsJsonObject().get("version").getAsString())
-                    .put("android-versionCode", uploadVersionJson.get("android").getAsJsonObject().get("versionCode").getAsString())
-                    .put("android-url", uploadVersionJson.get("android").getAsJsonObject().get("url").getAsString())
-                    .build());
+            JsonObject uploadVersionJson = (JsonObject) new JsonParser().parse(uploadVersionString);
+            JsonObject oldVersionJson = (JsonObject) new JsonParser().parse(HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8"));
+
+
+
         }catch (Exception e){
             return "上传version.json失败";
         }
         return null;
+    }
+
+    private Map<String, String> getVersionValue(JsonObject versionJson) {
+        return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                .put("android-version", versionJson.get("android").getAsJsonObject().get("version").getAsString().replace(".", ""))
+                .put("android-versionCode", versionJson.get("android").getAsJsonObject().get("versionCode").getAsString())
+                .put("android-url", versionJson.get("android").getAsJsonObject().get("url").getAsString())
+                .build());
     }
 }
