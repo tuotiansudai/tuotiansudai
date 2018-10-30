@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.util.GsonUtil;
-import com.tuotiansudai.api.util.HttpClientUtil;
+import com.tuotiansudai.util.HttpClientUtil;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RedisWrapperClient;

@@ -19,6 +19,7 @@ dependencies {
             'log4j:log4j:1.2.17',
             "redis.clients:jedis:2.8.2",
             "com.squareup.okhttp:okhttp:2.7.5",
+            'commons-httpclient:commons-httpclient:3.1',
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile 'com.fasterxml.jackson.core:jackson-databind:2.8.2',
