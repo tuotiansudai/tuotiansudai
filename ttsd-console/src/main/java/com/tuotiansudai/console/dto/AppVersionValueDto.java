@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.dto;
 
 
-public class AppVersionValueDto {
+import com.tuotiansudai.dto.BaseDataDto;
+
+public class AppVersionValueDto extends BaseDataDto {
 
     private String androidVersion;
 

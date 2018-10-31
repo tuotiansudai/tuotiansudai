@@ -1,18 +1,18 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tuotiansudai.client.OssApkWrapperClient;
 import com.tuotiansudai.console.dto.AppVersionValueDto;
 import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BaseWrapperDataDto;
 import com.tuotiansudai.util.HttpClientUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,17 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * Created by qduljs2011 on 2018/10/29.
- */
 @RequestMapping("/app")
 @Controller
 public class AppVersionController {
@@ -43,10 +37,11 @@ public class AppVersionController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
-    private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
+    @Value("${app:version:info}")
+    private String APP_VERSION_INFO_REDIS_KEY;
 
-    private static final String APP_VERSION_CHECK_URL = "http://tuotiansudai.com/app/version.json";
-
+    @Value("${app.version.check.url}")
+    private String APP_VERSION_CHECK_URL;
 
     @RequestMapping(value = "/version-update", method = RequestMethod.GET)
     public ModelAndView accountBalance() {
@@ -87,6 +82,23 @@ public class AppVersionController {
         return new BaseDataDto(true);
     }
 
+    @RequestMapping(value = "/look/version-json", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<AppVersionValueDto> lookVersionJson() {
+        String versionValueString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
+        if (Strings.isNullOrEmpty(versionValueString)){
+            versionValueString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
+        }
+        try {
+            JsonObject versionJson = (JsonObject) new JsonParser().parse(versionValueString);
+            AppVersionValueDto appVersionValueDto = getVersionValue(versionJson);
+            return new BaseDto<AppVersionValueDto>(appVersionValueDto);
+        }catch (Exception e){
+            logger.error("console look version json fail");
+        }
+        return new BaseDto<AppVersionValueDto>(false);
+    }
+
     private String inputStreamToString(InputStream is) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         int i=-1;
@@ -120,6 +132,13 @@ public class AppVersionController {
         return new AppVersionValueDto(
                 versionJson.get("android").getAsJsonObject().get("version").getAsString(),
                 versionJson.get("android").getAsJsonObject().get("versionCode").getAsString(),
-                versionJson.get("android").getAsJsonObject().get("url").getAsString());
+                versionJson.get("android").getAsJsonObject().get("url").getAsString(),
+                versionJson.get("android").getAsJsonObject().get("forceUpgrade").getAsString(),
+                versionJson.get("android").getAsJsonObject().get("message").getAsString(),
+                versionJson.get("ios").getAsJsonObject().get("version").getAsString(),
+                versionJson.get("ios").getAsJsonObject().get("versionCode").getAsString(),
+                versionJson.get("ios").getAsJsonObject().get("url").getAsString(),
+                versionJson.get("ios").getAsJsonObject().get("forceUpgrade").getAsString(),
+                versionJson.get("ios").getAsJsonObject().get("message").getAsString());
     }
 }
