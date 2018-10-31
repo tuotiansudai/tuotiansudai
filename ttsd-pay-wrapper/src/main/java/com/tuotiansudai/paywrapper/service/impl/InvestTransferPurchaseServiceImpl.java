@@ -379,7 +379,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
                 SystemBillMessage sbm = new SystemBillMessage(SystemBillMessageType.TRANSFER_IN,
                         transferApplicationId, transferFee + interestFee, SystemBillBusinessType.TRANSFER_FEE,
-                        MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
+                        MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee + interestFee)));
                 mqWrapperClient.sendMessage(MessageQueue.SystemBill, sbm);
 
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));

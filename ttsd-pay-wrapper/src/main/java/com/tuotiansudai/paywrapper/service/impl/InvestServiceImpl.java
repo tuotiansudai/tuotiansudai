@@ -113,6 +113,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
@@ -503,8 +506,13 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), investModel.getTransferInvestId() == null ? UserBillBusinessType.INVEST_SUCCESS : UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
-            atm.setNext(new AmountTransferMessage(TransferType.UNFREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null));
+            long investAmount = investModel.getAmount();
+            if (investModel.getTransferInvestId() != null){
+                List<TransferApplicationModel> models = transferApplicationMapper.findTransfersDescByTransferInvestId(investModel.getTransferInvestId());
+                investAmount = models != null && models.size() > 0 ? models.get(0).getTransferAmount() : investAmount;
+            }
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investAmount, investModel.getTransferInvestId() == null ? UserBillBusinessType.INVEST_SUCCESS : UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+            atm.setNext(new AmountTransferMessage(TransferType.UNFREEZE, investModel.getLoginName(), investModel.getId(), investAmount, UserBillBusinessType.OVER_INVEST_PAYBACK, null, null));
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
             // 返款失败，当作出借成功处理
