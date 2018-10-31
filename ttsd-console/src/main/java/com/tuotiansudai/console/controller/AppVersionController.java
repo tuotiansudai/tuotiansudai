@@ -94,7 +94,7 @@ public class AppVersionController {
             AppVersionValueDto appVersionValueDto = getVersionValue(versionJson);
             return new BaseDataDto(true, appVersionValueDto.toString());
         }catch (Exception e){
-            logger.error("console look version json fail");
+            logger.error(MessageFormat.format("console look version json fail:{0}", e.getMessage()));
         }
         return new BaseDataDto(false);
     }
@@ -123,6 +123,7 @@ public class AppVersionController {
             }
 
         }catch (Exception e){
+            logger.error("[console look version json fail]", e);
             return "上传version.json失败";
         }
         return null;
