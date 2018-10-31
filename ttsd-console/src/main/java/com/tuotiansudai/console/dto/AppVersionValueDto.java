@@ -55,17 +55,7 @@ public class AppVersionValueDto extends BaseDataDto {
 
     @Override
     public String toString() {
-        return "{" +
-                "androidVersion='" + androidVersion + '\'' +
-                ", androidVersionCode='" + androidVersionCode + '\'' +
-                ", androidUrl='" + androidUrl + '\'' +
-                ", androidForceUpgrade='" + androidForceUpgrade + '\'' +
-                ", androidMessage='" + androidMessage + '\'' +
-                ", iosVersion='" + iosVersion + '\'' +
-                ", iosVersionCode='" + iosVersionCode + '\'' +
-                ", iosUrl='" + iosUrl + '\'' +
-                ", iosForceUpgrade='" + iosForceUpgrade + '\'' +
-                ", iosMessage='" + iosMessage + '\'' +
-                '}';
+        return "android : {Version='" + androidVersion + ", VersionCode='" + androidVersionCode + ", Url='" + androidUrl + ", ForceUpgrade='" + androidForceUpgrade + ", Message='" + androidMessage + "}" +
+                "ios : {Version='" + iosVersion + ", VersionCode='" + iosVersionCode + ", Url='" + iosUrl + ", ForceUpgrade='" + iosForceUpgrade + ", Message='" + iosMessage + '}';
     }
 }

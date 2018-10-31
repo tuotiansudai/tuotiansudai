@@ -84,7 +84,7 @@ public class AppVersionController {
 
     @RequestMapping(value = "/look/version-json", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<AppVersionValueDto> lookVersionJson() {
+    public BaseDataDto lookVersionJson() {
         String versionValueString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
         if (Strings.isNullOrEmpty(versionValueString)){
             versionValueString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
@@ -92,11 +92,11 @@ public class AppVersionController {
         try {
             JsonObject versionJson = (JsonObject) new JsonParser().parse(versionValueString);
             AppVersionValueDto appVersionValueDto = getVersionValue(versionJson);
-            return new BaseDto<AppVersionValueDto>(appVersionValueDto);
+            return new BaseDataDto(true, appVersionValueDto.toString());
         }catch (Exception e){
             logger.error("console look version json fail");
         }
-        return new BaseDto<AppVersionValueDto>(false);
+        return new BaseDataDto(false);
     }
 
     private String inputStreamToString(InputStream is) throws IOException {

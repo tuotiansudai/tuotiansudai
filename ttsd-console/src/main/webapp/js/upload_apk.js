@@ -29,9 +29,21 @@ require(['jquery', 'bootstrap','jquery-ui','csrf'], function ($) {
             }
         });
 
-        $('#version-view').on('click', function(event){
-
-
+        $('.version-view').on('click', function(event){
+            $.ajax({
+                url: '/app/look/version-json',
+                type: 'GET'
+            })
+                .done(function (data) {
+                    if (data.status){
+                        alert(data.message);
+                    }else {
+                        alert("查看失败");
+                    }
+                })
+                .fail(function (message) {
+                    alert("查看失败");
+                });
         });
     });
 });
