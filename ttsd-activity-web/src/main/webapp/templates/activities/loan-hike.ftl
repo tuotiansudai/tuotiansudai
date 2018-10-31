@@ -15,7 +15,7 @@
             <div class="model-list">
                 <div class="list-template list-left">
                     <h3><i class="title-icon"><img
-                            src="${commonStaticServer}/activity/images/sign/actor/loanhike/car-icon.png" width="100%"></i>车辆抵押借款
+                            src="${commonStaticServer}/activity/images/sign/actor/loanhike/car-icon.png" width="100%"></i>车辆消费借款
                     </h3>
                     <table class="table table-border">
                         <thead>
@@ -88,7 +88,7 @@
                 <a href="javascript:void(0)" class="example-show">如何投资1元赚取266元收益？点击查看例子</a>
             </div>
             <div class="example-text">
-                <span class="name-text">举个栗子：</span>李先生选择了一个“车辆抵押借款”项目(360天)投资49999元，按照活动规则可以享受0.6%的加息，预期总收益为6036.04元，李先生再次投资50000元，那么加息后预期总收益将达到6302.46元，仅仅多投<span
+                <span class="name-text">举个栗子：</span>李先生选择了一个“车辆消费借款”项目(360天)投资49999元，按照活动规则可以享受0.6%的加息，预期总收益为6036.04元，李先生再次投资50000元，那么加息后预期总收益将达到6302.46元，仅仅多投<span
                     class="call-out">1元钱</span>就可以拿到额外<span class="call-out">266.42元</span>收益哦！
             </div>
             <div class="arrow-icon"></div>
@@ -110,7 +110,7 @@
                 <div class="product-container">
                     <div class="product-left">
                         <dl>
-                            <dt><span class="name-text">车辆抵押借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span>
+                            <dt><span class="name-text">车辆消费借款</span><span class="tip-text">先付收益后还投资本金，按天计息，放款后生息</span>
                             </dt>
                             <dd><span class="title-text">约定年化利率</span><span
                                     class="number-text active"><strong>12～12.8</strong>％</span></dd>
@@ -150,7 +150,7 @@
                 </div>
                 <div class="rule-right">
                     <ul class="rule-list">
-                        <li><i class="fa fa-circle" aria-hidden="true"></i>本次活动限抵押类项目参加，并且车辆抵押借款项目与房产抵押借款项目采用不同加息方式；
+                        <li><i class="fa fa-circle" aria-hidden="true"></i>本次活动限抵押类项目参加，并且车辆消费借款项目与房产抵押借款项目采用不同加息方式；
                         </li>
                         <li><i class="fa fa-circle" aria-hidden="true"></i>加息奖励将会在最后一期返本付息时一次性发放至个人账户中；</li>
                         <li><i class="fa fa-circle" aria-hidden="true"></i>投资体验券金额不参与本活动优惠，既不计入本金，也不享受加息；</li>

@@ -49,7 +49,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                 sectionThreeElement.html("<div class='house-pledge'><h3><span class='house-title'>房产信息</span> <button type='button' class='jq-add-house-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeHouseTemplate) + '</div>');
             }
 
-            if ('车辆抵押借款' === loanName) {
+            if ('车辆消费借款' === loanName) {
                 pledgeTypeElement.val("VEHICLE");
                 sectionTwoElement.html(Mustache.render(loanerDetailsTemplate));
                 sectionThreeElement.html("<div class='vehicle-pledge'><h3><span class='vehicle-title'>车辆信息</span> <button type='button' class='jq-add-vehicle-pledge btn btn-info' style='margin-left: 10px;'>+</button></h3>" + Mustache.render(pledgeVehicleTemplate) + '</div>');
@@ -538,7 +538,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     'pledgeHouse': pledgeHouseParam
                 });
             }
-            if ("车辆抵押借款" == value || ('个人资金周转' == value && pledgeRadioCheckVehicle)) {
+            if ("车辆消费借款" == value || ('个人资金周转' == value && pledgeRadioCheckVehicle)) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
