@@ -5,10 +5,10 @@
         <#assign keywords="拓天速贷,拓天产品,房产抵押借款,资金周转">
         <#assign description="拓天速贷P2P金融信息服务平台为您提供优质房产抵押借款,让您获得稳定收益的投资产品.">
         <#break>
-    <#case '车辆抵押借款'>
-        <#assign title="车辆抵押借款_投资列表_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆抵押借款">
-        <#assign description="拓天速贷优质车辆抵押借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
+    <#case '车辆消费借款'>
+        <#assign title="车辆消费借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆消费借款">
+        <#assign description="拓天速贷优质车辆消费借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
         <#break>
     <#case '个人资金周转'>
         <#assign title="个人资金周转_投资列表_拓天速贷">
@@ -17,7 +17,7 @@
         <#break>
     <#default>
         <#assign title="投资列表_投资产品_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆抵押借款">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆消费借款">
         <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
@@ -27,7 +27,7 @@
             <li class="project-kind">
                 <span>项目类型: </span>
                 <#assign nametUrl = "/loan-list?name={name}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
-                <#assign nameMap = {"":"全部","个人资金周转":"个人资金周转","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款","经营性借款":"经营性借款"}>
+                <#assign nameMap = {"":"全部","个人资金周转":"个人资金周转","房产抵押借款":"房产抵押借款","车辆消费借款":"车辆消费借款","经营性借款":"经营性借款"}>
                 <#assign nameKeys = nameMap?keys>
                 <#list nameKeys as key>
                     <a <#if name?? && name == key>class="active"

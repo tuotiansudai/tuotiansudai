@@ -262,7 +262,7 @@
                                                 </div>
                                             </div>
                                             <div class="swiper-slide loan-wrap">
-                                                <h2 class="loan-title">车辆抵押借款</h2>
+                                                <h2 class="loan-title">车辆消费借款</h2>
                                                 <div class="loan-con">
                                                     <div class="loan-info"><span class="big-num">9</span><span
                                                             class="percent">%</span>180<span
@@ -275,7 +275,7 @@
                                                 </div>
                                             </div>
                                             <div class="swiper-slide loan-wrap">
-                                                <h2 class="loan-title">车辆抵押借款</h2>
+                                                <h2 class="loan-title">车辆消费借款</h2>
                                                 <div class="loan-con">
                                                     <div class="loan-info"><span class="big-num">8</span><span
                                                             class="percent">%</span>90<span
