@@ -21,33 +21,33 @@
                 </div>
 
             </div>
-
-            <div class="form-group">
-                <label class="col-sm-1 control-label">version.json文件: </label>
-                <div class="col-sm-4">
-                    <input type="text" name="showPicture" value="" readonly class="form-control article-showPicture"
-                           placeholder="" imageWidth="750" imageHeight="340">
-                </div>
-                <div class="col-sm-4 showPicture">
-                    <input type="file" name="versionFile" imageWidth="750" imageHeight="340"/>
-                </div>
-                <div class="col-sm-4 text-danger">
-                       (version.json)
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
-
-                <div class="col-sm-4 form-error">
-                </div>
-            </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">操作: </label>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="col-sm-4">
                     <button type="button" class="btn jq-btn-form btn-primary article-save">更新</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <form class="form-horizontal upload-version-form" id="upload-version-form" action="/app/upload/version-json" method="post" enctype=”multipart/form-data”>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">version.json文件: </label>
+                <div class="col-sm-4">
+                    <input type="file" name="versionFile" id="versionFile"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">操作: </label>
+                <div class="col-sm-4">
+                    <button type="button" class="btn jq-btn-form btn-primary version-update">上传</button>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn jq-btn-form btn-primary version-view">查看当前version文件</button>
                 </div>
             </div>
         </form>
