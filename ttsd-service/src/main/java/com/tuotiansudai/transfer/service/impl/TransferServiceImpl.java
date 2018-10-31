@@ -168,9 +168,10 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
 
         return investRepayModels.stream()
+                .filter(investRepayModel -> investRepayModel.getStatus() != RepayStatus.COMPLETE)
                 .map(investRepayModel -> new TransferInvestRepayDataDto(
                         investRepayModel.getRepayDate(),
-                        investRepayModel.getExpectedInterest() + investRepayModel.getCorpus(),
+                        investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest(),
                         investRepayModel.getStatus()
                 )).collect(Collectors.toList());
     }
