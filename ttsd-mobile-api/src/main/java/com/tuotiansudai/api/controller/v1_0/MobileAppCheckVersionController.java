@@ -6,7 +6,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.util.GsonUtil;
-import com.tuotiansudai.api.util.HttpClientUtil;
+import com.tuotiansudai.util.HttpClientUtil;
 import com.tuotiansudai.dto.Environment;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -31,16 +31,15 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
 
     private static Logger logger = Logger.getLogger(MobileAppCheckVersionController.class);
 
-    private static final String APP_VERSION_CHECK_URL = "https://tuotiansudai.com/app/version.json";
-    private static final String VERSION_CONFIG_FILE = "version.json";
-    private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
     private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60 * 60;
-    private static final Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
+
+    @Value("${app:version:info}")
+    private String APP_VERSION_INFO_REDIS_KEY;
+
+    @Value("${app.version.check.url}")
+    private String APP_VERSION_CHECK_URL;
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    @Value("${common.environment}")
-    private Environment environment;
 
     @RequestMapping(value = "/get/version", method = RequestMethod.POST)
     @ResponseBody
@@ -64,12 +63,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
         try {
             String jsonString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
             if (StringUtils.isBlank(jsonString)) {
-                if (environment == Environment.PRODUCTION) {
-                    jsonString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
-                } else {
-                    InputStream inputStream = MobileAppCheckVersionController.class.getClassLoader().getResourceAsStream(VERSION_CONFIG_FILE);
-                    jsonString = inputStreamToString(inputStream);
-                }
+                jsonString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
                 redisWrapperClient.setex(APP_VERSION_INFO_REDIS_KEY, APP_VERSION_INFO_EXPIRE_SECONDS, jsonString);
             }
             JsonObject json = GsonUtil.stringToJsonObject(jsonString);
@@ -87,7 +81,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
             }
             return dto;
         } catch (Exception e) {
-            log.error("getLatestVersionInfo failed. ", e);
+            logger.error("getLatestVersionInfo failed. ", e);
         }
         return null;
     }

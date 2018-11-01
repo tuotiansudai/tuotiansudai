@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.gson.JsonObject;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
 import com.tuotiansudai.api.util.GsonUtil;
-import com.tuotiansudai.api.util.HttpClientUtil;
+import com.tuotiansudai.util.HttpClientUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
