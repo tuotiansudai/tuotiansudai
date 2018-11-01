@@ -5,8 +5,10 @@ import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.UserBillBusinessType;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.TransferApplicationModel;
 import com.tuotiansudai.repository.model.UserBillModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +21,12 @@ public class OverInvestPayBackDiagnosis extends UserBillBusinessDiagnosis {
 
     private final InvestMapper investMapper;
 
+    private TransferApplicationMapper transferApplicationMapper;
+
     @Autowired
-    public OverInvestPayBackDiagnosis(InvestMapper investMapper) {
+    public OverInvestPayBackDiagnosis(InvestMapper investMapper,TransferApplicationMapper transferApplicationMapper) {
         this.investMapper = investMapper;
+        this.transferApplicationMapper=transferApplicationMapper;
     }
 
     @Override
@@ -32,6 +37,12 @@ public class OverInvestPayBackDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         InvestModel tracedObject = investMapper.findById(userBillModel.getOrderId());
+        if(tracedObject.getTransferInvestId() != null){
+            TransferApplicationModel currentInvestTransferModel= transferApplicationMapper.findTransfersDescByTransferInvestId(tracedObject.getTransferInvestId())
+                    .stream()
+                    .filter(transferApplicationModel -> tracedObject.getCreatedTime().after(transferApplicationModel.getApplicationTime())).findFirst().orElse(null);
+            tracedObject.setAmount(currentInvestTransferModel.getTransferAmount());
+        }
         SingleObjectDiagnosis
                 // exist
                 .init(userBillModel, tracedObject, this::buildTracedObjectId)
