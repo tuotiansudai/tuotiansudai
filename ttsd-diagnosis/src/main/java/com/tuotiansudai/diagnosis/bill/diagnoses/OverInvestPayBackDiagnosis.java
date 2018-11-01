@@ -41,7 +41,7 @@ public class OverInvestPayBackDiagnosis extends UserBillBusinessDiagnosis {
             TransferApplicationModel currentInvestTransferModel= transferApplicationMapper.findTransfersDescByTransferInvestId(tracedObject.getTransferInvestId())
                     .stream()
                     .filter(transferApplicationModel -> tracedObject.getCreatedTime().after(transferApplicationModel.getApplicationTime())).findFirst().orElse(null);
-            tracedObject.setAmount(currentInvestTransferModel.getTransferAmount());
+            tracedObject.setAmount(currentInvestTransferModel == null?tracedObject.getAmount():currentInvestTransferModel.getTransferAmount());
         }
         SingleObjectDiagnosis
                 // exist
