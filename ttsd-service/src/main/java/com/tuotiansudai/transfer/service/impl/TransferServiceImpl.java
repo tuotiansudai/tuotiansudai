@@ -97,9 +97,9 @@ public class TransferServiceImpl implements TransferService {
         if (loan == null) {
             throw new InvestException(InvestExceptionType.LOAN_NOT_FOUND);
         }
-        long investAmount = Long.parseLong(investDto.getAmount());
+        long transferAmount = transferApplicationModel.getTransferAmount();
 
-        if (accountModel.getBalance() < investAmount) {
+        if (accountModel.getBalance() < transferAmount) {
             throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
         }
 
@@ -107,7 +107,8 @@ public class TransferServiceImpl implements TransferService {
             throw new InvestException(InvestExceptionType.PASSWORD_INVEST_OFF);
         }
 
-        if (LoanStatus.REPAYING != loan.getStatus()) {
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        if (!transferInvestModel.isOverdueTransfer() && LoanStatus.REPAYING != loan.getStatus()) {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
@@ -123,10 +124,9 @@ public class TransferServiceImpl implements TransferService {
         }
         //总投资金额超出风险投资限额
         long amount = investMapper.sumUsedFund(investDto.getLoginName());
-        if ((amount + investAmount) > AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()))) {
+        if ((amount + transferAmount) > AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey, riskEstimateModel.getEstimate().name()))) {
             throw new InvestException(InvestExceptionType.RISK_ESTIMATE_AMOUNT_OVER);
         }
-
     }
 
     @Override
@@ -168,9 +168,10 @@ public class TransferServiceImpl implements TransferService {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
 
         return investRepayModels.stream()
+                .filter(investRepayModel -> investRepayModel.getStatus() != RepayStatus.COMPLETE)
                 .map(investRepayModel -> new TransferInvestRepayDataDto(
                         investRepayModel.getRepayDate(),
-                        investRepayModel.getExpectedInterest() + investRepayModel.getCorpus(),
+                        investRepayModel.getExpectedInterest() + investRepayModel.getCorpus() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest(),
                         investRepayModel.getStatus()
                 )).collect(Collectors.toList());
     }
@@ -202,6 +203,12 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
+    public TransferApplicationModel findLastTransfersByTransferInvestId(long transferInvestId) {
+        List<TransferApplicationModel> list=transferApplicationMapper.findTransfersDescByTransferInvestId(transferInvestId);
+        return (list == null || list.size() == 0) ? null : list.get(0);
+    }
+
+    @Override
     public BasePaginationDataDto<TransferableInvestPaginationItemDataView> generateTransferableInvest(String loginName, Integer index, Integer pageSize) {
         long count = investMapper.findWebCountTransferableApplicationPaginationByLoginName(loginName);
         List<TransferableInvestView> items = Lists.newArrayList();
@@ -215,8 +222,15 @@ public class TransferServiceImpl implements TransferService {
             TransferableInvestPaginationItemDataView transferableInvestPaginationItemDataView = new TransferableInvestPaginationItemDataView(input);
             transferableInvestPaginationItemDataView.setTransferStatus(input.getTransferStatus().getDescription());
             transferableInvestPaginationItemDataView.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(input.getLoanId()));
+            if (input.isOverdueTransfer()){
+                List<InvestRepayModel> overdueInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getInvestId()).stream().filter(model -> model.getStatus() == RepayStatus.OVERDUE).collect(Collectors.toList());
+                transferableInvestPaginationItemDataView.setLeftPeriod(1);
+                transferableInvestPaginationItemDataView.setLeftDays("0");
+                transferableInvestPaginationItemDataView.setNextRepayDate(overdueInvestRepayModels.get(overdueInvestRepayModels.size() - 1).getRepayDate());
+                transferableInvestPaginationItemDataView.setNextRepayAmount(AmountConverter.convertCentToString(overdueInvestRepayModels.stream().mapToLong(model-> model.getCorpus() + model.getExpectedInterest() + model.getDefaultInterest() + model.getOverdueInterest() - model.getExpectedFee() - model.getDefaultFee() - model.getOverdueFee()).sum()));
+            }
             LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(input.getLoanId());
-            if (loanRepayModel != null) {
+            if (!input.isOverdueTransfer() && loanRepayModel != null) {
                 int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getInvestId(), loanRepayModel.getPeriod());
                 transferableInvestPaginationItemDataView.setLeftPeriod(leftPeriod);
                 LoanModel loanModel = loanMapper.findById(input.getLoanId());
@@ -285,7 +299,8 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setTransferrer(randomUtils.encryptMobile(loginName, transferApplicationModel.getLoginName(), transferApplicationModel.getTransferInvestId()));
         long investId = transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
-        transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(transferInvestModel.isOverdueTransfer() ? 0 : InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             AccountModel accountModel = accountMapper.findByLoginName(loginName);
             InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
@@ -299,7 +314,7 @@ public class TransferServiceImpl implements TransferService {
         }
 
         long nextExpectedFee = new BigDecimal(investRepayModel.getExpectedInterest()).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(investFeeRate)).longValue();
-        long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - nextExpectedFee;
+        long nextExpectedInterest = investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - nextExpectedFee;
         if (transferApplicationModel.getPeriod() == loanModel.getPeriods()) {
             nextExpectedInterest += investRepayMapper.findByInvestIdAndPeriod(investId, transferApplicationModel.getPeriod()).getCorpus();
         }

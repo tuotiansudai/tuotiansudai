@@ -14,7 +14,7 @@
 					</div>
 					<div class="info-right">
 						<#--<input type="text" class="int-number" id="transferAmount" name="price" value="${formData.investAmount}">-->
-						<span class="price_transfer" id="transferAmount">${formData.investAmount}</span>元
+						<span class="price_transfer" id="transferAmount">${formData.transferAmount}</span>元
 						<input type="hidden" id="transferInvestId" value="${formData.transferInvestId?string.computer}">
 					</div>
 				</li>

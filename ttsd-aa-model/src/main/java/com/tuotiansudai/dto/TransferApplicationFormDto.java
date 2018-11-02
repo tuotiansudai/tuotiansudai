@@ -25,7 +25,9 @@ public class TransferApplicationFormDto implements Serializable {
 
     private boolean anxinAuthenticationRequired;
 
-    public TransferApplicationFormDto(long transferInvestId, long investAmount, long transferAmountLower, double transferFeeRate, long transferFee, Date expiredDate, int holdDays, boolean isAnxinUser, boolean isAnxinAuthenticationRequired) {
+    private String transferAmount;
+
+    public TransferApplicationFormDto(long transferInvestId, long investAmount, long transferAmountLower, double transferFeeRate, long transferFee, Date expiredDate, int holdDays, boolean isAnxinUser, boolean isAnxinAuthenticationRequired,long transferAmount) {
         this.transferInvestId = transferInvestId;
         this.investAmount = AmountConverter.convertCentToString(investAmount);
         this.transferAmountLower = AmountConverter.convertCentToString(transferAmountLower);
@@ -35,6 +37,7 @@ public class TransferApplicationFormDto implements Serializable {
         this.holdDays = holdDays;
         this.anxinUser = isAnxinUser;
         this.anxinAuthenticationRequired = isAnxinAuthenticationRequired;
+        this.transferAmount=AmountConverter.convertCentToString(transferAmount);
     }
 
     public long getTransferInvestId() {
@@ -71,5 +74,13 @@ public class TransferApplicationFormDto implements Serializable {
 
     public boolean isAnxinAuthenticationRequired() {
         return anxinAuthenticationRequired;
+    }
+
+    public String getTransferAmount() {
+        return transferAmount;
+    }
+
+    public void setTransferAmount(String transferAmount) {
+        this.transferAmount = transferAmount;
     }
 }

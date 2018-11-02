@@ -17,6 +17,7 @@
         <result column="invest_amount" property="investAmount"/>
         <result column="transfer_amount" property="transferAmount"/>
         <result column="transfer_fee" property="transferFee"/>
+        <result column="interest_fee" property="interestFee"/>
         <result column="status" property="status"/>
         <result column="deadline" property="deadline"/>
         <result column="transfer_time" property="transferTime"/>
@@ -45,6 +46,7 @@
         <result column="deadline" property="deadLine"/>
         <result column="application_time" property="applicationTime"/>
         <result column="source" property="source"/>
+        <result column="transfer_invest_time" property="transferInvestTime"/>
     </resultMap>
 
     <resultMap id="transferableInvestPaginationItemDataDtoMap" type="TransferableInvestPaginationItemDataView">
@@ -61,10 +63,10 @@
 
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name,
-        invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time,
+        invest_amount, transfer_amount, transfer_fee, interest_fee, status, deadline, transfer_time,
         application_time,left_period,source)
         value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount},
-        #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod},
+        #{transferAmount}, #{transferFee}, #{interestFee},#{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod},
         #{source})
     </insert>
 
@@ -155,12 +157,14 @@
         ta.loan_id, u1.mobile
         AS transferrer_mobile,
         ta.transfer_fee, ta.transfer_invest_id, ta.period, ta.left_period, ta.deadline, ta.application_time, u2.mobile
-        AS transferee_mobile, ta.source AS source
+        AS transferee_mobile, ta.source AS source,
+        transfer_invest.created_time as transfer_invest_time
         FROM
-        (transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name)
+        transfer_application ta JOIN aa.user u1 ON ta.login_name = u1.login_name
         left JOIN
         (invest i JOIN aa.user u2 ON i.login_name = u2.login_name)
         ON ta.invest_id = i.id
+        join invest transfer_invest on transfer_invest.id = ta.transfer_invest_id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
@@ -227,8 +231,8 @@
             </if>
         </where>
         order by
-        CASE ta.status WHEN 'TRANSFERRING' THEN '1' WHEN 'SUCCESS' THEN '2' ELSE '3' END,
-        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time ELSE ta.transfer_time END desc
+        CASE ta.status WHEN 'TRANSFERRING' THEN '1'  WHEN 'SUCCESS' THEN '2' ELSE '3' END,
+        CASE ta.status WHEN 'TRANSFERRING' THEN ta.application_time  ELSE ta.transfer_time END desc
         limit #{index}, #{pageSize}
     </select>
 
@@ -375,11 +379,6 @@
         i.contract_no,
         (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING',
         'OVERDUE')) as next_repay_date,
-        (select ir.expected_interest + ir.corpus - ir.expected_fee
-        from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE')
-        and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = i.id and ir.status in
-        ('REPAYING', 'OVERDUE'))
-        ) as next_repay_amount,
         i.id as invest_id,
         ta.transfer_invest_id,
         ta.login_name as transferrer_loginName,
@@ -430,5 +429,9 @@
         WHERE
           loan_id = #{loanId} AND
           status = 'TRANSFERRING'
+    </select>
+
+    <select id="findTransfersDescByTransferInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where transfer_invest_id = #{transferInvestId}  order by application_time DESC ;
     </select>
 </mapper>

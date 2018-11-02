@@ -26,12 +26,15 @@ public class CouponDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date activatedTime;
 
     private Long totalCount;
 
     private Integer deadline;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date failureTime;
 
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
@@ -298,10 +301,17 @@ public class CouponDto implements Serializable {
         this.activatedTime = activatedTime;
     }
 
+    public Date getFailureTime() {
+        return failureTime;
+    }
+
+    public void setFailureTime(Date failureTime) {
+        this.failureTime = failureTime;
+    }
+
     public CouponDto(){
 
     }
-
 
     public CouponDto(CouponModel couponModel){
         this.id = couponModel.getId();
@@ -309,6 +319,7 @@ public class CouponDto implements Serializable {
         this.startTime = couponModel.getStartTime();
         this.endTime = couponModel.getEndTime();
         this.deadline = couponModel.getDeadline();
+        this.failureTime = couponModel.getFailureTime();
         this.totalCount = couponModel.getTotalCount();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.productTypes = couponModel.getProductTypes();

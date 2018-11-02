@@ -30,7 +30,7 @@
                     <div class="col-sm-4">
                         <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                             <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
-                            <option value="车辆抵押借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆抵押借款</option>
+                            <option value="车辆消费借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆消费借款</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT" <#if loan.loan.pledgeType == "ENTERPRISE_CREDIT">selected</#if>>税易经营性借款信用类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE" <#if loan.loan.pledgeType == "ENTERPRISE_PLEDGE">selected</#if>>税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
@@ -41,11 +41,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户:</label>
+                    <label class="col-sm-2 control-label">权证人:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="代理用户不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="权证人不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -207,7 +207,7 @@
                         <div class='input-group date' id='fundraisingEndTime'>
                             <input name="fundraisingEndTime" type='text' class="form-control" datatype="date" errormsg="筹款截止时间需要正确填写"
                                    value="${(loan.loan.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["WAITING_VERIFY", "PREHEAT", "RAISING", "RECHECK"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>

@@ -25,7 +25,9 @@
         <result column="repay_date" property="repayTime"/>
         <result column="period" property="period"/>
         <result column="expect_interest" property="expectInterest"/>
+        <result column="overdue_interest" property="overdueInterest"/>
         <result column="actual_interest" property="actualInterest"/>
+        <result column="overdue_fee" property="overdueFee"/>
         <result column="actual_fee" property="fee"/>
         <result column="repay_amount" property="actualRepayAmount"/>
         <result column="coupon_id" property="couponId"/>
@@ -43,7 +45,9 @@
 
         invest_repay.corpus + invest_repay.expected_interest - invest_repay.expected_fee +
         if(loan.periods = invest_repay.period , ifnull(invest_extra_rate.expected_interest - invest_extra_rate.expected_fee, 0), 0) +
-        if(coupon.coupon_type = 'RED_ENVELOPE', 0, ifnull(coupon_repay.expected_interest - coupon_repay.expected_fee, 0)) as expect_interest
+        if(coupon.coupon_type = 'RED_ENVELOPE', 0, ifnull(coupon_repay.expected_interest - coupon_repay.expected_fee, 0)) as expect_interest,
+        invest_repay.overdue_interest as overdue_interest,
+        invest_repay.overdue_fee as overdue_fee
 
         FROM
         `aa`.`loan` JOIN `aa`.`invest` JOIN `aa`.`invest_repay` JOIN `aa`.`user`

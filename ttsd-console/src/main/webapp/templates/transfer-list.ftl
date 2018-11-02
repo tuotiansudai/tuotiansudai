@@ -83,6 +83,7 @@
                 <th>剩余期限</th>
                 <th>转让状态</th>
                 <th>转让发起时间</th>
+                <th>原投资时间</th>
                 <th>承接人</th>
                 <th>来源</th>
                 <th>转让手续费(元)</th>
@@ -122,6 +123,7 @@
                             </#switch>
                     </td>
                     <td>${transferApplication.applicationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${transferApplication.transferInvestTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${transferApplication.transfereeMobile!}</td>
                     <td>${transferApplication.source!}</td>
                     <td>${transferApplication.transferFee}</td>

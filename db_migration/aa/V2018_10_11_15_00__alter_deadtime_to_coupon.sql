@@ -1,0 +1,1 @@
+ALTER table `coupon` ADD COLUMN `failure_time` DATETIME after `deadline`

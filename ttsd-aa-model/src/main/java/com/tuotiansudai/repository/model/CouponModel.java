@@ -21,6 +21,7 @@ public class CouponModel implements Serializable {
     private Date startTime;
     private Date endTime;
     private Integer deadline;
+    private Date failureTime;
     private long usedCount;
     private Long totalCount;
     private boolean active;
@@ -314,12 +315,22 @@ public class CouponModel implements Serializable {
         this.comment = comment;
     }
 
+
+    public Date getFailureTime() {
+        return failureTime;
+    }
+
+    public void setFailureTime(Date failureTime) {
+        this.failureTime = failureTime;
+    }
+
     public CouponModel(CouponDto couponDto) {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime() != null ? new DateTime(couponDto.getStartTime()).withTimeAtStartOfDay().toDate() : null;
         this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
         this.deadline = couponDto.getDeadline() != null ? couponDto.getDeadline() : 0;
+        this.failureTime = couponDto.getFailureTime() == null ? null : new DateTime(couponDto.getFailureTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
         this.productTypes = couponDto.getProductTypes();
         this.couponType = couponDto.getCouponType();
@@ -334,40 +345,5 @@ public class CouponModel implements Serializable {
         this.comment = couponDto.getComment();
         this.updatedTime = new Date();
 
-    }
-
-    protected CouponModel(CouponModel couponModel) {
-        this.id = couponModel.getId();
-        this.amount = couponModel.getAmount();
-        this.rate = couponModel.getRate();
-        this.birthdayBenefit = couponModel.getBirthdayBenefit();
-        this.multiple = couponModel.isMultiple();
-        this.startTime = couponModel.getStartTime();
-        this.endTime = couponModel.getEndTime();
-        this.deadline = couponModel.getDeadline();
-        this.usedCount = couponModel.getUsedCount();
-        this.totalCount = couponModel.getTotalCount();
-        this.active = couponModel.isActive();
-        this.shared = couponModel.isShared();
-        this.createdTime = couponModel.getCreatedTime();
-        this.createdBy = couponModel.getCreatedBy();
-        this.activatedBy = couponModel.getActivatedBy();
-        this.activatedTime = couponModel.getActivatedTime();
-        this.updatedBy = couponModel.getUpdatedBy();
-        this.updatedTime = couponModel.getUpdatedTime();
-        this.issuedCount = couponModel.getIssuedCount();
-        this.expectedAmount = couponModel.getExpectedAmount();
-        this.actualAmount = couponModel.getActualAmount();
-        this.investLowerLimit = couponModel.getInvestLowerLimit();
-        this.productTypes = couponModel.getProductTypes();
-        this.couponType = couponModel.getCouponType();
-        this.userGroup = couponModel.getUserGroup();
-        this.totalInvestAmount = couponModel.getTotalInvestAmount();
-        this.deleted = couponModel.isDeleted();
-        this.importIsRight = couponModel.getImportIsRight();
-        this.agents = couponModel.getAgents();
-        this.channels = couponModel.getChannels();
-        this.couponSource = couponModel.couponSource;
-        this.comment = couponModel.getComment();
     }
 }

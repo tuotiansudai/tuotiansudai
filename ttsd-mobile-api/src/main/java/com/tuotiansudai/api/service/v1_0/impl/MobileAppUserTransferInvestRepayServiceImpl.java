@@ -52,12 +52,7 @@ public class MobileAppUserTransferInvestRepayServiceImpl implements MobileAppUse
                 }
                 TransferInvestRepayDataDto transferInvestRepayDataDto = new TransferInvestRepayDataDto();
                 transferInvestRepayDataDto.setRepayDate(sdf.format(investRepayModel.getRepayDate()));
-                if(maxPeriods == investRepayModel.getPeriod()){
-                    transferInvestRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getCorpus()));
-                }
-                else{
-                    transferInvestRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest()));
-                }
+                transferInvestRepayDataDto.setExpectedInterest(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest()));
                 transferInvestRepayDataDto.setStatus(investRepayModel.getStatus().name());
                 transferInvestRepayList.add(transferInvestRepayDataDto);
             }

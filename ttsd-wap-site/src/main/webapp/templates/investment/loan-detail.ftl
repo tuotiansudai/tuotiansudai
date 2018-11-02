@@ -11,7 +11,7 @@
         <a href="javascript:void(0);"><i class="icon-help"></i></a>
         <div class="collection">
             <span class="title">
-                车辆抵押借款17014 <br/>
+                车辆消费借款17014 <br/>
                 <i class="icon-sign">五一专享</i>
                 <i class="icon-sign">新手专享</i>
             </span>

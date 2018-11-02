@@ -128,25 +128,26 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
-        BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
-        BigDecimal discountBig = new BigDecimal(transferRuleMapper.find().getDiscount());
         long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
-        long discountLower = investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationDto.getTransferInvestId());
+
+        if (!investModel.isOverdueTransfer() && transferAmount != investModel.getAmount()){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_IS_CORPUS);
+        }
+
+        if (investModel.isOverdueTransfer() && transferAmount <= investModel.getAmount()){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_UPGRADE_APP);
+        }
 
         if(CollectionUtils.isEmpty(investRepayModels)){
             return new BaseResponseDto(ReturnMessage.REPAY_IS_GENERATION_IN.getCode(), ReturnMessage.REPAY_IS_GENERATION_IN.getMsg());
         }
 
-        if (transferAmount > investModel.getAmount() || transferAmount < discountLower) {
-            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(), ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
-        }
-
-        if(loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE){
+        if (!investModel.isOverdueTransfer() && loanMapper.findById(investModel.getLoanId()).getStatus() == LoanStatus.OVERDUE) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IS_OVERDUE.getCode(), ReturnMessage.TRANSFER_IS_OVERDUE.getMsg());
         }
 
-        if(!investTransferService.validTransferIsDayLimit(investModel.getLoanId())){
+        if (!investModel.isOverdueTransfer() && !investTransferService.validTransferIsDayLimit(investModel.getLoanId())) {
             return new BaseResponseDto(ReturnMessage.TRANSFER_IMPEND_REPAYING.getCode(), ReturnMessage.TRANSFER_IMPEND_REPAYING.getMsg());
         }
 
@@ -184,6 +185,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
         transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(loanModel.getType(), loanModel.getRecheckTime(), investModel.getAmount(), investModel.getCreatedTime(), transferRuleModel)));
+        //新增转让价格
+        transferApplyQueryResponseDataDto.setTransferAmount(AmountConverter.convertCentToString(investTransferService.calcultorTransferAmount(Long.parseLong(investId))));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -245,7 +248,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getStatus() == TransferStatus.SUCCESS ? transferApplicationModel.getInvestId() : transferApplicationModel.getTransferInvestId());
         double investFeeRate = membershipPrivilegePurchaseService.obtainServiceFee(requestDto.getBaseParam().getUserId());
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(transferInvestModel.isOverdueTransfer() ? 0 : InterestCalculator.calculateTransferInterest(transferApplicationModel, investRepayModels, investFeeRate)));
         //
         LoanDetailsModel loanDetailsModel=loanDetailsMapper.getByLoanId(transferApplicationModel.getLoanId());
         RiskEstimateModel userEstimate=riskEstimateMapper.findByLoginName(requestDto.getBaseParam().getUserId());
@@ -336,10 +340,9 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
-        final long transferInvestId = Long.parseLong(userInvestRepayRequestDto.getInvestId().trim());
-        //return TransferLoan Details
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(transferInvestId);
-        InvestModel investModel = investMapper.findById(transferInvestId);
+        final long investId = Long.parseLong(userInvestRepayRequestDto.getInvestId().trim());
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
+        InvestModel investModel = investMapper.findById(investId);
         if (null == investModel) {
             return new BaseResponseDto<>(ReturnMessage.ERROR.getCode(), ReturnMessage.ERROR.getMsg());
         }
@@ -354,25 +357,36 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         UserInvestRepayResponseDataDto userInvestRepayResponseDataDto = new UserInvestRepayResponseDataDto(loanModel, transferApplicationModel);
 
         long totalExpectedInterest = 0;
+        long totalOverdueInterest = 0;
         long totalActualInterest = 0;
         long corpus = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(userInvestRepayRequestDto.getBaseParam().getUserId(),
-                transferInvestId);
+                investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            totalExpectedInterest += investRepayModel.getExpectedInterest();
-            totalActualInterest += investRepayModel.getRepayAmount();
+            long expectedInterest = investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+            long overdueInterest = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
+            long actualInterest = investRepayModel.getRepayAmount();
+
             corpus += investRepayModel.getCorpus();
             CouponRepayModel couponRepayModel = couponRepayMapper.findByUserCouponByInvestIdAndPeriod(investRepayModel.getInvestId(), investRepayModel.getPeriod());
-            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, couponRepayModel);
+            if (couponRepayModel != null) {
+                expectedInterest += couponRepayModel.getExpectedInterest() - couponRepayModel.getExpectedFee();
+                actualInterest += couponRepayModel.getRepayAmount();
+            }
+            InvestRepayDataDto investRepayDataDto = new InvestRepayDataDto(investRepayModel, expectedInterest + overdueInterest, actualInterest);
             userInvestRepayResponseDataDto.getInvestRepays().add(investRepayDataDto);
             if (investRepayModel.getPeriod() == loanModel.getPeriods()) {
                 userInvestRepayResponseDataDto.setLastRepayDate(simpleDateFormat.format(investRepayModel.getRepayDate()));
             }
+            totalExpectedInterest += expectedInterest;
+            totalOverdueInterest += overdueInterest;
+            totalActualInterest += actualInterest;
         }
 
-        userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(totalExpectedInterest));
+        InvestModel transferInvestModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        userInvestRepayResponseDataDto.setExpectedInterest(AmountConverter.convertCentToString(transferInvestModel.isOverdueTransfer() ? 0 : totalExpectedInterest + totalOverdueInterest));
         userInvestRepayResponseDataDto.setActualInterest(AmountConverter.convertCentToString(totalActualInterest));
-        userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest + corpus - totalActualInterest));
+        userInvestRepayResponseDataDto.setUnPaidRepay(AmountConverter.convertCentToString(totalExpectedInterest + totalOverdueInterest + corpus - totalActualInterest));
 
         MembershipModel membershipModel = userMembershipEvaluator.evaluateSpecifiedDate(userInvestRepayRequestDto.getBaseParam().getUserId(), transferApplicationModel.getTransferTime());
         userInvestRepayResponseDataDto.setMembershipLevel(String.valueOf(membershipModel.getLevel()));

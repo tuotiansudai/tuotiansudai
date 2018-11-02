@@ -28,6 +28,8 @@ public class TransferableInvestView implements Serializable {
 
     private double activityRate;
 
+    private boolean isOverdueTransfer;
+
     public long getInvestId() {
         return investId;
     }
@@ -111,5 +113,13 @@ public class TransferableInvestView implements Serializable {
 
     public void setNextRepayAmount(long nextRepayAmount) {
         this.nextRepayAmount = nextRepayAmount;
+    }
+
+    public boolean isOverdueTransfer() {
+        return isOverdueTransfer;
+    }
+
+    public void setOverdueTransfer(boolean overdueTransfer) {
+        isOverdueTransfer = overdueTransfer;
     }
 }

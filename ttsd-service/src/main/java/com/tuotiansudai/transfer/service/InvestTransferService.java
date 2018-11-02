@@ -4,9 +4,7 @@ package com.tuotiansudai.transfer.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.TransferInvestDetailView;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.TransferApplicationDto;
 import com.tuotiansudai.dto.TransferApplicationFormDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
@@ -42,4 +40,6 @@ public interface InvestTransferService {
     boolean validTransferIsCanceled(long investId);
 
     boolean validTransferIsDayLimit(long loanId);
+
+    long calcultorTransferAmount(long investId);
 }

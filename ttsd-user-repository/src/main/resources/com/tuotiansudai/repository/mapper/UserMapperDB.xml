@@ -63,6 +63,12 @@
         where login_name = #{loginName}
     </update>
 
+    <update id="updateStaffReferrerMobile" parameterType="map">
+        update user set
+        staff_referrer_mobile = #{staffReferrerMobile}
+        where login_name = #{loginName}
+    </update>
+
     <select id="findUsersByRegisterTimeOrReferrer" parameterType="map" resultMap="userResultMap">
         select * from user where register_time between #{startTime} and #{endTime}
         <if test="referrer != null and referrer != ''">

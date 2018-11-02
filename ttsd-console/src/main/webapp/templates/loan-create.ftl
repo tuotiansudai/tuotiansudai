@@ -18,7 +18,7 @@
                     <div class="col-sm-4">
                         <select name="name" class="selectpicker" id="projectName">
                             <option value="房产抵押借款" selected="selected" data-pledgeType="HOUSE">房产抵押借款</option>
-                            <option value="车辆抵押借款" data-pledgeType="VEHICLE">车辆抵押借款</option>
+                            <option value="车辆消费借款" data-pledgeType="VEHICLE">车辆消费借款</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT">税易经营性借款信用类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_PLEDGE">税易经营性借款抵押类</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
@@ -29,12 +29,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">代理用户: </label>
+                    <label class="col-sm-2 control-label">权证人: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="代理用户不能为空">
+                               errormsg="权证人不能为空">
                     </div>
                 </div>
 

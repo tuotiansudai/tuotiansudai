@@ -24,7 +24,9 @@ public class FinanceReportItemView implements Serializable {
     private Date repayTime; //回款时间  InvestRepayModel.repayDate
     private int period;  //期限    InvestRepayModel.period
     private long expectInterest;  //预期期限
+    private long overdueInterest;  //逾期期限
     private long actualInterest; //实际收益 InvestRepayModel.actualInterest
+    private long overdueFee;   //逾期服务费   InvestRepayModel.overdueFee
     private long fee;   //服务费   InvestRepayModel.actualFee
     private long actualRepayAmount; //实际回款  InvestRepayModel.repayAmount
     private long couponId;  //使用红包
@@ -237,5 +239,21 @@ public class FinanceReportItemView implements Serializable {
 
     public void setExpectInterest(long expectInterest) {
         this.expectInterest = expectInterest;
+    }
+
+    public long getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(long overdueInterest) {
+        this.overdueInterest = overdueInterest;
+    }
+
+    public long getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(long overdueFee) {
+        this.overdueFee = overdueFee;
     }
 }

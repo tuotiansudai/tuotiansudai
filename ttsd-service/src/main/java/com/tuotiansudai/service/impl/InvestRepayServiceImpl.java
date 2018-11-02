@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.InvestorInvestPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.CouponMapper;
 import com.tuotiansudai.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.repository.model.UserCouponModel;
@@ -13,6 +14,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.InvestRepayService;
+import com.tuotiansudai.service.InvestService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class InvestRepayServiceImpl implements InvestRepayService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestService investService;
 
     @Override
     public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
@@ -73,23 +78,13 @@ public class InvestRepayServiceImpl implements InvestRepayService {
     }
 
     @Override
-    public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
-        List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
-        for (LatestInvestView latestInvestView : latestInvestViews) {
+    public List<InvestorInvestPaginationItemDataDto> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
+        List<InvestorInvestPaginationItemDataDto> latestInvestViews=investService.getInvestPagination(loginName,1,6,null,null,null).getRecords();
+        for (InvestorInvestPaginationItemDataDto latestInvestView : latestInvestViews) {
             List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, latestInvestView.getInvestId());
             latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
-            }
-
-            if (latestInvestView.getProductType().equals(ProductType.EXPERIENCE)) {
-                List<UserCouponModel> userCouponModelList = userCouponMapper.findByInvestId(latestInvestView.getInvestId());
-                for (UserCouponModel userCouponModel : userCouponModelList) {
-                    if (userCouponModel.getStatus().equals(InvestStatus.SUCCESS)) {
-                        latestInvestView.setInvestAmount(couponMapper.findById(userCouponModel.getCouponId()).getAmount());
-                        break;
-                    }
-                }
             }
         }
         return latestInvestViews;

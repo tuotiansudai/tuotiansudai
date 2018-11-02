@@ -25,6 +25,6 @@ public class MothersDayActivityService {
         if(Strings.isNullOrEmpty(loginName)){
             return "0";
         }
-        return AmountConverter.convertCentToString(investMapper.sumInvestAmountConsole(null, loginName, null, null, null, activityStartTime, activityEndTime, InvestStatus.SUCCESS, null, null));
+        return AmountConverter.convertCentToString(investMapper.sumInvestAmountConsole(null, loginName, null, null, null, activityStartTime, activityEndTime, InvestStatus.SUCCESS, null, null, null));
     }
 }

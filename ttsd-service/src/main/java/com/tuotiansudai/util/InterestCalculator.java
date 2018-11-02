@@ -310,5 +310,21 @@ public class InterestCalculator {
                 .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-
+    /**
+     *
+     * @param yearRate  年化利率
+     * @param amount
+     * @param lastRepayDate
+     * @param currentDate
+     * @return
+     */
+    public static long calculateLoanInterest(double yearRate,long amount,DateTime lastRepayDate,DateTime currentDate){
+        BigDecimal loanRate = BigDecimal.valueOf(yearRate);
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentDate.withTimeAtStartOfDay()).getDays();
+        return BigDecimal.valueOf(amount).multiply(new BigDecimal(periodDuration)).multiply(loanRate).divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+    public static long calculateLoanInterestDateRate(double dateRate,long amount,DateTime lastRepayDate,DateTime currentDate){
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentDate.withTimeAtStartOfDay()).getDays();
+        return BigDecimal.valueOf(amount).multiply(new BigDecimal(periodDuration)).multiply(BigDecimal.valueOf(dateRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+    }
 }

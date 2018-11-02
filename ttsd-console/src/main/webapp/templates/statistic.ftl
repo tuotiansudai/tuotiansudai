@@ -68,8 +68,8 @@
                         </select>
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="LOANER">权证人</option>
+                            <option value="UN_LOANER">非权证人</option>
                         </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
@@ -104,8 +104,8 @@
                         </select>
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="LOANER">权证人</option>
+                            <option value="UN_LOANER">非权证人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -135,8 +135,8 @@
                         结束时间：<input type="text" class="form-control end-date" name="endTime">
                         <select class="form-control" name="role">
                             <option value="">全部</option>
-                            <option value="LOANER">代理人</option>
-                            <option value="UN_LOANER">非代理人</option>
+                            <option value="LOANER">权证人</option>
+                            <option value="UN_LOANER">非权证人</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

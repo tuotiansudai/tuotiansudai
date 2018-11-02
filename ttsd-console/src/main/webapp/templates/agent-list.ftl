@@ -18,7 +18,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>代理人</th>
+                <th>权证人</th>
                 <th>代理层级</th>
                 <th>收益比例(%)</th>
                 <th>操作</th>

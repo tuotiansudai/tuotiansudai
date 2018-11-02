@@ -773,8 +773,8 @@
             for (i = 0; i < this.imageList.length; i++) {
                 data = this.imageList[i];
                 list.push({
-                    src: prefix + data.url,
-                    _src: prefix + data.url,
+                    src: data.domain+prefix + data.url,
+                    _src: data.domain+prefix + data.url,
                     title: data.title,
                     alt: data.original,
                     floatStyle: align

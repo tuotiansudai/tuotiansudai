@@ -39,6 +39,10 @@ public enum JianZhouSmsTemplate {
             "尊敬的拓天速贷客户，由于原始项目提前还款，您的债权转让项目${param0}已自动取消，请尽快登录平台进行查看。",
             null),
 
+    SMS_CANCEL_TRANSFER_LOAN_COMPLETE_TEMPLATE(
+            "尊敬的拓天速贷客户，由于原始项目已完成还款，您的债权转让项目${param0}已自动取消，请尽快登录平台进行查看。",
+            null),
+
     SMS_TRANSFER_LOAN_SUCCESS_TEMPLATE(
             "尊敬的用户，您发起的转让项目${param0}已经转让成功，资金已经到达您的账户，感谢您选择拓天速贷！",
             null),
@@ -68,7 +72,7 @@ public enum JianZhouSmsTemplate {
             null),
 
     SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE(
-            "${param0}上线的${param1}天总额为${param2}万的项目于今日${param3}已满，借款人:${param4};代理人:${param5}，30分钟内将完成复核。",
+            "${param0}上线的${param1}天总额为${param2}万的项目于今日${param3}已满，借款人:${param4};权证人:${param5}，30分钟内将完成复核。",
             null),
 
     SMS_LOAN_OUT_COMPLETE_NOTIFY_TEMPLATE(

@@ -155,6 +155,20 @@ public class CouponAssignmentServiceTest {
     }
 
     @Test
+    public void shouldAssignByFailureTime() throws Exception {
+        UserModel fakeUser = getFakeUser("fakeUser1");
+        CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, false);
+        fakeCoupon.setDeadline(0);
+        fakeCoupon.setFailureTime(new DateTime(fakeCoupon.getEndTime()).toDate());
+        couponMapper.updateCoupon(fakeCoupon);
+        couponAssignmentService.assign(fakeUser.getLoginName(), fakeCoupon.getId(), "");
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(fakeCoupon.getId());
+        assertThat(userCouponModels.size(), is(1));
+        assertThat(new DateTime(userCouponModels.get(0).getEndTime()).getDayOfYear(), is(new DateTime(fakeCoupon.getFailureTime()).getDayOfYear()));
+    }
+
+    @Test
     public void shouldAssignMultiple() throws Exception {
         UserModel fakeUser = getFakeUser("fakeUser1");
         CouponModel fakeCoupon = getFakeCoupon(UserGroup.ALL_USER, true);
