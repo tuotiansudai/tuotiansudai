@@ -92,7 +92,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     public boolean isManual(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         UserFundView userFundView = userFundMapper.findByLoginName(loginName);
-        return accountModel.getFreeze() > 0 || accountModel.getBalance() > 0 || userFundView.getExpectedTotalCorpus() > 0 || userFundView.getExpectedTotalInterest() > 0;
+        return accountModel.getFreeze() > 0
+                || accountModel.getBalance() > 0
+                || userFundView.getExpectedTotalCorpus() + userFundView.getOverdueTotalCorpus() > 0
+                || userFundView.getExpectedTotalInterest() + userFundView.getOverdueTotalInterest() + userFundView.getOverdueTotalDefaultInterest() > 0;
 
     }
 
