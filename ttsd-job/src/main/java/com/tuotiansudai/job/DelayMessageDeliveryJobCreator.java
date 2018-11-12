@@ -1,6 +1,7 @@
 package com.tuotiansudai.job;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tuotiansudai.dto.SmsNotifyDto;
 import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.util.JsonConverter;
@@ -8,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -47,7 +49,16 @@ public class DelayMessageDeliveryJobCreator {
 
     public static void createCancelTransferApplicationDelayJob(JobManager jobManager, long transferApplicationId, Date deadline) {
         String messageBody = String.valueOf(transferApplicationId);
-        create(jobManager, new DateTime(deadline).plusHours(9).toDate(), MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
+        create(jobManager, deadline, MessageQueue.CancelTransferApplication, messageBody, String.valueOf(transferApplicationId), true);
+    }
+
+    public static void createCancelTransferApplicationDelaySmsJob(JobManager jobManager, SmsNotifyDto smsNotifyDto, Date deadline) {
+        try {
+            String messageBody = JsonConverter.writeValueAsString(smsNotifyDto);
+            create(jobManager, new DateTime(deadline).plusHours(9).toDate(), MessageQueue.SmsNotify, messageBody, String.valueOf(System.currentTimeMillis()), true);
+        } catch (JsonProcessingException e) {
+            logger.error(MessageFormat.format("transfer application expire send sms fail:{0}", e.getMessage()));
+        }
     }
 
     public static void createOrReplaceCreditLoanBalanceAlertDelayJob(JobManager jobManager, Date sendingTime) {

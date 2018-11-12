@@ -30,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.tree.TreeNode;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -98,7 +97,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return dto;
         }
 
-        if (investModel.isOverdueTransfer()){
+        if (investModel.isOverdueTransfer()) {
             dto.getData().setStatus(true);
             return dto;
         }
@@ -137,7 +136,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
 
         return new TransferApplicationFormDto(investId, investModel.getAmount(), transferAmountLower, transferFeeRate, transferFee, expiredDate, holdDays,
                 anxinProp != null && anxinProp.isAnxinUser(),
-                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus(),calcultorTransferAmount(investId));
+                anxinWrapperClient.isAuthenticationRequired(investModel.getLoginName()).getData().getStatus(), calcultorTransferAmount(investId));
     }
 
     @Override
@@ -260,8 +259,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
                 AppUrl.MESSAGE_CENTER_LIST));
 
         String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
-        mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
-
+        DelayMessageDeliveryJobCreator.createCancelTransferApplicationDelaySmsJob(jobManager, new SmsNotifyDto(JianZhouSmsTemplate.SMS_TRANSFER_LOAN_OVERDUE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())), transferApplicationModel.getDeadline());
         return true;
     }
 
@@ -287,7 +285,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE){
+        if (investModel.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
             return false;
         }
 
@@ -296,7 +294,7 @@ public class InvestTransferServiceImpl implements InvestTransferService {
             return false;
         }
 
-        if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && investModel.isOverdueTransfer()){
+        if (investModel.getTransferStatus() == TransferStatus.TRANSFERABLE && investModel.isOverdueTransfer()) {
             return true;
         }
 
