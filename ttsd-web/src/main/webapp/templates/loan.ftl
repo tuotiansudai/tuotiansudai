@@ -59,7 +59,7 @@
                             </div>
                         </script>
                     </#if>
-                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf" target="_blank">债权转让协议样本</a></span>
+                    <span class="fr boilerplate"><a href="${commonStaticServer}/images/pdf/<#if loan.pledgeType == 'VEHICLE'>loanConsumeAgreement-sample.pdf<#else>loanAgreement-sample.pdf</#if>" target="_blank">债权转让协议样本</a></span>
                 </h2>
                 <div class="container-block loan-info">
                     <div class="content">

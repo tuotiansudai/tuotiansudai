@@ -100,6 +100,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Value(value = "${anxin.loan.contract.template}")
     private String loanTemplate;
 
+    @Value(value = "${anxin.loan.consume.contract.template}")
+    private String loanConsumeTemplate;
+
     @Value(value = "${anxin.transfer.contract.template}")
     private String transferTemplate;
 
@@ -474,6 +477,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("msg1", transferMap.get("msg1"));
         dataModel.put("msg2", transferMap.get("msg2"));
         dataModel.put("msg3", transferMap.get("msg3"));
+        dataModel.put("purpose", transferMap.get("purpose"));
+        dataModel.put("repayType", transferMap.get("repayType"));
+        dataModel.put("pledge", transferMap.get("pledge"));
 
         createContractVO.setInvestmentInfo(dataModel);
 
@@ -541,6 +547,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         dataModel.put("endTime2", investMap.get("endTime"));
         dataModel.put("orderId", String.valueOf(investId));
         dataModel.put("pledge", investMap.get("pledge"));
+        dataModel.put("purpose", investMap.get("purpose"));
+        dataModel.put("repayType", investMap.get("repayType"));
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -560,7 +568,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(loanTemplate);
+        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
         createContractVO.setIsSign(1);
         return createContractVO;
     }
