@@ -164,12 +164,4 @@ public class CalculateDefaultInterestScheduler {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
         return CollectionUtils.isEmpty(investRepayModels) || investRepayModels.stream().noneMatch(input -> input.getStatus() == RepayStatus.OVERDUE);
     }
-
-    @PostConstruct
-    public void initScheduler() {
-        logger.info("=================计算罚息初始化=======================");
-        calculateDefaultInterest();
-        logger.info("=================计算罚息初jieshu=======================");
-    }
-
 }
