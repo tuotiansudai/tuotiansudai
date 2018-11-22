@@ -27,7 +27,7 @@ public class AnxinClientTest {
     @Autowired
     private OkHttpClient httpClient;
     private String JKS_CLASS_PATH = "anxinsign.jks";
-    public String JKS_PWD = "123abc";
+    public String JKS_PWD = "tuotiansudai";
     public String ALIAS = "anxinsign";
     public String URL = "https://210.74.42.33:9443/FEP/";
     public String PLAT_ID = "3FEC02111C593DECE05312016B0A418F";

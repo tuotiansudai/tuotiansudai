@@ -135,7 +135,7 @@
         </li>
         <li>
             <label>借款协议</label>
-            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/loanAgreement-sample.pdf">债权转让协议（样本）</a><em class="pdf"><i
+            <span><a id="agrement" data-url="${commonStaticServer}/images/pdf/<#if loan.pledgeType == 'VEHICLE'>loanConsumeAgreement-sample.pdf<#else>loanAgreement-sample.pdf</#if>">债权转让协议（样本）</a><em class="pdf"><i
                     class="iconRight" ></i></em></span>
 
         </li>

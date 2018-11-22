@@ -7,6 +7,7 @@ import cfca.trustsign.common.vo.request.tx3.Tx3202ReqVO;
 import com.tuotiansudai.cfca.connector.AnxinClientTest;
 import com.tuotiansudai.cfca.constant.TxCode;
 import com.tuotiansudai.cfca.converter.JsonObjectMapper;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,55 +25,14 @@ public class Test3202 {
 
         List<CreateContractVO> createContractlist = new ArrayList<CreateContractVO>();
 
-        CreateContractVO createContract = new CreateContractVO();
-        createContract.setTemplateId("7");
-
-        Map<String, String> fieldMap = new HashMap<String, String>();
-        fieldMap.put("text1", "2016");
-        fieldMap.put("text2", "3");
-        fieldMap.put("text3", "16");
-        fieldMap.put("text4", "孙一");
-        fieldMap.put("text5", "222321199112050001");
-        fieldMap.put("text6", "成都");
-        fieldMap.put("text7", "壹万");
-        fieldMap.put("text8", "壹万元整");
-        fieldMap.put("text9", "10000");
-        fieldMap.put("text10", "壹万元整");
-        fieldMap.put("text11", "10000");
-        fieldMap.put("text12", "壹万元整");
-        fieldMap.put("text13", "10000");
-        fieldMap.put("text14", "叁万元整");
-        fieldMap.put("text15", "30000");
-        fieldMap.put("text16", "10000");
-        fieldMap.put("text17", "10000");
-        fieldMap.put("text18", "10000");
-        fieldMap.put("text19", "孙一");
-        fieldMap.put("text20", "成都支行");
-        fieldMap.put("text21", "001");
-        createContract.setInvestmentInfo(fieldMap);
-
-        SignInfoVO[] signInfos = new SignInfoVO[1];
-        SignInfoVO signInfoVO0 = new SignInfoVO();
-        signInfoVO0.setUserId("2E25DA12B23DC896E050007F01007548");
-        signInfoVO0.setIsProxySign(1);
-        signInfoVO0.setLocation("210.74.41.0");
-        signInfoVO0.setProjectCode("002");
-        signInfoVO0.setSignLocation("Signature1");
-        signInfoVO0.setAuthorizationTime("20160214171200");
-        signInfos[0] = signInfoVO0;
-        createContract.setSignInfos(signInfos);
-
-        CreateContractVO createContract2 = new CreateContractVO();
-        createContract2.setTemplateId("7");
-        createContract2.setInvestmentInfo(fieldMap);
-        createContract2.setSignInfos(signInfos);
+//        CreateContractVO createContract = loanContract();
+        CreateContractVO createContract = transferContract();
 
         createContractlist.add(createContract);
-        createContractlist.add(createContract2);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B113");
-        tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[0]));
+        tx3202ReqVO.setBatchNo("B2018111510");
+        tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
         String req = jsonObjectMapper.writeValueAsString(tx3202ReqVO);
@@ -80,5 +40,102 @@ public class Test3202 {
 
         String res = anxinClient.send(TxCode.CREATE_CONTRACT_BATCH, req);
         System.out.println("res:" + res);
+    }
+
+    public static CreateContractVO loanContract(){
+        CreateContractVO createContract = new CreateContractVO();
+
+        Map<String, String> dataModel = new HashMap<>();
+        dataModel.put("agentMobile", "18895730992");
+        dataModel.put("agentIdentityNumber", "111111111111111111");
+        dataModel.put("investorMobile", "18895730992");
+        dataModel.put("investorIdentityNumber", "111111111111111111");
+        dataModel.put("loanerUserName", "借款人");
+        dataModel.put("loanerIdentityNumber", "111111111111111111");
+        dataModel.put("loanAmount1", "100元");
+        dataModel.put("loanAmount2", "100元");
+        dataModel.put("periods1", "3");
+        dataModel.put("periods2", "3");
+        dataModel.put("totalRate", "10%");
+        dataModel.put("recheckTime1", "2018-10-10");
+        dataModel.put("recheckTime2", "2018-10-10");
+        dataModel.put("endTime1", "2018-10-10");
+        dataModel.put("endTime2", "2018-10-10");
+        dataModel.put("orderId", "20181010");
+        dataModel.put("pledge", "房产");
+        dataModel.put("purpose", "借款用途");
+        dataModel.put("repayType", "到期还本付息");
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId("40C1F3CB74D35AE3E05312016B0AA49B");
+        agentSignInfo.setAuthorizationTime("20160214171200");
+        agentSignInfo.setLocation("172.16.10.1");
+        agentSignInfo.setSignLocation("agentUserName");
+        agentSignInfo.setProjectCode("8735358083014a0dbe88e2cbf711c734");
+        agentSignInfo.setIsProxySign(1);
+
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId("4074F0BDDC1263F9E05311016B0A0D35");
+        investorSignInfo.setAuthorizationTime("20160214171200");
+        investorSignInfo.setLocation("118.187.56.162");
+        investorSignInfo.setSignLocation("investorUserName");
+        investorSignInfo.setProjectCode("f337f9748c5146ed9c520d26f02e06b1");
+        investorSignInfo.setIsProxySign(1);
+
+        createContract.setInvestmentInfo(dataModel);
+        createContract.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
+        createContract.setTemplateId("JK_2303");  //抵押
+//        createContract.setTemplateId("JK_2304");   //消费
+        createContract.setIsSign(1);
+        return createContract;
+    }
+
+    private static CreateContractVO transferContract(){
+        CreateContractVO createContractVO = new CreateContractVO();
+        Map<String, String> dataModel = new HashMap<>();
+        dataModel.put("transferMobile", "11111111111");
+        dataModel.put("transferIdentity", "111111111111111111");
+        dataModel.put("transfereeMobile", "11111111111");
+        dataModel.put("transfereeIdentity", "111111111111111111");
+        dataModel.put("userName", "userName");
+        dataModel.put("identity", "111111111111111111");
+        dataModel.put("amount", "100元");
+        dataModel.put("totalRate", "10%");
+        dataModel.put("periods", "3");
+        dataModel.put("transferStartTime", "2018-11-11");
+        dataModel.put("transferEndTime", "2018-11-11");
+        dataModel.put("investAmount", "100元");
+        dataModel.put("transferTime", "2018-11-11");
+        dataModel.put("leftPeriod", "3");
+        dataModel.put("orderId", "1123123");
+        dataModel.put("msg1", "msg1");
+        dataModel.put("msg2", "msg2");
+        dataModel.put("msg3", "msg3");
+        dataModel.put("purpose", "借款用途");
+        dataModel.put("repayType", "到期还本付息");
+        dataModel.put("pledge", "车辆");
+
+        createContractVO.setInvestmentInfo(dataModel);
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId("40C1F3CB74D35AE3E05312016B0AA49B");
+        agentSignInfo.setAuthorizationTime("20160214171200");
+        agentSignInfo.setLocation("172.16.10.1");
+        agentSignInfo.setSignLocation("transferUserName");
+        agentSignInfo.setProjectCode("8735358083014a0dbe88e2cbf711c734");
+        agentSignInfo.setIsProxySign(1);
+
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId("4074F0BDDC1263F9E05311016B0A0D35");
+        investorSignInfo.setAuthorizationTime("20160214171200");
+        investorSignInfo.setLocation("118.187.56.162");
+        investorSignInfo.setSignLocation("transfereeUserName");
+        investorSignInfo.setProjectCode("f337f9748c5146ed9c520d26f02e06b1");
+        investorSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
+        createContractVO.setTemplateId("JK_2315");
+        createContractVO.setIsSign(1);
+        return createContractVO;
     }
 }
