@@ -106,8 +106,8 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.actualExperienceInterest = userFundView.getActualExperienceInterest();
         this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.actualTotalCouponInterest + this.actualExperienceInterest;
 
-        this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus();
-        this.expectedTotalInterest = userFundView.getExpectedTotalInterest();
+        this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus() + userFundView.getOverdueTotalCorpus();
+        this.expectedTotalInterest = userFundView.getExpectedTotalInterest() + userFundView.getOverdueTotalInterest();
         this.expectedTotalExtraInterest = userFundView.getExpectedTotalExtraInterest();
         this.expectedTotalCouponInterest = userFundView.getExpectedCouponInterest();
         this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.expectedExperienceInterest+this.expectedTotalCouponInterest;
