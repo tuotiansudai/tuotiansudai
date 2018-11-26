@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -23,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,8 +64,7 @@ public class OperationDataServiceTest {
     private final String REDIS_INFO_PUBLISH_CHART_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private final String REDIS_INFO_PUBLISH_TABLE_KEY_TEMPLATE = "web:info:publish:table:{0}";
 
-    private final String USERS_COUNT = "userCount";
-    private final String TRADE_AMOUNT = "tradeAmount";
+    private final String REDIS_OPERATION_DATA = "operationData";
     private final String OPERATION_DATA_MONTH = "operationDataMonth";
     private final String OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
 
@@ -200,7 +201,7 @@ public class OperationDataServiceTest {
     }
 
     @Test
-    public void testGetOperationDataFromRedis() {
+    public void testGetOperationDataFromRedis() throws IOException {
         Date testEndDate = new DateTime().withDate(2016, 5, 10).withTimeAtStartOfDay().toDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
         String redisKey = MessageFormat.format(REDIS_INFO_PUBLISH_CHART_KEY_TEMPLATE, simpleDateFormat.format(testEndDate));
@@ -240,8 +241,9 @@ public class OperationDataServiceTest {
         assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), operationDataDtoFromRedis.getTradeAmount());
 
         //测试redis中的缓存
-        assertEquals(2 + originUsersCount, Integer.parseInt(redisWrapperClient.hget(redisKey, USERS_COUNT)));
-        assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), redisWrapperClient.hget(redisKey, TRADE_AMOUNT));
+        OperationDataDto operationDataDto = JsonConverter.readValue(redisWrapperClient.hget(redisKey, REDIS_OPERATION_DATA), OperationDataDto.class);
+        assertEquals(2 + originUsersCount, operationDataDto.getUsersCount());
+        assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), operationDataDto.getTradeAmount());
         assertEquals("2015.7,2015.8,2015.9,2015.10,2015.11,2015.12,2016.1,2016.2,2016.3,2016.4", redisWrapperClient.hget(redisKey, OPERATION_DATA_MONTH));
 
         //测试从redis中拿出的数据

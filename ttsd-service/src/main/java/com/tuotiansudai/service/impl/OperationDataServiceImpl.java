@@ -67,7 +67,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:amount:invest:city:scale:{0}";
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
-    private static final String REDIS_OPERATION_DATA = "operation_data";
+    private static final String REDIS_OPERATION_DATA = "operationData";
     private static final String REDIS_USER_SUM_INTEREST = "userSumInterest";
 
     private static final int timeout = 60 * 60 * 24;
