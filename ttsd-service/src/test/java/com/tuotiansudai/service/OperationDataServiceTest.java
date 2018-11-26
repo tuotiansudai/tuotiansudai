@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.base.Joiner;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -65,8 +66,6 @@ public class OperationDataServiceTest {
     private final String REDIS_INFO_PUBLISH_TABLE_KEY_TEMPLATE = "web:info:publish:table:{0}";
 
     private final String REDIS_OPERATION_DATA = "operationData";
-    private final String OPERATION_DATA_MONTH = "operationDataMonth";
-    private final String OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
 
     private LoanModel createLoanByUserId(String userId, long loanId, ProductType productType) {
         LoanDto loanDto = new LoanDto();
@@ -244,7 +243,7 @@ public class OperationDataServiceTest {
         OperationDataDto operationDataDto = JsonConverter.readValue(redisWrapperClient.hget(redisKey, REDIS_OPERATION_DATA), OperationDataDto.class);
         assertEquals(2 + originUsersCount, operationDataDto.getUsersCount());
         assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), operationDataDto.getTradeAmount());
-        assertEquals("2015.7,2015.8,2015.9,2015.10,2015.11,2015.12,2016.1,2016.2,2016.3,2016.4", redisWrapperClient.hget(redisKey, OPERATION_DATA_MONTH));
+        assertEquals("2015.7,2015.8,2015.9,2015.10,2015.11,2015.12,2016.1,2016.2,2016.3,2016.4", Joiner.on(",").join(operationDataDto.getMonth()));
 
         //测试从redis中拿出的数据
         operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis(testEndDate);
