@@ -1,8 +1,11 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanerDetailsModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface LoanerDetailsMapper {
@@ -12,5 +15,5 @@ public interface LoanerDetailsMapper {
 
     void deleteByLoanId(@Param(value = "loanId") long loanId);
 
-    long getSumLoanerCount();
+    long getSumLoanerCountByLoanStatus(@Param(value = "loanStatusList") List<LoanStatus> loanStatusList);
 }

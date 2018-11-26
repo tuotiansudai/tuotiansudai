@@ -1,20 +1,20 @@
 package com.tuotiansudai.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.AgeDistributionType;
 import com.tuotiansudai.enums.AgeNewDistributionType;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.InvestDataView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CalculateUtil;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,6 +24,7 @@ import org.joda.time.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -66,32 +67,11 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String AMOUNT_INVEST_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:amount:invest:city:scale:{0}";
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
-    private static final String REDIS_USERS_COUNT = "userCount";
-    private static final String REDIS_SUM_LOAN_AMOUNT = "sumLoanAmount";
-    private static final String REDIS_SUM_LOAN_COUNT = "sumLoanCount";
-    private static final String REDIS_SUM_LOANER_COUNT = "sumLoanerCount";
-    private static final String REDIS_SUM_OVER_DUE_AMOUNT = "sumOverDueAmount";
-    private static final String REDIS_SUM_EXPECTED_AMOUNT = "sumExpectedAmount";
-    private static final String REDIS_LOAN_OVER_DUE_RATE = "loanOverDueRate";
-    private static final String REDIS_AMOUNT_OVER_DUE_RATE = "amountOverDueRate";
-    private static final String REDIS_LOANER_OVER_DUE_COUNT = "loanerOverDueCount";
-    private static final String REDIS_LOANER_OVER_DUE_AMOUNT = "loanerOverDueAmount";
-    private static final String REDIS_INVEST_USERS_COUNT = "investUserCount";
-    private static final String REDIS_TRADE_AMOUNT = "tradeAmount";
-    private static final String REDIS_OPERATION_DATA_MONTH = "operationDataMonth";
-    private static final String REDIS_OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
+    private static final String REDIS_OPERATION_DATA = "operation_data";
     private static final String REDIS_USER_SUM_INTEREST = "userSumInterest";
 
     private static final int timeout = 60 * 60 * 24;
     private static final Date startOperationDate = new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay().toDate();
-
-    private List<String> convertRedisListStringIntoList(String listString) {
-        return Splitter.on(",").splitToList(listString);
-    }
-
-    private String convertListIntoRedisListString(List<String> list) {
-        return Joiner.on(",").join(list);
-    }
 
     private String getRedisKeyFromTemplateByDate(String template, Date timeStampDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
@@ -111,26 +91,47 @@ public class OperationDataServiceImpl implements OperationDataService {
         return period.getMonths();
     }
 
-    private void loadOperationDataDtoFromDatabase(OperationDataDto operationDataDto, Date endDate) {
+    private OperationDataDto loadOperationDataDtoFromDatabase(Date endDate) {
+        OperationDataDto operationDataDto = new OperationDataDto();
         operationDataDto.setOperationDays(calOperationTime(endDate));
 
-        operationDataDto.setTradeAmount(AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null,
+        long tradeAmount = investMapper.sumInvestAmount(null, null, null,
                 null, null, startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate(),
-                InvestStatus.SUCCESS, null)));
-
+                InvestStatus.SUCCESS, null);
+        operationDataDto.setTradeAmount(AmountConverter.convertCentToString(tradeAmount));
 
         operationDataDto.setUsersCount(userMapper.findUsersCount());
         operationDataDto.setInvestUsersCount(investMapper.findInvestorCount());
         List<LoanModel> loanModels = loanMapper.findSuccessLoanOutLoan();
-        operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum()));
+
+        long sumLoanAmount = loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum();
+        operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(sumLoanAmount));
         operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
-        operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCount()));
+        operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE, LoanStatus.RAISING))));
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
         long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
+        long sumExpectedInterestAmount = loanRepayModels.stream().mapToLong(loanRepayModel -> loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() + loanRepayModel.getOverdueInterest()).sum();
         operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));
         operationDataDto.setSumOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
+        operationDataDto.setSumExpectedInterestAmount(AmountConverter.convertCentToString(sumExpectedInterestAmount));
+        operationDataDto.setSumRepayIngInvestCount(AmountConverter.convertCentToString(investMapper.sumInvestCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE), startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
+        operationDataDto.setAvgInvestAmount(AmountConverter.convertCentToString( tradeAmount / investMapper.sumInvestCountByLoanStatus(null, startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
 
+        List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen(startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate());
+        long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);
+        long maxTenInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.stream().mapToLong(i -> i).sum();
+        operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenInvestAmountRate(String.valueOf(new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
+
+        operationDataDto.setSumNotCompleteLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.RAISING))));
+        operationDataDto.setAvgLoanAmount(AmountConverter.convertCentToString(sumLoanAmount / loanModels.size()));
+
+        List<Long> sumLoanAmountGroupByIdentityByTopTens = loanMapper.sumLoanAmountGroupByIdentityByTopTen();
+        long maxSingleLoanAmount = sumLoanAmountGroupByIdentityByTopTens.get(0);
+        long maxTenLoanAmount = sumLoanAmountGroupByIdentityByTopTens.stream().mapToLong(i -> i).sum();
+        operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumLoanAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenLoanAmountRate(String.valueOf(new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumLoanAmount), 4, BigDecimal.ROUND_DOWN)));
 
         long sumRepayingLoanCount = loanRepayModels.stream().map(LoanRepayModel::getLoanId).distinct().count();
         long sumOverDueLoanCount = loanRepayModels.stream()
@@ -140,12 +141,25 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setLoanOverDueRate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(sumOverDueLoanCount).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setAmountOverDueRate(String.valueOf(sumOverDueAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
+        long amountOverDueLess90Amount = this.findAmountOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
+        long amountOverDue90To180Amount = this.findAmountOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - amountOverDueLess90Amount;
+        long amountOverDueGreater180Amount = sumExpectedAmount - amountOverDueLess90Amount - amountOverDue90To180Amount ;
+        operationDataDto.setAmountOverDueLess90Rate(String.valueOf(amountOverDueLess90Amount == 0 ? 0 : new BigDecimal(amountOverDueLess90Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDue90To180Rate(String.valueOf(amountOverDue90To180Amount == 0 ? 0 : new BigDecimal(amountOverDue90To180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueGreater180Rate(String.valueOf(amountOverDueGreater180Amount == 0 ? 0 : new BigDecimal(amountOverDueGreater180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+
+        long loanOverDueLess90Rate = this.findLoanOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
+        long loanOverDue90To180Rate = this.findLoanOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - loanOverDueLess90Rate;
+        long loanOverDueGreater180Rate = sumOverDueLoanCount - loanOverDueLess90Rate - loanOverDue90To180Rate;
+        operationDataDto.setLoanOverDueLess90Rate(String.valueOf(loanOverDueLess90Rate == 0 ? 0 : new BigDecimal(loanOverDueLess90Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDue90To180Rate(String.valueOf(loanOverDue90To180Rate == 0 ? 0 : new BigDecimal(loanOverDue90To180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDueGreater180Rate(String.valueOf(loanOverDueGreater180Rate == 0 ? 0 : new BigDecimal(loanOverDueGreater180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+
         operationDataDto.setLoanerOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
         operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
                 .map(LoanRepayModel::getLoanId)
                 .distinct()
                 .count()));
-
 
         List<Integer> sexList = findScaleByGender(new Date());
         if (sexList.size() > 1) {
@@ -181,27 +195,19 @@ public class OperationDataServiceImpl implements OperationDataService {
                     new DateTime(startTime).withTimeAtStartOfDay().toDate(), new DateTime(endTime).withTimeAtStartOfDay().plusSeconds(-1).toDate(), InvestStatus.SUCCESS, null));
             operationDataDto.getMoney().add(amount);
         }
+        return operationDataDto;
     }
 
-    private void loadOperationDataDtoFromRedis(OperationDataDto operationDataDto, Date endDate) {
+    private OperationDataDto loadOperationDataDtoFromRedis(Date endDate) {
+        OperationDataDto operationDataDto = new OperationDataDto();
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endDate);
+        try {
+            operationDataDto = JsonConverter.readValue(redisWrapperClient.hget(redisInfoPublishKey, REDIS_OPERATION_DATA), OperationDataDto.class);
+        } catch (IOException e) {
+            return loadOperationDataDtoFromDatabase(endDate);
+        }
+
         operationDataDto.setOperationDays(calOperationTime(endDate));
-        operationDataDto.setSumLoanerCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT));
-        operationDataDto.setSumExpectedAmount(redisWrapperClient.hget(redisInfoPublishKey,REDIS_SUM_EXPECTED_AMOUNT));
-        operationDataDto.setUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_USERS_COUNT)));
-        operationDataDto.setSumLoanCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT));
-        operationDataDto.setSumLoanAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_LOAN_AMOUNT));
-        operationDataDto.setSumOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT));
-        operationDataDto.setAmountOverDueRate(redisWrapperClient.hget(redisInfoPublishKey, REDIS_AMOUNT_OVER_DUE_RATE));
-        operationDataDto.setLoanOverDueRate(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOAN_OVER_DUE_RATE));
-        operationDataDto.setInvestUsersCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT)));
-        operationDataDto.setTradeAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_TRADE_AMOUNT));
-        operationDataDto.setLoanerOverDueAmount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_AMOUNT));
-        operationDataDto.setLoanerOverDueCount(redisWrapperClient.hget(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_COUNT));
-        operationDataDto.setMonth(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
-                REDIS_OPERATION_DATA_MONTH)));
-        operationDataDto.setMoney(convertRedisListStringIntoList(redisWrapperClient.hget(redisInfoPublishKey,
-                REDIS_OPERATION_DATA_MONTH_AMOUNT)));
         operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
 
@@ -219,36 +225,24 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setLoanerFemaleScale(String.valueOf(CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
             operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         }
-
+        return operationDataDto;
     }
 
     private void updateRedis(OperationDataDto operationDataDto, Date endTime) {
         final String redisInfoPublishKey = getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endTime);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOAN_AMOUNT, operationDataDto.getSumLoanAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOAN_COUNT, operationDataDto.getSumLoanCount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_LOANER_COUNT, operationDataDto.getSumLoanerCount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_EXPECTED_AMOUNT, operationDataDto.getSumExpectedAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_AMOUNT_OVER_DUE_RATE, operationDataDto.getAmountOverDueRate(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOAN_OVER_DUE_RATE, operationDataDto.getLoanOverDueRate(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_SUM_OVER_DUE_AMOUNT, operationDataDto.getSumOverDueAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_USERS_COUNT, Long.toString(operationDataDto.getUsersCount()), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_COUNT, operationDataDto.getLoanerOverDueCount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_LOANER_OVER_DUE_AMOUNT, operationDataDto.getLoanerOverDueAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_INVEST_USERS_COUNT, String.valueOf(operationDataDto.getInvestUsersCount()), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_TRADE_AMOUNT, operationDataDto.getTradeAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_OPERATION_DATA_MONTH, convertListIntoRedisListString(
-                operationDataDto.getMonth()), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, REDIS_OPERATION_DATA_MONTH_AMOUNT, convertListIntoRedisListString(
-                operationDataDto.getMoney()), timeout);
+        try {
+            redisWrapperClient.hset(redisInfoPublishKey, REDIS_OPERATION_DATA, JsonConverter.writeValueAsString(operationDataDto), timeout);
+        } catch (JsonProcessingException ignored) {
+        }
     }
 
     @Override
     public OperationDataDto getOperationDataFromRedis(Date endDate) {
         OperationDataDto operationDataDto = new OperationDataDto();
         if (redisWrapperClient.exists(getRedisKeyFromTemplateByDate(CHART_INFO_PUBLISH_KEY_TEMPLATE, endDate))) {
-            loadOperationDataDtoFromRedis(operationDataDto, endDate);
+            operationDataDto = loadOperationDataDtoFromRedis(endDate);
         } else {
-            loadOperationDataDtoFromDatabase(operationDataDto, endDate);
+            operationDataDto = loadOperationDataDtoFromDatabase(endDate);
             updateRedis(operationDataDto, endDate);
         }
         operationDataDto.setNow(new Date());
@@ -682,4 +676,17 @@ public class OperationDataServiceImpl implements OperationDataService {
         return resultGroupMap;
     }
 
+    private long findAmountOverdueAmountByOverdueDay(int overdueDays, Date endDate, List<LoanRepayModel> loanRepayModels){
+        return loanRepayModels.stream()
+                .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
+                        && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
+                .mapToLong(LoanRepayModel::getCorpus).sum();
+    }
+
+    private long findLoanOverdueAmountByOverdueDay(int overdueDays, Date endDate, List<LoanRepayModel> loanRepayModels){
+        return loanRepayModels.stream()
+                .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
+                        && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
+                .map(LoanRepayModel::getLoanId).distinct().count();
+    }
 }

@@ -721,4 +721,9 @@
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
     </select>
 
+    <select id="sumLoanAmountGroupByIdentityByTopTen" resultType="long">
+        select sum(loan_amount) from loan where id != '1' and status in ('RECHECK','REPAYING','OVERDUE','COMPLETE','RAISING')
+        group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
+    </select>
+
 </mapper>
