@@ -7,68 +7,76 @@ let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
 var sourceKind = globalFun.parseURL(location.href);
+var formatCurrency = function (num) {
+    return globalFun.formatCurrency(num,2)
+};
+var formatNum = function (num) {
+  return formatNumber(num / 10000 ,2);
+};
 
 (function(){
-    let browser = $(window).width();
-    if(browser<1000) {
-        $('.subMenu_show').hide();
-        $('.left-nav').find('.text_icon').hide();
-        $('.menuItem.active').addClass('ipad_styles');
-        let menuLen = $(leftMenuBox).find('li:visible').length;
-        let screenW = $(window).width(),
-            showMenuNum = 3, //希望一屏展示3个菜单
-            someLiW = screenW/showMenuNum,
-            totalWidth = someLiW * menuLen;
-        $(leftMenuBox).find('ul').width(totalWidth);
-        $(leftMenuBox).find('li').css({"width":someLiW});
+    if (location.pathname !== '/about/operational') {
+        let browser = $(window).width();
+        if(browser<1000) {
+            $('.subMenu_show').hide();
+            $('.left-nav').find('.text_icon').hide();
+            $('.menuItem.active').addClass('ipad_styles');
+            let menuLen = $(leftMenuBox).find('li:visible').length;
+            let screenW = $(window).width(),
+                showMenuNum = 3, //希望一屏展示3个菜单
+                someLiW = screenW/showMenuNum,
+                totalWidth = someLiW * menuLen;
+            $(leftMenuBox).find('ul').width(totalWidth);
+            $(leftMenuBox).find('li').css({"width":someLiW});
 
-        //判断当前激活的菜单在可视区域
-        let slipAway = (function() {
-            let currentLi = $(leftMenuBox).find('li').filter(function(key,option) {
-                return $(option).find('a').hasClass('active');
-            });
-            let hideLi = $(leftMenuBox).find('li:hidden').index();
+            //判断当前激活的菜单在可视区域
+            let slipAway = (function() {
+                let currentLi = $(leftMenuBox).find('li').filter(function(key,option) {
+                    return $(option).find('a').hasClass('active');
+                });
+                let hideLi = $(leftMenuBox).find('li:hidden').index();
 
-            let currentOrder = currentLi.index();
-            if(currentOrder>hideLi) {
-                currentOrder = currentOrder -1;
+                let currentOrder = currentLi.index();
+                if(currentOrder>hideLi) {
+                    currentOrder = currentOrder -1;
+                }
+                let curOrder = parseInt(currentOrder/showMenuNum);
+                let moveInit = -curOrder*screenW + 'px';
+                $(leftMenuBox).find('ul').css({
+                    '-webkit-transform':"translate("+moveInit+")",
+                    '-webkit-transition':'10ms linear'
+                });
+                return curOrder;
+            })();
+
+            let touchSlide = require('publicJs/touch_slide');
+            let num=slipAway * showMenuNum;
+            touchSlide.options.sliderDom = leftMenuBox;
+            touchSlide.finish = function() {
+
+                let direction = touchSlide.options.moveDirection,
+                    moveDistance;
+                //如果没有任何滑动迹象，不左处理
+                if(!this.options.moveDirection.horizontal) {
+                    return;
+                }
+                if(direction.rtl && num<menuLen-showMenuNum) {
+                    //从右到左
+                    num++;
+
+                } else if(direction.ltr && num>0) {
+                    //从左到右
+                    num--;
+                }
+
+                moveDistance = - someLiW*num + 'px';
+                $(leftMenuBox).find('ul').css({
+                    '-webkit-transform':"translate("+moveDistance+")",
+                    '-webkit-transition':'100ms linear'
+                });
             }
-            let curOrder = parseInt(currentOrder/showMenuNum);
-            let moveInit = -curOrder*screenW + 'px';
-            $(leftMenuBox).find('ul').css({
-                '-webkit-transform':"translate("+moveInit+")",
-                '-webkit-transition':'10ms linear'
-            });
-            return curOrder;
-        })();
-
-        let touchSlide = require('publicJs/touch_slide');
-        let num=slipAway * showMenuNum;
-        touchSlide.options.sliderDom = leftMenuBox;
-        touchSlide.finish = function() {
-
-            let direction = touchSlide.options.moveDirection,
-                moveDistance;
-            //如果没有任何滑动迹象，不左处理
-            if(!this.options.moveDirection.horizontal) {
-                return;
-            }
-            if(direction.rtl && num<menuLen-showMenuNum) {
-                //从右到左
-                num++;
-
-            } else if(direction.ltr && num>0) {
-                //从左到右
-                num--;
-            }
-
-            moveDistance = - someLiW*num + 'px';
-            $(leftMenuBox).find('ul').css({
-                '-webkit-transform':"translate("+moveDistance+")",
-                '-webkit-transition':'100ms linear'
-            });
+            touchSlide.init();
         }
-        touchSlide.init();
     }
 }());
 
@@ -411,7 +419,7 @@ let getPartOnePage = (data, dataStr) => {
     $('#operationDays').append(dom);
     $('#operationDays').append(`<span style="margin-top: 20px">天</span>`);
 
-     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
+     $('#earn_total_amount').html(formatNum(data.totalInterest));//累计为用户赚取
 };
 
 function toThousands(num) {
@@ -547,14 +555,16 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
-         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));//累计交易金额
-       $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
+        $('#tradeAmount').text(formatNum(data.tradeAmount));//累计交易金额
+        $('#sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
+        $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
+        $('#usersCount').text(formatNum(data.usersCount));//注册投资用户数
+        $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
         $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
         $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
 
         $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
-         $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
+
         //  $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
         //  $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
         //  $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率

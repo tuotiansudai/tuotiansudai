@@ -823,6 +823,9 @@ $gray5:#333333;
     li {
       width: 370px;
       margin-left: 78px;
+      @media screen and (max-width: 768px){
+        width: 80%;
+      }
       &.loan {
         width: 49%;
       }

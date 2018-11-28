@@ -178,7 +178,7 @@ var web_globalFun = (function() {
                 var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
                 obj.className = obj.className.replace(reg, ' ');
             }
-        }
+        };
         this.toggleClass=function(obj, cls) {
             if(this.hasClass(obj,cls)){
                 this.removeClass(obj, cls);
@@ -186,7 +186,7 @@ var web_globalFun = (function() {
                 this.addClass(obj, cls);
 
             }
-        }
+        };
     }
 
     globalFun.prototype={
