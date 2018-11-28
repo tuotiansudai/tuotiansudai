@@ -570,6 +570,10 @@
             position: relative;
             background: none;
             color: #ff7200;
+            &.ipad_styles {
+              background: #ff7200;
+              color: #fff;
+            }
           }
         }
         &:hover {

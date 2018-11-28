@@ -11,6 +11,9 @@ var sourceKind = globalFun.parseURL(location.href);
 (function(){
     let browser = $(window).width();
     if(browser<1000) {
+        $('.subMenu_show').hide();
+        $('.left-nav').find('.text_icon').hide();
+        $('.menuItem.active').addClass('ipad_styles');
         let menuLen = $(leftMenuBox).find('li:visible').length;
         let screenW = $(window).width(),
             showMenuNum = 3, //希望一屏展示3个菜单
