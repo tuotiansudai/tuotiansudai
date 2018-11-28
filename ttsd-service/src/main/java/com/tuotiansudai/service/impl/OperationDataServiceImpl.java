@@ -101,7 +101,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setTradeAmount(AmountConverter.convertCentToString(tradeAmount));
 
         operationDataDto.setUsersCount(userMapper.findUsersCount());
-        operationDataDto.setInvestUsersCount(investMapper.findInvestorCount());
+        operationDataDto.setInvestUsersCount(investMapper.findInvestorCountByLoanStatus(null));
         List<LoanModel> loanModels = loanMapper.findSuccessLoanOutLoan();
 
         long sumLoanAmount = loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum();
@@ -115,8 +115,9 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));
         operationDataDto.setSumOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
         operationDataDto.setSumExpectedInterestAmount(AmountConverter.convertCentToString(sumExpectedInterestAmount));
-        operationDataDto.setSumRepayIngInvestCount(AmountConverter.convertCentToString(investMapper.sumInvestCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE), startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
+        operationDataDto.setSumRepayIngInvestCount(String.valueOf(investMapper.sumInvestCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE), startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
         operationDataDto.setAvgInvestAmount(AmountConverter.convertCentToString( tradeAmount / investMapper.sumInvestCountByLoanStatus(null, startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
+        operationDataDto.setSumNotCompleteInvestorCount(String.valueOf(investMapper.findInvestorCountByLoanStatus(Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE))));
 
         List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen(startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate());
         long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);

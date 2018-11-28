@@ -193,7 +193,7 @@ public interface InvestMapper {
 
     List<String> findInvestorLoginNames();
 
-    long findInvestorCount();
+    long findInvestorCountByLoanStatus(@Param(value = "loanStatusList") List<LoanStatus> loanStatusList);
 
     long findRegisteredNotInvestCount();
 

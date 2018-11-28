@@ -182,7 +182,7 @@ public class ConsoleCouponService {
             case ALL_USER:
                 return userMapper.findUsersCount();
             case INVESTED_USER:
-                return investMapper.findInvestorCount();
+                return investMapper.findInvestorCountByLoanStatus(null);
             case REGISTERED_NOT_INVESTED_USER:
                 return investMapper.findRegisteredNotInvestCount();
             case STAFF:

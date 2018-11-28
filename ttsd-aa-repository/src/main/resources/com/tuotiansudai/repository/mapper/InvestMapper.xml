@@ -636,8 +636,14 @@
         select login_name from invest where invest.status = 'SUCCESS'
     </select>
 
-    <select id="findInvestorCount" resultType="long">
-        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS' and transfer_invest_id is null
+    <select id="findInvestorCountByLoanStatus" resultType="long">
+        select count(distinct(login_name)) from invest JOIN loan on invest.loan_id = loan.id where invest.status = 'SUCCESS' and transfer_invest_id is null
+        <if test="loanStatusList != null and loanStatusList.size != 0">
+            and loan.status in
+            <foreach item="item" index="index" collection="loanStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
     <select id="findRegisteredNotInvestCount" resultType="long">
@@ -1292,7 +1298,7 @@
     </update>
 
     <select id="sumInvestCountByLoanStatus" parameterType="map" resultType="long">
-        SELECT count(1) from invest join loan on invest.loan_id = loan.id where loan.id != '1' and invest.status='SUCCESS' and invest.created_time between #{startTime} and #{endTime}
+        SELECT count(1) from invest join loan on invest.loan_id = loan.id where loan.id != '1' and invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
         <if test="loanStatusList != null and loanStatusList.size != 0">
             and loan.status in
             <foreach item="item" index="index" collection="loanStatusList" open="(" separator="," close=")">
@@ -1302,7 +1308,7 @@
     </select>
 
     <select id="sumInvestAmountGroupByLoginNameByTopTen" parameterType="map" resultType="long">
-        select sum(amount) as sumAmount from invest where loan_id !='1' and invest.status='SUCCESS' and invest.created_time between #{startTime} and #{endTime}
+        select sum(amount) as sumAmount from invest where loan_id !='1' and invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
         group by login_name order by sum(amount) desc limit 0, 10
     </select>
 </mapper>

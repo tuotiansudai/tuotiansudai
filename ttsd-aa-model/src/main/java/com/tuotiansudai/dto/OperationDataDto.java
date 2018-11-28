@@ -38,6 +38,7 @@ public class OperationDataDto implements Serializable {
     private String avgInvestAmount;  //平均出借金额
     private String maxSingleInvestAmountRate;  //最大单户出借余额占比
     private String maxTenInvestAmountRate;  //最大十户出借余额占比
+    private String sumNotCompleteInvestorCount;  //当前出借人数
 
     private String sumNotCompleteLoanerCount;  //当前借款人数
     private String avgLoanAmount;  //平均借款金额
@@ -297,6 +298,14 @@ public class OperationDataDto implements Serializable {
 
     public void setMaxTenInvestAmountRate(String maxTenInvestAmountRate) {
         this.maxTenInvestAmountRate = maxTenInvestAmountRate;
+    }
+
+    public String getSumNotCompleteInvestorCount() {
+        return sumNotCompleteInvestorCount;
+    }
+
+    public void setSumNotCompleteInvestorCount(String sumNotCompleteInvestorCount) {
+        this.sumNotCompleteInvestorCount = sumNotCompleteInvestorCount;
     }
 
     public String getAvgLoanAmount() {
