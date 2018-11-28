@@ -14,7 +14,7 @@
                             <p>
                                 <em id="tradeAmount" class="item_li_amount"></em>
                                 <span class="item_li_unit">万元</span>
-                                <span class="item_li_total_orders total-first">（23333笔）</span>
+                                <span class="item_li_total_orders total-first">（<span class="total_trade_count"></span>笔）</span>
                             </p>
                         </div>
                     </li>
@@ -24,27 +24,27 @@
                             <p>
                                 <em id="earn_total_amount" class="item_li_amount"></em>
                                 <span class="item_li_unit">万元</span>
-                                <span class="item_li_total_orders total-first">（23333笔）</span>
+                                <span class="item_li_total_orders total-first">（<span class="total_trade_count"></span>笔）</span>
                             </p>
                         </div>
                     </li>
                     <li>
                         <div class="item_li_wrapper">
-                            <p class="item_li_text total-first">代偿金额</p>
+                            <p class="item_li_text total-first">待偿金额</p>
                             <p>
-                                <em id="sumExpectedAmount" class="item_li_amount"></em>
+                                <em class="item_li_amount sumExpectedAmount"></em>
                                 <span class="item_li_unit">万元</span>
-                                <span class="item_li_total_orders total-first">（23333笔）</span>
+                                <span class="item_li_total_orders total-first">（<span class="sumRepayIngInvestCount"></span>笔）</span>
                             </p>
                         </div>
                     </li>
                     <li>
                         <div class="item_li_wrapper">
-                            <p class="item_li_text total-first">代偿利息金额</p>
+                            <p class="item_li_text total-first">待偿利息金额</p>
                             <p>
-                                <em id="sumExpectedInterestAmount" class="item_li_amount">1111</em>
+                                <em id="sumExpectedInterestAmount" class="item_li_amount"></em>
                                 <span class="item_li_unit">万元</span>
-                                <span class="item_li_total_orders total-first">（23333笔）</span>
+                                <span class="item_li_total_orders total-first">（<span class="sumRepayIngInvestCount"></span>笔）</span>
                             </p>
                         </div>
                     </li>
@@ -53,7 +53,7 @@
                         <div class="item_li_wrapper">
                             <p class="item_li_text total-first">总注册用户数</p>
                             <p>
-                                <em id="sumExpectedInterestAmount" class="item_li_amount">22222</em>
+                                <em id="usersCount" class="item_li_amount">22222</em>
                                 <span class="item_li_unit">人</span>
                             </p>
                         </div>
@@ -87,7 +87,7 @@
                 </li>
                 <li class="loan_item_wrapper loan_item_wrapper_right">
                     <span class="loan_count_wrapper"><em class="loan_count" id="sumLoanCount"></em>万元</span>
-                    <span class="loan_text">累计借贷金额</span>
+                    <span class="loan_text">累计借贷笔数</span>
                 </li>
             </ul>
         </div>
@@ -100,7 +100,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">累计出借人数</span>
-                                    <span class="item_li_total_orders item_info">12221人</span>
+                                    <span class="item_li_total_orders item_info"><span id="investUsersCount"></span>人</span>
                                 </p>
                             </div>
                         </li>
@@ -108,7 +108,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">最大单户出借余额占比</span>
-                                    <span class="item_li_total_orders item_info">0.32211%</span>
+                                    <span class="item_li_total_orders item_info"><span id="maxSingleInvestAmountRate"></span>%</span>
                                 </p>
                             </div>
                         </li>
@@ -116,7 +116,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">人均累计出借金额</span>
-                                    <span class="item_li_total_orders item_info">14.75万元</span>
+                                    <span class="item_li_total_orders item_info"><span id="avgInvestAmount"></span>万元</span>
                                 </p>
                             </div>
                         </li>
@@ -124,7 +124,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">最大十户出借余额占比</span>
-                                    <span class="item_li_total_orders item_info">0.32211%</span>
+                                    <span class="item_li_total_orders item_info"><span id="maxTenInvestAmountRate"></span>%</span>
                                 </p>
                             </div>
                         </li>
@@ -133,7 +133,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">当前出借人数</span>
-                                    <span class="item_li_total_orders item_info">12221人</span>
+                                    <span class="item_li_total_orders item_info"><span id="sumNotCompleteInvestorCount"></span>人</span>
                                 </p>
                             </div>
                         </li>
@@ -173,7 +173,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">累计借款人数</span>
-                                <span class="item_li_total_orders item_info">12221人</span>
+                                <span class="item_li_total_orders item_info"><span class="sumLoanerCount"></span>人</span>
                             </p>
                         </div>
                     </li>
@@ -181,7 +181,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">最大单一借款人待还金额占比</span>
-                                <span class="item_li_total_orders item_info">0.32211%</span>
+                                <span class="item_li_total_orders item_info"><span class="maxSingleLoanAmountRate"></span>%</span>
                             </p>
                         </div>
                     </li>
@@ -189,7 +189,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">人均累计借款金额</span>
-                                <span class="item_li_total_orders item_info">14.75万元</span>
+                                <span class="item_li_total_orders item_info"><span id="avgLoanAmount"></span>万元</span>
                             </p>
                         </div>
                     </li>
@@ -197,7 +197,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">前十大借款人待还金额占比</span>
-                                <span class="item_li_total_orders item_info">0.32211%</span>
+                                <span class="item_li_total_orders item_info"><span id="maxTenLoanAmountRate"></span>%</span>
                             </p>
                         </div>
                     </li>
@@ -206,7 +206,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">当前借款人数</span>
-                                <span class="item_li_total_orders item_info">12221人</span>
+                                <span class="item_li_total_orders item_info"><span id="sumNotCompleteLoanerCount"></span>人</span>
                             </p>
                         </div>
                     </li>
@@ -215,11 +215,11 @@
             <div class="data-wrap">
                 <ul class="clearfix">
                     <li class="loan_data_wrapper">
-                        <div class="loan_data_wrapper_count"><em id="sumLoanerCount" class="loan_amount_font"></em>人</div>
+                        <div class="loan_data_wrapper_count"><em class="sumLoanerCount" class="loan_amount_font"></em>人</div>
                         <div>借款人数</div>
                     </li>
                     <li class="loan_data_wrapper">
-                        <div class="loan_data_wrapper_count"><em id="sumExpectedAmount" class="loan_amount_font"></em>元</div>
+                        <div class="loan_data_wrapper_count"><em class="loan_amount_font sumExpectedAmount"></em>元</div>
                         <div>待偿金额</div>
                     </li>
                     <li class="loan_data_wrapper">
@@ -280,7 +280,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span class="item_li_text item_info">金额逾期率（90天及以内）</span>
-                                <span class="item_li_total_orders item_info"><span id="amountOverDueLess90Rate">6</span>%</span>
+                                <span class="item_li_total_orders item_info"><span id="amountOverDueLess90Rate"></span>%</span>
                             </p>
                         </div>
                     </li>
@@ -288,7 +288,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span class="item_li_text item_info">项目逾期率（90天及以内）</span>
-                                <span class="item_li_total_orders item_info"><span id="loanOverDueLess90Rate">1</span>%</span>
+                                <span class="item_li_total_orders item_info"><span id="loanOverDueLess90Rate"></span>%</span>
                             </p>
                         </div>
                     </li>
@@ -296,30 +296,30 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">金额逾期率（90天以上至180天）</span>
-                                <span class="item_li_total_orders item_info"><span id="amountOverDue90To180Rate">2</span>%</span>
+                                <span class="item_li_total_orders item_info"><span id="amountOverDue90To180Rate"></span>%</span>
                             </p>
                         </div>
                     </li>
                     <li>
                         <div class="item_li_wrapper">
                             <p class="clearfix">
-                                <span id="tradeAmount" class="item_li_text item_info">项目逾期率（90天以上至180天）</span>
-                                <span class="item_li_total_orders item_info"><span id="loanOverDue90To180Rate">3</span>%</span>
+                                <span class="item_li_text item_info">项目逾期率（90天以上至180天）</span>
+                                <span class="item_li_total_orders item_info"><span id="loanOverDue90To180Rate"></span>%</span>
                             </p>
                         </div>
                     </li>
                     <li>
                         <div class="item_li_wrapper">
                             <p class="clearfix">
-                                <span id="tradeAmount" class="item_li_text item_info">金额逾期率（181天及以上）</span>
-                                <span class="item_li_total_orders item_info"><span id="amountOverDueGreater180Rate">4</span>%</span>
+                                <span class="item_li_text item_info">金额逾期率（181天及以上）</span>
+                                <span class="item_li_total_orders item_info"><span id="amountOverDueGreater180Rate"></span>%</span>
                             </p>
                         </div>
                     </li>
                     <li>
                         <div class="item_li_wrapper">
                             <p class="clearfix">
-                                <span id="tradeAmount" class="item_li_text item_info">项目逾期率（181天及以上）</span>
+                                <span class="item_li_text item_info">项目逾期率（181天及以上）</span>
                                 <span class="item_li_total_orders item_info"><span id="loanOverDueGreater180Rate">5</span>%</span>
                             </p>
                         </div>

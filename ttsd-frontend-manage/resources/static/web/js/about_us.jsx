@@ -555,27 +555,45 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-        $('#tradeAmount').text(formatNum(data.tradeAmount));//累计交易金额
-        $('#sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
+        // 平台数据总览
+        $('#tradeAmount').text(formatNum(data.tradeAmount * 100));//累计交易金额
+        $('.sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
         $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
-        $('#usersCount').text(formatNum(data.usersCount));//注册投资用户数
-        $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
-        $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
+        $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
+        $('.sumRepayIngInvestCount').html(toThousands(data.sumRepayIngInvestCount)); // 待偿金额笔数
+
+        // 借款标的情况
+        $('#sumLoanAmount').text(formatNum(data.sumLoanAmount));//累计借贷金额
         $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
 
-        $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
+        // 出借人信息
+        $('#investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
+        $('#maxSingleInvestAmountRate').text(data.maxSingleInvestAmountRate);//最大单户出借余额占比
+        $('#avgInvestAmount').text(toThousands(data.avgInvestAmount));//人均累计出借金额
+        $('#maxTenInvestAmountRate').text(data.maxTenInvestAmountRate);//最大十户出借余额占比
+        $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
 
-        //  $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
-        //  $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
-        //  $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
-        //
-        // $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
-        // $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
-        $('#sumOverDueAmount').text(formatNumber('"5297800.00"',2));
-        $('#loanOverDueRate').text(formatNumber(0.0121*100,2));
-        $('#amountOverDueRate').text(formatNumber(0.0357*100,2));
-        $('#loanerOverDueCount').text(toThousands('11'));
-        $('#loanerOverDueAmount').text(formatNumber('5297800.00',2));
+        // 借款人信息
+        $('.sumLoanerCount').text(toThousands(data.sumLoanerCount));//累计借款人数
+        $('#maxSingleLoanAmountRate').text(data.maxSingleInvestAmountRate);//最大单一借款人待还金额占比
+        $('#avgLoanAmount').text(formatNum(data.avgLoanAmount));//人均累计借款金额
+        $('#maxTenLoanAmountRate').text(data.maxTenLoanAmountRate);//前十大借款人待还金额占比
+        $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
+        $('#sumOverDueAmount').text(formatNum(data.sumOverDueAmount));//逾期金额
+
+        // 逾期情况
+        $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
+        $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
+        $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+        $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
+        $('#amountOverDueLess90Rate').text(data.amountOverDueLess90Rate);//金额逾期率（90天及以内）
+        $('#amountOverDue90To180Rate').text(data.amountOverDue90To180Rate);//金额逾期率（90天以上至180天）
+        $('#amountOverDueGreater180Rate').text(data.amountOverDueGreater180Rate);//金额逾期率（181天及以上）
+        $('#loanOverDueLess90Rate').text(data.loanOverDueLess90Rate);//项目逾期率（90天及以内）
+        $('#loanOverDue90To180Rate').text(data.loanOverDue90To180Rate);//项目逾期率（90天以上至180天）
+        $('#loanOverDueGreater180Rate').text(data.loanOverDueGreater180Rate);//项目逾期率（181天及以上）
+
+
 
         let barChartArr = [];
         let num = 0;
@@ -586,7 +604,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             let count = Number($item.data('count')) || 0;
             num += count;
         }
-        $('#total_trade_count').html(toThousands(num));//累计投资笔数
+        $('.total_trade_count').html(toThousands(num));//累计投资笔数
         var dataJson = {
 
                 sub:'金额（元）',
