@@ -403,10 +403,10 @@ let getPartOnePage = (data, dataStr) => {
     for (let i = 0; i < dataStr.length; i++) {
         dom += `<span class="data-bg">${dataStr.charAt(i)}</span>`
     }
-    $('#operationDays').prepend(`<span class="assurance">安全运营</span>`);
-    $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
+    $('#operationDays').prepend(`<span class="assurance"><span class="margin28">安</span><span class="margin28">全</span><span class="margin28">运</span><span class="margin28">营</span></span>`);
+    $('#operationDays').append(`<span class="mid_line pre_line"></span><span class="data-bg">${days}</span><span style="margin-top: 20px">年</span><span class="mid_line last_line"></span>`);
     $('#operationDays').append(dom);
-    $('#operationDays').append(`<span>天</span>`);
+    $('#operationDays').append(`<span style="margin-top: 20px">天</span>`);
 
      $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
 };
@@ -609,7 +609,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         });
         calculateWidth($('#geographicalWrap'),'.city-name');
         calculateWidth($('#geographicalWrapLoan'),'.city-name');
-        
+
         //借款人基本信息环形图
         var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,{},'借款用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);

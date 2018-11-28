@@ -371,6 +371,19 @@ $.fn.initCheckbox=function(callback) {
     });
 };
 
+$('.subMenuItem').on('click',function () {
+    var position = $(this).data('position');
+    $(this).addClass("default_light_item").siblings().removeClass("default_light_item");
+    console.log($(position).offset().top)
+    $("html,body").animate({scrollTop: $(position).offset().top}, 200);
+    $('.left-nav').animate({marginTop: $(position).offset().top - 161}, 300);
+});
+
+
+
+
+
+
 
 
 
