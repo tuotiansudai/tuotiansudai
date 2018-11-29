@@ -95,7 +95,7 @@ public class OperationDataServiceTest {
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
-        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.create(loanModel);
         return loanModel;
     }
