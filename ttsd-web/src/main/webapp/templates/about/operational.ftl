@@ -86,7 +86,7 @@
                     <span class="loan_text">累计借贷金额</span>
                 </li>
                 <li class="loan_item_wrapper loan_item_wrapper_right">
-                    <span class="loan_count_wrapper"><em class="loan_count" id="sumLoanCount"></em>万元</span>
+                    <span class="loan_count_wrapper"><em class="loan_count" id="sumLoanCount"></em>笔</span>
                     <span class="loan_text">累计借贷笔数</span>
                 </li>
             </ul>
@@ -181,7 +181,7 @@
                         <div class="item_li_wrapper">
                             <p class="clearfix">
                                 <span id="tradeAmount" class="item_li_text item_info">最大单一借款人待还金额占比</span>
-                                <span class="item_li_total_orders item_info"><span class="maxSingleLoanAmountRate"></span>%</span>
+                                <span class="item_li_total_orders item_info"><span id="maxSingleLoanAmountRate"></span>%</span>
                             </p>
                         </div>
                     </li>

@@ -569,13 +569,13 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // 出借人信息
         $('#investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
         $('#maxSingleInvestAmountRate').text(data.maxSingleInvestAmountRate);//最大单户出借余额占比
-        $('#avgInvestAmount').text(toThousands(data.avgInvestAmount));//人均累计出借金额
+        $('#avgInvestAmount').text(formatNum(data.avgInvestAmount));//人均累计出借金额
         $('#maxTenInvestAmountRate').text(data.maxTenInvestAmountRate);//最大十户出借余额占比
         $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
 
         // 借款人信息
         $('.sumLoanerCount').text(toThousands(data.sumLoanerCount));//累计借款人数
-        $('#maxSingleLoanAmountRate').text(data.maxSingleInvestAmountRate);//最大单一借款人待还金额占比
+        $('#maxSingleLoanAmountRate').text(data.maxSingleLoanAmountRate);//最大单一借款人待还金额占比
         $('#avgLoanAmount').text(formatNum(data.avgLoanAmount));//人均累计借款金额
         $('#maxTenLoanAmountRate').text(data.maxTenLoanAmountRate);//前十大借款人待还金额占比
         $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
