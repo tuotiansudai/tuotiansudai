@@ -111,7 +111,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
         long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
-        long sumExpectedInterestAmount = loanRepayModels.stream().mapToLong(loanRepayModel -> loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() + loanRepayModel.getOverdueInterest()).sum();
+        long sumExpectedInterestAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getExpectedInterest).sum();
         operationDataDto.setSumExpectedAmount(AmountConverter.convertCentToString(sumExpectedAmount));
         operationDataDto.setSumOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
         operationDataDto.setSumExpectedInterestAmount(AmountConverter.convertCentToString(sumExpectedInterestAmount));
@@ -174,7 +174,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         }
 
-        operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(new Date())));
+        operationDataDto.setTotalInterest(AmountConverter.convertCentToString(findUserSumInterest(new Date())));
         operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
         operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
