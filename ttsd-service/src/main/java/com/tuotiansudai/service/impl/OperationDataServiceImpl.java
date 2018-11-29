@@ -107,7 +107,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         long sumLoanAmount = loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum();
         operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(sumLoanAmount));
         operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
-        operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE, LoanStatus.RAISING))));
+        operationDataDto.setSumLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE))));
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         long sumExpectedAmount = loanRepayModels.stream().mapToLong(LoanRepayModel::getCorpus).sum();
         long sumOverDueAmount = loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate)).mapToLong(LoanRepayModel::getCorpus).sum();
@@ -117,7 +117,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setSumExpectedInterestAmount(AmountConverter.convertCentToString(sumExpectedInterestAmount));
         operationDataDto.setSumRepayIngInvestCount(String.valueOf(investMapper.sumInvestCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE), startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
         operationDataDto.setAvgInvestAmount(AmountConverter.convertCentToString( tradeAmount / investMapper.sumInvestCountByLoanStatus(null, startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate())));
-        operationDataDto.setSumNotCompleteInvestorCount(String.valueOf(investMapper.findInvestorCountByLoanStatus(Lists.newArrayList(LoanStatus.RAISING, LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE))));
+        operationDataDto.setSumNotCompleteInvestorCount(String.valueOf(investMapper.findInvestorCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE))));
 
         List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen(startOperationDate, new DateTime().withMillis(endDate.getTime()).withTimeAtStartOfDay().toDate());
         long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);
@@ -125,7 +125,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setMaxTenInvestAmountRate(String.valueOf(new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
 
-        operationDataDto.setSumNotCompleteLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.RAISING))));
+        operationDataDto.setSumNotCompleteLoanerCount(String.valueOf(loanerDetailsMapper.getSumLoanerCountByLoanStatus(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE))));
         operationDataDto.setAvgLoanAmount(AmountConverter.convertCentToString(sumLoanAmount / loanModels.size()));
 
         List<Long> sumLoanAmountGroupByIdentityByTopTens = loanMapper.sumLoanAmountGroupByIdentityByTopTen();
