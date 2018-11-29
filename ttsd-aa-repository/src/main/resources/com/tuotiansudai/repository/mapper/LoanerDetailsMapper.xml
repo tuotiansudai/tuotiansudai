@@ -45,15 +45,5 @@
         WHERE
         loan_id = #{loanId}
     </delete>
-    <select id="getSumLoanerCountByLoanStatus" resultType="long" parameterType="map">
-        select count(DISTINCT(identity_number)) from loaner_details ld join loan l on ld.loan_id = l.id
-        <where>
-            <if test="loanStatusList != null and loanStatusList.size != 0">
-                and l.status in
-                <foreach item="item" index="index" collection="loanStatusList" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
-    </select>
+
 </mapper>
