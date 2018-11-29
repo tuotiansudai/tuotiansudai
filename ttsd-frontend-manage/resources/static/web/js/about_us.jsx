@@ -581,7 +581,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // 逾期情况
         $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
-        $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+        $('#loanerOverDueAmount').text(formatNum(data.loanerOverDueAmount));//平台逾期总金额
         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
         $('#amountOverDueLess90Rate').text(data.amountOverDueLess90Rate);//金额逾期率（90天及以内）
         $('#amountOverDue90To180Rate').text(data.amountOverDue90To180Rate);//金额逾期率（90天以上至180天）

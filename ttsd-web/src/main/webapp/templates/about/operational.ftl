@@ -219,11 +219,11 @@
                         <div>借款人数</div>
                     </li>
                     <li class="loan_data_wrapper">
-                        <div class="loan_data_wrapper_count"><em class="loan_amount_font sumExpectedAmount"></em>元</div>
+                        <div class="loan_data_wrapper_count"><em class="loan_amount_font sumExpectedAmount"></em>万元</div>
                         <div>待偿金额</div>
                     </li>
                     <li class="loan_data_wrapper">
-                        <div class="loan_data_wrapper_count"><em id="sumOverDueAmount" class="loan_amount_font"></em>元</div>
+                        <div class="loan_data_wrapper_count"><em id="sumOverDueAmount" class="loan_amount_font"></em>万元</div>
                         <div>逾期金额</div>
                     </li>
                 </ul>
@@ -266,7 +266,7 @@
                     <span class="loan_text">项目逾期率</span>
                 </li>
                 <li class="loan_item_wrapper loan_item_wrapper_left">
-                    <span class="loan_count_wrapper"><em class="loan_count" id="loanerOverDueAmount"></em>元</span>
+                    <span class="loan_count_wrapper"><em class="loan_count" id="loanerOverDueAmount"></em>万元</span>
                     <span class="loan_text">平台逾期总金额</span>
                 </li>
                 <li class="loan_item_wrapper loan_item_wrapper_right">
