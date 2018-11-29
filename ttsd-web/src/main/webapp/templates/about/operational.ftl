@@ -53,7 +53,7 @@
                         <div class="item_li_wrapper">
                             <p class="item_li_text total-first">总注册用户数</p>
                             <p>
-                                <em id="usersCount" class="item_li_amount">22222</em>
+                                <em id="usersCount" class="item_li_amount"></em>
                                 <span class="item_li_unit">人</span>
                             </p>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="item_li_wrapper">
                             <p class="item_li_text total-first">累计出借用户数</p>
                             <p>
-                                <em id="sumExpectedInterestAmount" class="item_li_amount">2222</em>
+                                <em class="investUsersCount" class="item_li_amount"></em>
                                 <span class="item_li_unit">人</span>
                             </p>
                         </div>
@@ -100,7 +100,7 @@
                             <div class="item_li_wrapper">
                                 <p class="clearfix">
                                     <span id="tradeAmount" class="item_li_text item_info">累计出借人数</span>
-                                    <span class="item_li_total_orders item_info"><span id="investUsersCount"></span>人</span>
+                                    <span class="item_li_total_orders item_info"><span class="investUsersCount"></span>人</span>
                                 </p>
                             </div>
                         </li>

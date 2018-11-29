@@ -564,7 +564,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
 
         // 出借人信息
-        $('#investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
+        $('.investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
         $('#maxSingleInvestAmountRate').text(data.maxSingleInvestAmountRate);//最大单户出借余额占比
         $('#avgInvestAmount').text(formatNum(data.avgInvestAmount));//人均累计出借金额
         $('#maxTenInvestAmountRate').text(data.maxTenInvestAmountRate);//最大十户出借余额占比
