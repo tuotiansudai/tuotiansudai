@@ -42,7 +42,7 @@
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
     {"title":"信息披露", "url":"/about/team","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"组织架构", "url":"/about/team","subLeftMenuItem":[
+        {"title":"组织架构", "url":"/about/team","current": "team", "subLeftMenuItem":[
             {"title":"关于我们", "offsetName": ".to_about_us"},
             {"title":"拓天理念", "offsetName": ".to_ideas"},
             {"title":"拓天价值观", "offsetName": ".to_value"},
@@ -58,7 +58,7 @@
         ]},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"合规报告", "url":"/about/audit-report","subLeftMenuItem": [
+        {"title":"合规报告", "url":"/about/audit-report","current": "audit-report", "subLeftMenuItem": [
             {"title":"审计报告", "offsetName": ".to_shenji_report"},
             {"title":"合规报告", "offsetName": ".to_hegui_report"},
             {"title":"其他类报告", "offsetName": ".to_others_report"}

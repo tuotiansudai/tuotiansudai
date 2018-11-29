@@ -374,11 +374,20 @@ $.fn.initCheckbox=function(callback) {
 $('.subMenuItem').on('click',function () {
     var position = $(this).data('position');
     $(this).addClass("default_light_item").siblings().removeClass("default_light_item");
-    console.log($(position).offset().top)
     $("html,body").animate({scrollTop: $(position).offset().top}, 200);
-    $('.left-nav').animate({marginTop: $(position).offset().top - 161}, 300);
+    // $('.left-nav').animate({marginTop: $(position).offset().top - 161}, 300);
 });
 
+$('.totalMenu').on('click',function () {
+    if ($(this).find('.text_icon').hasClass('text_icon_open')) {
+        $(this).removeClass('menuItem').removeClass('active');
+        $(this).find('.text_icon').removeClass('text_icon_open').addClass('text_icon_close');
+        $(this).siblings('.subMenu').removeClass('subMenu_show').addClass('subMenu_hide');
+    }
+    else {
+        location.href = '/about/' + $(this).data('current');
+    }
+});
 
 
 

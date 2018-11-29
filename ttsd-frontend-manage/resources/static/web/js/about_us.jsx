@@ -7,9 +7,6 @@ let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
 var sourceKind = globalFun.parseURL(location.href);
-var formatCurrency = function (num) {
-    return globalFun.formatCurrency(num,2)
-};
 var formatNum = function (num) {
   return formatNumber(num / 10000 ,2);
 };

@@ -11,11 +11,11 @@
                 <#else>
                     <li class="swiper-slide">
                         <#if leftNav.subLeftMenuItem??>
-                            <a <#if leftNav.title==activeLeftNav>class="menuItem active"</#if> href="${leftNav.url}">
+                            <a class="totalMenu <#if leftNav.title==activeLeftNav>menuItem active</#if>" data-current="${leftNav.current}">
                                 <span <#if leftNav.title==activeLeftNav >class="text_icon text_icon_open" <#else> class="text_icon text_icon_close" </#if>></span>
                                 ${leftNav.title}
                             </a>
-                            <div <#if leftNav.title==activeLeftNav>class="subMenu_show" <#else> class="subMenu_hide" </#if>>
+                            <div <#if leftNav.title==activeLeftNav>class="subMenu_show subMenu" <#else> class="subMenu_hide subMenu" </#if>>
                                 <#list leftNav.subLeftMenuItem as subLeftMenu>
                                     <span class="object_label subMenuItem <#if subLeftMenu_index == 0>default_light_item</#if>" data-position="${subLeftMenu.offsetName}">
                                         ${subLeftMenu.title}
