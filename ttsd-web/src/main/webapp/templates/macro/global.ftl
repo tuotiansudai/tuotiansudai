@@ -42,14 +42,31 @@
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
     {"title":"信息披露", "url":"/about/team","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"组织架构", "url":"/about/team"},
+        {"title":"组织架构", "url":"/about/team","subLeftMenuItem":[
+            {"title":"关于我们", "offsetName": ".to_about_us"},
+            {"title":"拓天理念", "offsetName": ".to_ideas"},
+            {"title":"拓天价值观", "offsetName": ".to_value"},
+            {"title":"工商信息", "offsetName": ".to_business_info"},
+            {"title":"拓天资质", "offsetName": ".to_qualification"},
+            {"title":"法人承诺书", "offsetName": ".to_commitment"},
+            {"title":"组织架构", "offsetName": ".to_structure"},
+            {"title":"公司管理", "offsetName": ".to_managers"},
+            {"title":"从业人员", "offsetName": ".to_practitioners"},
+            {"title":"公司环境", "offsetName": ".to_environment"},
+            {"title":"合作伙伴", "offsetName": ".to_partners"},
+            {"title":"其他信息", "offsetName": ".to_others_info"}
+        ]},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"合规报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"/about/audit-report","subLeftMenuItem": [
+            {"title":"审计报告", "offsetName": ".to_shenji_report"},
+            {"title":"合规报告", "offsetName": ".to_hegui_report"},
+            {"title":"其他类报告", "offsetName": ".to_others_report"}
+        ]},
         {"title":"服务费用", "url":"/about/service-fee"},
-        {"title":"联系我们", "url":"/about/contact"},
-        {"title":"运营数据", "url":"/about/operational"}
+        {"title":"联系我们", "url":"/about/contact"}
     ]},
+    {"title":"运营数据", "url":"/about/operational","category":"30顶部导航","navigation":"true"},
     {"title":"网贷课堂", "url":"/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
     {"title":"法律法规", "url":"/about/knowledge"},
     {"title":"出借人教育", "url":"/about/investor-knowledge"},

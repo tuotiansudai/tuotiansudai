@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="信息披露" activeLeftNav="组织架构" title="拓天团队_金融精英_拓天速贷" keywords="拓天速贷,精英团队,安全保障,拓天安全" description="拓天速贷金融精英为您提供规范、安全、专业的互联网金融信息服务.">
     <div class="about-us-container team-introduction">
-        <h2 class="column-title"><em>拓天速贷</em></h2>
+        <h2 class="column-title"><em class="to_about_us">拓天速贷</em></h2>
         <div class="company-info">
             <p class="text-indent">
                 拓天速贷，全称拓天伟业（北京）金融信息服务有限公司，拓天伟业集团旗下子公司，2015年7月正式上线运营，实缴资本5000万元，位于北京市丰台区。
@@ -16,21 +16,21 @@
 
         <div class="clear-blank-m">
         </div>
-        <h2 class="column-title"><em>拓天理念</em></h2>
+        <h2 class="column-title"><em class="to_ideas">拓天理念</em></h2>
         <p>
             让金融更简单。 <br/>
             成为每个人的金融伙伴。
         </p>
         <div class="clear-blank">
         </div>
-        <h2 class="column-title"><em>拓天的价值观</em></h2>
+        <h2 class="column-title"><em class="to_value">拓天的价值观</em></h2>
         <p>
             诚信、拼搏、创新、协作是拓天始终不渝的原则。<br/>
             诚信是立业之本，拼搏是成功之源，创新是活力之源，协作是生态之美。
         </p>
         <div class="clear-blank">
         </div>
-        <h2 class="column-title"><em>工商信息</em></h2>
+        <h2 class="column-title"><em class="to_business_info">工商信息</em></h2>
         <div class="business-circles">
             <table class="table-info clear-blank-m">
 
@@ -87,7 +87,7 @@
 
         </div>
 
-        <h2 class="column-title"><em>拓天资质</em></h2>
+        <h2 class="column-title"><em class="to_qualification">拓天资质</em></h2>
         <div class="clear-blank-m">
         </div>
         <div class="aptitude-new">
@@ -103,7 +103,7 @@
                 </li>
             </ul>
         </div>
-        <h2 class="column-title"><em>法人承诺书</em></h2>
+        <h2 class="column-title"><em class="to_commitment">法人承诺书</em></h2>
         <div class="clear-blank-m">
         </div>
         <div class="aptitude-new">
@@ -114,14 +114,14 @@
             </ul>
         </div>
 
-        <h2 class="column-title"><em>组织架构</em></h2>
+        <h2 class="column-title"><em class="to_structure">组织架构</em></h2>
         <div class="organizational-structure">
 
         </div>
 
 
 
-        <h2 class="column-title"><em>公司管理</em></h2>
+        <h2 class="column-title"><em class="to_managers">公司管理</em></h2>
         <div class="team-box com-list clearfix" style="padding-top: 10px;">
             <i class="sign-profile user-one"></i>
             <dl class="company-user">
@@ -185,7 +185,7 @@
             <#--</ul>-->
             <#--</div>-->
         <#--</div>-->
-        <h2 class="column-title"><em>从业人员数量及从业背景</em></h2>
+        <h2 class="column-title"><em class="to_practitioner">从业人员数量及从业背景</em></h2>
         <div class="employment-bg">
             <div class="arrow-btn prevBtn"></div>
             <div class="arrow-btn nextBtn"></div>
@@ -217,7 +217,7 @@
             </div>
         </div>
 
-        <h2 class="column-title"><em>工作环境</em></h2>
+        <h2 class="column-title"><em class="to_environment">工作环境</em></h2>
         <ul class="com-place" id="companyPhoto">
             <li>
                 <a  title="办公大楼" rel="group"></a>
@@ -241,7 +241,7 @@
             </li>
         </ul>
 
-        <h2 class="column-title"><em>合作伙伴</em></h2>
+        <h2 class="column-title"><em class="to_partners">合作伙伴</em></h2>
         <ul class="partner-list">
             <li>
                 <p class="icon-logo logo-one"></p>
@@ -280,7 +280,7 @@
         </div>
     </div>
     <#--控股名单-->
-<div id="nameListPop" class="pad-m popLayer" style="display: none; padding-top:15px;padding-bottom: 0">
+<div id="nameListPop" class="pad-m popLayer to_others" style="display: none; padding-top:15px;padding-bottom: 0">
     <div class="tc text-m">
         <div class="name-content">
             实际控制人<br/>

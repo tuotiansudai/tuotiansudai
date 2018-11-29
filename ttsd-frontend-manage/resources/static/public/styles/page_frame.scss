@@ -306,7 +306,7 @@
   .nav-menu {
       li {
         float: left;
-        width: 140px;
+        width: 120px;
         position: relative;
         height: 43px;
         line-height: 40px;
@@ -489,12 +489,60 @@
     }
   }
   .left-nav {
-    width: 150px;
+    padding-top: 9px;
+    width: 190px;
     height: auto;
     overflow: hidden;
     float: left;
-    background: #e7eaef;
+    font-size: 18px;
+    background: #fff;
     margin: 0 15px 20px 0;
+    .subMenu_hide {
+      display: none;
+    }
+    .subMenu_show {
+      display: block;
+    }
+    .text_icon {
+      position: absolute;
+      &.text_icon_open {
+        top: 21px;
+        left: 20px;
+        width: 20px;
+        height: 3px;
+        background: url("../images/global/text_icon_open.png");
+        background-size: contain;
+      }
+      &.text_icon_close {
+        top: 13px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        background: url("../images/global/text_icon_close.png");
+        background-size: contain;
+      }
+    }
+    .subMenuItem {
+      display: block;
+      height: 45px;
+      line-height: 45px;
+      padding-left: 70px;
+      font-size: 16px;
+      text-align: left;
+      color: #595757;
+      cursor: pointer;
+      &.default_light_item {
+        background: #ff7200;
+        color: #fff;
+      }
+      &:hover {
+        background: #ffe0c7;
+      }
+      &.active {
+        background: #ff7200;
+        color: #fff;
+      }
+    }
     @media (min-width:701px) and (max-width:999px) {
       width:100%;
     }
@@ -506,17 +554,30 @@
         width:10%;
       }
       a {
+        position: relative;
         display: block;
         height: 45px;
         line-height: 45px;
         text-align: center;
-        color: #4d4d4d;
+        color: #595757;
         &:hover {
           background: #ffe0c7;
         }
         &.active {
           background: #ff7200;
           color: #fff;
+          &.menuItem {
+            position: relative;
+            background: none;
+            color: #ff7200;
+            &.ipad_styles {
+              background: #ff7200;
+              color: #fff;
+            }
+          }
+        }
+        &:hover {
+          background: #ffe0c7;
         }
       }
     }
@@ -671,7 +732,7 @@
       }
     }
     .nav-menu {
-      width: 100%;
+        width: 100%;
         background: #fff;
         position: absolute;
         top: 53px;
@@ -819,4 +880,5 @@
     cursor: pointer;
   }
 }
+
 
