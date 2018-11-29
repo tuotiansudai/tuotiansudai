@@ -553,7 +553,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         getPartOnePage(data,data.operationDays);
 
         // 平台数据总览
-        $('#tradeAmount').text(formatNum(data.tradeAmount * 100));//累计交易金额
+        $('#tradeAmount').text(formatNum(data.tradeAmount));//累计交易金额
         $('.sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
         $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
