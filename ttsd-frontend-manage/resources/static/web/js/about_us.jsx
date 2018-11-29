@@ -583,12 +583,12 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
         $('#loanerOverDueAmount').text(formatNum(data.loanerOverDueAmount));//平台逾期总金额
         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
-        $('#amountOverDueLess90Rate').text(data.amountOverDueLess90Rate);//金额逾期率（90天及以内）
-        $('#amountOverDue90To180Rate').text(data.amountOverDue90To180Rate);//金额逾期率（90天以上至180天）
-        $('#amountOverDueGreater180Rate').text(data.amountOverDueGreater180Rate);//金额逾期率（181天及以上）
-        $('#loanOverDueLess90Rate').text(data.loanOverDueLess90Rate);//项目逾期率（90天及以内）
-        $('#loanOverDue90To180Rate').text(data.loanOverDue90To180Rate);//项目逾期率（90天以上至180天）
-        $('#loanOverDueGreater180Rate').text(data.loanOverDueGreater180Rate);//项目逾期率（181天及以上）
+        $('#amountOverDueLess90Rate').text(formatNumber(data.amountOverDueLess90Rate*100, 2));//金额逾期率（90天及以内）
+        $('#amountOverDue90To180Rate').text(formatNumber(data.amountOverDue90To180Rate*100, 2));//金额逾期率（90天以上至180天）
+        $('#amountOverDueGreater180Rate').text(formatNumber(data.amountOverDueGreater180Rate*100, 2));//金额逾期率（181天及以上）
+        $('#loanOverDueLess90Rate').text(formatNumber(data.loanOverDueLess90Rate*100, 2));//项目逾期率（90天及以内）
+        $('#loanOverDue90To180Rate').text(formatNumber(data.loanOverDue90To180Rate*100, 2));//项目逾期率（90天以上至180天）
+        $('#loanOverDueGreater180Rate').text(formatNumber(data.loanOverDueGreater180Rate*100, 2));//项目逾期率（181天及以上）
 
 
 
