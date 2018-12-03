@@ -138,7 +138,7 @@
 
                     <p class="single-title">3、借款人逾期还款怎么办？</p>
 
-                    <p class="single-answer">答：会有相应的罚息。拓天速贷平台具有22道风控手续，上线至今，逾期率一直保持为零。</p>
+                    <p class="single-answer">答：会有相应的罚息；会加强与借款人的催收沟通；走法律诉讼手续，处理抵/质押物。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
