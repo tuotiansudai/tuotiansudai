@@ -1,12 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.FakeUserHelper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
@@ -56,6 +54,9 @@ public class OperationDataServiceTest {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Autowired
     private OperationDataService operationDataService;
@@ -170,6 +171,12 @@ public class OperationDataServiceTest {
         return model;
     }
 
+    private InvestRepayModel createInvestRepay(long investId) {
+        InvestRepayModel model = new InvestRepayModel(IdGenerator.generate(), investId, 1, 10, 10, 1, new Date(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(model));
+        return model;
+    }
+
     @Test
     public void shouldGetInvestDetail() {
         Date testEndDate = new DateTime().withDate(2016, 5, 10).withTimeAtStartOfDay().toDate();
@@ -218,10 +225,15 @@ public class OperationDataServiceTest {
         createLoanByUserId("testUserLoaner", 10002, ProductType._90);
         createLoanByUserId("testUserLoaner", 10003, ProductType._180);
 
-        createInvest("testUserInvest", 10001, 1000, testEndDate);
-        createInvest("testUserInvest", 10001, 2000, testEndDate);
-        createInvest("testUserInvest", 10002, 3000, testEndDate);
-        createInvest("testUserInvest", 10002, 4000, testEndDate);
+        InvestModel investModel1 = createInvest("testUserInvest", 10001, 1000, testEndDate);
+        InvestModel investModel2 = createInvest("testUserInvest", 10001, 2000, testEndDate);
+        InvestModel investModel3 = createInvest("testUserInvest", 10002, 3000, testEndDate);
+        InvestModel investModel4 = createInvest("testUserInvest", 10002, 4000, testEndDate);
+
+        createInvestRepay(investModel1.getId());
+        createInvestRepay(investModel2.getId());
+        createInvestRepay(investModel3.getId());
+        createInvestRepay(investModel4.getId());
 
         InvestModel investModelStart = createInvest("testUserInvest", 10003, 6000, testEndDate);
         investModelStart.setCreatedTime(DateTime.parse("2016-04-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
