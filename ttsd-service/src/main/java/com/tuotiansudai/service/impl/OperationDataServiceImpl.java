@@ -103,6 +103,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<LoanModel> loanModels = loanMapper.findSuccessLoanOutLoan();
 
         long sumLoanAmount = loanModels.stream().mapToLong(LoanModel::getLoanAmount).sum();
+        long sumRepayingLoanAmount = loanModels.stream().filter(loanModel -> Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())).mapToLong(LoanModel::getLoanAmount).sum();
         operationDataDto.setSumLoanAmount(AmountConverter.convertCentToString(sumLoanAmount));
         operationDataDto.setSumLoanCount(String.valueOf(loanModels.size()));
         long sumLoanerCount = loanModels.stream().map(LoanModel::getLoanerIdentityNumber).distinct().count();
@@ -121,8 +122,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen();
         long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);
         long maxTenInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.stream().mapToLong(i -> i).sum();
-        operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setMaxTenInvestAmountRate(String.valueOf(new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(tradeAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenInvestAmountRate(String.valueOf(new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
         operationDataDto.setSumNotCompleteLoanerCount(String.valueOf(loanModels.stream().
                 filter(loanModel -> Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()))
@@ -132,8 +133,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<Long> sumLoanAmountGroupByIdentityByTopTens = loanMapper.sumLoanAmountGroupByIdentityByTopTen();
         long maxSingleLoanAmount = sumLoanAmountGroupByIdentityByTopTens.get(0);
         long maxTenLoanAmount = sumLoanAmountGroupByIdentityByTopTens.stream().mapToLong(i -> i).sum();
-        operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumLoanAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setMaxTenLoanAmountRate(String.valueOf(new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumLoanAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenLoanAmountRate(String.valueOf(new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
 
         long sumRepayingLoanCount = loanRepayModels.stream().map(LoanRepayModel::getLoanId).distinct().count();
         long sumOverDueLoanCount = loanRepayModels.stream()
