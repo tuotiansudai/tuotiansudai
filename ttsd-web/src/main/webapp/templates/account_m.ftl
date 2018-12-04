@@ -9,7 +9,7 @@
         </div>
         <div class="collection">
             <span class="summary-box">
-                <b>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string(',##0.00'))!}</b>
+                <b>${(((expectedTotalCorpus+expectedTotalInterest+overdueTotalCorpus+overdueTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string(',##0.00'))!}</b>
                 <em>待收回款 (<i>元</i>)</em>
             </span>
         </div>
