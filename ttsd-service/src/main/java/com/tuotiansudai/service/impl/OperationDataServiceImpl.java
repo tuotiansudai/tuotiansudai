@@ -66,7 +66,6 @@ public class OperationDataServiceImpl implements OperationDataService {
     private static final String COUNT_LOANER_CITY_SCALE_INFO_PUBLISH_KEY_TEMPLATE = "app:info:publish:count:loaner:city:scale:{0}";
 
     private static final String REDIS_OPERATION_DATA = "operationData";
-    private static final String REDIS_USER_SUM_INTEREST = "userSumInterest";
 
     private static final int timeout = 60 * 60 * 24;
     private static final Date startOperationDate = new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay().toDate();
@@ -176,7 +175,7 @@ public class OperationDataServiceImpl implements OperationDataService {
             operationDataDto.setLoanerMaleScale(String.valueOf(100 - CalculateUtil.calculatePercentage(loanerSexList.get(0), loanerSexList.get(0) + loanerSexList.get(1), 1)));
         }
 
-        operationDataDto.setTotalInterest(AmountConverter.convertCentToString(findUserSumInterest(new Date())));
+        operationDataDto.setTotalInterest(AmountConverter.convertCentToString(loanRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
         operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
         operationDataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountDataDto());
@@ -211,7 +210,6 @@ public class OperationDataServiceImpl implements OperationDataService {
         }
 
         operationDataDto.setOperationDays(calOperationTime(endDate));
-        operationDataDto.setTotalInterest(String.valueOf(findUserSumInterest(endDate)));
         operationDataDto.setAgeDistribution(convertMapToOperationDataNewAgeDataDto());
 
         operationDataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeDataDto());
@@ -383,18 +381,6 @@ public class OperationDataServiceImpl implements OperationDataService {
             }
         }
         return resultMap;
-    }
-
-    @Override
-    public long findUserSumInterest(Date endDate) {
-        long userSumInterest;
-        if (redisWrapperClient.exists(REDIS_USER_SUM_INTEREST)) {
-            userSumInterest = Long.parseLong(redisWrapperClient.get(REDIS_USER_SUM_INTEREST));
-        } else {
-            userSumInterest = loanRepayMapper.findSumActualInterest(endDate) + userBillMapper.findUserSumInterest(endDate);
-            redisWrapperClient.setex(REDIS_USER_SUM_INTEREST, timeout, Long.toString(userSumInterest));
-        }
-        return userSumInterest;
     }
 
     @Override
