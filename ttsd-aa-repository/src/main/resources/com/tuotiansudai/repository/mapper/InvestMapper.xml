@@ -1308,7 +1308,7 @@
     </select>
 
     <select id="sumInvestAmountGroupByLoginNameByTopTen" parameterType="map" resultType="long">
-        select sum(amount) as sumAmount from invest where loan_id !='1' and invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
+        select sum(amount) as sumAmount from invest join loan on invest.loan_id = loan.id where loan.id !='1' and loan.status in ('OVERDUE', 'REPAYING') and invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
         group by login_name order by sum(amount) desc limit 0, 10
     </select>
 </mapper>

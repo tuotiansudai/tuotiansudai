@@ -722,7 +722,7 @@
     </select>
 
     <select id="sumLoanAmountGroupByIdentityByTopTen" resultType="long">
-        select sum(loan_amount) from loan where id != '1' and status in ('RECHECK','REPAYING','OVERDUE','COMPLETE','RAISING')
+        select sum(loan_amount) from loan where id != '1' and status in ('REPAYING','OVERDUE')
         group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
     </select>
 
