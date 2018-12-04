@@ -345,9 +345,9 @@ public interface InvestMapper {
 
     void updateIsOverdueTransfer(@Param(value = "investId") long investId);
 
-    long sumInvestCountByLoanStatus(@Param(value = "loanStatusList") List<LoanStatus> loanStatusList,
-                                    @Param(value = "startTime") Date startTime,
-                                    @Param(value = "endTime") Date endTime);
+    long sumInvestCountByRepayStatus(@Param(value = "repayStatusList") List<RepayStatus> repayStatusList,
+                                     @Param(value = "startTime") Date startTime,
+                                     @Param(value = "endTime") Date endTime);
 
     List<Long> sumInvestAmountGroupByLoginNameByTopTen(@Param(value = "startTime") Date startTime,
                                                        @Param(value = "endTime") Date endTime);

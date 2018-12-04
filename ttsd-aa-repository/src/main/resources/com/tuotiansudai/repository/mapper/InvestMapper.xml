@@ -1297,11 +1297,11 @@
         update invest set is_overdue_transfer = 1 where id = #{investId}
     </update>
 
-    <select id="sumInvestCountByLoanStatus" parameterType="map" resultType="long">
-        SELECT count(1) from invest join loan on invest.loan_id = loan.id where loan.id != '1' and invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
-        <if test="loanStatusList != null and loanStatusList.size != 0">
-            and loan.status in
-            <foreach item="item" index="index" collection="loanStatusList" open="(" separator="," close=")">
+    <select id="sumInvestCountByRepayStatus" parameterType="map" resultType="long">
+        SELECT count(1) from invest join invest_repay on invest.id = invest_repay.invest_id where invest.status='SUCCESS' and invest.transfer_invest_id is null and invest.created_time between #{startTime} and #{endTime}
+        <if test="repayStatusList != null and repayStatusList.size != 0">
+            and invest_repay.status in
+            <foreach item="item" index="index" collection="repayStatusList" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
