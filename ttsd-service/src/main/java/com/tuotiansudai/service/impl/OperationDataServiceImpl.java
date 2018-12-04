@@ -122,8 +122,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen();
         long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);
         long maxTenInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.stream().mapToLong(i -> i).sum();
-        operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setMaxTenInvestAmountRate(String.valueOf(new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenInvestAmountRate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
         operationDataDto.setSumNotCompleteLoanerCount(String.valueOf(loanModels.stream().
                 filter(loanModel -> Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()))
@@ -133,8 +133,8 @@ public class OperationDataServiceImpl implements OperationDataService {
         List<Long> sumLoanAmountGroupByIdentityByTopTens = loanMapper.sumLoanAmountGroupByIdentityByTopTen();
         long maxSingleLoanAmount = sumLoanAmountGroupByIdentityByTopTens.get(0);
         long maxTenLoanAmount = sumLoanAmountGroupByIdentityByTopTens.stream().mapToLong(i -> i).sum();
-        operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setMaxTenLoanAmountRate(String.valueOf(new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(sumRepayingLoanAmount == 0 ? 0 : new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setMaxTenLoanAmountRate(String.valueOf(sumRepayingLoanAmount == 0 ? 0 : new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
 
         long sumRepayingLoanCount = loanRepayModels.stream().map(LoanRepayModel::getLoanId).distinct().count();
         long sumOverDueLoanCount = loanRepayModels.stream()
@@ -142,21 +142,21 @@ public class OperationDataServiceImpl implements OperationDataService {
                         && loanRepayModel.getRepayDate().before(endDate))
                 .map(LoanRepayModel::getLoanId).distinct().count();
         operationDataDto.setLoanOverDueRate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(sumOverDueLoanCount).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setAmountOverDueRate(String.valueOf(sumOverDueAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueRate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(sumOverDueAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
         long amountOverDueLess90Amount = this.findAmountOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
         long amountOverDue90To180Amount = this.findAmountOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - amountOverDueLess90Amount;
         long amountOverDueGreater180Amount = sumExpectedAmount - amountOverDueLess90Amount - amountOverDue90To180Amount ;
-        operationDataDto.setAmountOverDueLess90Rate(String.valueOf(amountOverDueLess90Amount == 0 ? 0 : new BigDecimal(amountOverDueLess90Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setAmountOverDue90To180Rate(String.valueOf(amountOverDue90To180Amount == 0 ? 0 : new BigDecimal(amountOverDue90To180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setAmountOverDueGreater180Rate(String.valueOf(amountOverDueGreater180Amount == 0 ? 0 : new BigDecimal(amountOverDueGreater180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueLess90Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDueLess90Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDue90To180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDue90To180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setAmountOverDueGreater180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDueGreater180Amount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
         long loanOverDueLess90Rate = this.findLoanOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
         long loanOverDue90To180Rate = this.findLoanOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - loanOverDueLess90Rate;
         long loanOverDueGreater180Rate = sumOverDueLoanCount - loanOverDueLess90Rate - loanOverDue90To180Rate;
-        operationDataDto.setLoanOverDueLess90Rate(String.valueOf(loanOverDueLess90Rate == 0 ? 0 : new BigDecimal(loanOverDueLess90Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setLoanOverDue90To180Rate(String.valueOf(loanOverDue90To180Rate == 0 ? 0 : new BigDecimal(loanOverDue90To180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
-        operationDataDto.setLoanOverDueGreater180Rate(String.valueOf(loanOverDueGreater180Rate == 0 ? 0 : new BigDecimal(loanOverDueGreater180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDueLess90Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDueLess90Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDue90To180Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDue90To180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
+        operationDataDto.setLoanOverDueGreater180Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDueGreater180Rate).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
 
         operationDataDto.setLoanerOverDueAmount(AmountConverter.convertCentToString(sumOverDueAmount));
         operationDataDto.setLoanerOverDueCount(String.valueOf(loanRepayModels.stream().filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null && loanRepayModel.getRepayDate().before(endDate))
