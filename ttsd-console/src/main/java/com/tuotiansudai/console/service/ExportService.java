@@ -44,13 +44,13 @@ public class ExportService {
             row.add(loanRepayDataItemDto.getLoanName());
             row.add(loanRepayDataItemDto.getAgentLoginName());
             row.add(loanRepayDataItemDto.getRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getRepayDate()).toString("yyyy-MM-dd"));
-            row.add(loanRepayDataItemDto.getActualRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd"));
+            row.add(loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE ? new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd") : "-");
             row.add(String.valueOf("第" + loanRepayDataItemDto.getPeriod() + "期"));
             row.add(loanRepayDataItemDto.getCorpus());
             row.add(loanRepayDataItemDto.getExpectedInterest());
             row.add(loanRepayDataItemDto.getTotalAmount());
             row.add(loanRepayDataItemDto.getActualRepayAmount());
-            if (loanRepayDataItemDto.getActualRepayDate() != null && loanRepayDataItemDto.getActualRepayDate().before(loanRepayDataItemDto.getRepayDate())) {
+            if (loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE && loanRepayDataItemDto.getActualRepayDate().before(new DateTime(loanRepayDataItemDto.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 row.add("提前还款");
             } else {
                 row.add(loanRepayDataItemDto.getLoanRepayStatus().getDescription());
