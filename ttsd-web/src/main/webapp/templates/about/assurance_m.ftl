@@ -19,7 +19,7 @@
 
         <div class="safe-info-list">
             <dl class="clearfix">
-                <dt class="list01"><em>第三方资金托管</em></dt>
+                <dt class="list01"><em>第三方资金支付</em></dt>
                 <dd>第三方支付平台为拓天速贷建立了专门账户，对所有资金进行监管，确保资金安全。</dd>
             </dl>
             <dl class="clearfix">

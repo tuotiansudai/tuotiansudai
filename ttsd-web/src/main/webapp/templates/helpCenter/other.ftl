@@ -17,8 +17,7 @@
 
                     <p class="single-title">怎么下载拓天速贷手机APP客户端？</p>
 
-                    <p class="single-answer">答：两种方式：<br/>（1）到手机应用市场搜索下载：Android系统可到“应用商城”进行搜索（拓天速贷）下载即可；IOS系统可到“App
-                        Store”进行搜索（拓天速贷）下载即可；<br/>（2）点击平台右上角“手机APP”，扫描二维码即可下载；</p>
+                    <p class="single-answer">答：两种方式：<br/>（1）到手机应用市场搜索下载：Android系统可到“应用商城”进行搜索（拓天速贷）下载即可；<br/>（2）点击平台右上角“手机APP”，扫描二维码即可下载；</p>
                 </li>
             </ul>
             <ul class="list-group">
