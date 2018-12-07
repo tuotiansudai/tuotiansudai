@@ -577,7 +577,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         $('#maxTenLoanAmountRate').text(formatNumber(data.maxTenLoanAmountRate*100,2));//前十大借款人待还金额占比
         $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
         // $('#sumOverDueAmount').text(formatNum(data.sumOverDueAmount));//逾期金额
-        $('#sumOverDueAmount').text(formatNumber("5297800.00"));//逾期金额
+        $('#sumOverDueAmount').text(formatNum("5297800.00"));//逾期金额
 
         // 逾期情况
         // $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
@@ -585,7 +585,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
         $('#loanOverDueRate').text(formatNumber(0.0121*100,2));//项目逾期率
         // $('#loanerOverDueAmount').text(formatNum(data.loanerOverDueAmount));//平台逾期总金额
-        $('#loanerOverDueAmount').text(formatNum('5297800.00',2));//平台逾期总金额
+        $('#loanerOverDueAmount').text(formatNum('5297800.00'));//平台逾期总金额
         // $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
         $('#amountOverDueRate').text(formatNumber(0.0357*100,2));//金额逾期率
         // $('#amountOverDueLess90Rate').text(formatNumber(data.amountOverDueLess90Rate*100, 2));//金额逾期率（90天及以内）
