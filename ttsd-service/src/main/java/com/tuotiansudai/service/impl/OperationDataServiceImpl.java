@@ -151,9 +151,9 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setAmountOverDue90To180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDue90To180).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setAmountOverDueGreater180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDueGreater180).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
 
-        long loanOverDueLess90 = this.findLoanOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
-        long loanOverDue90To180 = this.findLoanOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - loanOverDueLess90;
-        long loanOverDueGreater180 = sumOverDueLoanCount - loanOverDueLess90 - loanOverDue90To180;
+        long loanOverDueGreater180 = this.findLoanOverdueAmountByOverdueDay(180, endDate, loanRepayModels);
+        long loanOverDue90To180 = this.findLoanOverdueAmountByOverdueDay(90, endDate, loanRepayModels) - loanOverDueGreater180;
+        long loanOverDueLess90 = sumOverDueLoanCount - loanOverDueGreater180 - loanOverDue90To180;
         operationDataDto.setLoanOverDueLess90Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDueLess90).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setLoanOverDue90To180Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDue90To180).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setLoanOverDueGreater180Rate(String.valueOf(sumRepayingLoanCount == 0 ? 0 : new BigDecimal(loanOverDueGreater180).divide(new BigDecimal(sumRepayingLoanCount), 4, BigDecimal.ROUND_DOWN)));
@@ -676,7 +676,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     private long findLoanOverdueAmountByOverdueDay(int overdueDays, Date endDate, List<LoanRepayModel> loanRepayModels){
         return loanRepayModels.stream()
                 .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
-                        && loanRepayModel.getRepayDate().before(endDate) && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
+                        && loanRepayModel.getRepayDate().before(new DateTime(endDate).minusDays(overdueDays).toDate()))
                 .map(LoanRepayModel::getLoanId).distinct().count();
     }
 }
