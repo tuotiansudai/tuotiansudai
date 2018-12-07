@@ -146,7 +146,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
         long amountOverDueLess90 = this.findAmountOverdueAmountByOverdueDay(90, endDate, loanRepayModels);
         long amountOverDue90To180 = this.findAmountOverdueAmountByOverdueDay(180, endDate, loanRepayModels) - amountOverDueLess90;
-        long amountOverDueGreater180 = sumExpectedAmount - amountOverDueLess90 - amountOverDue90To180 ;
+        long amountOverDueGreater180 = sumOverDueAmount - amountOverDueLess90 - amountOverDue90To180 ;
         operationDataDto.setAmountOverDueLess90Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDueLess90).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setAmountOverDue90To180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDue90To180).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setAmountOverDueGreater180Rate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(amountOverDueGreater180).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
