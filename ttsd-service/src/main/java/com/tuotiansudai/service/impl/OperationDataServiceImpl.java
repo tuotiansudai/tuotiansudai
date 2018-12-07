@@ -120,7 +120,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setSumNotCompleteInvestorCount(String.valueOf(investMapper.findInvestorCountByRepayStatus(Lists.newArrayList(RepayStatus.REPAYING, RepayStatus.OVERDUE))));
 
         List<Long> sumInvestAmountGroupByLoginNameByTopTens = investMapper.sumInvestAmountGroupByLoginNameByTopTen();
-        long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.get(0);
+        long maxSingleInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.size() > 0 ? sumInvestAmountGroupByLoginNameByTopTens.get(0) : 0;
         long maxTenInvestAmount = sumInvestAmountGroupByLoginNameByTopTens.stream().mapToLong(i -> i).sum();
         operationDataDto.setMaxSingleInvestAmountRate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(maxSingleInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setMaxTenInvestAmountRate(String.valueOf(sumExpectedAmount == 0 ? 0 : new BigDecimal(maxTenInvestAmount).divide(new BigDecimal(sumExpectedAmount), 4, BigDecimal.ROUND_DOWN)));
@@ -131,7 +131,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         operationDataDto.setAvgLoanAmount(AmountConverter.convertCentToString(sumLoanAmount / sumLoanerCount));
 
         List<Long> sumLoanAmountGroupByIdentityByTopTens = loanMapper.sumLoanAmountGroupByIdentityByTopTen();
-        long maxSingleLoanAmount = sumLoanAmountGroupByIdentityByTopTens.get(0);
+        long maxSingleLoanAmount = sumLoanAmountGroupByIdentityByTopTens.size() > 0 ? sumLoanAmountGroupByIdentityByTopTens.get(0) : 0;
         long maxTenLoanAmount = sumLoanAmountGroupByIdentityByTopTens.stream().mapToLong(i -> i).sum();
         operationDataDto.setMaxSingleLoanAmountRate(String.valueOf(sumRepayingLoanAmount == 0 ? 0 : new BigDecimal(maxSingleLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));
         operationDataDto.setMaxTenLoanAmountRate(String.valueOf(sumRepayingLoanAmount == 0 ? 0 : new BigDecimal(maxTenLoanAmount).divide(new BigDecimal(sumRepayingLoanAmount), 4, BigDecimal.ROUND_DOWN)));

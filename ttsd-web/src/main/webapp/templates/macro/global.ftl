@@ -68,9 +68,9 @@
     ]},
     {"title":"运营数据", "url":"/about/operational","category":"30顶部导航","navigation":"true"},
     {"title":"网贷课堂", "url":"/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
-    {"title":"法律法规", "url":"/about/knowledge"},
-    {"title":"出借人教育", "url":"/about/investor-knowledge"},
-    {"title":"基础知识", "url":"/about/base-knowledge"}
+        {"title":"法律法规", "url":"/about/knowledge"},
+        {"title":"出借人教育", "url":"/about/investor-knowledge"},
+        {"title":"基础知识", "url":"/about/base-knowledge"}
     ]},
     {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
         {"title":"注册认证", "url":"/help/account"},

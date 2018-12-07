@@ -47,9 +47,9 @@
         {"title":"媒体报道", "url":"${webServer}/about/media"},
         {"title":"合规报告", "url":"${webServer}/about/audit-report"},
         {"title":"服务费用", "url":"${webServer}/about/service-fee"},
-        {"title":"联系我们", "url":"${webServer}/about/contact"},
-        {"title":"运营数据", "url":"${webServer}/about/operational"}
+        {"title":"联系我们", "url":"${webServer}/about/contact"}
     ]},
+    {"title":"运营数据", "url":"${webServer}/about/operational","category":"30顶部导航","navigation":"true"},
     {"title":"网贷课堂", "url":"${webServer}/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
         {"title":"法律法规", "url":"${webServer}/about/knowledge"},
         {"title":"出借人教育", "url":"${webServer}/about/investor-knowledge"},
