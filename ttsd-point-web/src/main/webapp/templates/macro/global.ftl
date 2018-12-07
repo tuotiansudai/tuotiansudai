@@ -40,7 +40,7 @@
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
-    {"title":"信息纰漏", "url":"/about/company","category":"20顶部导航", "leftNavs":[
+    {"title":"信息披漏", "url":"/about/company","category":"20顶部导航", "leftNavs":[
         {"title":"组织架构", "url":"/about/team"},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
@@ -49,8 +49,7 @@
         {"title":"常见问题", "url":"/about/qa"},
         {"title":"联系我们", "url":"/about/contact"},
         {"title":"运营数据", "url":"/about/operational"}
-    ]
-    }
+    ]}
     ]/>
 
     <#local membershipMenus=[
