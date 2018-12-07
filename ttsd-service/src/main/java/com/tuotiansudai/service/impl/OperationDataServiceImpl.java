@@ -669,14 +669,14 @@ public class OperationDataServiceImpl implements OperationDataService {
     private long findAmountOverdueAmountByOverdueDay(int overdueDays, Date endDate, List<LoanRepayModel> loanRepayModels){
         return loanRepayModels.stream()
                 .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
-                        && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
+                        && loanRepayModel.getRepayDate().before(endDate) && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
                 .mapToLong(LoanRepayModel::getCorpus).sum();
     }
 
     private long findLoanOverdueAmountByOverdueDay(int overdueDays, Date endDate, List<LoanRepayModel> loanRepayModels){
         return loanRepayModels.stream()
                 .filter(loanRepayModel -> loanRepayModel.getActualRepayDate() == null
-                        && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
+                        && loanRepayModel.getRepayDate().before(endDate) && loanRepayModel.getRepayDate().after(new DateTime(endDate).minusDays(overdueDays).toDate()))
                 .map(LoanRepayModel::getLoanId).distinct().count();
     }
 }
