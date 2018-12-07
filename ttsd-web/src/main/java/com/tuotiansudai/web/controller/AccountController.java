@@ -77,6 +77,8 @@ public class AccountController {
         modelAndView.addObject("balance", userFundView.getBalance()); //余额
         modelAndView.addObject("expectedTotalCorpus", userFundView.getExpectedTotalCorpus()); //待收出借本金
         modelAndView.addObject("expectedTotalInterest", userFundView.getExpectedTotalInterest()); //待收预期收益
+        modelAndView.addObject("overdueTotalCorpus", userFundView.getOverdueTotalCorpus()); //逾期待收出借本金
+        modelAndView.addObject("overdueTotalInterest", userFundView.getOverdueTotalInterest() + userFundView.getOverdueTotalDefaultInterest()); //逾期待收预期收益
 
         modelAndView.addObject("referRewardAmount", userFundView.getReferRewardAmount()); //已收推荐奖励
         modelAndView.addObject("actualTotalInterest", userFundView.getActualTotalInterest()); //已收出借收益

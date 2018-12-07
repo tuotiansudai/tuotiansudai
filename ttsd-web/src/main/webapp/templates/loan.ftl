@@ -365,7 +365,7 @@
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
-                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期率', '还款来源'] as key>
+                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期笔数', '还款来源'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
                                             <div class="col-md-4"><div class="col-md-3">${key}：</div><div class="col-md-9">${loan.loanerDetail[key]}</div></div>
                                         </#if>

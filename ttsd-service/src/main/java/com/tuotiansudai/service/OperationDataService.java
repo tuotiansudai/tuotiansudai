@@ -24,8 +24,6 @@ public interface OperationDataService {
 
     Map<String, String> findInvestAmountScaleTop3(Date endDate);
 
-    long findUserSumInterest(Date endDate);
-
     List<OperationDataAgeDataDto> convertMapToOperationDataAgeDataDto();
 
     List<OperationDataLoanerAgeDataDto>  convertMapToOperationDataLoanerAgeDataDto();

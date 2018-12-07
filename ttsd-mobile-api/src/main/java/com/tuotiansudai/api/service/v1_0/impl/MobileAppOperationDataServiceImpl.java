@@ -34,7 +34,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setCurrentDay(sdf.format(currentDate));
         dataDto.setOperationDays(String.valueOf(operationDataDto.getOperationDays()));
         dataDto.setTotalTradeAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount())));
-        dataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(currentDate)));
+        dataDto.setTotalInterest(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTotalInterest())));
 
         List<InvestDataView> investDataViewList = operationDataService.getInvestDetail(currentDate);
         List<OperationDataInvestByProductTypeResponseDataDto> operationDataInvestByProductTypeResponseDataDtoList = Lists.newArrayList();

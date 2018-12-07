@@ -19,6 +19,10 @@ public class UserFundView implements Serializable {
     private long expectedTotalInterest; //待收出借收益(分)
     private long expectedCouponInterest;//待收优惠券奖励(分)
     private long expectedTotalExtraInterest; //待收出借奖励(阶梯加息)(分)
+    private long overdueTotalCorpusInterest; //逾期待收回款=逾期出借本金+逾期出借本金收益+逾期罚息收益
+    private long overdueTotalCorpus; //逾期待收本金
+    private long overdueTotalInterest; //逾期待收本金收益
+    private long overdueTotalDefaultInterest; //逾期待收罚息收益
 
     private long investFrozeAmount; //出借冻结资金(分)
     private long withdrawFrozeAmount; //提现冻结资金(分)
@@ -172,5 +176,37 @@ public class UserFundView implements Serializable {
 
     public void setExpectedCouponInterest(long expectedCouponInterest) {
         this.expectedCouponInterest = expectedCouponInterest;
+    }
+
+    public long getOverdueTotalCorpusInterest() {
+        return overdueTotalCorpusInterest;
+    }
+
+    public void setOverdueTotalCorpusInterest(long overdueTotalCorpusInterest) {
+        this.overdueTotalCorpusInterest = overdueTotalCorpusInterest;
+    }
+
+    public long getOverdueTotalCorpus() {
+        return overdueTotalCorpus;
+    }
+
+    public void setOverdueTotalCorpus(long overdueTotalCorpus) {
+        this.overdueTotalCorpus = overdueTotalCorpus;
+    }
+
+    public long getOverdueTotalInterest() {
+        return overdueTotalInterest;
+    }
+
+    public void setOverdueTotalInterest(long overdueTotalInterest) {
+        this.overdueTotalInterest = overdueTotalInterest;
+    }
+
+    public long getOverdueTotalDefaultInterest() {
+        return overdueTotalDefaultInterest;
+    }
+
+    public void setOverdueTotalDefaultInterest(long overdueTotalDefaultInterest) {
+        this.overdueTotalDefaultInterest = overdueTotalDefaultInterest;
     }
 }

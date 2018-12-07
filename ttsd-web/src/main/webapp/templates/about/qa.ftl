@@ -40,7 +40,7 @@
                 ④检查无误仍提示错误，请联系客服热线400-169-1188获取帮助。
 			</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>12.账号如何绑定到联动优势？</span></dt>
-            <dd><strong>答：</strong>当您进行实名认证时，平台会将您的帐号绑定到联动优势，资金由联动优势全面托管。</dd>
+            <dd><strong>答：</strong>当您进行实名认证时，平台会将您的帐号绑定到联动优势，联动优势为您开设独立子账户，为您的资金安全提供保障。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>13.登录时，忘记账户密码了，怎么找回？</span></dt>
             <dd><strong>答：</strong>您可以直接在登录界面，点击“忘记密码”，根据提示直接找回您的密码。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>14.如何修改登录密码？</span></dt>
@@ -49,7 +49,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>15.我的账户被锁了，怎么办？ </span></dt>
             <dd><strong>答：</strong>连续输入错误密码3次，系统将会将你的账户进行锁定；账户被锁定0.5小时后系统会自动解锁。你也可以与在线客服进行联系，或者拨打客服热线400-169-1188。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>16.支付密码是什么? </span></dt>
-            <dd><strong>答：</strong>当您注册时，资金托管方（联动优势）会以短信的形式将支付密码发送到您的注册手机号上，投资标的时需要验证后方可支付成功。</dd>
+            <dd><strong>答：</strong>当您注册时，资金存管方会以短信的形式将支付密码发送到您的注册手机号上，投资标的时需要验证后方可支付成功。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>17.支付密码怎么修改？ </span></dt>
             <dd><strong>答：</strong>方式一：登录官方网站—我的账户—个人资料—支付密码—重置，输入身份证号，进行修改。<br/>方式二：通过发送短信修改，具体操作步骤请参照“我想通过短信修改或重设支付密码，怎么操作”。
             </dd>
@@ -79,7 +79,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>26.VIP会员享有哪些特权？ </span></dt>
             <dd>
                 <strong>答：</strong>
-                多重保障：三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>
+                多重保障：三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>
                 随时提现：24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账<br/>
                 生日特权：生日月投资，投90天产品首期收益翻1.5倍，投180天、360天产品首期收益翻2倍<br/>
                 会员礼包：每月发放投资红包，588、688、788、888元随机派送<br/>
@@ -165,7 +165,7 @@
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>55.提现手续费是多少？</span></dt>
             <dd><strong>答：</strong>每笔提现手续费2.00元（联动优势收取）。</dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>56.提现受理成功是到账了吗？</span></dt>
-            <dd><strong>答：</strong>用户在平台发起账户资金提现至银行卡，页面输入支付密码和验证码确认后，资金托管方返回受理成功结果，即提现申请受理成功，工作日16:00前发起提现当日到账，其他次日（工作日）到账，具体到账因银行结算时间存在差异。
+            <dd><strong>答：</strong>用户在平台发起账户资金提现至银行卡，页面输入支付密码和验证码确认后，资金存管方返回受理成功结果，即提现申请受理成功，工作日16:00前发起提现当日到账，其他次日（工作日）到账，具体到账因银行结算时间存在差异。
             </dd>
             <dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>57.提现失败怎么办？</span></dt>
             <dd><strong>答：</strong>建议重新操作，如多次失败，请拨打客服热线400-169-1188。</dd>

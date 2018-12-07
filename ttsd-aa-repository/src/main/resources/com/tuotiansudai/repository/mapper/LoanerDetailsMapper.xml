@@ -45,8 +45,5 @@
         WHERE
         loan_id = #{loanId}
     </delete>
-    <select id="getSumLoanerCount" resultType="long">
-        select count(DISTINCT(identity_number)) from loaner_details ld join loan l on ld.loan_id = l.id
-        where l.status in ('RECHECK','REPAYING','OVERDUE','COMPLETE','RAISING');
-    </select>
+
 </mapper>

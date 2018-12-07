@@ -211,8 +211,8 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         List<DisclosureDto> disclosureDtoList = Lists.newArrayList();
 
         if (loanerDetailsModel != null) {
-            String overdueRate = MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString());
-            DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueRate);
+            String overdueCount = MessageFormat.format("{0}笔", loanRepayMapper.findNotCompleteLoanRepay().stream().filter(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.OVERDUE).map(LoanRepayModel::getLoanId).distinct().count());
+            DisclosureDto loanerDisclosureDto = convertLoanerInfoFromLoan(loanerDetailsModel, overdueCount);
             disclosureDtoList.add(loanerDisclosureDto);
 
             if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())){
@@ -365,7 +365,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     }
 
 
-    private DisclosureDto convertLoanerInfoFromLoan(LoanerDetailsModel model, String overdueRate) {
+    private DisclosureDto convertLoanerInfoFromLoan(LoanerDetailsModel model, String overdueCount) {
         DisclosureDto loanerDisclosureDto = new DisclosureDto();
         loanerDisclosureDto.setTitle("借款人基本信息");
 
@@ -375,7 +375,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         ItemDto employmentStatusItemDto = new ItemDto("从业情况", model.getEmploymentStatus());
         ItemDto incomeItemDto = new ItemDto("年收入", model.getIncome());
         ItemDto purposeItemDto = new ItemDto("借款用途", model.getPurpose());
-        ItemDto overdueRateItemDto = new ItemDto("逾期率", overdueRate);
+        ItemDto overdueRateItemDto = new ItemDto("逾期笔数", overdueCount);
         ItemDto sourceItemDto = new ItemDto("还款来源", model.getSource());
         List<ItemDto> itemDtoList = Lists.newArrayList(genderItemDto, ageItemDto, marriageItemDto, employmentStatusItemDto,
                 incomeItemDto, purposeItemDto, overdueRateItemDto, sourceItemDto);

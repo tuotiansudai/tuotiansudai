@@ -636,8 +636,14 @@
         select login_name from invest where invest.status = 'SUCCESS'
     </select>
 
-    <select id="findInvestorCount" resultType="long">
-        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS' and transfer_invest_id is null
+    <select id="findInvestorCountByRepayStatus" resultType="long">
+        select count(distinct(login_name)) from invest JOIN invest_repay on invest.id = invest_repay.invest_id where invest.loan_id !='1' and invest.status = 'SUCCESS'
+        <if test="RepayStatusList != null and RepayStatusList.size != 0">
+            and invest_repay.status in
+            <foreach item="item" index="index" collection="RepayStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
     <select id="findRegisteredNotInvestCount" resultType="long">
@@ -1290,4 +1296,19 @@
     <update id="updateIsOverdueTransfer" parameterType="map">
         update invest set is_overdue_transfer = 1 where id = #{investId}
     </update>
+
+    <select id="sumInvestCountByRepayStatus" parameterType="map" resultType="long">
+        SELECT count(DISTINCT(invest.id)) from invest join invest_repay on invest.id = invest_repay.invest_id where invest.loan_id !='1' and invest.status='SUCCESS' and invest.transfer_invest_id is null
+        <if test="repayStatusList != null and repayStatusList.size != 0">
+            and invest_repay.status in
+            <foreach item="item" index="index" collection="repayStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="sumInvestAmountGroupByLoginNameByTopTen" parameterType="map" resultType="long">
+        select sum(amount) as sumAmount from invest join loan on invest.loan_id = loan.id where loan.id !='1' and loan.status in ('OVERDUE', 'REPAYING') and invest.status='SUCCESS' and invest.transfer_invest_id is null
+        group by login_name order by sum(amount) desc limit 0, 10
+    </select>
 </mapper>

@@ -30,7 +30,7 @@
     </div>
 
     <div class="column-box bg-w clearfix amount-sum">
-        <h3><b>账户总额：</b><span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest)/100)?string('0.00'))!}元</span>
+        <h3><b>账户总额：</b><span>${(((balance+freeze+expectedTotalCorpus+expectedTotalInterest+overdueTotalCorpus+overdueTotalInterest)/100)?string('0.00'))!}元</span>
             <ul class="proList fr">
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
@@ -59,10 +59,10 @@
     </div>
 
     <div class="column-box bg-w clearfix amount-sum ">
-        <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
+        <h3> <b>待收回款：</b><span>${(((expectedTotalCorpus+expectedTotalInterest+expectedTotalExtraInterest+expectedExperienceInterest+expectedCouponInterest+overdueTotalCorpus+overdueTotalInterest)/100)?string('0.00'))!}</span>元 <i class="icon-has-con"></i></h3>
         <ul class="detail-list">
-            <li>待收出借本金：<span>${((expectedTotalCorpus/100)?string('0.00'))!}</span>元</li>
-            <li>待收预期收益：<span>${((expectedTotalInterest/100)?string('0.00'))!}</span>元</li>
+            <li>待收出借本金：<span>${(((expectedTotalCorpus+overdueTotalCorpus)/100)?string('0.00'))!}</span>元</li>
+            <li>待收预期收益：<span>${(((expectedTotalInterest+overdueTotalInterest)/100)?string('0.00'))!}</span>元</li>
             <li>待收出借奖励：<span>${((expectedTotalExtraInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收优惠券奖励：<span>${((expectedCouponInterest/100)?string('0.00'))!}</span>元</li>
             <li>待收体验金收益：<span>${((expectedExperienceInterest/100)?string('0.00'))!}</span>元</li>

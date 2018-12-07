@@ -608,7 +608,7 @@
     </select>
 
     <select id="findSuccessLoanOutLoan" resultMap="loanResultMap">
-       SELECT * FROM loan WHERE status IN ('RAISING','RECHECK','REPAYING','COMPLETE','OVERDUE')
+       SELECT * FROM loan WHERE status IN ('REPAYING','COMPLETE','OVERDUE')
     </select>
 
     <select id="findLoanAchievementCount" parameterType="map" resultType="long">
@@ -719,6 +719,11 @@
         AND ld.activity_desc = '0元购'
         and l.status = 'RAISING'
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+    </select>
+
+    <select id="sumLoanAmountGroupByIdentityByTopTen" resultType="long">
+        select sum(loan_amount) from loan where id != '1' and status in ('REPAYING','OVERDUE')
+        group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
     </select>
 
 </mapper>

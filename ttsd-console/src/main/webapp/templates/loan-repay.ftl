@@ -74,14 +74,14 @@
                     <td>${loanRepay.loanName}</td>
                     <td>${loanRepay.agentLoginName!}</td>
                     <td>${loanRepay.repayDate?string("yyyy-MM-dd")}</td>
-                    <td>${(loanRepay.actualRepayDate?string("yyyy-MM-dd HH:mm:ss"))!"-"}</td>
+                    <td><#if loanRepay.loanRepayStatus == 'COMPLETE'>${(loanRepay.actualRepayDate?string("yyyy-MM-dd HH:mm:ss"))!"-"}<#else>-</#if></td>
                     <td>第${loanRepay.period}期</td>
                     <td>${loanRepay.corpus}</td>
                     <td>${loanRepay.expectedInterest}</td>
                     <td>${loanRepay.totalAmount}</td>
                     <td>${loanRepay.actualRepayAmount!}</td>
                     <td>
-                        <#if loanRepay.actualRepayDate??>
+                        <#if loanRepay.loanRepayStatus == 'COMPLETE'>
                             <#assign actualRepayDate = loanRepay.actualRepayDate?string('yyyy-MM-dd')>
                             <#assign repayDate = loanRepay.repayDate?string('yyyy-MM-dd')>
                             <#if actualRepayDate?date('yyyy-MM-dd') lt repayDate?date('yyyy-MM-dd')>

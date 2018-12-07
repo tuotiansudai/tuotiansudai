@@ -193,7 +193,7 @@ public interface InvestMapper {
 
     List<String> findInvestorLoginNames();
 
-    long findInvestorCount();
+    long findInvestorCountByRepayStatus(@Param(value = "RepayStatusList") List<RepayStatus> RepayStatusList);
 
     long findRegisteredNotInvestCount();
 
@@ -317,31 +317,35 @@ public interface InvestMapper {
                                                         @Param(value = "activityEndTime") Date activityEndTime,
                                                         @Param(value = "limit") Integer limit);
 
-    List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value="loginName") String loginName,
-                                                                  @Param(value="startTime") Date startTime,
-                                                                  @Param(value="endTime") Date endTime);
+    List<InvestModel> findSuccessByLoginNameExceptTransferAndTime(@Param(value = "loginName") String loginName,
+                                                                  @Param(value = "startTime") Date startTime,
+                                                                  @Param(value = "endTime") Date endTime);
 
-    List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value="startTime") Date startTime,
-                                         @Param(value="endTime") Date endTime,
-                                         @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
+    List<LoanInvestAmountView> findAmountByNationalDayActivity(@Param(value = "startTime") Date startTime,
+                                                               @Param(value = "endTime") Date endTime,
+                                                               @Param(value = "loanActivityDescList") List<String> loanActivityDescList);
 
     List<InvestProductTypeView> findAmountOrderByNameAndProductType(@Param(value = "startTime") Date startTime,
                                                                     @Param(value = "endTime") Date endTime,
                                                                     @Param(value = "activityDesc") String activityDesc);
 
     List<InvestModel> findSuccessDoubleElevenActivityByTime(@Param(value = "loanId") Long loanId,
-                                                            @Param(value="startTime") Date startTime,
-                                                            @Param(value="endTime") Date endTime);
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
 
     long sumAmountActivityDoubleElevenByLoginName(@Param(value = "loginName") String loginName,
                                                   @Param(value = "startTime") Date startTime,
-                                                  @Param(value="endTime") Date endTime);
+                                                  @Param(value = "endTime") Date endTime);
 
     List<String> findInvestorMobileByLoanId(@Param(value = "loanId") long loanId);
 
     List<InvestModel> findTransfeeInvestByTransfer(@Param(value = "transfer") String transfer);
 
-    long sumUsedFund(@Param(value = "loginName")String loginName);
+    long sumUsedFund(@Param(value = "loginName") String loginName);
 
     void updateIsOverdueTransfer(@Param(value = "investId") long investId);
+
+    long sumInvestCountByRepayStatus(@Param(value = "repayStatusList") List<RepayStatus> repayStatusList);
+
+    List<Long> sumInvestAmountGroupByLoginNameByTopTen();
 }

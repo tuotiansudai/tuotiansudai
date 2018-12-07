@@ -1,15 +1,15 @@
 package com.tuotiansudai.service;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.FakeUserHelper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JsonConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -23,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ public class OperationDataServiceTest {
     private InvestMapper investMapper;
 
     @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
     private OperationDataService operationDataService;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
@@ -62,10 +66,7 @@ public class OperationDataServiceTest {
     private final String REDIS_INFO_PUBLISH_CHART_KEY_TEMPLATE = "web:info:publish:chart:{0}";
     private final String REDIS_INFO_PUBLISH_TABLE_KEY_TEMPLATE = "web:info:publish:table:{0}";
 
-    private final String USERS_COUNT = "userCount";
-    private final String TRADE_AMOUNT = "tradeAmount";
-    private final String OPERATION_DATA_MONTH = "operationDataMonth";
-    private final String OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
+    private final String REDIS_OPERATION_DATA = "operationData";
 
     private LoanModel createLoanByUserId(String userId, long loanId, ProductType productType) {
         LoanDto loanDto = new LoanDto();
@@ -95,7 +96,7 @@ public class OperationDataServiceTest {
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         loanDto.setPledgeType(PledgeType.HOUSE);
         LoanModel loanModel = new LoanModel(loanDto);
-        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -170,6 +171,12 @@ public class OperationDataServiceTest {
         return model;
     }
 
+    private InvestRepayModel createInvestRepay(long investId) {
+        InvestRepayModel model = new InvestRepayModel(IdGenerator.generate(), investId, 1, 10, 10, 1, new Date(), RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(model));
+        return model;
+    }
+
     @Test
     public void shouldGetInvestDetail() {
         Date testEndDate = new DateTime().withDate(2016, 5, 10).withTimeAtStartOfDay().toDate();
@@ -200,7 +207,7 @@ public class OperationDataServiceTest {
     }
 
     @Test
-    public void testGetOperationDataFromRedis() {
+    public void testGetOperationDataFromRedis() throws IOException {
         Date testEndDate = new DateTime().withDate(2016, 5, 10).withTimeAtStartOfDay().toDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
         String redisKey = MessageFormat.format(REDIS_INFO_PUBLISH_CHART_KEY_TEMPLATE, simpleDateFormat.format(testEndDate));
@@ -218,10 +225,15 @@ public class OperationDataServiceTest {
         createLoanByUserId("testUserLoaner", 10002, ProductType._90);
         createLoanByUserId("testUserLoaner", 10003, ProductType._180);
 
-        createInvest("testUserInvest", 10001, 1000, testEndDate);
-        createInvest("testUserInvest", 10001, 2000, testEndDate);
-        createInvest("testUserInvest", 10002, 3000, testEndDate);
-        createInvest("testUserInvest", 10002, 4000, testEndDate);
+        InvestModel investModel1 = createInvest("testUserInvest", 10001, 1000, testEndDate);
+        InvestModel investModel2 = createInvest("testUserInvest", 10001, 2000, testEndDate);
+        InvestModel investModel3 = createInvest("testUserInvest", 10002, 3000, testEndDate);
+        InvestModel investModel4 = createInvest("testUserInvest", 10002, 4000, testEndDate);
+
+        createInvestRepay(investModel1.getId());
+        createInvestRepay(investModel2.getId());
+        createInvestRepay(investModel3.getId());
+        createInvestRepay(investModel4.getId());
 
         InvestModel investModelStart = createInvest("testUserInvest", 10003, 6000, testEndDate);
         investModelStart.setCreatedTime(DateTime.parse("2016-04-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
@@ -240,9 +252,10 @@ public class OperationDataServiceTest {
         assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), operationDataDtoFromRedis.getTradeAmount());
 
         //测试redis中的缓存
-        assertEquals(2 + originUsersCount, Integer.parseInt(redisWrapperClient.hget(redisKey, USERS_COUNT)));
-        assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), redisWrapperClient.hget(redisKey, TRADE_AMOUNT));
-        assertEquals("2015.7,2015.8,2015.9,2015.10,2015.11,2015.12,2016.1,2016.2,2016.3,2016.4", redisWrapperClient.hget(redisKey, OPERATION_DATA_MONTH));
+        OperationDataDto operationDataDto = JsonConverter.readValue(redisWrapperClient.hget(redisKey, REDIS_OPERATION_DATA), OperationDataDto.class);
+        assertEquals(2 + originUsersCount, operationDataDto.getUsersCount());
+        assertEquals(AmountConverter.convertCentToString(originInvestAmount + 21000), operationDataDto.getTradeAmount());
+        assertEquals("2015.7,2015.8,2015.9,2015.10,2015.11,2015.12,2016.1,2016.2,2016.3,2016.4", Joiner.on(",").join(operationDataDto.getMonth()));
 
         //测试从redis中拿出的数据
         operationDataDtoFromRedis = operationDataService.getOperationDataFromRedis(testEndDate);

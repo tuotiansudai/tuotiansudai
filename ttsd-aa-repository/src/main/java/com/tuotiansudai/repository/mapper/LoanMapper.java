@@ -110,4 +110,6 @@ public interface LoanMapper {
 
     List<LoanModel> findSuccessLoanOutLoan();
 
+    List<Long> sumLoanAmountGroupByIdentityByTopTen();
+
 }
