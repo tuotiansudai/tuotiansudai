@@ -410,10 +410,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
                 AmountTransferMessage transferAmount = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
-                AmountTransferMessage transferFeeAmount = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                AmountTransferMessage transferInterestAmount = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, interestFee, UserBillBusinessType.INVEST_FEE, null, null);
+                AmountTransferMessage transferFeeAmount = transferFee > 0 ? new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null) : null;
+                AmountTransferMessage transferInterestAmount = interestFee > 0 ? new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, interestFee, UserBillBusinessType.INVEST_FEE, null, null) : null;
+                if (transferFeeAmount == null){
+                    transferFeeAmount = transferInterestAmount;
+                }else{
+                    transferFeeAmount.setNext(transferInterestAmount);
+                }
                 transferAmount.setNext(transferFeeAmount);
-                transferFeeAmount.setNext(transferInterestAmount);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, transferFeeAmount);
                 logger.info(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
