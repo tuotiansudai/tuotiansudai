@@ -565,26 +565,41 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         InvestModel investModel = investMapper.findById(currentInvestRepay.getInvestId());
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
-        // interest user bill
-        long paybackAmount = currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest();
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+        boolean isNormalRepay = currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate());
+        // corpus + ExpectedInterest user bill
+        AmountTransferMessage corpusAndExpectedInterestAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
                 investRepayId,
-                paybackAmount,
-                currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
+                currentInvestRepay.getCorpus() + currentInvestRepay.getExpectedInterest(),
+                isNormalRepay ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
                 null, null);
 
-        // fee user bill
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
+        //  ExpectedInterestFee user bill
+        AmountTransferMessage expectedInterestFeeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
                 investRepayId,
-                currentInvestRepay.getActualFee(),
+                currentInvestRepay.getExpectedFee(),
                 UserBillBusinessType.INVEST_FEE, null, null);
 
-        inAtm.setNext(outAtm);
+        if (!isNormalRepay) {
+            //  defaultInterest + overdueInterest user bill
+            AmountTransferMessage defaultInterestAndOverdueInterestAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+                    investRepayId,
+                    currentInvestRepay.getDefaultInterest() + currentInvestRepay.getOverdueInterest(),
+                    UserBillBusinessType.OVERDUE_INTEREST, null, null);
+
+            //  defaultInterestFee + overdueInterestFee user bill
+            AmountTransferMessage defaultInterestFeeAndOverdueInterestFeeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
+                    investRepayId,
+                    currentInvestRepay.getDefaultFee() + currentInvestRepay.getOverdueFee(),
+                    UserBillBusinessType.OVERDUE_INTEREST_FEE, null, null);
+            defaultInterestAndOverdueInterestAtm.setNext(defaultInterestFeeAndOverdueInterestFeeAtm);
+            expectedInterestFeeAtm.setNext(defaultInterestAndOverdueInterestAtm);
+        }
+        corpusAndExpectedInterestAtm.setNext(expectedInterestFeeAtm);
 
         logger.info(MessageFormat.format("[Normal Repay {0}] send message to update user account. invest repay({1}), payback amount({2}), fee amount({3})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount), String.valueOf(currentInvestRepay.getActualFee())));
+                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest()), String.valueOf(currentInvestRepay.getActualFee())));
 
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, corpusAndExpectedInterestAtm);
 
         //update invest repay
         currentInvestRepay.setStatus(RepayStatus.COMPLETE);
