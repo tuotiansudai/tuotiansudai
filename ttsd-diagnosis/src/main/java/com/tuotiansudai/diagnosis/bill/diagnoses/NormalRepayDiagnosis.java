@@ -4,10 +4,7 @@ import com.tuotiansudai.diagnosis.bill.UserBillBusinessDiagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
 import com.tuotiansudai.diagnosis.support.SingleObjectDiagnosis;
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +19,19 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
     private final LoanRepayMapper loanRepayMapper;
     private final InvestMapper investMapper;
     private final LoanMapper loanMapper;
+    private final UserBillMapper userBillMapper;
 
     @Autowired
     public NormalRepayDiagnosis(InvestRepayMapper investRepayMapper,
                                 LoanRepayMapper loanRepayMapper,
                                 InvestMapper investMapper,
-                                LoanMapper loanMapper) {
+                                LoanMapper loanMapper,
+                                UserBillMapper userBillMapper) {
         this.investRepayMapper = investRepayMapper;
         this.loanRepayMapper = loanRepayMapper;
         this.investMapper = investMapper;
         this.loanMapper = loanMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override
@@ -59,6 +59,8 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
 
     private void diagnosisInvestRepay(UserBillModel userBillModel, DiagnosisContext context) {
         InvestRepayModel tracedObject = investRepayMapper.findById(userBillModel.getOrderId());
+        long overdueInterest = userBillModel.getBusinessType() == UserBillBusinessType.OVERDUE_REPAY ?
+                userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.OVERDUE_INTEREST).stream().mapToLong(UserBillModel::getAmount).sum() : 0;
         String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
@@ -73,8 +75,8 @@ public class NormalRepayDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectIdInvestRepay(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectIdInvestRepay(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == calcExpectInvestRepayAmount(m),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), calcExpectInvestRepayAmount(m)))
+                .check(m -> userBillModel.getAmount() + overdueInterest == calcExpectInvestRepayAmount(m),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount() + overdueInterest, calcExpectInvestRepayAmount(m)))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectIdInvestRepay(tracedObject)));

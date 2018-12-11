@@ -1,10 +1,7 @@
 package com.tuotiansudai.diagnosis.bill.diagnoses;
 
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -20,15 +17,18 @@ public class AdvanceRepayDiagnosis extends NormalRepayDiagnosis {
 
     private final InvestMapper investMapper;
     private final LoanMapper loanMapper;
+    private final UserBillMapper userBillMapper;
 
     @Autowired
     public AdvanceRepayDiagnosis(InvestRepayMapper investRepayMapper,
                                  LoanRepayMapper loanRepayMapper,
                                  InvestMapper investMapper,
-                                 LoanMapper loanMapper) {
-        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper);
+                                 LoanMapper loanMapper,
+                                 UserBillMapper userBillMapper) {
+        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper, userBillMapper);
         this.investMapper = investMapper;
         this.loanMapper = loanMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override
