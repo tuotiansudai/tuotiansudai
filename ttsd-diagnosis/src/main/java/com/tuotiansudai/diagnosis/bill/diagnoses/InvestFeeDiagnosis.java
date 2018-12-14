@@ -1,5 +1,6 @@
 package com.tuotiansudai.diagnosis.bill.diagnoses;
 
+import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.diagnosis.bill.UserBillBusinessDiagnosis;
 import com.tuotiansudai.diagnosis.support.DiagnosisContext;
@@ -23,12 +24,14 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
     private final InvestRepayMapper investRepayMapper;
     private final InvestCouponFeeDiagnosis investCouponFeeDiagnosis;
     private final InvestMapper investMapper;
+    private final UserBillMapper userBillMapper;
 
     @Autowired
-    public InvestFeeDiagnosis(InvestRepayMapper investRepayMapper, InvestCouponFeeDiagnosis investCouponFeeDiagnosis, InvestMapper investMapper) {
+    public InvestFeeDiagnosis(InvestRepayMapper investRepayMapper, InvestCouponFeeDiagnosis investCouponFeeDiagnosis, InvestMapper investMapper, UserBillMapper userBillMapper) {
         this.investRepayMapper = investRepayMapper;
         this.investCouponFeeDiagnosis = investCouponFeeDiagnosis;
         this.investMapper = investMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
                 return;
             }
         }
+        long overdueInterestFee = userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.OVERDUE_INTEREST_FEE).stream().mapToLong(UserBillModel::getAmount).sum();
         String investLoginName = traceInvestLoginName(tracedObject);
         SingleObjectDiagnosis
                 // exist
@@ -58,8 +62,8 @@ public class InvestFeeDiagnosis extends UserBillBusinessDiagnosis {
                 .check(m -> !context.hasAlreadyTraced(buildTracedObjectId(m)),
                         m -> String.format("has already traced by UserBill#%d", context.getUserBillId(buildTracedObjectId(m))))
                 // amount
-                .check(m -> userBillModel.getAmount() == m.getActualFee(),
-                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount(), m.getActualFee()))
+                .check(m -> userBillModel.getAmount() + overdueInterestFee == m.getActualFee(),
+                        m -> String.format("wrong amount [expect: %d, actual: %d]", userBillModel.getAmount() + overdueInterestFee, m.getActualFee()))
                 // result
                 .fail(r -> onFail(userBillModel, context, r))
                 .success(r -> onPass(userBillModel, context, buildTracedObjectId(tracedObject)));

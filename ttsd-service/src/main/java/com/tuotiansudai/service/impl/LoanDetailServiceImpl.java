@@ -205,7 +205,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
                     .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
-                    .put("逾期笔数", MessageFormat.format("{0}笔", loanRepayMapper.findNotCompleteLoanRepay().stream().filter(loanRepayModel -> loanRepayModel.getStatus() == RepayStatus.OVERDUE).map(LoanRepayModel::getLoanId).distinct().count()))
+                    .put("逾期笔数", MessageFormat.format("{0}笔", loanMapper.findByStatus(LoanStatus.OVERDUE).stream().filter(model->model.getLoanerIdentityNumber().equals(loanModel.getLoanerIdentityNumber())).count()))
                     .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
                     .build());
         }

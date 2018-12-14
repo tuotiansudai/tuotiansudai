@@ -49,7 +49,7 @@ public class ExportService {
             row.add(loanRepayDataItemDto.getCorpus());
             row.add(loanRepayDataItemDto.getExpectedInterest());
             row.add(loanRepayDataItemDto.getTotalAmount());
-            row.add(loanRepayDataItemDto.getActualRepayAmount());
+            row.add(loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE ? loanRepayDataItemDto.getActualRepayAmount() : "0");
             if (loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE && loanRepayDataItemDto.getActualRepayDate().before(new DateTime(loanRepayDataItemDto.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 row.add("提前还款");
             } else {

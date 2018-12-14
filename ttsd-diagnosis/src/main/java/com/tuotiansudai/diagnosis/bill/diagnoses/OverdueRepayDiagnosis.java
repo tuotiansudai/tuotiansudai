@@ -1,10 +1,7 @@
 package com.tuotiansudai.diagnosis.bill.diagnoses;
 
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -26,18 +23,21 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
     private final InvestRepayMapper investRepayMapper;
     private final LoanMapper loanMapper;
     private final LoanRepayMapper loanRepayMapper;
+    private final UserBillMapper userBillMapper;
     private static final Date VERSION_UPDATING_DATE = DateTime.parse("2016-05-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     @Autowired
     public OverdueRepayDiagnosis(InvestRepayMapper investRepayMapper,
                                  LoanRepayMapper loanRepayMapper,
                                  InvestMapper investMapper,
-                                 LoanMapper loanMapper) {
-        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper);
+                                 LoanMapper loanMapper,
+                                 UserBillMapper userBillMapper) {
+        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper, userBillMapper);
         this.investMapper = investMapper;
         this.investRepayMapper = investRepayMapper;
         this.loanMapper = loanMapper;
         this.loanRepayMapper = loanRepayMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override

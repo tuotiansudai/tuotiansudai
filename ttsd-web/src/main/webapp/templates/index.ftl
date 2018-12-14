@@ -203,22 +203,22 @@
                 <a href="/about/media" class="hot-more">更多></a>
             </h3>
             <ul class="media-list">
-                <li><i>●</i><a rel="nofollow" href="http://www.greatchinese.com.cn/news/hyxw/20160907/15431.html" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
-                    <time>2016-09-07</time>
+                <li><i>●</i><a rel="nofollow" href="https://www.mika18.com/wdxw/ptxw/982.html" target="_blank">拓天伟业成建设银行“税易-助保贷”唯一运营商</a>
+                    <time>2017-07-03</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://www.hao123.com/mid?key=pZwYTjCEQLwEIgwGmyt8mvqVQvbvn1Tvnj63n10dnHT4PHR3Pj0kQs&from=tuijian&pn=1&qq-pf-to=pcqq.c2c"
-                               target="_blank">新春到，送好礼，拓天速贷年货大礼包疯狂派送中</a>
-                    <time>2016-03-31</time>
+                <li><i>●</i><a rel="nofollow" href="https://baijiahao.baidu.com/s?id=1571613495782360&wfr=spider&for=pc"
+                               target="_blank">保障体系再升级，拓天速贷牵手CFCA</a>
+                    <time>2017-06-30</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台
+                <li><i>●</i><a rel="nofollow" href="https://baijiahao.baidu.com/s?id=1567754437495750&wfr=spider&for=pc" target="_blank">乘“风”破浪·拓天速贷傲立行业改革潮头</a>
+                    <time>2016-05-19</time>
+                </li>
+                <li><i>●</i><a rel="nofollow" href="http://q.dahe.cn/2016/03-14/106571836.html" target="_blank">拓天速贷：财富盛宴大平台
                     感恩豪礼滚滚来</a>
                     <time>2016-03-14</time>
                 </li>
-                <li><i>●</i><a rel="nofollow" href="http://finance.jrj.com.cn/biz/2016/02/02170120525459.shtml" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元出借红包</a>
-                    <time>2016-01-20</time>
-                </li>
-                <li><i>●</i><a rel="nofollow" href="http://w.huanqiu.com/r/MV8wXzgyNzQ4NDZfMTM5NF8xNDUxMzAzNzYy" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
-                    <time>2015-12-28</time>
+                <li><i>●</i><a rel="nofollow" href="http://www.kaixian.tv/gd/2016/0201/994178.html" target="_blank">拓天速贷：新年贺岁嗨翻天 全民领取888元出借红包</a>
+                    <time>2016-02-01</time>
                 </li>
             </ul>
             <div class="media-logo-section sprite-homepage-media"></div>

@@ -20,7 +20,7 @@
                     <p class="single-title">1、充值是否有上下限？</p>
 
                     <p class="single-answer">
-                        答：单笔充值金额必须大于或等于1元，网银支付限额由银行或您个人设置，快捷支付时，单笔/单日限额均为5万元（招商银行除外，单笔/单日限额分别为1000元/10000元。）</p>
+                        答：单笔充值金额必须大于或等于1元，网银支付限额由银行或您个人设置，快捷支付时，充值金额需参考各银行单笔/单日限额。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -124,7 +124,7 @@
 
                     <p class="single-title">1、目前有哪几种回款方式？</p>
 
-                    <p class="single-answer">答：1种，先付收益后还本金，按天计息，放款后生息。</p>
+                    <p class="single-answer">答：2种，先付收益后还本金，按天计息，放款后生息；到期还本付息，按天计息，放款后生息。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
