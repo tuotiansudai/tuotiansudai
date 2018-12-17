@@ -36,7 +36,7 @@ public class TransferFeeDiagnosis extends UserBillBusinessDiagnosis {
     @Override
     public void diagnosis(UserBillModel userBillModel, DiagnosisContext context) {
         TransferApplicationModel tracedObject = transferApplicationMapper.findById(userBillModel.getOrderId());
-        long transferInterestAmount = userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.INVEST_FEE).stream().mapToLong(UserBillModel::getAmount).sum();
+        long transferInterestAmount = userBillMapper.findByOrderIdAndBusinessType(userBillModel.getOrderId(), UserBillBusinessType.TRANSFER_INVEST_FEE).stream().mapToLong(UserBillModel::getAmount).sum();
         SingleObjectDiagnosis
                 // exist
                 .init(userBillModel, tracedObject, this::buildTracedObjectId)

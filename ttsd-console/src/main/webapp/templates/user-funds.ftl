@@ -46,7 +46,7 @@
                     <#list businessTypeList as businessType>
                         <#if businessType != 'PAYROLL'>
                             <option value="${businessType}"
-                                <#if userBillBusinessType?has_content && businessType == userBillBusinessType>selected</#if>>${businessType.description}</option>
+                                <#if userBillBusinessType?has_content && businessType == userBillBusinessType>selected</#if>>${businessType.description}<#if businessType == 'TRANSFER_INVEST_FEE'>(逾期债转)</#if></option>
                         </#if>
                     </#list>
                 </select>
