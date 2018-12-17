@@ -13,6 +13,7 @@ public enum UserBillBusinessType {
     OVERDUE_REPAY("逾期还款"),
     OVERDUE_INTEREST("逾期罚息"),
     INVEST_FEE("利息管理费"),
+    TRANSFER_INVEST_FEE("利息管理费"),   //逾期债权转让利息管理费
     OVERDUE_INTEREST_FEE("逾期罚息管理费"),
     TRANSFER_FEE("债权转让管理费"),
     ACTIVITY_REWARD("活动奖励"),

@@ -411,7 +411,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (paybackResponseModel.isSuccess()) {
                 AmountTransferMessage transferAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
                 AmountTransferMessage transferFeeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
-                AmountTransferMessage transferInterestAtm = interestFee > 0 ? new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, interestFee, UserBillBusinessType.INVEST_FEE, null, null) : null;
+                AmountTransferMessage transferInterestAtm = interestFee > 0 ? new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, transferInvestModel.getLoginName(), transferApplicationId, interestFee, UserBillBusinessType.TRANSFER_INVEST_FEE, null, null) : null;
                 transferFeeAtm.setNext(transferInterestAtm);
                 transferAtm.setNext(transferFeeAtm);
                 mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, transferAtm);
