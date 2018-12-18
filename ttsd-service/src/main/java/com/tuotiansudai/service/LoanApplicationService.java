@@ -4,6 +4,7 @@ import cn.jpush.api.utils.StringUtils;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
+import com.tuotiansudai.dto.LoanConsumeApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.LoanApplicationModel;
@@ -20,13 +21,13 @@ public class LoanApplicationService {
     private static Logger logger = Logger.getLogger(LoanApplicationService.class);
 
     @Autowired
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    LoanApplicationMapper loanApplicationMapper;
+    private LoanApplicationMapper loanApplicationMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
         if (null == accountMapper.findByLoginName(loanApplicationDto.getLoginName())) {
@@ -57,6 +58,10 @@ public class LoanApplicationService {
         } catch (Exception e) {
             logger.info(e);
         }
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public BaseDto<BaseDataDto> createConsume(LoanConsumeApplicationDto loanConsumeApplicationDto){
         return new BaseDto<>(new BaseDataDto(true));
     }
 }

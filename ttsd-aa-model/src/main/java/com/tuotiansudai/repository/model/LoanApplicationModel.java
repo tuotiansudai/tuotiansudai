@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanApplicationDto;
+import com.tuotiansudai.enums.LoanApplicationStatus;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -40,6 +41,9 @@ public class LoanApplicationModel implements Serializable {
     //性别
     private String sex;
 
+    private Long loanId;  //生成的标的
+    private LoanApplicationStatus status; //审核状态
+    private boolean isDivorced;     //是否离异
 
     public LoanApplicationModel() {
     }
@@ -257,5 +261,29 @@ public class LoanApplicationModel implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public LoanApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanApplicationStatus status) {
+        this.status = status;
+    }
+
+    public boolean isDivorced() {
+        return isDivorced;
+    }
+
+    public void setDivorced(boolean divorced) {
+        isDivorced = divorced;
     }
 }

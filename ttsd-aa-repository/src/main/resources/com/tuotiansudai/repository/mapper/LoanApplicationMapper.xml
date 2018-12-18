@@ -32,17 +32,34 @@
         <result column="loan_usage" property="loanUsage"/>
         <result column="else_pledge" property="elsePledge"/>
         <result column="sex" property="sex"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="status" property="status"/>
+        <result column="is_divorced" property="isDivorced"/>
+    </resultMap>
+
+    <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterials">
+        <id column="id" property="id"/>
+        <result column="loan_application_id" property="loanApplicationId"/>
+        <result column="identity_prove_urls" property="identityProveUrls"/>
+        <result column="income_prove_urls" property="incomeProveUrls"/>
+        <result column="credit_prove_urls" property="creditProveUrls"/>
+        <result column="marriage_prove_urls" property="marriageProveUrls"/>
+        <result column="property_prove_urls" property="propertyProveUrls"/>
+        <result column="together_loaner" property="togetherLoaner"/>
+        <result column="together_prove_urls" property="togetherProveUrls"/>
+        <result column="drivers_license" property="driversLicense"/>
     </resultMap>
 
     <insert id="create" parameterType="LoanApplicationModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application`
         (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
         updated_by, updated_time,identity_number,address,age,is_married,have_credit_report,work_position,sesame_credit,
-        home_income,loan_usage,else_pledge,sex)
+        home_income,loan_usage,else_pledge,sex,status,is_divorced)
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
-        #{comment}, #{createdTime},
-        #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},#{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex})
+        #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},
+        #{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex},
+        #{status},#{isDivorced})
     </insert>
 
     <update id="update" parameterType="LoanApplicationModel">
@@ -110,7 +127,6 @@
         <if test="sex != null">
             sex = #{sex},
         </if>
-
         comment = #{comment},
         amount = #{amount},
         period = #{period}
@@ -128,19 +144,22 @@
     </select>
 
     <select id="findPagination" resultMap="LoanApplicationResultMap">
-        SELECT
-        *
-        FROM
-          `aa`.`loan_application`
+        SELECT * FROM `aa`.`loan_application` where pledge_type in ('VEHICLE', 'HOUSE')
         ORDER BY created_time DESC
         LIMIT #{index}, #{pageSize}
     </select>
 
     <select id="findCount" resultType="java.lang.Long">
-        SELECT
-          COUNT(1)
-        FROM
-          `aa`.`loan_application`
+        SELECT COUNT(1) FROM `aa`.`loan_application` where pledge_type in ('VEHICLE', 'HOUSE')
     </select>
+
+    <insert id="createMaterials" parameterType="LoanApplicationMaterialsModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`loan_application_materials`
+        (loan_application_id, identity_prove_urls, income_prove_urls, credit_prove_urls, marriage_prove_urls,
+        property_prove_urls, together_loaner, together_prove_urls, drivers_license)
+        VALUES
+        (#{loanApplicationId}, #{identityProveUrls}, #{incomeProveUrls}, #{creditProveUrls}, #{marriageProveUrls},
+         #{propertyProveUrls}, #{togetherLoaner}, #{togetherProveUrls},#{driversLicense})
+    </insert>
 
 </mapper>

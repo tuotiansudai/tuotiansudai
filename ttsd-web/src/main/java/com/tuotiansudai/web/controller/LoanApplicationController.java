@@ -3,11 +3,10 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.dto.LoanConsumeApplicationDto;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -23,16 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/loan-application")
 public class LoanApplicationController {
 
-    static Logger logger = Logger.getLogger(LoanApplicationController.class);
+    private static Logger logger = Logger.getLogger(LoanApplicationController.class);
 
     @Autowired
-    LoanApplicationService loanApplicationService;
+    private LoanApplicationService loanApplicationService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    AccountService accountService;
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -52,8 +48,8 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/borrow-apply", method = RequestMethod.GET)
     public ModelAndView loanApplication(@RequestParam("type")PledgeType pledgeType) {
-        ModelAndView modelAndView = new ModelAndView("loan-borrow-apply", "responsive", true);
-        UserModel userModel=userService.findByMobile(LoginUserInfo.getMobile());
+        ModelAndView modelAndView = new ModelAndView(pledgeType == PledgeType.NONE ? "loan-consume-apply" : "loan-borrow-apply", "responsive", true);
+        UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
         modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
         modelAndView.addObject("age", IdentityNumberValidator.getAgeByIdentityCard(userModel.getIdentityNumber(),18));
         modelAndView.addObject("sex", "MALE".equalsIgnoreCase(IdentityNumberValidator.getSexByIdentityCard(userModel.getIdentityNumber(),"MALE"))?"男":"女");
@@ -68,12 +64,18 @@ public class LoanApplicationController {
     @ResponseBody
     public BaseDto<BaseDataDto> create(@RequestBody LoanApplicationDto loanApplicationDto) {
         String loginName = LoginUserInfo.getLoginName();
-        if (StringUtils.isEmpty(loginName)) {
-            logger.info("loginName is Empty!");
-        }
-        loanApplicationDto.setLoginName(null == loginName ? "" : loginName);
+        loanApplicationDto.setLoginName(null == LoginUserInfo.getLoginName() ? "" : loginName);
         return loanApplicationService.create(loanApplicationDto);
     }
+
+
+    @RequestMapping(value = "/create-consume", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> createConsume(@RequestBody LoanConsumeApplicationDto loanConsumeApplicationDto) {
+        loanConsumeApplicationDto.setLoginName(LoginUserInfo.getLoginName());
+        return loanApplicationService.createConsume(loanConsumeApplicationDto);
+    }
+
     @RequestMapping(value = "/success", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView success() {
