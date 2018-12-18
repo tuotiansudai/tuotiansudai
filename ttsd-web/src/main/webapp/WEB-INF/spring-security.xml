@@ -115,7 +115,9 @@
         <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
-        <intercept-url pattern="/loan-application/create" access="not isAnonymous()" method="POST"/>
+        <intercept-url pattern="/loan-application/create" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
+        <intercept-url pattern="/loan-application/create-consume" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
+        <intercept-url pattern="/loan-application/upload" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="POST"/>
         <intercept-url pattern="/loan-application/borrow-apply" access="hasAnyAuthority('INVESTOR', 'LOANER')" method="GET"/>
         <intercept-url pattern="/assign-coupon" access="not isAnonymous()"/>
         <intercept-url pattern="/risk-estimate/**" access="not isAnonymous()"/>
