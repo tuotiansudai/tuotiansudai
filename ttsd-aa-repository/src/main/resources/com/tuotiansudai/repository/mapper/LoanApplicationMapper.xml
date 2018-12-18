@@ -37,7 +37,7 @@
         <result column="is_divorced" property="isDivorced"/>
     </resultMap>
 
-    <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterials">
+    <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterialsModel">
         <id column="id" property="id"/>
         <result column="loan_application_id" property="loanApplicationId"/>
         <result column="identity_prove_urls" property="identityProveUrls"/>
