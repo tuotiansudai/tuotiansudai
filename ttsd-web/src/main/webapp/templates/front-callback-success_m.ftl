@@ -3,13 +3,13 @@
 <div class="my-account-content apply-transfer-success">
 
         <#if ["INVEST_PROJECT_TRANSFER", 'INVEST_PROJECT_TRANSFER_NOPWD']?seq_contains(service)>
-            <div class="m-header">投资成功</div>
+            <div class="m-header">出借成功</div>
             <div class="info">
                 <i class="icon-success"></i>
-                <em class="success-tips">投资成功</em>
+                <em class="success-tips">出借成功</em>
                 <ul class="input-list">
                     <li>
-                        <label>投资金额</label>
+                        <label>出借金额</label>
                         <span><em class="money">${amount}</em>元</span>
                     </li>
                     <li>
@@ -103,7 +103,7 @@
                     <em class="success-tips">转让成功</em>
                     <ul class="input-list">
                         <li>
-                            <label>投资金额</label>
+                            <label>出借金额</label>
                             <span><em class="money">${amount}</em>元</span>
                         </li>
                         <li>

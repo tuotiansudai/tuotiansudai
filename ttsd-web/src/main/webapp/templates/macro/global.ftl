@@ -22,7 +22,7 @@
 <#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="" site='main'>
     <#local mainMenus=[
     {"title":"首页", "url":"/","category":"16顶部导航","navigation":"true"},
-    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
+    {"title":"我要出借", "url":"/loan-list","category":"17顶部导航","navigation":"true","leftNavs":[
         {"title":"直投项目", "url":"/loan-list"},
         {"title":"转让项目", "url":"/transfer-list"}
     ]},
@@ -30,7 +30,7 @@
 
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","navigation":"true","leftNavs":[
         {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
-        {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
+        {"title":"我的出借", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
         {"title":"债权转让", "url":"/transferrer/transfer-application-list/TRANSFERABLE", "role":"'USER', 'INVESTOR'"},
         {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
         {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
@@ -41,16 +41,36 @@
         {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"拓天问答", "url":"${askServer}","category":"22顶部导航","navigation":"true"},
-    {"title":"信息披露", "url":"/about/company","category":"20顶部导航", "navigation":"true","leftNavs":[
-        {"title":"公司介绍", "url":"/about/company"},
-        {"title":"团队介绍", "url":"/about/team"},
+    {"title":"信息披露", "url":"/about/team","category":"20顶部导航", "navigation":"true","leftNavs":[
+        {"title":"组织架构", "url":"/about/team","current": "team", "subLeftMenuItem":[
+            {"title":"关于我们", "offsetName": ".to_about_us"},
+            {"title":"拓天理念", "offsetName": ".to_ideas"},
+            {"title":"拓天价值观", "offsetName": ".to_value"},
+            {"title":"工商信息", "offsetName": ".to_business_info"},
+            {"title":"拓天资质", "offsetName": ".to_qualification"},
+            {"title":"法人承诺书", "offsetName": ".to_commitment"},
+            {"title":"组织架构", "offsetName": ".to_structure"},
+            {"title":"公司管理", "offsetName": ".to_managers"},
+            {"title":"从业人员", "offsetName": ".to_practitioners"},
+            {"title":"公司环境", "offsetName": ".to_environment"},
+            {"title":"合作伙伴", "offsetName": ".to_partners"},
+            {"title":"其他信息", "offsetName": ".to_others_info"}
+        ]},
         {"title":"拓天公告", "url":"/about/notice"},
         {"title":"媒体报道", "url":"/about/media"},
-        {"title":"网贷知识", "url":"/about/knowledge"},
-        {"title":"审计报告", "url":"/about/audit-report"},
+        {"title":"合规报告", "url":"/about/audit-report","current": "audit-report", "subLeftMenuItem": [
+            {"title":"审计报告", "offsetName": ".to_shenji_report"},
+            {"title":"合规报告", "offsetName": ".to_hegui_report"},
+            {"title":"其他类报告", "offsetName": ".to_others_report"}
+        ]},
         {"title":"服务费用", "url":"/about/service-fee"},
-        {"title":"联系我们", "url":"/about/contact"},
-        {"title":"运营数据", "url":"/about/operational"}
+        {"title":"联系我们", "url":"/about/contact"}
+    ]},
+    {"title":"运营数据", "url":"/about/operational","category":"30顶部导航","navigation":"true"},
+    {"title":"网贷课堂", "url":"/about/knowledge","category":"28顶部导航", "navigation":"true","leftNavs":[
+        {"title":"法律法规", "url":"/about/knowledge"},
+        {"title":"出借人教育", "url":"/about/investor-knowledge"},
+        {"title":"基础知识", "url":"/about/base-knowledge"}
     ]},
     {"title":"帮助中心", "url":"/help/help-center","category":"21顶部导航", "navigation":"false","leftNavs":[
         {"title":"注册认证", "url":"/help/account"},
@@ -96,7 +116,7 @@
         gtag('config', 'UA-115616275-1');
     </script>
 
-    <link href="${commonStaticServer}/images/favicon.ico" id="icoFavicon" rel="shortcut icon" type="image/x-icon" />
+    <link href="/favicon.ico" id="icoFavicon" rel="shortcut icon" type=rel="shortcut icon""image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${css.globalFun_page!}" charset="utf-8"/>
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${pageCss}" charset="utf-8"/>

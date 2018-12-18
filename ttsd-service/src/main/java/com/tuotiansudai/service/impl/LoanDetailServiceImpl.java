@@ -209,7 +209,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("收入水平", loanerDetail.getIncome())
                     .put("就业情况", loanerDetail.getEmploymentStatus())
                     .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
-                    .put("逾期率", MessageFormat.format("{0}%", new BigDecimal(loanRepayMapper.calculateOverdueRate(loanModel.getAgentLoginName()) * 100).setScale(0, BigDecimal.ROUND_DOWN).toString()))
+                    .put("逾期笔数", MessageFormat.format("{0}笔", loanMapper.findByStatus(LoanStatus.OVERDUE).stream().filter(model->model.getLoanerIdentityNumber().equals(loanModel.getLoanerIdentityNumber())).count()))
                     .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
                     .build());
         }
@@ -219,7 +219,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             List<Map<String, String>> pledgeHouseDetail = Lists.newArrayList();
             for (PledgeHouseModel pledgeHouseModel : pledgeHouseModelList) {
                 Map<String, String> stringMap = ImmutableMap.<String, String>builder()
-                        .put("抵押物所在地", pledgeHouseModel.getPledgeLocation())
+                        .put("房产所在地", pledgeHouseModel.getPledgeLocation())
                         .put("抵押物估值", pledgeHouseModel.getEstimateAmount())
                         .put("房屋面积", pledgeHouseModel.getSquare())
                         .put("房产证编号", pledgeHouseModel.getPropertyCardId())
@@ -238,7 +238,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             List<Map<String, String>> pledgeVehicleDetail = Lists.newArrayList();
             for (PledgeVehicleModel pledgeVehicleModel : pledgeVehicleModelList) {
                 Map<String, String> stringMap = ImmutableMap.<String, String>builder()
-                        .put("抵押物所在地", pledgeVehicleModel.getPledgeLocation())
+                        .put("车辆所在地", pledgeVehicleModel.getPledgeLocation())
                         .put("车辆品牌", pledgeVehicleModel.getBrand())
                         .put("车辆型号", pledgeVehicleModel.getModel())
                         .put("抵押物估值", pledgeVehicleModel.getEstimateAmount())

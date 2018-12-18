@@ -14,8 +14,8 @@
             <tbody>
             <tr>
                 <td>技术服务费</td>
-                <td>投资人</td>
-                <td style="box-sizing:border-box;width:310px;">投资应收收益的10%（基础）。根据会员等级的不同，技术服务费会有相应的优惠：V0、V1会员收取10%，V2收取9%，V3、V4收取8%，V5仅收取7%</td>
+                <td>出借人</td>
+                <td style="box-sizing:border-box;width:310px;">出借应收收益的10%（基础）。根据会员等级的不同，技术服务费会有相应的优惠：V0、V1会员收取10%，V2收取9%，V3、V4收取8%，V5仅收取7%</td>
                 <td>项目回款后自动扣除</td>
             </tr>
             <tr>
@@ -26,8 +26,8 @@
             </tr>
             <tr>
                 <td>提现费用</td>
-                <td>投资人</td>
-                <td>每笔提现手续费${withdrawFee}元，费用由投资人承担</td>
+                <td>出借人</td>
+                <td>每笔提现手续费${withdrawFee}元，费用由出借人承担</td>
                 <td>提现时自动扣除</td>
             </tr>
             <tr>

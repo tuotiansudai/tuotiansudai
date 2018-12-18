@@ -25,6 +25,7 @@
         <result column="achievements" property="achievements"
                 typeHandler="com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler"/>
         <result column="invest_fee_rate" property="investFeeRate"/>
+        <result column="is_overdue_transfer" property="isOverdueTransfer"/>
     </resultMap>
 
     <resultMap id="investPaginationItemView" type="InvestPaginationItemView">
@@ -53,6 +54,8 @@
         <result column="city" property="city"/>
         <result column="identity_number" property="identityNumber"/>
         <result column="transfer_status" property="transferStatus"/>
+        <result column="last_period_repay_status" property="lastPeriodRepayStatus"/>
+        <result column="is_overdue_transfer" property="isOverdueTransfer"/>
     </resultMap>
 
     <resultMap id="heroRankingView" type="HeroRankingView">
@@ -80,6 +83,7 @@
         <result column="base_rate" property="baseRate"></result>
         <result column="activity_rate" property="activityRate"></result>
         <result column="transfer_status" property="transferStatus"></result>
+        <result column="is_overdue_transfer" property="isOverdueTransfer"></result>
 
     </resultMap>
 
@@ -104,7 +108,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time, updated_time, invest_time, trading_time, achievements, invest_fee_rate, contract_no, is_overdue_transfer
     </sql>
 
     <insert id="create" parameterType="InvestModel">
@@ -114,7 +118,7 @@
         value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source},
         #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime}, now(), #{investTime}, #{tradingTime},
         #{achievements, typeHandler=com.tuotiansudai.repository.mybatis.InvestAchievementListTypeHandler},
-        #{investFeeRate}, #{contractNo})
+        #{investFeeRate}, #{contractNo}, 0)
     </insert>
 
     <update id="update" parameterType="InvestModel">
@@ -307,7 +311,9 @@
         (SELECT actual_interest FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id) AS
         extra_actual_interest,
         invest.status AS invest_status,
-        invest.transfer_status as transfer_status
+        invest.transfer_status as transfer_status,
+        invest.is_overdue_transfer as is_overdue_transfer,
+        (select invest_repay.status from invest_repay where invest_repay.invest_id =invest.id and invest_repay.period = loan.periods) AS last_period_repay_status
         FROM
         invest join loan on invest.loan_id = loan.id
         <where>
@@ -350,6 +356,15 @@
             </if>
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
+            </if>
+            <if test="transferType != null and transferType == 'normalTransfer'">
+                and invest.transfer_status not in ('NONTRANSFERABLE') and invest.is_overdue_transfer = 0
+            </if>
+            <if test="transferType != null and transferType == 'overdueTransfer'">
+                and invest.is_overdue_transfer = 1
+            </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
             </if>
         </where>
         ORDER BY CASE invest.trading_time WHEN NULL THEN invest.created_time ELSE invest.trading_time END DESC,
@@ -451,6 +466,15 @@
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
+            <if test="transferType != null and transferType == 'normalTransfer'">
+                and invest.transfer_status not in ('NONTRANSFERABLE') and invest.is_overdue_transfer = 0
+            </if>
+            <if test="transferType != null and transferType == 'overdueTransfer'">
+                and invest.is_overdue_transfer = 1
+            </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
+            </if>
         </where>
     </select>
 
@@ -531,6 +555,15 @@
             <if test="preferenceType != null and preferenceType.name() == 'INVEST_BENEFIT'">
                 AND EXISTS (SELECT 1 FROM invest_extra_rate WHERE invest_extra_rate.invest_id = invest.id)
             </if>
+            <if test="transferType != null and transferType == 'normalTransfer'">
+                and invest.transfer_status not in ('NONTRANSFERABLE') and invest.is_overdue_transfer = 0
+            </if>
+            <if test="transferType != null and transferType == 'overdueTransfer'">
+                and invest.is_overdue_transfer = 1
+            </if>
+            <if test="transferType != null and transferType == 'no'">
+                and invest.transfer_status = 'NONTRANSFERABLE' and invest.is_overdue_transfer = 0
+            </if>
         </where>
     </select>
 
@@ -603,8 +636,14 @@
         select login_name from invest where invest.status = 'SUCCESS'
     </select>
 
-    <select id="findInvestorCount" resultType="long">
-        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS' and transfer_invest_id is null
+    <select id="findInvestorCountByRepayStatus" resultType="long">
+        select count(distinct(login_name)) from invest JOIN invest_repay on invest.id = invest_repay.invest_id where invest.loan_id !='1' and invest.status = 'SUCCESS'
+        <if test="RepayStatusList != null and RepayStatusList.size != 0">
+            and invest_repay.status in
+            <foreach item="item" index="index" collection="RepayStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
     <select id="findRegisteredNotInvestCount" resultType="long">
@@ -783,6 +822,7 @@
         invest.amount ,
         invest.created_time,
         invest.transfer_status,
+        invest.is_overdue_transfer,
         loan.name as loan_name,
         loan.base_rate,
         loan.activity_rate,
@@ -805,21 +845,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
         ORDER BY invest.created_time DESC
         limit #{index}, #{pageSize}
     </select>
@@ -836,21 +879,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
     </select>
 
     <select id="findTransferableApplicationPaginationByLoginName" parameterType="map" resultMap="investResultMap"
@@ -863,6 +909,7 @@
         invest.amount,
         invest.status,
         invest.transfer_status,
+        invest.is_overdue_transfer,
         invest.source,
         invest.is_auto_invest,
         invest.created_time,
@@ -875,22 +922,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND ld.non_transferable = 0
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
         ORDER BY invest.created_time DESC
         limit #{index}, #{pageSize}
     </select>
@@ -907,22 +956,24 @@
         loan_details ld on invest.loan_id = ld.loan_id
         WHERE
         invest.login_name = #{loginName}
-        AND loan.status = 'REPAYING'
-        AND ld.non_transferable = 0
-        AND invest.status = 'SUCCESS'
-        AND invest.transfer_status = 'TRANSFERABLE'
         AND invest.transfer_invest_id IS NULL
-        AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
-        AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
-        and lr.status = 'REPAYING'), '%Y-%m-%d'),
-        DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
-        days_limit
-        FROM
-        transfer_rule)
+        AND invest.status = 'SUCCESS'
         AND (NOT EXISTS (SELECT * FROM `transfer_application` ta1 where ta1.`transfer_invest_id` = invest.id)
         or DATEDIFF(DATE_FORMAT(NOW(), '%Y-%m-%d'),DATE_FORMAT((select max(ta2.application_time) from
         `transfer_application` ta2 where ta2.`transfer_invest_id` = invest.`id` and ta2.status = 'CANCEL'),'%Y-%m-%d'))
         &lt;&gt; 0)
+        AND
+            ((invest.is_overdue_transfer = 1 and EXISTS(select 1 from invest_repay where invest_repay.invest_id = invest.id and invest_repay.period=loan.periods and invest_repay.status='OVERDUE'))
+            OR
+            (loan.status = 'REPAYING'
+            AND invest.transfer_status = 'TRANSFERABLE'
+            AND DATEDIFF(DATE_FORMAT((SELECT min(lr.repay_date) FROM `loan_repay` lr where lr.`loan_id` = loan.`id`
+            AND DATE(NOW()) >= DATE(loan.`recheck_time`) AND DATE(lr.`repay_date`) >=DATE(NOW())
+            and lr.status = 'REPAYING'), '%Y-%m-%d'),
+            DATE_FORMAT(NOW(), '%Y-%m-%d')) > (SELECT
+            days_limit
+            FROM
+            transfer_rule)))
     </select>
 
     <select id="findCountSuccessByLoginNameAndProductTypes" parameterType="map" resultType="int">
@@ -1233,5 +1284,31 @@
         AND invest.status = 'SUCCESS'
         AND invest.transfer_invest_id IS NULL
     </select>
+    <select id="sumUsedFund" parameterType="string" resultType="long">
+        SELECT IFNULL(sum(amount),0) FROM invest JOIN loan ON invest.loan_id = loan.id
+        WHERE invest.status = 'SUCCESS'
+        AND loan.id!='1'
+        AND( loan.status='RAISING' OR loan.status='RECHECK' OR loan.status='REPAYING' OR loan.status='OVERDUE')
+        AND transfer_status !='SUCCESS'
+        AND login_name=#{loginName}
+    </select>
 
+    <update id="updateIsOverdueTransfer" parameterType="map">
+        update invest set is_overdue_transfer = 1 where id = #{investId}
+    </update>
+
+    <select id="sumInvestCountByRepayStatus" parameterType="map" resultType="long">
+        SELECT count(DISTINCT(invest.id)) from invest join invest_repay on invest.id = invest_repay.invest_id where invest.loan_id !='1' and invest.status='SUCCESS' and invest.transfer_invest_id is null
+        <if test="repayStatusList != null and repayStatusList.size != 0">
+            and invest_repay.status in
+            <foreach item="item" index="index" collection="repayStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="sumInvestAmountGroupByLoginNameByTopTen" parameterType="map" resultType="long">
+        select sum(amount) as sumAmount from invest join loan on invest.loan_id = loan.id where loan.id !='1' and loan.status in ('OVERDUE', 'REPAYING') and invest.status='SUCCESS' and invest.transfer_invest_id is null
+        group by login_name order by sum(amount) desc limit 0, 10
+    </select>
 </mapper>

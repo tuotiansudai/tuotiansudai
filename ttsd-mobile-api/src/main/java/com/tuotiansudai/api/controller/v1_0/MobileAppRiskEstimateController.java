@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@Api(description = "用户投资偏好测评")
+@Api(description = "用户出借偏好测评")
 public class MobileAppRiskEstimateController extends MobileAppBaseController {
 
     private final RiskEstimateService riskEstimateService;

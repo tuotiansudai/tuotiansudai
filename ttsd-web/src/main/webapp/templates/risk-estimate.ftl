@@ -1,11 +1,11 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.risk_estimate}" pageJavascript="${js.risk_estimate}" activeNav="我的账户" activeLeftNav="个人资料" title="投资偏好评估">
+<@global.main pageCss="${css.risk_estimate}" pageJavascript="${js.risk_estimate}" activeNav="我的账户" activeLeftNav="个人资料" title="出借偏好评估">
 <div class="content-container invetsment-preferences" id="investmentBox">
-    <h4 class="column-title"><em class="tc">投资偏好评估</em></h4>
+    <h4 class="column-title"><em class="tc">出借偏好评估</em></h4>
     <div class="edit-item">
-        <h3 class="title-name">用户投资偏好评估</h3>
+        <h3 class="title-name">用户出借偏好评估</h3>
         <div class="intro-item">
-            以下问题根据您的财务状况、投资经验、投资风格、风险偏好和风险承受能力等对您进投资偏好评估，它可协助我们评估您的投资偏好和风险承受能力，有助于您控制投资的风险，同时也便于我行据此为您提供更准确的的投资服务。
+            以下问题根据您的财务状况、出借经验、出借风格、风险偏好和风险承受能力等对您进出借偏好评估，它可协助我们评估您的出借偏好和风险承受能力，有助于您控制出借的风险，同时也便于我行据此为您提供更准确的的出借服务。
         </div>
         <div class="problem-list">
             <dl>

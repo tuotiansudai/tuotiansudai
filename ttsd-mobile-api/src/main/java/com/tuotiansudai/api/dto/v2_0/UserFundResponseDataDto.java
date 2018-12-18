@@ -13,14 +13,14 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "可用余额", example = "1000")
     private long balance; //可用余额(分)
 
-    @ApiModelProperty(value = "累计收益=已收投资收益+已收投资奖励(阶梯加息)+已收红包奖励+已收推荐奖励", example = "100")
-    private long totalIncome; //累计收益=已收投资收益+已收投资奖励(阶梯加息)+已收红包奖励+已收推荐奖励
+    @ApiModelProperty(value = "累计收益=已收出借收益+已收出借奖励(阶梯加息)+已收红包奖励+已收推荐奖励", example = "100")
+    private long totalIncome; //累计收益=已收出借收益+已收出借奖励(阶梯加息)+已收红包奖励+已收推荐奖励
 
-    @ApiModelProperty(value = "已收投资收益(分)", example = "100")
-    private long actualTotalInterest; //已收投资收益(分)
+    @ApiModelProperty(value = "已收出借收益(分)", example = "100")
+    private long actualTotalInterest; //已收出借收益(分)
 
-    @ApiModelProperty(value = "已收投资奖励(阶梯加息)(分)", example = "10")
-    private long actualTotalExtraInterest; //已收投资奖励(阶梯加息)(分)
+    @ApiModelProperty(value = "已收出借奖励(阶梯加息)(分)", example = "10")
+    private long actualTotalExtraInterest; //已收出借奖励(阶梯加息)(分)
 
     @ApiModelProperty(value = "已收推荐奖励(分)", example = "10")
     private long referRewardAmount; //已收推荐奖励(分)
@@ -28,20 +28,20 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "已收红包奖励(分)", example = "10")
     private long redEnvelopeAmount; //已收红包奖励(分)
 
-    @ApiModelProperty(value = "待收回款=待收投资本金+待收投资收益+待收投资奖励(阶梯加息)", example = "1")
-    private long expectedTotalCorpusInterest; //待收回款=待收投资本金+待收投资收益+待收投资奖励(阶梯加息)
+    @ApiModelProperty(value = "待收回款=待收出借本金+待收出借收益+待收出借奖励(阶梯加息)", example = "1")
+    private long expectedTotalCorpusInterest; //待收回款=待收出借本金+待收出借收益+待收出借奖励(阶梯加息)
 
-    @ApiModelProperty(value = "待收投资本金(分)", example = "1")
-    private long expectedTotalCorpus; //待收投资本金(分)
+    @ApiModelProperty(value = "待收出借本金(分)", example = "1")
+    private long expectedTotalCorpus; //待收出借本金(分)
 
-    @ApiModelProperty(value = "待收投资收益(分)", example = "13")
-    private long expectedTotalInterest; //待收投资收益(分)
+    @ApiModelProperty(value = "待收出借收益(分)", example = "13")
+    private long expectedTotalInterest; //待收出借收益(分)
 
-    @ApiModelProperty(value = "待收投资奖励(阶梯加息)(分)", example = "0")
-    private long expectedTotalExtraInterest; //待收投资奖励(阶梯加息)(分)
+    @ApiModelProperty(value = "待收出借奖励(阶梯加息)(分)", example = "0")
+    private long expectedTotalExtraInterest; //待收出借奖励(阶梯加息)(分)
 
-    @ApiModelProperty(value = "投资冻结资金(分)", example = "0")
-    private long investFrozeAmount; //投资冻结资金(分)
+    @ApiModelProperty(value = "出借冻结资金(分)", example = "0")
+    private long investFrozeAmount; //出借冻结资金(分)
 
     @ApiModelProperty(value = "提现冻结资金(分)", example = "0")
     private long withdrawFrozeAmount; //提现冻结资金(分)
@@ -89,9 +89,12 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "是否显示摇钱树", example = "1")
     private int showMoneyTree = 0; //是否显示摇钱树
 
+    @ApiModelProperty(value = "风险评估可用投资额度，单位:分", example = "1")
+    private long availableInvestMoney;
+
     public UserFundResponseDataDto(UserFundView userFundView, long balance, long point, int membershipLevel,
                                    long membershipPoint, int usableUserCouponCount, Date membershipExpiredDate,
-                                   Date membershipPrivilegeExpiredDate, long experienceBalance) {
+                                   Date membershipPrivilegeExpiredDate, long experienceBalance,long availableInvestMoney) {
         this.balance = balance;
         this.actualTotalInterest = userFundView.getActualTotalInterest();
         this.actualTotalExtraInterest = userFundView.getActualTotalExtraInterest();
@@ -103,8 +106,8 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.actualExperienceInterest = userFundView.getActualExperienceInterest();
         this.totalIncome = this.actualTotalInterest + this.actualTotalExtraInterest + this.referRewardAmount + this.actualTotalCouponInterest + this.actualExperienceInterest;
 
-        this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus();
-        this.expectedTotalInterest = userFundView.getExpectedTotalInterest();
+        this.expectedTotalCorpus = userFundView.getExpectedTotalCorpus() + userFundView.getOverdueTotalCorpus();
+        this.expectedTotalInterest = userFundView.getExpectedTotalInterest() + userFundView.getOverdueTotalInterest() + userFundView.getOverdueTotalDefaultInterest();
         this.expectedTotalExtraInterest = userFundView.getExpectedTotalExtraInterest();
         this.expectedTotalCouponInterest = userFundView.getExpectedCouponInterest();
         this.expectedTotalCorpusInterest = this.expectedTotalCorpus + this.expectedTotalInterest + this.expectedTotalExtraInterest + this.expectedExperienceInterest+this.expectedTotalCouponInterest;
@@ -123,6 +126,7 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
         this.membershipExpiredDate = membershipExpiredDate != null ? "有效期至:" + new SimpleDateFormat("yyyy-MM-dd").format(membershipExpiredDate) : null;
         this.membershipPrivilegeExpiredDate = membershipPrivilegeExpiredDate != null ? String.format("有效期至:%s", DateConvertUtil.format(membershipPrivilegeExpiredDate, "yyyy-MM-dd HH:mm:ss")) : null;
         this.experienceBalance = experienceBalance;
+        this.availableInvestMoney=availableInvestMoney;
     }
 
     public long getBalance() {
@@ -227,5 +231,13 @@ public class UserFundResponseDataDto extends BaseResponseDataDto {
 
     public long getActualTotalCouponInterest() {
         return actualTotalCouponInterest;
+    }
+
+    public long getAvailableInvestMoney() {
+        return availableInvestMoney;
+    }
+
+    public void setAvailableInvestMoney(long availableInvestMoney) {
+        this.availableInvestMoney = availableInvestMoney;
     }
 }

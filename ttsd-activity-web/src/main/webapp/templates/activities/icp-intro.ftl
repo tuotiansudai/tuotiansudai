@@ -4,7 +4,7 @@
 	<div class="top-item compliance-banner">
 		<img src="" width="100%" class="media-pc">
 		<img src="" width="100%" class="media-phone">
-        <div class="invest-tip tip-width">市场有风险，投资需谨慎！</div>
+        <div class="invest-tip tip-width">市场有风险，出借需谨慎！</div>
 	</div>
 	<div class="wp clearfix">
 		<h3>拓天伟业（北京）金融信息服务有限公司正式获得由<span>北京市通信管理局核发的ICP经营许可证</span>，标志着平台在合规化发展道路上又迈进了关键的一步。</h3>

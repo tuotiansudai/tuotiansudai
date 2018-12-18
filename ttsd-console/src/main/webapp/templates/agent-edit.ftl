@@ -7,7 +7,7 @@
         <form class="form-horizontal jq-form" action="<#if edit??>/user-manage/agent/edit<#else >/user-manage/agent/create</#if>" method="post">
 
             <div class="form-group">
-                <label class="col-sm-1 control-label">代理人: </label>
+                <label class="col-sm-1 control-label">权证人: </label>
 
                 <div class="col-sm-4">
                     <input type="hidden" id = "id" name="id" <#if agent??>value="${agent.id!}"</#if> />
@@ -16,7 +16,7 @@
                         <p class="form-control-static"><#if agent??>${agent.loginName!}</#if> </p>
                         <input type="hidden" name="loginName" <#if agent??>value="${agent.loginName!}"</#if>/>
                     <#else >
-                        <input type="text" name="loginName" <#if agent??>value="${agent.loginName!}"</#if> class="form-control jq-loginName" placeholder="" datatype="*" errormsg="代理人不能为空"/>
+                        <input type="text" name="loginName" <#if agent??>value="${agent.loginName!}"</#if> class="form-control jq-loginName" placeholder="" datatype="*" errormsg="权证人不能为空"/>
                     </#if>
                 </div>
             </div>

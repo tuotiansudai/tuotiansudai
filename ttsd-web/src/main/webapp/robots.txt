@@ -4,6 +4,7 @@ Disallow:/css/
 Disallow:/js/
 Disallow:/loan/
 Disallow:/transfer/
+Disallow:/upload/
 Sitemap:https://tuotiansudai.com/sitemap.xml
 Sitemap:https://tuotiansudai.com/cms/sitemap.txt
 Sitemap:https://tuotiansudai.com/ask/sitemap.txt

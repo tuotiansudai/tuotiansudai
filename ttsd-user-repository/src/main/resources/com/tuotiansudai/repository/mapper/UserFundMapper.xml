@@ -15,6 +15,9 @@
         <result column="expected_total_interest" property="expectedTotalInterest"/>
         <result column="expected_total_extra_interest" property="expectedTotalExtraInterest"/>
         <result column="expected_coupon_interest" property="expectedCouponInterest"/>
+        <result column="overdue_total_corpus" property="overdueTotalCorpus"/>
+        <result column="overdue_total_interest" property="overdueTotalInterest"/>
+        <result column="overdue_total_default_interest" property="overdueTotalDefaultInterest"/>
         <result column="invest_froze_amount" property="investFrozeAmount"/>
         <result column="withdraw_froze_amount" property="withdrawFrozeAmount"/>
         <result column="current_month_invest_repay_count" property="currentMonthInvestRepayCount"/>
@@ -64,6 +67,18 @@
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
               from invest_extra_rate
               where login_name = #{loginName} and is_transfer is false and actual_repay_date is null) as expected_total_extra_interest,
+
+              (select ifnull(sum(invest_repay.corpus), 0)
+              from invest_repay join invest on invest_repay.invest_id = invest.id
+              where invest.login_name = #{loginName} and invest_repay.status = 'OVERDUE') as overdue_total_corpus,
+
+              (select ifnull(sum(invest_repay.expected_interest), 0) - sum(invest_repay.expected_fee)
+              from invest_repay join invest on invest_repay.invest_id = invest.id
+              where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status = 'OVERDUE') as overdue_total_interest,
+
+              (select sum(invest_repay.default_interest) + sum(invest_repay.overdue_interest) - sum(invest_repay.default_fee) - sum(invest_repay.overdue_fee)
+              from invest_repay join invest on invest_repay.invest_id = invest.id
+              where invest.loan_id != 1 and login_name = #{loginName} and invest_repay.status = 'OVERDUE') as overdue_total_default_interest,
 
               (select ifnull(sum(invest.amount), 0)
               from invest join loan on invest.loan_id = loan.id

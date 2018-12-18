@@ -58,33 +58,33 @@
             </span>
             </li>
         </#if>
-        <li><span class="info-title"> 免密投资</span>
+        <li><span class="info-title"> 免密出借</span>
             <#if noPasswordInvest>
-                <em class="info">您已开启免密投资，投资快人一步</em>
+                <em class="info">您已开启免密出借，出借快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                 </span>
             <#elseif autoInvest>
-                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，投资快人一步</em>
+                <em class="info">您已授权自动投标，可直接开启免密出借，及时选择心仪标的，出借快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest"  href="javascript:void(0);">开启</a>
                 </span>
             <#else>
-                <em class="info">开启免密投资后，您可及时选择心仪标的，投资快人一步</em>
+                <em class="info">开启免密出借后，您可及时选择心仪标的，出借快人一步</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
                 </span>
             </#if>
         </li>
         <li>
-            <span class="info-title">投资偏好</span>
+            <span class="info-title">出借偏好</span>
             <#if estimate??>
-                <em class="info">${estimate.summary}</em>
+                <em class="info">${estimate.summary}。出借限额为${estimateLimit}元</em>
                 <span class="binding-set">
                     <i class="fa fa-check-circle ok"></i>已评估<a class="setlink" href="/risk-estimate">重置</a>
                 </span>
             <#else>
-                <em class="info">还未进行过投资偏好测评，评估一下更了解自己哦！</em>
+                <em class="info">还未进行过出借偏好测评，评估一下更了解自己哦！</em>
                 <span class="binding-set">
                     <i class="fa fa-times-circle no"></i>未评估<a class="setlink" href="/risk-estimate">评估</a>
                 </span>
@@ -156,7 +156,7 @@
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
     <form id="get_authorization" name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post"  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
-        <div class="tc text-m">推荐您开通免密投资功能，简化投资过程，投资快人一步。</div>
+        <div class="tc text-m">推荐您开通免密出借功能，简化出借过程，出借快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <div class="tc person-info-btn" style="margin-top:50px;">
@@ -168,7 +168,7 @@
 <div id="turnOnNoPasswordInvestDOM_identified" class="pad-m popLayer" style="display: none; ">
     <form id="imageCaptchaForm" name="imageCaptchaForm"  method="post">
         <dl>
-            <dt>推荐您开通免密投资功能，简化投资过程，投资快人一步，确认开启吗？</dt>
+            <dt>推荐您开通免密出借功能，简化出借过程，出借快人一步，确认开启吗？</dt>
             <dd class="mt-20">
                 <span>图形验证码：</span>
                 <input type="text" class="input-control img-captcha image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
@@ -202,7 +202,7 @@
 </div>
 <#--关闭免密支付 -->
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; padding-top:20px;padding-bottom: 0">
-        <div class="tc text-m">免密支付可以帮助您在投资时快速购买标的，<br/>您是否确认关闭免密支付？</div>
+        <div class="tc text-m">免密支付可以帮助您在投出借时快速购买标的，<br/>您是否确认关闭免密支付？</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="tc person-info-btn" style="margin-top:40px;">
             <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>

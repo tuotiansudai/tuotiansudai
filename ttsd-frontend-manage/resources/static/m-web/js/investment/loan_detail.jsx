@@ -22,6 +22,9 @@ let commonFun = require('publicJs/commonFun');
 
 let isEstimate = $buyDetail.data('estimate');
 let isEstimateTransfer  = $transferDetail.data('estimate');
+
+
+
 //领优惠券
 $.when(commonFun.isUserLogin())
     .done(function () {
@@ -100,15 +103,15 @@ $recordTop.find('span').on('click',function() {
     let kindObj = {
         'xianfeng':{
             title:'拓荒先锋',
-            content:'第一位投资的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
+            content:'第一位出借的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
         },
         'biaowang':{
             title:'拓天标王',
-            content:'单标累计投资最高的用户，<br/>获得<i>0.5%加息券，100元红包。</i>'
+            content:'单标累计出借最高的用户，<br/>获得<i>0.5%加息券，100元红包。</i>'
         },
         'dingying':{
             title:'一锤定音',
-            content:'最后一位投资的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
+            content:'最后一位出借的用户，<br/>获得<i>0.2%加息券，50元红包。</i>'
         }
     };
     commonFun.CommonLayerTip({
@@ -486,7 +489,7 @@ function testAmount() {
         $btnWapNormal.prop('disabled',true).text('输入金额应小于项目可投金额');
     }
     else {
-        $btnWapNormal.prop('disabled',false).text('立即投资');
+        $btnWapNormal.prop('disabled',false).text('立即出借');
     }
 
 }
@@ -503,10 +506,28 @@ let isInvestor = 'INVESTOR' === $buyDetail.data('user-role');
 let isAuthentication = 'USER' === $buyDetail.data('authentication');
 let $investForm = $('#investForm');//立即投资表单
 
+//风险等级是否超出
+let avalibableMoney = $buyDetail.data('available-invest-money');
+$amountInputElement.autoNumeric("init");
+let limitMoney =  $buyDetail.data('estimate-limit')/100;
+
+
+let userLevel = $buyDetail.data('estimate-level');
+let loanLevel = $buyDetail.data('loan-estimate-level');
+let isOverLevel = userLevel<loanLevel;
+// let isOverLevel = false;
+//可用额度是否超出
+
+// let isOverQuota = false;
+let userEstimateType = $buyDetail.data('estimate-type');
+let pdfUrl = $buyDetail.data('pdf');
+let pdfUrlTransfer = $transferDetail.data('pdf');
+
 $('#investSubmit').on('click', function(event) {
     event.preventDefault();
     let investAmount = getInvestAmount()/100;
     $amountInputElement.val($amountInputElement.autoNumeric("get"))//格式化还原金额
+    let isOverQuota = avalibableMoney<investAmount*100;
     $.when(commonFun.isUserLogin())
         .done(function() {
             if (isInvestor) {
@@ -538,25 +559,63 @@ $('#investSubmit').on('click', function(event) {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">根据监管要求，出借人在出借前需进行投资偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
 
                         },function () {
-                            commonFun.useAjax({
-                                url: '/risk-estimate',
-                                data: {answers: ['-1']},
-                                type: 'POST'
-                            },function(data) {
-                                layer.closeAll();
-                                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
-                            });
+                            layer.closeAll();
+                            return false;
                         })
                         $('.layui-layer-content').css('height','180px')
                         return false;
                     }else {
-                        noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+                        if(isOverLevel){
+                            commonFun.CommonLayerTip({
+                                btn: ['重新评测','取消'],
+                                area:['280px', '230px'],
+                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateType}，此项目已超出您的风险等级，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                            },function() {
+                                layer.closeAll();
+                                location.href = '/m/risk-estimate'
+
+                            },function () {
+                                layer.closeAll();
+                                return false;
+                            })
+                            $('.layui-layer-content').css('height','180px')
+                            return false;
+                        }
+                        if(isOverQuota){
+                            commonFun.CommonLayerTip({
+                                btn: ['重新评测','取消'],
+                                area:['280px', '230px'],
+                                content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateType}，最多出借金额为${limitMoney}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                            },function() {
+                                layer.closeAll();
+                                location.href = '/m/risk-estimate'
+
+                            },function () {
+                                layer.closeAll();
+                                return false;
+                            })
+                            $('.layui-layer-content').css('height','180px')
+                            return false;
+                        }
+
+                        commonFun.CommonLayerTip({
+                            btn: ['确定'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center;margin-top: 20px;">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBook" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
+                        },function() {
+                            layer.closeAll();
+                            noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
+
+                        })
+                        $('.layui-layer-content').css('height','180px')
+
+                        // noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
                     }
 
 
@@ -572,7 +631,12 @@ $('#investSubmit').on('click', function(event) {
             location.href='/m/login'
         });
 });
-
+$('body').on('click','.riskBook',function () {
+    location.href = `${pdfUrl}`
+})
+$('body').on('click','.riskBookTransfer',function () {
+    location.href = `${pdfUrlTransfer}`
+})
 //发送投资提交请求
 function sendSubmitRequest(){
     $amountInputElement.val($amountInputElement.autoNumeric("get"));//格式化还原金额
@@ -653,6 +717,22 @@ function submitData() {
     let isAuthentication = 'USER' === $transferDetail.data('authentication');
     let isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
     let hasBankCard = $transferDetail.data('has-bank-card');
+
+    //风险等级是否超出
+    let avalibableMoneyTransfer = $transferDetail.data('available-invest-money');
+    let investAmountTransfer= $('.transfer-price').val()*100;
+
+    let userLevelTransfer = $transferDetail.data('estimate-level');
+    let loanLevelTransfer = $transferDetail.data('loan-estimate-level');
+let isOverLevelTransfer = userLevelTransfer<loanLevelTransfer;
+    // let isOverLevelTransfer = false;
+//可用额度是否超出
+let isOverQuotaTransfer = avalibableMoneyTransfer<investAmountTransfer;
+let limitMoneyTransfer = $transferDetail.data('estimate-limit')/100;
+//     let isOverQuotaTransfer = true;
+    let userEstimateTypeTransfer = $transferDetail.data('estimate-type');
+    let pdfUrlTransfer = $transferDetail.data('pdf');
+
     if (!isInvestor) {
         location.href = '/m/register/account';//去实名认证
         return;
@@ -730,25 +810,62 @@ function submitData() {
                     commonFun.CommonLayerTip({
                         btn: ['确定','取消'],
                         area:['280px', '230px'],
-                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                     },function() {
                         layer.closeAll();
                         location.href = '/m/risk-estimate'
 
                     },function () {
-                        commonFun.useAjax({
-                            url: '/risk-estimate',
-                            data: {answers: ['-1']},
-                            type: 'POST'
-                        },function(data) {
-                            layer.closeAll();
-                            $transferForm.submit();
-                        });
+                        layer.closeAll();
+                        return false;
                     })
                     $('.layui-layer-content').css('height','180px')
                     return false;
                 }else {
-                    $transferForm.submit();
+                    if(isOverLevelTransfer){
+                        commonFun.CommonLayerTip({
+                            btn: ['重新评测','取消'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateTypeTransfer}，此项目已超出您的风险等级，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                        },function() {
+                            layer.closeAll();
+                            location.href = '/m/risk-estimate'
+
+                        },function () {
+                            layer.closeAll();
+                            return false;
+                        })
+                        $('.layui-layer-content').css('height','180px')
+                        return false;
+                    }
+                    if(isOverQuotaTransfer){
+                        commonFun.CommonLayerTip({
+                            btn: ['重新评测','取消'],
+                            area:['280px', '230px'],
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span style="display:block;text-align: left">您当前的风险等级为${userEstimateTypeTransfer}，最多出借金额为${limitMoneyTransfer}元，是否重新评测？</span></div><p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
+                        },function() {
+                            layer.closeAll();
+                            location.href = '/m/risk-estimate'
+
+                        },function () {
+                            layer.closeAll();
+                            return false;
+                        })
+                        $('.layui-layer-content').css('height','180px')
+                        return false;
+                    }
+
+                    commonFun.CommonLayerTip({
+                        btn: ['确定'],
+                        area:['280px', '230px'],
+                        content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b><span style="display:block;text-align: center;margin-top: 20px;">市场有风险，出借需谨慎！<br/>点击查看<a class="riskBookTransfer" style="color: #FF473C" >《风险揭示书》</a></span></div>`,
+                    },function() {
+                        layer.closeAll();
+                        $transferForm.submit();
+
+                    })
+                    $('.layui-layer-content').css('height','180px')
+                    // $transferForm.submit();
                 }
 
             }else{
@@ -844,20 +961,14 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
 
                         },function () {
-                            commonFun.useAjax({
-                                url: '/risk-estimate',
-                                data: {answers: ['-1']},
-                                type: 'POST'
-                            },function(data) {
-                                layer.closeAll();
-                                noPasswordInvest ? sendSubmitRequest() : $investForm.submit();
-                            });
+                            layer.closeAll();
+                            return false;
                         })
                         $('.layui-layer-content').css('height','180px')
                         return false;
@@ -871,20 +982,14 @@ function anxinService() {
                         commonFun.CommonLayerTip({
                             btn: ['确定','取消'],
                             area:['280px', '230px'],
-                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行投资偏好评估，取消则默认为保守型（可承受风险能力为最低）。是否进行评估？</span></div> `,
+                            content: `<div class="record-tip-box"><b class="pop-title">温馨提示</b> <span>根据监管要求，出借人在出借前需进行出借偏好评估，如果取消将不能参与出借，您是否进行评估？</span></div> <p style="text-align: center;color: #a2a2a2">市场有风险，出借需谨慎！</p>`,
                         },function() {
                             layer.closeAll();
                             location.href = '/m/risk-estimate'
 
                         },function () {
-                            commonFun.useAjax({
-                                url: '/risk-estimate',
-                                data: {answers: ['-1']},
-                                type: 'POST'
-                            },function(data) {
-                                layer.closeAll();
-                                $('#transferForm').submit();
-                            });
+                            layer.closeAll();
+                            return false;
                         })
                         $('.layui-layer-content').css('height','180px')
                         return false;
@@ -962,7 +1067,7 @@ $('#relatedTip').on('click',function () {
     commonFun.CommonLayerTip({
         btn: ['我知道了'],
         area:['280px', '210px'],
-        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>根据会员等级的不同，收取投资应收收益7%-10%的费用。您当前投资可能会收取${data}%技术服务费。</span></div> `,
+        content: `<div class="record-tip-box"> <b class="pop-title">温馨提示</b> <span>根据会员等级的不同，收取出借应收收益7%-10%的费用。您当前出借可能会收取${data}%技术服务费。</span></div> `,
     },function() {
         layer.closeAll();
     })

@@ -128,6 +128,7 @@ public class ContractServiceImpl implements ContractService {
         if (loanModel == null) {
             return dataModel;
         }
+        LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanModel.getId());
 
         UserModel transferUserModel = userMapper.findByLoginName(transferApplicationModel.getLoginName());
         dataModel.put("transferUserName", transferUserModel.getUserName());
@@ -143,6 +144,13 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("loanerUserName", loanerDetailsMapper.getByLoanId(loanModel.getId()).getUserName());
         dataModel.put("loanerIdentityNumber", loanModel.getLoanerIdentityNumber());
         dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()) + "元");
+        if (loanModel.getPledgeType().equals(PledgeType.HOUSE)) {
+            dataModel.put("pledge", "房屋");
+        } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
+            dataModel.put("pledge", "车辆");
+        }
+        dataModel.put("purpose", loanerDetailsModel == null || loanerDetailsModel.getPurpose() == null ? "" : loanerDetailsModel.getPurpose());
+        dataModel.put("repayType", loanModel.getType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY ? "按期还息到期还本" : "到期还本付息");
 
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         dataModel.put("totalRate", decimalFormat.format((loanModel.getBaseRate() + loanModel.getActivityRate()) * 100) + "%");
@@ -224,6 +232,8 @@ public class ContractServiceImpl implements ContractService {
         } else if (loanModel.getPledgeType().equals(PledgeType.VEHICLE)) {
             dataModel.put("pledge", "车辆");
         }
+        dataModel.put("purpose", loanerDetailsModel == null || loanerDetailsModel.getPurpose() == null ? "" : loanerDetailsModel.getPurpose());
+        dataModel.put("repayType", loanModel.getType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY ? "按期还息到期还本" : "到期还本付息");
         return dataModel;
     }
 

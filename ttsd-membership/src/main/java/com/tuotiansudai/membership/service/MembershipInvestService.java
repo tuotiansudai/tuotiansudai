@@ -70,7 +70,7 @@ public class MembershipInvestService {
                     String.valueOf(investId),
                     investMembershipPoint,
                     accountModel.getMembershipPoint(),
-                    MessageFormat.format("您投资了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount)));
+                    MessageFormat.format("您出借了{0}项目{1}元", loanName, AmountConverter.convertCentToString(investAmount)));
 
             membershipExperienceBillMapper.create(billModel);
 

@@ -106,7 +106,7 @@ public class ConsoleCouponService {
         if (!Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
             long amount = couponModel.getAmount();
             if (amount <= 0) {
-                throw new CreateCouponException("投资体验券金额应大于0!");
+                throw new CreateCouponException("出借体验券金额应大于0!");
             }
         }
 
@@ -182,7 +182,7 @@ public class ConsoleCouponService {
             case ALL_USER:
                 return userMapper.findUsersCount();
             case INVESTED_USER:
-                return investMapper.findInvestorCount();
+                return investMapper.findInvestorCountByRepayStatus(null);
             case REGISTERED_NOT_INVESTED_USER:
                 return investMapper.findRegisteredNotInvestCount();
             case STAFF:

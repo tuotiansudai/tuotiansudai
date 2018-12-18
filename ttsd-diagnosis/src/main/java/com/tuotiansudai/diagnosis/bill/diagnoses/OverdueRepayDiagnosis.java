@@ -1,10 +1,7 @@
 package com.tuotiansudai.diagnosis.bill.diagnoses;
 
 import com.tuotiansudai.enums.UserBillBusinessType;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
@@ -27,18 +23,21 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
     private final InvestRepayMapper investRepayMapper;
     private final LoanMapper loanMapper;
     private final LoanRepayMapper loanRepayMapper;
+    private final UserBillMapper userBillMapper;
     private static final Date VERSION_UPDATING_DATE = DateTime.parse("2016-05-01 00:00:00", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
 
     @Autowired
     public OverdueRepayDiagnosis(InvestRepayMapper investRepayMapper,
                                  LoanRepayMapper loanRepayMapper,
                                  InvestMapper investMapper,
-                                 LoanMapper loanMapper) {
-        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper);
+                                 LoanMapper loanMapper,
+                                 UserBillMapper userBillMapper) {
+        super(investRepayMapper, loanRepayMapper, investMapper, loanMapper, userBillMapper);
         this.investMapper = investMapper;
         this.investRepayMapper = investRepayMapper;
         this.loanMapper = loanMapper;
         this.loanRepayMapper = loanRepayMapper;
+        this.userBillMapper = userBillMapper;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
 
     @Override
     protected long calcExpectInvestRepayAmount(InvestRepayModel investRepayModel) {
-        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
+        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 当期应还投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         InvestModel investModel = investMapper.findById(investRepayModel.getInvestId());
         if (investModel == null) {
@@ -57,17 +56,17 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
 
         long overdueDefaultInterest = investRepayModel.getActualRepayDate().before(VERSION_UPDATING_DATE) ?
                 investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId())
-                .stream()
-                .map(InvestRepayModel::getDefaultInterest)
-                .filter(defaultInterest -> defaultInterest > 0)
-                .findAny()
-                .orElse(0L) : 0L;
-        return investModel.getAmount() + investRepayModel.getActualInterest() + overdueDefaultInterest;
+                        .stream()
+                        .map(InvestRepayModel::getDefaultInterest)
+                        .filter(defaultInterest -> defaultInterest > 0)
+                        .findAny()
+                        .orElse(0L) : 0L;
+        return investRepayModel.getCorpus() + investRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 
     @Override
     protected long calcExpectLoanRepayAmount(LoanRepayModel loanRepayModel) {
-        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 投资本金
+        // 逾期还款实际交易金额 = 当期利息 + 罚息 + 当期应还投资本金
         // 其中 当期利息 = 上期利息 + 逾期天数产生的利息
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         if (loanModel == null) {
@@ -79,6 +78,6 @@ public class OverdueRepayDiagnosis extends NormalRepayDiagnosis {
                 .filter(defaultInterest -> defaultInterest > 0)
                 .findAny()
                 .orElse(0L) : 0L;
-        return loanModel.getLoanAmount() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
+        return loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + overdueDefaultInterest;
     }
 }

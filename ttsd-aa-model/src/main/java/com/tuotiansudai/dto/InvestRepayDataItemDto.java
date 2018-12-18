@@ -57,6 +57,16 @@ public class InvestRepayDataItemDto {
 
     private String investExperienceAmount;
 
+    private String overdueInterest;
+
+    private String defaultFee;
+
+    private String overdueFee;
+
+    private String sumDefaultInterest;
+
+    private String sumDefaultFee;
+
     public InvestRepayDataItemDto() {
     }
 
@@ -75,10 +85,18 @@ public class InvestRepayDataItemDto {
             this.actualRepayDate = model.getActualRepayDate();
         }
 
-
-        if (model.getDefaultInterest() > 0) {
+        if (!model.isTransferred() &&  model.getDefaultInterest() > 0) {
             this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
+            this.defaultFee = AmountConverter.convertCentToString(model.getDefaultFee());
+            this.sumDefaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest() + model.getOverdueInterest());
+            this.sumDefaultFee = AmountConverter.convertCentToString(model.getDefaultFee() + model.getOverdueFee());
         }
+
+        if (model.getOverdueInterest() > 0) {
+            this.overdueInterest = AmountConverter.convertCentToString(model.getOverdueInterest());
+            this.overdueFee = AmountConverter.convertCentToString(model.getOverdueFee());
+        }
+
         if (model.getRepayAmount() > 0) {
             this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
         }
@@ -275,5 +293,45 @@ public class InvestRepayDataItemDto {
 
     public void setInvestExperienceAmount(String investExperienceAmount) {
         this.investExperienceAmount = investExperienceAmount;
+    }
+
+    public String getDefaultFee() {
+        return defaultFee;
+    }
+
+    public void setDefaultFee(String defaultFee) {
+        this.defaultFee = defaultFee;
+    }
+
+    public String getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(String overdueInterest) {
+        this.overdueInterest = overdueInterest;
+    }
+
+    public String getOverdueFee() {
+        return overdueFee;
+    }
+
+    public void setOverdueFee(String overdueFee) {
+        this.overdueFee = overdueFee;
+    }
+
+    public String getSumDefaultInterest() {
+        return sumDefaultInterest;
+    }
+
+    public void setSumDefaultInterest(String sumDefaultInterest) {
+        this.sumDefaultInterest = sumDefaultInterest;
+    }
+
+    public String getSumDefaultFee() {
+        return sumDefaultFee;
+    }
+
+    public void setSumDefaultFee(String sumDefaultFee) {
+        this.sumDefaultFee = sumDefaultFee;
     }
 }

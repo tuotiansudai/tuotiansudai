@@ -1,0 +1,1 @@
+ALTER table `transfer_application` ADD COLUMN `interest_fee` BIGINT UNSIGNED  DEFAULT  0 after `transfer_fee`;

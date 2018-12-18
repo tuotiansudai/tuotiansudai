@@ -37,14 +37,14 @@
                 <div class="input-group-addon">%（持有90天以上）</div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">折价本金上限</label>
+        <#--<div class="form-group">-->
+            <#--<label class="col-sm-2 control-label">折价本金上限</label>-->
 
-            <div class="col-sm-2 input-group <#if transferRule.updateDiscount>has-error</#if>">
-                <input name="discount" id="discount" type="number" class="form-control" value="${transferRule.discount}"/>
-                <div class="input-group-addon">%</div>
-            </div>
-        </div>
+            <#--<div class="col-sm-2 input-group <#if transferRule.updateDiscount>has-error</#if>">-->
+                <input name="discount" id="discount" type="hidden" class="form-control" value="${transferRule.discount}"/>
+                <#--<div class="input-group-addon">%</div>-->
+            <#--</div>-->
+        <#--</div>-->
         <div class="form-group">
             <label class="col-sm-2 control-label">不可转让天数</label>
 

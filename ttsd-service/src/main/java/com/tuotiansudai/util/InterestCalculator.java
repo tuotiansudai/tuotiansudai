@@ -76,7 +76,7 @@ public class InterestCalculator {
 
         //到期还本付息，按天计息，即投即生息,优惠券只加首期利息
         if (loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
-            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(loanModel.getRecheckTime(), loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+            List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(loanModel.getRecheckTime(), loanModel.getDeadline(), LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
             periodDuration = daysOfPeriodList.get(0);
         }
 
@@ -119,7 +119,7 @@ public class InterestCalculator {
             case INTEREST_COUPON:
                 //到期还本付息，按天计息，即投即生息,优惠券只加首期利息
                 if (loanModel.getType() == LoanType.INVEST_INTEREST_LUMP_SUM_REPAY){
-                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, loanModel.getDeadline(), LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+                    List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, loanModel.getDeadline(), LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
                     couponExpectedInterest += getCouponExpectedInterest(loanModel, couponModel, investAmount, daysOfPeriodList.get(0));
                 }
                 else{
@@ -310,5 +310,21 @@ public class InterestCalculator {
                 .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
     }
 
-
+    /**
+     *
+     * @param yearRate  年化利率
+     * @param amount
+     * @param lastRepayDate
+     * @param currentDate
+     * @return
+     */
+    public static long calculateLoanInterest(double yearRate,long amount,DateTime lastRepayDate,DateTime currentDate){
+        BigDecimal loanRate = BigDecimal.valueOf(yearRate);
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentDate.withTimeAtStartOfDay()).getDays();
+        return BigDecimal.valueOf(amount).multiply(new BigDecimal(periodDuration)).multiply(loanRate).divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+    public static long calculateLoanInterestDateRate(double dateRate,long amount,DateTime lastRepayDate,DateTime currentDate){
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentDate.withTimeAtStartOfDay()).getDays();
+        return BigDecimal.valueOf(amount).multiply(new BigDecimal(periodDuration)).multiply(BigDecimal.valueOf(dateRate)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+    }
 }

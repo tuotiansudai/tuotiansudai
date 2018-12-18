@@ -264,26 +264,21 @@ public class ConsoleLoanCreateService {
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
-        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanModel.getPledgeType())) {
+        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE,PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
             loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
+            List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
+                    .map(LoanCreatePledgeHouseRequestDto::new).collect(Collectors.toList());
+            loanCreateRequestDto.setPledgeHouse(loanCreatePledgeHouseRequestDtoList);
 
-            if (loanModel.getPledgeType() == PledgeType.HOUSE) {
-                List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
-                        .map(n -> new LoanCreatePledgeHouseRequestDto(n)).collect(Collectors.toList());
-                loanCreateRequestDto.setPledgeHouse(loanCreatePledgeHouseRequestDtoList);
-            }
-
-            if (loanModel.getPledgeType() == PledgeType.VEHICLE) {
-                List<LoanCreatePledgeVehicleRequestDto> loanCreatePledgeVehicleRequestDtoList = pledgeVehicleMapper.getByLoanId(loanId).stream()
-                        .map(n -> new LoanCreatePledgeVehicleRequestDto(n)).collect(Collectors.toList());
-                loanCreateRequestDto.setPledgeVehicle(loanCreatePledgeVehicleRequestDtoList);
-            }
+            List<LoanCreatePledgeVehicleRequestDto> loanCreatePledgeVehicleRequestDtoList = pledgeVehicleMapper.getByLoanId(loanId).stream()
+                    .map(LoanCreatePledgeVehicleRequestDto::new).collect(Collectors.toList());
+            loanCreateRequestDto.setPledgeVehicle(loanCreatePledgeVehicleRequestDtoList);
         }
 
         if (PledgeType.ENTERPRISE_PLEDGE == loanModel.getPledgeType()) {
             loanCreateRequestDto.setLoanerEnterpriseDetails(new LoanCreateLoanerEnterpriseDetailsDto(loanerEnterpriseDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeEnterpriseRequestDto> loanCreatePledgeEnterpriseRequestDtoList = pledgeEnterpriseMapper.getByLoanId(loanId).stream()
-                    .map(n -> new LoanCreatePledgeEnterpriseRequestDto(n)).collect(Collectors.toList());
+                    .map(LoanCreatePledgeEnterpriseRequestDto::new).collect(Collectors.toList());
             loanCreateRequestDto.setPledgeEnterprise(loanCreatePledgeEnterpriseRequestDtoList);
         }
         if (PledgeType.ENTERPRISE_CREDIT == loanModel.getPledgeType()) {
@@ -377,7 +372,7 @@ public class ConsoleLoanCreateService {
         Date validInvestTime = new DateTime().minusMinutes(30).toDate();
 
         if (investMapper.findWaitingInvestCountAfter(loanId, validInvestTime) > 0) {
-            logger.info("流标失败，存在等待第三方资金托管确认的投资!");
+            logger.info("流标失败，存在等待第三方资金托管确认的出借!");
             return baseDto;
         }
 
@@ -409,23 +404,31 @@ public class ConsoleLoanCreateService {
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) < AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMinInvestAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "最小投资金额不得大于最大投资金额"));
+            return new BaseDto<>(new BaseDataDto(false, "最小出借金额不得大于最大出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "最大投资金额不得大于预计出借金额"));
+            return new BaseDto<>(new BaseDataDto(false, "最大出借金额不得大于预计出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getLoanAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于预计出借金额"));
+            return new BaseDto<>(new BaseDataDto(false, "出借递增金额不得大于预计出借金额"));
         }
 
         if (AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getInvestIncreasingAmount()) > AmountConverter.convertStringToCent(loanCreateRequestDto.getLoan().getMaxInvestAmount())) {
-            return new BaseDto<>(new BaseDataDto(false, "投资递增金额不得大于最大投资金额"));
+            return new BaseDto<>(new BaseDataDto(false, "出借递增金额不得大于最大出借金额"));
         }
 
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
+        }
+        if(loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.WAITING_VERIFY)){
+            if((loanCreateRequestDto.getLoan().getFundraisingEndTime().getTime()-loanCreateRequestDto.getLoan().getFundraisingStartTime().getTime())> 7*24*60*60*1000){
+                return new BaseDto<>(new BaseDataDto(false, "筹款启动时间与筹款截止时间不能超过7天"));
+            }
+            if(new Date().after(loanCreateRequestDto.getLoan().getFundraisingEndTime())){
+                return new BaseDto<>(new BaseDataDto(false, "筹款截止时间不能小于当前时间"));
+            }
         }
 
         if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanCreateRequestDto.getLoan().getPledgeType())) {

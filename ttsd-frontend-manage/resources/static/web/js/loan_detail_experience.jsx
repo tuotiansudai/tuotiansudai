@@ -26,7 +26,7 @@ function getAmount() {
 function checkError(amount) {
     //输入的投资金额
     let errorInfo ={
-        min:'最小投资金额为50元！',
+        min:'最小出借金额为50元！',
         balance:'体验金余额不足'
     };
     let error='';

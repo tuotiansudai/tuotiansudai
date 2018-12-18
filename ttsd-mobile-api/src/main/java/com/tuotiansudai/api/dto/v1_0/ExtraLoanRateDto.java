@@ -13,10 +13,10 @@ public class ExtraLoanRateDto implements Serializable {
     @ApiModelProperty(value = "利率", example = "1")
     private double rate;
 
-    @ApiModelProperty(value = "最少投资", example = "10")
+    @ApiModelProperty(value = "最少出借", example = "10")
     private long amountLower;
 
-    @ApiModelProperty(value = "最大投资", example = "100")
+    @ApiModelProperty(value = "最大出借", example = "100")
     private long amountUpper;
 
     public ExtraLoanRateDto(ExtraLoanRateModel extraLoanRateModel) {

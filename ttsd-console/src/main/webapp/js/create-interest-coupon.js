@@ -3,11 +3,14 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
             $dateEnd = $('#endTime'), //结束时间
+            $dateFailure = $('#failureTimeSelectpicker'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
             $businessType = $('#businessType'),  // 业务类型
             $couponForm = $('.form-list'),
             boolFlag = false, //校验布尔变量值
+            $deadline = $('#deadline'),
+            $failureTime = $('#failureTime'),
             currentErrorObj = null;
 
         // 业务类型切换
@@ -32,9 +35,22 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             $dateEnd.data("DateTimePicker").minDate(e.date);
         });
 
+        //结束时间绑定插件
         $dateEnd.datetimepicker({
             format: 'YYYY-MM-DD'
+        }).on('dp.change', function(e) {
+            initDateFailureMinDate();
         });
+
+        //截止时间绑定插件
+        $dateFailure.datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        initDateFailureMinDate();
+        function initDateFailureMinDate() {
+            $dateFailure.data("DateTimePicker").minDate($('input[type=radio][name="useDeadline"]:checked').val() === '1' ? $("input[name='endTime']").val() : null);
+        }
 
         /**
          * @msg  {[string]} //文字信息
@@ -52,6 +68,15 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             html += '</div>';
             $errorDom.append(html);
         }
+
+        $('input[type=radio][name="useDeadline"]').change(function() {
+            var isUseDeadline = $('input[type=radio][name="useDeadline"]:checked').val() === '0';
+            $failureTime.attr("readonly", isUseDeadline);
+            $deadline.attr("readonly", !isUseDeadline);
+            initDateFailureMinDate();
+            $failureTime.val('');
+            $deadline.val('0');
+        });
 
         // 充值金额保留小数点后2位
         var rep = /^\d+$/;
@@ -106,8 +131,15 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     return false;
                 }
                 var deadline = parseInt($('.coupon-deadline', curform).val());
-                if (deadline <= 0) {
+                var isCheckDeadline = $("input[name='useDeadline']:checked").val() === '0';
+                if (isCheckDeadline && deadline <= 0) {
                     showErrorMessage('优惠券有效天数必须大于0', $('.coupon-deadline', curform));
+                    return false;
+                }
+
+                var failureTime = $failureTime.val();
+                if (!isCheckDeadline && (failureTime === null || failureTime === '')) {
+                    showErrorMessage('截止时间不能为空', $('.coupon-deadline', curform));
                     return false;
                 }
                 var fivenumber = parseInt($('.give-number', curform).val());

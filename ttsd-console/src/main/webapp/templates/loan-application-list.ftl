@@ -53,7 +53,7 @@
                     ${loanApplicationView.mobile!}
                     </td>
                     <td>
-                    ${loanApplicationView.region.description!}
+                    ${(loanApplicationView.address)!""}
                     </td>
                     <td>
                     ${loanApplicationView.amount!}
@@ -73,9 +73,11 @@
                     <td>
                         <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
                             <input type="button" class="loanApplication-comment" value="添加备注"
-                                   data-loanApplication-id="${loanApplicationView.id?c}"
-                                    >
+                                   data-loanApplication-id="${loanApplicationView.id?c}">
                         </@security.authorize>
+                        <#if !(loanApplicationView.region)??>
+                            <a href="/loan-application/${loanApplicationView.id?c}">查看详情</a>
+                        </#if>
                     </td>
                 </tr>
                 </#list>

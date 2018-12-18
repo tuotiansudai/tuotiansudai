@@ -113,7 +113,7 @@
                 </dd>
                 <dd>
                     <i class="icon-five"></i>
-                    <span>第三方资金托管</span>
+                    <span>第三方资金存管</span>
                 </dd>
                 <dd>
                     <i class="icon-six"></i>

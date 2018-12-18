@@ -7,11 +7,9 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.enums.AsyncUmPayService;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.BankCardUtil;
 import com.tuotiansudai.util.RedisWrapperClient;
@@ -51,7 +49,7 @@ public class MobileAppFrontCallBackController {
     private LoanService loanService;
 
     @Autowired
-    private PayWrapperClient payWrapperClient;
+    private TransferService transferService;
 
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
@@ -149,7 +147,17 @@ public class MobileAppFrontCallBackController {
                     .put("loanName", investModel != null ? loanService.findLoanById(investModel.getLoanId()).getName() : "")
                     .put("investAmount", (investModel != null ? AmountConverter.convertCentToString(investModel.getAmount()) : ""))
                     .put("loanId", investModel != null ? String.valueOf(investModel.getLoanId()) : "")
-                    .put("message", Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(service) ? "投资成功" : "债权购买成功")
+                    .put("message", Lists.newArrayList(AsyncUmPayService.INVEST_PROJECT_TRANSFER, AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD).contains(service) ? "出借成功" : "债权购买成功")
+                    .build());
+        };
+        Function<Long, Map<String, String>> transferValuesGenerator = (Long investId) -> {
+            InvestModel investModel=investService.findById(investId);
+            TransferApplicationModel transferApplicationModel = transferService.findLastTransfersByTransferInvestId(investModel == null?0l:investModel.getTransferInvestId());
+            return Maps.newHashMap(ImmutableMap.<String, String>builder()
+                    .put("loanName", transferApplicationModel != null ? loanService.findLoanById(transferApplicationModel.getLoanId()).getName() : "")
+                    .put("investAmount", (transferApplicationModel != null ? AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()) : ""))
+                    .put("loanId", transferApplicationModel != null ? String.valueOf(transferApplicationModel.getLoanId()) : "")
+                    .put("message", "债权购买成功")
                     .build());
         };
 
@@ -168,8 +176,8 @@ public class MobileAppFrontCallBackController {
                 .put(AsyncUmPayService.CUST_WITHDRAWALS, withdrawValuesGenerator)
                 .put(AsyncUmPayService.INVEST_PROJECT_TRANSFER, investValuesGenerator)
                 .put(AsyncUmPayService.INVEST_PROJECT_TRANSFER_NOPWD, investValuesGenerator)
-                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, investValuesGenerator)
-                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, investValuesGenerator)
+                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER, transferValuesGenerator)
+                .put(AsyncUmPayService.INVEST_TRANSFER_PROJECT_TRANSFER_NOPWD, transferValuesGenerator)
                 .put(AsyncUmPayService.MEMBERSHIP_PRIVILEGE_PURCHASE_TRANSFER_ASYN, memberPrivilegePurchaseValuesGenerator)
                 .put(AsyncUmPayService.NO_PASSWORD_INVEST_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)
                 .put(AsyncUmPayService.AUTO_REPAY_PTP_MER_BIND_AGREEMENT, bindAgreementValuesGenerator)

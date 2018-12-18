@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferApplicationRecordView;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private boolean transferNewSuccess;
     private boolean transferOldSuccess;
     private boolean cancelTransfer;
+    private Date transferInvestTime;
 
 
     public TransferApplicationPaginationItemDataDto(){}
@@ -52,6 +54,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferStatus = transferApplicationRecordView.getTransferStatus().name();
         this.applicationTime = transferApplicationRecordView.getApplicationTime();
         this.source = transferApplicationRecordView.getSource();
+        this.transferInvestTime = transferApplicationRecordView.getTransferInvestTime();
     }
 
     public String getTransferApplicationId() {
@@ -228,5 +231,13 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setCancelTransfer(boolean cancelTransfer) {
         this.cancelTransfer = cancelTransfer;
+    }
+
+    public Date getTransferInvestTime() {
+        return transferInvestTime;
+    }
+
+    public void setTransferInvestTime(Date transferInvestTime) {
+        this.transferInvestTime = transferInvestTime;
     }
 }

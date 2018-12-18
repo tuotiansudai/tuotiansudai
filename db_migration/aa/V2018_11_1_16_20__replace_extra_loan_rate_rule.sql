@@ -1,0 +1,1 @@
+UPDATE extra_loan_rate_rule SET name='车辆消费借款' WHERE name='车辆抵押借款';

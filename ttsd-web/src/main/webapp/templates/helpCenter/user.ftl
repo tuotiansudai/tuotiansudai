@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="账户管理" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有投资需求的个人提供规范、安全、专业的互联网金融信息服务.">
+<@global.main pageCss="${css.help_center}" pageJavascript="${js.help_center}" activeNav="帮助中心" activeLeftNav="账户管理" title="拓天速贷公司介绍_拓天理念_拓天资质_拓天速贷" keywords="拓天速贷,拓天速贷公司,拓天资质,拓天价值" description="拓天速贷以透明、公平、高效为原则,为有贷款需求的小微企业及有出借需求的个人提供规范、安全、专业的互联网金融信息服务.">
 <div class="help-center-group">
     <h3>
         <a href="/help/help-center"><< 返回帮助中心</a>
@@ -41,7 +41,7 @@
 
                     <p class="single-title">4、支付密码是什么?</p>
 
-                    <p class="single-answer">答：当您注册时，资金托管方（联动优势）会以短信的形式将支付密码发送到您的注册手机号上，投资标的时需要验证后方可支付成功。</p>
+                    <p class="single-answer">答：当您注册时，资金存管方会以短信的形式将支付密码发送到您的注册手机号上，出借标的时需要验证后方可支付成功。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -63,16 +63,16 @@
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">7、免密投资怎么设置？</p>
+                    <p class="single-title">7、免密出借怎么设置？</p>
 
-                    <p class="single-answer">答：登录官方网站—我的账户—个人资料—免密投资—开启，进行设置。</p>
+                    <p class="single-answer">答：登录官方网站—我的账户—个人资料—免密出借—开启，进行设置。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">8、开启免密投资有什么作用？</p>
+                    <p class="single-title">8、开启免密出借有什么作用？</p>
 
-                    <p class="single-answer">答：开启免密投资后，投资时不再需要繁琐的过程即可成功，抢标快人一步。开启免密投资是免费的，且您的资金不会有任何安全隐患。</p>
+                    <p class="single-answer">答：开启免密出借后，出借时不再需要繁琐的过程即可成功，抢标快人一步。开启免密出借是免费的，且您的资金不会有任何安全隐患。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
@@ -88,19 +88,19 @@
 
                     <p class="single-title">1、红包、加息券使用时间一般是多久？</p>
 
-                    <p class="single-answer">答：自发放日起30天。</p>
+                    <p class="single-answer">答：自发放日起3-30天。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
                     <p class="single-title">2、怎么使用红包、加息券？</p>
 
-                    <p class="single-answer">答：登录官方网站—选择标的进行投资—输入投资金额—勾选优惠劵（投资金额下方）—勾选红色优惠劵（红色为您可使用优惠劵）。</p>
+                    <p class="single-answer">答：登录官方网站—选择标的进行出借—输入出借金额—勾选优惠劵（出借金额下方）—勾选红色优惠劵（红色为您可使用优惠劵）。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
-                    <p class="single-title">3、怎么将兑换码兑换成投资红包？</p>
+                    <p class="single-title">3、怎么将兑换码兑换成出借红包？</p>
 
                     <p class="single-answer">答：登录官方网站—我的账户—我的宝藏—输入兑换码（右上角），进行兑换。</p>
                 </li>
@@ -119,14 +119,14 @@
                     <p class="single-title">1、VIP会员分为哪几个等级？</p>
 
                     <p class="single-answer">
-                        答：拓天会员是为给处于不同成长阶段的投资用户提供差异化的专享特权而设置的。会员目前总计分为六个等级，依次为：V0、V1、V2、V3、V4、V5。会员等级越高，享有的特权越多。</p>
+                        答：拓天会员是为给处于不同成长阶段的出借用户提供差异化的专享特权而设置的。会员目前总计分为六个等级，依次为：V0、V1、V2、V3、V4、V5。会员等级越高，享有的特权越多。</p>
                 </li>
                 <li class="problem-single-item">
                     <i class="fa fa-angle-down"></i>
 
                     <p class="single-title">2、VIP会员享有哪些特权？</p>
 
-                    <p class="single-answer">答：多重保障：三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>随时提现：24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账<br/>会员礼包：每月发放投资红包，588、688、788、888元随机派送<br/>服务费折扣：平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%<br/>贵宾专线：贵宾级客服服务，投资问题，意见建议专享直达<br/>专享投资顾问：发标时间，平台活动，投资顾问第一时间通知到您<br/>生日福利：V5专享，平台将会在会员生日时送上神秘礼包<br/>注：会员权益会不断提升，敬请期待。
+                    <p class="single-answer">答：多重保障：三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障；<br/>随时提现：24小时随时提现，16:00点前提现当日到账，16:00后提现次日到账<br/>会员礼包：每月发放出借红包，588、688、788、888元随机派送<br/>服务费折扣：平台向V0、V1会员收取利息的10%作为服务费，V2收取9%，V3、V4收取8%，V5仅收取7%<br/>贵宾专线：贵宾级客服服务，出借问题，意见建议专享直达<br/>专享出借顾问：发标时间，平台活动，出借顾问第一时间通知到您<br/>生日福利：V5专享，平台将会在会员生日时送上神秘礼包<br/>注：会员权益会不断提升，敬请期待。
                     </p>
                 </li>
                 <li class="problem-single-item">
@@ -135,7 +135,7 @@
                     <p class="single-title">3、如何提高会员等级？</p>
 
                     <p class="single-answer">
-                        答：方式一：投资，投资额越高，所获得的成长值（按照投资金额年化1：1转化为成长值，不足1元的舍去不计）越高，每达到规定的成长值，会员等级会提高；<br/>方式二：购买，25元/月，180元/年（暂未开放）。
+                        答：出借，出借额越高，所获得的成长值（按照出借金额年化1：1转化为成长值，不足1元的舍去不计）越高，每达到规定的成长值，会员等级会提高；<br/>目前可以在app上购买增值特权，出借立享服务费7折优惠。七折特权购买价格：25元/30天，120元/180天，180元/360天。
                     </p>
                 </li>
             </ul>

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.investor_invest_list}" pageJavascript="${js.investor_invest_list}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
+<@global.main pageCss="${css.investor_invest_list}" pageJavascript="${js.investor_invest_list}" activeNav="我的账户" activeLeftNav="我的出借" title="投资记录">
 <div class="content-container invest-list-content">
     <h4 class="column-title">
         <a href="/investor/invest-list"><em class="tc">直投项目</em></a>
@@ -31,7 +31,7 @@
             <thead>
                 <tr>
                     <th>项目名称</th>
-                    <th class="tr">我的投资(元)</th>
+                    <th class="tr">我的出借(元)</th>
                     <th>交易时间</th>
                     <th>交易状态</th>
                     <th>下次回款(元)</th>
@@ -115,7 +115,7 @@
                 </tr>
             {{/each}}
             {{else}}
-            <td colspan="6" class="no-data">暂时没有投资记录</td>
+            <td colspan="6" class="no-data">暂时没有出借记录</td>
             {{/if}}
             </tbody>
         </table>
@@ -131,7 +131,7 @@
         <div class="summary-top clearfix">
             <span>已收回款总额 : <em><%=sumActualInterest%></em>元</span>
             <span>待收回款总额 : <em><%=sumExpectedInterest%></em>元</span>
-            <span>投资红包奖励 : <em><%=redInterest%></em>元</span>
+            <span>出借红包奖励 : <em><%=redInterest%></em>元</span>
         </div>
         <table class="table table-repay">
             <thead>
@@ -168,7 +168,7 @@
                 </td>
                 <td class="tr spec-bg">
                 <%=item.actualAmount ? item.actualAmount : '--'%>
-                <%=(item.actualAmount && item.defaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.defaultInterest+'元"></i>':'' %>
+                <%=(item.actualAmount && item.sumDefaultInterest)?'<i class="fa fa-question-circle text-b repay" data-benefit="逾期'+item.overdueDay+'天，已收违约金'+item.sumDefaultInterest+'元, 已收服务费'+item.sumDefaultFee+'元"></i>':'' %>
                 
                 </td>
                 <td class="tr spec-bg">
@@ -198,7 +198,7 @@
             <tr>
                 <th class="tr">到期回款日</th>
                 <th class="tr">应收体验金收益</th>
-                <th class="tr">投资金额(体验金)</th>
+                <th class="tr">出借金额(体验金)</th>
                 <th class="tr spec-bg">已收体验金收益</th>
                 <th class="tr spec-bg">回款时间</th>
                 <th class="spec-bg">状态</th>

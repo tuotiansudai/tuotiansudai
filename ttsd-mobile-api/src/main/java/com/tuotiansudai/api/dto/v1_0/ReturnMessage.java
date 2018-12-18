@@ -35,38 +35,38 @@ public enum ReturnMessage {
     SMS_CAPTCHA_TYPE_IS_NULL("0022", "验证码类型不能为空"),
     /******手机端找回密码返回码******/
 
-    /******手机端投资列表******/
+    /******手机端出借列表******/
     REQUEST_PARAM_IS_WRONG("0023", "请求参数错误"),
-    /******手机端投资列表******/
+    /******手机端出借列表******/
 
     /******手机端标的详情******/
     LOAN_NOT_FOUND("0024", "标的不存在"),
     APP_VERSION_NOT_LATEST("0400", "您的app版本不支持查看此标的详情，请升级至最新版"),
     /******手机端标的详情******/
 
-    /******手机端投资******/
+    /******手机端出借******/
     INVESTOR_SAME_TO_LOANER("0025", "你不能投自己的项目"),
-    INVEST_PASSWORD_IS_WRONG("0029", "投资密码不匹配"),
-    INVEST_PASSWORD_IS_NULL("0030", "投资密码为空"),
+    INVEST_PASSWORD_IS_WRONG("0029", "出借密码不匹配"),
+    INVEST_PASSWORD_IS_NULL("0030", "出借密码为空"),
     UMPAY_INVEST_MESSAGE_INVALID("0031", "请求第三方加密失败"),
     INSUFFICIENT_BALANCE("0032", "账户余额不足，请充值"),
     EXCEED_MONEY_NEED_RAISED("0033", "标的可投金额不足"),
-    UNREACHED_MONEY_LIMIT_EXCETPTION("0034", "投资金额未到达优惠券使用条件"),
-    ILLEGAL_LOAN_STATUS("0035", "当前借款不可投资"),
-    NO_MATCHING_OBJECTS_EXCEPTION("0036", "投资失败"),
+    UNREACHED_MONEY_LIMIT_EXCETPTION("0034", "出借金额未到达优惠券使用条件"),
+    ILLEGAL_LOAN_STATUS("0035", "当前借款不可出借"),
+    NO_MATCHING_OBJECTS_EXCEPTION("0036", "出借失败"),
     EXCEED_DEAD_LINE_EXCEPTION("0037", "优惠券已过期"),
     USER_IS_NOT_CERTIFICATED("0038", "您尚未进行实名认证"),
-    INVEST_CAN_NOT_BE_FOUND("0040", "查找不到投资详情"),
+    INVEST_CAN_NOT_BE_FOUND("0040", "查找不到出借详情"),
     NOT_ENOUGH_BALANCE("0045", "账户余额不足"),
-    NO_MATCH_XS_INVEST_CONDITION("0050", "不符合新手标投资条件"),
-    ILLEGAL_INVEST_AMOUNT("0051", "投资金额不符合递增金额要求"),
-    MORE_THAN_MAX_INVEST_AMOUNT("0052", "投资金额超过了用户投资限额"),
+    NO_MATCH_XS_INVEST_CONDITION("0050", "不符合新手标出借条件"),
+    ILLEGAL_INVEST_AMOUNT("0051", "出借金额不符合递增金额要求"),
+    MORE_THAN_MAX_INVEST_AMOUNT("0052", "出借金额超过了用户出借限额"),
     LOAN_IS_FULL("0053", "标的已满"),
-    LESS_THAN_MIN_INVEST_AMOUNT("0054", "投资金额小于标的最小投资金额"),
+    LESS_THAN_MIN_INVEST_AMOUNT("0054", "出借金额小于标的最小出借金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055", "您已购买过新手专享产品"),
-    INVEST_FAILED("0056", "投资失败"),
+    INVEST_FAILED("0056", "出借失败"),
     APPLICATION_IS_HIS_OWN("0057", "您不能接手自己的债权"),
-    /******手机端投资******/
+    /******手机端出借******/
 
 
     /******绑卡失败******/
@@ -95,7 +95,7 @@ public enum ReturnMessage {
 
     /******未开通快捷支付******/
     FAST_PAY_OFF("0046", "未开通快捷支付"),
-    PASSWORD_INVEST_OFF("0058", "尚未开启免密投资"),
+    PASSWORD_INVEST_OFF("0058", "尚未开启免密出借"),
 
     USER_IS_DISABLED("0049", "错误次数太多,请{0}分钟以后再试。"),
     IMAGE_CAPTCHA_IS_WRONG("0081", "图形验证码错误"),
@@ -103,9 +103,9 @@ public enum ReturnMessage {
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
     /******自动投标******/
     AUTO_INVEST_PLAN_NOT_EXIST("0061", "自动投标计划不存在"),
-    MIN_NOT_EXCEED_MAX_INVEST_AMOUNT("0062", "最小投资金额不能超过最大投资金额"),
-    MIN_INVEST_AMOUNT_NOT_NULL("0063", "最小投资金额不能空"),
-    MAX_INVEST_AMOUNT_NOT_NULL("0064", "最大投资金额不能空"),
+    MIN_NOT_EXCEED_MAX_INVEST_AMOUNT("0062", "最小出借金额不能超过最大出借金额"),
+    MIN_INVEST_AMOUNT_NOT_NULL("0063", "最小出借金额不能空"),
+    MAX_INVEST_AMOUNT_NOT_NULL("0064", "最大出借金额不能空"),
     RETENTION_AMOUNT_NOT_NULL("0065", "保留金额不能空"),
     AUTO_INVEST_PERIODS_NOT_NULL("0066", "保留金额不能空"),
 
@@ -137,6 +137,8 @@ public enum ReturnMessage {
     TRANSFER_IMPEND_REPAYING("0078", "该项目即将回款，请在本期回款完成后再申请转让。"),
     TRANSFER_IS_OVERDUE("0079", "该项目正处于逾期当中，暂时无法申请转让。"),
     REPAY_IS_GENERATION_IN("0082", "回款计划生成中，暂不可申请转让。"),
+    TRANSFER_AMOUNT_IS_CORPUS("0083", "转让价格只能是本金"),
+    TRANSFER_UPGRADE_APP("0084", "请升至最新版本后再进行转让操作"),
 
 
     /******意见反馈******/
@@ -180,7 +182,7 @@ public enum ReturnMessage {
     MEMBERSHIP_PRIVILEGE_PURCHASE_NO_ENOUGH_AMOUNT("0202", "账户金额不足，请充值"),
 
     /******增值特权购买******/
-    RISK_ESTIMATE_FAILED("0203", "投资偏好测评失败，请检查您提交的答卷是否完整"),
+    RISK_ESTIMATE_FAILED("0203", "出借偏好测评失败，请检查您提交的答卷是否完整"),
     SMS_IP_RESTRICTED("0204", "短信发送频繁，请稍后再试"),
 
     /******回款日历******/

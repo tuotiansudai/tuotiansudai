@@ -249,7 +249,7 @@
             (select min(loan_repay.repay_date)
              from loan_repay
              where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
-            (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
+            (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)+sum(loan_repay.overdue_interest)
              from loan_repay
              where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan LEFT JOIN loan_mapping_history ON loan.id = loan_mapping_history.loan_id
@@ -290,10 +290,10 @@
         (select max(loan_repay.actual_repay_date)
         from loan_repay
         where loan.id=loan_repay.loan_id) as completed_date,
-        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest)
+        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)+sum(loan_repay.overdue_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id) as expected_repay_amount,
-        (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest) + sum(loan_repay.default_interest)
+        (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id) as actual_repay_amount
         from loan LEFT JOIN loan_mapping_history on loan.id = loan_mapping_history.loan_id
@@ -643,7 +643,7 @@
     </select>
 
     <select id="findSuccessLoanOutLoan" resultMap="loanResultMap">
-       SELECT * FROM loan WHERE status IN ('RAISING','RECHECK','REPAYING','COMPLETE','OVERDUE')
+       SELECT * FROM loan WHERE status IN ('REPAYING','COMPLETE','OVERDUE')
     </select>
 
     <select id="findLoanAchievementCount" parameterType="map" resultType="long">
@@ -741,7 +741,7 @@
     <select id="findLoanCountByYear" resultType="long">
         SELECT COUNT(id) FROM loan
         WHERE DATE_FORMAT(created_time,'%Y') = #{createdTime}
-        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE')">
+        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE' or pledgeType.name() == 'PERSONAL_CAPITAL_TURNOVER' or pledgeType.name() == 'ENTERPRISE_CAPITAL_TURNOVER')">
             and pledge_type = #{pledgeType}
         </if>
         <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE_CREDIT' or pledgeType.name() == 'ENTERPRISE_PLEDGE')">
@@ -754,6 +754,11 @@
         AND ld.activity_desc = '0元购'
         and l.status = 'RAISING'
         AND l.fundraising_start_time BETWEEN #{activityStartTime} AND #{activityEndTime}
+    </select>
+
+    <select id="sumLoanAmountGroupByIdentityByTopTen" resultType="long">
+        select sum(loan_amount) from loan where id != '1' and status in ('REPAYING','OVERDUE')
+        group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
     </select>
 
 </mapper>

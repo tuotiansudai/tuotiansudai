@@ -272,7 +272,7 @@ public class InvestTransferControllerTest {
     }
 
     private void jobAsyncInvestNotify(int count) throws Exception {
-        // job 触发投资 notify 处理
+        // job 触发出借 notify 处理
 
         List<InvestNotifyRequestModel> requestModelList = investTransferNotifyRequestMapper.getLastRequest(count);
 

@@ -31,6 +31,8 @@ public class LoanRepayModel implements Serializable {
 
     private LoanModel loan;
 
+    private long overdueInterest;
+
     public LoanRepayModel() {
     }
 
@@ -146,5 +148,13 @@ public class LoanRepayModel implements Serializable {
 
     public void setLoan(LoanModel loan) {
         this.loan = loan;
+    }
+
+    public long getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(long overdueInterest) {
+        this.overdueInterest = overdueInterest;
     }
 }

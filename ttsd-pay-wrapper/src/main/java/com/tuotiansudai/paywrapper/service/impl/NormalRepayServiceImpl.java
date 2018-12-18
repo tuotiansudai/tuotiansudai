@@ -2,10 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.MQWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.Environment;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.message.*;
@@ -31,6 +28,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
@@ -95,6 +93,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -252,6 +256,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         loanRepayMapper.update(currentLoanRepay);
         logger.info(MessageFormat.format("[Normal Repay {0}] loan repay callback update current loan repay status to COMPLETE", String.valueOf(loanRepayId)));
 
+        if (currentLoanRepay.getPeriod() == loanModel.getPeriods()){
+            lastLoanRepaySendTransferCancelMessage(loanModel.getId());
+        }
+
         // update all overdue loan repay status
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
@@ -267,7 +275,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         // update invest repay actual interest fee status
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             if (RepayStatus.COMPLETE == investRepayModel.getStatus()) {
                 logger.info(String.format("[Normal Repay %s] investRepay %s  status is COMPLETE", String.valueOf(currentLoanRepay.getRepayAmount()), String.valueOf(investRepayModel.getId())));
@@ -305,16 +313,16 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     /**
-     * 借款人还款后Job回调，返款投资人
+     * 借款人还款后Job回调，返款出借人
      *
      * @param loanRepayId 标的还款计划id
-     * @return 处理结果(true 所有投资人返款已成功发放)
+     * @return 处理结果(true 所有出借人返款已成功发放)
      */
     @Override
     public boolean paybackInvest(long loanRepayId) {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
         long loanId = currentLoanRepay.getLoanId();
-        //投资人实收利息总计
+        //出借人实收利息总计
         long interestWithoutFee = 0;
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -322,7 +330,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
 
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
 
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
@@ -429,7 +437,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         mqWrapperClient.sendMessage(MessageQueue.RepaySuccessInvestRepayCallback, new RepaySuccessAsyncCallBackMessage(callbackRequest.getId(), false));
-        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放投资人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
+        logger.info(MessageFormat.format("[Normal Repay] 正常还款发放出借人收益回调消息发送成功,notifyRequestId:{0}", String.valueOf(callbackRequest.getId())));
         return callbackRequest.getResponseData();
     }
 
@@ -519,10 +527,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(currentLoanRepay.getLoanId());
 
-        //投资人实收利息总和
+        //出借人实收利息总和
         long interestWithoutFee = 0;
         for (InvestModel investModel : successInvests) {
-            //投资人当期还款计划
+            //出借人当期还款计划
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), currentLoanRepay.getPeriod());
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
         }
@@ -547,9 +555,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     /**
-     * 投资人收到返款处理
+     * 出借人收到返款处理
      *
-     * @param currentInvestRepay 投资人还款计划
+     * @param currentInvestRepay 出借人还款计划
      * @throws AmountTransferException
      */
     private void processInvestRepay(long loanRepayId, InvestRepayModel currentInvestRepay) throws AmountTransferException {
@@ -557,26 +565,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         InvestModel investModel = investMapper.findById(currentInvestRepay.getInvestId());
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
-        // interest user bill
-        long paybackAmount = currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest();
-        AmountTransferMessage inAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
-                investRepayId,
-                paybackAmount,
-                currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate()) ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
-                null, null);
-
-        // fee user bill
-        AmountTransferMessage outAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
-                investRepayId,
-                currentInvestRepay.getActualFee(),
-                UserBillBusinessType.INVEST_FEE, null, null);
-
-        inAtm.setNext(outAtm);
-
-        logger.info(MessageFormat.format("[Normal Repay {0}] send message to update user account. invest repay({1}), payback amount({2}), fee amount({3})",
-                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(paybackAmount), String.valueOf(currentInvestRepay.getActualFee())));
-
-        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, inAtm);
 
         //update invest repay
         currentInvestRepay.setStatus(RepayStatus.COMPLETE);
@@ -585,21 +573,67 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update status to COMPLETE",
                 String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId())));
 
+        long actualRepayCorpus = currentInvestRepay.getCorpus();
+        long actualRepayExpectedInterest = currentInvestRepay.getExpectedInterest();
+        long actualRepayExpectedInterestFee = currentInvestRepay.getExpectedFee();
+
         // update all overdue invest repay
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-        investRepayModels.stream().filter(investRepayModel -> investRepayModel.getStatus() == RepayStatus.OVERDUE).forEach(investRepayModel -> {
-            investRepayModel.setStatus(RepayStatus.COMPLETE);
-            investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
-            investRepayMapper.update(investRepayModel);
-            logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
-                    String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
-        });
+        for(InvestRepayModel investRepayModel : investRepayModels){
+            if (investRepayModel.getStatus() == RepayStatus.OVERDUE){
+                investRepayModel.setStatus(RepayStatus.COMPLETE);
+                investRepayModel.setActualRepayDate(currentInvestRepay.getActualRepayDate());
+                investRepayMapper.update(investRepayModel);
+                logger.info(MessageFormat.format("[Normal Repay {0}] invest repay({1}) update overdue invest repay({2}) status to COMPLETE",
+                        String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(investRepayModel.getId())));
+                actualRepayCorpus += investRepayModel.getCorpus();
+                actualRepayExpectedInterest += investRepayModel.getExpectedInterest();
+                actualRepayExpectedInterestFee += investRepayModel.getExpectedFee();
+            }
+        }
+
+        boolean isNormalRepay = currentInvestRepay.getActualRepayDate().before(currentInvestRepay.getRepayDate());
+        // corpus + ExpectedInterest user bill
+        AmountTransferMessage corpusAndExpectedInterestAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+                investRepayId,
+                actualRepayCorpus + actualRepayExpectedInterest,
+                isNormalRepay ? UserBillBusinessType.NORMAL_REPAY : UserBillBusinessType.OVERDUE_REPAY,
+                null, null);
+
+        //  ExpectedInterestFee user bill
+        AmountTransferMessage expectedInterestFeeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
+                investRepayId,
+                actualRepayExpectedInterestFee,
+                UserBillBusinessType.INVEST_FEE, null, null);
+
+        if (!isNormalRepay) {
+            //  defaultInterest + overdueInterest user bill
+            AmountTransferMessage defaultInterestAndOverdueInterestAtm = new AmountTransferMessage(TransferType.TRANSFER_IN_BALANCE, investModel.getLoginName(),
+                    investRepayId,
+                    currentInvestRepay.getActualInterest() - actualRepayExpectedInterest,
+                    UserBillBusinessType.OVERDUE_INTEREST, null, null);
+
+            //  defaultInterestFee + overdueInterestFee user bill
+            AmountTransferMessage defaultInterestFeeAndOverdueInterestFeeAtm = new AmountTransferMessage(TransferType.TRANSFER_OUT_BALANCE, investModel.getLoginName(),
+                    investRepayId,
+                    currentInvestRepay.getActualFee() - actualRepayExpectedInterestFee,
+                    UserBillBusinessType.OVERDUE_INTEREST_FEE, null, null);
+            defaultInterestAndOverdueInterestAtm.setNext(defaultInterestFeeAndOverdueInterestFeeAtm);
+            expectedInterestFeeAtm.setNext(defaultInterestAndOverdueInterestAtm);
+        }
+
+        corpusAndExpectedInterestAtm.setNext(expectedInterestFeeAtm);
+
+        logger.info(MessageFormat.format("[Normal Repay {0}] send message to update user account. invest repay({1}), payback amount({2}), fee amount({3})",
+                String.valueOf(loanRepayId), String.valueOf(currentInvestRepay.getId()), String.valueOf(currentInvestRepay.getCorpus() + currentInvestRepay.getActualInterest()), String.valueOf(currentInvestRepay.getActualFee())));
+
+        mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, corpusAndExpectedInterestAtm);
 
         String redisKey = MessageFormat.format(REPAY_REDIS_KEY_TEMPLATE, String.valueOf(loanRepayId));
         redisWrapperClient.hset(redisKey, String.valueOf(investRepayId), SyncRequestStatus.SUCCESS.name());
 
-        //Title:您投资的{0}已回款{1}元，请前往账户查收！
-        //Content:尊敬的用户，您投资的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
+        //Title:您出借的{0}已回款{1}元，请前往账户查收！
+        //Content:尊敬的用户，您出借的{0}项目已回款，期待已久的收益已奔向您的账户，快来查看吧。
         long repayAmount = currentInvestRepay.getRepayAmount();
         CouponRepayModel couponRepayModel = couponRepayMapper.findCouponRepayByInvestIdAndPeriod(currentInvestRepay.getInvestId(), currentInvestRepay.getPeriod());
         if (couponRepayModel != null) {
@@ -628,7 +662,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() : 0;
+            actualInterest += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() : 0;
         }
         return actualInterest;
     }
@@ -641,7 +675,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualFee = 0;
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
-            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? investRepayModel.getExpectedFee() : 0;
+            actualFee += investRepayModel.getStatus() == RepayStatus.OVERDUE ? (investRepayModel.getExpectedFee()+investRepayModel.getOverdueFee()+investRepayModel.getDefaultFee()) : 0;
         }
         return actualFee;
     }
@@ -654,7 +688,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         long actualInterest = 0;
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest() : 0;
+            actualInterest += loanRepayModel.getStatus() == RepayStatus.OVERDUE ? loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest(): 0;
         }
         return actualInterest;
     }
@@ -692,5 +726,14 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("正常还款业务错误。详细信息：{0}", errMsg));
     }
 
-
+    private void lastLoanRepaySendTransferCancelMessage(long loanId){
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findAllTransferringApplicationsByLoanId(loanId);
+        for (TransferApplicationModel transferApplicationModel : transferApplicationModels) {
+            transferApplicationModel.setStatus(TransferStatus.CANCEL);
+            transferApplicationMapper.update(transferApplicationModel);
+            logger.info(MessageFormat.format("Transfer Loan id: {0} is canceled because of loan repay over.", transferApplicationModel.getId()));
+            String mobile = userMapper.findByLoginName(transferApplicationModel.getLoginName()).getMobile();
+            mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_CANCEL_TRANSFER_LOAN_COMPLETE_TEMPLATE, Lists.newArrayList(mobile), Lists.newArrayList(transferApplicationModel.getName())));
+        }
+    }
 }

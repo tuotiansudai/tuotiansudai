@@ -19,6 +19,7 @@
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
+        <result column="overdue_interest" property="overdueInterest"/>
     </resultMap>
 
 
@@ -35,6 +36,7 @@
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="loan_repay_status" property="status"/>
         <result column="loan_repay_created_time" property="createdTime"/>
+        <result column="overdue_interest" property="overdueInterest"/>
         <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
             <id column="loan_id" property="id"/>
             <result column="name" property="name"></result>
@@ -66,14 +68,14 @@
     </resultMap>
 
     <sql id="columns">
-        id, loan_id, corpus, default_interest, expected_interest, actual_interest, repay_amount, period, repay_date, actual_repay_date, status, created_time
+        id, loan_id, corpus, default_interest, expected_interest, actual_interest, repay_amount, period, repay_date, actual_repay_date, status, created_time,overdue_interest
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
         insert into loan_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.repayAmount},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime})
+            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.repayAmount},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime},#{item.overdueInterest})
         </foreach>
     </insert>
 
@@ -198,14 +200,15 @@
             actual_repay_date = #{actualRepayDate},
             default_interest = #{defaultInterest},
             repay_amount = #{repayAmount},
-            status = #{status}
+            status = #{status},
+            overdue_interest = #{overdueInterest}
         where id = #{id}
     </update>
 
     <select id="findByLoginNameAndTimeSuccessRepay" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
-            t.`corpus` + t.`default_interest` + t.`expected_interest`
+            t.`corpus` + t.`default_interest` + t.`overdue_interest` + t.`expected_interest`
           ),0)
         FROM
           loan_repay t
@@ -236,6 +239,7 @@
           n.`actual_interest`,
           n.`expected_interest`,
           n.`default_interest`,
+          n.`overdue_interest`,
           n.`repay_amount`,
           n.`actual_repay_date`,
           n.`repay_date`,
@@ -253,6 +257,7 @@
               t.`actual_interest`,
               t.`expected_interest`,
               t.`default_interest`,
+              t.`overdue_interest`,
               t.`repay_amount`,
               t.`actual_repay_date`,
               t.`repay_date`,
@@ -297,7 +302,7 @@
 
     <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
-            lr.corpus + lr.expected_interest + lr.default_interest as repay_amount,
+            lr.corpus + lr.expected_interest + lr.default_interest + lr.overdue_interest as repay_amount,
             l.name as loan_name,
             u.mobile,
             l.id as loan_id,
@@ -328,4 +333,23 @@
         select ifnull(SUM(actual_interest),0) from loan_repay where status='COMPLETE'
     </select>
 
+    <select id="findOverdueLoanRepay" resultMap="loanRepayResultMap">
+        select * from loan_repay where status = 'OVERDUE' and loan_id != 1
+    </select>
+
+    <select id="findFirstOverdueRepayByLoanId" resultMap="loanRepayResultMap" parameterType="map">
+        select * from loan_repay
+        where status = 'OVERDUE'
+              and loan_id = #{loanId}
+              and loan_repay.period = (select min(period)
+                                       from loan_repay future_repay
+                                       where future_repay.loan_id = #{loanId} and future_repay.status = 'OVERDUE')
+    </select>
+
+    <update id="updateOverdueInterest" parameterType="map">
+        update loan_repay
+        set
+          overdue_interest = #{overdueInterest}
+        where id = #{id}
+    </update>
 </mapper>

@@ -8,6 +8,7 @@ import com.tuotiansudai.api.service.MobileAppMediaCenterService;
 import com.tuotiansudai.api.util.PageValidUtils;
 import com.tuotiansudai.repository.model.ArticleSectionType;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.SubArticleSectionType;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +66,7 @@ public class MobileAppMediaCenterControllerTest extends ControllerTestBase{
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         baseResponseDto.setData(mediaArticleListResponseDataDto);
 
-        when(service.obtainArticleList(any(ArticleSectionType.class), anyInt(), anyInt())).thenReturn(baseResponseDto);
+        when(service.obtainArticleList(any(ArticleSectionType.class),any(SubArticleSectionType.class), anyInt(), anyInt())).thenReturn(baseResponseDto);
         when(pageValidUtils.validPageSizeLimit(anyInt())).thenReturn(10);
         this.mockMvc.perform(get("/media-center/article-list")
                 .param("articleSectionType", "ALL").param("index", "1").param("pageSize", "10"))

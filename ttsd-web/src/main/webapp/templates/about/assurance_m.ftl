@@ -14,12 +14,12 @@
         <h2 class="cash-title">
             资金安全
         </h2>
-        <div class="cash-fonts">为保障投资者的资金安全<br/>
+        <div class="cash-fonts">为保障出借者的资金安全<br/>
             拓天速贷采用多管齐下的资金管理措施</div>
 
         <div class="safe-info-list">
             <dl class="clearfix">
-                <dt class="list01"><em>第三方资金托管</em></dt>
+                <dt class="list01"><em>第三方资金支付</em></dt>
                 <dd>第三方支付平台为拓天速贷建立了专门账户，对所有资金进行监管，确保资金安全。</dd>
             </dl>
             <dl class="clearfix">

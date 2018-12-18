@@ -5,24 +5,29 @@
         <#assign keywords="拓天速贷,拓天产品,房产抵押借款,资金周转">
         <#assign description="拓天速贷P2P金融信息服务平台为您提供优质房产抵押借款,让您获得稳定收益的投资产品.">
         <#break>
-    <#case '车辆抵押借款'>
-        <#assign title="车辆抵押借款_投资列表_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆抵押借款">
-        <#assign description="拓天速贷优质车辆抵押借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
+    <#case '车辆消费借款'>
+        <#assign title="车辆消费借款_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,个人借贷,车辆消费借款">
+        <#assign description="拓天速贷优质车辆消费借贷个人借款投资产品,较高的年化收益率,高收益,高效率,低风险.">
+        <#break>
+    <#case '个人资金周转'>
+        <#assign title="个人资金周转_投资列表_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,个人借贷,个人资金周转">
+        <#assign description="拓天速贷优质个人资金周转投资产品,较高的年化收益率,高收益,高效率,低风险.">
         <#break>
     <#default>
         <#assign title="投资列表_投资产品_拓天速贷">
-        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆抵押借款">
+        <#assign keywords="拓天速贷,拓天产品,房产抵押借款,车辆消费借款">
         <#assign description="拓天速贷为您提供准确及时的P2P投资项目,投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您获得较高的收益.">
 </#switch>
 
-<@global.main pageCss="${css.loan_list}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
+<@global.main pageCss="${css.loan_list}" pageJavascript="${js.loan_list}" activeNav="我要出借" activeLeftNav="直投项目" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
     <ul class="wrapper-list" id="wrapperList">
             <li class="project-kind">
                 <span>项目类型: </span>
                 <#assign nametUrl = "/loan-list?name={name}&status=${status!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
-                <#assign nameMap = {"":"全部","房产抵押借款":"房产抵押借款","车辆抵押借款":"车辆抵押借款","经营性借款":"经营性借款"}>
+                <#assign nameMap = {"":"全部","个人资金周转":"个人资金周转","房产抵押借款":"房产抵押借款","车辆消费借款":"车辆消费借款","经营性借款":"经营性借款"}>
                 <#assign nameKeys = nameMap?keys>
                 <#list nameKeys as key>
                     <a <#if name?? && name == key>class="active"
@@ -31,7 +36,7 @@
                 </#list>
                 <div class="safety-notification">出借人适当性管理告知<i id="noticeBtn" class="fa fa-question-circle" aria-hidden="true"></i></div>
                 <div class="notice-tips extra-rate-popup" style="display: none">
-                    参与网络借贷的出借人，应当具备投资风险意识、风险识别能力，拥有非保本类金融产品投资的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。
+                    参与网络借贷的出借人，应当具备出借风险意识、风险识别能力，拥有非保本类金融产品出借的经历并熟悉互联网。请您在出借前，确保了解融资项目信贷风险，确认具有相应的风险认知和承受能力，并自行承担借贷产生的本息损失。
                 </div>
                 <em class="show-more">更多 <i class="fa fa-angle-down"></i> </em>
             </li>
@@ -53,7 +58,7 @@
             <li>
                 <span>项目状态: </span>
                 <#assign statusUrl = "/loan-list?status={status}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&durationStart=${durationStart!}&durationEnd=${durationEnd!}">
-                <#assign statusMap = {"":"全部","RAISING":"可投资","REPAYING":"还款中","COMPLETE":"还款完成","PREHEAT":"预热中"}>
+                <#assign statusMap = {"":"全部","RAISING":"可出借","REPAYING":"还款中","COMPLETE":"还款完成","PREHEAT":"预热中"}>
                 <#assign statusKeys = statusMap?keys>
                 <#list statusKeys as key>
                     <a <#if status?? && status == key>class="active"
@@ -88,7 +93,7 @@
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
                             <span class="l-title fl">${loanItem.name}
-                                <#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金投资</i></#if>
+                                <#if loanItem.productType == 'EXPERIENCE'><i class="new-tip">仅限使用体验金购买</i></#if>
                             </span>
 
                             <#if loanItem.activity?string("true","false") == "true">
@@ -161,7 +166,7 @@
                         <#if loanItem.status== 'PREHEAT'>
                             <div class="time-item preheat" data-time="${loanItem.preheatSeconds?string.computer}">
                                 <#if loanItem.preheatSeconds lte 1800>
-                                    <i class="time-clock" ></i><strong class="minute_show">00</strong><em>:</em><strong class="second_show">00</strong>以后可投资
+                                    <i class="time-clock" ></i><strong class="minute_show">00</strong><em>:</em><strong class="second_show">00</strong>以后可出借
                                 <#else>
                                 ${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                                 </#if>
@@ -181,11 +186,11 @@
                                     </div>
                                     <div class="rest-amount">
                                         <span>可投额度：<i>${loanItem.alert}</i></span>
-                                        <i class="btn-invest btn-normal">马上投资</i>
+                                        <i class="btn-invest btn-normal">马上出借</i>
                                     </div>
                                 <#else>
                                     <div class="rest-amount">
-                                        <i class="btn-invest btn-normal">马上投资</i>
+                                        <i class="btn-invest btn-normal">马上出借</i>
                                     </div>
                                 </#if>
                             </div>
@@ -201,12 +206,12 @@
                                 </div>
                                 <div class="rest-amount">
                                     <span>可投额度：<i>${loanItem.alert}</i></span>
-                                    <i class="btn-invest btn-normal">马上投资</i>
+                                    <i class="btn-invest btn-normal">马上出借</i>
                                 </div>
                             <#else>
                                 <div class="rest-amount">
                                     <br/>
-                                    <i class="btn-invest btn-normal">马上投资</i>
+                                    <i class="btn-invest btn-normal">马上出借</i>
                                 </div>
                             </#if>
                         </#if>

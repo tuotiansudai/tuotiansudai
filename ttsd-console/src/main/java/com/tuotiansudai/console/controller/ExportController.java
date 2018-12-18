@@ -272,12 +272,14 @@ public class ExportController {
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                             RoleStage roleStage, String referrerMobile, String channel,
                             UserOperation userOperation,
+                            @RequestParam(value = "hasStaff", required = false) Boolean hasStaff,
+                            @RequestParam(value = "staffMobile", required = false) String staffMobile,
                             @RequestParam(value = "source", required = false) Source source, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleUsers.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
-                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile, index, pageSize);
         List<List<String>> usersData = exportService.buildUsers(baseDto.getData().getRecords());
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, usersData, response.getOutputStream());
     }
@@ -291,12 +293,13 @@ public class ExportController {
                               @RequestParam(name = "investStatus", required = false) InvestStatus investStatus,
                               @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                               @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                              @RequestParam(name = "transferType", required = false) String transferType,
                               @RequestParam(name = "usedPreferenceType", required = false) PreferenceType preferenceType, HttpServletResponse response) throws IOException {
         fillExportResponse(response, CsvHeaderType.ConsoleInvests.getDescription());
         int index = 1;
         int pageSize = Integer.MAX_VALUE;
         InvestPaginationDataDto investPagination = consoleInvestService.getInvestPagination(loanId, investorMobile, channel, source,
-                role, startTime, endTime, investStatus, preferenceType, null, index, pageSize);
+                role, startTime, endTime, investStatus, preferenceType, null, transferType, index, pageSize);
         List<InvestPaginationItemDataDto> records = investPagination.getRecords();
         List<List<String>> investsData = exportService.buildInvests(records);
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, investsData, response.getOutputStream());

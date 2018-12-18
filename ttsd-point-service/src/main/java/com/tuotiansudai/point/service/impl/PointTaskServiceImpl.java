@@ -86,14 +86,6 @@ public class PointTaskServiceImpl implements PointTaskService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
-
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER = "REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER:{0}:{1}";
-
-    private final String REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT = "REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT:{0}:{1}";
-
-    private final int seconds = 60 * 24 * 60 * 60;
-
     @Override
     @Transactional
     public void completeNewbieTask(PointTask pointTask, String loginName) {
@@ -120,17 +112,17 @@ public class PointTaskServiceImpl implements PointTaskService {
             long firstInvestAmount;
             switch (pointTask) {
                 case EACH_SUM_INVEST:
-                    //累计投资满5000元返100积分，只能完成一次
+                    //累计出借满5000元返100积分，只能完成一次
                     userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, FIRST_TASK_LEVEL));
-                    pointBillNote = MessageFormat.format("累计投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
+                    pointBillNote = MessageFormat.format("累计出借满{0}元奖励{1}积分", AmountConverter.convertCentToString(SUM_INVEST_5000_AMOUNT), String.valueOf(SUM_INVEST_5000_POINT));
                     pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), SUM_INVEST_5000_POINT, pointBillNote);
                     break;
                 case FIRST_SINGLE_INVEST:
-                    //首次投资满10000元返200积分，只能完成一次
+                    //首次出借满10000元返200积分，只能完成一次
                     firstInvestAmount = investMapper.findLatestSuccessInvest(loginName).getAmount();
                     if (firstInvestAmount >= FIRST_INVEST_10000_AMOUNT) {
                         userPointTaskMapper.create(new UserPointTaskModel(loginName, pointTaskModel.getId(), FIRST_INVEST_10000_POINT, FIRST_TASK_LEVEL));
-                        pointBillNote = MessageFormat.format("单笔投资满{0}元奖励{1}积分", AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT), String.valueOf(FIRST_INVEST_10000_POINT));
+                        pointBillNote = MessageFormat.format("单笔出借满{0}元奖励{1}积分", AmountConverter.convertCentToString(FIRST_INVEST_10000_AMOUNT), String.valueOf(FIRST_INVEST_10000_POINT));
                         pointBillService.createTaskPointBill(loginName, pointTaskModel.getId(), FIRST_INVEST_10000_POINT, pointBillNote);
                     }
                     break;
@@ -357,9 +349,6 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST:
                 couponId =  402l;
                 break;
-            case REGISTER:
-                referrerSuperScholarActivityAccount(loginName, referrer);
-                break;
         }
 
         if(couponId != null){
@@ -367,12 +356,4 @@ public class PointTaskServiceImpl implements PointTaskService {
             mqWrapperClient.sendMessage(MessageQueue.Coupon_Assigning, referrer + ":" + couponId);
         }
     }
-
-    private void referrerSuperScholarActivityAccount(String loginName, String referrer){
-        String currentDate = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now());
-        if (redisWrapperClient.exists(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_REGISTER, currentDate, loginName))){
-            redisWrapperClient.setex(MessageFormat.format(REFERRER_ACTIVITY_SUPER_SCHOLAR_ACCOUNT, currentDate, referrer), seconds, "SUCCESS");
-        }
-    }
-
 }

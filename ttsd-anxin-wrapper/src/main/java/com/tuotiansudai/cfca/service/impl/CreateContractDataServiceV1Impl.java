@@ -15,13 +15,17 @@ import java.util.Map;
 public class CreateContractDataServiceV1Impl extends AbstractCreateContractDataService {
 
     @Value(value = "${anxin.loan.contract.template.v1}")
-    private String supportTemp;
+    private String anxinLoanContractTemplateV1;
+
+    @Value(value = "${anxin.loan.consume.contract.template.v1}")
+    private String anxinLoanConsumeContractTemplateV1;
+
     @Autowired
     private ContractService contractService;
 
     @Override
     public String getSupportContractVersion() {
-        return supportTemp;
+        return anxinLoanContractTemplateV1;
     }
 
     @Override
@@ -45,6 +49,8 @@ public class CreateContractDataServiceV1Impl extends AbstractCreateContractDataS
         dataModel.put("endTime2", investMap.get("endTime"));
         dataModel.put("orderId", String.valueOf(investId));
         dataModel.put("pledge", investMap.get("pledge"));
+        dataModel.put("purpose", investMap.get("purpose"));
+        dataModel.put("repayType", investMap.get("repayType"));
         return dataModel;
     }
 }

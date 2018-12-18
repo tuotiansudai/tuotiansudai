@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享投资顾问,会员专属特权,为广大投资用户提供丰富的投资福利." site="membership">
+<@global.main pageCss="${css.membership}" pageJavascript="" activeNav="我的会员" activeLeftNav="" title="我的会员_会员福利_拓天速贷" keywords="拓天会员,拓天会员积分,拓天保障,拓天速贷" description="拓天速贷会员中心为您提供会员专享出借顾问,会员专属特权,为广大出借用户提供丰富的福利." site="membership">
 
 <div class="global-member-ship">
     <#if mobile??>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="my-level">
-            特权多多,稳赚收益 <a href="/loan-list">马上去投资></a>
+            特权多多,稳赚收益 <a href="/loan-list">马上去出借></a>
         </div>
 
         <div class="levels">
@@ -55,7 +55,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -65,7 +65,7 @@
                         <li class="membership-giftbag-hui">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount-hui">
                             <h3>技术服务费</h3>
@@ -75,12 +75,12 @@
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -91,7 +91,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -101,7 +101,7 @@
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount-hui">
                             <h3>技术服务费</h3>
@@ -111,12 +111,12 @@
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -127,7 +127,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -137,7 +137,7 @@
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
                             <h3>技术服务费</h3>
@@ -147,12 +147,12 @@
                         <li class="vip-service-hui">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -163,7 +163,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -173,7 +173,7 @@
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
                             <h3>技术服务费</h3>
@@ -183,12 +183,12 @@
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor-hui">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -199,7 +199,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -209,7 +209,7 @@
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
                             <h3>技术服务费</h3>
@@ -219,12 +219,12 @@
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits-hui">
                             <h3>生日福利</h3>
@@ -235,7 +235,7 @@
                         <li class="multi-ensuring">
                             <h3>多重保障</h3>
 
-                            <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                            <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                         </li>
                         <li class="anytime-withdraw">
                             <h3>随时提现</h3>
@@ -245,7 +245,7 @@
                         <li class="membership-giftbag">
                             <h3>会员礼包</h3>
 
-                            <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                            <p>每月发放出借红包，588、688、788、888元随机派送</p>
                         </li>
                         <li class="service-fee-discount">
                             <h3>技术服务费</h3>
@@ -255,12 +255,12 @@
                         <li class="vip-service">
                             <h3>贵宾专线</h3>
 
-                            <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                            <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                         </li>
                         <li class="spec-financial-advisor">
-                            <h3>专享投资顾问</h3>
+                            <h3>专享出借顾问</h3>
 
-                            <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                            <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                         </li>
                         <li class="birthday-benefits">
                             <h3>生日福利</h3>
@@ -311,7 +311,7 @@
         </div>
 
         <div class="my-level">
-            特权多多,稳赚收益 <a href="/loan-list">去投资></a>
+            特权多多,稳赚收益 <a href="/loan-list">去出借></a>
         </div>
 
         <div class="levels">
@@ -325,7 +325,7 @@
                     <li class="multi-ensuring">
                         <h3>多重保障</h3>
 
-                        <p>三方托管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
+                        <p>三方存管、抵押模式、严格风控体系、平台信息透明、数据信息安全等保障</p>
                     </li>
                     <li class="anytime-withdraw">
                         <h3>随时提现</h3>
@@ -335,7 +335,7 @@
                     <li class="membership-giftbag">
                         <h3>会员礼包</h3>
 
-                        <p>每月发放投资红包，588、688、788、888元随机派送</p>
+                        <p>每月发放出借红包，588、688、788、888元随机派送</p>
                     </li>
                     <li class="service-fee-discount">
                         <h3>技术服务费</h3>
@@ -345,12 +345,12 @@
                     <li class="vip-service">
                         <h3>贵宾专线</h3>
 
-                        <p>贵宾级客服服务，投资问题，意见建议专享直达</p>
+                        <p>贵宾级客服服务，出借问题，意见建议专享直达</p>
                     </li>
                     <li class="spec-financial-advisor">
-                        <h3>专享投资顾问</h3>
+                        <h3>专享出借顾问</h3>
 
-                        <p>发标时间，平台活动，投资顾问第一时间通知到您</p>
+                        <p>发标时间，平台活动，出借顾问第一时间通知到您</p>
                     </li>
                     <li class="birthday-benefits">
                         <h3>生日福利</h3>
@@ -427,7 +427,7 @@
                         <td><i class="fa fa-check-circle-o" aria-hidden="true"></i></td>
                     </tr>
                     <tr>
-                        <td>专享投资顾问</td>
+                        <td>专享出借顾问</td>
                         <td></td>
                         <td></td>
                         <td></td>

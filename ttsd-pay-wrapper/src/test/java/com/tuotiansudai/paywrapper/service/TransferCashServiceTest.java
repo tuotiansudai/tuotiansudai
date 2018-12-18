@@ -155,41 +155,4 @@ public class TransferCashServiceTest {
         assertThat(feeMessage.getBusinessType(), CoreMatchers.is(UserBillBusinessType.INVEST_CASH_BACK));
         assertThat(feeMessage.getTransferType(), CoreMatchers.is(TransferType.TRANSFER_IN_BALANCE));
     }
-
-    @Test
-    public void transferCashInviteHelpActivityFail(){
-        long orderId = IdGenerator.generate();
-        InviteHelpActivityPayCashDto dto = new InviteHelpActivityPayCashDto("openId", null, String.valueOf(orderId), "1", UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
-        BaseDto<PayDataDto> baseDto = transferCashService.transferCashInviteHelpActivity(dto);
-
-        assertFalse(baseDto.getData().getStatus());
-        assertThat(baseDto.getData().getCode(), is(String.valueOf(HttpStatus.BAD_REQUEST)));
-        assertThat(baseDto.getData().getMessage(), is("用户未注册"));
-
-        WeChatUserModel weChatUserModel = new WeChatUserModel("loginName", "openid");
-        weChatUserMapper.create(weChatUserModel);
-        weChatUserModel.setBound(true);
-        weChatUserMapper.update(weChatUserModel);
-        BaseDto<PayDataDto> baseDto1 = transferCashService.transferCashInviteHelpActivity(dto);
-
-        assertFalse(baseDto1.getData().getStatus());
-        assertThat(baseDto1.getData().getCode(), is(String.valueOf(HttpStatus.BAD_REQUEST)));
-        assertThat(baseDto1.getData().getMessage(), is("用户未实名认证"));
-    }
-
-    @Test
-    public void transferCashInviteHelpActivitySuccess(){
-        WeChatUserModel weChatUserModel = new WeChatUserModel("loginName", "openid");
-        weChatUserMapper.create(weChatUserModel);
-        weChatUserModel.setBound(true);
-        weChatUserMapper.update(weChatUserModel);
-        this.createAccountByUserId("loginName");
-        long orderId = IdGenerator.generate();
-        InviteHelpActivityPayCashDto dto = new InviteHelpActivityPayCashDto("openId", null, String.valueOf(orderId), "1", UserBillBusinessType.INVEST_CASH_BACK, SystemBillBusinessType.INVEST_CASH_BACK, SystemBillDetailTemplate.INVITE_HELP_SEND_CASH_REWARD_DETAIL_TEMPLATE);
-
-        BaseDto<PayDataDto> baseDto = transferCashService.transferCashInviteHelpActivity(dto);
-
-        assertTrue(baseDto.getData().getStatus());
-    }
-
 }

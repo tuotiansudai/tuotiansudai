@@ -9,7 +9,7 @@ public enum Tag {
     LOAN("贷款"),
     FUND("基金"),
     CROWD_FUNDING("众筹"),
-    INVEST("投资"),
+    INVEST("出借"),
     CREDIT_CARD("信用卡"),
     FOREX("外汇"),
     STOCK("股票"),

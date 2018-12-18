@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.enums.riskestimation.Estimate;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -11,11 +12,13 @@ import com.tuotiansudai.repository.mapper.LoanDetailsMapper;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RiskEstimateService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -64,6 +67,14 @@ public class TransferApplicationController {
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
+
+    @Autowired
+    private InvestService investService;
+
+    private RedisWrapperClient redisWrapperClient=RedisWrapperClient.getInstance();
+
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getTransferApplicationDetail(@PathVariable long transferApplicationId) {
@@ -81,7 +92,7 @@ public class TransferApplicationController {
         loanDto.setType(loanModel.getType());
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setEstimate(loanDetailsModel != null && loanDetailsModel.getEstimate() != null ? loanDetailsModel.getEstimate().getType() : null);
-
+        loanDto.setEstimateLevel(loanDetailsModel != null && loanDetailsModel.getEstimate() != null ? loanDetailsModel.getEstimate().getLower():0);
         String loginName = LoginUserInfo.getLoginName();
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
 
@@ -95,7 +106,10 @@ public class TransferApplicationController {
         BankCardModel passedBankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         modelAndView.addObject("hasBankCard", passedBankCard != null);
 
-        modelAndView.addObject("estimate", riskEstimateService.getEstimate(LoginUserInfo.getLoginName()) != null);
+        modelAndView.addObject("availableInvestMoney", investService.availableInvestMoney(LoginUserInfo.getLoginName()));
+        Estimate estimate=riskEstimateService.getEstimate(LoginUserInfo.getLoginName());
+        modelAndView.addObject("estimate", estimate);
+        modelAndView.addObject("estimateLimit", estimate == null?0:AmountConverter.convertStringToCent(redisWrapperClient.hget(riskEstimateLimitKey,estimate.name())));
         modelAndView.addObject("investFeeRate", membershipPrivilegePurchaseService.obtainServiceFee(LoginUserInfo.getLoginName()));
         return modelAndView;
     }

@@ -10,6 +10,7 @@ import com.tuotiansudai.console.repository.model.UserMicroModelView;
 import com.tuotiansudai.console.repository.model.UserOperation;
 import com.tuotiansudai.console.service.ConsoleRiskEstimateService;
 import com.tuotiansudai.console.service.ConsoleUserService;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
@@ -37,15 +38,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -53,6 +57,9 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
+
+    @Value("${risk.estimate.limit.key}")
+    private String riskEstimateLimitKey;
 
     @Autowired
     private UserService userService;
@@ -211,10 +218,12 @@ public class UserController {
                                     @RequestParam(value = "channel", required = false) String channel,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "userOperation", required = false) UserOperation userOperation,
+                                    @RequestParam(value = "hasStaff", required = false) Boolean hasStaff,
+                                    @RequestParam(value = "staffMobile", required = false) String staffMobile,
                                     @RequestParam(value = "index", defaultValue = "1", required = false) int index) {
         int pageSize = 10;
         BaseDto<BasePaginationDataDto<UserItemDataDto>> baseDto = consoleUserService.findAllUser(loginName, email, mobile,
-                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, index, pageSize);
+                beginTime, endTime, source, roleStage, referrerMobile, channel, userOperation, hasStaff, staffMobile, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto", baseDto);
         mv.addObject("loginName", loginName);
@@ -235,6 +244,8 @@ public class UserController {
         mv.addObject("channelList", channelList);
         mv.addObject("sourceList", Source.values());
         mv.addObject("userOperations", UserOperation.values());
+        mv.addObject("hasStaff", hasStaff);
+        mv.addObject("staffMobile", staffMobile);
         return mv;
     }
 
@@ -481,5 +492,36 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.GET)
+    public ModelAndView riskEstimateLimit() {
+        ModelAndView modelAndView = new ModelAndView("/risk-estimate-limit");
+        modelAndView.addAllObjects(redisWrapperClient.hgetAll(riskEstimateLimitKey));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/risk-estimate/limit", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDataDto riskEstimateLimitEdit(@RequestBody Map<String, String> dataMap) {
+        String conservative = dataMap.get(Estimate.CONSERVATIVE.name());
+        String steady = dataMap.get(Estimate.STEADY.name());
+        String positive = dataMap.get(Estimate.POSITIVE.name());
+        if (!(Long.valueOf(conservative) < Long.valueOf(steady) && Long.valueOf(steady) < Long.valueOf(positive))) {
+            return new BaseDataDto(false, "输入的金额需满足:保守型<稳健型<积极型!");
+        }
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.CONSERVATIVE.name(), conservative);
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.STEADY.name(), steady);
+        redisWrapperClient.hset(riskEstimateLimitKey, Estimate.POSITIVE.name(), positive);
+        return new BaseDataDto(true);
+    }
+
+    @PostConstruct
+    public void initRiskEstimvate() {
+        Map<String, String> limitMap = redisWrapperClient.hgetAll(riskEstimateLimitKey);
+        if (CollectionUtils.isEmpty(limitMap)) {
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.CONSERVATIVE.name(), "500000");
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.STEADY.name(), "1500000");
+            redisWrapperClient.hset(riskEstimateLimitKey, Estimate.POSITIVE.name(), "5000000");
+        }
+    }
 
 }

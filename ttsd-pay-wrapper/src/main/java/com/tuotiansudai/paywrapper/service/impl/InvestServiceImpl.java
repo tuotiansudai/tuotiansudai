@@ -112,6 +112,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+
     private RedisWrapperClient redisWrapperClient = RedisWrapperClient.getInstance();
 
     @Override
@@ -158,7 +161,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds, String prize) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, String channel, List<Long> userCouponIds) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -219,7 +222,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     /**
-     * 投资回调接口，记录请求入库
+     * 出借回调接口，记录请求入库
      *
      * @param paramsMap
      * @param originalQueryString
@@ -273,10 +276,10 @@ public class InvestServiceImpl implements InvestService {
             // 超投返款处理
             overInvestPaybackProcess(orderId, investModel, loginName, loanId);
         } else {
-            // 投资成功
+            // 出借成功
             infoLog("invest_success", String.valueOf(orderId), investModel.getAmount(), loginName, loanId);
 
-            // 投资成功，冻结用户资金，更新投资状态为success
+            // 出借成功，冻结用户资金，更新出借状态为success
             ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
 
             if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
@@ -289,7 +292,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     /**
-     * 超投处理：返款、记录userBill、更新投资状态为失败
+     * 超投处理：返款、记录userBill、更新出借状态为失败
      *
      * @param orderId
      * @param investModel
@@ -317,7 +320,7 @@ public class InvestServiceImpl implements InvestService {
                 infoLog("pay_back_success", newOrderId, investModel.getAmount(), loginName, loanId);
                 paybackSuccess = true;
             } else {
-                // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
+                // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行出借成功处理
                 errorLog("pay_back_fail", newOrderId, investModel.getAmount(), loginName, loanId);
             }
         } catch (PayException e) {
@@ -330,7 +333,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         if (!paybackSuccess) {
-            // 如果返款失败，则记录本次投资为 超投返款失败
+            // 如果返款失败，则记录本次出借为 超投返款失败
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK_FAIL);
             investMapper.update(investModel);
         }
@@ -349,7 +352,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds(), dto.getZeroShoppingPrize());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel(), dto.getUserCouponIds());
     }
 
     @Override
@@ -393,7 +396,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null, null);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null, null);
                 if (!baseDto.isSuccess()) {
                     logger.info(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
@@ -441,7 +444,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     /**
-     * 投资成功处理：冻结资金＋更新invest状态
+     * 出借成功处理：冻结资金＋更新invest状态
      *
      * @param investModel
      */
@@ -452,7 +455,7 @@ public class InvestServiceImpl implements InvestService {
         AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
 
-        // 改invest 本身状态为投资成功
+        // 改invest 本身状态为出借成功
         investModel.setStatus(InvestStatus.SUCCESS);
         //设置交易时间
         investModel.setTradingTime(new Date());
@@ -460,7 +463,7 @@ public class InvestServiceImpl implements InvestService {
 
         this.investAchievementService.awardAchievement(investModel);
 
-        //投资成功后发送消息
+        //出借成功后发送消息
         this.publishInvestSuccessMessage(investModel);
     }
 
@@ -502,11 +505,16 @@ public class InvestServiceImpl implements InvestService {
             // 改 invest 本身状态为超投返款
             investModel.setStatus(InvestStatus.OVER_INVEST_PAYBACK);
             investMapper.update(investModel);
-            AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), investModel.getTransferInvestId() == null ? UserBillBusinessType.INVEST_SUCCESS : UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
-            atm.setNext(new AmountTransferMessage(TransferType.UNFREEZE, investModel.getLoginName(), investModel.getId(), investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null));
+            long investAmount = investModel.getAmount();
+            if (investModel.getTransferInvestId() != null){
+                List<TransferApplicationModel> models = transferApplicationMapper.findTransfersDescByTransferInvestId(investModel.getTransferInvestId());
+                investAmount = models != null && models.size() > 0 ? models.get(0).getTransferAmount() : investAmount;
+            }
+            AmountTransferMessage atm = new AmountTransferMessage(TransferType.FREEZE, investModel.getLoginName(), investModel.getId(), investAmount, investModel.getTransferInvestId() == null ? UserBillBusinessType.INVEST_SUCCESS : UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+            atm.setNext(new AmountTransferMessage(TransferType.UNFREEZE, investModel.getLoginName(), investModel.getId(), investAmount, UserBillBusinessType.OVER_INVEST_PAYBACK, null, null));
             mqWrapperClient.sendMessage(MessageQueue.AmountTransfer, atm);
         } else {
-            // 返款失败，当作投资成功处理
+            // 返款失败，当作出借成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
             ((InvestService) AopContext.currentProxy()).investSuccess(investModel);
@@ -519,8 +527,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void publishInvestSuccessMessage(InvestModel investModel) {
-        //Title:恭喜您成功投资{0}元
-        //Content:尊敬的用户，您已成功投资房产/车辆抵押借款{0}元，独乐不如众乐，马上【邀请好友投资】还能额外拿1%现金奖励哦！
+        //Title:恭喜您成功出借{0}元
+        //Content:尊敬的用户，您已成功出借房产/车辆抵押借款{0}元，独乐不如众乐，马上【邀请好友出借】还能额外拿1%现金奖励哦！
         String title = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
         String content = MessageFormat.format(MessageEventType.INVEST_SUCCESS.getTitleTemplate(), AmountConverter.convertCentToString(investModel.getAmount()));
         mqWrapperClient.sendMessage(MessageQueue.EventMessage, new EventMessage(MessageEventType.INVEST_SUCCESS,
@@ -649,6 +657,6 @@ public class InvestServiceImpl implements InvestService {
 
     private void sendSmsErrNotify(String errMsg) {
         logger.info("sent invest fatal sms message");
-        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        mqWrapperClient.sendMessage(MessageQueue.SmsFatalNotify, MessageFormat.format("出借业务错误。详细信息：{0}", errMsg));
     }
 }

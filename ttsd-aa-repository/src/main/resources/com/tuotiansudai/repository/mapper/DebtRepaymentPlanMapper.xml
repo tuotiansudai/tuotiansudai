@@ -21,7 +21,7 @@
         SELECT
           temp.repay_date,
           (
-            SUM(temp.interest) + SUM(temp.corpus) + SUM(temp.default_interest)
+            SUM(temp.interest) + SUM(temp.corpus) + SUM(temp.default_interest)+sum(temp.overdue_interest)
           ) AS total_amount
         FROM
           (
@@ -30,7 +30,8 @@
             DATE_FORMAT(m.`actual_repay_date`, '%Y-%m') AS repay_date,
             SUM(m.`actual_interest`) AS interest,
             SUM(m.`corpus`) AS corpus,
-            SUM(m.`default_interest`) AS default_interest
+            SUM(m.`default_interest`) AS default_interest,
+            SUM(m.`overdue_interest`) AS overdue_interest
           FROM
             loan_repay m
           WHERE m.`status` = 'COMPLETE'
@@ -45,7 +46,8 @@
             DATE_FORMAT(m.`repay_date`, '%Y-%m') AS repay_date,
             SUM(m.`expected_interest`) AS interest,
             SUM(m.`corpus`) AS corpus,
-            SUM(m.`default_interest`) AS default_interest
+            SUM(m.`default_interest`) AS default_interest,
+            SUM(m.`overdue_interest`) AS overdue_interest
           FROM
             loan_repay m
           WHERE m.`status` != 'COMPLETE'
@@ -62,7 +64,7 @@
           IF(
             l.`status` = 'COMPLETE',
             l.`repay_amount`,
-            l.`corpus` + l.`expected_interest` + l.`default_interest`
+            l.`corpus` + l.`expected_interest` + l.`default_interest`+l.`overdue_interest`
           ) AS repay_amount,
           t.`name` AS loan_name,
           t.`id` AS loan_id,

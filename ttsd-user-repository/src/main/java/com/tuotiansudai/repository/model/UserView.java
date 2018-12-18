@@ -26,6 +26,7 @@ public class UserView implements Serializable {
     private boolean isReferrerStaff;
     private Date lastBillTime;
     private boolean fastPay;
+    private String staffMobile;
 
     public boolean isBindBankCard() {
         return isBindBankCard;
@@ -201,5 +202,13 @@ public class UserView implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         this.fastPay = fastPay;
+    }
+
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
     }
 }

@@ -208,7 +208,7 @@ public class LoanServiceImpl implements LoanService {
             }
 
             if (updateSuccess) {
-                if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
+                if (loanModel.getStatus() != LoanStatus.OVERDUE && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
                     loanModel.setRecheckTime(new Date());
                     loanModel.setPeriods(LoanPeriodCalculator.calculateLoanPeriods(loanModel.getRecheckTime(), loanModel.getDeadline(), loanModel.getType()));
                 }
@@ -270,14 +270,14 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException(MessageFormat.format("loan{0} status{1} is not RECHECK, loan out is failed", String.valueOf(loanId), loan.getStatus().name()));
         }
 
-        // 将已失效的投资记录状态置为失败
+        // 将已失效的出借记录状态置为失败
         investMapper.cleanWaitingInvest(loanId);
 
-        // 查找所有投资成功的记录
+        // 查找所有出借成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
-        logger.info("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
+        logger.info("标的放款：查找到" + successInvestList.size() + "条成功的出借，标的ID:" + loanId);
 
-        // 计算投资总金额
+        // 计算出借总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
         if (investAmountTotal <= 0) {
             throw new PayException(MessageFormat.format("loan{0} out is failed, invest amount sum is less then 0", String.valueOf(loanId)));
@@ -286,7 +286,7 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> checkLoanAmount = umPayRealTimeStatusService.checkLoanAmount(loanId, investAmountTotal);
 
         if (!checkLoanAmount.getData().getStatus()) {
-            throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与投资金额不一致", String.valueOf(loanId)));
+            throw new PayException(MessageFormat.format("标的(loanId={0})借款金额与出借金额不一致", String.valueOf(loanId)));
         }
 
 
@@ -324,7 +324,7 @@ public class LoanServiceImpl implements LoanService {
         return amount;
     }
 
-    //将成功的投资人冻结金额转出
+    //将成功的出借人冻结金额转出
     private boolean processInvestFreezeAmountForLoanOut(List<InvestModel> investList, long loanId) {
         boolean result = true;
         String redisKey = MessageFormat.format(LOAN_OUT_IDEMPOTENT_CHECK_TEMPLATE, String.valueOf(loanId));
@@ -457,9 +457,9 @@ public class LoanServiceImpl implements LoanService {
             this.fatalLog(loanId, "更新标的状态失败", null);
         }
 
-        logger.debug("[标的放款]：处理该标的的所有投资的账务信息，标的ID:" + loanId);
+        logger.debug("[标的放款]：处理该标的的所有出借的账务信息，标的ID:" + loanId);
         if (!this.processInvestFreezeAmountForLoanOut(successInvestList, loanId)) {
-            this.fatalLog(loanId, "处理该标的的所有投资的账务信息失败", null);
+            this.fatalLog(loanId, "处理该标的的所有出借的账务信息失败", null);
         }
 
         logger.debug("[标的放款]：把借款转给代理人账户，标的ID:" + loanId);
@@ -488,8 +488,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void sendMessage(long loanId) {
-        //Title:您投资的{0}已经满额放款，预期年化收益{1}%
-        //Content:尊敬的用户，您投资的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
+        //Title:您出借的{0}已经满额放款，预期年化收益{1}%
+        //Content:尊敬的用户，您出借的{0}项目已经满额放款，预期年化收益{1}%，快来查看收益吧。
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
         String title = MessageFormat.format(MessageEventType.LOAN_OUT_SUCCESS.getTitleTemplate(), loanModel.getName(), (loanModel.getBaseRate() + loanModel.getActivityRate()) * 100);

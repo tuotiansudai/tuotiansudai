@@ -37,7 +37,6 @@ public enum MessageQueue {
     LoanOutSuccess_GenerateAnXinContract("LoanOutSuccess-GenerateAnXinContract"),
     LoanOutSuccess_SendCashReward("LoanOutSuccess-SendCashReward"),
     LoanOutSuccess_SmsInvestor("LoanOutSuccess-SmsInvestor"),
-    LoanOutSuccess_SuperScholarActivity("LoanOutSuccess-SuperScholarActivity"),
     RepaySuccess_InvestRepay("RepaySuccess-InvestRepay"),
     RepaySuccess_CouponRepay("RepaySuccess-CouponRepay"),
     RepaySuccess_ExtraRateRepay("RepaySuccess-ExtraRateRepay"),
@@ -77,6 +76,7 @@ public enum MessageQueue {
     LuxuryStageRepayQueue("LuxuryStageRepayQueue"), // 奢侈品还款
     SmsNotify("SmsNotify"),
     SmsFatalNotify("SmsFatalNotify"),
+    HuiZuCouponAssignQueue("HuiZuCouponAssignQueue"),//慧租发放优惠券
     ;
 
     private final String queueName;

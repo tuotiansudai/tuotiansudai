@@ -26,6 +26,8 @@ public interface UserMapperConsole {
                                @Param(value = "referrerMobile") String referrerMobile,
                                @Param(value = "channel") String channel,
                                @Param(value = "userOperation") UserOperation userOperation,
+                               @Param(value = "hasStaff") Boolean hasStaff,
+                               @Param(value = "staffMobile") String staffMobile,
                                @Param(value = "index") Integer index,
                                @Param(value = "pageSize") Integer pageSize);
 
@@ -38,7 +40,11 @@ public interface UserMapperConsole {
                          @Param(value = "roleStage") RoleStage roleStage,
                          @Param(value = "referrerMobile") String referrerMobile,
                          @Param(value = "channel") String channel,
-                         @Param(value = "userOperation") UserOperation userOperation);
+                         @Param(value = "userOperation") UserOperation userOperation,
+                         @Param(value = "hasStaff") Boolean hasStaff,
+                         @Param(value = "staffMobile") String staffMobile);
+
+    int findUserCountByRegisterTime(@Param(value = "startTime") Date startTime);
 
     List<UserView> searchAllUsers(@Param(value = "loginName") String loginName,
                                   @Param(value = "referrerMobile") String referrerMobile,

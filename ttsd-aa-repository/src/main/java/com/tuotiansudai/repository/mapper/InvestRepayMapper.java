@@ -64,4 +64,6 @@ public interface InvestRepayMapper {
                                                                   @Param(value = "day") String day);
 
     List<InvestRepayModel> findByInvestId(long investId);
+
+    void updateOverdueAndFee(@Param(value = "id")long id, @Param(value = "overdueInterest")long overdueInterest, @Param(value = "overdueFee")long overdueFee);
 }

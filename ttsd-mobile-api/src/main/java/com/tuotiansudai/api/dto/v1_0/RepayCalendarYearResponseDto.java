@@ -5,6 +5,8 @@ import com.tuotiansudai.repository.model.CouponRepayModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Map;
+
 public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
 
     @ApiModelProperty(value = "年", example = "2016")
@@ -26,14 +28,14 @@ public class RepayCalendarYearResponseDto extends BaseResponseDataDto {
         this.expectedRepayAmount = expectedRepayAmount;
     }
 
-    public RepayCalendarYearResponseDto(String month, InvestRepayModel investRepayModel) {
+    public RepayCalendarYearResponseDto(String month, InvestRepayModel investRepayModel, Map<String, Long> investExtraRateAmount) {
         this.month = month;
         if (investRepayModel.getActualRepayDate() != null) {
-            this.repayAmount = String.valueOf(investRepayModel.getRepayAmount());
+            this.repayAmount = String.valueOf(investRepayModel.getRepayAmount() + investExtraRateAmount.get("repayAmount"));
             this.expectedRepayAmount = "0";
         } else {
             this.repayAmount = "0";
-            this.expectedRepayAmount = String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investRepayModel.getDefaultInterest());
+            this.expectedRepayAmount = String.valueOf(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() + investExtraRateAmount.get("expectedRepayAmount"));
         }
     }
 

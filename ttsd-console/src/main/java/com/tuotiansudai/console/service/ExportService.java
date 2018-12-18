@@ -44,13 +44,13 @@ public class ExportService {
             row.add(loanRepayDataItemDto.getLoanName());
             row.add(loanRepayDataItemDto.getAgentLoginName());
             row.add(loanRepayDataItemDto.getRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getRepayDate()).toString("yyyy-MM-dd"));
-            row.add(loanRepayDataItemDto.getActualRepayDate() == null ? "-" : new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd"));
+            row.add(loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE ? new DateTime(loanRepayDataItemDto.getActualRepayDate()).toString("yyyy-MM-dd") : "-");
             row.add(String.valueOf("第" + loanRepayDataItemDto.getPeriod() + "期"));
             row.add(loanRepayDataItemDto.getCorpus());
             row.add(loanRepayDataItemDto.getExpectedInterest());
             row.add(loanRepayDataItemDto.getTotalAmount());
-            row.add(loanRepayDataItemDto.getActualRepayAmount());
-            if (loanRepayDataItemDto.getActualRepayDate() != null && loanRepayDataItemDto.getActualRepayDate().before(loanRepayDataItemDto.getRepayDate())) {
+            row.add(loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE ? loanRepayDataItemDto.getActualRepayAmount() : "0");
+            if (loanRepayDataItemDto.getLoanRepayStatus() == RepayStatus.COMPLETE && loanRepayDataItemDto.getActualRepayDate().before(new DateTime(loanRepayDataItemDto.getRepayDate()).withTimeAtStartOfDay().toDate())) {
                 row.add("提前还款");
             } else {
                 row.add(loanRepayDataItemDto.getLoanRepayStatus().getDescription());
@@ -73,6 +73,7 @@ public class ExportService {
             row.add(String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod()));
             row.add(transferApplicationPaginationItemDataDto.getTransferStatus());
             row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss"));
+            row.add(new DateTime(transferApplicationPaginationItemDataDto.getTransferInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
             row.add(transferApplicationPaginationItemDataDto.getTransfereeMobile());
             row.add(transferApplicationPaginationItemDataDto.getSource() == null ? "" : transferApplicationPaginationItemDataDto.getSource().name());
             row.add(String.valueOf(transferApplicationPaginationItemDataDto.getTransferFee()));
@@ -130,7 +131,7 @@ public class ExportService {
 
     public List<List<String>> buildCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();
@@ -167,7 +168,7 @@ public class ExportService {
 
     public List<List<String>> buildInterestCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();
@@ -203,7 +204,7 @@ public class ExportService {
 
     public List<List<String>> buildRedEnvelopeCoupons(List<CouponDto> records) {
         String activityTimeTemplate = "{0}至{1}";
-        String useCondition = "投资满{0}元";
+        String useCondition = "出借满{0}元";
         List<List<String>> rows = Lists.newArrayList();
         for (CouponDto record : records) {
             List<String> row = Lists.newArrayList();
@@ -314,6 +315,7 @@ public class ExportService {
             row.add(record.getMobile());
             row.add(record.getEmail());
             row.add(record.getReferrerMobile());
+            row.add(record.getStaffMobile());
             row.add(record.isReferrerStaff() ? "是" : "否");
             row.add(record.getSource() != null ? record.getSource().name() : "");
             row.add(record.getChannel());

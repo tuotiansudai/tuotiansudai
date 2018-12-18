@@ -30,10 +30,10 @@ public class InvestorInvestDetailDto implements Serializable {
     //标的类型
     private ProductType productNewType;
 
-    //投资ID
+    //出借ID
     private long investId;
 
-    //投资金额
+    //出借金额
     private long investAmount;
 
     //预计收益
@@ -42,7 +42,7 @@ public class InvestorInvestDetailDto implements Serializable {
     //已收收益
     private long actualInterest;
 
-    //投资时间
+    //出借时间
     private Date investTime;
 
     //放款时间
@@ -72,7 +72,7 @@ public class InvestorInvestDetailDto implements Serializable {
     //合同地址
     private String contractUrl;
 
-    //体验金投资
+    //体验金出借
     private boolean experience;
 
     //用户累计直投项目
@@ -90,7 +90,7 @@ public class InvestorInvestDetailDto implements Serializable {
         this.interestInitiateType = loanModel.getType().getInterestInitiateType();
         this.productNewType = loanModel.getProductType();
         this.investId = transferApplicationModel.getInvestId();
-        this.investAmount = transferApplicationModel.getInvestAmount();
+        this.investAmount = transferApplicationModel.getTransferAmount();
         this.investTime = transferApplicationModel.getTransferTime();
         this.recheckTime = loanModel.getRecheckTime();
         this.interestBeginDate = loanModel.getRecheckTime();

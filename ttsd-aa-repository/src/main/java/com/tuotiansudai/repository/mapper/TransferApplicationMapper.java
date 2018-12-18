@@ -85,5 +85,5 @@ public interface TransferApplicationMapper {
                                                                          @Param(value = "year") String year,
                                                                          @Param(value = "month") String month,
                                                                          @Param(value = "day") String day);
-
+    List<TransferApplicationModel>  findTransfersDescByTransferInvestId(long transferInvestId);
 }

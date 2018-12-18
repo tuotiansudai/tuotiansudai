@@ -6,66 +6,74 @@ let echarts = require('echarts');
 let paginationElement = $('.pagination');
 let leftMenuBox = globalFun.$('#leftMenuBox');
 //手机端菜单滑动
-
+var sourceKind = globalFun.parseURL(location.href);
+var formatNum = function (num) {
+  return formatNumber(num / 10000 ,2);
+};
 
 (function(){
-    let browser = $(window).width();
-    if(browser<1000) {
-        let menuLen = $(leftMenuBox).find('li:visible').length;
-        let screenW = $(window).width(),
-            showMenuNum = 3, //希望一屏展示3个菜单
-            someLiW = screenW/showMenuNum,
-            totalWidth = someLiW * menuLen;
-        $(leftMenuBox).find('ul').width(totalWidth);
-        $(leftMenuBox).find('li').css({"width":someLiW});
+    if (location.pathname !== '/about/operational') {
+        let browser = $(window).width();
+        if(browser<1000) {
+            $('.subMenu_show').hide();
+            $('.left-nav').find('.text_icon').hide();
+            $('.menuItem.active').addClass('ipad_styles');
+            let menuLen = $(leftMenuBox).find('li:visible').length;
+            let screenW = $(window).width(),
+                showMenuNum = 3, //希望一屏展示3个菜单
+                someLiW = screenW/showMenuNum,
+                totalWidth = someLiW * menuLen;
+            $(leftMenuBox).find('ul').width(totalWidth);
+            $(leftMenuBox).find('li').css({"width":someLiW});
 
-        //判断当前激活的菜单在可视区域
-        let slipAway = (function() {
-            let currentLi = $(leftMenuBox).find('li').filter(function(key,option) {
-                return $(option).find('a').hasClass('active');
-            });
-            let hideLi = $(leftMenuBox).find('li:hidden').index();
+            //判断当前激活的菜单在可视区域
+            let slipAway = (function() {
+                let currentLi = $(leftMenuBox).find('li').filter(function(key,option) {
+                    return $(option).find('a').hasClass('active');
+                });
+                let hideLi = $(leftMenuBox).find('li:hidden').index();
 
-            let currentOrder = currentLi.index();
-            if(currentOrder>hideLi) {
-                currentOrder = currentOrder -1;
+                let currentOrder = currentLi.index();
+                if(currentOrder>hideLi) {
+                    currentOrder = currentOrder -1;
+                }
+                let curOrder = parseInt(currentOrder/showMenuNum);
+                let moveInit = -curOrder*screenW + 'px';
+                $(leftMenuBox).find('ul').css({
+                    '-webkit-transform':"translate("+moveInit+")",
+                    '-webkit-transition':'10ms linear'
+                });
+                return curOrder;
+            })();
+
+            let touchSlide = require('publicJs/touch_slide');
+            let num=slipAway * showMenuNum;
+            touchSlide.options.sliderDom = leftMenuBox;
+            touchSlide.finish = function() {
+
+                let direction = touchSlide.options.moveDirection,
+                    moveDistance;
+                //如果没有任何滑动迹象，不左处理
+                if(!this.options.moveDirection.horizontal) {
+                    return;
+                }
+                if(direction.rtl && num<menuLen-showMenuNum) {
+                    //从右到左
+                    num++;
+
+                } else if(direction.ltr && num>0) {
+                    //从左到右
+                    num--;
+                }
+
+                moveDistance = - someLiW*num + 'px';
+                $(leftMenuBox).find('ul').css({
+                    '-webkit-transform':"translate("+moveDistance+")",
+                    '-webkit-transition':'100ms linear'
+                });
             }
-            let curOrder = parseInt(currentOrder/showMenuNum);
-            let moveInit = -curOrder*screenW + 'px';
-            $(leftMenuBox).find('ul').css({
-                '-webkit-transform':"translate("+moveInit+")",
-                '-webkit-transition':'10ms linear'
-            });
-            return curOrder;
-        })();
-
-        let touchSlide = require('publicJs/touch_slide');
-        let num=slipAway * showMenuNum;
-        touchSlide.options.sliderDom = leftMenuBox;
-        touchSlide.finish = function() {
-
-            let direction = touchSlide.options.moveDirection,
-                moveDistance;
-            //如果没有任何滑动迹象，不左处理
-            if(!this.options.moveDirection.horizontal) {
-                return;
-            }
-            if(direction.rtl && num<menuLen-showMenuNum) {
-                //从右到左
-                num++;
-
-            } else if(direction.ltr && num>0) {
-                //从左到右
-                num--;
-            }
-
-            moveDistance = - someLiW*num + 'px';
-            $(leftMenuBox).find('ul').css({
-                '-webkit-transform':"translate("+moveDistance+")",
-                '-webkit-transition':'100ms linear'
-            });
+            touchSlide.init();
         }
-        touchSlide.init();
     }
 }());
 
@@ -97,7 +105,86 @@ if($noticeList.length) {
         }
     });
 }
+if($('#basicList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"BASIC_KNOWLEDGE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#basicList').html(html);
+        $('#basicList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#basicList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#knowlegeList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"LAW_RULE"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#knowlegeList').html(html);
+        $('#knowlegeList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#knowlegeList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($('#investorList').length) {
+    let noticeTpl=$('#noticeListTemplate').html();
+    let ListRender = _.template(noticeTpl);
+    let requestData={"index":1,"pageSize":10,"subSection":"INVESTOR_EDUCATION"};
+    paginationElement.loadPagination(requestData, function (data) {
+        let html = ListRender(data);
+        $('#investorList').html(html);
+        $('#investorList').find('span').each(function(key,option) {
+            var getTime=$(option).text();
+            $(option).text(getTime.substr(0,10));
+        });
+        if(/app/gi.test(location.search)) {
+            $('#investorList').find('li a').each(function(key,option) {
+                var thisURL= $(option).attr('href')+'?source=app';
+                $(option).attr('href',thisURL);
+            });
+        }
+    });
+}
+if($noticeDetail.length){
+    var title = $('#knowledgeTitleH2').text();
+    switch (sourceKind.params.subSection) {
+        case 'base':
+            $('#knowledgeTitle').text('基础知识');
+            $('.left-nav').find('li').eq(2).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'law':
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        case 'investor':
+            $('#knowledgeTitle').text('出借人教育');
+            $('.left-nav').find('li').eq(1).find('a').addClass('active').siblings().removeClass('active');
+            break;
+        default :
+            $('#knowledgeTitle').text('法律法规');
+            $('.left-nav').find('li').eq(0).find('a').addClass('active').siblings().removeClass('active');
 
+
+
+    }
+}
 let $companyPhoto = $('#companyPhoto');
 
 let photoGroup={
@@ -139,6 +226,10 @@ let organizationalImg={
     '2':{
         small:require('../images/sign/aboutus/aptitude_two_small.png'),
         big:require('../images/sign/aboutus/aptitude_two_big.png')
+    },
+    '3':{
+        small:require('../images/sign/aboutus/aptitude_three_small.jpg'),
+        big:require('../images/sign/aboutus/aptitude_three_big.jpg')
     }
 };
 $organizationalImg.find('li').each(function(key,option) {
@@ -146,8 +237,21 @@ $organizationalImg.find('li').each(function(key,option) {
     $(option).find('a').attr('href',organizationalImg[num].big);
     $(option).find('a').append(`<img src="${organizationalImg[num].small}">`);
 });
+//法人承诺书
+let $corporateUndertakingImg = $('#corporateUndertaking');
+
+let corporateUndertakingImg={
+    '1': {
+        small:require('../images/sign/aboutus/corporate_undertaking_one_big.jpeg'),
+        big:require('../images/sign/aboutus/corporate_undertaking_one_big.jpeg')
+    }
+};
+
+$corporateUndertakingImg.find('a').attr('href',corporateUndertakingImg[1].big);
+$corporateUndertakingImg.find('a').append(`<img src="${corporateUndertakingImg[1].small}">`);
+
 //审计报告
-let $reportImg = $('.reportImg');
+let $reportImg = $('.report-con');
 let $report2017 = $('.photo2017'),
     $report2016 = $('.photo2016'),
     $report2015 = $('.photo2015');
@@ -172,11 +276,13 @@ let reportImg={
 };
 
 $reportImg.find('li').each(function(key,option) {
-    console.log(option)
     let num = key+1;
     $(option).find('a').attr('href',reportImg[num].big);
     $(option).find('a').append(`<img src="${reportImg[num].small}">`);
 });
+
+
+
 //团队介绍
 let fancybox = require('publicJs/fancybox');
 fancybox(function() {
@@ -201,6 +307,17 @@ fancybox(function() {
         }
     });
 });
+fancybox(function() {
+    $("#corporateUndertaking li a").fancybox({
+        'titlePosition' : 'over',
+        'cyclic'        : false,
+        'showCloseButton':true,
+        'showNavArrows' : true,
+        'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+            return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+        }
+    });
+});
 //审计报告放大图
 
 fancybox(function() {
@@ -215,6 +332,17 @@ fancybox(function() {
         }
     });
 });
+
+//三个报告切换
+let $reportContainer = $('#reportContainer');
+let $reportTitle = $('#reportTitle');
+$reportTitle.find('em').on('click',function () {
+    let _self = $(this);
+    let index = _self.index();
+    _self.siblings().removeClass('active').end().addClass('active');
+    $reportContainer.find('.content').hide().eq(index).show();
+})
+
 //问题列表
 require.ensure([],function() {
     let $problemListFrame=$('#problemListFrame');
@@ -283,12 +411,12 @@ let getPartOnePage = (data, dataStr) => {
     for (let i = 0; i < dataStr.length; i++) {
         dom += `<span class="data-bg">${dataStr.charAt(i)}</span>`
     }
-    $('#operationDays').prepend(`<span class="assurance">安全运营</span>`);
-    $('#operationDays').append(`<span class="data-bg">${days}</span><span>年</span>`);
+    $('#operationDays').prepend(`<span class="assurance"><span class="margin28">安</span><span class="margin28">全</span><span class="margin28">运</span><span class="margin28">营</span></span>`);
+    $('#operationDays').append(`<span class="mid_line pre_line"></span><span class="data-bg">${days}</span><span style="margin-top: 20px">年</span><span class="mid_line last_line"></span>`);
     $('#operationDays').append(dom);
-    $('#operationDays').append(`<span>天</span>`);
+    $('#operationDays').append(`<span style="margin-top: 20px">天</span>`);
 
-     $('#earn_total_amount').html(formatNumber(data.totalInterest / 100, 2));//累计为用户赚取
+     $('#earn_total_amount').html(formatNum(data.totalInterest));//累计为用户赚取
 };
 
 function toThousands(num) {
@@ -416,7 +544,6 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         url: '/about/operation-data/chart',
         type: 'GET'
     },function(data) {
-        console.log(data);
         var datetime = data.now;
         var dateTimeDOM = '（数据截止到'+dateFomater(datetime)+'）';
         $('#dateTime').text(dateTimeDOM);
@@ -425,20 +552,56 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         var money = data.money.slice(-6);
         getPartOnePage(data,data.operationDays);
 
-         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
-         $('#tradeAmount').text(formatNumber(data.tradeAmount,2));//累计交易金额
-       $('#investUsersCount').text(toThousands(data.investUsersCount));//累计投资用户数
-        $('#sumLoanAmount').text(formatNumber(data.sumLoanAmount,2));//累计借贷金额
+        // 平台数据总览
+        $('#tradeAmount').text(formatNum(data.tradeAmount));//累计交易金额
+        $('.sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
+        $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
+        $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
+        $('.sumRepayIngInvestCount').html(toThousands(data.sumRepayIngInvestCount)); // 待偿金额笔数
+
+        // 借款标的情况
+        $('#sumLoanAmount').text(formatNum(data.sumLoanAmount));//累计借贷金额
         $('#sumLoanCount').text(toThousands(data.sumLoanCount));//累计借贷笔数
 
-        $('#sumLoanerCount').text(toThousands(data.sumLoanerCount));//借款人数
-         $('#sumExpectedAmount').text(formatNumber(data.sumExpectedAmount,2));//待偿金额
-         $('#sumOverDueAmount').text(formatNumber(data.sumOverDueAmount,2));//逾期金额
-         $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
-         $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
+        // 出借人信息
+        $('.investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
+        $('#maxSingleInvestAmountRate').text(formatNumber(data.maxSingleInvestAmountRate*100,2));//最大单户出借余额占比
+        $('#avgInvestAmount').text(formatNum(data.avgInvestAmount));//人均累计出借金额
+        $('#maxTenInvestAmountRate').text(formatNumber(data.maxTenInvestAmountRate*100,2));//最大十户出借余额占比
+        $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
 
-        $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
-        $('#loanerOverDueAmount').text(formatNumber(data.loanerOverDueAmount,2));//平台逾期总金额
+        // 借款人信息
+        $('.sumLoanerCount').text(toThousands(data.sumLoanerCount));//累计借款人数
+        $('#maxSingleLoanAmountRate').text(formatNumber(data.maxSingleLoanAmountRate*100,2));//最大单一借款人待还金额占比
+        $('#avgLoanAmount').text(formatNum(data.avgLoanAmount));//人均累计借款金额
+        $('#maxTenLoanAmountRate').text(formatNumber(data.maxTenLoanAmountRate*100,2));//前十大借款人待还金额占比
+        $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
+        // $('#sumOverDueAmount').text(formatNum(data.sumOverDueAmount));//逾期金额
+        $('#sumOverDueAmount').text(formatNum("5297800.00"));//逾期金额
+
+        // 逾期情况
+        // $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
+        $('#loanerOverDueCount').text(toThousands('11'));//借款人平台逾期次数
+        // $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
+        $('#loanOverDueRate').text(formatNumber(0.0121*100,2));//项目逾期率
+        // $('#loanerOverDueAmount').text(formatNum(data.loanerOverDueAmount));//平台逾期总金额
+        $('#loanerOverDueAmount').text(formatNum('5297800.00'));//平台逾期总金额
+        // $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
+        $('#amountOverDueRate').text(formatNumber(0.0357*100,2));//金额逾期率
+        // $('#amountOverDueLess90Rate').text(formatNumber(data.amountOverDueLess90Rate*100, 2));//金额逾期率（90天及以内）
+        // $('#amountOverDue90To180Rate').text(formatNumber(data.amountOverDue90To180Rate*100, 2));//金额逾期率（90天以上至180天）
+        // $('#amountOverDueGreater180Rate').text(formatNumber(data.amountOverDueGreater180Rate*100, 2));//金额逾期率（181天及以上）
+        // $('#loanOverDueLess90Rate').text(formatNumber(data.loanOverDueLess90Rate*100, 2));//项目逾期率（90天及以内）
+        // $('#loanOverDue90To180Rate').text(formatNumber(data.loanOverDue90To180Rate*100, 2));//项目逾期率（90天以上至180天）
+        // $('#loanOverDueGreater180Rate').text(formatNumber(data.loanOverDueGreater180Rate*100, 2));//项目逾期率（181天及以上）
+
+        $('#amountOverDueLess90Rate').text(formatNumber(0.0357*100, 2));//金额逾期率（90天及以内）
+        $('#amountOverDue90To180Rate').text(formatNumber(0.0000*100, 2));//金额逾期率（90天以上至180天）
+        $('#amountOverDueGreater180Rate').text(formatNumber(0.0000*100, 2));//金额逾期率（181天及以上）
+        $('#loanOverDueLess90Rate').text(formatNumber(0.0121*100, 2));//项目逾期率（90天及以内）
+        $('#loanOverDue90To180Rate').text(formatNumber(0.0000*100, 2));//项目逾期率（90天以上至180天）
+        $('#loanOverDueGreater180Rate').text(formatNumber(0.0000*100, 2));//项目逾期率（181天及以上）
+
 
         let barChartArr = [];
         let num = 0;
@@ -449,7 +612,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
             let count = Number($item.data('count')) || 0;
             num += count;
         }
-        $('#total_trade_count').html(toThousands(num));//累计投资笔数
+        $('.total_trade_count').html(toThousands(num));//累计投资笔数
         var dataJson = {
 
                 sub:'金额（元）',
@@ -485,7 +648,7 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         });
         calculateWidth($('#geographicalWrap'),'.city-name');
         calculateWidth($('#geographicalWrapLoan'),'.city-name');
-        
+
         //借款人基本信息环形图
         var optionLoan = loadEcharts.ChartOptionTemplates.AnnularOption(data.loanerAgeDistribution,{},'借款用户(人)');
         var  optLoan = loadEcharts.ChartConfig('loanBaseRecord', optionLoan);

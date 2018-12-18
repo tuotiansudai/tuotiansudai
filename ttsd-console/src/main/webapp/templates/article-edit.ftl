@@ -92,11 +92,19 @@
             <div class="form-group">
                 <label  class="col-sm-1 control-label">栏目: </label>
                 <div class="col-sm-2">
-                    <select class="selectpicker" name="section" >
+                    <select class="selectpicker " id="section" name="section" >
                         <#list sectionList as sectionItem>
                             <option value="${sectionItem.name()}" <#if dto?? && dto.section?? && sectionItem == dto.section>selected</#if>> ${sectionItem.getArticleSectionTypeName()}</option>
                         </#list>
-                    </select>
+                    </select>˙
+                </div>
+                <div id="subSectionDiv" class="col-sm-3 radio" <#if  !(dto.section)?? || dto.section != 'KNOWLEDGE'>style="display: none"</#if> >
+                    <#list subSectionList as subSectionItem>
+                        <label class="subSectionLabel">
+                            <input type="radio" name="subSection" value="${subSectionItem.name()}" <#if  dto?? && dto.subSection?? && subSectionItem==dto.subSection>checked="checked"</#if> />${subSectionItem.getArticleSectionTypeName()}
+                            &nbsp;
+                        </label>
+                    </#list>
                 </div>
             </div>
 

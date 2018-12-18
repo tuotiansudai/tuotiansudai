@@ -13,7 +13,7 @@
             <li title="绑卡时提示该银行卡不支持，怎么回事？"><a href="/help/user#43">绑卡时提示该银行卡不支持，怎么回事？</a></li>
             <li title="如何更换绑定的银行卡？"><a href="/help/user#45">如何更换绑定的银行卡？</a></li>
             <li title="借款人逾期还款怎么办？"><a href="/help/money#33">借款人逾期还款怎么办？</a></li>
-            <li title="投资后能不能提前收款？"><a href="/help/money#34">投资后能不能提前收款？</a></li>
+            <li title="投资后能不能提前收款？"><a href="/help/money#34">出借后能不能提前收款？</a></li>
             <li title="申请提现后，资金到账时间一般是多久？"><a href="/help/money#41">申请提现后，资金到账时间一般是多久？</a></li>
             <li title="什么是“好友推荐赚奖励”？"><a href="/help/other#21">什么是“好友推荐赚奖励”？</a></li>
         </ul>

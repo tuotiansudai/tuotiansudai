@@ -19,16 +19,16 @@ public class InvestRepayRecordResponseDataDto {
     @ApiModelProperty(value = "标的名称", example = "车辆抵押借款")
     private String loanName;
 
-    /*** 投资id */
-    @ApiModelProperty(value = "投资ID", example = "1111")
+    /*** 出借id */
+    @ApiModelProperty(value = "出借ID", example = "1111")
     private String investId;
 
-    /*** 投资金额 */
-    @ApiModelProperty(value = "投资金额", example = "11")
+    /*** 出借金额 */
+    @ApiModelProperty(value = "出借金额", example = "11")
     private String investMoney;
 
-    /*** 投资时间 */
-    @ApiModelProperty(value = "投资时间", example = "2016-11-23")
+    /*** 出借时间 */
+    @ApiModelProperty(value = "出借时间", example = "2016-11-23")
     private String investTime;
 
     /*** 还款日 */
@@ -78,9 +78,9 @@ public class InvestRepayRecordResponseDataDto {
         }
         this.corpus = AmountConverter.convertCentToString(investRepay.getCorpus());
         if (RepayStatus.COMPLETE == investRepay.getStatus()) {
-            this.interest = AmountConverter.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest() - investRepay.getActualFee());
+            this.interest = AmountConverter.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest()+investRepay.getOverdueInterest() - investRepay.getActualFee());
         } else {
-            this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest() + investRepay.getDefaultInterest() - investRepay.getExpectedFee());
+            this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest() + investRepay.getDefaultInterest()+investRepay.getOverdueInterest() - investRepay.getExpectedFee());
         }
         this.loanType = loan.getProductType() != null ? loan.getProductType().name() : "";
     }

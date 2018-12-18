@@ -128,14 +128,14 @@ public class LicaiquanArticleMapperTest {
     @Test
     public void testFindExistedArticleListOrderByCreateTime() {
         prepareArticleData();
-        List<LicaiquanArticleModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null, articleId, 1);
+        List<LicaiquanArticleModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null,null, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() > 0);
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, articleId, 1);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY,null, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() == 0);
         //前端不输入标题查询条件时，应当查询出结果
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS,null, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() == 1);
-        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS, articleId, 1);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS,null, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() > 0);
     }
 

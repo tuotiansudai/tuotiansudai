@@ -50,6 +50,8 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
         List<UserBillModel> advancedRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.ADVANCE_REPAY);
         List<UserBillModel> investFeeRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.INVEST_FEE);
         List<UserBillModel> overdueRepayUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.OVERDUE_REPAY);
+        List<UserBillModel> overdueInterestUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.OVERDUE_INTEREST);
+        List<UserBillModel> overdueFeeUserBillModels = userBillMapper.findByOrderIdAndBusinessType(businessId, UserBillBusinessType.OVERDUE_INTEREST_FEE);
         long userBillAmount = 0;
         if (normalRepayUserBillModels.size() == 1) {
             userBillAmount += normalRepayUserBillModels.get(0).getAmount();
@@ -60,8 +62,14 @@ public class InvestRepayDailyValidation extends BaseDailyValidation implements D
         if (overdueRepayUserBillModels.size() == 1) {
             userBillAmount += overdueRepayUserBillModels.get(0).getAmount();
         }
+        if (overdueInterestUserBillModels.size() == 1) {
+            userBillAmount += overdueInterestUserBillModels.get(0).getAmount();
+        }
         if (investFeeRepayUserBillModels.size() == 1) {
             userBillAmount -= investFeeRepayUserBillModels.get(0).getAmount();
+        }
+        if (overdueFeeUserBillModels.size() == 1) {
+            userBillAmount -= overdueFeeUserBillModels.get(0).getAmount();
         }
         return userBillAmount == Long.parseLong(amount);
     }

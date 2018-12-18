@@ -34,7 +34,7 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setCurrentDay(sdf.format(currentDate));
         dataDto.setOperationDays(String.valueOf(operationDataDto.getOperationDays()));
         dataDto.setTotalTradeAmount(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTradeAmount())));
-        dataDto.setTotalInterest(String.valueOf(operationDataService.findUserSumInterest(currentDate)));
+        dataDto.setTotalInterest(String.valueOf(AmountConverter.convertStringToCent(operationDataDto.getTotalInterest())));
 
         List<InvestDataView> investDataViewList = operationDataService.getInvestDetail(currentDate);
         List<OperationDataInvestByProductTypeResponseDataDto> operationDataInvestByProductTypeResponseDataDtoList = Lists.newArrayList();
@@ -61,9 +61,9 @@ public class MobileAppOperationDataServiceImpl implements MobileAppOperationData
         dataDto.setAgeDistribution(convertMapToOperationDataAgeResponseDataDto());
         //各用借款人户年龄段分布
         dataDto.setLoanerAgeDistribution(convertMapToOperationDataLoanerAgeResponseDataDto());
-        //投资人数top3
+        //出借人数top3
         dataDto.setInvestCityScaleTop3(convertMapToOperationDataInvestCityResponseDataDto());
-        //投资金额top3
+        //出借金额top3
         dataDto.setInvestAmountScaleTop3(convertMapToOperationDataInvestAmountResponseDataDto());
 
         dataDto.setLoanerCityScaleTop5(convertMapToOperationDataLoanerCityResponseDataDto());

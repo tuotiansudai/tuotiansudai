@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.rest.client.mapper.UserMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -139,5 +140,9 @@ public class ReferrerRelationService {
             }
         }
         return relations;
+    }
+
+    public String findStaffReferrerMobileByLoginName(String loginName){
+        return referrerRelationMapper.findStaffReferrerMobileByLoginName(loginName);
     }
 }

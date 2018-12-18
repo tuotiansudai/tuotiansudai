@@ -126,7 +126,7 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setNormalRepayEnabled(true);
             long defaultInterest = 0;
             for (LoanRepayModel loanRepayModel : loanRepayModels) {
-                defaultInterest += loanRepayModel.getDefaultInterest();
+                defaultInterest += (loanRepayModel.getDefaultInterest()+loanRepayModel.getOverdueInterest());
             }
             dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
         }
@@ -188,7 +188,8 @@ public class RepayServiceImpl implements RepayService {
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto(investRepayModel);
 
-                long expectedTotalAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee(); //当期应收回款
+                long expectedTotalAmount = investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee() ; //当期应收回款
+                long interestTotalAmount = investRepayModel.getDefaultInterest() + investRepayModel.getOverdueInterest() - investRepayModel.getDefaultFee() - investRepayModel.getOverdueFee();
                 long expectedTotalFee = investRepayModel.getExpectedFee(); // 当期应缴服务费
                 long actualTotalAmount = investRepayModel.getRepayAmount(); // 当期实收回款
                 long actualTotalFee = investRepayModel.getActualFee(); // 当期实缴服务费
@@ -227,7 +228,7 @@ public class RepayServiceImpl implements RepayService {
                     investRepayDataItemDto.setActualFee(AmountConverter.convertCentToString(actualTotalFee));
                     investRepayDataItemDto.setCouponActualInterest(AmountConverter.convertCentToString(couponActualInterest));
                 } else {
-                    sumExpectedInterest += expectedTotalAmount;
+                    sumExpectedInterest += expectedTotalAmount + interestTotalAmount;
                 }
 
                 if (loanModel.getProductType() == ProductType.EXPERIENCE) {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@Api(description = "投资")
+@Api(description = "出借")
 public class MobileAppInvestController extends MobileAppBaseController {
     @Autowired
     private MobileAppInvestService mobileAppInvestService;
@@ -29,7 +29,7 @@ public class MobileAppInvestController extends MobileAppBaseController {
     }
 
     @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
-    @ApiOperation("免密投资")
+    @ApiOperation("免密出借")
     public BaseResponseDto<InvestNoPassResponseDataDto> noPasswordInvest(@RequestBody InvestRequestDto investRequestDto) {
         investRequestDto.setUserId(getLoginName());
         investRequestDto.getBaseParam().setUserId(getLoginName());

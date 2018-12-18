@@ -105,7 +105,7 @@
                             <i class="icon-four">
                                 <img src="${commonStaticServer}/activity/images/today-headlines/icon-four.png" width="50%">
                             </i>
-                            <span>第三方托管体系</span>
+                            <span>第三方存管体系</span>
                         </li>
                         <li>
                             <i class="icon-five">
