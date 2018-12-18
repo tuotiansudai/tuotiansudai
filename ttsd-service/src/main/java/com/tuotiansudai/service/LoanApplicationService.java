@@ -39,9 +39,6 @@ public class LoanApplicationService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private OssWrapperClient ossWrapperClient;
-
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
         BaseDto<BaseDataDto> baseDataDtoBaseDto = checkLoanApplication(loanApplicationDto);
         if (baseDataDtoBaseDto.isSuccess()){
@@ -110,27 +107,4 @@ public class LoanApplicationService {
         loanApplicationMapper.createMaterials(loanApplicationMaterialsModel);
         return new BaseDto<>(new BaseDataDto(true));
     }
-
-//    private String uploadFile(HttpServletRequest request) {
-//        if (!ServletFileUpload.isMultipartContent(request)) {
-//            return buildUploadFileResult("未包含文件上传域", "", "", "");
-//        }
-//        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-//        MultipartFile dfi = multiRequest.getFile("upfile");
-//        String originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
-//        String fileExtName = FilenameUtils.getExtension(originalName);
-//        String rootPath = request.getSession().getServletContext().getRealPath("/");
-//        try {
-//            String url = request.getRequestURL().toString();
-//            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), false);
-//            if (absoluteUrl.indexOf(":") > 0 ) {
-//                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
-//            }
-//            String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
-//            return buildUploadFileResult("SUCCESS", originalName, relativeUrl, absoluteUrl);
-//        } catch (Exception e) {
-//            logger.error(MessageFormat.format("{0}|{1}", "[OSS UPLOAD]", e.getLocalizedMessage()), e);
-//            return buildUploadFileResult(e.getMessage(), "", "", "");
-//        }
-//    }
 }
