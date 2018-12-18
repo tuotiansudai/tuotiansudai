@@ -22,9 +22,10 @@ CREATE TABLE `loan_application_materials` (
 ALTER TABLE `loan_application`
   ADD COLUMN (
   loan_id     BIGINT UNSIGNED   COMMENT '生成的标的ID',
-  is_divorced TINYINT(1)        NOT NULL COMMENT '是否离异',
   status      VARCHAR(10)       NOT NULL DEFAULT 'WAITING' COMMENT '审核状态'
   );
+
+ALTER TABLE loan_application change is_married marriage_state int(1);
 
 ALTER TABLE loan_application ADD CONSTRAINT FK_LOAN_ID_REF_LOAN_ID FOREIGN KEY(loan_id) REFERENCES loan(id);
 

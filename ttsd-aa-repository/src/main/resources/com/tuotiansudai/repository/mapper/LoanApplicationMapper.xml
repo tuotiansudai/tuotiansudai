@@ -24,7 +24,7 @@
         <result column="identity_number" property="identityNumber"/>
         <result column="address" property="address"/>
         <result column="age" property="age"/>
-        <result column="is_married" property="isMarried"/>
+        <result column="marriage_state" property="marriageState"/>
         <result column="have_credit_report" property="haveCreditReport"/>
         <result column="work_position" property="workPosition"/>
         <result column="sesame_credit" property="sesameCredit"/>
@@ -34,7 +34,6 @@
         <result column="sex" property="sex"/>
         <result column="loan_id" property="loanId"/>
         <result column="status" property="status"/>
-        <result column="is_divorced" property="isDivorced"/>
     </resultMap>
 
     <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterials">
@@ -53,11 +52,11 @@
     <insert id="create" parameterType="LoanApplicationModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application`
         (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
-        updated_by, updated_time,identity_number,address,age,is_married,have_credit_report,work_position,sesame_credit,
+        updated_by, updated_time,identity_number,address,age,marriage_state,have_credit_report,work_position,sesame_credit,
         home_income,loan_usage,else_pledge,sex,status,is_divorced)
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
-        #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},
+        #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{marriageState},
         #{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex},
         #{status},#{isDivorced})
     </insert>
