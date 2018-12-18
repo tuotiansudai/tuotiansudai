@@ -6,15 +6,17 @@ public class LoanRiskManagementTitleRelationModel implements Serializable {
     private long id;
     private Long loanId;
     private Long loanApplicationId;
+    private Long titleId;
     private String detail;
 
     public LoanRiskManagementTitleRelationModel() {
     }
 
-    public LoanRiskManagementTitleRelationModel(long id, Long loanId, Long loanApplicationId, String detail) {
+    public LoanRiskManagementTitleRelationModel(long id, Long loanId, Long loanApplicationId, Long titleId, String detail) {
         this.id = id;
         this.loanId = loanId;
         this.loanApplicationId = loanApplicationId;
+        this.titleId = titleId;
         this.detail = detail;
     }
 
@@ -40,6 +42,14 @@ public class LoanRiskManagementTitleRelationModel implements Serializable {
 
     public void setLoanApplicationId(Long loanApplicationId) {
         this.loanApplicationId = loanApplicationId;
+    }
+
+    public Long getTitleId() {
+        return titleId;
+    }
+
+    public void setTitleId(Long titleId) {
+        this.titleId = titleId;
     }
 
     public String getDetail() {

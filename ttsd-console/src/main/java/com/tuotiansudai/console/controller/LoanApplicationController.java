@@ -19,7 +19,7 @@ public class LoanApplicationController {
     private ConsoleLoanApplicationService consoleLoanApplicationService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
+    public ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
         int pageSize = 10;
         ModelAndView modelAndView = new ModelAndView("/loan-application-list");
         BasePaginationDataDto<LoanApplicationModel> basePaginationDataDto = consoleLoanApplicationService.getPagination(index, pageSize);
@@ -29,7 +29,7 @@ public class LoanApplicationController {
     }
 
     @RequestMapping(value = "/{applyId:^\\d+$}", method = RequestMethod.GET)
-    ModelAndView detail(@PathVariable long applyId) {
+    public ModelAndView detail(@PathVariable long applyId) {
         ModelAndView modelAndView = new ModelAndView("/loan-application-detail");
         modelAndView.addObject("data", consoleLoanApplicationService.detail(applyId));
         return modelAndView;
@@ -37,8 +37,14 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     @ResponseBody
-    BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationModel) {
+    public BaseDto<BaseDataDto> commentLoanApplication(@RequestBody LoanApplicationModel loanApplicationModel) {
         loanApplicationModel.setUpdatedBy(LoginUserInfo.getLoginName());
         return consoleLoanApplicationService.comment(loanApplicationModel);
+    }
+
+    @RequestMapping(value = "/consume-list", method = RequestMethod.GET)
+    public ModelAndView consumeList() {
+        ModelAndView modelAndView = new ModelAndView("/loan-application-consume-list");
+        return modelAndView;
     }
 }
