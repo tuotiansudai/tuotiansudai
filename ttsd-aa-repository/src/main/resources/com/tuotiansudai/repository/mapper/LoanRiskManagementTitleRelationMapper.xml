@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanRiskManagementTitleRelationMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="loanTitleResultMap" type="LoanRiskManagementTitleRelationModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="loan_application_id" property="loanApplicationId"></result>
+        <result column="title_id" property="titleId"></result>
+        <result column="detail" property="detail"></result>
+    </resultMap>
+
+</mapper>

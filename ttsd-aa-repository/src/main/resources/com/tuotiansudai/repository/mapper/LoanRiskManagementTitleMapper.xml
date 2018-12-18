@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanRiskManagementTitleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="titleResultMap" type="LoanRiskManagementTitleModel">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanRiskManagementTitleModel">
+        insert into loan_risk_management_title(id,title)VALUES (#{id},#{title})
+    </insert>
+
+    <select id="findAll" resultMap="titleResultMap">
+        select * from loan_risk_management_title
+    </select>
+
+</mapper>
