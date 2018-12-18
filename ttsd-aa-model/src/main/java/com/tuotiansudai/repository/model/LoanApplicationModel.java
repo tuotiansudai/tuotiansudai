@@ -24,8 +24,8 @@ public class LoanApplicationModel implements Serializable {
     private String identityNumber;
     private String address;
     private short age;
-    //是否结婚
-    private boolean isMarried;
+    //0 : 未婚  1: 已婚婚  2: 离异
+    private int marriageState;
     //是否有信用报告
     private boolean haveCreditReport;
     //工作职位
@@ -54,14 +54,14 @@ public class LoanApplicationModel implements Serializable {
         this.amount = loanApplicationDto.getAmount();
         this.period = loanApplicationDto.getPeriod();
         this.pledgeType = loanApplicationDto.getPledgeType();
-        this.pledgeInfo = loanApplicationDto.getPledgeInfo();
+        this.pledgeInfo = loanApplicationDto.getPledgeInfo() == null ? "" : loanApplicationDto.getPledgeInfo();
         this.createdTime = new Date();
         this.updatedBy = loanApplicationDto.getLoginName();
         this.updatedTime = new Date();
         this.identityNumber = loanApplicationDto.getIdentityNumber();
         this.address = loanApplicationDto.getAddress();
         this.age = loanApplicationDto.getAge();
-        this.isMarried = loanApplicationDto.getIsMarried();
+        this.marriageState = loanApplicationDto.getIsMarried() ? 1 : 0;
         this.haveCreditReport = loanApplicationDto.getHaveCreditReport();
         this.workPosition = loanApplicationDto.getWorkPosition();
         this.sesameCredit = loanApplicationDto.getSesameCredit();
@@ -199,12 +199,12 @@ public class LoanApplicationModel implements Serializable {
         this.age = age;
     }
 
-    public boolean getIsMarried() {
-        return isMarried;
+    public int getMarriageState() {
+        return marriageState;
     }
 
-    public void setIsMarried(boolean married) {
-        isMarried = married;
+    public void setMarriageState(int marriageState) {
+        this.marriageState = marriageState;
     }
 
     public boolean getHaveCreditReport() {

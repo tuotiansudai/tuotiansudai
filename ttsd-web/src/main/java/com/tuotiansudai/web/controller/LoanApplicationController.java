@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.client.OssWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
@@ -11,12 +12,19 @@ import com.tuotiansudai.service.LoanApplicationService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.IdentityNumberValidator;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(value = "/loan-application")
@@ -29,6 +37,9 @@ public class LoanApplicationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OssWrapperClient ossWrapperClient;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() {
@@ -68,7 +79,6 @@ public class LoanApplicationController {
         return loanApplicationService.create(loanApplicationDto);
     }
 
-
     @RequestMapping(value = "/create-consume", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> createConsume(@RequestBody LoanConsumeApplicationDto loanConsumeApplicationDto) {
@@ -80,5 +90,29 @@ public class LoanApplicationController {
     @ResponseBody
     public ModelAndView success() {
         return new ModelAndView("loan-application-success");
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> uploadFile(HttpServletRequest request) {
+        if (!ServletFileUpload.isMultipartContent(request)) {
+            return new BaseDto<>(new BaseDataDto(false, "上传失败"));
+        }
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+        MultipartFile dfi = multiRequest.getFile("upfile");
+        String originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
+        String fileExtName = FilenameUtils.getExtension(originalName);
+        String rootPath = request.getSession().getServletContext().getRealPath("/");
+        try {
+            String url = request.getRequestURL().toString();
+            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), false);
+            if (absoluteUrl.indexOf(":") > 0 ) {
+                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
+            }
+            return new BaseDto<>(new BaseDataDto(true, absoluteUrl));
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("{0}|{1}", "[LOAN APPLICATION OSS UPLOAD]", e.getLocalizedMessage()), e);
+            return new BaseDto<>(new BaseDataDto(false, "上传失败"));
+        }
     }
 }
