@@ -54,8 +54,8 @@ public class LoanApplicationController {
             modelAndView.addObject("mobile", mobile);
             UserModel userModel = userService.findByMobile(mobile);
             modelAndView.addObject("userName", userModel.getUserName());
-            modelAndView.addObject("isAnxinProp", loanApplicationService.isAnxinProp(LoginUserInfo.getLoginName()));
         }
+        modelAndView.addObject("isAnxinProp", !StringUtils.isEmpty(mobile) && loanApplicationService.isAnxinProp(LoginUserInfo.getLoginName()));
         modelAndView.addObject("regions", LoanApplicationRegion.values());
         return modelAndView;
     }
