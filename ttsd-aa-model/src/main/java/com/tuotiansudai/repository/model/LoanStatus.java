@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 public enum LoanStatus {
+    DRAFT("", "草稿"),
     WAITING_VERIFY("", "等待审核"),
     PREHEAT("0", "预热"),
     RAISING("1", "筹款中"),

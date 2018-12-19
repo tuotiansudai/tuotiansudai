@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanRiskManagementTitleModel">
-        insert into loan_risk_management_title(id,title)VALUES (#{id},#{title})
+        insert into loan_risk_management_title(title)VALUES (#{title})
     </insert>
 
     <select id="findAll" resultMap="titleResultMap">

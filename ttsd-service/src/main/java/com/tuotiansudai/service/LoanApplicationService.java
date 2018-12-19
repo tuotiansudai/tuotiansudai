@@ -1,29 +1,19 @@
 package com.tuotiansudai.service;
 
 import cn.jpush.api.utils.StringUtils;
-import com.tuotiansudai.client.OssWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.dto.LoanConsumeApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
-import com.tuotiansudai.repository.model.LoanApplicationMaterialsModel;
-import com.tuotiansudai.repository.model.LoanApplicationModel;
-import com.tuotiansudai.repository.model.PledgeType;
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.util.IdentityNumberValidator;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 
 @Service
 public class LoanApplicationService {
@@ -39,31 +29,34 @@ public class LoanApplicationService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
+
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
-        BaseDto<BaseDataDto> baseDataDtoBaseDto = checkLoanApplication(loanApplicationDto);
-        if (baseDataDtoBaseDto.isSuccess()){
+        BaseDataDto baseDataDto = checkLoanApplication(loanApplicationDto);
+        if (baseDataDto.getStatus()){
             this.createLoanApplication(loanApplicationDto);
         }
-        return baseDataDtoBaseDto;
+        return new BaseDto<>(baseDataDto);
     }
 
-    private BaseDto<BaseDataDto> checkLoanApplication(LoanApplicationDto loanApplicationDto){
+    private BaseDataDto checkLoanApplication(LoanApplicationDto loanApplicationDto){
         if (null == accountMapper.findByLoginName(loanApplicationDto.getLoginName())) {
-            return new BaseDto<>(new BaseDataDto(false, "账户没有实名认证"));
+            return new BaseDataDto(false, "账户没有实名认证");
         }
         if (loanApplicationDto.getAmount() <= 0) {
-            return new BaseDto<>(new BaseDataDto(false, "借款金额必须是大于等于1的整数"));
+            return new BaseDataDto(false, "借款金额必须是大于等于1的整数");
         }
         if (loanApplicationDto.getPeriod() <= 0) {
-            return new BaseDto<>(new BaseDataDto(false, "借款期限必须是大于等于1的整数"));
+            return new BaseDataDto(false, "借款期限必须是大于等于1的整数");
         }
         if(StringUtils.isEmpty(loanApplicationDto.getLoanUsage())){
-            return new BaseDto<>(new BaseDataDto(false, "借款用途不能为空"));
+            return new BaseDataDto(false, "借款用途不能为空");
         }
         if(loanApplicationDto.getPledgeType() != PledgeType.NONE && StringUtils.isEmpty(loanApplicationDto.getPledgeInfo())){
-            return new BaseDto<>(new BaseDataDto(false, "抵押物信息不能为空"));
+            return new BaseDataDto(false, "抵押物信息不能为空");
         }
-        return new BaseDto<>(new BaseDataDto(true));
+        return new BaseDataDto(true);
     }
 
     private LoanApplicationModel createLoanApplication(LoanApplicationDto loanApplicationDto){
@@ -80,10 +73,14 @@ public class LoanApplicationService {
     }
 
     public BaseDto<BaseDataDto> createConsume(LoanConsumeApplicationDto loanConsumeApplicationDto){
-        BaseDto<BaseDataDto> baseDataDtoBaseDto = this.checkLoanApplication(loanConsumeApplicationDto);
-        if (!baseDataDtoBaseDto.isSuccess()){
-            return baseDataDtoBaseDto;
+        BaseDataDto baseDataDto = this.checkLoanApplication(loanConsumeApplicationDto);
+        if (!baseDataDto.getStatus()){
+            return new BaseDto<>(baseDataDto);
         }
+        if (!isAnxinProp(loanConsumeApplicationDto.getLoginName())){
+            return new BaseDto<>(new BaseDataDto(false, "未开通安心签免短信服务"));
+        }
+
         if (StringUtils.isEmpty(loanConsumeApplicationDto.getIdentityProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "身份证明材料不能为空"));
         }
@@ -93,7 +90,7 @@ public class LoanApplicationService {
         if (StringUtils.isEmpty(loanConsumeApplicationDto.getCreditProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "信用报告材料不能为空"));
         }
-        if (loanConsumeApplicationDto.getMarriageState() == 1 && StringUtils.isEmpty(loanConsumeApplicationDto.getMarriageProveUrls())) {
+        if (loanConsumeApplicationDto.getMarriage() == Marriage.MARRIED && StringUtils.isEmpty(loanConsumeApplicationDto.getMarriageProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "婚姻状况材料不能为空"));
         }
         if (StringUtils.isEmpty(loanConsumeApplicationDto.getPropertyProveUrls())) {
@@ -103,8 +100,14 @@ public class LoanApplicationService {
             return new BaseDto<>(new BaseDataDto(false, "共同借款人材料不能为空"));
         }
         LoanApplicationModel loanApplicationModel = this.createLoanApplication(loanConsumeApplicationDto);
+        loanApplicationModel.setMarriage(loanConsumeApplicationDto.getMarriage());
         LoanApplicationMaterialsModel loanApplicationMaterialsModel = new LoanApplicationMaterialsModel(loanApplicationModel.getId(), loanConsumeApplicationDto);
         loanApplicationMapper.createMaterials(loanApplicationMaterialsModel);
         return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public boolean isAnxinProp(String loginName){
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+        return anxinProp != null && anxinProp.isSkipAuth();
     }
 }

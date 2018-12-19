@@ -5,6 +5,8 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.dto.LoanConsumeApplicationDto;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
+import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.repository.model.UserModel;
@@ -25,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan-application")
@@ -50,10 +54,9 @@ public class LoanApplicationController {
             modelAndView.addObject("mobile", mobile);
             UserModel userModel = userService.findByMobile(mobile);
             modelAndView.addObject("userName", userModel.getUserName());
+            modelAndView.addObject("isAnxinProp", loanApplicationService.isAnxinProp(LoginUserInfo.getLoginName()));
         }
-
         modelAndView.addObject("regions", LoanApplicationRegion.values());
-
         return modelAndView;
     }
 
@@ -94,9 +97,12 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> uploadFile(HttpServletRequest request) {
+    public Map<String, String> uploadFile(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        map.put("status", "SUCCESS");
         if (!ServletFileUpload.isMultipartContent(request)) {
-            return new BaseDto<>(new BaseDataDto(false, "上传失败"));
+            map.put("status", "FAIL");
+            return map;
         }
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile dfi = multiRequest.getFile("upfile");
@@ -109,10 +115,11 @@ public class LoanApplicationController {
             if (absoluteUrl.indexOf(":") > 0 ) {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("/upload"), absoluteUrl.length());
             }
-            return new BaseDto<>(new BaseDataDto(true, absoluteUrl));
+            map.put("ImgUrl", absoluteUrl);
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0}|{1}", "[LOAN APPLICATION OSS UPLOAD]", e.getLocalizedMessage()), e);
-            return new BaseDto<>(new BaseDataDto(false, "上传失败"));
+            map.put("status", "FAIL");
         }
+        return map;
     }
 }
