@@ -1,6 +1,7 @@
 package com.tuotiansudai.enums;
 
 public enum LoanApplicationStatus {
+    DRAFT("草稿"),
     WAITING("等待审核"),
     APPROVE("通过"),
     REJECT("驳回");

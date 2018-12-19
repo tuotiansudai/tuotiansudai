@@ -6,12 +6,32 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
-    <resultMap id="loanTitleResultMap" type="LoanRiskManagementTitleRelationModel">
+    <resultMap id="loanRiskManagementTitleRelationResultMap" type="LoanRiskManagementTitleRelationModel">
         <id column="id" property="id"></id>
         <result column="loan_id" property="loanId"></result>
         <result column="loan_application_id" property="loanApplicationId"></result>
         <result column="title_id" property="titleId"></result>
         <result column="detail" property="detail"></result>
     </resultMap>
+
+    <insert id="create" parameterType="LoanTitleModel">
+        insert into loan_risk_management_title_relation (id, loan_id, loan_application_id, title_id, detail) values
+        <foreach collection="loanTitleModels" item="item" index="index" separator=",">
+            (#{item.id}, #{item.loanId}, #{item.loanApplicationId},#{item.titleId}, #{item.detail})
+        </foreach>
+    </insert>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanRiskManagementTitleRelationResultMap">
+        select * from loan_risk_management_title_relation  where loan_id = #{loanId}
+    </select>
+
+    <select id="findByLoanApplicationId" parameterType="long" resultMap="loanRiskManagementTitleRelationResultMap">
+        select * from loan_risk_management_title_relation  where loan_application_id = #{loanApplicationId}
+    </select>
+
+    <delete id="delete" parameterType="long">
+        delete from loan_title_relation where loan_id = #{loanId};
+    </delete>
+
 
 </mapper>
