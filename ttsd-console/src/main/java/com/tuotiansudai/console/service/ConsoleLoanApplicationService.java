@@ -105,6 +105,7 @@ public class ConsoleLoanApplicationService {
 
         loanApplicationConsumeDto.getLoan().setStatus(LoanStatus.DRAFT);
         LoanCreateRequestDto loanCreateRequestDto = new LoanCreateRequestDto();
+        loanApplicationConsumeDto.getLoan().setStatus(LoanStatus.DRAFT);
         loanCreateRequestDto.setLoan(loanApplicationConsumeDto.getLoan());
         loanCreateRequestDto.setLoanerDetails(loanApplicationConsumeDto.getLoanerDetails());
         loanCreateRequestDto.setLoanDetails(loanApplicationConsumeDto.getLoanDetails());
