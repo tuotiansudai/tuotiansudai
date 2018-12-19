@@ -81,12 +81,18 @@ public class ConsoleLoanCreateService {
 
     protected final static String generateLoanName = "{0}{1}";
 
-    @Transactional
-    public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
+    public BaseDto<BaseDataDto> create(LoanCreateRequestDto loanCreateRequestDto) {
         BaseDto<BaseDataDto> dto = this.checkCreateLoanData(loanCreateRequestDto);
         if (!dto.getData().getStatus()) {
             return dto;
         }
+        this.createLoan(loanCreateRequestDto);
+
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    @Transactional
+    public long createLoan(LoanCreateRequestDto loanCreateRequestDto){
 
         long loanId = IdGenerator.generate();
 
@@ -136,8 +142,7 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
             loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
         }
-
-        return new BaseDto<>(new BaseDataDto(true));
+        return loanId;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -167,7 +172,7 @@ public class ConsoleLoanCreateService {
 
         loanMapper.update(loanModel.updateLoan(loanCreateRequestDto));
 
-        if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(loanModel.getStatus())) {
+        if (Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.DRAFT).contains(loanModel.getStatus())) {
             this.updateExtraRate(loanId, loanCreateRequestDto.getLoanDetails().getExtraRateRuleIds());
         } else {
             LoanDetailsModel loanDetailsModel = loanDetailsMapper.getByLoanId(loanId);
@@ -244,7 +249,11 @@ public class ConsoleLoanCreateService {
 
         loanCreateRequestDto.setLoanDetails(new LoanCreateDetailsRequestDto(loanDetailsMapper.getByLoanId(loanId)));
 
-        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE,PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
+        if (PledgeType.NONE == loanModel.getPledgeType()){
+            loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
+        }
+
+        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.PERSONAL_CAPITAL_TURNOVER).contains(loanModel.getPledgeType())) {
             loanCreateRequestDto.setLoanerDetails(new LoanCreateLoanerDetailsRequestDto(loanerDetailsMapper.getByLoanId(loanId)));
             List<LoanCreatePledgeHouseRequestDto> loanCreatePledgeHouseRequestDtoList = pledgeHouseMapper.getByLoanId(loanId).stream()
                     .map(LoanCreatePledgeHouseRequestDto::new).collect(Collectors.toList());
@@ -361,8 +370,8 @@ public class ConsoleLoanCreateService {
         return payWrapperClient.cancelLoan(loanId);
     }
 
-    private BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
-        if (userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
+    public BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
+        if (loanCreateRequestDto.getLoan().getPledgeType() != PledgeType.NONE &&  userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
@@ -374,7 +383,7 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
-        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus()) && !Lists.newArrayList(LoanType.INVEST_INTEREST_MONTHLY_REPAY, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY).contains(loanCreateRequestDto.getLoan().getLoanType())) {
+        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus())) {
                 return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
@@ -402,7 +411,7 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoan().getFundraisingEndTime().before(loanCreateRequestDto.getLoan().getFundraisingStartTime())) {
             return new BaseDto<>(new BaseDataDto(false, "筹款启动时间不得晚于筹款截止时间"));
         }
-        if(loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.WAITING_VERIFY)){
+        if(Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.DRAFT).contains(loanCreateRequestDto.getLoan().getStatus())){
             if((loanCreateRequestDto.getLoan().getFundraisingEndTime().getTime()-loanCreateRequestDto.getLoan().getFundraisingStartTime().getTime())> 7*24*60*60*1000){
                 return new BaseDto<>(new BaseDataDto(false, "筹款启动时间与筹款截止时间不能超过7天"));
             }
@@ -411,7 +420,7 @@ public class ConsoleLoanCreateService {
             }
         }
 
-        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE).contains(loanCreateRequestDto.getLoan().getPledgeType())) {
+        if (Lists.newArrayList(PledgeType.HOUSE, PledgeType.VEHICLE, PledgeType.NONE).contains(loanCreateRequestDto.getLoan().getPledgeType())) {
             if (loanCreateRequestDto.getLoanerDetails() == null) {
                 return new BaseDto<>(new BaseDataDto(false, "借款人信息不完整"));
             }

@@ -1,19 +1,21 @@
 package com.tuotiansudai.console.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.LoanApplicationStatus;
+import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
-import com.tuotiansudai.repository.model.LoanApplicationModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRiskManagementTitleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.CalculateUtil;
+import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.PaginationUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,12 @@ public class ConsoleLoanApplicationService {
 
     @Autowired
     private ExtraLoanRateMapper extraLoanRateMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
 
     public BaseDto<BaseDataDto> comment(LoanApplicationModel loanApplicationModel) {
@@ -86,5 +94,68 @@ public class ConsoleLoanApplicationService {
         }
 
         return loanApplicationConsumeDto;
+    }
+
+    @Transactional
+    public BaseDto<BaseDataDto> consumeSave(LoanApplicationConsumeDto loanApplicationConsumeDto){
+        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationConsumeDto.getLoanApplicationModel().getId());
+        if (loanApplicationModel == null){
+            return new BaseDto<>(new BaseDataDto(false, "借款申请不存在"));
+        }
+
+        loanApplicationConsumeDto.getLoan().setStatus(LoanStatus.DRAFT);
+        LoanCreateRequestDto loanCreateRequestDto = new LoanCreateRequestDto();
+        loanCreateRequestDto.setLoan(loanApplicationConsumeDto.getLoan());
+        loanCreateRequestDto.setLoanerDetails(loanApplicationConsumeDto.getLoanerDetails());
+        loanCreateRequestDto.setLoanDetails(loanApplicationConsumeDto.getLoanDetails());
+
+        if (loanApplicationModel.getLoanId() != null){
+            return consoleLoanCreateService.updateLoan(loanCreateRequestDto);
+        }
+
+        BaseDto<BaseDataDto> baseDataDtoBaseDto = consoleLoanCreateService.checkCreateLoanData(loanCreateRequestDto);
+        if (baseDataDtoBaseDto.getData().getStatus()){
+            long loanId = consoleLoanCreateService.createLoan(loanCreateRequestDto);
+            loanApplicationModel.setLoanId(Long.parseLong(baseDataDtoBaseDto.getData().getMessage()));
+            loanApplicationModel.setId(loanApplicationConsumeDto.getLoanApplicationModel().getId());
+            loanApplicationModel.setAddress(loanApplicationConsumeDto.getLoanApplicationModel().getAddress());
+            loanApplicationModel.setLoanUsage(loanApplicationConsumeDto.getLoanApplicationModel().getLoanUsage());
+            loanApplicationModel.setLoanId(loanId);
+            loanApplicationMapper.update(loanApplicationModel);
+            loanRiskManagementTitleRelationMapper.create(loanApplicationConsumeDto.getLoanRiskManagementTitleRelationModelList());
+        }
+        return baseDataDtoBaseDto;
+    }
+
+    public BaseDto<BaseDataDto> consumeReject(long loanApplicationId){
+        loanApplicationMapper.updateStatus(loanApplicationId, LoanApplicationStatus.REJECT);
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public BaseDto<BaseDataDto> consumeApprove(long loanApplicationId){
+        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationId);
+        if (loanApplicationModel == null || loanApplicationModel.getLoanId() == null){
+            return new BaseDto<>(new BaseDataDto(false, "审核通过失败"));
+        }
+
+        if (userRoleMapper.findByLoginNameAndRole(loanApplicationModel.getLoginName(), Role.LOANER) == null){
+            userRoleMapper.create(Lists.newArrayList(new UserRoleModel(loanApplicationModel.getLoginName(), Role.LOANER)));
+        }
+
+        loanApplicationMapper.updateStatus(loanApplicationId, LoanApplicationStatus.APPROVE);
+        loanMapper.updateStatus(loanApplicationModel.getLoanId(), LoanStatus.WAITING_VERIFY);
+        consoleLoanCreateService.applyAuditLoan(loanApplicationModel.getLoanId());
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public LoanRiskManagementTitleModel createTitle(String title) {
+        LoanRiskManagementTitleModel loanRiskManagementTitleModel = new LoanRiskManagementTitleModel();
+        loanRiskManagementTitleModel.setTitle(title);
+        loanRiskManagementTitleMapper.create(loanRiskManagementTitleModel);
+        return loanRiskManagementTitleModel;
+    }
+
+    public List<LoanRiskManagementTitleModel> findAllTitles() {
+        return loanRiskManagementTitleMapper.findAll();
     }
 }

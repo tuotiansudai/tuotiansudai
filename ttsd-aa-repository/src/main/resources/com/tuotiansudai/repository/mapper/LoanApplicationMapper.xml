@@ -133,6 +133,14 @@
         id = #{id}
     </update>
 
+    <update id="updateStatus" parameterType="map">
+        update loan_application set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateLoanId" parameterType="map">
+        update loan_application set loan_id = #{loanId} where id = #{id}
+    </update>
+
     <select id="findById" resultMap="LoanApplicationResultMap">
         SELECT
           *

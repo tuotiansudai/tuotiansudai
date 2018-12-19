@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.dto.LoanConsumeApplicationDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.rest.client.mapper.UserMapper;
@@ -27,6 +28,9 @@ public class LoanApplicationService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AnxinSignPropertyMapper anxinSignPropertyMapper;
 
     public BaseDto<BaseDataDto> create(LoanApplicationDto loanApplicationDto) {
         BaseDataDto baseDataDto = checkLoanApplication(loanApplicationDto);
@@ -73,6 +77,10 @@ public class LoanApplicationService {
         if (!baseDataDto.getStatus()){
             return new BaseDto<>(baseDataDto);
         }
+        if (!isAnxinProp(loanConsumeApplicationDto.getLoginName())){
+            return new BaseDto<>(new BaseDataDto(false, "未开通安心签免短信服务"));
+        }
+
         if (StringUtils.isEmpty(loanConsumeApplicationDto.getIdentityProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "身份证明材料不能为空"));
         }
@@ -96,5 +104,10 @@ public class LoanApplicationService {
         LoanApplicationMaterialsModel loanApplicationMaterialsModel = new LoanApplicationMaterialsModel(loanApplicationModel.getId(), loanConsumeApplicationDto);
         loanApplicationMapper.createMaterials(loanApplicationMaterialsModel);
         return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public boolean isAnxinProp(String loginName){
+        AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
+        return anxinProp != null && anxinProp.isSkipAuth();
     }
 }

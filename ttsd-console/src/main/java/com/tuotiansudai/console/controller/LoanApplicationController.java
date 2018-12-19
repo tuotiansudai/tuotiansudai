@@ -5,8 +5,8 @@ import com.tuotiansudai.console.service.ConsoleLoanApplicationService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.LoanApplicationConsumeDto;
 import com.tuotiansudai.enums.LoanApplicationStatus;
-import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/loan-application")
@@ -23,9 +24,6 @@ public class LoanApplicationController {
 
     @Autowired
     private ConsoleLoanApplicationService consoleLoanApplicationService;
-
-    @Autowired
-    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
@@ -77,4 +75,32 @@ public class LoanApplicationController {
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/consume/save", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> consumeSave(@RequestBody LoanApplicationConsumeDto loanApplicationConsumeDto) {
+        return consoleLoanApplicationService.consumeSave(loanApplicationConsumeDto);
+    }
+
+    @RequestMapping(value = "/consume/{applyId:^\\d+$}/reject", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> consumeReject(@PathVariable long applyId) {
+        return consoleLoanApplicationService.consumeReject(applyId);
+    }
+
+    @RequestMapping(value = "/consume/{applyId:^\\d+$}/approve", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> consumeApprove(@PathVariable long applyId) {
+        return consoleLoanApplicationService.consumeApprove(applyId);
+    }
+
+    @RequestMapping(value = "/titles", method = RequestMethod.GET)
+    @ResponseBody
+    public List<LoanRiskManagementTitleModel> findAllTitles() {
+        return consoleLoanApplicationService.findAllTitles();
+    }
+
+    @RequestMapping(value = "/title", method = RequestMethod.POST)
+    @ResponseBody
+    public LoanRiskManagementTitleModel addTitle(@RequestParam(value = "title") String title) {
+        return consoleLoanApplicationService.createTitle(title);
+    }
+
 }

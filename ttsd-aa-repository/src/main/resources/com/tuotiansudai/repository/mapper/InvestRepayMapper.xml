@@ -319,7 +319,7 @@
             invest i
             JOIN loan l
               ON i.`loan_id` = l.`id`
-              AND l.`status` != 'WAITING_VERIFY'
+              AND l.`status` not in ('WAITING_VERIFY', 'DRAFT')
           WHERE i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}) temp
           LEFT JOIN

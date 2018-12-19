@@ -15,6 +15,10 @@ public interface LoanApplicationMapper {
 
     void update(LoanApplicationModel loanApplicationModel);
 
+    void updateStatus(@Param(value = "id") long id, @Param(value = "status") LoanApplicationStatus status);
+
+    void updateLoanId(@Param(value = "id") long id, @Param(value = "loanId") long loanId);
+
     LoanApplicationModel findById(@Param(value = "id") long id);
 
     List<LoanApplicationModel> findPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
