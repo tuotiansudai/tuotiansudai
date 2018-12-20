@@ -17,9 +17,6 @@ public class CreateContractDataServiceV1Impl extends AbstractCreateContractDataS
     @Value(value = "${anxin.loan.contract.template.v1}")
     private String anxinLoanContractTemplateV1;
 
-    @Value(value = "${anxin.loan.consume.contract.template.v1}")
-    private String anxinLoanConsumeContractTemplateV1;
-
     @Autowired
     private ContractService contractService;
 
