@@ -24,7 +24,7 @@
         <result column="identity_number" property="identityNumber"/>
         <result column="address" property="address"/>
         <result column="age" property="age"/>
-        <result column="is_married" property="isMarried"/>
+        <result column="marriage" property="marriage"/>
         <result column="have_credit_report" property="haveCreditReport"/>
         <result column="work_position" property="workPosition"/>
         <result column="sesame_credit" property="sesameCredit"/>
@@ -34,7 +34,6 @@
         <result column="sex" property="sex"/>
         <result column="loan_id" property="loanId"/>
         <result column="status" property="status"/>
-        <result column="is_divorced" property="isDivorced"/>
     </resultMap>
 
     <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterialsModel">
@@ -53,13 +52,13 @@
     <insert id="create" parameterType="LoanApplicationModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application`
         (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
-        updated_by, updated_time,identity_number,address,age,is_married,have_credit_report,work_position,sesame_credit,
-        home_income,loan_usage,else_pledge,sex,status,is_divorced)
+        updated_by, updated_time,identity_number,address,age,marriage,have_credit_report,work_position,sesame_credit,
+        home_income,loan_usage,else_pledge,sex,status)
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
-        #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{isMarried},
+        #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{marriage},
         #{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex},
-        #{status},#{isDivorced})
+        #{status})
     </insert>
 
     <update id="update" parameterType="LoanApplicationModel">
@@ -103,8 +102,8 @@
         <if test="age != null">
             age = #{age},
         </if>
-        <if test="isMarried != null">
-            is_married = #{isMarried},
+        <if test="marriage != null">
+            marriage = #{marriage},
         </if>
         <if test="haveCreditReport != null">
             have_credit_report = #{haveCreditReport},
@@ -134,6 +133,14 @@
         id = #{id}
     </update>
 
+    <update id="updateStatus" parameterType="map">
+        update loan_application set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateLoanId" parameterType="map">
+        update loan_application set loan_id = #{loanId} where id = #{id}
+    </update>
+
     <select id="findById" resultMap="LoanApplicationResultMap">
         SELECT
           *
@@ -153,6 +160,40 @@
         SELECT COUNT(1) FROM `aa`.`loan_application` where pledge_type in ('VEHICLE', 'HOUSE')
     </select>
 
+    <select id="findConsumeApply" resultMap="LoanApplicationResultMap" parameterType="map">
+        SELECT * from loan_application WHERE pledge_type = 'NONE'
+        <if test="keyWord !=null and keyWord!=''">
+            and (login_name = #{keyWord} or mobile=#{keyWord})
+        </if>
+        <if test="status !=null">
+            and status = #{status})
+        </if>
+        <if test="startTime != null">
+            and created_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and created_time &lt;= #{endTime}
+        </if>
+        ORDER BY created_time DESC
+        LIMIT #{index}, #{pageSize}
+    </select>
+
+    <select id="findConsumeApplyCount" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM `aa`.`loan_application` where pledge_type = 'NONE'
+        <if test="keyWord !=null and keyWord!=''">
+            and (login_name = #{keyWord} or mobile=#{keyWord})
+        </if>
+        <if test="status !=null">
+            and status = #{status})
+        </if>
+        <if test="startTime != null">
+            and created_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and created_time &lt;= #{endTime}
+        </if>
+    </select>
+
     <insert id="createMaterials" parameterType="LoanApplicationMaterialsModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application_materials`
         (loan_application_id, identity_prove_urls, income_prove_urls, credit_prove_urls, marriage_prove_urls,
@@ -161,5 +202,9 @@
         (#{loanApplicationId}, #{identityProveUrls}, #{incomeProveUrls}, #{creditProveUrls}, #{marriageProveUrls},
          #{propertyProveUrls}, #{togetherLoaner}, #{togetherProveUrls},#{driversLicense})
     </insert>
+
+    <select id="findMaterialsByLoanApplicationId" parameterType="map" resultMap="LoanApplicationMaterialsResultMap">
+        select * from loan_application_materials where loan_application_id = #{loanApplicationId}
+    </select>
 
 </mapper>

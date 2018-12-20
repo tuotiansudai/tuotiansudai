@@ -1,9 +1,11 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.repository.model.Marriage;
+
 public class LoanConsumeApplicationDto extends LoanApplicationDto{
 
-    private int marriageState;
+    private Marriage Marriage;
     private String identityProveUrls;
     private String incomeProveUrls;
     private String creditProveUrls;
@@ -13,12 +15,12 @@ public class LoanConsumeApplicationDto extends LoanApplicationDto{
     private String togetherProveUrls;
     private String driversLicense;
 
-    public int getMarriageState() {
-        return marriageState;
+    public com.tuotiansudai.repository.model.Marriage getMarriage() {
+        return Marriage;
     }
 
-    public void setMarriageState(int marriageState) {
-        this.marriageState = marriageState;
+    public void setMarriage(com.tuotiansudai.repository.model.Marriage marriage) {
+        Marriage = marriage;
     }
 
     public String getIdentityProveUrls() {

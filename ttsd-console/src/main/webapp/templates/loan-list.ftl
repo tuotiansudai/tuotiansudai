@@ -122,11 +122,13 @@
                             class="loan_repay"
                             href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a>
                     </td>
-                    <#if loanListDto.pledgeType != 'NONE'>
-                        <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a>
-                        </td></#if>
-                    <#if loanListDto.pledgeType == 'NONE'>
-                        <td><a class="loan_edit" ${loanListDto.id?string('0')}">无</a></td></#if>
+                    <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a>
+
+                        <#if loanListDto.pledgeType == 'NONE' && ['REPAYING', 'OVERDUE']?seq_contains(loanListDto.status)>
+                            <a href="/project-manage/loan/${loanListDto.id?string('0')}/tail-after">贷后跟踪</a>
+                        </#if>
+                    </td>
+
                 </tr>
                 </#list>
             </tbody>
