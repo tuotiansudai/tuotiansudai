@@ -11,7 +11,7 @@
                 <input name="contractId" type="hidden" value="${contractId}"/><!-- 默认合同ID -->
                 <input name="status" type="hidden" value="WAITING_VERIFY"/>
                 <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="true"/>
-                <input id="loanApplication" type="hidden" value="${loanApplicationId!}"/>
+                <input id="loanApplicationId" type="hidden" value="${loanApplicationId!}"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称: </label>

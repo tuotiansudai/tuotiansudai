@@ -41,7 +41,7 @@ class uploadPic {
             data: data,
             processData: false,
             cache: false,
-            contentType: false,
+            contentType: false
         },function(data) {
             if(data.success) {
 

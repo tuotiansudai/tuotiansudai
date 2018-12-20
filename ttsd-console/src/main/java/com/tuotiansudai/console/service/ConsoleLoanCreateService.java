@@ -80,6 +80,9 @@ public class ConsoleLoanCreateService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
+    private LoanApplicationMapper loanApplicationMapper;
+
+    @Autowired
     private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
     protected final static String generateLoanName = "{0}{1}";
@@ -138,6 +141,10 @@ public class ConsoleLoanCreateService {
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
             loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
+        }
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
+            loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
         }
 
         return new BaseDto<>(new BaseDataDto(true));

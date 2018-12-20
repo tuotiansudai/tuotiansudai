@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +87,9 @@ public class LoanApplicationController {
     public ModelAndView createLoan(@PathVariable long applyId) {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
-        modelAndView.addObject("loanTypes", LoanType.values());
+        List<LoanType> loanTypes = Lists.newArrayList(LoanType.values());
+        Collections.reverse(loanTypes);
+        modelAndView.addObject("loanTypes", loanTypes);
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
         modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
