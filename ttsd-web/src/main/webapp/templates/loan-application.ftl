@@ -66,6 +66,13 @@
                     <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="car" data-type="VEHICLE">
                         我要借款</p>
                 </li>
+                <li class="car-loan-item">
+                    <h3>消费借款</h3>
+                    <i class="icon-consume"></i>
+
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="consume" data-type="NONE">
+                        我要借款</p>
+                </li>
             </ul>
         </div>
     </div>
