@@ -106,13 +106,16 @@
                 <span class="required-icon">*</span>
                 <span class="item_text">身份证明：要求拍摄的身份证件照片四角完整，亮度均匀，文字清晰</span>
                 <div class="imgWrapper">
-                    <div class="img-item positive">
-                        <div class="upload-desc">
-                            <div class="icon-upload"></div>
-                            点击上传人像面
-                        </div>
-                        <input type="file" name="aaaaa" class="file-input" data-type="positive">
-                    </div>
+                    <#--<div class="img-item positive">-->
+                        <#--<div class="upload-desc">-->
+                            <#--<div class="icon-upload"></div>-->
+                            <#--点击上传人像面-->
+                        <#--</div>-->
+                        <#--<input type="file" class="file-input" data-type="positive">-->
+                    <#--</div>-->
+                        <a class="fancybox" href="http://thyrsi.com/t6/637/1545215955x2890202953.png" rel="example_group">
+                            <img class="img" src="http://thyrsi.com/t6/637/1545215955x2890202953.png"/>
+                        </a>
                     <div class="img-item negative">
                         <div class="upload-desc">
                             <div class="icon-upload"></div>

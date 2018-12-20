@@ -118,12 +118,23 @@ $(function () {
 
     $('.file-input').on('change',function (event) {
         event.preventDefault();
-        new uploadPic($(this)).init();
-        // $(this).replaceWith(function () {
-        //     return (
-        //         `<div>11111</div>`
-        //     )
-        // })
-    })
+        new uploadPic($(this)).init(handlePic(url));
+    });
+
+    function handlePic(url) {
+        let type = $(this).data('type');
+        if (type) {
+            $('.' + type).replaceWith(function () {
+                return `
+                <a class="fancybox" href="${url}" rel="example_group">
+                    <img class="img" src="${url}" />
+                </a>
+                `
+            })
+        }
+        else {
+
+        }
+    }
 });
 
