@@ -82,17 +82,10 @@ public class ConsoleLoanApplicationService {
 
     public LoanApplicationConsumeDto consumeDetail(long id){
         LoanApplicationConsumeDto loanApplicationConsumeDto = new LoanApplicationConsumeDto();
-        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(id);
-        loanApplicationConsumeDto.setLoanApplicationModel(loanApplicationModel);
+        loanApplicationConsumeDto.setLoanApplicationModel(loanApplicationMapper.findById(id));
+        loanApplicationConsumeDto.setLoanApplicationMaterialsModel(loanApplicationMapper.findMaterialsByLoanApplicationId(id));
         loanApplicationConsumeDto.setLoanRiskManagementTitleModelList(loanRiskManagementTitleMapper.findAll());
-        loanApplicationConsumeDto.setLoanRiskManagementTitleRelationModelList(loanRiskManagementTitleRelationMapper.findByLoanApplicationId(loanApplicationModel.getId()));
-        if (loanApplicationModel.getLoanId() != null){
-            LoanCreateRequestDto loanCreateRequestDto = consoleLoanCreateService.getEditLoanDetails(loanApplicationModel.getLoanId());
-            loanApplicationConsumeDto.setLoan(loanCreateRequestDto.getLoan());
-            loanApplicationConsumeDto.setLoanDetails(loanCreateRequestDto.getLoanDetails());
-            loanApplicationConsumeDto.setExtraLoanRateModelList(extraLoanRateMapper.findByLoanId(loanApplicationModel.getLoanId()));
-        }
-
+        loanApplicationConsumeDto.setLoanRiskManagementTitleRelationModelList(loanRiskManagementTitleRelationMapper.findByLoanApplicationId(id));
         return loanApplicationConsumeDto;
     }
 
@@ -102,32 +95,17 @@ public class ConsoleLoanApplicationService {
         if (loanApplicationModel == null){
             return new BaseDto<>(new BaseDataDto(false, "借款申请不存在"));
         }
+        loanApplicationModel.setAddress(loanApplicationConsumeDto.getLoanApplicationModel().getAddress());
+        loanApplicationModel.setLoanUsage(loanApplicationConsumeDto.getLoanApplicationModel().getLoanUsage());
+        loanApplicationModel.setUpdatedBy(loginName);
+        loanApplicationModel.setUpdatedTime(new Date());
+        loanApplicationMapper.update(loanApplicationModel);
+        loanRiskManagementTitleRelationMapper.create(loanApplicationConsumeDto.getLoanRiskManagementTitleRelationModelList());
+        return new BaseDto<>(new BaseDataDto(true));
+    }
 
-        loanApplicationConsumeDto.getLoan().setStatus(LoanStatus.DRAFT);
-        LoanCreateRequestDto loanCreateRequestDto = new LoanCreateRequestDto();
-        loanApplicationConsumeDto.getLoan().setStatus(LoanStatus.DRAFT);
-        loanCreateRequestDto.setLoan(loanApplicationConsumeDto.getLoan());
-        loanCreateRequestDto.setLoanerDetails(loanApplicationConsumeDto.getLoanerDetails());
-        loanCreateRequestDto.setLoanDetails(loanApplicationConsumeDto.getLoanDetails());
-
-        if (loanApplicationModel.getLoanId() != null){
-            return consoleLoanCreateService.updateLoan(loanCreateRequestDto);
-        }
-
-        BaseDto<BaseDataDto> baseDataDtoBaseDto = consoleLoanCreateService.checkCreateLoanData(loanCreateRequestDto);
-        if (baseDataDtoBaseDto.getData().getStatus()){
-            long loanId = consoleLoanCreateService.createLoan(loanCreateRequestDto);
-            loanApplicationModel.setLoanId(Long.parseLong(baseDataDtoBaseDto.getData().getMessage()));
-            loanApplicationModel.setId(loanApplicationConsumeDto.getLoanApplicationModel().getId());
-            loanApplicationModel.setAddress(loanApplicationConsumeDto.getLoanApplicationModel().getAddress());
-            loanApplicationModel.setLoanUsage(loanApplicationConsumeDto.getLoanApplicationModel().getLoanUsage());
-            loanApplicationModel.setLoanId(loanId);
-            loanApplicationModel.setUpdatedBy(loginName);
-            loanApplicationModel.setUpdatedTime(new Date());
-            loanApplicationMapper.update(loanApplicationModel);
-            loanRiskManagementTitleRelationMapper.create(loanApplicationConsumeDto.getLoanRiskManagementTitleRelationModelList());
-        }
-        return baseDataDtoBaseDto;
+    public LoanerDetailsModel findLoanerDetail(long loanApplicationId){
+        return new LoanerDetailsModel(loanApplicationMapper.findById(loanApplicationId));
     }
 
     public BaseDto<BaseDataDto> consumeReject(long loanApplicationId){

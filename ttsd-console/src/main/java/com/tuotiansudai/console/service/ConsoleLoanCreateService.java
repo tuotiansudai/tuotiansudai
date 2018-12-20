@@ -84,18 +84,12 @@ public class ConsoleLoanCreateService {
 
     protected final static String generateLoanName = "{0}{1}";
 
-    public BaseDto<BaseDataDto> create(LoanCreateRequestDto loanCreateRequestDto) {
+    @Transactional
+    public BaseDto<BaseDataDto> createLoan(LoanCreateRequestDto loanCreateRequestDto) {
         BaseDto<BaseDataDto> dto = this.checkCreateLoanData(loanCreateRequestDto);
         if (!dto.getData().getStatus()) {
             return dto;
         }
-        this.createLoan(loanCreateRequestDto);
-
-        return new BaseDto<>(new BaseDataDto(true));
-    }
-
-    @Transactional
-    public long createLoan(LoanCreateRequestDto loanCreateRequestDto){
 
         long loanId = IdGenerator.generate();
 
@@ -145,7 +139,8 @@ public class ConsoleLoanCreateService {
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
             loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
         }
-        return loanId;
+
+        return new BaseDto<>(new BaseDataDto(true));
     }
 
     @Transactional(rollbackFor = Exception.class)

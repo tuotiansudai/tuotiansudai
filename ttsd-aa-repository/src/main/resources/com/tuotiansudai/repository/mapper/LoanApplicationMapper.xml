@@ -203,4 +203,8 @@
          #{propertyProveUrls}, #{togetherLoaner}, #{togetherProveUrls},#{driversLicense})
     </insert>
 
+    <select id="findMaterialsByLoanApplicationId" parameterType="map" resultMap="LoanApplicationMaterialsResultMap">
+        select * from loan_application_materials where loan_application_id = #{loanApplicationId}
+    </select>
+
 </mapper>

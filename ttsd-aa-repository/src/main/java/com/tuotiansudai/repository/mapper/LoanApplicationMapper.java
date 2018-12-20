@@ -25,8 +25,6 @@ public interface LoanApplicationMapper {
 
     long findCount();
 
-    void createMaterials(LoanApplicationMaterialsModel loanApplicationMaterialsModel);
-
     List<LoanApplicationModel> findConsumeApply(@Param(value = "keyWord") String keyWord,
                                                 @Param(value = "status") LoanApplicationStatus status,
                                                 @Param(value = "startTime") Date startTime,
@@ -38,4 +36,9 @@ public interface LoanApplicationMapper {
                                @Param(value = "status") LoanApplicationStatus status,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
+
+    void createMaterials(LoanApplicationMaterialsModel loanApplicationMaterialsModel);
+
+    LoanApplicationMaterialsModel findMaterialsByLoanApplicationId(@Param(value = "loanApplicationId") long loanApplicationId);
+
 }

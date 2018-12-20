@@ -69,7 +69,7 @@ public class LoanController {
     public BaseDto<BaseDataDto> createLoan(@RequestBody LoanCreateRequestDto loanCreateRequestDto) {
 
         loanCreateRequestDto.getLoan().setCreatedBy(LoginUserInfo.getLoginName());
-        return consoleLoanCreateService.create(loanCreateRequestDto);
+        return consoleLoanCreateService.createLoan(loanCreateRequestDto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
