@@ -32,7 +32,7 @@ class uploadPic {
             dataType: 'JSON',
             processData: false,
             cache: false,
-            contentType: false,
+            contentType: false
         },function(data) {
             if(data.state === 'SUCCESS') {
                 callBack(data.url);

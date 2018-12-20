@@ -22,6 +22,8 @@ public class LoanCreateRequestDto {
 
     private LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo;
 
+    private String loanApplicationId;
+
     public LoanCreateBaseRequestDto getLoan() {
         return loan;
     }
@@ -84,5 +86,13 @@ public class LoanCreateRequestDto {
 
     public void setLoanerEnterpriseInfo(LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo) {
         this.loanerEnterpriseInfo = loanerEnterpriseInfo;
+    }
+
+    public String getLoanApplicationId() {
+        return loanApplicationId;
+    }
+
+    public void setLoanApplicationId(String loanApplicationId) {
+        this.loanApplicationId = loanApplicationId;
     }
 }

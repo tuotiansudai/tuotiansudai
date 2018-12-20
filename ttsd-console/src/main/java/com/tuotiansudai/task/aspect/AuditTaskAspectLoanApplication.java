@@ -72,7 +72,7 @@ public class AuditTaskAspectLoanApplication {
                 task.setOperateURL("/loan-application/consume/" + loanApplicationModel.getId());
                 task.setDescription(senderRealName + " 提交了新的消费借款，请审核。");
 
-                redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.RISK_CONTROL_STAFF, String.valueOf(taskId), task);
+                redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR, String.valueOf(taskId), task);
             }
         } catch (Exception e) {
             logger.error("after apply loan application aspect fail ", e);
