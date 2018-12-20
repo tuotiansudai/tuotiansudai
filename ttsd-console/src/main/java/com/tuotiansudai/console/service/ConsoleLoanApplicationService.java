@@ -97,7 +97,7 @@ public class ConsoleLoanApplicationService {
     }
 
     @Transactional
-    public BaseDto<BaseDataDto> consumeSave(LoanApplicationConsumeDto loanApplicationConsumeDto){
+    public BaseDto<BaseDataDto> consumeSave(LoanApplicationConsumeDto loanApplicationConsumeDto, String loginName){
         LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationConsumeDto.getLoanApplicationModel().getId());
         if (loanApplicationModel == null){
             return new BaseDto<>(new BaseDataDto(false, "借款申请不存在"));
@@ -122,6 +122,8 @@ public class ConsoleLoanApplicationService {
             loanApplicationModel.setAddress(loanApplicationConsumeDto.getLoanApplicationModel().getAddress());
             loanApplicationModel.setLoanUsage(loanApplicationConsumeDto.getLoanApplicationModel().getLoanUsage());
             loanApplicationModel.setLoanId(loanId);
+            loanApplicationModel.setUpdatedBy(loginName);
+            loanApplicationModel.setUpdatedTime(new Date());
             loanApplicationMapper.update(loanApplicationModel);
             loanRiskManagementTitleRelationMapper.create(loanApplicationConsumeDto.getLoanRiskManagementTitleRelationModelList());
         }
@@ -130,6 +132,10 @@ public class ConsoleLoanApplicationService {
 
     public BaseDto<BaseDataDto> consumeReject(long loanApplicationId){
         loanApplicationMapper.updateStatus(loanApplicationId, LoanApplicationStatus.REJECT);
+        return new BaseDto<>(new BaseDataDto(true));
+    }
+
+    public BaseDto<BaseDataDto> applyAuditLoanApplication(long loanApplicationId, String submitLoginName){
         return new BaseDto<>(new BaseDataDto(true));
     }
 

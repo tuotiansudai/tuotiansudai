@@ -24,6 +24,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
 
         var arrayPledgeParam = ['pledgeHouse', 'pledgeVehicle', 'pledgeEnterprise'];
 
+        var loanOutTailAfterParam = ['financeState', 'repayPower', 'isOverdue', 'isAdministrativePenalty', 'amountUsage'];
+
         var loanIdElement = $('input[name="id"]');
         var loanNameElement = $('select[name="name"]'); //标的名称Element
         var loanTypeElement = $('select[name="loanType"]'); //标的类型Element
@@ -530,6 +532,15 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             var value = loanNameElement.val();
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
+
+            if ("消费借款" == value && !pledgeRadioCheckVehicle) {
+                requestData = generateRequestParams({
+                    'loan': loanParam,
+                    'loanDetails': loanDetailsParam,
+                    'loanerDetails': loanerDetailsParam,
+                    'loanOutTailAfterModel': loanOutTailAfterParam
+                });
+            }
             if ("房产抵押借款" == value || ('个人资金周转' == value && !pledgeRadioCheckVehicle)) {
                 requestData = generateRequestParams({
                     'loan': loanParam,

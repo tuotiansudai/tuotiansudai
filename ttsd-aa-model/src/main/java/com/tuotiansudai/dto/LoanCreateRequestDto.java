@@ -1,5 +1,7 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.LoanOutTailAfterModel;
+
 import java.util.List;
 
 public class LoanCreateRequestDto {

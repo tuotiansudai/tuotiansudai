@@ -20,7 +20,9 @@ public enum OperationType implements Serializable {
 
     PUSH("App推送", "新建App推送"),
 
-    BAND_CARD("绑卡管理", "终止换卡申请");
+    BAND_CARD("绑卡管理", "终止换卡申请"),
+
+    CONSUME_LOAN("消费借款", "消费借款");
 
     private String targetType;
 
