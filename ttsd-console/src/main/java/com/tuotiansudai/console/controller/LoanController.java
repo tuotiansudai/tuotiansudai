@@ -18,7 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static com.tuotiansudai.repository.model.LoanType.*;
+import static com.tuotiansudai.repository.model.LoanType.INVEST_INTEREST_LUMP_SUM_REPAY;
+import static com.tuotiansudai.repository.model.LoanType.INVEST_INTEREST_MONTHLY_REPAY;
 
 @Controller
 @RequestMapping(value = "/project-manage/loan")
@@ -131,5 +132,23 @@ public class LoanController {
     @ResponseBody
     public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
+    }
+
+    @RequestMapping(value = "/{loanId:^\\d+$}/tail-after", method = RequestMethod.GET)
+    public ModelAndView loanTailAfter(@PathVariable long loanId) {
+        ModelAndView modelAndView = new ModelAndView("/loan-out-tail-after");
+        modelAndView.addObject("data", consoleLoanCreateService.findLoanOutTailAfter(loanId));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/{loanId:^\\d+$}/tail-after", method = RequestMethod.POST)
+    public ModelAndView loanTailAfter(@PathVariable long loanId,
+                                      @RequestParam(value = "financeState", defaultValue = "良好") String financeState,
+                                      @RequestParam(value = "repayPower", defaultValue = "无变化") String repayPower,
+                                      @RequestParam(value = "isOverdue") boolean isOverdue,
+                                      @RequestParam(value = "isAdministrativePenalty") boolean isAdministrativePenalty,
+                                      @RequestParam(value = "amountUsage", defaultValue = "按照借款用途使用") String amountUsage) {
+        consoleLoanCreateService.updateLoanOutTailAfter(loanId, financeState, repayPower, isOverdue, isAdministrativePenalty, amountUsage);
+        return new ModelAndView("redirect:/project-manage/loan-list");
     }
 }

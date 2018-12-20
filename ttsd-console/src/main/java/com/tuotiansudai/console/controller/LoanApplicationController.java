@@ -78,12 +78,17 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/consume/save", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> consumeSave(@RequestBody LoanApplicationConsumeDto loanApplicationConsumeDto) {
-        return consoleLoanApplicationService.consumeSave(loanApplicationConsumeDto);
+        return consoleLoanApplicationService.consumeSave(loanApplicationConsumeDto, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/reject", method = RequestMethod.POST)
     public BaseDto<BaseDataDto> consumeReject(@PathVariable long applyId) {
         return consoleLoanApplicationService.consumeReject(applyId);
+    }
+
+    @RequestMapping(value = "/consume/{applyId:^\\d+$}/submit-audit", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> consumeSubmitAudit(@PathVariable long applyId) {
+        return consoleLoanApplicationService.applyAuditLoanApplication(applyId, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/approve", method = RequestMethod.POST)

@@ -36,6 +36,7 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                             <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER" <#if loan.loan.pledgeType == "PERSONAL_CAPITAL_TURNOVER">selected</#if>>个人资金周转</option>
+                            <#if loan.loan.pledgeType == "NONE"> <option value="消费借款" data-pledgeType="NONE" selected>消费借款</option></#if>
                         </select>
                     </div>
                 </div>
@@ -350,7 +351,7 @@
         </section>
 
         <section id="section-two">
-            <#if ['HOUSE', 'VEHICLE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
+            <#if ['HOUSE', 'VEHICLE','NONE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
@@ -416,6 +417,10 @@
             </div>
             <div class="upload-box"></div>
         </div>
+
+        <#if loan.loanOutTailAfterModel??>
+            <#include 'loan-out-tail-after.ftl'>
+        </#if>
 
         <h3><span>消息中心信息</span></h3>
         <hr class="top-line"/>

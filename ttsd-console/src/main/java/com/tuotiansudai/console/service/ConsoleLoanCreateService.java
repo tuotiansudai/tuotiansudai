@@ -79,6 +79,9 @@ public class ConsoleLoanCreateService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private LoanOutTailAfterMapper loanOutTailAfterMapper;
+
     protected final static String generateLoanName = "{0}{1}";
 
     public BaseDto<BaseDataDto> create(LoanCreateRequestDto loanCreateRequestDto) {
@@ -379,7 +382,7 @@ public class ConsoleLoanCreateService {
             return new BaseDto<>(new BaseDataDto(false, "原借款期限不能小于1天"));
         }
 
-        if (!loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
+        if (loanCreateRequestDto.getLoan().getPledgeType() != PledgeType.NONE && !loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
         }
 
@@ -490,4 +493,22 @@ public class ConsoleLoanCreateService {
         return loanNameSeq;
     }
 
+    public LoanOutTailAfterModel findLoanOutTailAfter(long loanId){
+        LoanModel loanModel = loanMapper.findById(loanId);
+        LoanOutTailAfterModel loanOutTailAfterModel = null;
+        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) && loanModel.getPledgeType() == PledgeType.NONE){
+            loanOutTailAfterModel = loanOutTailAfterMapper.findByLoanId(loanModel.getId());
+            if (loanOutTailAfterModel == null){
+                loanOutTailAfterModel = new LoanOutTailAfterModel(loanModel.getId(), "良好", "无变化", false, false, "按照借款用途使用");
+                loanOutTailAfterMapper.create(loanOutTailAfterModel);
+            }
+        }
+        return loanOutTailAfterModel;
+    }
+
+    public LoanOutTailAfterModel updateLoanOutTailAfter(long loanId, String financeState, String repayPower, boolean isOverdue, boolean isAdministrativePenalty, String amountUsage){
+        LoanOutTailAfterModel model = new LoanOutTailAfterModel(loanId, financeState, repayPower, isOverdue, isAdministrativePenalty, amountUsage);
+        loanOutTailAfterMapper.update(model);
+        return model;
+    }
 }

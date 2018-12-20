@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanOutTailAfterMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="loanOutTailAfterResultMap" type="LoanOutTailAfterModel">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="finance_state" property="financeState"/>
+        <result column="repay_power" property="repayPower"/>
+        <result column="is_overdue" property="isOverdue"/>
+        <result column="is_administrative_penalty" property="isAdministrativePenalty"/>
+        <result column="amount_usage" property="amountUsage"/>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanOutTailAfterModel">
+        insert into loan_out_tail_after(loan_id,finance_state, repay_power, is_overdue, is_administrative_penalty, amount_usage)
+        values(#{loanId},#{financeState}, #{repayPower}, #{isOverdue}, #{isAdministrativePenalty}, #{amountUsage})
+    </insert>
+
+    <update id="update" parameterType="com.tuotiansudai.repository.model.LoanOutTailAfterModel">
+        update loan_out_tail_after set
+        finance_state = #{financeState},
+        repay_power = #{repayPower},
+        is_overdue = #{isOverdue},
+        is_administrative_penalty = #{isAdministrativePenalty},
+        amount_usage = #{amountUsage}
+        where loan_id = #{loanId}
+    </update>
+
+    <select id="findByLoanId" parameterType="map" resultMap="loanOutTailAfterResultMap">
+        SELECT * from loan_out_tail_after where loan_id = #{loanId}
+    </select>
+
+</mapper>
