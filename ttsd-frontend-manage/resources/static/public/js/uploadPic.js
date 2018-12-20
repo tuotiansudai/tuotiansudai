@@ -11,7 +11,6 @@ class uploadPic {
     }
 
     uploadPic() {
-        debugger
         let AllImgExt = ".jpg|.jpeg|.gif|.bmp|.png|",
             file_input = this.input,
             type = file_input[0].files[0].type.split('/')[1],
@@ -23,7 +22,18 @@ class uploadPic {
             return;
         }
 
-        data.append(file_input.attr('name'), file_input[0].files[0]);
+        data.append('upfile', file_input[0].files[0]);
+        // $.ajax({
+        //
+        //     type: 'POST',
+        //     url:'/loan-application/upload',
+        //     data: data,
+        //     processData: false,
+        //     cache: false,
+        //     contentType: false,
+        // }).done(function () {
+        //
+        // })
 
         commonFun.useAjax({
             type:'POST',
