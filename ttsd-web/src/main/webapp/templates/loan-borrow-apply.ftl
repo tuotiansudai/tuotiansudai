@@ -70,12 +70,12 @@
             </div>
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
-                <span class="item_text pledgeInfo_text textarea_text"><#if (pledgeType?? && pledgeType.name() == 'HOUSE' )>房产<#else>车辆</#if>信息：</span>
+                <span class="item_text pledgeInfo_text textarea_text"><#if (pledgeType?? && pledgeType.name() == 'HOUSE' )>房产<#else>资产</#if>信息：</span>
                 <textarea type="text" placeholder="请输入（200字以内）" class="pledgeInfo item-textarea" maxlength="200"></textarea>
             </div>
             <div class="loan_application_item">
                 <span class="required-icon required-icon-none">*</span>
-                <span class="item_text elsePledge_text textarea_text">其他资产：</span>
+                <span class="item_text elsePledge_text textarea_text">其他：</span>
                 <textarea type="text" placeholder="请输入（200字以内）" class="elsePledge item-textarea" maxlength="200"></textarea>
             </div>
         </div>
