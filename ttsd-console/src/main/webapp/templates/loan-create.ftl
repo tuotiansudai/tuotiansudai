@@ -11,12 +11,13 @@
                 <input name="contractId" type="hidden" value="${contractId}"/><!-- 默认合同ID -->
                 <input name="status" type="hidden" value="WAITING_VERIFY"/>
                 <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="true"/>
+                <input id="loanApplication" type="hidden" value="${loanApplicationId!}"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称: </label>
 
                     <div class="col-sm-4">
-                        <select name="name" class="selectpicker" id="projectName">
+                        <select name="name" class="selectpicker" id="projectName" <#if pledgeType?? && pledgeType == "NONE">disabled="disabled"</#if>>
                             <option value="房产抵押借款" selected="selected" data-pledgeType="HOUSE">房产抵押借款</option>
                             <option value="车辆消费借款" data-pledgeType="VEHICLE">车辆消费借款</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT">税易经营性借款信用类</option>
@@ -24,17 +25,18 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING">企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL">企业经营性借款—票据</option>
                             <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER">个人资金周转</option>
+                            <#if pledgeType?? && pledgeType == "NONE"><option value="消费借款" data-pledgeType="NONE" selected>消费借款</option></#if>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">权证人: </label>
+                    <label class="col-sm-2 control-label">借款人: </label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="权证人不能为空">
+                               errormsg="借款不能为空">
                     </div>
                 </div>
 
@@ -61,19 +63,21 @@
                     </div>
                 </div>
 
-                <div class="form-group input-append">
-                    <label class="col-sm-2 control-label">借款截止时间: </label>
+                <#if !pledgeType?? || pledgeType != "NONE">
+                    <div class="form-group input-append">
+                        <label class="col-sm-2 control-label">借款截止时间: </label>
 
-                    <div class="col-sm-3">
-                        <div class='input-group date' id='deadline'>
-                            <input name="deadline" type='text' class="form-control" datatype="date"
-                                   errormsg="借款截止时间需要正确填写"/>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                        <div class="col-sm-3">
+                            <div class='input-group date' id='deadline'>
+                                <input name="deadline" type='text' class="form-control" datatype="date"
+                                       errormsg="借款截止时间需要正确填写"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </#if>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">映射旧版本期限（天）: </label>

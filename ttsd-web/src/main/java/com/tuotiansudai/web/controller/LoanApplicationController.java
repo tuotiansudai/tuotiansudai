@@ -5,8 +5,6 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
 import com.tuotiansudai.dto.LoanConsumeApplicationDto;
-import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
-import com.tuotiansudai.repository.model.AnxinSignPropertyModel;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.repository.model.UserModel;
