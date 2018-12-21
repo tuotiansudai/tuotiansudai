@@ -1,5 +1,7 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.LoanOutTailAfterModel;
+
 import java.util.List;
 
 public class LoanCreateRequestDto {
@@ -19,6 +21,8 @@ public class LoanCreateRequestDto {
     private List<LoanCreatePledgeEnterpriseRequestDto> pledgeEnterprise;
 
     private LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo;
+
+    private String loanApplicationId;
 
     public LoanCreateBaseRequestDto getLoan() {
         return loan;
@@ -82,5 +86,13 @@ public class LoanCreateRequestDto {
 
     public void setLoanerEnterpriseInfo(LoanCreateLoanerEnterpriseInfoDto loanerEnterpriseInfo) {
         this.loanerEnterpriseInfo = loanerEnterpriseInfo;
+    }
+
+    public String getLoanApplicationId() {
+        return loanApplicationId;
+    }
+
+    public void setLoanApplicationId(String loanApplicationId) {
+        this.loanApplicationId = loanApplicationId;
     }
 }

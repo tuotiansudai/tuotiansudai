@@ -53,6 +53,20 @@ public class LoanerDetailsModel implements Serializable {
         this.purpose = loanerDetails.getPurpose();
     }
 
+    public LoanerDetailsModel(LoanApplicationModel model) {
+        this.loginName = model.getLoginName();
+        this.userName = model.getUserName();
+        this.gender = model.getSex().equals("MALE") ? Gender.MALE : Gender.FEMALE;
+        this.age = model.getAge();
+        this.identityNumber = model.getIdentityNumber();
+        this.marriage = model.getMarriage();
+        this.region = model.getAddress();
+        this.source = Source.WEB.name();
+        this.income = String.valueOf(model.getHomeIncome() * 10000);
+        this.employmentStatus = model.getWorkPosition();
+        this.purpose = model.getLoanUsage();
+    }
+
     public long getId() {
         return id;
     }

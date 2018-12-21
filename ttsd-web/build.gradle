@@ -9,7 +9,9 @@ dependencies {
             fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
-            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1',
+            'commons-fileupload:commons-fileupload:1.2.2',
+            'commons-io:commons-io:2.0.1'
 
     testCompile project(path: ':ttsd-user-repository', configuration: 'tests')
 }

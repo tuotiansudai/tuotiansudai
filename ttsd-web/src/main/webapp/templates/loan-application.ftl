@@ -66,6 +66,13 @@
                     <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="car" data-type="VEHICLE">
                         我要借款</p>
                 </li>
+                <li class="car-loan-item">
+                    <h3>消费借款</h3>
+                    <i class="icon-consume"></i>
+
+                    <p class="loan-btn loan-tip" data-holder="请填写车辆信息（200字以内）" data-title="consume" data-type="NONE">
+                        我要借款</p>
+                </li>
             </ul>
         </div>
     </div>
@@ -145,6 +152,7 @@
     </div>
     <input type="hidden" value="" id="pledgeType">
     <input type="hidden" name="userName" id="userName" value="${userName!}" />
+    <input type="hidden" name="isAnxinProp" id="isAnxinProp" value="${isAnxinProp?c}" />
     <div class="is-user" id="isUser">
         <p class="tip-text">亲，实名认证后才能借款哦~</p>
         <p><a href="/register/account#loan">实名认证</a></p>

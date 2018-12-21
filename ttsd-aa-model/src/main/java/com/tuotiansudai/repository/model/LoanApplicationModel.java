@@ -24,8 +24,8 @@ public class LoanApplicationModel implements Serializable {
     private String identityNumber;
     private String address;
     private short age;
-    //0 : 未婚  1: 已婚婚  2: 离异
-    private int marriageState;
+
+    private Marriage marriage;
     //是否有信用报告
     private boolean haveCreditReport;
     //工作职位
@@ -43,7 +43,8 @@ public class LoanApplicationModel implements Serializable {
 
     private Long loanId;  //生成的标的
     private LoanApplicationStatus status; //审核状态
-    private boolean isDivorced;     //是否离异
+    private String togetherLoaner;
+    private String togetherLoanerIdentity;
 
     public LoanApplicationModel() {
     }
@@ -61,7 +62,7 @@ public class LoanApplicationModel implements Serializable {
         this.identityNumber = loanApplicationDto.getIdentityNumber();
         this.address = loanApplicationDto.getAddress();
         this.age = loanApplicationDto.getAge();
-        this.marriageState = loanApplicationDto.getIsMarried() ? 1 : 0;
+        this.marriage = loanApplicationDto.getIsMarried() ? Marriage.MARRIED : Marriage.DIVORCE;
         this.haveCreditReport = loanApplicationDto.getHaveCreditReport();
         this.workPosition = loanApplicationDto.getWorkPosition();
         this.sesameCredit = loanApplicationDto.getSesameCredit();
@@ -69,6 +70,9 @@ public class LoanApplicationModel implements Serializable {
         this.loanUsage = loanApplicationDto.getLoanUsage();
         this.elsePledge = loanApplicationDto.getElsePledge();
         this.sex = loanApplicationDto.getSex();
+        this.togetherLoaner = loanApplicationDto.getTogetherLoaner();
+        this.togetherLoanerIdentity = loanApplicationDto.getTogetherLoanerIdentity();
+        this.status = LoanApplicationStatus.WAITING;
     }
 
     public long getId() {
@@ -199,12 +203,12 @@ public class LoanApplicationModel implements Serializable {
         this.age = age;
     }
 
-    public int getMarriageState() {
-        return marriageState;
+    public Marriage getMarriage() {
+        return marriage;
     }
 
-    public void setMarriageState(int marriageState) {
-        this.marriageState = marriageState;
+    public void setMarriage(Marriage marriage) {
+        this.marriage = marriage;
     }
 
     public boolean getHaveCreditReport() {
@@ -279,11 +283,19 @@ public class LoanApplicationModel implements Serializable {
         this.status = status;
     }
 
-    public boolean isDivorced() {
-        return isDivorced;
+    public String getTogetherLoaner() {
+        return togetherLoaner;
     }
 
-    public void setDivorced(boolean divorced) {
-        isDivorced = divorced;
+    public void setTogetherLoaner(String togetherLoaner) {
+        this.togetherLoaner = togetherLoaner;
+    }
+
+    public String getTogetherLoanerIdentity() {
+        return togetherLoanerIdentity;
+    }
+
+    public void setTogetherLoanerIdentity(String togetherLoanerIdentity) {
+        this.togetherLoanerIdentity = togetherLoanerIdentity;
     }
 }

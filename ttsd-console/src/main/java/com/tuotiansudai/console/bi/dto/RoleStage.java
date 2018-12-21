@@ -5,7 +5,7 @@ public enum RoleStage {
     ALL("全部"),
     USER("注册用户"),
     INVESTOR("出借人"),
-    LOANER("权证人"),
+    LOANER("借款人"),
     SD_STAFF("速贷业务员"),
     ZC_STAFF("资产业务员"),
     NOT_STAFF_RECOMMEND("自然用户"), //用户上溯邀请人为非业务员角色，或该用户没有邀请人，则该用户为自然用户

@@ -1,0 +1,177 @@
+@charset "utf-8";
+@import "top_sub_menu";
+.main-frame {
+  width: 100%;
+  background: #fff;
+}
+.loan_apply_wrapper {
+  padding: 0 40px;
+  margin: 0 auto;
+  width: 1000px;
+  background: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  .loan_title {
+    margin: 30px auto 20px auto;
+    font-size: 20px;
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+  }
+  .info_title {
+    margin: 10px auto 10px auto;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+  }
+  .info_wrapper {
+    margin-bottom: 20px;
+    font-size: 13px;
+    .item {
+      display: inline-block;
+      width: 33%;
+    }
+    .item_text {
+      margin-right: 20px;
+      &.textarea_text {
+        margin-right: 33px;
+        vertical-align: middle;
+      }
+      &.workPosition-text {
+        margin-right: 59px;
+      }
+      &.amount_text, &.period_text {
+        margin-right: 33px;
+      }
+    }
+    .supplement_info_item, .loan_application_item, .evidence_item {
+      margin-top: 10px;
+      .required-icon {
+        display: inline-block;
+        height: 20px;
+        font-size: 20px;
+        color: red;
+        overflow: hidden;
+        &.required-icon-none {
+          visibility: hidden;
+        }
+      }
+      .workPosition {
+        margin-right: 10px;
+      }
+      .item-input {
+        width: 300px;
+        outline: none;
+      }
+      .item-textarea {
+        padding: 5px;
+        width: 400px;
+        height: 60px;
+        border: 1px solid #ccc;
+        vertical-align: middle;
+      }
+    }
+    .check_radio, .check_label {
+      vertical-align: middle;
+    }
+    .check_label {
+      margin-right: 30px;
+    }
+  }
+  .confirm_btn {
+    margin: 30px auto 50px auto;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #ff7200;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    &.disabled {
+      background: #ccc;
+    }
+  }
+  select {
+    border: solid 1px #ccc;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding-left: 13px;
+    width: 40px;
+    height: 25px;
+  }
+  select::-ms-expand { display: none;}
+  input[type='file'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 9;
+  }
+  .evidence_item {
+    .item_text {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .imgWrapper {
+      padding-left: 73px;
+      position: relative;
+      overflow: hidden;
+      .fancybox {
+        width: 200px;
+        float: left;
+        margin: auto 10px 10px auto;
+        display: block;
+      }
+      .img {
+        display: block;
+        margin: 0 auto;
+        width: 198px;
+        height: 118px;
+        border: 1px solid #fafafa;
+      }
+      .img-item {
+        float: left;
+        position: relative;
+        display: table;
+        margin-right: 14px;
+        width: 200px;
+        height: 120px;
+        border: 1px dashed #ccc;
+        box-sizing: border-box;
+        .file-input {
+          cursor: pointer;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+        .upload-desc {
+          display: table-cell;
+          vertical-align: middle;
+          text-align: center;
+          .icon-upload {
+            margin: 0 auto;
+            width: 32px;
+            height: 32px;
+            background: url('../../images/wantloan/add-pic.png') no-repeat center;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+  .apply-data {
+    padding-left: 20px;
+    h5 {
+      font-size: 14px;
+      color: #808080;
+      padding: 20px 0;
+    }
+  }
+}
+
+
+

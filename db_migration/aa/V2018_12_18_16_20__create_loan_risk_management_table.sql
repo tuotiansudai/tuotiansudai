@@ -26,7 +26,8 @@ CREATE TABLE `aa`.`loan_risk_management_title_relation` (
   `detail`              TEXT            NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_LOAN_RISK_LOAN_ID_REF_LOAN_ID` FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`),
-  CONSTRAINT `FK_LOAN_RISK_LOAN_APPLICATION_ID_REF_LOAN_ID` FOREIGN KEY (`title_id`) REFERENCES `aa`.`loan_application` (`id`)
+  CONSTRAINT `FK_LOAN_RISK_LOAN_APPLICATION_ID_REF_LOAN_ID` FOREIGN KEY (`loan_application_id`) REFERENCES `aa`.`loan_application` (`id`),
+  CONSTRAINT `FK_LOAN_RISK_TITLE_ID_REF_LOAN_ID` FOREIGN KEY (`title_id`) REFERENCES `aa`.`loan_risk_management_title` (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
