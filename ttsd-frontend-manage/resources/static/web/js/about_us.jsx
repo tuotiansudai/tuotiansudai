@@ -569,10 +569,10 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // 出借人信息
         $('.investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
         // $('#maxSingleInvestAmountRate').text(formatNumber(data.maxSingleInvestAmountRate*100,2));//最大单户出借余额占比
-        $('#maxSingleInvestAmountRate').text('2.48');//最大单户出借余额占比
+        $('#maxSingleInvestAmountRate').text('0.91');//最大单户出借余额占比
         $('#avgInvestAmount').text(formatNum(data.avgInvestAmount));//人均累计出借金额
         // $('#maxTenInvestAmountRate').text(formatNumber(data.maxTenInvestAmountRate*100,2));//最大十户出借余额占比
-        $('#maxTenInvestAmountRate').text('10.92');//最大十户出借余额占比
+        $('#maxTenInvestAmountRate').text('6.34');//最大十户出借余额占比
         // $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
         $('#sumNotCompleteInvestorCount').text(toThousands('1771'));//当前出借人数
 
