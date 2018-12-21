@@ -26,7 +26,7 @@
                 {"name":"","class":"sub-title-1","text":"直投项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    <#--{"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},-->
                 {"name":"","class":"sub-title-1","text":"转让项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},

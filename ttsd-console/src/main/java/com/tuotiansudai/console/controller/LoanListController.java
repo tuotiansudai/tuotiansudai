@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
@@ -96,7 +97,7 @@ public class LoanListController {
         modelAndView.addObject("loanName", loanName);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("loanStatusList", LoanStatus.values());
+        modelAndView.addObject("loanStatusList", Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.RAISING, LoanStatus.RECHECK, LoanStatus.REPAYING, LoanStatus.COMPLETE, LoanStatus.CANCEL));
         return modelAndView;
     }
 
