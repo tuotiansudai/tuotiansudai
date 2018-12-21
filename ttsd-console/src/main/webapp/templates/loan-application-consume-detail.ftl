@@ -44,7 +44,7 @@
                     <label class="col-sm-2 control-label">借款人所在地区: </label>
 
                     <div class="col-sm-3">
-                        <#--<input name="region" value="${loan.loanerDetails.region}" type="text" class="form-control" datatype="*" errormsg="借款人所在地区不能为空">-->
+                        <input name="address" value="" type="text" class="form-control" datatype="*" errormsg="借款人所在地区不能为空">
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@
                     <label class="col-sm-2 control-label">借款用途: </label>
 
                     <div class="col-sm-3">
-                        <#--<input name="purpose" value="${(loan.loanerDetails.purpose)!}" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">-->
+                        <input name="loanUsage" value="" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">
                     </div>
                 </div>
 
@@ -240,11 +240,11 @@
             <div class="wind_control" id="wind_control">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                            <input name="radio_1" type="radio"
-                                   value="radio_1"> 手机认证
+                            <input name="radio_1" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
+                                   data-id="data[i].id"> 手机认证
                     </label>
 
-                    <input type="file" style="display: none" id="window_1" data-value="">
+                    <input type="file" style="display: none" id="window_1" >
                     <ul class="img_list">
                         <li class="img_item item_small">
                             <i class="item_small_i">❎</i>
@@ -256,20 +256,20 @@
                         </li>
                     </ul>
                     <div class="col-sm-1 btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_1').click()">上传</button>
+                        <button class="btn btn-primary" onclick="$('#window_1').click()" type="button">上传</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="radio_2" type="radio"
-                               value="radio_2"> 收入认证
+                        <input name="radio_2" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
+                               > 收入认证
                     </label>
-                    <input type="file" style="display: none" id="window_2" data-value="">
+                    <input type="file" style="display: none" id="window_2" >
                     <ul class="img_list">
 
                     </ul>
                     <div class="col-sm-1 btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_2').click()">上传</button>
+                        <button class="btn btn-primary" onclick="$('#window_2').click()" type="button">上传</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -401,10 +401,10 @@
 
         <div class="form-group">
             <div class="col-sm-12">
-                <button type="button" class="btn form-submit-btn btn-primary" data-url="/">
+                <button type="button" class="btn  btn-primary" data-url="/" id="form-refuse-btn">
                     驳回
                 </button>
-                <button type="button" class="btn form-submit-btn btn-primary" data-url="/">
+                <button type="button" class="btn  btn-primary" data-url="/" id="form-save-btn">
                     保存
                 </button>
             </div>
