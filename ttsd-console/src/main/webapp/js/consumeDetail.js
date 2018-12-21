@@ -148,10 +148,9 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             }
         });
         $('body').on('click','#upload_btn',function(){
-            console.log(111111222)
             $('#upload_input').click();
         })
-        $('input[type="file"]').change(function(e){
+        $('body').on('change','input[type="file"]',function(e){
             console.log(e)
             var file = e.target.files[0]
             var id = e.target.id
@@ -194,17 +193,19 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         $('#add_wind_control').click(function(){
             $('#add_input').hide();
             var value=$('#add_input').find('input').val();
+            var length=$('#wind_control').children().length
+            console.log(length)
             console.log(value)
             $('#wind_control').append(`<div class="form-group"><label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
-                               value="CONSERVATIVE"> ${value}
+                        <input name="radio_${length+1}" type="radio"
+                               value="radio_${length+1}"> ${value}
                     </label>
-
+                    <input type="file" style="display: none" id="window_${length+1}" data-value="">
                     <ul class="img_list">
 
                     </ul>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary" onclick="$('#phone').click()" id="btn_phone">dianji</button>
+                    <div class="col-sm-1 btn_container">
+                        <button class="btn btn-primary" onclick="$('#window_${length+1}').click()">上传</button>
                     </div></div>`)
         })
 

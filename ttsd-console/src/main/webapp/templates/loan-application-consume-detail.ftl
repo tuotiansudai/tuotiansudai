@@ -240,7 +240,7 @@
             <div class="wind_control" id="wind_control">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                            <input name="estimate" type="radio"
+                            <input name="radio_1" type="radio"
                                    value="radio_1"> 手机认证
                     </label>
 
@@ -261,7 +261,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_2" type="radio"
                                value="radio_2"> 收入认证
                     </label>
                     <input type="file" style="display: none" id="window_2" data-value="">
@@ -274,7 +274,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_3" type="radio"
                                value="radio_3"> 信用报告
                     </label>
 
@@ -288,7 +288,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_4" type="radio"
                                value="radio_4"> 资产认证
                     </label>
 
@@ -302,7 +302,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_5" type="radio"
                                value="radio_5"> 身份信息认证
                     </label>
 
@@ -316,7 +316,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_6" type="radio"
                                value="radio_6"> 婚姻状况认证
                     </label>
 
@@ -330,7 +330,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_7" type="radio"
                                value="radio_7"> 住址信息认证
                     </label>
 
@@ -344,7 +344,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_8" type="radio"
                                value="radio_8"> 工作信息认证
                     </label>
 
@@ -358,7 +358,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="estimate" type="radio"
+                        <input name="radio_9" type="radio"
                                value="radio_9"> 共同借款人
                     </label>
 
@@ -386,13 +386,25 @@
                     <button class="btn btn-primary" style="margin-top:0px" id="add_wind_control">保存</button>
                 </label>
             </div>
-            <button class="btn btn-primary" id="add_wind_input" style="margin-top:30px">添加</button>
+            <button class="btn btn-warning" id="add_wind_input" style="margin-top:30px">添加</button>
+        </section>
+
+        <section id="section-six">
+            <h3><span>标的信息</span></h3>
+            <hr class="top-line">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    <button class="btn btn-warning" >添加标的相关信息</button>
+                </label>
+            </div>
         </section>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">操作: </label>
-            <div class="col-sm-4">
-                <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/create">
+            <div class="col-sm-12">
+                <button type="button" class="btn form-submit-btn btn-primary" data-url="/">
+                    驳回
+                </button>
+                <button type="button" class="btn form-submit-btn btn-primary" data-url="/">
                     保存
                 </button>
             </div>
