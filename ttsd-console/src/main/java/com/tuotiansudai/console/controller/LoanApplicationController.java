@@ -42,9 +42,9 @@ public class LoanApplicationController {
         return consoleLoanApplicationService.comment(loanApplicationModel);
     }
 
-    @RequestMapping(value = "/consume-list", method = RequestMethod.GET)
+    @RequestMapping(value = "/consume-detail", method = RequestMethod.GET)
     public ModelAndView consumeList() {
-        ModelAndView modelAndView = new ModelAndView("/loan-application-consume-list");
+        ModelAndView modelAndView = new ModelAndView("/loan-application-consume-detail");
         return modelAndView;
     }
 }

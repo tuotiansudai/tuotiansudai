@@ -250,6 +250,7 @@
     <link href="${applicationContext}/style/index.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/jquery.pageflip.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
+    <link href="${applicationContext}/js/libs/layer/skin/layer.css" rel="stylesheet"/><!--layer-->
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
     </#if>
