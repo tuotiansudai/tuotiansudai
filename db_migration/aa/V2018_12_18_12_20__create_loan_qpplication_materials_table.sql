@@ -4,11 +4,11 @@ CREATE TABLE `loan_application_materials` (
   `loan_application_id`   BIGINT(20) UNSIGNED NOT NULL,
   `identity_prove_urls`   TEXT                NOT NULL,
   `income_prove_urls`     TEXT                NOT NULL,
-  `credit_report_urls`    TEXT                NOT NULL,
+  `credit_prove_urls`    TEXT                NOT NULL,
   `marriage_prove_urls`   TEXT,
   `property_prove_urls`   TEXT                NOT NULL,
   `together_prove_urls`   TEXT,
-  `tdrivers_license_urls` TEXT,
+  `drivers_license_urls` TEXT,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_MATERIALS_LOAN_APPLICATION_ID_REF_LOAN_APPLICATION_ID` FOREIGN KEY (`loan_application_id`) REFERENCES `aa`.`loan_application` (`id`)
 
