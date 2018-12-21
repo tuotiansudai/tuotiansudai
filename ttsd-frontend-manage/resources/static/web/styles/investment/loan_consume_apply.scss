@@ -94,9 +94,6 @@
   }
   select {
     border: solid 1px #ccc;
-    appearance:none;
-    -moz-appearance:none;
-    -webkit-appearance:none;
     padding-left: 13px;
     width: 40px;
     height: 25px;
@@ -117,32 +114,52 @@
       margin-bottom: 20px;
     }
     .imgWrapper {
-      padding-left: 73px;
       position: relative;
+      padding-left: 73px;
+      box-sizing: border-box;
       overflow: hidden;
+      &.identity {
+        height: 120px;
+      }
       .fancybox {
+        position: relative;
+        display: block;
         width: 200px;
         float: left;
-        margin: auto 10px 10px auto;
-        display: block;
-      }
-      .img {
-        display: block;
-        margin: 0 auto;
-        width: 198px;
-        height: 118px;
-        border: 1px solid #fafafa;
+        margin: auto 14px 14px auto;
+        box-sizing: border-box;
+        &:nth-child(4n + 4) {
+          margin-right: 0;
+        }
+        .img {
+          display: block;
+          margin: 0 auto;
+          width: 200px;
+          height: 120px;
+          box-sizing: border-box;
+        }
+        .remove-img-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 999;
+          width: 18px;
+          height: 18px;
+          background: url('../../images/wantloan/remove-btn.png') no-repeat center;
+          background-size: contain;
+        }
       }
       .img-item {
         float: left;
         position: relative;
         display: table;
-        margin-right: 14px;
+        margin: auto 14px 14px auto;
         width: 200px;
         height: 120px;
         border: 1px dashed #ccc;
         box-sizing: border-box;
         .file-input {
+          box-sizing: border-box;
           cursor: pointer;
         }
         &:last-child {
