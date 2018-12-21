@@ -24,9 +24,9 @@
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
                 <span class="item_text">婚姻状况：</span>
-                <input type="radio" name="marriageState" class="check_radio" id="married" value="MARRIED" style="margin-left: 13px"/><label for="married" class="check_label">已婚</label>
-                <input type="radio" name="marriageState" class="check_radio" id="noMarried" value="UNMARRIED"/><label for="noMarried" class="check_label">未婚</label>
-                <input type="radio" name="marriageState" class="check_radio" id="divorced" value="DIVORCE"/><label for="divorced" class="check_label">离异</label>
+                <input type="radio" name="marriage" class="check_radio" id="married" value="MARRIED" style="margin-left: 13px"/><label for="married" class="check_label">已婚</label>
+                <input type="radio" name="marriage" class="check_radio" id="noMarried" value="UNMARRIED"/><label for="noMarried" class="check_label">未婚</label>
+                <input type="radio" name="marriage" class="check_radio" id="divorced" value="DIVORCE"/><label for="divorced" class="check_label">离异</label>
             </div>
             <div class="supplement_info_item">
                 <span class="required-icon required-icon-none">*</span>
@@ -102,55 +102,148 @@
     <div class="evidence">
         <h3 class="info_title">证明材料</h3>
         <div class="info_wrapper">
-            <div class="evidence_item">
+            <div class="evidence_item" id="identityProveUrls">
                 <span class="required-icon">*</span>
                 <span class="item_text">身份证明：要求拍摄的身份证件照片四角完整，亮度均匀，文字清晰</span>
                 <div class="imgWrapper">
-                    <#--<div class="img-item positive">-->
-                        <#--<div class="upload-desc">-->
-                            <#--<div class="icon-upload"></div>-->
-                            <#--点击上传人像面-->
-                        <#--</div>-->
-                        <#--<input type="file" class="file-input" data-type="positive">-->
-                    <#--</div>-->
-                        <a class="fancybox" href="http://thyrsi.com/t6/637/1545215955x2890202953.png" rel="example_group">
-                            <img class="img" src="http://thyrsi.com/t6/637/1545215955x2890202953.png"/>
-                        </a>
+                    <div class="img-item positive">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传人像面
+                        </div>
+                        <input type="file" class="file-input" data-type="positive" accept="image/*" />
+                    </div>
                     <div class="img-item negative">
                         <div class="upload-desc">
                             <div class="icon-upload"></div>
                             点击上传国徽面
                         </div>
-                        <input type="file" class="file-input" data-type="negative">
+                        <input type="file" class="file-input" data-type="negative" accept="image/*" />
                     </div>
                     <div class="img-item positive_hand">
                         <div class="upload-desc">
                             <div class="icon-upload"></div>
                             点击上传手持身份证人像面
                         </div>
-                        <input type="file" class="file-input" data-type="positive_hand">
+                        <input type="file" class="file-input" data-type="positive_hand" accept="image/*" />
                     </div>
                     <div class="img-item negative_hand">
                         <div class="upload-desc">
                             <div class="icon-upload"></div>
                             点击上传手持身份证国徽面
                         </div>
-                        <input type="file" class="file-input" data-type="negative_hand">
+                        <input type="file" class="file-input" data-type="negative_hand" accept="image/*" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="info_wrapper">
-            <div class="evidence_item">
+            <div class="evidence_item" id="incomeProveUrls">
                 <span class="required-icon">*</span>
                 <span class="item_text">收入证明：要求上传收入证明或者银行流水等能证明收入的材料</span>
                 <div class="imgWrapper">
-                    <a class="fancybox" href="http://thyrsi.com/t6/637/1545215955x2890202953.png" rel="example_group">
-                        <img class="img" src="http://thyrsi.com/t6/637/1545215955x2890202953.png"/>
-                    </a>
+                    <div class="img-item">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传
+                        </div>
+                        <input type="file" class="file-input" accept="image/*" />
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="info_wrapper">
+            <div class="evidence_item" id="creditProveUrls">
+                <span class="required-icon">*</span>
+                <span class="item_text">信用报告：要求上传人民银行征信报告材料</span>
+                <div class="imgWrapper">
+                    <div class="img-item">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传
+                        </div>
+                        <input type="file" class="file-input" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_wrapper">
+            <div class="evidence_item" id="marriageProveUrls">
+                <span class="required-icon">*</span>
+                <span class="item_text">婚姻状况证明：要求上传能证明与配偶关系的证明材料</span>
+                <div class="imgWrapper">
+                    <div class="img-item isMarried">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传
+                        </div>
+                        <input type="file" class="file-input" data-type="isMarried" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_wrapper">
+            <div class="evidence_item" id="propertyProveUrls">
+                <span class="required-icon">*</span>
+                <span class="item_text">资产证明：要求上传个人或配偶名下房产或车辆证明，若在配偶名下需提供关系证明</span>
+                <div class="imgWrapper">
+                    <div class="img-item">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传
+                        </div>
+                        <input type="file" class="file-input" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_wrapper">
+            <div class="evidence_item" id="togetherProveUrls">
+                <span class="required-icon">*</span>
+                <span class="item_text" style="margin-right: 0">共同借款人：</span>
+                <input type="radio" name="togetherLoaner" class="check_radio" id="noLoaner" value="noLoaner" style="margin-left: 13px"/><label for="noLoaner" class="check_label">无共同借款人</label>
+                <input type="radio" name="togetherLoaner" class="check_radio" id="loaner" value="loaner"/><label for="loaner" class="check_label">有共同借款人</label>
+                <div id="togetherLoaner">
+                    <div>若有共同借款人，则要求填写共同借款人的姓名、身份证号并上传共同借款人的身份证照片</div>
+                    <div style="margin: 20px auto"><span style="margin-right: 33px">姓名：</span><input type="text" placeholder="请输入共同借款人姓名" class="togetherLoaner item-input" maxlength="50"/></div>
+                    <div style="margin-bottom: 20px"><span style="margin-right: 7px">身份证号：</span><input type="text" placeholder="请输入共同借款人身份证号" class="togetherLoanerIdentity item-input" maxlength="18"/></div>
+                    <div class="imgWrapper">
+                        <div class="img-item positive">
+                            <div class="upload-desc">
+                                <div class="icon-upload"></div>
+                                点击上传人像面
+                            </div>
+                            <input type="file" class="file-input" data-type="positive" accept="image/*" />
+                        </div>
+                        <div class="img-item negative">
+                            <div class="upload-desc">
+                                <div class="icon-upload"></div>
+                                点击上传国徽面
+                            </div>
+                            <input type="file" class="file-input" data-type="negative" accept="image/*" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_wrapper">
+            <div class="evidence_item" id="driversLicense">
+                <span class="required-icon required-icon-none">*</span>
+                <span class="item_text">机动车驾驶证：要求上传本人机动车驾驶证</span>
+                <div class="imgWrapper">
+                    <div class="img-item">
+                        <div class="upload-desc">
+                            <div class="icon-upload"></div>
+                            点击上传
+                        </div>
+                        <input type="file" class="file-input" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div style="text-align: center;margin-top: 35px">
+        <input type="checkbox" class="agreeContract" />我已阅读并同意<a href="#">《拓天速贷借款信息咨询与服务协议》</a>
+    </div>
     <div class="confirm_btn disabled">确认申请</div>
 </div>
 </@global.main>
