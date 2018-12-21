@@ -2,10 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLoanApplicationService;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanApplicationConsumeDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
@@ -18,9 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import static com.tuotiansudai.repository.model.LoanType.INVEST_INTEREST_LUMP_SUM_REPAY;
-import static com.tuotiansudai.repository.model.LoanType.INVEST_INTEREST_MONTHLY_REPAY;
 
 @Controller
 @RequestMapping(value = "/loan-application")
@@ -78,9 +72,9 @@ public class LoanApplicationController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/consume/save", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> consumeSave(@RequestBody LoanApplicationConsumeDto loanApplicationConsumeDto) {
-        return consoleLoanApplicationService.consumeSave(loanApplicationConsumeDto, LoginUserInfo.getLoginName());
+    @RequestMapping(value = "/consume/{applyId:^\\d+$}/save", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> consumeSave(@PathVariable long applyId, @RequestBody LoanApplicationUpdateDto loanApplicationUpdateDto) {
+        return consoleLoanApplicationService.consumeSave(applyId, loanApplicationUpdateDto, LoginUserInfo.getLoginName());
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/create-loan", method = RequestMethod.GET)

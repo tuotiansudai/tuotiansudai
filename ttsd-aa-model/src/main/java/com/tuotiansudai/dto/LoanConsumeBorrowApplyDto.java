@@ -3,7 +3,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Marriage;
 
-public class LoanConsumeApplicationDto extends LoanApplicationDto{
+public class LoanConsumeBorrowApplyDto extends LoanApplicationDto{
 
     private Marriage Marriage;
     private String identityProveUrls;
@@ -11,7 +11,6 @@ public class LoanConsumeApplicationDto extends LoanApplicationDto{
     private String creditProveUrls;
     private String marriageProveUrls;
     private String propertyProveUrls;
-    private String togetherLoaner;
     private String togetherProveUrls;
     private String driversLicense;
 
@@ -61,14 +60,6 @@ public class LoanConsumeApplicationDto extends LoanApplicationDto{
 
     public void setPropertyProveUrls(String propertyProveUrls) {
         this.propertyProveUrls = propertyProveUrls;
-    }
-
-    public String getTogetherLoaner() {
-        return togetherLoaner;
-    }
-
-    public void setTogetherLoaner(String togetherLoaner) {
-        this.togetherLoaner = togetherLoaner;
     }
 
     public String getTogetherProveUrls() {

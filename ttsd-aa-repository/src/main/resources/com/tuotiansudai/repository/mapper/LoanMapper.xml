@@ -419,6 +419,10 @@
         update loan set status = #{status} where id = #{loanId}
     </update>
 
+    <update id="updateDeadline" parameterType="map">
+        update loan set deadline = #{deadline} where id = #{loanId} and pledge_type = 'NONE'
+    </update>
+
     <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
         select * from loan t
         <where>

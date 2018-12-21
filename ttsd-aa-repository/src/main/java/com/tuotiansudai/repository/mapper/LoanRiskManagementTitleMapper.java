@@ -13,4 +13,5 @@ public interface LoanRiskManagementTitleMapper {
 
     List<LoanRiskManagementTitleModel> findAll();
 
+
 }

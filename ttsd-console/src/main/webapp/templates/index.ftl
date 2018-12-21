@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="title-type">
-        <h4 class="give-charge">充值金额 (元) (权证人)</h4>
+        <h4 class="give-charge">充值金额 (元) (借款人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width blue-bg">
@@ -103,7 +103,7 @@
         </ul>
     </div>
     <div class="title-type">
-        <h4 class="give-charge">充值金额 (元) (非权证人)</h4>
+        <h4 class="give-charge">充值金额 (元) (非借款人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width blue-bg">
@@ -122,7 +122,7 @@
         </ul>
     </div>
     <div class="title-type">
-        <h4 class="get-money">提现金额 (元) (权证人)</h4>
+        <h4 class="get-money">提现金额 (元) (借款人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width green-bg">
@@ -141,7 +141,7 @@
         </ul>
     </div>
     <div class="title-type">
-        <h4 class="get-money">提现金额 (元) (非权证人)</h4>
+        <h4 class="get-money">提现金额 (元) (非借款人)</h4>
     </div>
     <div class="table-data">
         <ul class="data-list list-width green-bg">

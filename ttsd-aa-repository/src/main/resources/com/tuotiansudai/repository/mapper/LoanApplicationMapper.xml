@@ -34,6 +34,8 @@
         <result column="sex" property="sex"/>
         <result column="loan_id" property="loanId"/>
         <result column="status" property="status"/>
+        <result column="together_loaner" property="togetherLoaner"/>
+        <result column="together_loaner_identity" property="togetherLoanerIdentity"/>
     </resultMap>
 
     <resultMap id="LoanApplicationMaterialsResultMap" type="LoanApplicationMaterialsModel">
@@ -44,7 +46,7 @@
         <result column="credit_prove_urls" property="creditProveUrls"/>
         <result column="marriage_prove_urls" property="marriageProveUrls"/>
         <result column="property_prove_urls" property="propertyProveUrls"/>
-        <result column="together_loaner" property="togetherLoaner"/>
+
         <result column="together_prove_urls" property="togetherProveUrls"/>
         <result column="drivers_license" property="driversLicense"/>
     </resultMap>
@@ -53,12 +55,12 @@
         INSERT INTO `aa`.`loan_application`
         (id, login_name, mobile, user_name, region, amount, period, pledge_type, pledge_info, comment, created_time,
         updated_by, updated_time,identity_number,address,age,marriage,have_credit_report,work_position,sesame_credit,
-        home_income,loan_usage,else_pledge,sex,status)
+        home_income,loan_usage,else_pledge,sex,status,together_loaner, together_loaner_identity)
         VALUES
         (#{id}, #{loginName}, #{mobile}, #{userName}, #{region}, #{amount}, #{period}, #{pledgeType}, #{pledgeInfo},
         #{comment}, #{createdTime}, #{updatedBy}, #{updatedTime},#{identityNumber},#{address},#{age},#{marriage},
         #{haveCreditReport},#{workPosition},#{sesameCredit},#{homeIncome},#{loanUsage},#{elsePledge},#{sex},
-        #{status})
+        #{status},#{togetherLoaner},#{togetherLoanerIdentity})
     </insert>
 
     <update id="update" parameterType="LoanApplicationModel">
@@ -142,12 +144,11 @@
     </update>
 
     <select id="findById" resultMap="LoanApplicationResultMap">
-        SELECT
-          *
-        FROM
-          `aa`.`loan_application`
-        WHERE
-          id = #{id}
+        SELECT * FROM `aa`.`loan_application` WHERE id = #{id}
+    </select>
+
+    <select id="findByLoanId" resultMap="LoanApplicationResultMap">
+        SELECT * FROM `aa`.`loan_application` WHERE loan_id = #{loanId}
     </select>
 
     <select id="findPagination" resultMap="LoanApplicationResultMap">
@@ -197,10 +198,10 @@
     <insert id="createMaterials" parameterType="LoanApplicationMaterialsModel" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `aa`.`loan_application_materials`
         (loan_application_id, identity_prove_urls, income_prove_urls, credit_prove_urls, marriage_prove_urls,
-        property_prove_urls, together_loaner, together_prove_urls, drivers_license)
+        property_prove_urls, together_prove_urls, drivers_license)
         VALUES
         (#{loanApplicationId}, #{identityProveUrls}, #{incomeProveUrls}, #{creditProveUrls}, #{marriageProveUrls},
-         #{propertyProveUrls}, #{togetherLoaner}, #{togetherProveUrls},#{driversLicense})
+         #{propertyProveUrls},#{togetherProveUrls},#{driversLicense})
     </insert>
 
     <select id="findMaterialsByLoanApplicationId" parameterType="map" resultMap="LoanApplicationMaterialsResultMap">

@@ -43,7 +43,8 @@ public class LoanApplicationModel implements Serializable {
 
     private Long loanId;  //生成的标的
     private LoanApplicationStatus status; //审核状态
-    private boolean isDivorced;     //是否离异
+    private String togetherLoaner;
+    private String togetherLoanerIdentity;
 
     public LoanApplicationModel() {
     }
@@ -69,7 +70,9 @@ public class LoanApplicationModel implements Serializable {
         this.loanUsage = loanApplicationDto.getLoanUsage();
         this.elsePledge = loanApplicationDto.getElsePledge();
         this.sex = loanApplicationDto.getSex();
-        this.status = LoanApplicationStatus.DRAFT;
+        this.togetherLoaner = loanApplicationDto.getTogetherLoaner();
+        this.togetherLoanerIdentity = loanApplicationDto.getTogetherLoanerIdentity();
+        this.status = LoanApplicationStatus.WAITING;
     }
 
     public long getId() {
@@ -280,11 +283,19 @@ public class LoanApplicationModel implements Serializable {
         this.status = status;
     }
 
-    public boolean isDivorced() {
-        return isDivorced;
+    public String getTogetherLoaner() {
+        return togetherLoaner;
     }
 
-    public void setDivorced(boolean divorced) {
-        isDivorced = divorced;
+    public void setTogetherLoaner(String togetherLoaner) {
+        this.togetherLoaner = togetherLoaner;
+    }
+
+    public String getTogetherLoanerIdentity() {
+        return togetherLoanerIdentity;
+    }
+
+    public void setTogetherLoanerIdentity(String togetherLoanerIdentity) {
+        this.togetherLoanerIdentity = togetherLoanerIdentity;
     }
 }

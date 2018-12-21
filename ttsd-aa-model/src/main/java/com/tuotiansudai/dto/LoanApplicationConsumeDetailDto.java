@@ -5,7 +5,7 @@ import com.tuotiansudai.repository.model.*;
 
 import java.util.List;
 
-public class LoanApplicationConsumeDto {
+public class LoanApplicationConsumeDetailDto {
 
     private LoanApplicationModel loanApplicationModel;
 

@@ -4,7 +4,7 @@ import com.tuotiansudai.client.OssWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.dto.LoanConsumeApplicationDto;
+import com.tuotiansudai.dto.LoanConsumeBorrowApplyDto;
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
 import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.repository.model.UserModel;
@@ -82,9 +82,9 @@ public class LoanApplicationController {
 
     @RequestMapping(value = "/create-consume", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> createConsume(@RequestBody LoanConsumeApplicationDto loanConsumeApplicationDto) {
-        loanConsumeApplicationDto.setLoginName(LoginUserInfo.getLoginName());
-        return loanApplicationService.createConsume(loanConsumeApplicationDto);
+    public BaseDto<BaseDataDto> createConsume(@RequestBody LoanConsumeBorrowApplyDto loanConsumeBorrowApplyDto) {
+        loanConsumeBorrowApplyDto.setLoginName(LoginUserInfo.getLoginName());
+        return loanApplicationService.createConsume(loanConsumeBorrowApplyDto);
     }
 
     @RequestMapping(value = "/success", method = RequestMethod.GET)

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,9 +47,15 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
         logger.info(MessageFormat.format("[Generate_Repay:] loanId:{0} starting...", String.valueOf(loanId)));
 
         LoanModel loanModel = loanMapper.findById(loanId);
+
         if (loanModel == null) {
             logger.error(MessageFormat.format("[Generate_Repay:] loanId:{0} 回款计划生成失败，标的不存在", String.valueOf(loanId)));
             throw new PayException("回款计划生成失败，标的不存在");
+        }
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && loanModel.getDeadline() == null){
+            loanModel.setDeadline(new DateTime(new Date()).plusDays(loanModel.getOriginalDuration()).toDate());
+            loanMapper.updateDeadline(loanModel.getId(), loanModel.getDeadline());
         }
 
         // 放款当天到借款截止时间之间的天数以30天为一期

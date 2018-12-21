@@ -158,6 +158,9 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
     @ApiModelProperty(value = "信息披露", example = "model")
     private List<DisclosureDto> disclosures;
 
+    @ApiModelProperty(value = "风控审核", example = "model")
+    private List<String> riskManagement;
+
     @ApiModelProperty(value = "是否可以转让", example = "true")
     private boolean nonTransferable;
 
@@ -586,4 +589,11 @@ public class LoanDetailV3ResponseDataDto extends BaseResponseDataDto {
         this.estimateLevel = estimateLevel;
     }
 
+    public List<String> getRiskManagement() {
+        return riskManagement;
+    }
+
+    public void setRiskManagement(List<String> riskManagement) {
+        this.riskManagement = riskManagement;
+    }
 }

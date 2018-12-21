@@ -4,7 +4,7 @@ import cn.jpush.api.utils.StringUtils;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
-import com.tuotiansudai.dto.LoanConsumeApplicationDto;
+import com.tuotiansudai.dto.LoanConsumeBorrowApplyDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AnxinSignPropertyMapper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
@@ -72,36 +72,36 @@ public class LoanApplicationService {
         return loanApplicationModel;
     }
 
-    public BaseDto<BaseDataDto> createConsume(LoanConsumeApplicationDto loanConsumeApplicationDto){
-        BaseDataDto baseDataDto = this.checkLoanApplication(loanConsumeApplicationDto);
+    public BaseDto<BaseDataDto> createConsume(LoanConsumeBorrowApplyDto loanConsumeBorrowApplyDto){
+        BaseDataDto baseDataDto = this.checkLoanApplication(loanConsumeBorrowApplyDto);
         if (!baseDataDto.getStatus()){
             return new BaseDto<>(baseDataDto);
         }
-        if (!isAnxinProp(loanConsumeApplicationDto.getLoginName())){
+        if (!isAnxinProp(loanConsumeBorrowApplyDto.getLoginName())){
             return new BaseDto<>(new BaseDataDto(false, "未开通安心签免短信服务"));
         }
 
-        if (StringUtils.isEmpty(loanConsumeApplicationDto.getIdentityProveUrls())) {
+        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getIdentityProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "身份证明材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeApplicationDto.getIncomeProveUrls())) {
+        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getIncomeProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "收入证明材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeApplicationDto.getCreditProveUrls())) {
+        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getCreditProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "信用报告材料不能为空"));
         }
-        if (loanConsumeApplicationDto.getMarriage() == Marriage.MARRIED && StringUtils.isEmpty(loanConsumeApplicationDto.getMarriageProveUrls())) {
+        if (loanConsumeBorrowApplyDto.getMarriage() == Marriage.MARRIED && StringUtils.isEmpty(loanConsumeBorrowApplyDto.getMarriageProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "婚姻状况材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeApplicationDto.getPropertyProveUrls())) {
+        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getPropertyProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "资产证明材料不能为空"));
         }
-        if (!StringUtils.isEmpty(loanConsumeApplicationDto.getTogetherLoaner()) && StringUtils.isEmpty(loanConsumeApplicationDto.getTogetherProveUrls())) {
+        if (!StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherLoaner()) && StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "共同借款人材料不能为空"));
         }
-        LoanApplicationModel loanApplicationModel = this.createLoanApplication(loanConsumeApplicationDto);
-        loanApplicationModel.setMarriage(loanConsumeApplicationDto.getMarriage());
-        LoanApplicationMaterialsModel loanApplicationMaterialsModel = new LoanApplicationMaterialsModel(loanApplicationModel.getId(), loanConsumeApplicationDto);
+        LoanApplicationModel loanApplicationModel = this.createLoanApplication(loanConsumeBorrowApplyDto);
+        loanApplicationModel.setMarriage(loanConsumeBorrowApplyDto.getMarriage());
+        LoanApplicationMaterialsModel loanApplicationMaterialsModel = new LoanApplicationMaterialsModel(loanApplicationModel.getId(), loanConsumeBorrowApplyDto);
         loanApplicationMapper.createMaterials(loanApplicationMaterialsModel);
         return new BaseDto<>(new BaseDataDto(true));
     }

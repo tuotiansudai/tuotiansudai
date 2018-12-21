@@ -21,6 +21,8 @@ public interface LoanApplicationMapper {
 
     LoanApplicationModel findById(@Param(value = "id") long id);
 
+    LoanApplicationModel findByLoanId(@Param(value = "loanId") long loanId);
+
     List<LoanApplicationModel> findPagination(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     long findCount();

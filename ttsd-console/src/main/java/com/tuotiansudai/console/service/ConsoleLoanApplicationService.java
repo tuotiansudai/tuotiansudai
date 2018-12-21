@@ -6,19 +6,19 @@ import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.enums.Role;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.rest.client.mapper.UserMapper;
-import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.util.CalculateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.PaginationUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ConsoleLoanApplicationService {
@@ -36,9 +36,6 @@ public class ConsoleLoanApplicationService {
 
     @Autowired
     private ConsoleLoanCreateService consoleLoanCreateService;
-
-    @Autowired
-    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -80,27 +77,34 @@ public class ConsoleLoanApplicationService {
         return new BasePaginationDataDto<>(index, pageSize, count, loanApplicationModels);
     }
 
-    public LoanApplicationConsumeDto consumeDetail(long id){
-        LoanApplicationConsumeDto loanApplicationConsumeDto = new LoanApplicationConsumeDto();
-        loanApplicationConsumeDto.setLoanApplicationModel(loanApplicationMapper.findById(id));
-        loanApplicationConsumeDto.setLoanApplicationMaterialsModel(loanApplicationMapper.findMaterialsByLoanApplicationId(id));
-        loanApplicationConsumeDto.setLoanRiskManagementTitleModelList(loanRiskManagementTitleMapper.findAll());
-        loanApplicationConsumeDto.setLoanRiskManagementTitleRelationModelList(loanRiskManagementTitleRelationMapper.findByLoanApplicationId(id));
-        return loanApplicationConsumeDto;
+    public LoanApplicationConsumeDetailDto consumeDetail(long id){
+        LoanApplicationConsumeDetailDto loanApplicationConsumeDetailDto = new LoanApplicationConsumeDetailDto();
+        loanApplicationConsumeDetailDto.setLoanApplicationModel(loanApplicationMapper.findById(id));
+        loanApplicationConsumeDetailDto.setLoanApplicationMaterialsModel(loanApplicationMapper.findMaterialsByLoanApplicationId(id));
+        loanApplicationConsumeDetailDto.setLoanRiskManagementTitleModelList(loanRiskManagementTitleMapper.findAll());
+        loanApplicationConsumeDetailDto.setLoanRiskManagementTitleRelationModelList(loanRiskManagementTitleRelationMapper.findByLoanApplicationId(id));
+        return loanApplicationConsumeDetailDto;
     }
 
     @Transactional
-    public BaseDto<BaseDataDto> consumeSave(LoanApplicationConsumeDto loanApplicationConsumeDto, String loginName){
-        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationConsumeDto.getLoanApplicationModel().getId());
+    public BaseDto<BaseDataDto> consumeSave(long id, LoanApplicationUpdateDto loanApplicationUpdateDto, String loginName){
+        LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(id);
         if (loanApplicationModel == null){
             return new BaseDto<>(new BaseDataDto(false, "借款申请不存在"));
         }
-        loanApplicationModel.setAddress(loanApplicationConsumeDto.getLoanApplicationModel().getAddress());
-        loanApplicationModel.setLoanUsage(loanApplicationConsumeDto.getLoanApplicationModel().getLoanUsage());
+        loanApplicationModel.setAddress(loanApplicationUpdateDto.getAddress());
+        loanApplicationModel.setLoanUsage(loanApplicationUpdateDto.getLoanUsage());
         loanApplicationModel.setUpdatedBy(loginName);
         loanApplicationModel.setUpdatedTime(new Date());
         loanApplicationMapper.update(loanApplicationModel);
-        loanRiskManagementTitleRelationMapper.create(loanApplicationConsumeDto.getLoanRiskManagementTitleRelationModelList());
+
+        loanRiskManagementTitleRelationMapper.deleteByLoanApplication(loanApplicationModel.getId());
+        if (CollectionUtils.isNotEmpty(loanApplicationUpdateDto.getRelationModels())) {
+            for (LoanRiskManagementTitleRelationModel model : loanApplicationUpdateDto.getRelationModels()) {
+                model.setLoanApplicationId(id);
+            }
+            loanRiskManagementTitleRelationMapper.create(loanApplicationUpdateDto.getRelationModels());
+        }
         return new BaseDto<>(new BaseDataDto(true));
     }
 

@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.dto.LoanConsumeApplicationDto;
+import com.tuotiansudai.dto.LoanConsumeBorrowApplyDto;
 
 import java.io.Serializable;
 
@@ -13,23 +13,21 @@ public class LoanApplicationMaterialsModel implements Serializable {
     private String creditProveUrls;
     private String marriageProveUrls;
     private String propertyProveUrls;
-    private String togetherLoaner;
     private String togetherProveUrls;
     private String driversLicense;
 
     public LoanApplicationMaterialsModel() {
     }
 
-    public LoanApplicationMaterialsModel(long loanApplicationId, LoanConsumeApplicationDto loanConsumeApplicationDto) {
+    public LoanApplicationMaterialsModel(long loanApplicationId, LoanConsumeBorrowApplyDto loanConsumeBorrowApplyDto) {
         this.loanApplicationId = loanApplicationId;
-        this.identityProveUrls = loanConsumeApplicationDto.getIdentityProveUrls();
-        this.incomeProveUrls = loanConsumeApplicationDto.getIncomeProveUrls();
-        this.creditProveUrls = loanConsumeApplicationDto.getCreditProveUrls();
-        this.marriageProveUrls = loanConsumeApplicationDto.getMarriageProveUrls();
-        this.propertyProveUrls = loanConsumeApplicationDto.getPropertyProveUrls();
-        this.togetherLoaner = loanConsumeApplicationDto.getTogetherLoaner();
-        this.togetherProveUrls = loanConsumeApplicationDto.getTogetherProveUrls();
-        this.driversLicense = loanConsumeApplicationDto.getDriversLicense();
+        this.identityProveUrls = loanConsumeBorrowApplyDto.getIdentityProveUrls();
+        this.incomeProveUrls = loanConsumeBorrowApplyDto.getIncomeProveUrls();
+        this.creditProveUrls = loanConsumeBorrowApplyDto.getCreditProveUrls();
+        this.marriageProveUrls = loanConsumeBorrowApplyDto.getMarriageProveUrls();
+        this.propertyProveUrls = loanConsumeBorrowApplyDto.getPropertyProveUrls();
+        this.togetherProveUrls = loanConsumeBorrowApplyDto.getTogetherProveUrls();
+        this.driversLicense = loanConsumeBorrowApplyDto.getDriversLicense();
     }
 
     public long getId() {
@@ -86,14 +84,6 @@ public class LoanApplicationMaterialsModel implements Serializable {
 
     public void setPropertyProveUrls(String propertyProveUrls) {
         this.propertyProveUrls = propertyProveUrls;
-    }
-
-    public String getTogetherLoaner() {
-        return togetherLoaner;
-    }
-
-    public void setTogetherLoaner(String togetherLoaner) {
-        this.togetherLoaner = togetherLoaner;
     }
 
     public String getTogetherProveUrls() {

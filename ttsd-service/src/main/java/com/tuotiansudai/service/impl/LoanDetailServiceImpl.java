@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,6 +92,15 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
+
+    @Autowired
+    private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
+
+    @Autowired
+    private LoanApplicationMapper loanApplicationMapper;
+
+    @Autowired
+    private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -195,6 +202,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {
+            LoanApplicationModel loanApplicationModel = loanApplicationMapper.findByLoanId(loanModel.getId());
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
                     .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
                     .put("性别", loanerDetail.getGender().getDescription())
@@ -207,6 +215,10 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
                     .put("逾期笔数", MessageFormat.format("{0}笔", loanMapper.findByStatus(LoanStatus.OVERDUE).stream().filter(model->model.getLoanerIdentityNumber().equals(loanModel.getLoanerIdentityNumber())).count()))
                     .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
+                    .put("家庭年收入", loanApplicationModel == null? "" : String.valueOf(loanApplicationModel.getHomeIncome()) + "万元")
+                    .put("主体性质", loanApplicationModel == null? "" : "自然人")
+                    .put("共同借款人", loanApplicationModel == null ? "" : loanApplicationModel.getTogetherLoanerIdentity())
+                    .put("共同借款人身份证号", loanApplicationModel == null ? "" : MessageFormat.format("{0}*******", loanApplicationModel.getTogetherLoanerIdentity().substring(0, 10)))
                     .build());
         }
 
@@ -289,6 +301,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .build());
             }
         }
+
+        List<List<String>> names = new ArrayList<>();
+        List<String> riskManagementTitleNames = loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId());
+        if (riskManagementTitleNames.size() > 0) {
+            for (int i = 0; i < riskManagementTitleNames.size(); i += 3) {
+                int toIndex = i + 3 > riskManagementTitleNames.size() ? riskManagementTitleNames.size() : i + 3;
+                names.add(riskManagementTitleNames.subList(i, toIndex));
+            }
+        }
+        loanDto.setRiskManagementTitleNames(names);
+
+        loanDto.setLoanOutTailAfter(loanOutTailAfterMapper.findByLoanId(loanModel.getId()));
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
             double newbieInterestCouponRate = 0;

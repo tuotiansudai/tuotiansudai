@@ -30,6 +30,8 @@ public class LoanApplicationDto {
     private String elsePledge;
     //性别
     private String sex;
+    private String togetherLoaner;
+    private String togetherLoanerIdentity;
 
     public String getLoginName() {
         return loginName;
@@ -165,5 +167,21 @@ public class LoanApplicationDto {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getTogetherLoaner() {
+        return togetherLoaner;
+    }
+
+    public void setTogetherLoaner(String togetherLoaner) {
+        this.togetherLoaner = togetherLoaner;
+    }
+
+    public String getTogetherLoanerIdentity() {
+        return togetherLoanerIdentity;
+    }
+
+    public void setTogetherLoanerIdentity(String togetherLoanerIdentity) {
+        this.togetherLoanerIdentity = togetherLoanerIdentity;
     }
 }

@@ -12,9 +12,11 @@ public interface LoanRiskManagementTitleRelationMapper {
 
     void create(@Param("loanTitleModels") List<LoanRiskManagementTitleRelationModel> loanRiskManagementTitleRelationModels);
 
-    List<LoanRiskManagementTitleRelationModel> findByLoanId(@Param("loanId") long loanId);
+    void updateLoanIdByLoanApplicationId(@Param("loanId") long loanId, @Param("loanApplicationId") long loanApplicationId);
 
     List<LoanRiskManagementTitleRelationModel> findByLoanApplicationId(@Param("loanApplicationId") long loanApplicationId);
 
-    void delete(@Param("loanId") long loanId);
+    List<String> findTitleNameByLoanId(@Param("loanId") long loanId);
+
+    void deleteByLoanApplication(@Param("loanApplicationId") long loanApplicationId);
 }

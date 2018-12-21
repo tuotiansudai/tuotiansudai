@@ -50,6 +50,8 @@ public interface LoanMapper {
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 
+    void updateDeadline(@Param(value = "loanId") long loanId, @Param(value = "deadline") Date deadline);
+
     List<LoanModel> findRepayingPaginationByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
                                                            @Param(value = "index") int index,
                                                            @Param(value = "pageSize") int pageSize,

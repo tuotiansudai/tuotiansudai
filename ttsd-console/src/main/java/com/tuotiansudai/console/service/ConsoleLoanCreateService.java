@@ -85,6 +85,9 @@ public class ConsoleLoanCreateService {
     @Autowired
     private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
+    @Autowired
+    private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
+
     protected final static String generateLoanName = "{0}{1}";
 
     @Transactional
@@ -145,6 +148,7 @@ public class ConsoleLoanCreateService {
 
         if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
             loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
+            loanRiskManagementTitleRelationMapper.updateLoanIdByLoanApplicationId(loanId, Long.parseLong(loanCreateRequestDto.getLoanApplicationId()));
         }
 
         return new BaseDto<>(new BaseDataDto(true));

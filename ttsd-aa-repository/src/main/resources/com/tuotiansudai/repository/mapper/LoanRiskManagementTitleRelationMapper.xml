@@ -21,16 +21,20 @@
         </foreach>
     </insert>
 
-    <select id="findByLoanId" parameterType="long" resultMap="loanRiskManagementTitleRelationResultMap">
-        select * from loan_risk_management_title_relation  where loan_id = #{loanId}
+    <update id="updateLoanIdByLoanApplicationId" parameterType="map">
+        update loan_risk_management_title_relation set loan_id = #{loanId} where loan_application_id = #{loanApplicationId}
+    </update>
+
+    <select id="findTitleNameByLoanId" parameterType="long" resultType="string">
+        select t.title from loan_risk_management_title_relation r join loan_risk_management_title t on r.title_id = t.id where loan_id = #{loanId}
     </select>
 
     <select id="findByLoanApplicationId" parameterType="long" resultMap="loanRiskManagementTitleRelationResultMap">
         select * from loan_risk_management_title_relation  where loan_application_id = #{loanApplicationId}
     </select>
 
-    <delete id="delete" parameterType="long">
-        delete from loan_title_relation where loan_id = #{loanId};
+    <delete id="deleteByLoanApplication" parameterType="long">
+        delete from loan_title_relation where loan_application_id = #{loanApplicationId};
     </delete>
 
 
