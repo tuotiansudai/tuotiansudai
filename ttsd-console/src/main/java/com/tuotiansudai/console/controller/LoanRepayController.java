@@ -41,7 +41,7 @@ public class LoanRepayController {
                 startTime,
                 endTime,
                 repayStatus);
-        List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
+        List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.ALL, RepayStatus.COMPLETE, RepayStatus.REPAYING, RepayStatus.WAIT_PAY);
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("repayStatusList", repayStatusList);
         modelAndView.addObject("index", index);
