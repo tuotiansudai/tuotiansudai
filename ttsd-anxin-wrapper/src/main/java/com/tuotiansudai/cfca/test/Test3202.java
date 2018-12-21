@@ -27,13 +27,13 @@ public class Test3202 {
 
 //        CreateContractVO createContract = loanContract();
 //        CreateContractVO createContract = transferContract();
-        CreateContractVO createContract = loanServiceContract();
-//        CreateContractVO createContract = loanConsumeContract();
+//        CreateContractVO createContract = loanServiceContract();
+        CreateContractVO createContract = loanConsumeContract();
 
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B2018122104");
+        tx3202ReqVO.setBatchNo("B2018122107");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
@@ -180,11 +180,12 @@ public class Test3202 {
         dataModel.put("investorMobile", "11111111111");
         dataModel.put("investorIdentityNumber", "111111111111111111");
         dataModel.put("agentIdentityNumber", "222222222222222222");
-        dataModel.put("loanerUserName", "高应龙");
+        dataModel.put("loanerUserName", "朱坤");
         dataModel.put("loanerIdentityNumber", "222222222222222222");
         dataModel.put("purpose", "娶媳妇");
         dataModel.put("amount", "100000.00");
         dataModel.put("amountChinese", "十万元整");
+        dataModel.put("periods", "12");
         dataModel.put("remark", "");
         dataModel.put("overdueRate1", "0");
         dataModel.put("overdueRate2", "0");
@@ -209,7 +210,7 @@ public class Test3202 {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId("JK_2315");
+        createContractVO.setTemplateId("JK_2497");
         createContractVO.setIsSign(1);
         return createContractVO;
     }
