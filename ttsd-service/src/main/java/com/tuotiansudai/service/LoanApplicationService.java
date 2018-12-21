@@ -14,6 +14,7 @@ import com.tuotiansudai.util.IdentityNumberValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class LoanApplicationService {
@@ -81,22 +82,22 @@ public class LoanApplicationService {
             return new BaseDto<>(new BaseDataDto(false, "未开通安心签免短信服务"));
         }
 
-        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getIdentityProveUrls())) {
+        if (CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getIdentityProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "身份证明材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getIncomeProveUrls())) {
+        if (CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getIncomeProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "收入证明材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getCreditProveUrls())) {
+        if (CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getCreditProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "信用报告材料不能为空"));
         }
-        if (loanConsumeBorrowApplyDto.getMarriage() == Marriage.MARRIED && StringUtils.isEmpty(loanConsumeBorrowApplyDto.getMarriageProveUrls())) {
+        if (loanConsumeBorrowApplyDto.getMarriage() == Marriage.MARRIED && CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getMarriageProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "婚姻状况材料不能为空"));
         }
-        if (StringUtils.isEmpty(loanConsumeBorrowApplyDto.getPropertyProveUrls())) {
+        if (CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getPropertyProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "资产证明材料不能为空"));
         }
-        if (!StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherLoaner()) && StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherProveUrls())) {
+        if (!StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherLoaner()) && CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "共同借款人材料不能为空"));
         }
         LoanApplicationModel loanApplicationModel = this.createLoanApplication(loanConsumeBorrowApplyDto);

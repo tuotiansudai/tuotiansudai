@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanConsumeBorrowApplyDto;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 
@@ -21,13 +22,13 @@ public class LoanApplicationMaterialsModel implements Serializable {
 
     public LoanApplicationMaterialsModel(long loanApplicationId, LoanConsumeBorrowApplyDto loanConsumeBorrowApplyDto) {
         this.loanApplicationId = loanApplicationId;
-        this.identityProveUrls = loanConsumeBorrowApplyDto.getIdentityProveUrls();
-        this.incomeProveUrls = loanConsumeBorrowApplyDto.getIncomeProveUrls();
-        this.creditProveUrls = loanConsumeBorrowApplyDto.getCreditProveUrls();
-        this.marriageProveUrls = loanConsumeBorrowApplyDto.getMarriageProveUrls();
-        this.propertyProveUrls = loanConsumeBorrowApplyDto.getPropertyProveUrls();
-        this.togetherProveUrls = loanConsumeBorrowApplyDto.getTogetherProveUrls();
-        this.driversLicense = loanConsumeBorrowApplyDto.getDriversLicense();
+        this.identityProveUrls = String.join(",", loanConsumeBorrowApplyDto.getIdentityProveUrls());
+        this.incomeProveUrls = String.join(",", loanConsumeBorrowApplyDto.getIncomeProveUrls());
+        this.creditProveUrls = String.join(",", loanConsumeBorrowApplyDto.getCreditProveUrls());
+        this.marriageProveUrls = String.join(",", loanConsumeBorrowApplyDto.getMarriageProveUrls());
+        this.propertyProveUrls = String.join(",", loanConsumeBorrowApplyDto.getPropertyProveUrls());
+        this.togetherProveUrls = String.join(",", loanConsumeBorrowApplyDto.getTogetherProveUrls());
+        this.driversLicense = String.join(",", loanConsumeBorrowApplyDto.getDriversLicense());
     }
 
     public long getId() {
