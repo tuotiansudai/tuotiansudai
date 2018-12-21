@@ -554,10 +554,13 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
 
         // 平台数据总览
         $('#tradeAmount').text(formatNum(data.tradeAmount));//累计交易金额
-        $('.sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
-        $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
+        // $('.sumExpectedAmount').text(formatNum(data.sumExpectedAmount));//待偿金额
+        $('.sumExpectedAmount').text(formatNum('125902455.00'));//待偿金额
+        // $('#sumExpectedInterestAmount').text(formatNum(data.sumExpectedInterestAmount));//待偿利息金额
+        $('#sumExpectedInterestAmount').text(formatNum('5709077.78'));//待偿利息金额
         $('#usersCount').text(toThousands(data.usersCount));//注册投资用户数
-        $('.sumRepayIngInvestCount').html(toThousands(data.sumRepayIngInvestCount)); // 待偿金额笔数
+        // $('.sumRepayIngInvestCount').html(toThousands(data.sumRepayIngInvestCount)); // 待偿金额笔数
+        $('.sumRepayIngInvestCount').html(toThousands('3442')); // 待偿金额笔数
 
         // 借款标的情况
         $('#sumLoanAmount').text(formatNum(data.sumLoanAmount));//累计借贷金额
@@ -565,17 +568,23 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
 
         // 出借人信息
         $('.investUsersCount').text(toThousands(data.investUsersCount));//累计出借用户数
-        $('#maxSingleInvestAmountRate').text(formatNumber(data.maxSingleInvestAmountRate*100,2));//最大单户出借余额占比
+        // $('#maxSingleInvestAmountRate').text(formatNumber(data.maxSingleInvestAmountRate*100,2));//最大单户出借余额占比
+        $('#maxSingleInvestAmountRate').text('2.48');//最大单户出借余额占比
         $('#avgInvestAmount').text(formatNum(data.avgInvestAmount));//人均累计出借金额
-        $('#maxTenInvestAmountRate').text(formatNumber(data.maxTenInvestAmountRate*100,2));//最大十户出借余额占比
-        $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
+        // $('#maxTenInvestAmountRate').text(formatNumber(data.maxTenInvestAmountRate*100,2));//最大十户出借余额占比
+        $('#maxTenInvestAmountRate').text('10.92');//最大十户出借余额占比
+        // $('#sumNotCompleteInvestorCount').text(toThousands(data.sumNotCompleteInvestorCount));//当前出借人数
+        $('#sumNotCompleteInvestorCount').text(toThousands('1771'));//当前出借人数
 
         // 借款人信息
         $('.sumLoanerCount').text(toThousands(data.sumLoanerCount));//累计借款人数
-        $('#maxSingleLoanAmountRate').text(formatNumber(data.maxSingleLoanAmountRate*100,2));//最大单一借款人待还金额占比
+        // $('#maxSingleLoanAmountRate').text(formatNumber(data.maxSingleLoanAmountRate*100,2));//最大单一借款人待还金额占比
+        $('#maxSingleLoanAmountRate').text('2.14');//最大单一借款人待还金额占比
         $('#avgLoanAmount').text(formatNum(data.avgLoanAmount));//人均累计借款金额
-        $('#maxTenLoanAmountRate').text(formatNumber(data.maxTenLoanAmountRate*100,2));//前十大借款人待还金额占比
-        $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
+        // $('#maxTenLoanAmountRate').text(formatNumber(data.maxTenLoanAmountRate*100,2));//前十大借款人待还金额占比
+        $('#maxTenLoanAmountRate').text('7.71');//前十大借款人待还金额占比
+        // $('#sumNotCompleteLoanerCount').text(toThousands(data.sumNotCompleteLoanerCount));//当前借款人数
+        $('#sumNotCompleteLoanerCount').text(toThousands('733'));//当前借款人数
         // $('#sumOverDueAmount').text(formatNum(data.sumOverDueAmount));//逾期金额
         $('#sumOverDueAmount').text(formatNum("5297800.00"));//逾期金额
 
@@ -583,11 +592,11 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // $('#loanerOverDueCount').text(toThousands(data.loanerOverDueCount));//借款人平台逾期次数
         $('#loanerOverDueCount').text(toThousands('11'));//借款人平台逾期次数
         // $('#loanOverDueRate').text(formatNumber(data.loanOverDueRate*100,2));//项目逾期率
-        $('#loanOverDueRate').text(formatNumber(0.0121*100,2));//项目逾期率
+        $('#loanOverDueRate').text(formatNumber(0.0147*100,2));//项目逾期率
         // $('#loanerOverDueAmount').text(formatNum(data.loanerOverDueAmount));//平台逾期总金额
         $('#loanerOverDueAmount').text(formatNum('5297800.00'));//平台逾期总金额
         // $('#amountOverDueRate').text(formatNumber(data.amountOverDueRate*100,2));//金额逾期率
-        $('#amountOverDueRate').text(formatNumber(0.0357*100,2));//金额逾期率
+        $('#amountOverDueRate').text(formatNumber(0.0421*100,2));//金额逾期率
         // $('#amountOverDueLess90Rate').text(formatNumber(data.amountOverDueLess90Rate*100, 2));//金额逾期率（90天及以内）
         // $('#amountOverDue90To180Rate').text(formatNumber(data.amountOverDue90To180Rate*100, 2));//金额逾期率（90天以上至180天）
         // $('#amountOverDueGreater180Rate').text(formatNumber(data.amountOverDueGreater180Rate*100, 2));//金额逾期率（181天及以上）
@@ -595,10 +604,10 @@ require.ensure(['publicJs/load_echarts','publicJs/commonFun'],function() {
         // $('#loanOverDue90To180Rate').text(formatNumber(data.loanOverDue90To180Rate*100, 2));//项目逾期率（90天以上至180天）
         // $('#loanOverDueGreater180Rate').text(formatNumber(data.loanOverDueGreater180Rate*100, 2));//项目逾期率（181天及以上）
 
-        $('#amountOverDueLess90Rate').text(formatNumber(0.0357*100, 2));//金额逾期率（90天及以内）
+        $('#amountOverDueLess90Rate').text(formatNumber(0.0421*100, 2));//金额逾期率（90天及以内）
         $('#amountOverDue90To180Rate').text(formatNumber(0.0000*100, 2));//金额逾期率（90天以上至180天）
         $('#amountOverDueGreater180Rate').text(formatNumber(0.0000*100, 2));//金额逾期率（181天及以上）
-        $('#loanOverDueLess90Rate').text(formatNumber(0.0121*100, 2));//项目逾期率（90天及以内）
+        $('#loanOverDueLess90Rate').text(formatNumber(0.0147*100, 2));//项目逾期率（90天及以内）
         $('#loanOverDue90To180Rate').text(formatNumber(0.0000*100, 2));//项目逾期率（90天以上至180天）
         $('#loanOverDueGreater180Rate').text(formatNumber(0.0000*100, 2));//项目逾期率（181天及以上）
 
