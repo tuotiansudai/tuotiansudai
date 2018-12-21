@@ -420,24 +420,22 @@
     </update>
 
     <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
-        select * from loan t
-        <where>
-            <if test="status != null">
-                t.status = #{status}
-            </if>
-            <if test="loanId != null">
-                and t.id = #{loanId}
-            </if>
-            <if test="loanName != null and loanName != ''">
-                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
-            </if>
-            <if test="startTime != null">
-                and t.created_time >= #{startTime}
-            </if>
-            <if test="endTime != null">
-                <![CDATA[ and t.created_time <= #{endTime} ]]>
-            </if>
-        </where>
+        select * from loan t where t.status != 'OVERDUE'
+        <if test="status != null">
+            and t.status = #{status}
+        </if>
+        <if test="loanId != null">
+            and t.id = #{loanId}
+        </if>
+        <if test="loanName != null and loanName != ''">
+            and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+        </if>
+        <if test="startTime != null">
+            and t.created_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and t.created_time <= #{endTime} ]]>
+        </if>
         order by t.created_time desc
         <if test="currentPageNo >= 0">
             limit #{currentPageNo}, #{pageSize}
@@ -445,24 +443,22 @@
     </select>
 
     <select id="findLoanListCount" parameterType="map" resultType="int">
-        select count(*) from loan t
-        <where>
-            <if test="status != null">
-                t.status = #{status}
-            </if>
-            <if test="loanId != null">
-                and t.id = #{loanId}
-            </if>
-            <if test="loanName != null and loanName != ''">
-                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
-            </if>
-            <if test="startTime != null">
-                and t.created_time >= #{startTime}
-            </if>
-            <if test="endTime != null">
-                <![CDATA[ and t.created_time <= #{endTime} ]]>
-            </if>
-        </where>
+        select count(*) from loan t WHERE t.status != 'OVERDUE'
+        <if test="status != null">
+            and t.status = #{status}
+        </if>
+        <if test="loanId != null">
+            and t.id = #{loanId}
+        </if>
+        <if test="loanName != null and loanName != ''">
+            and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+        </if>
+        <if test="startTime != null">
+            and t.created_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and t.created_time <= #{endTime} ]]>
+        </if>
     </select>
 
     <update id="updateRaisingCompleteTime" parameterType="map">
@@ -724,6 +720,11 @@
     <select id="sumLoanAmountGroupByIdentityByTopTen" resultType="long">
         select sum(loan_amount) from loan where id != '1' and status in ('REPAYING','OVERDUE')
         group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
+    </select>
+
+    <select id="findOverdueLoanList" resultMap="loanResultMap">
+        SELECT * from loan where id in ('79777480751792', '104438859020640', '80399115846496', '81091061832208', '104913327294896',
+        '81275462694528', '93220109314848', '97113887852272', '92786417826144','93392074303536','81807142366272')
     </select>
 
 </mapper>

@@ -22,7 +22,7 @@ require(['jquery', 'bootstrap', 'bootstrapSelect', 'bootstrapDatetimepicker'], f
             $(".loanId").val('0');
         }
         var formData=$("#formLoanList").serialize(),
-            allData=formData+'&index=1&pageSize=10';
+            allData=formData+'&index=1';
         window.location.href = "/project-manage/loan-list?"+allData;
 
     });
