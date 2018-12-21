@@ -112,4 +112,7 @@ public interface LoanMapper {
 
     List<Long> sumLoanAmountGroupByIdentityByTopTen();
 
+    //console 标的列表 单独查询11条逾期标的
+    List<LoanModel> findOverdueLoanList();
+
 }

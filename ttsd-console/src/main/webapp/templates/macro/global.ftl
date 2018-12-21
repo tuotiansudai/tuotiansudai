@@ -26,7 +26,7 @@
                     {"name":"","class":"sub-title-1","text":"直投项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
-                        <#--{"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},-->
+                        {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"","class":"sub-title-1","text":"转让项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
@@ -54,7 +54,7 @@
                     {"name":"","class":"sub-title-1","text":"投资管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"userInvest","text":"用户投资管理","link":"/finance-manage/invests","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"financeReport","text":"债权财务数据","link":"/finance-manage/financeReport","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"debtRepay","text":"债权还款计划","link":"/finance-manage/debt-repayment-plan","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                        <#--{"name":"debtRepay","text":"债权还款计划","link":"/finance-manage/debt-repayment-plan","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},-->
                     {"name":"","class":"sub-title-1","text":"用户账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN','FINANCE_ADMIN'"},
                         {"name":"userBalance","text":"用户余额查询","link":"/finance-manage/account-balance?balanceMin=50","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"userFund","text":"用户资金查询","link":"/finance-manage/user-funds","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
