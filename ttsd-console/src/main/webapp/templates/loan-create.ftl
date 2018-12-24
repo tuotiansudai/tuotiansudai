@@ -29,12 +29,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">权证人: </label>
-
+                    <label class="col-sm-2 control-label">借款人: </label>
                     <div class="col-sm-2">
                         <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
                                autocomplete="off"
-                               errormsg="权证人不能为空">
+                               errormsg="借款人不能为空">
                     </div>
                 </div>
 
@@ -299,7 +298,7 @@
                                    value="STEADY">稳健型
                         </label>
                         <label>
-                            <input name="estimate" type="radio"
+                            <input  name="estimate" type="radio"
                                    value="POSITIVE">积极型
                         </label>
                     </div>
@@ -390,7 +389,8 @@
             </div>
         </div>
     </div>
-
+    <div class="pop_layer">
+    </div>
 
 </div>
 <!-- content area end -->

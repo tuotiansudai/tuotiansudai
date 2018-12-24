@@ -11,6 +11,7 @@ import com.tuotiansudai.cfca.contract.ContractService;
 import com.tuotiansudai.cfca.dto.ContractResponseView;
 import com.tuotiansudai.cfca.service.AnxinSignConnectService;
 import com.tuotiansudai.cfca.service.AnxinSignService;
+import com.tuotiansudai.cfca.service.CreateContractDataContext;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.JianZhouSmsTemplate;
@@ -72,10 +73,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Autowired
     private MQWrapperClient mqWrapperClient;
 
-    private static final String LOAN_CONTRACT_AGENT_SIGN = "agentUserName";
-
-    private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
-
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
@@ -122,6 +119,9 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     private static final String SEND_CAPTCHA_FAIL = "发送短信失败";
 
     private static final String SWITCH_SIGN_FAIL = "打开/关闭 免验开关失败";
+
+    @Autowired
+    private CreateContractDataContext createContractDataContext;
 
     /**
      * 以前是否授权过
@@ -356,7 +356,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
         boolean processResult = true;
         for (InvestModel investModel : investModels) {
-            CreateContractVO createContractVO = createInvestorContractVo(loanId, investModel);
+            CreateContractVO createContractVO = createContractDataContext.createInvestorContractVo(loanId, investModel, loanModel.getContractVersion());
             if (createContractVO == null) {
                 continue;
             }
@@ -506,73 +506,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return createContractVO;
     }
 
-    private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
-        CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
-
-        // 标的
-        LoanModel loanModel = loanMapper.findById(loanId);
-
-        // 借款人（代理人 or 企业借款人）
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
-
-        // 出借人
-        long investId = investModel.getId();
-        String investLoginName = investModel.getLoginName();
-        AnxinSignPropertyModel investorAnxinProp = anxinSignPropertyMapper.findByLoginName(investLoginName);
-
-        if (investorAnxinProp == null || Strings.isNullOrEmpty(investorAnxinProp.getProjectCode())) {
-            // 如果出借人未授权安心签，则将该笔出借的合同号设置为OLD，使用旧版合同：
-            investMapper.updateContractNoById(investModel.getId(), ContractNoStatus.OLD.name());
-            logger.warn(MessageFormat.format("[安心签] create contract fail, investor has not signed. loanid:{0}, investId:{1}, userId:{2}",
-                    String.valueOf(loanId), String.valueOf(investId), investLoginName));
-            return null;
-        }
-
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
-        dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
-        dataModel.put("purpose", investMap.get("purpose"));
-        dataModel.put("repayType", investMap.get("repayType"));
-        createContractVO.setInvestmentInfo(dataModel);
-
-        SignInfoVO agentSignInfo = new SignInfoVO();
-        agentSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
-        agentSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
-        agentSignInfo.setLocation(agentAnxinProp.getAuthIp());
-        agentSignInfo.setSignLocation(LOAN_CONTRACT_AGENT_SIGN);
-        agentSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
-        agentSignInfo.setIsProxySign(1);
-
-        SignInfoVO investorSignInfo = new SignInfoVO();
-        investorSignInfo.setUserId(investorAnxinProp.getAnxinUserId());
-        investorSignInfo.setAuthorizationTime(new DateTime(investorAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
-        investorSignInfo.setLocation(investorAnxinProp.getAuthIp());
-        investorSignInfo.setSignLocation(LOAN_CONTRACT_INVESTOR_SIGN);
-        investorSignInfo.setProjectCode(investorAnxinProp.getProjectCode());
-        investorSignInfo.setIsProxySign(1);
-
-        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
-        createContractVO.setIsSign(1);
-        return createContractVO;
-    }
-
     @Override
     public boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType) {
 
@@ -616,7 +549,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(result, new AnxinDataDto(true, "success"));
     }
 
-    private void sendSms(String params){
+    private void sendSms(String params) {
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_GENERATE_CONTRACT_ERROR_NOTIFY_TEMPLATE, mobileList, Lists.newArrayList(params)));
     }
 }

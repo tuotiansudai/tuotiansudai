@@ -126,7 +126,7 @@ function loadLoanData(currentPage) {
                         if (data.isNormalRepayEnabled) {
                             $('a.normal-repay').click(function () {
                                 if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
-                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount);
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount,data.isHistoryLoan);
                                     return false;
                                 }
 
@@ -139,7 +139,7 @@ function loadLoanData(currentPage) {
                         if (data.isAdvanceRepayEnabled) {
                             $('a.advanced-repay').click(function () {
                                 if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
-                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount,data.isHistoryLoan);
                                     return false;
                                 }
                                 $("#advanced-repay-form").submit();
@@ -163,7 +163,11 @@ $('.apply-btn').click(function () {
     $(".date-filter .select-item").removeClass("current");
 });
 
-var showBalanceNotEnoughAlert = function (balance, repayAmount) {
+var showBalanceNotEnoughAlert = function (balance, repayAmount,isHistoryLoan) {
+    var btn=['关闭','充值'];
+    if(isHistoryLoan){
+        btn=['充值'];
+    }
     layer.closeAll();
     layer.open({
         type: 1,
@@ -171,7 +175,7 @@ var showBalanceNotEnoughAlert = function (balance, repayAmount) {
         skin: 'demo-class',
         shadeClose: false,
         title: '账户余额不足',
-        btn: ['关闭', '去充值'],
+        btn: btn,
         area: ['400px', '160px'],
         content:`<p class="pad-m-tb tc">应还金额 ${repayAmount}元，您的账户余额仅有${balance}元</p>`,
         btn1: function () {

@@ -5,7 +5,7 @@
         <label class="col-sm-2 control-label">借款人姓名: </label>
 
         <div class="col-sm-4">
-            <input name="userName" value="${loan.loanerDetails.userName}" type="text" class="form-control" datatype="*" errormsg="借款人姓名不能为空">
+            <input disabled="disabled" name="userName" value="${loan.loanerDetails.userName}" type="text" class="form-control" datatype="*" errormsg="借款人姓名不能为空">
         </div>
     </div>
 
@@ -13,7 +13,7 @@
         <label class="col-sm-2 control-label">借款人性别: </label>
 
         <div class="col-sm-4">
-            <select name="gender" class="selectpicker b-width">
+            <select id="genderSelector" name="gender" class="selectpicker b-width" disabled="disabled">
                 <option value="MALE" <#if loan.loanerDetails.gender='MALE'>selected="selected"</#if>>男</option>
                 <option value="FEMALE" <#if loan.loanerDetails.gender='FEMALE'>selected="selected"</#if>>女</option>
             </select>
@@ -24,7 +24,7 @@
         <label class="col-sm-2 control-label">借款人年龄: </label>
 
         <div class="col-sm-4">
-            <input name="age" value="${loan.loanerDetails.age}" type="text" class="form-control" datatype="n1-3" errormsg="借款人年龄填写有误" maxlength="3">
+            <input disabled="disabled" name="age" value="${loan.loanerDetails.age}" type="text" class="form-control" datatype="n1-3" errormsg="借款人年龄填写有误" maxlength="3">
         </div>
     </div>
 
@@ -32,7 +32,7 @@
         <label class="col-sm-2 control-label">借款人身份证号: </label>
 
         <div class="col-sm-4">
-            <input name="identityNumber" value="${loan.loanerDetails.identityNumber}" type="text" class="form-control" datatype="idcard" errormsg="借款人身份证号填写有误">
+            <input disabled="disabled" name="identityNumber" value="${loan.loanerDetails.identityNumber}" type="text" class="form-control" datatype="idcard" errormsg="借款人身份证号填写有误">
         </div>
     </div>
     <div class="form-group">

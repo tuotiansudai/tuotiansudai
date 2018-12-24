@@ -11,6 +11,7 @@ import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,7 @@ public class LoanController {
     static Logger logger = Logger.getLogger(LoanController.class);
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
+
 
     @Autowired
     private LoanService loanService;
@@ -131,5 +133,10 @@ public class LoanController {
     @ResponseBody
     public BaseDto<ExtraLoanRateRuleDto> extraRateRule(@RequestParam(value = "loanName") String loanName, @RequestParam(value = "productType") ProductType productType) {
         return extraLoanRateService.findExtraLoanRateRuleByNameAndProductType(loanName, productType);
+    }
+    @RequestMapping(value = "/check-loaner", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> checkLoaner(@RequestParam(value = "loanerLoginName") String loanerLoginName) {
+        return consoleLoanCreateService.checkLoaner(loanerLoginName);
     }
 }

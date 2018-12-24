@@ -4,7 +4,6 @@ package com.tuotiansudai.util;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -90,7 +89,7 @@ public class IdentityNumberValidator {
         return !Strings.isNullOrEmpty(val) && val.matches("^[0-9]*$");
     }
 
-    private static boolean validateFistNumber(String idCard){
+    private static boolean validateFistNumber(String idCard) {
         return Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9;
     }
 
@@ -135,7 +134,7 @@ public class IdentityNumberValidator {
         return !(Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0);
     }
 
-    private static boolean validateYearByAdult(String idCard){
+    private static boolean validateYearByAdult(String idCard) {
         return ((Integer.parseInt(sdf.format(new Date())) - Integer.parseInt(idCard.substring(6, 14))) / 10000 >= 18);
     }
 
@@ -146,7 +145,7 @@ public class IdentityNumberValidator {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             Calendar cal = Calendar.getInstance();
             if (birthDate != null)
                 cal.setTime(birthDate);

@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.*;
-import com.tuotiansudai.job.DelayMessageDeliveryJobCreator;
 import com.tuotiansudai.job.JobManager;
 import com.tuotiansudai.membership.service.MembershipPrivilegePurchaseService;
 import com.tuotiansudai.message.*;
@@ -598,8 +597,7 @@ public class InvestServiceImpl implements InvestService {
         } catch (Exception e) {
             logger.error("send loan raising complete notify failed.", e);
         }
-
-        DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
+        //DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
     }
 
     private void sendLoanRaisingCompleteNotify(long loanId) {
@@ -619,9 +617,6 @@ public class InvestServiceImpl implements InvestService {
 
         String loanDuration = String.valueOf(loanModel.getDuration());
 
-        LoanerDetailsModel loanerModel = loanerDetailsMapper.getByLoanId(loanId);
-        String loanerName = loanerModel == null ? "" : loanerModel.getUserName();
-
         UserModel agentModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
         String agentUserName = agentModel == null ? "" : agentModel.getUserName();
 
@@ -631,7 +626,7 @@ public class InvestServiceImpl implements InvestService {
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
-                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
+                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, agentUserName)));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanId));
 

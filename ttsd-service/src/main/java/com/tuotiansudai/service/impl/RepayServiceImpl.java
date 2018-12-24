@@ -116,7 +116,12 @@ public class RepayServiceImpl implements RepayService {
 
         dataDto.setLoanId(loanId);
         dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
+        //如果真是借款人和登录人不一致，就是历史不合规标的
+        if(!loanModel.getAgentLoginName().equals(loginName)){
+            dataDto.setIsHistoryLoan(true);
+            dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loanModel.getAgentLoginName()).getBalance()));
 
+        }
         if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
             dataDto.setNormalRepayEnabled(true);
             long defaultInterest = 0;

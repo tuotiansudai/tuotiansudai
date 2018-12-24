@@ -50,6 +50,7 @@
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
         <result column="update_time" property="updateTime"/>
+        <result column="contract_version" property="contractVersion"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -76,12 +77,12 @@
         periods, original_duration, duration, description_text, description_html, pledge_type, base_rate, loan_amount, min_invest_amount,
         invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time,
         fundraising_end_time, deadline, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time,
-        recheck_login_name, status, update_time)
+        recheck_login_name, status, update_time,contract_version)
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type},
         #{periods}, #{originalDuration}, #{duration}, '', '', #{pledgeType}, #{baseRate}, #{loanAmount}, #{minInvestAmount},
         #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime},
         #{fundraisingEndTime}, #{deadline}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName},
-        #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
+        #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime},#{contractVersion})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -244,15 +245,20 @@
     </select>
 
     <select useCache="false" id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
-        select *,
+        select loan.*,
             (select min(loan_repay.repay_date)
              from loan_repay
              where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
             (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)+sum(loan_repay.overdue_interest)
              from loan_repay
              where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
-        from loan
-        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
+        from loan LEFT JOIN loan_mapping_history ON loan.id = loan_mapping_history.loan_id
+        where (
+                  agent_login_name = #{agentLoginName}
+              OR
+                   loan_mapping_history.login_name = #{agentLoginName}
+              )
+              and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
               and
               (
                   (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
@@ -264,8 +270,13 @@
     </select>
 
     <select useCache="false" id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
-        select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
+        select count(1) from loan LEFT JOIN  loan_mapping_history ON loan_mapping_history.loan_id=loan.id
+        where (
+                  agent_login_name = #{agentLoginName}
+              OR
+                  loan_mapping_history.login_name = #{agentLoginName}
+              )
+              and status in ('REPAYING', 'OVERDUE')
               and
               (
                   (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
@@ -275,7 +286,7 @@
     </select>
 
     <select useCache="false" id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
-        select *,
+        select loan.*,
         (select max(loan_repay.actual_repay_date)
         from loan_repay
         where loan.id=loan_repay.loan_id) as completed_date,
@@ -285,29 +296,53 @@
         (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id) as actual_repay_amount
-        from loan
-        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
+        from loan LEFT JOIN loan_mapping_history on loan.id = loan_mapping_history.loan_id
+        where
+        (
+              agent_login_name = #{agentLoginName}
+          OR
+              loan_mapping_history.login_name = #{agentLoginName}
+        )
+        and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
         order by completed_date desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select useCache="false" id="findCountCompletedByAgentLoginName" parameterType="map" resultType="long">
-        select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
+        select count(1) from loan  LEFT JOIN loan_mapping_history on loan.id = loan_mapping_history.loan_id
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan_mapping_history.login_name = #{agentLoginName}
+        )
+        and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
     </select>
 
     <select useCache="false" id="findCanceledPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
-        select * from loan
-        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        select loan.* from loan LEFT JOIN  loan_mapping_history ON loan.id = loan_mapping_history.loan_id
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan_mapping_history.login_name = #{agentLoginName}
+        )
+        and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select useCache="false" id="findCountCanceledByAgentLoginName" parameterType="map" resultType="long">
-        select count(1) from loan
-        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        select count(1) from loan LEFT JOIN  loan_mapping_history ON loan.id = loan_mapping_history.loan_id
+        where
+        (
+          agent_login_name = #{agentLoginName}
+        OR
+          loan_mapping_history.login_name = #{agentLoginName}
+        )
+        and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
 
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
