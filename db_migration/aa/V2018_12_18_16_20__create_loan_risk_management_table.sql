@@ -19,7 +19,7 @@ INSERT INTO `aa`.`loan_risk_management_title` VALUES (8, '工作信息认证');
 INSERT INTO `aa`.`loan_risk_management_title` VALUES (9, '共同借款人');
 
 CREATE TABLE `aa`.`loan_risk_management_title_relation` (
-  `id`                  BIGINT UNSIGNED NOT NULL,
+  `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `loan_id`             BIGINT UNSIGNED,
   `loan_application_id` BIGINT UNSIGNED NOT NULL,
   `title_id`            BIGINT UNSIGNED NOT NULL,

@@ -7,12 +7,12 @@ import java.util.List;
 public class LoanRiskManagementTitleRelationCreateDto implements Serializable {
     private Long loanApplicationId;
     private Long titleId;
-    private List<String> detail = new ArrayList<>();
+    private String detail;
 
     public LoanRiskManagementTitleRelationCreateDto() {
     }
 
-    public LoanRiskManagementTitleRelationCreateDto(Long loanApplicationId, Long titleId, List<String> detail) {
+    public LoanRiskManagementTitleRelationCreateDto(Long loanApplicationId, Long titleId, String detail) {
         this.loanApplicationId = loanApplicationId;
         this.titleId = titleId;
         this.detail = detail;
@@ -34,11 +34,11 @@ public class LoanRiskManagementTitleRelationCreateDto implements Serializable {
         this.titleId = titleId;
     }
 
-    public List<String> getDetail() {
+    public String getDetail() {
         return detail;
     }
 
-    public void setDetail(List<String> detail) {
+    public void setDetail(String detail) {
         this.detail = detail;
     }
 }

@@ -111,7 +111,7 @@ public class ConsoleLoanApplicationService {
         List<LoanRiskManagementTitleRelationModel> relationModels = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(loanApplicationUpdateDto.getRelationModels())) {
             for (LoanRiskManagementTitleRelationCreateDto dto : loanApplicationUpdateDto.getRelationModels()) {
-                relationModels.add(new LoanRiskManagementTitleRelationModel(null, id, dto.getTitleId(), dto.toString()));
+                relationModels.add(new LoanRiskManagementTitleRelationModel(null, id, dto.getTitleId(), dto.getDetail()));
             }
             loanRiskManagementTitleRelationMapper.create(relationModels);
         }

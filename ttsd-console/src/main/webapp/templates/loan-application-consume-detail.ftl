@@ -4,7 +4,7 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal jq-form" id="formDom">
-
+        <input type="hidden" id="loanApplicationId" value="${data.loanApplicationModel.id}">
         <section id="section-four">
             <h3><span>借款人基本信息</span></h3>
             <hr class="top-line">
@@ -182,143 +182,6 @@
             <h3><span>风控信息</span></h3>
             <hr class="top-line">
             <div class="wind_control" id="wind_control">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                            <input name="radio_1" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
-                                   data-id="data[i].id"> 手机认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_1" >
-                    <ul class="img_list">
-                        <li class="img_item item_small">
-                            <i class="item_small_i">❎</i>
-                            <img src="https://www.yasuotu.com/img/question-6.jpg" alt="" class="item_small_img">
-                        </li>
-                        <li class="img_item item_small">
-                            <i class="item_small_i">❎</i>
-                            <img src="https://www.yasuotu.com/img/question-6.jpg" class="item_small_img" alt="">
-                        </li>
-                    </ul>
-                    <div class="col-sm-1 btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_1').click()" type="button">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_2" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
-                               > 收入认证
-                    </label>
-                    <input type="file" style="display: none" id="window_2" >
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1 btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_2').click()" type="button">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_3" type="radio"
-                               value="radio_3"> 信用报告
-                    </label>
-
-                    <input type="file" style="display: none" id="window_3" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_3').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_4" type="radio"
-                               value="radio_4"> 资产认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_4" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_4').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_5" type="radio"
-                               value="radio_5"> 身份信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_5" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_5').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_6" type="radio"
-                               value="radio_6"> 婚姻状况认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_6" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_6').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_7" type="radio"
-                               value="radio_7"> 住址信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_7" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_7').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_8" type="radio"
-                               value="radio_8"> 工作信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_8" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_8').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_9" type="radio"
-                               value="radio_9"> 共同借款人
-                    </label>
-
-                    <label class="col-sm-1 control-label">
-                        姓名
-                    </label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control">
-                    </div>
-                    <label class="col-sm-1 control-label" style="width:110px">
-                        身份证号
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
 
             </div>
             <div class="form-group" id="add_input" style="display: none">
@@ -327,10 +190,10 @@
                 </label>
 
                 <label class="col-sm-1 control-label">
-                    <button class="btn btn-primary" style="margin-top:0px" id="add_wind_control">保存</button>
+                    <button class="btn btn-primary" type="button" style="margin-top:0px" id="add_wind_control">保存</button>
                 </label>
             </div>
-            <button class="btn btn-warning" id="add_wind_input" style="margin-top:30px">添加</button>
+            <button class="btn btn-warning" type="button" id="add_wind_input" style="margin-top:30px">添加</button>
         </section>
 
         <#if data.loanApplicationModel.status != 'REJECT'>
@@ -362,11 +225,13 @@
                                 提交审核
                             </button>
                         </@security.authorize>
-                        <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                            <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve" id="form-approve-btn">
-                                审核通过
-                            </button>
-                        </@security.authorize>
+                        <#if data.loanApplicationModel.status != 'APPROVE'>
+                            <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                                <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve" id="form-approve-btn">
+                                    审核通过
+                                </button>
+                            </@security.authorize>
+                        </#if>
                     </#if>
                 </div>
             </div>
