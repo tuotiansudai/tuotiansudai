@@ -108,10 +108,10 @@ public class LoanApplicationController {
         return consoleLoanApplicationService.consumeApprove(applyId);
     }
 
-    @RequestMapping(value = "/titles", method = RequestMethod.GET)
+    @RequestMapping(value = "/{applyId:^\\d+$}/titles", method = RequestMethod.GET)
     @ResponseBody
-    public List<LoanRiskManagementTitleModel> findAllTitles() {
-        return consoleLoanApplicationService.findAllTitles();
+    public List<LoanRiskManagementDetailDto> findAllTitles(@PathVariable long applyId) {
+        return consoleLoanApplicationService.findAllTitleDetail(applyId);
     }
 
     @RequestMapping(value = "/title", method = RequestMethod.POST)
