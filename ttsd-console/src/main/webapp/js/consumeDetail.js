@@ -276,10 +276,10 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             console.log(length)
             console.log(value)
             $('#wind_control').append(`<div class="form-group"><label class="col-sm-2 control-label">
-                        <input name="radio_${length+1}" type="radio"
+                        <input name="${data.name}" type="checkbox"
                                > ${value}
                     </label>
-                    <input type="file" style="display: none" id="window_${length}" data-value="">
+                    <input type="file" style="display: none" id="window_${length}" data-name="${data.id}">
                     <ul class="img_list">
 
                     </ul>
