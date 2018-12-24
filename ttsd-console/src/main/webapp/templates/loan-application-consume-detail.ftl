@@ -240,18 +240,18 @@
             <div class="wind_control" id="wind_control">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                            <input name="radio_1" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
-                                   data-id="data[i].id"> 手机认证
+                            <input name="radio_1" type="checkbox" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
+                                   data-id="data[i].id" data-title="手机认证"> 手机认证
                     </label>
 
-                    <input type="file" style="display: none" id="window_1" >
+                    <input type="file" style="display: none" id="window_1" data-name="radio_1">
                     <ul class="img_list">
                         <li class="img_item item_small">
-                            <i class="item_small_i">❎</i>
+                            <i class="item_small_i" data-num="0" data-del="radio_1">❎</i>
                             <img src="https://www.yasuotu.com/img/question-6.jpg" alt="" class="item_small_img">
                         </li>
                         <li class="img_item item_small">
-                            <i class="item_small_i">❎</i>
+                            <i class="item_small_i" data-num="1" data-del="radio_1">❎</i>
                             <img src="https://www.yasuotu.com/img/question-6.jpg" class="item_small_img" alt="">
                         </li>
                     </ul>
@@ -261,12 +261,15 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="radio_2" type="radio" value="https://www.yasuotu.com/img/question-6.jpg,https://www.yasuotu.com/img/question-6.jpg" checked=true
+                        <input name="radio_2" type="checkbox" value="https://www.yasuotu.com/img/question-6.jpg" checked=true data-title="手机认证"
                                > 收入认证
                     </label>
-                    <input type="file" style="display: none" id="window_2" >
+                    <input type="file" style="display: none" id="window_2" data-name="radio_2">
                     <ul class="img_list">
-
+                        <li class="img_item item_small">
+                            <i class="item_small_i" data-num="0" data-del="radio_2">❎</i>
+                            <img src="https://www.yasuotu.com/img/question-6.jpg" alt="" class="item_small_img">
+                        </li>
                     </ul>
                     <div class="col-sm-1 btn_container">
                         <button class="btn btn-primary" onclick="$('#window_2').click()" type="button">上传</button>
@@ -274,7 +277,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="radio_3" type="radio"
+                        <input name="radio_3" type="checkbox"
                                value="radio_3"> 信用报告
                     </label>
 
@@ -286,93 +289,24 @@
                         <button class="btn btn-primary" onclick="$('#window_3').click()">上传</button>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <input name="radio_4" type="radio"
-                               value="radio_4"> 资产认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_4" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_4').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_5" type="radio"
-                               value="radio_5"> 身份信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_5" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_5').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_6" type="radio"
-                               value="radio_6"> 婚姻状况认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_6" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_6').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_7" type="radio"
-                               value="radio_7"> 住址信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_7" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_7').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_8" type="radio"
-                               value="radio_8"> 工作信息认证
-                    </label>
-
-                    <input type="file" style="display: none" id="window_8" data-value="">
-                    <ul class="img_list">
-
-                    </ul>
-                    <div class="col-sm-1  btn_container">
-                        <button class="btn btn-primary" onclick="$('#window_8').click()">上传</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">
-                        <input name="radio_9" type="radio"
-                               value="radio_9"> 共同借款人
+                        <input name="radio_9" type="checkbox" data-title="共同借款人"
+                               > 共同借款人
                     </label>
 
                     <label class="col-sm-1 control-label">
                         姓名
                     </label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="username">
                     </div>
                     <label class="col-sm-1 control-label" style="width:110px">
                         身份证号
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="pid">
                     </div>
                 </div>
 
@@ -401,10 +335,10 @@
 
         <div class="form-group">
             <div class="col-sm-12">
-                <button type="button" class="btn  btn-primary" data-url="/" id="form-refuse-btn">
+                <button type="button" class="btn btn-primary" data-url="/" id="form-refuse-btn">
                     驳回
                 </button>
-                <button type="button" class="btn  btn-primary" data-url="/" id="form-save-btn">
+                <button type="button" class="btn btn-primary" data-url="/" id="form-save-btn">
                     保存
                 </button>
             </div>
