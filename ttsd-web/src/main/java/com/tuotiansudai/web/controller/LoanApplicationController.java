@@ -53,6 +53,7 @@ public class LoanApplicationController {
             UserModel userModel = userService.findByMobile(mobile);
             modelAndView.addObject("userName", userModel.getUserName());
         }
+        modelAndView.addObject("isAnxinProp", !StringUtils.isEmpty(mobile) && loanApplicationService.isAnxinProp(LoginUserInfo.getLoginName()));
         modelAndView.addObject("regions", LoanApplicationRegion.values());
         return modelAndView;
     }
@@ -68,7 +69,6 @@ public class LoanApplicationController {
         modelAndView.addObject("address", IdentityNumberValidator.getCityByIdentityCard(userModel.getIdentityNumber()));
         modelAndView.addObject("userName", userModel.getUserName());
         modelAndView.addObject("pledgeType", pledgeType);
-        modelAndView.addObject("isAnxinProp", !StringUtils.isEmpty(LoginUserInfo.getMobile()) && loanApplicationService.isAnxinProp(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 
