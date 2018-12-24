@@ -34,8 +34,11 @@
     </select>
 
     <delete id="deleteByLoanApplication" parameterType="long">
-        delete from loan_title_relation where loan_application_id = #{loanApplicationId};
+        delete from loan_risk_management_title_relation where loan_application_id = #{loanApplicationId};
     </delete>
 
+    <select id="findByLoanApplicationIdAndTitleId" parameterType="map" resultMap="loanRiskManagementTitleRelationResultMap">
+        SELECT * from loan_risk_management_title_relation where loan_application_id = #{loanApplicationId} and title_id=#{titleId}
+    </select>
 
 </mapper>

@@ -3,16 +3,19 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Marriage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoanConsumeBorrowApplyDto extends LoanApplicationDto{
 
     private Marriage Marriage;
-    private String identityProveUrls;
-    private String incomeProveUrls;
-    private String creditProveUrls;
-    private String marriageProveUrls;
-    private String propertyProveUrls;
-    private String togetherProveUrls;
-    private String driversLicense;
+    private List<String> identityProveUrls = new ArrayList<>();
+    private List<String> incomeProveUrls = new ArrayList<>();
+    private List<String> creditProveUrls = new ArrayList<>();
+    private List<String> marriageProveUrls = new ArrayList<>();
+    private List<String> propertyProveUrls = new ArrayList<>();
+    private List<String> togetherProveUrls = new ArrayList<>();
+    private List<String> driversLicense = new ArrayList<>();
 
     public com.tuotiansudai.repository.model.Marriage getMarriage() {
         return Marriage;
@@ -22,59 +25,59 @@ public class LoanConsumeBorrowApplyDto extends LoanApplicationDto{
         Marriage = marriage;
     }
 
-    public String getIdentityProveUrls() {
+    public List<String> getIdentityProveUrls() {
         return identityProveUrls;
     }
 
-    public void setIdentityProveUrls(String identityProveUrls) {
+    public void setIdentityProveUrls(List<String> identityProveUrls) {
         this.identityProveUrls = identityProveUrls;
     }
 
-    public String getIncomeProveUrls() {
+    public List<String> getIncomeProveUrls() {
         return incomeProveUrls;
     }
 
-    public void setIncomeProveUrls(String incomeProveUrls) {
+    public void setIncomeProveUrls(List<String> incomeProveUrls) {
         this.incomeProveUrls = incomeProveUrls;
     }
 
-    public String getCreditProveUrls() {
+    public List<String> getCreditProveUrls() {
         return creditProveUrls;
     }
 
-    public void setCreditProveUrls(String creditProveUrls) {
+    public void setCreditProveUrls(List<String> creditProveUrls) {
         this.creditProveUrls = creditProveUrls;
     }
 
-    public String getMarriageProveUrls() {
+    public List<String> getMarriageProveUrls() {
         return marriageProveUrls;
     }
 
-    public void setMarriageProveUrls(String marriageProveUrls) {
+    public void setMarriageProveUrls(List<String> marriageProveUrls) {
         this.marriageProveUrls = marriageProveUrls;
     }
 
-    public String getPropertyProveUrls() {
+    public List<String> getPropertyProveUrls() {
         return propertyProveUrls;
     }
 
-    public void setPropertyProveUrls(String propertyProveUrls) {
+    public void setPropertyProveUrls(List<String> propertyProveUrls) {
         this.propertyProveUrls = propertyProveUrls;
     }
 
-    public String getTogetherProveUrls() {
+    public List<String> getTogetherProveUrls() {
         return togetherProveUrls;
     }
 
-    public void setTogetherProveUrls(String togetherProveUrls) {
+    public void setTogetherProveUrls(List<String> togetherProveUrls) {
         this.togetherProveUrls = togetherProveUrls;
     }
 
-    public String getDriversLicense() {
+    public List<String> getDriversLicense() {
         return driversLicense;
     }
 
-    public void setDriversLicense(String driversLicense) {
+    public void setDriversLicense(List<String> driversLicense) {
         this.driversLicense = driversLicense;
     }
 }

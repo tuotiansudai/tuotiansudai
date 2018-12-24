@@ -144,7 +144,13 @@ public class ConsoleLoanApplicationService {
         return loanRiskManagementTitleModel;
     }
 
-    public List<LoanRiskManagementTitleModel> findAllTitles() {
-        return loanRiskManagementTitleMapper.findAll();
+    public List<LoanRiskManagementDetailDto> findAllTitleDetail(long loanApplicationId) {
+        List<LoanRiskManagementTitleModel> titleModels = loanRiskManagementTitleMapper.findAll();
+        List<LoanRiskManagementDetailDto> detailDtos = new ArrayList<>();
+        for(LoanRiskManagementTitleModel model : titleModels){
+            LoanRiskManagementTitleRelationModel relationModel = loanRiskManagementTitleRelationMapper.findByLoanApplicationIdAndTitleId(loanApplicationId, model.getId());
+            detailDtos.add(new LoanRiskManagementDetailDto(model.getId(), model.getTitle(), relationModel != null, relationModel != null ? relationModel.getDetail() : null));
+        }
+        return detailDtos;
     }
 }
