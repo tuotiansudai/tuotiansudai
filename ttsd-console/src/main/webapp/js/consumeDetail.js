@@ -152,21 +152,12 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         // $.get("/", function (data) {
         //     var wind_control_temp='';
         //     for(var i=0;i<data.length;i++){
-        //         var temp_item += '<ul class="img_list">'
-        //         for(var j=0;j<data[i].detail.length;j++){
-        //             temp_item+=`
-        //                 <li class="img_item item_small">
-        //                     <i class="item_small_i">❎</i>
-        //                     <img src="${data[i].detail[j]}" alt="" class="item_small_img">
-        //                 </li>
-        //             `
-        //         }
-        //         temp_item+='</ul>'
+        //
         //         if(data[i].title=="共同借款人"){
         //             wind_control_temp+=`
         //             <div class="form-group">
         //                 <label class="col-sm-2 control-label">
-        //                     <input name="${data[i].id}" type="radio" checked="${data[i].checked}"  data-id="data[i].id" data-title="data[i].title"
+        //                     <input name="${data[i].id}" type="checkbox" checked="${data[i].checked}"  data-id="${data[i].id}" data-title="${data[i].title}"
         //                            > 共同借款人
         //                 </label>
         //
@@ -184,14 +175,24 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
         //                 </div>
         //             </div>`
         //         }else{
+        //             var temp_item += '<ul class="img_list">'
+        //             for(var j=0;j<data[i].detail.length;j++){
+        //                 temp_item+=`
+        //                 <li class="img_item item_small">
+        //                     <i class="item_small_i" data-num="${j}" data-del="${data[i].id}">❎</i>
+        //                     <img src="${data[i].detail[j]}" alt="" class="item_small_img">
+        //                 </li>
+        //             `
+        //             }
+        //             temp_item+='</ul>'
         //             wind_control_temp+=`
         //             <div class="form-group">
         //                 <label class="col-sm-2 control-label">
-        //                         <input name="${data[i].id}" type="radio" checked="${data[i].checked}"
+        //                         <input name="${data[i].id}" type="checkbox" checked="${data[i].checked}" data-title="${data[i].title}" data-id="data[i].id"
         //                                > ${data[i].title}
         //                 </label>
         //
-        //                 <input type="file" style="display: none" id="window_${i}" data-value="">
+        //                 <input type="file" style="display: none" id="window_${i}" data-name="${data[i].id}">
         //                 ${temp_item}
         //                 <div class="col-sm-1 btn_container">
         //                     <button class="btn btn-primary" onclick="$('#window_${i}').click()" type='button'>上传</button>
@@ -220,13 +221,24 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             // }).done(function (data) {
             //     console.log(data)
             // })
-            // var detail = $(this).val()?$(this).val().split(','):''
-            // detail.push('https://www.yasuotu.com/img/question-6.jpg')
-            // $(this).val(detail.join(','))
-            $('#'+id).next().append('<li class="img_item item_small"><i class="item_small_i">❎</i><img src="https://www.yasuotu.com/img/question-6.jpg" class="item_small_img" alt=""></li>')
+            var name = $(this).data('name')
+            var detail =$('input[name="'+name+'"]')
+            var detail_arr = detail.val().split(',')
+            console.log(detail_arr)
+            detail_arr.push('https://www.yasuotu.com/img/question-'+detail_arr.length+1+'.jpg')
+            detail.val(detail_arr.join(','))
+            console.log(detail_arr)
+            $('#'+id).next().append('<li class="img_item item_small"><i class="item_small_i" data-num="'+(detail_arr.length-1)+'" data-del="'+name+'">❎</i><img src="https://www.yasuotu.com/img/question-6.jpg" class="item_small_img" alt=""></li>')
         })
         // 删除图片
         $('body').on('click', '.item_small_i', function () {
+            var name = $(this).data('del')
+            var num = $(this).data('num')
+            var detail =$('input[name="'+name+'"]')
+            var detail_arr = detail.val().split(',')
+            console.log(detail_arr)
+            detail_arr.splice(num,1)
+            detail.val(detail_arr.join(','))
             $(this).parent().remove();
         });
         // 查看大图
@@ -251,6 +263,16 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             $('#add_input').hide();
             var value=$('#add_input').find('input').val();
             var length=$('#wind_control').children().length
+            // $.ajax({
+            //     url: "/",
+            //     type: 'POST',
+            //     dataType: 'json',
+            //     data: value,
+            //     processData: false,
+            //     contentType: 'application/json; charset=UTF-8'
+            // }).done(function (data) {
+            //     console.log(data)
+            // })
             console.log(length)
             console.log(value)
             $('#wind_control').append(`<div class="form-group"><label class="col-sm-2 control-label">
@@ -271,8 +293,11 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             senddata.address = $('input[name="address"]').val()
             senddata.loanUsage = $('input[name="loanUsage"]').val()
             var ele_checked =  $('#wind_control').find('input:checked')
+            console.log(ele_checked.length)
             senddata.relationModels=[]
-            for(var key in ele_checked){
+            for(var key=0;key<ele_checked.length;key++){
+                console.log(key)
+                // console.log(ele_checked[key].value)
                 if($(ele_checked[key]).data('title')=='共同借款人'){
                     senddata.relationModels.push({
                         loanApplicationId:' ',
@@ -280,7 +305,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                         detail:[$('input[name="username"]').val(),$('input[name="pid"]').val()]
                     })
                 }else{
-                    var detail = $(this).val()
+                    var detail = ele_checked[key].value
                     senddata.relationModels.push({
                         loanApplicationId:' ',
                         titleId:$(ele_checked[key]).data('id'),
@@ -288,7 +313,16 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     })
                 }
             }
-            console.log(senddata)
+            // $.ajax({
+            //     url: "/",
+            //     type: 'POST',
+            //     dataType: 'json',
+            //     data: senddata,
+            //     processData: false,
+            //     contentType: 'application/json; charset=UTF-8'
+            // }).done(function (data) {
+            //     console.log(data)
+            // })
         })
     });
 
