@@ -14,4 +14,6 @@ CREATE TABLE `loan_out_tail_after` (
   DEFAULT CHARSET = utf8
   COMMENT = '放款后跟踪信息';
 
+ALTER TABLE `loan` ADD COLUMN `loan_contract_no`  VARCHAR(32);
+
 COMMIT;

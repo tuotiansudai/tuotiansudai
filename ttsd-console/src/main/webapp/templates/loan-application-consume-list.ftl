@@ -1,11 +1,11 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="loanList.js" headLab="project-manage" sideLab="ALL" title="借款申请项目管理">
+<@global.main pageCss="" pageJavascript="" headLab="project-manage" sideLab="ALL" title="借款申请项目管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="" class="form-inline query-build" id="formLoanList">
+    <form action="/loan-application/consume-list" class="form-inline query-build" method="get">
 
         <div class="form-group">
             <label for="number">借款人用户名/手机号</label>
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-primary search">查询</button>
+        <button type="submit" class="btn btn-sm btn-primary search">查询</button>
     </form>
     <div class="table-responsive" style="overflow: visible">
         <table class="table table-bordered table-hover " id="tabFormData">
@@ -67,7 +67,7 @@
                     <td>${dto.address}</td>
                     <td>${dto.amount}</td>
                     <td>${dto.period}</td>
-                    <td>${dto.status}</td>
+                    <td>${dto.status.description}</td>
                     <td><a href="/loan-application/consume/${dto.id?c}">详情</a></td>
                 </#list>
             </tbody>

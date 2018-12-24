@@ -4,16 +4,13 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class LoanApplicationConsumeDetailDto {
 
     private LoanApplicationModel loanApplicationModel;
 
-    private LoanApplicationMaterialsModel loanApplicationMaterialsModel;
-
-    private List<LoanRiskManagementTitleRelationModel> loanRiskManagementTitleRelationModelList;
-
-    private List<LoanRiskManagementTitleModel> loanRiskManagementTitleModelList;
+    private Map<String, List<String>> materialsList;
 
     public LoanApplicationModel getLoanApplicationModel() {
         return loanApplicationModel;
@@ -23,27 +20,11 @@ public class LoanApplicationConsumeDetailDto {
         this.loanApplicationModel = loanApplicationModel;
     }
 
-    public LoanApplicationMaterialsModel getLoanApplicationMaterialsModel() {
-        return loanApplicationMaterialsModel;
+    public Map<String, List<String>> getMaterialsList() {
+        return materialsList;
     }
 
-    public void setLoanApplicationMaterialsModel(LoanApplicationMaterialsModel loanApplicationMaterialsModel) {
-        this.loanApplicationMaterialsModel = loanApplicationMaterialsModel;
-    }
-
-    public List<LoanRiskManagementTitleRelationModel> getLoanRiskManagementTitleRelationModelList() {
-        return loanRiskManagementTitleRelationModelList;
-    }
-
-    public void setLoanRiskManagementTitleRelationModelList(List<LoanRiskManagementTitleRelationModel> loanRiskManagementTitleRelationModelList) {
-        this.loanRiskManagementTitleRelationModelList = loanRiskManagementTitleRelationModelList;
-    }
-
-    public List<LoanRiskManagementTitleModel> getLoanRiskManagementTitleModelList() {
-        return loanRiskManagementTitleModelList;
-    }
-
-    public void setLoanRiskManagementTitleModelList(List<LoanRiskManagementTitleModel> loanRiskManagementTitleModelList) {
-        this.loanRiskManagementTitleModelList = loanRiskManagementTitleModelList;
+    public void setMaterialsList(Map<String, List<String>> materialsList) {
+        this.materialsList = materialsList;
     }
 }

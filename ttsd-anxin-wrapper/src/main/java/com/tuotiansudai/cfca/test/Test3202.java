@@ -33,7 +33,7 @@ public class Test3202 {
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B2018122107");
+        tx3202ReqVO.setBatchNo("B2018122108");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();

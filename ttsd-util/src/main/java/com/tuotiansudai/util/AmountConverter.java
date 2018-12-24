@@ -7,6 +7,10 @@ public class AmountConverter {
 
     final static private Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
 
+    private static final String[] CN_UPPER_NUMBER = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
+    private static final String[] RADICES = {"", "拾", "佰", "仟"};
+    private static final String[] BIG_RADICES = {"", "万", "亿", "兆"};
+
     public static long convertStringToCent(String amount) {
         if (amount == null || amount.length() == 0) {
             return 0;
@@ -27,5 +31,48 @@ public class AmountConverter {
 
     public static String convertCentToString(long amount) {
         return String.format("%.2f", amount / 100D);
+    }
+
+    public static String convertCentToRMBString(long amount){
+        StringBuilder result = new StringBuilder("");
+        if (amount == 0) {
+            return "零";
+        }
+        long integral = amount / 100;
+        int integralLen = (integral + "").length();
+        int decimal = (int) (amount % 100);
+        if (integral > 0) {
+            int zeroCount = 0;
+            for (int i = 0; i < integralLen; i++) {
+                int unitLen = integralLen - i - 1;
+                int d = Integer.parseInt((integral + "").substring(i, i + 1));
+                int quotient = unitLen / 4;
+                int modulus = unitLen % 4;
+                if (d == 0) {
+                    zeroCount++;
+                } else {
+                    if (zeroCount > 0) {
+                        result.append(CN_UPPER_NUMBER[0]);
+                    }
+                    zeroCount = 0;
+                    result.append(CN_UPPER_NUMBER[d]).append(RADICES[modulus]);
+                }
+                if (modulus == 0 && zeroCount < 4) {
+                    result.append(BIG_RADICES[quotient]);
+                }
+            }
+            result.append("元");
+        }
+        if (decimal > 0) {
+            int j = decimal / 10;
+            if (j > 0) {
+                result.append(CN_UPPER_NUMBER[j]).append("角");
+            }
+            j = decimal % 10;
+            if (j > 0) {
+                result.append(CN_UPPER_NUMBER[j]).append("分");
+            }
+        }
+        return result.toString();
     }
 }

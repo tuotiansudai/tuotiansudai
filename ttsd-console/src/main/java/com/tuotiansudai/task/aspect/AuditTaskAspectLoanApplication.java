@@ -45,12 +45,12 @@ public class AuditTaskAspectLoanApplication {
     static Logger logger = Logger.getLogger(AuditTaskAspectLoanApplication.class);
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanApplicationService.applyAuditLoanApplication(*))", returning = "returnValue")
-    public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
+    public void afterReturningCreateLoan(JoinPoint joinPoint, BaseDto<BaseDataDto> returnValue) {
         logger.info("after apply loan application aspect.");
         try {
             if (returnValue.getData().getStatus()) {
                 long loanApplicationId = (long) joinPoint.getArgs()[0];
-                String senderLoginName = (String) joinPoint.getArgs()[1];
+                String senderLoginName = LoginUserInfo.getLoginName();
 
                 LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationId);
 
@@ -70,7 +70,7 @@ public class AuditTaskAspectLoanApplication {
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/loan-application/consume/" + loanApplicationModel.getId());
-                task.setDescription(senderRealName + " 提交了新的消费借款，请审核。");
+                task.setDescription(senderRealName + " 提交了新的消费借款申请，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR, String.valueOf(taskId), task);
             }
@@ -80,7 +80,7 @@ public class AuditTaskAspectLoanApplication {
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.console.service.ConsoleLoanApplicationService.consumeApprove(..))", returning = "returnValue")
-    public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
+    public void afterReturningOpenLoan(JoinPoint joinPoint, BaseDto<BaseDataDto> returnValue) {
         logger.info("after approve loan application aspect.");
         try {
             if (returnValue.getData().getStatus()) {
@@ -88,9 +88,9 @@ public class AuditTaskAspectLoanApplication {
                 String ip = (String) joinPoint.getArgs()[1];
                 String taskId = MessageFormat.format("{0}-{1}", OperationType.CONSUME_LOAN.name(), String.valueOf(loanApplicationId));
 
-                if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.RISK_CONTROL_STAFF, taskId)) {
+                if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR, taskId)) {
 
-                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.RISK_CONTROL_STAFF, taskId);
+                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR, taskId);
 
                     OperationTask notify = new OperationTask();
 
@@ -110,10 +110,10 @@ public class AuditTaskAspectLoanApplication {
 
                     notify.setDescription(senderRealName + " 通过了您 " + OperationType.CONSUME_LOAN.getDescription() + "［" + task.getObjName() + "］的申请。");
 
-                    redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.RISK_CONTROL_STAFF, taskId);
-//                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanService.findLoanById(loanId).getCreatedLoginName(), taskId, notify);
+                    redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR, taskId);
+                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
-                    String description = senderRealName + " 审核通过了消费借款 编号［" + loanApplicationId + "］。";
+                    String description = senderRealName + " 审核通过了消费借款申请 编号［" + loanApplicationId + "］。";
                     auditLogService.createAuditLog(senderLoginName, receiverLoginName, OperationType.CONSUME_LOAN, task.getObjId(), description, ip);
                 }
             }

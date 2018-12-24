@@ -2,16 +2,20 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLoanApplicationService;
+import com.tuotiansudai.console.service.ConsoleLoanCreateService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.LoanApplicationStatus;
+import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.spring.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +24,14 @@ import java.util.List;
 @RequestMapping(value = "/loan-application")
 public class LoanApplicationController {
 
-    private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
-
     @Autowired
     private ConsoleLoanApplicationService consoleLoanApplicationService;
+
+    @Autowired
+    private ConsoleLoanCreateService consoleLoanCreateService;
+
+    @Autowired
+    private ExtraLoanRateMapper extraLoanRateMapper;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView getViewList(@RequestParam(value = "index", defaultValue = "1") int index) {
@@ -59,7 +67,7 @@ public class LoanApplicationController {
         modelAndView.addObject("statusList", LoanApplicationStatus.values());
         modelAndView.addObject("dataDto", consoleLoanApplicationService.loanApplicationConsumeList(keyWord, status, startTime, endTime, index, 10));
         modelAndView.addObject("keyWord", keyWord);
-        modelAndView.addObject("keyWord", status);
+        modelAndView.addObject("selectedStatus", status);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         return modelAndView;
@@ -73,6 +81,7 @@ public class LoanApplicationController {
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/save", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> consumeSave(@PathVariable long applyId, @RequestBody LoanApplicationUpdateDto loanApplicationUpdateDto) {
         return consoleLoanApplicationService.consumeSave(applyId, loanApplicationUpdateDto, LoginUserInfo.getLoginName());
     }
@@ -80,32 +89,38 @@ public class LoanApplicationController {
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/create-loan", method = RequestMethod.GET)
     public ModelAndView createLoan(@PathVariable long applyId) {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360));
-        List<LoanType> loanTypes = Lists.newArrayList(LoanType.values());
-        Collections.reverse(loanTypes);
-        modelAndView.addObject("loanTypes", loanTypes);
-        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE));
-        modelAndView.addObject("extraSources", Lists.newArrayList(Source.WEB, Source.MOBILE));
-        modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
-        modelAndView.addObject("pledgeType", PledgeType.NONE);
+        modelAndView.addAllObjects(consoleLoanApplicationService.loanParams());
         modelAndView.addObject("loanerDto", consoleLoanApplicationService.findLoanerDetail(applyId));
         modelAndView.addObject("loanApplicationId", String.valueOf(applyId));
         return modelAndView;
     }
 
+    @RequestMapping(value = "/consume/{applyId:^\\d+$}/loan/{loanId:^\\d+$}/edit", method = RequestMethod.GET)
+    public ModelAndView loanEdit(@PathVariable long applyId, @PathVariable long loanId) {
+        ModelAndView modelAndView = new ModelAndView("/loan-edit");
+        modelAndView.addAllObjects(consoleLoanApplicationService.loanParams());
+        modelAndView.addObject("loan", consoleLoanCreateService.getEditLoanDetails(loanId));
+        modelAndView.addObject("loanApplicationId", String.valueOf(applyId));
+        modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/reject", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> consumeReject(@PathVariable long applyId) {
         return consoleLoanApplicationService.consumeReject(applyId);
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/submit-audit", method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> consumeSubmitAudit(@PathVariable long applyId) {
-        return consoleLoanApplicationService.applyAuditLoanApplication(applyId, LoginUserInfo.getLoginName());
+        return consoleLoanApplicationService.applyAuditLoanApplication(applyId);
     }
 
     @RequestMapping(value = "/consume/{applyId:^\\d+$}/approve", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> consumeApprove(@PathVariable long applyId) {
-        return consoleLoanApplicationService.consumeApprove(applyId);
+    @ResponseBody
+    public BaseDto<BaseDataDto> consumeApprove(@PathVariable long applyId, HttpServletRequest request) {
+        return consoleLoanApplicationService.consumeApprove(applyId, RequestIPParser.parse(request));
     }
 
     @RequestMapping(value = "/{applyId:^\\d+$}/titles", method = RequestMethod.GET)

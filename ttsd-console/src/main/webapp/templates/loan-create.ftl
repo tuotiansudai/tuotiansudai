@@ -34,7 +34,7 @@
                     <label class="col-sm-2 control-label">借款人: </label>
 
                     <div class="col-sm-2">
-                        <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*"
+                        <input name="agent" type="text" class="form-control ui-autocomplete-input" datatype="*" <#if pledgeType?? && pledgeType == "NONE" && loanApplicationId??>value="${loanerDto.loginName}" disabled</#if>
                                autocomplete="off"
                                errormsg="借款不能为空">
                     </div>
@@ -57,7 +57,7 @@
                     <label class="col-sm-2 control-label">原借款期限（天）: </label>
 
                     <div class="col-sm-3">
-                        <input name="originalDuration" type="text" class="form-control"
+                        <input name="originalDuration" type="text" class="form-control" <#if pledgeType?? && pledgeType == "NONE" && loanApplicationId??>value="${loanerDto.period * 30}"</#if>
                                datatype="/^\d+$/"
                                errormsg="原借款期限需要正确填写">
                     </div>
@@ -312,9 +312,12 @@
             </div>
         </section>
 
-
-        <section id="section-two">
-        </section>
+        <#if pledgeType?? && pledgeType == "NONE" && loanApplicationId??>
+            <#include 'loan-consume-loaner-details.ftl'>
+        <#else>
+            <section id="section-two">
+            </section>
+        </#if>
 
         <section id="section-three">
         </section>

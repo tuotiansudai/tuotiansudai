@@ -25,6 +25,8 @@ public class AnxinWrapperClient extends BaseClient {
 
     private final static String createLoanContract = "/anxin-sign/create-loan-contract";
 
+    private final static String createLoanServiceAgreement = "/anxin-sign/create-loan-service-agreement";
+
     private final static String createTransferContract = "/anxin-sign/create-transfer-contract";
 
     private final static String queryContract = "/anxin-sign/query-contract";
@@ -51,6 +53,10 @@ public class AnxinWrapperClient extends BaseClient {
 
     public BaseDto<AnxinDataDto> createLoanContract(long loanId) {
         return syncExecute(String.valueOf(loanId), createLoanContract, "POST");
+    }
+
+    public BaseDto<AnxinDataDto> createLoanServiceAgreement(long loanId) {
+        return syncExecute(String.valueOf(loanId), createLoanServiceAgreement, "POST");
     }
 
     public BaseDto<AnxinDataDto> createTransferContract(long transferId) {

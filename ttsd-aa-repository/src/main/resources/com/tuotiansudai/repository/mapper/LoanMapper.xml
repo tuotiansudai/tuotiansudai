@@ -50,6 +50,7 @@
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
         <result column="update_time" property="updateTime"/>
+        <result column="loan_contract_no" property="loanContractNo"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -729,5 +730,9 @@
         select sum(loan_amount) from loan where id != '1' and status in ('REPAYING','OVERDUE')
         group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
     </select>
+
+    <update id="updateLoanServiceContractNo" parameterType="map">
+        update loan set loan_contract_no = #{contractNo} where id = #{loanId}
+    </update>
 
 </mapper>

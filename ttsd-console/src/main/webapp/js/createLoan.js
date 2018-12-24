@@ -532,13 +532,13 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
             var url = $currentFormSubmitBtn.data("url");
             var requestData = {};
 
-            if ("消费借款" == value && !pledgeRadioCheckVehicle) {
+            if ("消费借款" == value) {
                 requestData = generateRequestParams({
                     'loan': loanParam,
                     'loanDetails': loanDetailsParam,
-                    'loanerDetails': loanerDetailsParam,
-                    'loanApplicationId': loanApplicationId.val()
+                    'loanerDetails': loanerDetailsParam
                 });
+                requestData['loanApplicationId'] = loanApplicationId.val()
             }
             if ("房产抵押借款" == value || ('个人资金周转' == value && !pledgeRadioCheckVehicle)) {
                 requestData = generateRequestParams({
@@ -601,7 +601,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'text!/tpl/loaner-detai
                     if (loanApplicationId.val() ==null || loanApplicationId.val()==''){
                         location.href = '/project-manage/loan-list';
                     }else {
-                        location.href = '/loan-application/consume-list';
+                        location.href = '/loan-application/consume/' + loanApplicationId.val();
                     }
                 } else {
                     fromValid = false;

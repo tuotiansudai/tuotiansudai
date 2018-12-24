@@ -24,11 +24,12 @@
                 <input name="id" type="hidden" value="${loan.loan.id?c}"/>
                 <input name="pledgeType" type="hidden" value="${loan.loan.pledgeType}"/>
                 <input name="status" type="hidden" value="${loan.loan.status}"/>
+                <input id="loanApplicationId" type="hidden" value="${loanApplicationId!}"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称:</label>
                     <div class="col-sm-4">
-                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY" || loan.loan.pledgeType == "NONE">disabled="disabled"</#if>>
                             <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
                             <option value="车辆消费借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆消费借款</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT" <#if loan.loan.pledgeType == "ENTERPRISE_CREDIT">selected</#if>>税易经营性借款信用类</option>
@@ -46,7 +47,7 @@
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="借款人不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="借款人不能为空" <#if loan.loan.status != "WAITING_VERIFY" || loan.loan.pledgeType == "NONE">disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -72,20 +73,22 @@
                     </div>
                 </div>
 
-                <div class="form-group input-append">
-                    <label class="col-sm-2 control-label">借款截止时间: </label>
+                <#if loan.loan.pledgeType != 'NONE' || (loan.loan.pledgeType == 'NONE' && ['REPAYING', 'OVERDUE']?seq_contains(loan.loan.status))>
+                    <div class="form-group input-append">
+                        <label class="col-sm-2 control-label">借款截止时间: </label>
 
-                    <div class="col-sm-3">
-                        <div class='input-group date' id='deadline'>
-                            <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
-                                   <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
-                                   errormsg="借款截止时间需要正确填写"/>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                        <div class="col-sm-3">
+                            <div class='input-group date' id='deadline'>
+                                <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
+                                       <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                                       errormsg="借款截止时间需要正确填写"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </#if>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">映射旧版本期限（天）:</label>
@@ -473,9 +476,15 @@
             <div class="col-sm-4">
                 <input name="contractId" type="hidden" value="${loan.loan.contractId?c}"/><!-- 默认合同ID -->
 
-                <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                    <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
-                </@security.authorize>
+                <#if loan.loan.pledgeType=='NONE' && loan.loan.status=='DRAFT'>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN','RISK_CONTROL_STAFF')">
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
+                    </@security.authorize>
+                <#else>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
+                    </@security.authorize>
+                </#if>
 
                 <#if loan.loan.status == "WAITING_VERIFY">
                     <@security.authorize access="hasAnyAuthority('OPERATOR')">

@@ -85,9 +85,6 @@ public class ConsoleLoanCreateService {
     @Autowired
     private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
-    @Autowired
-    private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
-
     protected final static String generateLoanName = "{0}{1}";
 
     @Transactional
@@ -101,6 +98,12 @@ public class ConsoleLoanCreateService {
 
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
         loanModel.setName(generateLoanName(loanModel.getName(), loanModel.getPledgeType()));
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
+            loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
+            loanCreateRequestDto.getLoan().setStatus(LoanStatus.DRAFT);
+        }
+
         loanMapper.create(loanModel);
 
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
@@ -144,11 +147,6 @@ public class ConsoleLoanCreateService {
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
             loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
-        }
-
-        if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
-            loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
-            loanRiskManagementTitleRelationMapper.updateLoanIdByLoanApplicationId(loanId, Long.parseLong(loanCreateRequestDto.getLoanApplicationId()));
         }
 
         return new BaseDto<>(new BaseDataDto(true));
@@ -390,10 +388,6 @@ public class ConsoleLoanCreateService {
 
         if (loanCreateRequestDto.getLoan().getPledgeType() != PledgeType.NONE && !loanCreateRequestDto.getLoan().getStatus().equals(LoanStatus.COMPLETE) && (loanCreateRequestDto.getLoan().getDeadline() == null || loanCreateRequestDto.getLoan().getDeadline().before(new Date()))) {
             return new BaseDto<>(new BaseDataDto(false, "借款截止时间不能为过去的时间"));
-        }
-
-        if (!Lists.newArrayList(LoanStatus.COMPLETE, LoanStatus.REPAYING).contains(loanCreateRequestDto.getLoan().getStatus())) {
-                return new BaseDto<>(new BaseDataDto(false, "标的类型不正确"));
         }
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loanCreateRequestDto.getLoan().getAgent());

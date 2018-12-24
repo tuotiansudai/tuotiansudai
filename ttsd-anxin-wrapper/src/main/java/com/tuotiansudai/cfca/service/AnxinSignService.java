@@ -29,6 +29,8 @@ public interface AnxinSignService {
 
     BaseDto<AnxinDataDto> createLoanContracts(long loanId);
 
+    BaseDto<AnxinDataDto> createLoanServiceAgreement(long loanId);
+
     BaseDto<AnxinDataDto> createTransferContracts(long transferApplicationId);
 
     boolean queryContract(long businessId, List<String> batchNoList, AnxinContractType anxinContractType);

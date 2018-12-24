@@ -76,6 +76,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private static final String LOAN_CONTRACT_INVESTOR_SIGN = "investorUserName";
 
+    private static final String LOAN_SERVICE_AGREEMENT_SIGN = "loaner";
+
     private static final String TRANSFER_LOAN_CONTRACT_AGENT_SIGN = "transferUserName";
 
     private static final String TRANSFER_LOAN_CONTRACT_INVESTOR_SIGN = "transfereeUserName";
@@ -105,6 +107,12 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     @Value(value = "${anxin.transfer.contract.template}")
     private String transferTemplate;
+
+    @Value(value = "${anxin.loan.service.agreement.template}")
+    private String loanServiceAgreementTemplate;
+
+    @Value(value = "${anxin.loan.contract.template.v2}")
+    private String loanTemplateV2;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -383,6 +391,51 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         return new BaseDto<>(new AnxinDataDto(true, "success"));
     }
 
+    @Override
+    public BaseDto<AnxinDataDto> createLoanServiceAgreement(long loanId) {
+        logger.info(MessageFormat.format("[安心签]: createLoanServiceAgreement loanId:{0}", String.valueOf(loanId)));
+        LoanModel loanModel = loanMapper.findById(loanId);
+        Map<String, String> dataMap = contractService.collectLoanerServiceContractModel(loanId);
+
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getLoanerLoginName());
+
+        CreateContractVO createContractVO = new CreateContractVO();
+
+        createContractVO.setInvestmentInfo(dataMap);
+
+        SignInfoVO loanerSignInfo = new SignInfoVO();
+        loanerSignInfo.setUserId(agentAnxinProp.getAnxinUserId());
+        loanerSignInfo.setAuthorizationTime(new DateTime(agentAnxinProp.getAuthTime()).toString(CONTRACT_TIME_FORMAT));
+        loanerSignInfo.setLocation(agentAnxinProp.getAuthIp());
+        loanerSignInfo.setSignLocation(LOAN_SERVICE_AGREEMENT_SIGN);
+        loanerSignInfo.setProjectCode(agentAnxinProp.getProjectCode());
+        loanerSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{loanerSignInfo});
+        createContractVO.setTemplateId(loanServiceAgreementTemplate);
+        createContractVO.setIsSign(1);
+
+        AnxinDataDto anxinDataDto = new AnxinDataDto();
+        BaseDto<AnxinDataDto> baseDto = new BaseDto<>(anxinDataDto);
+        try {
+            Tx3202ResVO tx3202ResVO = anxinSignConnectService.createContractBatch3202(loanId, UUIDGenerator.generate(), AnxinContractType.LOAN_SERVICE_CONTRACT, Lists.newArrayList(createContractVO));
+            boolean isSuccess = isSuccess(tx3202ResVO);
+            anxinDataDto.setStatus(isSuccess);
+            if (isSuccess){
+                loanMapper.updateLoanServiceContractNo(loanId, tx3202ResVO.getCreateContracts()[0].getContractNo());
+            }
+        } catch (PKIException e) {
+            anxinDataDto.setStatus(false);
+            logger.error(MessageFormat.format("[安心签] create loaner service contract error, loanId:{0}", String.valueOf(loanId)), e);
+        }
+
+        if (!anxinDataDto.getStatus()) {
+            logger.error("[安心签]: create transfer contract error, ready send sms. loanId:" + loanId);
+            sendSms(String.valueOf(loanId));
+        }
+        return baseDto;
+    }
+
     private Boolean createContractBatch(long loanId, List<CreateContractVO> createContractVOs, List<String> batchNoList) {
         String batchNo = UUIDGenerator.generate();
         try {
@@ -508,7 +561,6 @@ public class AnxinSignServiceImpl implements AnxinSignService {
 
     private CreateContractVO createInvestorContractVo(long loanId, InvestModel investModel) {
         CreateContractVO createContractVO = new CreateContractVO();
-        Map<String, String> dataModel = new HashMap<>();
 
         // 标的
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -529,26 +581,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
             return null;
         }
 
-        Map<String, String> investMap = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
-        dataModel.put("agentMobile", investMap.get("agentMobile"));
-        dataModel.put("agentIdentityNumber", investMap.get("agentIdentityNumber"));
-        dataModel.put("investorMobile", investMap.get("investorMobile"));
-        dataModel.put("investorIdentityNumber", investMap.get("investorIdentityNumber"));
-        dataModel.put("loanerUserName", investMap.get("loanerUserName"));
-        dataModel.put("loanerIdentityNumber", investMap.get("loanerIdentityNumber"));
-        dataModel.put("loanAmount1", investMap.get("loanAmount"));
-        dataModel.put("loanAmount2", investMap.get("investAmount"));
-        dataModel.put("periods1", investMap.get("agentPeriods"));
-        dataModel.put("periods2", investMap.get("leftPeriods"));
-        dataModel.put("totalRate", investMap.get("totalRate"));
-        dataModel.put("recheckTime1", investMap.get("recheckTime"));
-        dataModel.put("recheckTime2", investMap.get("recheckTime"));
-        dataModel.put("endTime1", investMap.get("endTime"));
-        dataModel.put("endTime2", investMap.get("endTime"));
+        Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
         dataModel.put("orderId", String.valueOf(investId));
-        dataModel.put("pledge", investMap.get("pledge"));
-        dataModel.put("purpose", investMap.get("purpose"));
-        dataModel.put("repayType", investMap.get("repayType"));
         createContractVO.setInvestmentInfo(dataModel);
 
         SignInfoVO agentSignInfo = new SignInfoVO();
@@ -568,7 +602,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
+        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.NONE ?  loanTemplateV2 : loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
         createContractVO.setIsSign(1);
         return createContractVO;
     }

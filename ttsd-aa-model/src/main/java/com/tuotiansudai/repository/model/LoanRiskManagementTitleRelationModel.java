@@ -12,8 +12,7 @@ public class LoanRiskManagementTitleRelationModel implements Serializable {
     public LoanRiskManagementTitleRelationModel() {
     }
 
-    public LoanRiskManagementTitleRelationModel(long id, Long loanId, Long loanApplicationId, Long titleId, String detail) {
-        this.id = id;
+    public LoanRiskManagementTitleRelationModel(Long loanId, Long loanApplicationId, Long titleId, String detail) {
         this.loanId = loanId;
         this.loanApplicationId = loanApplicationId;
         this.titleId = titleId;

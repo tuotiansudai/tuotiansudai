@@ -1,6 +1,9 @@
 package com.tuotiansudai.console.service;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.enums.Role;
@@ -15,15 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ConsoleLoanApplicationService {
 
     private static Logger logger = Logger.getLogger(ConsoleLoanApplicationService.class);
+
+    private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
 
     @Autowired
     private LoanApplicationMapper loanApplicationMapper;
@@ -80,9 +82,16 @@ public class ConsoleLoanApplicationService {
     public LoanApplicationConsumeDetailDto consumeDetail(long id){
         LoanApplicationConsumeDetailDto loanApplicationConsumeDetailDto = new LoanApplicationConsumeDetailDto();
         loanApplicationConsumeDetailDto.setLoanApplicationModel(loanApplicationMapper.findById(id));
-        loanApplicationConsumeDetailDto.setLoanApplicationMaterialsModel(loanApplicationMapper.findMaterialsByLoanApplicationId(id));
-        loanApplicationConsumeDetailDto.setLoanRiskManagementTitleModelList(loanRiskManagementTitleMapper.findAll());
-        loanApplicationConsumeDetailDto.setLoanRiskManagementTitleRelationModelList(loanRiskManagementTitleRelationMapper.findByLoanApplicationId(id));
+        LoanApplicationMaterialsModel materialsModel = loanApplicationMapper.findMaterialsByLoanApplicationId(id);
+        loanApplicationConsumeDetailDto.setMaterialsList(Maps.newHashMap(ImmutableMap.<String, List<String>>builder()
+                .put("identityProveUrls", Strings.isNullOrEmpty(materialsModel.getIdentityProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIdentityProveUrls().split(",")))
+                .put("incomeProveUrls", Strings.isNullOrEmpty(materialsModel.getIncomeProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIncomeProveUrls().split(",")))
+                .put("creditProveUrls", Strings.isNullOrEmpty(materialsModel.getCreditProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getCreditProveUrls().split(",")))
+                .put("marriageProveUrls", Strings.isNullOrEmpty(materialsModel.getMarriageProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getMarriageProveUrls().split(",")))
+                .put("propertyProveUrls", Strings.isNullOrEmpty(materialsModel.getPropertyProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getPropertyProveUrls().split(",")))
+                .put("togetherProveUrls", Strings.isNullOrEmpty(materialsModel.getTogetherProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getTogetherProveUrls().split(",")))
+                .put("driversLicense", Strings.isNullOrEmpty(materialsModel.getDriversLicense())? new ArrayList<>() : Arrays.asList(materialsModel.getDriversLicense().split(",")))
+                .build()));
         return loanApplicationConsumeDetailDto;
     }
 
@@ -99,17 +108,18 @@ public class ConsoleLoanApplicationService {
         loanApplicationMapper.update(loanApplicationModel);
 
         loanRiskManagementTitleRelationMapper.deleteByLoanApplication(loanApplicationModel.getId());
+        List<LoanRiskManagementTitleRelationModel> relationModels = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(loanApplicationUpdateDto.getRelationModels())) {
-            for (LoanRiskManagementTitleRelationModel model : loanApplicationUpdateDto.getRelationModels()) {
-                model.setLoanApplicationId(id);
+            for (LoanRiskManagementTitleRelationCreateDto dto : loanApplicationUpdateDto.getRelationModels()) {
+                relationModels.add(new LoanRiskManagementTitleRelationModel(null, id, dto.getTitleId(), dto.toString()));
             }
-            loanRiskManagementTitleRelationMapper.create(loanApplicationUpdateDto.getRelationModels());
+            loanRiskManagementTitleRelationMapper.create(relationModels);
         }
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public LoanerDetailsModel findLoanerDetail(long loanApplicationId){
-        return new LoanerDetailsModel(loanApplicationMapper.findById(loanApplicationId));
+    public LoanApplicationModel findLoanerDetail(long loanApplicationId){
+        return loanApplicationMapper.findById(loanApplicationId);
     }
 
     public BaseDto<BaseDataDto> consumeReject(long loanApplicationId){
@@ -117,11 +127,11 @@ public class ConsoleLoanApplicationService {
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BaseDto<BaseDataDto> applyAuditLoanApplication(long loanApplicationId, String submitLoginName){
+    public BaseDto<BaseDataDto> applyAuditLoanApplication(long loanApplicationId){
         return new BaseDto<>(new BaseDataDto(true));
     }
 
-    public BaseDto<BaseDataDto> consumeApprove(long loanApplicationId){
+    public BaseDto<BaseDataDto> consumeApprove(long loanApplicationId, String ip){
         LoanApplicationModel loanApplicationModel = loanApplicationMapper.findById(loanApplicationId);
         if (loanApplicationModel == null || loanApplicationModel.getLoanId() == null){
             return new BaseDto<>(new BaseDataDto(false, "审核通过失败"));
@@ -133,7 +143,6 @@ public class ConsoleLoanApplicationService {
 
         loanApplicationMapper.updateStatus(loanApplicationId, LoanApplicationStatus.APPROVE);
         loanMapper.updateStatus(loanApplicationModel.getLoanId(), LoanStatus.WAITING_VERIFY);
-        consoleLoanCreateService.applyAuditLoan(loanApplicationModel.getLoanId());
         return new BaseDto<>(new BaseDataDto(true));
     }
 
@@ -152,5 +161,18 @@ public class ConsoleLoanApplicationService {
             detailDtos.add(new LoanRiskManagementDetailDto(model.getId(), model.getTitle(), relationModel != null, relationModel != null ? relationModel.getDetail() : null));
         }
         return detailDtos;
+    }
+
+    public Map<String, Object> loanParams(){
+        List<LoanType> loanTypes = Lists.newArrayList(LoanType.values());
+        Collections.reverse(loanTypes);
+        return Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("loanTypes", loanTypes)
+                .put("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE))
+                .put("extraSources",  Lists.newArrayList(Source.WEB, Source.MOBILE))
+                .put("contractId", DEFAULT_CONTRACT_ID)
+                .put("pledgeType", PledgeType.NONE)
+                .put("productTypes", Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180, ProductType._360))
+                .build());
     }
 }

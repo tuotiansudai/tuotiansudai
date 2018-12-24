@@ -8,7 +8,7 @@ CREATE TABLE `loan_application_materials` (
   `marriage_prove_urls`   TEXT,
   `property_prove_urls`   TEXT                NOT NULL,
   `together_prove_urls`   TEXT,
-  `drivers_license_urls` TEXT,
+  `drivers_license`       TEXT,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_MATERIALS_LOAN_APPLICATION_ID_REF_LOAN_APPLICATION_ID` FOREIGN KEY (`loan_application_id`) REFERENCES `aa`.`loan_application` (`id`)
 

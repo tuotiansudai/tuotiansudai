@@ -192,6 +192,11 @@ public class LoanModel implements Serializable {
      */
     private long unpaidAmount;
 
+    /**
+     *借款信息咨询与服务协议合同编号
+     */
+    private String loanContractNo;
+
     public LoanModel() {
     }
 
@@ -211,7 +216,7 @@ public class LoanModel implements Serializable {
         this.activityRate = Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate()));
         this.fundraisingStartTime = baseRequestDto.getFundraisingStartTime();
         this.fundraisingEndTime = baseRequestDto.getFundraisingEndTime();
-        this.deadline = new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate();
+        this.deadline = baseRequestDto.getDeadline() == null ? null : new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate();
         this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
@@ -649,5 +654,13 @@ public class LoanModel implements Serializable {
 
     public void setRecheckLoginName(String recheckLoginName) {
         this.recheckLoginName = recheckLoginName;
+    }
+
+    public String getLoanContractNo() {
+        return loanContractNo;
+    }
+
+    public void setLoanContractNo(String loanContractNo) {
+        this.loanContractNo = loanContractNo;
     }
 }

@@ -13,7 +13,8 @@
             <div class="form-group">
                 <label for="control-label">标的类型:</label>
                 <select class="selectpicker" name="anxinContractType">
-                    <option value="LOAN_CONTRACT">普通标的</option>
+                    <option value="LOAN_CONTRACT">普通标的(出借人投资合同)</option>
+                    <option value="LOAN_SERVICE_CONTRACT">普通标的(借款人服务协议)</option>
                     <option value="TRANSFER_CONTRACT">债权转让</option>
                 </select>
             </div>

@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanRiskManagementTitleRelationModel;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public class LoanApplicationUpdateDto {
     private long id;
     private String address;
     private String loanUsage;
-    private List<LoanRiskManagementTitleRelationModel> relationModels = Lists.newArrayList();
+    private List<LoanRiskManagementTitleRelationCreateDto> relationModels;
 
     public long getId() {
         return id;
@@ -37,11 +36,11 @@ public class LoanApplicationUpdateDto {
         this.loanUsage = loanUsage;
     }
 
-    public List<LoanRiskManagementTitleRelationModel> getRelationModels() {
+    public List<LoanRiskManagementTitleRelationCreateDto> getRelationModels() {
         return relationModels;
     }
 
-    public void setRelationModels(List<LoanRiskManagementTitleRelationModel> relationModels) {
+    public void setRelationModels(List<LoanRiskManagementTitleRelationCreateDto> relationModels) {
         this.relationModels = relationModels;
     }
 }
