@@ -161,10 +161,8 @@ public class ConsoleLoanApplicationService {
     }
 
     public Map<String, Object> loanParams(){
-        List<LoanType> loanTypes = Lists.newArrayList(LoanType.values());
-        Collections.reverse(loanTypes);
         return Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("loanTypes", loanTypes)
+                .put("loanTypes", Lists.newArrayList(LoanType.LOAN_INTEREST_MONTHLY_REPAY, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY))
                 .put("activityTypes", Lists.newArrayList(ActivityType.NORMAL, ActivityType.NEWBIE))
                 .put("extraSources",  Lists.newArrayList(Source.WEB, Source.MOBILE))
                 .put("contractId", DEFAULT_CONTRACT_ID)

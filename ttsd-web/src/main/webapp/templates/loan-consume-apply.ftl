@@ -242,7 +242,7 @@
             </div>
         </div>
     <div style="text-align: center;margin-top: 35px">
-        <input type="checkbox" class="agreeContract" />我已阅读并同意<a href="#">《拓天速贷借款信息咨询与服务协议》</a>
+        <input type="checkbox" class="agreeContract" />我已阅读并同意<a href="${commonStaticServer}/images/pdf/loanConsumeAgreement-sample">《拓天速贷借款信息咨询与服务协议》</a>
     </div>
     <div class="confirm_btn disabled">确认申请</div>
 </div>
