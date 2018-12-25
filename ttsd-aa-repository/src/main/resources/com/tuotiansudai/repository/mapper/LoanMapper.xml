@@ -100,7 +100,7 @@
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
         'EXPERIENCE')
         <if test="name !=null and name!=''">
-            and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+            and temp.name LIKE CONCAT(CONCAT('', #{name}),'%')
         </if>
         <if test="status != null">
             and temp.status = #{status}
@@ -143,7 +143,7 @@
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or t.product_type =
         'EXPERIENCE')
         <if test="name !=null and name != ''">
-            and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+            and t.name LIKE CONCAT(CONCAT('', #{name}),'%')
         </if>
         <if test="status != null">
             and t.status = #{status}

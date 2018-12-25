@@ -316,11 +316,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             dataDto.setExtraRates(extraLoanRateDtos);
         }
 
-        List<String> riskManagement = loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId());
-        if (riskManagement.size() == 0){
-            riskManagement = Lists.newArrayList("身份验证", "手机验证", "婚姻状况验证", "房产验证", "住址信息验证", "收入证明");
-        }
-        dataDto.setRiskManagement(riskManagement);
+        dataDto.setRiskManagement(loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId()));
 
         return dataDto;
     }
