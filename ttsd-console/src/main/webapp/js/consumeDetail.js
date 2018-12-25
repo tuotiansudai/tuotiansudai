@@ -117,8 +117,8 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
             $(this).parent().remove();
         });
         // 查看大图
-        $('body').on('click', '.item_small_img', function (e) {
-            var src = e.target.src
+        $('body').on('click', '.item_small_img,.img_item', function (e) {
+            var src = e.target.src;
             layer.open({
                 type: 1,
                 closeBtn: 0, //不显示关闭按钮
@@ -126,7 +126,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
                 title:false,
                 shadeClose: true, //开启遮罩关闭
                 content: '<img src="'+src+'" style="width:100%">',
-                area: ['500px'],
+                area: ['500px',''],
             });
 
         });
