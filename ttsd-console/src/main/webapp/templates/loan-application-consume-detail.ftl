@@ -106,7 +106,7 @@
                     <ul class="col-sm-8 img_list">
                         <#list data.materialsList.identityProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
@@ -117,7 +117,7 @@
                     <ul class="col-sm-8 img_list">
                         <#list data.materialsList.incomeProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
@@ -128,7 +128,7 @@
                     <ul class="col-sm-8 img_list">
                         <#list data.materialsList.creditProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
@@ -139,7 +139,7 @@
                     <ul class="col-sm-8 img_list">
                         <#list data.materialsList.marriageProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
@@ -150,7 +150,7 @@
                     <ul class="col-sm-8 img_list">
                         <#list data.materialsList.propertyProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
@@ -160,7 +160,7 @@
                     <label class="col-sm-2 control-label">共同借款人: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.togetherLoaner!}
+                        ${data.loanApplicationModel.togetherLoaner!},${data.loanApplicationModel.togetherLoanerIdentity!}
                     </div>
                 </div>
 
@@ -169,7 +169,7 @@
                     <ul class="col-sm-8 img_list col-lg-offset-2">
                         <#list data.materialsList.togetherProveUrls as url>
                             <li class="img_item">
-                                <img src="${commonStaticServer}${url}" alt="">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
                             </li>
                         </#list>
                     </ul>
