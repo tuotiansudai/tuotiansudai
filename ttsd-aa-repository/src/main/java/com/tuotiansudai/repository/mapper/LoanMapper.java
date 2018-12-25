@@ -115,6 +115,6 @@ public interface LoanMapper {
     List<Long> sumLoanAmountGroupByIdentityByTopTen();
 
     void updateLoanServiceContractNo(@Param(value = "loanId") long loanId,
-                                     @Param(value = "contract_no") String contractNo);
+                                     @Param(value = "contractNo") String contractNo);
 
 }
