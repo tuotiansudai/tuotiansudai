@@ -24,6 +24,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -278,7 +279,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("avgServiceAmountChinese", "零");
         dataModel.put("avgServiceAmount", "0");
         dataModel.put("periods2", String.valueOf(loanModel.getPeriods()));
-        dataModel.put("signDate", simpleDateFormat.format(new DateTime()));
+        dataModel.put("signDate", simpleDateFormat.format(new Date()));
         return dataModel;
     }
 
