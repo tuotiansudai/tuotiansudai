@@ -213,21 +213,25 @@
 
             <div class="form-group">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/reject" id="form-refuse-btn">
-                        驳回
-                    </button>
                     <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/save" id="form-save-btn">
                         保存
                     </button>
-                    <#if data.loanApplicationModel.loanId??>
-                        <@security.authorize access="hasAnyAuthority('RISK_CONTROL_STAFF')">
-                            <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/submit-audit" id="form-submut-audit-btn">
-                                提交审核
-                            </button>
-                        </@security.authorize>
-                        <#if data.loanApplicationModel.status != 'APPROVE'>
+                    <#if data.loanApplicationModel.status != 'APPROVE'>
+                        <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/reject" id="form-refuse-btn">
+                            驳回
+                        </button>
+                        <#if data.loanApplicationModel.loanId??>
+                            <@security.authorize access="hasAnyAuthority('RISK_CONTROL_STAFF')">
+                                <button type="button" class="btn btn-primary"
+                                        data-url="/loan-application/consume/${data.loanApplicationModel.id}/submit-audit"
+                                        id="form-submut-audit-btn">
+                                    提交审核
+                                </button>
+                            </@security.authorize>
                             <@security.authorize access="hasAnyAuthority('OPERATOR')">
-                                <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve" id="form-approve-btn">
+                                <button type="button" class="btn btn-primary"
+                                        data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve"
+                                        id="form-approve-btn">
                                     审核通过
                                 </button>
                             </@security.authorize>
