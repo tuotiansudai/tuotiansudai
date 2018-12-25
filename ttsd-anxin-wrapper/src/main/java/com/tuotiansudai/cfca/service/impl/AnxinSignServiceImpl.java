@@ -397,7 +397,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         LoanModel loanModel = loanMapper.findById(loanId);
         Map<String, String> dataMap = contractService.collectLoanerServiceContractModel(loanId);
 
-        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getLoanerLoginName());
+        AnxinSignPropertyModel agentAnxinProp = anxinSignPropertyMapper.findByLoginName(loanModel.getAgentLoginName());
 
         CreateContractVO createContractVO = new CreateContractVO();
 

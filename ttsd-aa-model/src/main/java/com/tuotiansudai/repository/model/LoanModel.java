@@ -222,7 +222,7 @@ public class LoanModel implements Serializable {
         this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
         this.periods = baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods();
         this.originalDuration = baseRequestDto.getOriginalDuration();
-        this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1;
+        this.duration = this.deadline == null ? baseRequestDto.getOriginalDuration() : Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1;
         this.status = loanCreateRequestDto.getLoan().getStatus();
         this.createdLoginName = baseRequestDto.getCreatedBy();
         this.contractId = baseRequestDto.getContractId();
@@ -247,13 +247,13 @@ public class LoanModel implements Serializable {
         this.activityRate = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? Double.parseDouble(rateStrDivideOneHundred(baseRequestDto.getActivityRate())) : this.activityRate;
         this.fundraisingStartTime = this.status == LoanStatus.WAITING_VERIFY ? baseRequestDto.getFundraisingStartTime() : this.getFundraisingStartTime();
         this.fundraisingEndTime = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT, LoanStatus.RAISING, LoanStatus.RECHECK).contains(this.status) ? baseRequestDto.getFundraisingEndTime() : this.getFundraisingEndTime();
-        this.deadline = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate() : this.deadline;
+        this.deadline = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? baseRequestDto.getDeadline() == null ? null : new DateTime(baseRequestDto.getDeadline()).plusDays(1).minusSeconds(1).toDate() : this.deadline;
         this.investIncreasingAmount = AmountConverter.convertStringToCent(baseRequestDto.getInvestIncreasingAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMinInvestAmount());
         this.maxInvestAmount = AmountConverter.convertStringToCent(baseRequestDto.getMaxInvestAmount());
         this.periods = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? (baseRequestDto.getLoanType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : baseRequestDto.getProductType().getPeriods()) : this.periods;
         this.originalDuration = baseRequestDto.getOriginalDuration();
-        this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.duration = Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
+        this.duration = Lists.newArrayList(LoanStatus.WAITING_VERIFY, LoanStatus.PREHEAT).contains(this.status) ? this.deadline == null ? baseRequestDto.getOriginalDuration() : Days.daysBetween(new DateTime(this.fundraisingStartTime).withTimeAtStartOfDay(), new DateTime(this.deadline).withTimeAtStartOfDay()).getDays() + 1 : this.duration;
         this.contractId = baseRequestDto.getContractId();
         this.updateTime = new Date();
         return this;

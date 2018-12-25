@@ -56,10 +56,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">借款人年收入: </label>
+        <label class="col-sm-2 control-label">收入水平: </label>
 
         <div class="col-sm-4">
-            <input name="income" value="${loan.loanerDetails.income}" type="text" class="form-control" datatype="*" errormsg="借款人年收入不能为空">
+            <input name="income" value="${loan.loanerDetails.income}" type="text" class="form-control" datatype="*" errormsg="收入水平不能为空">
         </div>
     </div>
     <div class="form-group">
