@@ -217,7 +217,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
                     .put("家庭年收入", loanApplicationModel == null? "" : String.valueOf(loanApplicationModel.getHomeIncome()) + "万元")
                     .put("主体性质", loanApplicationModel == null? "" : "自然人")
-                    .put("共同借款人", loanApplicationModel == null ? "" : loanApplicationModel.getTogetherLoanerIdentity())
+                    .put("共同借款人", loanApplicationModel == null ? "" : loanApplicationModel.getTogetherLoaner())
                     .put("共同借款人身份证号", loanApplicationModel == null ? "" : MessageFormat.format("{0}*******", loanApplicationModel.getTogetherLoanerIdentity().substring(0, 10)))
                     .build());
         }

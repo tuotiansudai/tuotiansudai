@@ -167,7 +167,7 @@
             and (login_name = #{keyWord} or mobile=#{keyWord})
         </if>
         <if test="status !=null">
-            and status = #{status})
+            and status = #{status}
         </if>
         <if test="startTime != null">
             and created_time &gt;= #{startTime}
@@ -185,7 +185,7 @@
             and (login_name = #{keyWord} or mobile=#{keyWord})
         </if>
         <if test="status !=null">
-            and status = #{status})
+            and status = #{status}
         </if>
         <if test="startTime != null">
             and created_time &gt;= #{startTime}
