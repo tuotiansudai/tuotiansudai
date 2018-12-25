@@ -205,7 +205,7 @@
                         <#if data.loanApplicationModel.loanId??>
                             <button class="btn btn-warning" ><a href="/loan-application/consume/${data.loanApplicationModel.id?c}/loan/${data.loanApplicationModel.loanId?c}/edit">查看标的相关信息</a></button>
                         <#else>
-                            <button class="btn btn-warning" ><a href="/loan-application/consume/${data.loanApplicationModel.id}?c/create-loan">添加标的相关信息</a></button>
+                            <button class="btn btn-warning" ><a href="/loan-application/consume/${data.loanApplicationModel.id?c}/create-loan">添加标的相关信息</a></button>
                         </#if>
                     </label>
                 </div>

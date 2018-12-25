@@ -97,6 +97,9 @@ public class LoanApplicationService {
         if (CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getPropertyProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "资产证明材料不能为空"));
         }
+        if (!StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherLoanerIdentity()) && !IdentityNumberValidator.validateIdentity(loanConsumeBorrowApplyDto.getIdentityNumber())) {
+            return new BaseDto<>(new BaseDataDto(false, "共同借款人身份证号错误"));
+        }
         if (!StringUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherLoaner()) && CollectionUtils.isEmpty(loanConsumeBorrowApplyDto.getTogetherProveUrls())) {
             return new BaseDto<>(new BaseDataDto(false, "共同借款人材料不能为空"));
         }

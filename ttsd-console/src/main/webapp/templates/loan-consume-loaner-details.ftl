@@ -82,7 +82,7 @@
         <label class="col-sm-2 control-label">借款人借款金额(元): </label>
 
         <div class="col-sm-4">
-            <input value="${loanerDto.amount * 10000}" disabled type="text" class="form-control">
+            <input value="${(loanerDto.amount * 10000)?c}" disabled type="text" class="form-control">
         </div>
     </div>
 

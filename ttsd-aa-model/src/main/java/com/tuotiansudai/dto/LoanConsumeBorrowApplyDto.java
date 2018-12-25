@@ -8,7 +8,6 @@ import java.util.List;
 
 public class LoanConsumeBorrowApplyDto extends LoanApplicationDto{
 
-    private Marriage Marriage;
     private List<String> identityProveUrls = new ArrayList<>();
     private List<String> incomeProveUrls = new ArrayList<>();
     private List<String> creditProveUrls = new ArrayList<>();
@@ -16,14 +15,6 @@ public class LoanConsumeBorrowApplyDto extends LoanApplicationDto{
     private List<String> propertyProveUrls = new ArrayList<>();
     private List<String> togetherProveUrls = new ArrayList<>();
     private List<String> driversLicense = new ArrayList<>();
-
-    public com.tuotiansudai.repository.model.Marriage getMarriage() {
-        return Marriage;
-    }
-
-    public void setMarriage(com.tuotiansudai.repository.model.Marriage marriage) {
-        Marriage = marriage;
-    }
 
     public List<String> getIdentityProveUrls() {
         return identityProveUrls;

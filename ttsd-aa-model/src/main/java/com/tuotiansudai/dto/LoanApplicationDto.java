@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.LoanApplicationRegion;
+import com.tuotiansudai.repository.model.Marriage;
 import com.tuotiansudai.repository.model.PledgeType;
 
 public class LoanApplicationDto {
@@ -14,8 +15,6 @@ public class LoanApplicationDto {
     private String identityNumber;
     private String address;
     private short age;
-    //是否结婚
-    private boolean isMarried;
     //是否有信用报告
     private boolean haveCreditReport;
     //工作职位
@@ -32,6 +31,7 @@ public class LoanApplicationDto {
     private String sex;
     private String togetherLoaner;
     private String togetherLoanerIdentity;
+    private Marriage marriage;
 
     public String getLoginName() {
         return loginName;
@@ -105,14 +105,6 @@ public class LoanApplicationDto {
         this.age = age;
     }
 
-    public boolean getIsMarried() {
-        return isMarried;
-    }
-
-    public void setIsMarried(boolean married) {
-        isMarried = married;
-    }
-
     public boolean getHaveCreditReport() {
         return haveCreditReport;
     }
@@ -183,5 +175,13 @@ public class LoanApplicationDto {
 
     public void setTogetherLoanerIdentity(String togetherLoanerIdentity) {
         this.togetherLoanerIdentity = togetherLoanerIdentity;
+    }
+
+    public Marriage getMarriage() {
+        return marriage;
+    }
+
+    public void setMarriage(Marriage marriage) {
+        this.marriage = marriage;
     }
 }

@@ -62,7 +62,7 @@ public class LoanApplicationModel implements Serializable {
         this.identityNumber = loanApplicationDto.getIdentityNumber();
         this.address = loanApplicationDto.getAddress();
         this.age = loanApplicationDto.getAge();
-        this.marriage = loanApplicationDto.getIsMarried() ? Marriage.MARRIED : Marriage.DIVORCE;
+        this.marriage = loanApplicationDto.getMarriage();
         this.haveCreditReport = loanApplicationDto.getHaveCreditReport();
         this.workPosition = loanApplicationDto.getWorkPosition();
         this.sesameCredit = loanApplicationDto.getSesameCredit();

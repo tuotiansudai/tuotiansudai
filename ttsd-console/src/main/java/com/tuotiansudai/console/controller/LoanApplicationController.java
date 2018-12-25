@@ -1,12 +1,12 @@
 package com.tuotiansudai.console.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.console.service.ConsoleLoanApplicationService;
 import com.tuotiansudai.console.service.ConsoleLoanCreateService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.repository.mapper.ExtraLoanRateMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.LoanApplicationModel;
+import com.tuotiansudai.repository.model.LoanRiskManagementTitleModel;
 import com.tuotiansudai.spring.LoginUserInfo;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 

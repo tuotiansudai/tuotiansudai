@@ -99,11 +99,6 @@ public class ConsoleLoanCreateService {
         LoanModel loanModel = new LoanModel(loanId, loanCreateRequestDto);
         loanModel.setName(generateLoanName(loanModel.getName(), loanModel.getPledgeType()));
 
-        if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
-            loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
-            loanCreateRequestDto.getLoan().setStatus(LoanStatus.DRAFT);
-        }
-
         loanMapper.create(loanModel);
 
         if (CollectionUtils.isNotEmpty(loanCreateRequestDto.getLoan().getLoanTitles())) {
@@ -147,6 +142,10 @@ public class ConsoleLoanCreateService {
 
         if (loanCreateRequestDto.getLoanerEnterpriseInfo() != null) {
             loanerEnterpriseInfoMapper.create(new LoanerEnterpriseInfoModel(loanId, loanCreateRequestDto.getLoanerEnterpriseInfo()));
+        }
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && !Strings.isNullOrEmpty(loanCreateRequestDto.getLoanApplicationId())){
+            loanApplicationMapper.updateLoanId(Long.parseLong(loanCreateRequestDto.getLoanApplicationId()), loanId);
         }
 
         return new BaseDto<>(new BaseDataDto(true));

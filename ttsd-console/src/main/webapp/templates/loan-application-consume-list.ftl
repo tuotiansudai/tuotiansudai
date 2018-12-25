@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             <label for="project">申请状态</label>
-            <select class="selectpicker" name="status">
+            <select name="status">
                 <option value="">全部</option>
                 <#list statusList as status>
                     <option value="${status.name()}"
@@ -51,7 +51,7 @@
                 <th>申请人用户名</th>
                 <th>申请人手机号</th>
                 <th>地址</th>
-                <th>借款金额(元)</th>
+                <th>借款金额(万元)</th>
                 <th>借款周期(月)</th>
                 <th>状态</th>
                 <th>操作</th>

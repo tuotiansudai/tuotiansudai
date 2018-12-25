@@ -9,7 +9,7 @@
             <div>
                 <input name="pledgeType" type="hidden" value="NONE">
                 <input name="contractId" type="hidden" value="${contractId}"/><!-- 默认合同ID -->
-                <input name="status" type="hidden" value="WAITING_VERIFY"/>
+                <input name="status" type="hidden" <#if pledgeType?? && pledgeType == "NONE" && loanApplicationId??>value="DRAFT"<#else>value="WAITING_VERIFY"</#if>/>
                 <input id="defaultPledgeRadioCheckVehicle" type="hidden" value="true"/>
                 <input id="loanApplicationId" type="hidden" value="${loanApplicationId!}"/>
 
