@@ -11,7 +11,7 @@
         <result column="title" property="title"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanRiskManagementTitleModel" useGeneratedKeys="true">
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanRiskManagementTitleModel" useGeneratedKeys="true" keyProperty="id">
         insert into loan_risk_management_title(title)VALUES (#{title})
     </insert>
 

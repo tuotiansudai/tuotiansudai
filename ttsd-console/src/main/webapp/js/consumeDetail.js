@@ -150,10 +150,11 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
                 $('#wind_control').append(`
                           <div class="form-group">
                                 <label class="col-sm-2 control-label">
-                                    <input name="${data.id}" type="checkbox" data-title="${data.title}" data-id="${data.id}"> ${data.title}
+                                    <input name="${data.id}" type="checkbox" data-title="${data.title}" data-id="${data.id}" value=""> ${data.title}
                                 </label>
 
                                 <input type="file" style="display: none" id="window_${length}" data-name="${data.id}">
+                                <ul class="img_list"></ul>
                                 <div class="col-sm-1 btn_container">
                                     <button class="btn btn-primary" onclick="$('#window_${length}').click()" type='button'>上传</button>
                                 </div>
@@ -164,15 +165,12 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
 
         $('#form-save-btn').click(function(e){
             e.preventDefault();
-            var senddata={}
+            var senddata={};
             senddata.address = $('input[name="address"]').val();
             senddata.loanUsage = $('input[name="loanUsage"]').val();
             var ele_checked =  $('#wind_control').find('input:checked');
-            console.log(ele_checked.length)
-            senddata.relationModels=[]
+            senddata.relationModels=[];
             for(var key=0;key<ele_checked.length;key++){
-                console.log(key)
-                // console.log(ele_checked[key].value)
                 if($(ele_checked[key]).data('title')=='共同借款人'){
                     senddata.relationModels.push({
                         loanApplicationId:'',
@@ -191,62 +189,73 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
 
             console.log(senddata);
 
-            $.ajax({
-                url: $(this).data('url'),
-                data: JSON.stringify(senddata),
-                type: 'POST',
-                contentType: "application/json"
-            }).done(function (data) {
-                if (data.data.status) {
-                    location.href = '/loan-application/consume-list';
-                } else {
-                    alert('保存失败');
-                }
-            });
-
+            if (confirm("确认保存?")){
+                $.ajax({
+                    url: $(this).data('url'),
+                    data: JSON.stringify(senddata),
+                    type: 'POST',
+                    contentType: "application/json"
+                }).done(function (data) {
+                    if (data.data.status) {
+                        location.href = '/loan-application/consume-list';
+                    } else {
+                        alert('保存失败');
+                    }
+                });
+            }else{
+                return;
+            }
         });
 
         $('#form-refuse-btn').click(function () {
-            $.ajax({
-                url: $(this).data('url'),
-                type: 'POST'
-            }).done(function (data) {
-                if (data.data.status) {
-                    location.href = '/loan-application/consume-list';
-                } else {
-                    alert('驳回失败');
-                }
-            });
+            if (confirm("确认驳回?")){
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.data.status) {
+                        location.href = '/loan-application/consume-list';
+                    } else {
+                        alert('驳回失败');
+                    }
+                });
+            }else {
+                return;
+            }
         });
 
         $('#form-submut-audit-btn').click(function () {
-            $.ajax({
-                url: $(this).data('url'),
-                type: 'POST'
-            }).done(function (data) {
-                if (data.data.status) {
-                    location.href = '/loan-application/consume-list';
-                } else {
-                    alert('提交审核失败');
-                }
-            });
+            if (confirm("确认提交审核?")){
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.data.status) {
+                        location.href = '/loan-application/consume-list';
+                    } else {
+                        alert('提交审核失败');
+                    }
+                });
+            }else{
+                return;
+            }
         });
 
         $('#form-approve-btn').click(function () {
-            $.ajax({
-                url: $(this).data('url'),
-                type: 'POST'
-            }).done(function (data) {
-                if (data.data.status) {
-                    location.href = '/loan-application/consume-list';
-                } else {
-                    alert('审核失败');
-                }
-            });
+            if (confirm("确认审核通过?")){
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.data.status) {
+                        location.href = '/loan-application/consume-list';
+                    } else {
+                        alert('审核失败');
+                    }
+                });
+            }else{
+                return;
+            }
         });
-
     });
 
-/**
- * Created by qiqiannan on 2018/12/21.
- */
