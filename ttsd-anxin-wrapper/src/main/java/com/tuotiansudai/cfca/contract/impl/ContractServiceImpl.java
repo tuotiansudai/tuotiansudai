@@ -280,6 +280,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("avgServiceAmount", "0");
         dataModel.put("periods2", String.valueOf(loanModel.getPeriods()));
         dataModel.put("signDate", simpleDateFormat.format(loanModel.getRecheckTime()));
+        dataModel.put("orderId", String.valueOf(loanModel.getId()));
         return dataModel;
     }
 
