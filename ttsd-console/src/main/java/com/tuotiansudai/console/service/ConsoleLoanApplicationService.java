@@ -37,9 +37,6 @@ public class ConsoleLoanApplicationService {
     private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
 
     @Autowired
-    private ConsoleLoanCreateService consoleLoanCreateService;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired

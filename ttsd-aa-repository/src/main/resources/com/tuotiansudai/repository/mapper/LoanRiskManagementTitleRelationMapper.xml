@@ -14,7 +14,7 @@
         <result column="detail" property="detail"></result>
     </resultMap>
 
-    <insert id="create" parameterType="LoanTitleModel">
+    <insert id="create" parameterType="LoanTitleModel" useGeneratedKeys="true">
         insert into loan_risk_management_title_relation (loan_id, loan_application_id, title_id, detail) values
         <foreach collection="loanTitleModels" item="item" index="index" separator=",">
             (#{item.loanId}, #{item.loanApplicationId},#{item.titleId}, #{item.detail})
