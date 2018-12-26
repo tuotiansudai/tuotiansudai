@@ -57,6 +57,8 @@ $('input:radio[name="togetherLoaner"]').on('click',function () {
         $togetherLoaner.find('.togetherLoaner').val('');
         $togetherLoaner.find('.togetherLoanerIdentity').val('');
         $togetherLoaner.find('.remove-img-btn').trigger('click');
+        togetherLoaner = '';
+        togetherLoanerIdentity = '';
 
     }
     btnLightUp();
