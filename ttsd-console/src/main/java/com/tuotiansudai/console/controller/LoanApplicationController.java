@@ -76,6 +76,7 @@ public class LoanApplicationController {
     public ModelAndView consumeDetail(@PathVariable long applyId) {
         ModelAndView modelAndView = new ModelAndView("/loan-application-consume-detail");
         modelAndView.addObject("data", consoleLoanApplicationService.consumeDetail(applyId));
+        modelAndView.addObject("loanApplicationId", String.valueOf(applyId));
         return modelAndView;
     }
 

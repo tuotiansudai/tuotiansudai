@@ -1,19 +1,28 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="consumeDetail.js" headLab="project-manage" sideLab="start" title="借款申请信息">
+<@global.main pageCss="" pageJavascript="consumeDetail.js" headLab="project-manage" sideLab="loanApplicationList" title="借款申请信息">
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal jq-form" id="formDom">
-        <input type="hidden" id="loanApplicationId" value="${data.loanApplicationModel.id}">
+        <input type="hidden" id="loanApplicationId" value="${loanApplicationId}"/>
         <section id="section-four">
             <h3><span>借款人基本信息</span></h3>
             <hr class="top-line">
             <div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款人姓名: </label>
+
+                    <div class="col-sm-8 font_mid">
+                        ${(data.loanApplicationModel.userName)!}
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款人性别: </label>
 
                     <div class="col-sm-8 font_mid">
-                        <#if data.loanApplicationModel.sex= 'MALE'>
+                        <#if (data.loanApplicationModel.sex)?? && data.loanApplicationModel.sex= 'MALE'>
                         男
                         <#else>
                         女
@@ -25,7 +34,7 @@
                     <label class="col-sm-2 control-label">借款人年龄: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.age!}
+                        ${(data.loanApplicationModel.age)!}
                     </div>
                 </div>
 
@@ -33,7 +42,7 @@
                     <label class="col-sm-2 control-label">借款人身份证号: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.identityNumber!}
+                        ${(data.loanApplicationModel.identityNumber)!}
                     </div>
                 </div>
 
@@ -41,7 +50,9 @@
                     <label class="col-sm-2 control-label">借款人婚姻情况: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.marriage.description}
+                        <#if (data.loanApplicationModel.marriage)??>
+                             ${data.loanApplicationModel.marriage.description}
+                        </#if>
                     </div>
                 </div>
 
@@ -49,15 +60,31 @@
                     <label class="col-sm-2 control-label">借款人所在地区: </label>
 
                     <div class="col-sm-3">
-                        <input name="address" value="${data.loanApplicationModel.address!}" type="text" class="form-control" datatype="*" errormsg="借款人所在地区不能为空">
+                        <input name="address" value="${(data.loanApplicationModel.address)!}" type="text" class="form-control" datatype="*" errormsg="借款人所在地区不能为空">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">借款人家庭年收入（万元）: </label>
+                    <label class="col-sm-2 control-label">借款金额(万元): </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.homeIncome!}
+                        ${(data.loanApplicationModel.amount)!}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款周期(月): </label>
+
+                    <div class="col-sm-8 font_mid">
+                        ${(data.loanApplicationModel.period)!}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">借款人家庭年收入(万元): </label>
+
+                    <div class="col-sm-8 font_mid">
+                        ${(data.loanApplicationModel.homeIncome)!}
                     </div>
                 </div>
 
@@ -65,7 +92,7 @@
                     <label class="col-sm-2 control-label">借款人从业情况: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.workPosition!}
+                        ${(data.loanApplicationModel.workPosition)!}
                     </div>
                 </div>
 
@@ -73,7 +100,7 @@
                     <label class="col-sm-2 control-label">芝麻信用分: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.sesameCredit!}
+                        ${(data.loanApplicationModel.sesameCredit)!}
                     </div>
                 </div>
 
@@ -81,15 +108,15 @@
                     <label class="col-sm-2 control-label">借款用途: </label>
 
                     <div class="col-sm-3">
-                        <input name="loanUsage" value="${data.loanApplicationModel.loanUsage!}" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">
+                        <input name="loanUsage" value="${(data.loanApplicationModel.loanUsage)!}" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">其他资产: </label>
+                    <label class="col-sm-2 control-label">资产信息: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.elsePledge!}
+                        ${(data.loanApplicationModel.elsePledge)!}
                     </div>
                 </div>
 
@@ -160,7 +187,7 @@
                     <label class="col-sm-2 control-label">共同借款人: </label>
 
                     <div class="col-sm-8 font_mid">
-                        ${data.loanApplicationModel.togetherLoaner!},${data.loanApplicationModel.togetherLoanerIdentity!}
+                        ${(data.loanApplicationModel.togetherLoaner)!},${(data.loanApplicationModel.togetherLoanerIdentity)!}
                     </div>
                 </div>
 
@@ -196,7 +223,7 @@
             <button class="btn btn-warning" type="button" id="add_wind_input" style="margin-top:30px">添加</button>
         </section>
 
-        <#if data.loanApplicationModel.status != 'REJECT'>
+        <#if (data.loanApplicationModel.status)?? && data.loanApplicationModel.status != 'REJECT'>
             <section id="section-six">
                 <h3><span>标的信息</span></h3>
                 <hr class="top-line">
@@ -271,6 +298,5 @@
 
 
 </div>
-<!-- content area end -->
 
 </@global.main>
