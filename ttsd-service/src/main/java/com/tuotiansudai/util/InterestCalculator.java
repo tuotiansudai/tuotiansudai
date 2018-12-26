@@ -54,7 +54,7 @@ public class InterestCalculator {
 
     public static List<Long> estimateExpectedInterest(LoanModel loanModel, long amount, Date investTime) {
         Date deadline = loanModel.getPledgeType() == PledgeType.NONE && loanModel.getDeadline() == null ?
-                new DateTime(investTime).plusDays(loanModel.getOriginalDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate() : loanModel.getDeadline();
+                new DateTime(investTime).plusDays(loanModel.getOriginalDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate() : loanModel.getDeadline();
         List<Long> expectedInterestList = Lists.newArrayList();
         List<Integer> daysOfPeriodList = LoanPeriodCalculator.calculateDaysOfPerPeriod(investTime, deadline, loanModel.getType());
         for (Integer daysOfPeriod : daysOfPeriodList) {

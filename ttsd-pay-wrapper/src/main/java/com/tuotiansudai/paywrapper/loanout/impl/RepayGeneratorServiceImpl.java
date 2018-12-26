@@ -54,7 +54,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
         }
 
         if (loanModel.getPledgeType() == PledgeType.NONE && loanModel.getDeadline() == null){
-            loanModel.setDeadline(new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getOriginalDuration() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate());
+            loanModel.setDeadline(new DateTime(loanModel.getRecheckTime()).plusDays(loanModel.getOriginalDuration()).withTimeAtStartOfDay().minusSeconds(1).toDate());
             loanMapper.updateDeadline(loanModel.getId(), loanModel.getDeadline());
         }
 
