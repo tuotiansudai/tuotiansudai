@@ -202,6 +202,18 @@
                     </ul>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机动车驾驶证: </label>
+
+                    <ul class="col-sm-8 img_list">
+                        <#list data.materialsList.driversLicense as url>
+                            <li class="img_item">
+                                <img src="${commonStaticServer}${url}" alt="" width="100%">
+                            </li>
+                        </#list>
+                    </ul>
+                </div>
+
             </div>
         </section>
 

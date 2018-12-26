@@ -59,7 +59,7 @@ public class LoanApplicationController {
     }
 
     @RequestMapping(value = "/borrow-apply", method = RequestMethod.GET)
-    public ModelAndView loanApplication(@RequestParam("type")PledgeType pledgeType) {
+    public ModelAndView loanApplication(@RequestParam(value = "type", defaultValue = "NONE") PledgeType pledgeType) {
         ModelAndView modelAndView = new ModelAndView(pledgeType == PledgeType.NONE ? "loan-consume-apply" : "loan-borrow-apply", "responsive", true);
         UserModel userModel = userService.findByMobile(LoginUserInfo.getMobile());
         modelAndView.addObject("identityNumber", userModel.getIdentityNumber());
