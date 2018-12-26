@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.loan_consume_apply}" pageJavascript="${js.loan_consume_apply}" activeNav="我要借款" activeLeftNav="" title="我要借款_抵押借款_拓天速贷" keywords="抵押房产借款,抵押车辆借款,拓天借款,拓天速贷" description="拓天速贷为借款用户提供抵押房产借款和抵押车辆借款服务,拓天借款额度高,门槛低,速度快,利息低,24H放款,借款轻松还.">
+<@global.main pageCss="${css.loan_consume_apply}" pageJavascript="${js.loan_consume_apply}" activeNav="我要借款" activeLeftNav="" title="我要借款_消费借款_拓天速贷" keywords="抵押房产借款,抵押车辆借款,拓天借款,拓天速贷" description="拓天速贷为借款用户提供抵押房产借款和抵押车辆借款服务,拓天借款额度高,门槛低,速度快,利息低,24H放款,借款轻松还.">
 <div class="loan_apply_wrapper">
     <h2 class="loan_title">消费借款</h2>
     <input type="hidden" value="${pledgeType.name()}" id="pledgeType" />
@@ -29,7 +29,7 @@
                 <input type="radio" name="marriage" class="check_radio" id="divorced" value="DIVORCE"/><label for="divorced" class="check_label">离异</label>
             </div>
             <div class="supplement_info_item">
-                <span class="required-icon required-icon-none">*</span>
+                <span class="required-icon">*</span>
                 <span class="item_text workPosition-text">职位：</span>
                 <input type="text" placeholder="例如：技术总监" class="workPosition item-input" maxlength="20"/> 最多20个字
             </div>
