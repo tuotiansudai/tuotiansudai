@@ -303,9 +303,11 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         List<List<String>> names = new ArrayList<>();
         List<String> riskManagementTitleNames = loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId());
-        if (riskManagementTitleNames.size() > 0) {
-            for (int i = 0; i < riskManagementTitleNames.size(); i += 3) {
-                int toIndex = i + 3 > riskManagementTitleNames.size() ? riskManagementTitleNames.size() : i + 3;
+        int size = riskManagementTitleNames.size();
+        if (size > 0) {
+            int average = size / 2 + (size % 2 > 0 ? 1 : 0);
+            for (int i = 0; i < size; i += average) {
+                int toIndex = i + average > size ? size : i + average;
                 names.add(riskManagementTitleNames.subList(i, toIndex));
             }
         }

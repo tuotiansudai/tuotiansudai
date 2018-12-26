@@ -152,10 +152,16 @@
             <dd><span class="span-l">企业征信报告</span><span class="span-r">验资报告</span></dd>
             <dd><span class="span-l">不动产明细</span><span class="span-r">企业授信余额</span></dd>
             <dd><span class="span-l">银行流水查证</span><span class="span-r">税务缴纳</span></dd>
-        <#else>
+        <#elseif (loan.riskManagementTitleNames?size=0)>
             <dd><span class="span-l">身份认证</span><span class="span-r">手机认证</span></dd>
             <dd><span class="span-l">婚姻状况认证</span><span class="span-r">房产认证</span></dd>
             <dd><span class="span-l">住址信息认证</span><span class="span-r">收入证明</span></dd>
+        <#else>
+            <#list loan.riskManagementTitleNames as title>
+                <#list title as t>
+                    <dd><span class="span-l">t</span><span class="span-r">手机认证</span></dd>
+                </#list>
+            </#list>
         </#if>
         </dl>
     </div>
