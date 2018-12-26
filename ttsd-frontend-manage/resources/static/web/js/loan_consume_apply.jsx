@@ -68,6 +68,7 @@ haveCreditReport = 0;
 
 $('.workPosition').on('input',function (e) {
     workPosition = e.currentTarget.value;
+    btnLightUp();
 });
 
 $('.amount').on('input',function (e) {
@@ -225,8 +226,8 @@ function stopPropagation(e) {
 
 function validateSupplementInfo() {  // 补充信息
     if (marriage) {
-        if ( marriage === 'MARRIED') return maticalSets.marriageProveUrls.length;
-        else return true;
+        if ( marriage === 'MARRIED') return maticalSets.marriageProveUrls.length && workPosition && workPosition.length;
+        else return workPosition && workPosition.length;
     }
     else return false;
 }
