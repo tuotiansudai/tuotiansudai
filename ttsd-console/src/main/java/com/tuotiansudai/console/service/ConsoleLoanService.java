@@ -38,22 +38,12 @@ public class ConsoleLoanService {
     private ExtraLoanRateMapper extraLoanRateMapper;
 
     public int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
-
-        if (status !=null && status == LoanStatus.OVERDUE){
-            return 11;
-        }
-
         return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
     }
 
     public List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
-
-        if (status != null && status == LoanStatus.OVERDUE) {
-            loanModels = loanMapper.findOverdueLoanList();
-        }
-
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (LoanModel loanModel : loanModels) {
             LoanListDto loanListDto = new LoanListDto();
