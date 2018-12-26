@@ -1,6 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="loan-manage" sideLab="" title="贷后跟踪">
-
+<@global.main pageCss="" pageJavascript="" headLab="project-manage" sideLab="" title="贷后跟踪">
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal showForm" method="post" action="/project-manage/loan/${data.loanId?c}/tail-after">
@@ -74,5 +73,4 @@
     </form>
 
 </div>
-<!-- content area end -->
 </@global.main>

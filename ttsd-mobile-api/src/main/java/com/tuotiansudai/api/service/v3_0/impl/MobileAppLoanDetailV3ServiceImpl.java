@@ -94,7 +94,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
     @Autowired
-    private LoanApplicationMapper loanApplicationMapper;
+    private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
     @Autowired
     private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
@@ -277,6 +277,10 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
                 DisclosureDto loanerEnterpriseFactoringInfoDisclosureDto = convertLoanerEnterpriseFactoringInfoFromLoan(loanerEnterpriseInfoModel);
                 disclosureDtoList.add(loanerEnterpriseFactoringInfoDisclosureDto);
             }
+        }
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && Lists.newArrayList(LoanStatus.OVERDUE, LoanStatus.REPAYING).contains(loanModel.getStatus())) {
+            disclosureDtoList.add(convertLoanOutTailAfterFromLoan(loanOutTailAfterMapper.findByLoanId(loanModel.getId())));
         }
 
         dataDto.setDisclosures(disclosureDtoList);
@@ -530,4 +534,15 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         return LoanerEnterpriseInfoDisclosureDto;
     }
 
+    private DisclosureDto convertLoanOutTailAfterFromLoan(LoanOutTailAfterModel model) {
+        DisclosureDto loanOutTailAfterDisclosureDto = new DisclosureDto();
+        loanOutTailAfterDisclosureDto.setTitle("贷后跟踪");
+        loanOutTailAfterDisclosureDto.setItems(Lists.newArrayList(
+                new ItemDto("经营及财务状况", model == null ? "良好" : model.getFinanceState()),
+                new ItemDto("还款能力变化", model == null ? "无变化" : model.getRepayPower()),
+                new ItemDto("是否逾期", model == null || !model.isOverdue() ? "否" : "是"),
+                new ItemDto("是否受行政处罚", model == null || !model.isAdministrativePenalty() ? "否" : "是"),
+                new ItemDto("资金运用情况", model == null ? "按照借款用途使用" : model.getAmountUsage())));
+        return loanOutTailAfterDisclosureDto;
+    }
 }

@@ -14,8 +14,8 @@
                 "header":{"text":"系统首页","link":"/"},
                 "sidebar":
                 [
-                    {"name":"","class":"sub-title-1","text":"我的任务","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN'"},
-                        {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN'"}
+                    {"name":"","class":"sub-title-1","text":"我的任务","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN', 'RISK_CONTROL_STAFF"},
+                        {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN', 'RISK_CONTROL_STAFF'"}
                 ]
             },
             {

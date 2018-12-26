@@ -179,8 +179,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-        boolean isAuthenticationRequired = anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus();
-        boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
+        boolean isAuthenticationRequired = false;
+        boolean isAnxinUser = anxinProp != null;
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
@@ -301,19 +301,18 @@ public class LoanDetailServiceImpl implements LoanDetailService {
             }
         }
 
-        List<List<String>> names = new ArrayList<>();
-        List<String> riskManagementTitleNames = loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId());
-        int size = riskManagementTitleNames.size();
-        if (size > 0) {
-            int average = size / 2 + (size % 2 > 0 ? 1 : 0);
-            for (int i = 0; i < size; i += average) {
-                int toIndex = i + average > size ? size : i + average;
-                names.add(riskManagementTitleNames.subList(i, toIndex));
-            }
-        }
-        loanDto.setRiskManagementTitleNames(names);
+        loanDto.setRiskManagementTitleNames(loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId()));
 
-        loanDto.setLoanOutTailAfter(loanOutTailAfterMapper.findByLoanId(loanModel.getId()));
+        if (loanModel.getPledgeType() == PledgeType.NONE && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
+            LoanOutTailAfterModel model = loanOutTailAfterMapper.findByLoanId(loanModel.getId());
+            loanDto.setLoanOutTailAfter(ImmutableMap.<String, String>builder()
+                    .put("经营及财务状况", model == null ? "良好" : model.getFinanceState())
+                    .put("还款能力变化", model == null ? "无变化" : model.getRepayPower())
+                    .put("是否逾期", model == null || !model.isOverdue() ? "否" : "是")
+                    .put("是否受行政处罚", model == null || !model.isAdministrativePenalty() ? "否" : "是")
+                    .put("资金运用情况", model == null ? "按照借款用途使用" : model.getAmountUsage())
+                    .build());
+        }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {
             double newbieInterestCouponRate = 0;

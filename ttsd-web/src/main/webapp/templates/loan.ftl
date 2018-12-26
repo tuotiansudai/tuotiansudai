@@ -659,7 +659,7 @@
                                     <div class="col-md-6">
                                         <div class="container-fluid table">
                                             <div class="row">
-                                                <div class="col-xs-6 bg">房产认证</div>
+                                                <div class="col-xs-6 bg">资产认证</div>
                                                 <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
                                                 <div class="col-xs-6 bg">住址信息认证</div>
                                                 <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
@@ -669,18 +669,30 @@
                                         </div>
                                     </div>
                                 <#else>
-                                    <#list loan.riskManagementTitleNames as title>
-                                        <div class="col-md-6">
-                                            <div class="container-fluid table">
-                                                <div class="row">
-                                                    <#list title as t>
-                                                        <div class="col-xs-6 <#if t_has_next>bg<#else>br-b bg</#if>">${t}</div>
-                                                        <div class="col-xs-6 br-r <#if !t_has_next>br-b</#if>"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
-                                                    </#list>
-                                                </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <#list loan.riskManagementTitleNames as t>
+                                                    <#if ((t_index + 1) % 2) gt 0>
+                                                        <div class="col-xs-6 <#if !t_has_next || t_index gt 3 >br-b bg<#else>bg</#if>">${t}</div>
+                                                        <div class="col-xs-6 br-r <#if !t_has_next || t_index gt 3>br-b</#if>"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                    </#if>
+                                                </#list>
                                             </div>
                                         </div>
-                                    </#list>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <#list loan.riskManagementTitleNames as t>
+                                                    <#if ((t_index + 1) % 2) == 0>
+                                                        <div class="col-xs-6 <#if !t_has_next || t_index gt 4 >br-b bg<#else>bg</#if>">${t}</div>
+                                                        <div class="col-xs-6 br-r <#if !t_has_next || t_index gt 4>br-b</#if>"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                    </#if>
+                                                </#list>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </#if>
                             </div>
                         </div> <#-- .danger-control end tag -->
@@ -717,13 +729,13 @@
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
-                                      <div class="col-md-4">经营及财务状况:${(loan.loanOutTailAfter.financeState)!'良好'}</div>
-                                      <div class="col-md-4">还款能力变化:${(loan.loanOutTailAfter.repayPower)!'无变化'}</div>
-                                      <div class="col-md-4">是否逾期:${(loan.loanOutTailAfter.overdue?string('是', '否'))!'否'}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">是否受行政处罚:${(loan.loanOutTailAfter.administrativePenalty?string('是', '否'))!'否'}</div>
-                                    <div class="col-md-4">资金运用情况:${(loan.loanOutTailAfter.amountUsage)!'按照借款用途使用'}</div>
+                                    <#if loan.loanOutTailAfter??>
+                                        <#list ['经营及财务状况','还款能力变化', '是否逾期', '是否受行政处罚', '资金运用情况'] as key>
+                                            <#if loan.loanOutTailAfter[key]?? && loan.loanOutTailAfter[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.loanOutTailAfter[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
                                 </div>
                             </div>
                         </#if>
