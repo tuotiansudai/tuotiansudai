@@ -40,7 +40,7 @@
 
         <intercept-url pattern="/login/**" access="permitAll()"/>
 
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN','EDITOR','ASK_ADMIN','FINANCE_ADMIN')"/>
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN','EDITOR','ASK_ADMIN','FINANCE_ADMIN','RISK_CONTROL_STAFF')"/>
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
         <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
@@ -70,7 +70,7 @@
         <intercept-url pattern="/bank-card-manager/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/loan-application/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN','RISK_CONTROL_STAFF')"/>
 
-        <intercept-url pattern="/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN', 'RISK_CONTROL_STAFF')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
 

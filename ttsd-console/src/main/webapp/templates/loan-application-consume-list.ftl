@@ -1,7 +1,11 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 
-<@global.main pageCss="" pageJavascript="" headLab="project-manage" sideLab="ALL" title="借款申请项目管理">
+<@global.main pageCss="" pageJavascript="loan-application-list.js" headLab="project-manage" sideLab="ALL" title="借款申请项目管理">
+
+<script type="text/javascript">
+
+</script>
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -14,7 +18,7 @@
         </div>
         <div class="form-group">
             <label for="project">申请状态</label>
-            <select name="status">
+            <select name="status" class="selectpicker">
                 <option value="">全部</option>
                 <#list statusList as status>
                     <option value="${status.name()}"

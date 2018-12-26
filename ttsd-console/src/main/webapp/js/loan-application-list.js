@@ -1,4 +1,16 @@
-require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootstrapSelect', 'csrf'], function ($) {
+require(['jquery', 'jquery-ui', 'layer', 'layer-extend', 'layerWrapper', 'bootstrapSelect', 'csrf', 'bootstrapDatetimepicker'], function ($) {
+
+    $('.selectpicker').selectpicker();
+    $('#datepickerBegin,#datepickerEnd').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+    $("#datepickerBegin").on("dp.change", function (e) {
+        $('#datepickerEnd').data("DateTimePicker").minDate(e.date);
+    });
+    $("#datepickerEnd").on("dp.change", function (e) {
+        $('#datepickerBegin').data("DateTimePicker").maxDate(e.date);
+    });
+
     $(".loanApplication-comment").click(function (e) {
         e.preventDefault();
         var $self = $(this),
