@@ -3,10 +3,11 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class LoanApplicationConsumeDetailDto {
+public class LoanApplicationConsumeDetailDto implements Serializable{
 
     private LoanApplicationModel loanApplicationModel;
 

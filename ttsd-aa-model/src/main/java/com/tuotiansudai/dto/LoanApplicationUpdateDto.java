@@ -1,8 +1,6 @@
 package com.tuotiansudai.dto;
 
 
-import com.tuotiansudai.repository.model.LoanRiskManagementTitleRelationModel;
-
 import java.util.List;
 
 public class LoanApplicationUpdateDto {

@@ -81,13 +81,13 @@ public class ConsoleLoanApplicationService {
         loanApplicationConsumeDetailDto.setLoanApplicationModel(loanApplicationMapper.findById(id));
         LoanApplicationMaterialsModel materialsModel = loanApplicationMapper.findMaterialsByLoanApplicationId(id);
         loanApplicationConsumeDetailDto.setMaterialsList(Maps.newHashMap(ImmutableMap.<String, List<String>>builder()
-                .put("identityProveUrls", Strings.isNullOrEmpty(materialsModel.getIdentityProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIdentityProveUrls().split(",")))
-                .put("incomeProveUrls", Strings.isNullOrEmpty(materialsModel.getIncomeProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIncomeProveUrls().split(",")))
-                .put("creditProveUrls", Strings.isNullOrEmpty(materialsModel.getCreditProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getCreditProveUrls().split(",")))
-                .put("marriageProveUrls", Strings.isNullOrEmpty(materialsModel.getMarriageProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getMarriageProveUrls().split(",")))
-                .put("propertyProveUrls", Strings.isNullOrEmpty(materialsModel.getPropertyProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getPropertyProveUrls().split(",")))
-                .put("togetherProveUrls", Strings.isNullOrEmpty(materialsModel.getTogetherProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getTogetherProveUrls().split(",")))
-                .put("driversLicense", Strings.isNullOrEmpty(materialsModel.getDriversLicense())? new ArrayList<>() : Arrays.asList(materialsModel.getDriversLicense().split(",")))
+                .put("identityProveUrls", materialsModel == null || Strings.isNullOrEmpty(materialsModel.getIdentityProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIdentityProveUrls().split(",")))
+                .put("incomeProveUrls", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getIncomeProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getIncomeProveUrls().split(",")))
+                .put("creditProveUrls", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getCreditProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getCreditProveUrls().split(",")))
+                .put("marriageProveUrls", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getMarriageProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getMarriageProveUrls().split(",")))
+                .put("propertyProveUrls", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getPropertyProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getPropertyProveUrls().split(",")))
+                .put("togetherProveUrls", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getTogetherProveUrls())? new ArrayList<>() : Arrays.asList(materialsModel.getTogetherProveUrls().split(",")))
+                .put("driversLicense", materialsModel == null ||  Strings.isNullOrEmpty(materialsModel.getDriversLicense())? new ArrayList<>() : Arrays.asList(materialsModel.getDriversLicense().split(",")))
                 .build()));
         return loanApplicationConsumeDetailDto;
     }
