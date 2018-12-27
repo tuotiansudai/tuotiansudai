@@ -77,7 +77,7 @@
                                     <option value="11">11</option>
                                     <option value="12">12</option>
                                 </select>
-
+                                期
                             </label>
                     </div>
                 </div>
