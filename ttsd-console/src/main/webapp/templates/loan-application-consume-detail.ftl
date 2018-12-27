@@ -274,7 +274,7 @@
                                     提交审核
                                 </button>
                             </@security.authorize>
-                            <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR', 'OPERATOR_ADMIN')">
                                 <button type="button" class="btn btn-primary"
                                         data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve"
                                         id="form-approve-btn">
