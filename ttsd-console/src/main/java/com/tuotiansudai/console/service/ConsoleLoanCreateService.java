@@ -381,7 +381,7 @@ public class ConsoleLoanCreateService {
     }
 
     public BaseDto<BaseDataDto> checkCreateLoanData(LoanCreateRequestDto loanCreateRequestDto) {
-        if (loanCreateRequestDto.getLoan().getPledgeType() != PledgeType.NONE &&  userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
+        if (loanCreateRequestDto.getLoan().getStatus() != LoanStatus.DRAFT && userRoleMapper.findByLoginNameAndRole(loanCreateRequestDto.getLoan().getAgent(), Role.LOANER) == null) {
             return new BaseDto<>(new BaseDataDto(false, "代理用户不存在"));
         }
 
