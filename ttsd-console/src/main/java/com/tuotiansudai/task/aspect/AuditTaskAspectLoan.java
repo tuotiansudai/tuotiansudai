@@ -68,13 +68,13 @@ public class AuditTaskAspectLoan {
                 task.setObjName(loanModel.getName());
                 task.setCreatedTime(new Date());
 
-                String senderLoginName = loanModel.getCreatedLoginName();
+                String senderLoginName = LoginUserInfo.getLoginName();
                 UserModel sender = userMapper.findByLoginName(senderLoginName);
                 String senderRealName = sender != null && !Strings.isNullOrEmpty(sender.getUserName()) ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/project-manage/loan/" + loanModel.getId());
-                task.setDescription(senderRealName + " 创建了新的标的［" + loanModel.getName() + "］，请审核。");
+                task.setDescription(senderRealName + " 提交了新的标的［" + loanModel.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
