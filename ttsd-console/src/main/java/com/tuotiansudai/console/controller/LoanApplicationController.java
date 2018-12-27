@@ -102,6 +102,7 @@ public class LoanApplicationController {
         modelAndView.addObject("loan", consoleLoanCreateService.getEditLoanDetails(loanId));
         modelAndView.addObject("loanApplicationId", String.valueOf(applyId));
         modelAndView.addObject("extraLoanRates", extraLoanRateMapper.findByLoanId(loanId));
+        modelAndView.addObject("loanerDto", consoleLoanApplicationService.findLoanerDetail(applyId));
         return modelAndView;
     }
 

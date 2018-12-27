@@ -354,7 +354,9 @@
         </section>
 
         <section id="section-two">
-            <#if ['HOUSE', 'VEHICLE','NONE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
+            <#if loanApplicationId?? && loanerDto?? && loan.loan.pledgeType == 'NONE' && loan.loan.status='DRAFT'>
+                <#include 'loan-consume-loaner-details.ftl'>
+            <#elseif ['HOUSE', 'VEHICLE','NONE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
@@ -420,10 +422,6 @@
             </div>
             <div class="upload-box"></div>
         </div>
-
-        <#if loan.loanOutTailAfterModel??>
-            <#include 'loan-out-tail-after.ftl'>
-        </#if>
 
         <h3><span>消息中心信息</span></h3>
         <hr class="top-line"/>
