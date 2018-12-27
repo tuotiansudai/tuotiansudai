@@ -384,7 +384,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         ItemDto ageItemDto = new ItemDto("年龄", String.valueOf(model.getAge()));
         ItemDto marriageItemDto = new ItemDto("婚姻状况", model.getMarriage().getDescription());
         ItemDto employmentStatusItemDto = new ItemDto("从业情况", model.getEmploymentStatus());
-        ItemDto incomeItemDto = new ItemDto("年收入", model.getIncome());
+        ItemDto incomeItemDto = new ItemDto("收入水平", model.getIncome());
         ItemDto purposeItemDto = new ItemDto("借款用途", model.getPurpose());
         ItemDto overdueRateItemDto = new ItemDto("逾期笔数", overdueCount);
         ItemDto sourceItemDto = new ItemDto("还款来源", model.getSource());
