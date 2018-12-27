@@ -259,24 +259,24 @@
 
             <div class="form-group">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/save" id="form-save-btn">
+                    <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id?c}/save" id="form-save-btn">
                         保存
                     </button>
                     <#if data.loanApplicationModel.status != 'APPROVE'>
-                        <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id}/reject" id="form-refuse-btn">
+                        <button type="button" class="btn btn-primary" data-url="/loan-application/consume/${data.loanApplicationModel.id?c}/reject" id="form-refuse-btn">
                             驳回
                         </button>
                         <#if data.loanApplicationModel.loanId??>
                             <@security.authorize access="hasAnyAuthority('RISK_CONTROL_STAFF', 'OPERATOR', 'OPERATOR_ADMIN', 'ADMIN')">
                                 <button type="button" class="btn btn-primary"
-                                        data-url="/loan-application/consume/${data.loanApplicationModel.id}/submit-audit"
+                                        data-url="/loan-application/consume/${data.loanApplicationModel.id?c}/submit-audit"
                                         id="form-submut-audit-btn">
                                     提交审核
                                 </button>
                             </@security.authorize>
                             <@security.authorize access="hasAnyAuthority('OPERATOR', 'OPERATOR_ADMIN', 'ADMIN')">
                                 <button type="button" class="btn btn-primary"
-                                        data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve"
+                                        data-url="/loan-application/consume/${data.loanApplicationModel.id?c}/approve"
                                         id="form-approve-btn">
                                     审核通过
                                 </button>
