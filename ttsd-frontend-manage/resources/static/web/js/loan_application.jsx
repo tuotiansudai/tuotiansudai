@@ -25,17 +25,17 @@ $loanTip.on('click', function(event) {
     pageTitle = $(this).data('type');
 	$.when(commonFun.isUserLogin())
 		.done(function() {
-			if ($this.hasClass('consume') && $('#isAuthenticationRequired').val()==='false') {
-                layer.open({
-                    type: 1,
-                    btn: 0,
-                    area: ['auto', 'auto'],
-                    title: '温馨提示',
-                    content: $('#toAnXinSign')
-                });
-			}
-			else {
-                if ($('#userName').val() != '') {
+            if ($('#userName').val() != '') {
+                if ($this.hasClass('consume') && $('#isAuthenticationRequired').val()==='false') {
+                    layer.open({
+                        type: 1,
+                        btn: 0,
+                        area: ['auto', 'auto'],
+                        title: '温馨提示',
+                        content: $('#toAnXinSign')
+                    });
+                }
+                else {
                     var ifChecked = $('.risk-checkbox').prop('checked');
                     if (ifChecked) {
                         $('#risk-confirm-btn').removeClass('disabled');
@@ -50,16 +50,16 @@ $loanTip.on('click', function(event) {
                         title: '温馨提示',
                         content: $('#riskTip')
                     });
-                } else {
-                    layer.open({
-                        type: 1,
-                        btn: 0,
-                        area: ['auto', 'auto'],
-                        title: '温馨提示',
-                        content: $('#isUser')
-                    });
                 }
-			}
+            } else {
+                layer.open({
+                    type: 1,
+                    btn: 0,
+                    area: ['auto', 'auto'],
+                    title: '温馨提示',
+                    content: $('#isUser')
+                });
+            }
 		})
 		.fail(function() {
 			//判断是否需要弹框登陆
