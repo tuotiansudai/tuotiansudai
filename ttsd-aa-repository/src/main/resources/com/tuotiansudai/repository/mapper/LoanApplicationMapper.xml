@@ -164,7 +164,7 @@
     <select id="findConsumeApply" resultMap="LoanApplicationResultMap" parameterType="map">
         SELECT * from loan_application WHERE pledge_type = 'NONE'
         <if test="keyWord !=null and keyWord!=''">
-            and (login_name = #{keyWord} or mobile=#{keyWord})
+            and (login_name like CONCAT('%', #{keyWord}, '%') or mobile like CONCAT('%', #{keyWord}, '%'))
         </if>
         <if test="status !=null">
             and status = #{status}
@@ -182,7 +182,7 @@
     <select id="findConsumeApplyCount" resultType="java.lang.Long">
         SELECT COUNT(1) FROM `aa`.`loan_application` where pledge_type = 'NONE'
         <if test="keyWord !=null and keyWord!=''">
-            and (login_name = #{keyWord} or mobile=#{keyWord})
+            and (login_name like CONCAT('%', #{keyWord}, '%') or mobile like CONCAT('%', #{keyWord}, '%'))
         </if>
         <if test="status !=null">
             and status = #{status}

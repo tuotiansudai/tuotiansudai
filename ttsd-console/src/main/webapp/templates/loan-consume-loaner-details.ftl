@@ -74,7 +74,7 @@
         <label class="col-sm-2 control-label">借款人芝麻信用分: </label>
 
         <div class="col-sm-4">
-            <input value="${loanerDto.workPosition}" disabled type="text" class="form-control">
+            <input value="${loanerDto.sesameCredit!}" disabled type="text" class="form-control">
         </div>
     </div>
 
