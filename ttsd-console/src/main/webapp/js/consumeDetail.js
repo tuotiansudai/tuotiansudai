@@ -107,7 +107,9 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
                 $('#'+id).next().append('<li class="img_item item_small"><i class="item_small_i" data-num="'+(detail_arr.length-1)+'" data-del="'+name+'">❎</i><img src="' + data.url + '"class="item_small_img" alt=""></li>')})
         });
         // 删除图片
-        $('body').on('click', '.item_small_i', function () {
+        $('body').on('click', '.item_small_i', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             var name = $(this).data('del');
             var num = $(this).data('num');
             var detail =$('input[name="'+name+'"]');
@@ -117,7 +119,7 @@ require(['jquery', 'underscore', 'template', 'mustache', 'jquery-ui', 'bootstrap
             $(this).parent().remove();
         });
         // 查看大图
-        $('body').on('click', '.item_small_img,.img_item', function (e) {
+        $('body').on('click', '.img_item', function (e) {
             var src = e.target.src;
             layer.open({
                 type: 1,
