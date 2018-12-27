@@ -267,14 +267,14 @@
                             驳回
                         </button>
                         <#if data.loanApplicationModel.loanId??>
-                            <@security.authorize access="hasAnyAuthority('RISK_CONTROL_STAFF')">
+                            <@security.authorize access="hasAnyAuthority('RISK_CONTROL_STAFF', 'OPERATOR', 'OPERATOR_ADMIN', 'ADMIN')">
                                 <button type="button" class="btn btn-primary"
                                         data-url="/loan-application/consume/${data.loanApplicationModel.id}/submit-audit"
                                         id="form-submut-audit-btn">
                                     提交审核
                                 </button>
                             </@security.authorize>
-                            <@security.authorize access="hasAnyAuthority('OPERATOR', 'OPERATOR_ADMIN')">
+                            <@security.authorize access="hasAnyAuthority('OPERATOR', 'OPERATOR_ADMIN', 'ADMIN')">
                                 <button type="button" class="btn btn-primary"
                                         data-url="/loan-application/consume/${data.loanApplicationModel.id}/approve"
                                         id="form-approve-btn">
