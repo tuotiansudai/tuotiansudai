@@ -267,7 +267,6 @@ $('.agreeContract').on('click',function () {
 function submitFormData() {
     let data = { marriage, haveCreditReport, amount, period, homeIncome, loanUsage, elsePledge, workPosition, togetherLoaner, togetherLoanerIdentity, pledgeType, sesameCredit};
     data = Object.assign({},data,maticalSets);
-    console.log(data);
     commonFun.useAjax({
         type: 'POST',
         url: '/loan-application/create-consume',
