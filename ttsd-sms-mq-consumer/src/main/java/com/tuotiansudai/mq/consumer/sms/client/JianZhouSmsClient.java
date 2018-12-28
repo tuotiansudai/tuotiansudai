@@ -64,7 +64,7 @@ public class JianZhouSmsClient {
     @Autowired
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
-    @Value(value = "${fake.sms}")
+    @Value(value = "${sms.fake}")
     private boolean isFakeSms;
 
     public JianZhouSmsClient(){
