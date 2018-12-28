@@ -12,6 +12,7 @@ import com.tuotiansudai.util.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -63,6 +64,9 @@ public class JianZhouSmsClient {
     @Autowired
     private JianZhouSmsHistoryMapper jianZhouSmsHistoryMapper;
 
+    @Value(value = "${fake.sms}")
+    private boolean isFakeSms;
+
     public JianZhouSmsClient(){
         this.okHttpClient = new OkHttpClient();
         this.okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
@@ -98,12 +102,13 @@ public class JianZhouSmsClient {
         String content = MessageFormat.format("account={0}&password={1}&sendDateTime={2}&destmobile={3}&msgText={4}", ACCOUNT, PASSWORD, "", mobiles, msgText);
 
         List<JianZhouSmsHistoryModel> models = createSmsHistory(mobileList, template, paramList, isVoice);
-        String response = this.syncExecute(isVoice, content);
-        updateSmsHistory(models, response);
-
-        if(response == null || Long.parseLong(response) < 0){
-            logger.info("短信网关返回失败");
-            return;
+        if (!isFakeSms){
+            String response = this.syncExecute(isVoice, content);
+            updateSmsHistory(models, response);
+            if(response == null || Long.parseLong(response) < 0){
+                logger.info("短信网关返回失败");
+                return;
+            }
         }
 
         this.setIntoCoolDown(restrictedIP);
