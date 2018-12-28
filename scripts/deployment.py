@@ -10,7 +10,7 @@ class Deployment(object):
     _dockerCompose = '/usr/local/bin/docker-compose'
     _paver = '/usr/bin/paver'
 
-    def __init__(self, env='DEV', pay_fake=None, sms_fake=Nome):
+    def __init__(self, env='DEV', pay_fake=None, sms_fake=None):
         self.env = env
         self.pay_fake = pay_fake
         self.sms_fake = sms_fake
