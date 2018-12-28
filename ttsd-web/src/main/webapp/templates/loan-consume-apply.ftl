@@ -90,7 +90,7 @@
             <div class="loan_application_item">
                 <span class="required-icon">*</span>
                 <span class="item_text loanUsage_text textarea_text">借款用途：</span>
-                <textarea type="text" placeholder="请输入（200字以内）" class="loanUsage item-textarea" maxlength="200"></textarea>
+                <textarea type="text" placeholder="请输入（10字以内）" class="loanUsage item-textarea" maxlength="10"></textarea>
             </div>
             <div class="loan_application_item">
                 <span class="required-icon">*</span>

@@ -353,7 +353,7 @@
                     <div class="content detail">
                         <#if loan.introduce??>
                             <div class="subtitle">
-                                <h3>项目介绍</h3>
+                                <h3>项目简介</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 ${loan.introduce}
