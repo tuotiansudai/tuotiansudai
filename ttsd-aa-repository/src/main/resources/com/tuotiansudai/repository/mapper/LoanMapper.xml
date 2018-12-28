@@ -711,7 +711,7 @@
     <select id="findLoanCountByYear" resultType="long">
         SELECT COUNT(id) FROM loan
         WHERE DATE_FORMAT(created_time,'%Y') = #{createdTime}
-        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE' or pledgeType.name() == 'PERSONAL_CAPITAL_TURNOVER' or pledgeType.name() == 'ENTERPRISE_CAPITAL_TURNOVER')">
+        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE' or pledgeType.name() == 'PERSONAL_CAPITAL_TURNOVER' or pledgeType.name() == 'ENTERPRISE_CAPITAL_TURNOVER' or pledgeType.name() == 'NONE')">
             and pledge_type = #{pledgeType}
         </if>
         <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE_CREDIT' or pledgeType.name() == 'ENTERPRISE_PLEDGE')">
