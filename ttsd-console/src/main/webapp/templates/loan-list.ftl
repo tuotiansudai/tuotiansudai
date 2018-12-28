@@ -138,14 +138,14 @@
     <!-- pagination  -->
     <nav class="pagination-control">
         <div>
-            <span class="bordern">总共${loanListCount}条,每页显示${pageSize}条</span>
+            <span class="bordern">总共${loanListCount}条</span>
         </div>
         <#if loanListDtos?has_content>
             <ul class="pagination">
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?status=${selectedStatus!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${selectedStatus!}&index=${index-1}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -156,7 +156,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?status=${selectedStatus!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
+                    <a href="?status=${selectedStatus!}&index=${index+1}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

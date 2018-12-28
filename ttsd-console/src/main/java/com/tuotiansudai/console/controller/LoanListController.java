@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AnxinWrapperClient;
 import com.tuotiansudai.client.MQWrapperClient;
 import com.tuotiansudai.console.service.ConsoleLoanService;
@@ -82,7 +83,6 @@ public class LoanListController {
         modelAndView.addObject("loanListCount", loanListCount);
         modelAndView.addObject("loanListDtos", loanListDtos);
         modelAndView.addObject("index", index);
-        modelAndView.addObject("pageSize", pageSize);
         long totalPages = PaginationUtil.calculateMaxPage(loanListCount, pageSize);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
         boolean hasNextPage = index < totalPages;
