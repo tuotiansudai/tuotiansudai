@@ -1,9 +1,9 @@
 package com.tuotiansudai.enums;
 
 public enum LoanApplicationStatus {
-    WAITING("等待审核"),
-    APPROVE("通过"),
-    REJECT("驳回");
+    WAITING("待审核"),
+    APPROVE("已审核"),
+    REJECT("已驳回");
 
     LoanApplicationStatus(String description) {
         this.description = description;
