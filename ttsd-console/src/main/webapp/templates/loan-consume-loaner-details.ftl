@@ -98,7 +98,7 @@
         <label class="col-sm-2 control-label">借款用途: </label>
 
         <div class="col-sm-4">
-            <input name="purpose" value="${(loanerDto.loanUsage)!}" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">
+            <input name="purpose" value="${(loanerDto.loanUsage)!}" type="text" maxlength="10" class="form-control" datatype="*" errormsg="借款用途不能为空">
         </div>
     </div>
 
@@ -106,7 +106,7 @@
         <label class="col-sm-2 control-label">资产信息: </label>
 
         <div class="col-sm-4">
-            <input value="${(loanerDto.elsePledge)!}" disabled type="text" maxlength="6" class="form-control">
+            <input value="${(loanerDto.elsePledge)!}" disabled type="text" class="form-control">
         </div>
     </div>
 </div>

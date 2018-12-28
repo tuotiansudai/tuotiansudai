@@ -73,7 +73,7 @@
         <label class="col-sm-2 control-label">借款用途: </label>
 
         <div class="col-sm-4">
-            <input name="purpose" value="${(loan.loanerDetails.purpose)!}" type="text" maxlength="6" class="form-control" datatype="*" errormsg="借款用途不能为空">
+            <input name="purpose" value="${(loan.loanerDetails.purpose)!}" type="text" maxlength="10" class="form-control" datatype="*" errormsg="借款用途不能为空">
         </div>
     </div>
 </div>
