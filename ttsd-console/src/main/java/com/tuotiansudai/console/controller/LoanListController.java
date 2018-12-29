@@ -13,10 +13,7 @@ import com.tuotiansudai.message.AnxinContractMessage;
 import com.tuotiansudai.message.LoanOutSuccessMessage;
 import com.tuotiansudai.mq.client.model.MessageQueue;
 import com.tuotiansudai.repository.mapper.TransferApplicationMapper;
-import com.tuotiansudai.repository.model.AnxinContractType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.TransferApplicationModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.CalculateUtil;
@@ -141,6 +138,20 @@ public class LoanListController {
             mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateAnXinContract, new LoanOutSuccessMessage(businessId));
         }
 
+        if (anxinContractType.equals(AnxinContractType.LOAN_SERVICE_CONTRACT)) {
+            LoanModel loanModel = loanService.findLoanById(businessId);
+            if (loanModel == null) {
+                baseDataDto.setMessage("该标的不存在!");
+                return baseDto;
+            }
+
+            if (!Strings.isNullOrEmpty(loanModel.getLoanContractNo())) {
+                baseDataDto.setMessage("该标的借款信息咨询与服务协议合同已生成!");
+                return baseDto;
+            }
+            mqWrapperClient.sendMessage(MessageQueue.LoanOutSuccess_GenerateLoanServiceAgreement, new LoanOutSuccessMessage(businessId));
+        }
+
         if (anxinContractType.equals(AnxinContractType.TRANSFER_CONTRACT)) {
             TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(businessId);
             if (transferApplicationModel == null) {
@@ -205,6 +216,11 @@ public class LoanListController {
                 baseDataDto.setMessage("该债权转让合同已经全部生成!");
                 return baseDto;
             }
+        }
+
+        if (anxinContractType.equals(AnxinContractType.LOAN_SERVICE_CONTRACT)) {
+            baseDataDto.setMessage("success");
+            return baseDto;
         }
 
         return anxinWrapperClient.queryContract(new AnxinQueryContractDto(businessId, anxinContractType));

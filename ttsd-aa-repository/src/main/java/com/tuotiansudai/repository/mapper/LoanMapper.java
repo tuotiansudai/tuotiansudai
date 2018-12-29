@@ -50,6 +50,8 @@ public interface LoanMapper {
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 
+    void updateDeadline(@Param(value = "loanId") long loanId, @Param(value = "deadline") Date deadline);
+
     List<LoanModel> findRepayingPaginationByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
                                                            @Param(value = "index") int index,
                                                            @Param(value = "pageSize") int pageSize,
@@ -112,7 +114,7 @@ public interface LoanMapper {
 
     List<Long> sumLoanAmountGroupByIdentityByTopTen();
 
-    //console 标的列表 单独查询11条逾期标的
-    List<LoanModel> findOverdueLoanList();
+    void updateLoanServiceContractNo(@Param(value = "loanId") long loanId,
+                                     @Param(value = "contractNo") String contractNo);
 
 }

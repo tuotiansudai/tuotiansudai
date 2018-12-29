@@ -68,13 +68,13 @@ public class AuditTaskAspectLoan {
                 task.setObjName(loanModel.getName());
                 task.setCreatedTime(new Date());
 
-                String senderLoginName = loanModel.getCreatedLoginName();
+                String senderLoginName = LoginUserInfo.getLoginName();
                 UserModel sender = userMapper.findByLoginName(senderLoginName);
                 String senderRealName = sender != null && !Strings.isNullOrEmpty(sender.getUserName()) ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/project-manage/loan/" + loanModel.getId());
-                task.setDescription(senderRealName + " 创建了新的标的［" + loanModel.getName() + "］，请审核。");
+                task.setDescription(senderRealName + " 提交了新的标的［" + loanModel.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
@@ -117,7 +117,7 @@ public class AuditTaskAspectLoan {
                     notify.setDescription(senderRealName + " 通过了您 " + OperationType.PROJECT.getDescription() + "［" + task.getObjName() + "］的申请。");
 
                     redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanService.findLoanById(loanId).getCreatedLoginName(), taskId, notify);
+                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
                     String description = senderRealName + " 审核通过了标的［" + task.getObjName() + "］。";
                     auditLogService.createAuditLog(senderLoginName, receiverLoginName, OperationType.PROJECT, task.getObjId(), description, ip);

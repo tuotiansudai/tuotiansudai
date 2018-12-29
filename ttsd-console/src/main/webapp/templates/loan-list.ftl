@@ -54,7 +54,7 @@
                 <th>项目名称</th>
                 <th>借款期限</th>
                 <th>借款人</th>
-                <th>权证人</th>
+                <th>借款人用户名</th>
                 <th>借款金额(元)</th>
                 <th>年化/活动(利率)</th>
                 <th>投资奖励</th>
@@ -118,15 +118,17 @@
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td><a class="invest_repay"
-                           href="/finance-manage/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a
-                            class="loan_repay"
+                           href="/finance-manage/invests?loanId=${loanListDto.id?string('0')}">投资</a>/
+                        <a class="loan_repay"
                             href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a>
                     </td>
-                    <#if loanListDto.pledgeType != 'NONE'>
-                        <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a>
-                        </td></#if>
-                    <#if loanListDto.pledgeType == 'NONE'>
-                        <td><a class="loan_edit" ${loanListDto.id?string('0')}">无</a></td></#if>
+                    <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a>
+
+                        <#if loanListDto.pledgeType == 'NONE' && ['REPAYING', 'OVERDUE']?seq_contains(loanListDto.status)>
+                            <a href="/project-manage/loan/${loanListDto.id?string('0')}/tail-after">贷后跟踪</a>
+                        </#if>
+                    </td>
+
                 </tr>
                 </#list>
             </tbody>

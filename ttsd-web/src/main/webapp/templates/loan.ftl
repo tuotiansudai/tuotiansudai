@@ -353,7 +353,7 @@
                     <div class="content detail">
                         <#if loan.introduce??>
                             <div class="subtitle">
-                                <h3>项目介绍</h3>
+                                <h3>项目简介</h3>
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 ${loan.introduce}
@@ -365,9 +365,9 @@
                             </div>
                             <div class="container-fluid list-block clearfix">
                                 <div class="row">
-                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期笔数', '还款来源'] as key>
+                                    <#list ['借款人', '性别', '年龄', '婚姻状况', '身份证号', '申请地区', '收入水平', '就业情况', '借款用途', '逾期笔数', '还款来源', '主体性质', '共同借款人', '共同借款人身份证号'] as key>
                                         <#if (loan.loanerDetail[key])?? && loan.loanerDetail[key] != '' && loan.loanerDetail[key] != '不明' >
-                                            <div class="col-md-4"><div class="col-md-3">${key}：</div><div class="col-md-9">${loan.loanerDetail[key]}</div></div>
+                                            <div class="col-md-4">${key}：${loan.loanerDetail[key]}</div>
                                         </#if>
                                     </#list>
                                 </div>
@@ -614,8 +614,36 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                <#else>
+                                <#elseif loan.pledgeType == 'ENTERPRISE_BILL'>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">实地认证</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">商业汇票</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">企业征信报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">验资报告</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <div class="col-xs-6 bg">不动产明细</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 bg">企业授信余额</div>
+                                                <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">银行流水查证</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                <div class="col-xs-6 br-b bg">税务缴纳</div>
+                                                <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <#elseif (loan.riskManagementTitleNames?size=0)>
                                     <div class="col-md-6">
                                         <div class="container-fluid table">
                                             <div class="row">
@@ -631,12 +659,37 @@
                                     <div class="col-md-6">
                                         <div class="container-fluid table">
                                             <div class="row">
-                                                <div class="col-xs-6 bg">房产认证</div>
+                                                <div class="col-xs-6 bg">资产认证</div>
                                                 <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
                                                 <div class="col-xs-6 bg">住址信息认证</div>
                                                 <div class="col-xs-6 br-r"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
                                                 <div class="col-xs-6 br-b bg">收入证明</div>
                                                 <div class="col-xs-6 br-r br-b"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <#else>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <#list loan.riskManagementTitleNames as t>
+                                                    <#if ((t_index + 1) % 2) gt 0>
+                                                        <div class="col-xs-6 <#if !t_has_next || t_index gt 3 >br-b bg<#else>bg</#if>">${t}</div>
+                                                        <div class="col-xs-6 br-r <#if !t_has_next || t_index gt 3>br-b</#if>"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                    </#if>
+                                                </#list>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-fluid table">
+                                            <div class="row">
+                                                <#list loan.riskManagementTitleNames as t>
+                                                    <#if ((t_index + 1) % 2) == 0>
+                                                        <div class="col-xs-6 <#if !t_has_next || t_index gt 4 >br-b bg<#else>bg</#if>">${t}</div>
+                                                        <div class="col-xs-6 br-r <#if !t_has_next || t_index gt 4>br-b</#if>"><i class="fa fa-check-circle-o" aria-hidden="true"></i>已认证</div>
+                                                    </#if>
+                                                </#list>
                                             </div>
                                         </div>
                                     </div>
@@ -669,6 +722,23 @@
                             </#list>
                             <h5>声明：${loan.declaration!}</h5>
                         </div>
+
+                        <#if ['REPAYING','OVERDUE']?seq_contains(loan.loanStatus) && loan.pledgeType == 'NONE'>
+                            <div class="subtitle">
+                                <h3>贷后跟踪</h3>
+                            </div>
+                            <div class="container-fluid list-block clearfix">
+                                <div class="row">
+                                    <#if loan.loanOutTailAfter??>
+                                        <#list ['经营及财务状况','还款能力变化', '是否逾期', '是否受行政处罚', '资金运用情况'] as key>
+                                            <#if loan.loanOutTailAfter[key]?? && loan.loanOutTailAfter[key] != ''>
+                                                <div class="col-md-4">${key}：${loan.loanOutTailAfter[key]}</div>
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                </div>
+                            </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="loan-list-con">

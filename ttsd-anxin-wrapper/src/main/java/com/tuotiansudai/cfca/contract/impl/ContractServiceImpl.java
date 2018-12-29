@@ -15,6 +15,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -211,6 +213,11 @@ public class ContractServiceImpl implements ContractService {
         UserModel investorModel = userMapper.findByLoginName(investorLoginName);
         LoanerDetailsModel loanerDetailsModel = loanerDetailsMapper.getByLoanId(loanId);
         InvestModel investModel = investMapper.findById(investId);
+
+        if (loanModel.getPledgeType() == PledgeType.NONE){
+            return collectInvestorContractByPledgeTypeIsNoneModel(loanModel, agentModel, investorModel, loanerDetailsModel, investModel);
+        }
+
         dataModel.put("agentMobile", agentModel.getMobile());
         dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
         dataModel.put("investorMobile", investorModel.getMobile());
@@ -234,6 +241,46 @@ public class ContractServiceImpl implements ContractService {
         }
         dataModel.put("purpose", loanerDetailsModel == null || loanerDetailsModel.getPurpose() == null ? "" : loanerDetailsModel.getPurpose());
         dataModel.put("repayType", loanModel.getType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY ? "按期还息到期还本" : "到期还本付息");
+        return dataModel;
+    }
+
+    private Map<String, String> collectInvestorContractByPledgeTypeIsNoneModel(LoanModel loanModel, UserModel agentModel, UserModel investorModel, LoanerDetailsModel loanerDetailsModel, InvestModel investModel){
+        Map<String, String> dataModel = new HashMap<>();
+        dataModel.put("investorMobile", investorModel.getMobile());
+        dataModel.put("investorIdentityNumber", investorModel.getIdentityNumber());
+        dataModel.put("agentIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("loanerUserName", agentModel.getUserName());
+        dataModel.put("loanerIdentityNumber", agentModel.getIdentityNumber());
+        dataModel.put("purpose", loanerDetailsModel.getPurpose());
+        dataModel.put("amount", AmountConverter.convertCentToString(investModel.getAmount()));
+        dataModel.put("amountChinese", AmountConverter.convertCentToRMBString(investModel.getAmount()));
+        dataModel.put("periods", String.valueOf(loanModel.getPeriods()));
+        dataModel.put("remark", "");
+        dataModel.put("overdueRate1", "0");
+        dataModel.put("overdueRate2", "0");
+        dataModel.put("overdueDays", "0");
+        return dataModel;
+    }
+
+    @Override
+    public Map<String, String> collectLoanerServiceContractModel(long loanId) {
+        Map<String, String> dataModel = new HashMap<>();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        UserModel userModel = userMapper.findByLoginName(loanModel.getAgentLoginName());
+        dataModel.put("loanerName", userModel.getUserName());
+        dataModel.put("loanerIdentityNumber", userModel.getIdentityNumber());
+        dataModel.put("loanerMobile", userModel.getMobile());
+        dataModel.put("loanAmountChinese", AmountConverter.convertCentToRMBString(loanModel.getLoanAmount()));
+        dataModel.put("loanAmount", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("duration", String.valueOf(loanModel.getDuration()));
+        dataModel.put("periods1", String.valueOf(loanModel.getPeriods()));
+        dataModel.put("serviceAmountChinese", "零");
+        dataModel.put("serviceAmount", "0");
+        dataModel.put("avgServiceAmountChinese", "零");
+        dataModel.put("avgServiceAmount", "0");
+        dataModel.put("periods2", String.valueOf(loanModel.getPeriods()));
+        dataModel.put("signDate", simpleDateFormat.format(loanModel.getRecheckTime()));
+        dataModel.put("orderId", String.valueOf(loanModel.getId()));
         return dataModel;
     }
 

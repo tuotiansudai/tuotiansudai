@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanApplicationDto;
+import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.FakeUserHelper;
 import com.tuotiansudai.repository.mapper.LoanApplicationMapper;
@@ -87,6 +88,7 @@ public class ConsoleLoanApplicationServiceTest {
         loanApplicationModel.setHaveCreditReport(true);
         loanApplicationModel.setHomeIncome(100);
         loanApplicationModel.setLoanUsage("loanUsage");
+        loanApplicationModel.setStatus(LoanApplicationStatus.WAITING);
         loanApplicationMapper.create(loanApplicationModel);
         return loanApplicationModel;
     }

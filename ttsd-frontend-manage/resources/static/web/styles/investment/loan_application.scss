@@ -227,13 +227,16 @@ $width: 700px;
         padding: 0 40px;
       }
       li {
-        width: 350px;
+        width: 300px;
         height: auto;
         background: #fff;
         border: 1px solid #e6e6e6;
-        margin: 0 60px;
+        margin-right: 50px;
         padding: 30px 65px;
         box-sizing: border-box;
+        &:last-child {
+          margin-right: 0;
+        }
 
         @media (max-width: $width) {
           width: 100%;
@@ -253,7 +256,7 @@ $width: 700px;
           float: left;
 				}
         &.car-loan-item {
-          float: right;
+          float: left;
 				}
         h3 {
           font-size: 20px;
@@ -285,7 +288,14 @@ $width: 700px;
               background-size: 90%;
             }
           }
-				}
+          &.icon-consume {
+            background: url('../../images/wantloan/icon-consume.png') no-repeat center;
+
+            @media (max-width: $width) {
+              background-size: 70%;
+            }
+          }
+        }
         .loan-btn {
           margin-bottom: 0;
           background: #ff5400;
@@ -583,7 +593,7 @@ $width: 700px;
 			}
 		}
 	}
-  .success-tip, .risk-tip{
+  .success-tip, .risk-tip, .anXinSign-tip {
     float: left;
     width: 400px;
     display: none;

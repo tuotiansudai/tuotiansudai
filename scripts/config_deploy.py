@@ -3,7 +3,7 @@ import re
 import redis
 
 
-def deploy(etcd, env, pay_fake):
+def deploy(etcd, env, pay_fake, sms_fake):
     deploy_prop = [load_properties("./ttsd-config/src/main/resources/ttsd-env.properties"),
                    load_properties("./ttsd-config/src/main/resources/ttsd-biz.properties")]
 
@@ -16,15 +16,15 @@ def deploy(etcd, env, pay_fake):
         _r = redis.StrictRedis(host=('192.168.1.30' if env != 'CI1' else '127.0.0.1'), port=6379, db=2)
         deploy_prop.append(_r.hgetall('qa_common_account'))
 
-        flush_etcd(etcd, deploy_prop, pay_fake)
+        flush_etcd(etcd, deploy_prop, pay_fake, sms_fake)
         return
 
     # 读取每个环境特有的配置 envs/${env}.properties, 生成一个 dict 对象 specified_prop
     deploy_prop.append(load_properties("./ttsd-config/src/main/resources/envs/{0}.properties".format(env)))
-    flush_etcd(etcd, deploy_prop, pay_fake)
+    flush_etcd(etcd, deploy_prop, pay_fake, sms_fake)
 
 
-def flush_etcd(etcd, deploy_prop, pay_fake):
+def flush_etcd(etcd, deploy_prop, pay_fake, sms_fake):
     for props in deploy_prop:
         for key, value in props.items():
             etcd.put(key, value)
@@ -32,6 +32,9 @@ def flush_etcd(etcd, deploy_prop, pay_fake):
 
     if pay_fake is not None:
         etcd.put('pay.fake', pay_fake)
+
+    if sms_fake is not None:
+        etcd.put('sms.fake', sms_fake)
 
 
 # 读取properties 文件, 生成 dict 对象

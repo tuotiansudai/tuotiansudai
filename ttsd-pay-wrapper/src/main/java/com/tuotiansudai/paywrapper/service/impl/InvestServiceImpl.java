@@ -599,7 +599,7 @@ public class InvestServiceImpl implements InvestService {
             logger.error("send loan raising complete notify failed.", e);
         }
 
-        DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
+//        DelayMessageDeliveryJobCreator.createAutoLoanOutDelayJob(jobManager, loanId);
     }
 
     private void sendLoanRaisingCompleteNotify(long loanId) {
@@ -631,7 +631,7 @@ public class InvestServiceImpl implements InvestService {
         logger.info("will send loan raising complete notify, loanId:" + loanId);
 
         mqWrapperClient.sendMessage(MessageQueue.SmsNotify, new SmsNotifyDto(JianZhouSmsTemplate.SMS_LOAN_RAISING_COMPLETE_NOTIFY_TEMPLATE, loanRaisingCompleteNotifyMobileList,
-                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName, agentUserName)));
+                Lists.newArrayList(loanRaisingStartDate, loanDuration, loanAmountStr, loanRaisingCompleteTime, loanerName)));
 
         mqWrapperClient.sendMessage(MessageQueue.WeChatMessageNotify, new WeChatMessageNotify(null, WeChatMessageType.LOAN_COMPLETE, loanId));
 

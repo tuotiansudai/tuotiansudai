@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,6 +92,15 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
     @Autowired
     private AnxinWrapperClient anxinWrapperClient;
+
+    @Autowired
+    private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
+
+    @Autowired
+    private LoanApplicationMapper loanApplicationMapper;
+
+    @Autowired
+    private LoanOutTailAfterMapper loanOutTailAfterMapper;
 
     @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
     private Date achievementStartTime;
@@ -172,8 +179,8 @@ public class LoanDetailServiceImpl implements LoanDetailService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         AnxinSignPropertyModel anxinProp = anxinSignPropertyMapper.findByLoginName(loginName);
-        boolean isAuthenticationRequired = anxinWrapperClient.isAuthenticationRequired(loginName).getData().getStatus();
-        boolean isAnxinUser = anxinProp != null && StringUtils.isNotEmpty(anxinProp.getAnxinUserId());
+        boolean isAuthenticationRequired = false;
+        boolean isAnxinUser = anxinProp != null;
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
@@ -195,6 +202,7 @@ public class LoanDetailServiceImpl implements LoanDetailService {
 
         LoanerDetailsModel loanerDetail = loanerDetailsMapper.getByLoanId(loanModel.getId());
         if (loanerDetail != null) {
+            LoanApplicationModel loanApplicationModel = loanApplicationMapper.findByLoanId(loanModel.getId());
             loanDto.setLoanerDetail(ImmutableMap.<String, String>builder()
                     .put("借款人", MessageFormat.format("{0}某", loanerDetail.getUserName().substring(0, 1)))
                     .put("性别", loanerDetail.getGender().getDescription())
@@ -207,6 +215,9 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                     .put("借款用途", Strings.isNullOrEmpty(loanerDetail.getPurpose()) ? "" : loanerDetail.getPurpose())
                     .put("逾期笔数", MessageFormat.format("{0}笔", loanMapper.findByStatus(LoanStatus.OVERDUE).stream().filter(model->model.getLoanerIdentityNumber().equals(loanModel.getLoanerIdentityNumber())).count()))
                     .put("还款来源", Strings.isNullOrEmpty(loanerDetail.getSource()) ? "" : loanerDetail.getSource())
+                    .put("主体性质", loanApplicationModel == null? "" : "自然人")
+                    .put("共同借款人", loanApplicationModel == null || Strings.isNullOrEmpty(loanApplicationModel.getTogetherLoaner()) ? "" : loanApplicationModel.getTogetherLoaner())
+                    .put("共同借款人身份证号", loanApplicationModel == null || Strings.isNullOrEmpty(loanApplicationModel.getTogetherLoanerIdentity()) ? "" : MessageFormat.format("{0}*******", loanApplicationModel.getTogetherLoanerIdentity().substring(0, 10)))
                     .build());
         }
 
@@ -288,6 +299,19 @@ public class LoanDetailServiceImpl implements LoanDetailService {
                         .put("还款来源", Strings.isNullOrEmpty(loanerEnterpriseInfoModel.getSource()) ? "" : loanerEnterpriseInfoModel.getSource())
                         .build());
             }
+        }
+
+        loanDto.setRiskManagementTitleNames(loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId()));
+
+        if (loanModel.getPledgeType() == PledgeType.NONE && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
+            LoanOutTailAfterModel model = loanOutTailAfterMapper.findByLoanId(loanModel.getId());
+            loanDto.setLoanOutTailAfter(ImmutableMap.<String, String>builder()
+                    .put("经营及财务状况", model == null ? "良好" : model.getFinanceState())
+                    .put("还款能力变化", model == null ? "无变化" : model.getRepayPower())
+                    .put("是否逾期", model == null || !model.isOverdue() ? "否" : "是")
+                    .put("是否受行政处罚", model == null || !model.isAdministrativePenalty() ? "否" : "是")
+                    .put("资金运用情况", model == null ? "按照借款用途使用" : model.getAmountUsage())
+                    .build());
         }
 
         if (loanModel.getActivityType() == ActivityType.NEWBIE) {

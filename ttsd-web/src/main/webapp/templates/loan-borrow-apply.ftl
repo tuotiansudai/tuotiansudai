@@ -24,8 +24,8 @@
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>
                 <span class="item_text">婚姻状况：</span>
-                <input type="radio" name="isMarried" class="check_radio" id="married" value="true"/><label for="married" class="check_label">已婚</label>
-                <input type="radio" name="isMarried" class="check_radio" id="noMarried" value="false"/><label for="noMarried" class="check_label">未婚</label>
+                <input type="radio" name="isMarried" class="check_radio" id="married" value="MARRIED"/><label for="married" class="check_label">已婚</label>
+                <input type="radio" name="isMarried" class="check_radio" id="noMarried" value="UNMARRIED"/><label for="noMarried" class="check_label">未婚</label>
             </div>
             <div class="supplement_info_item">
                 <span class="required-icon">*</span>

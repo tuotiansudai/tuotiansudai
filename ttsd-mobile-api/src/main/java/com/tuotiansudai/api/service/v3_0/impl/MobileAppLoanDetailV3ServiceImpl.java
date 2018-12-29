@@ -93,6 +93,12 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
     @Autowired
     private MembershipPrivilegePurchaseService membershipPrivilegePurchaseService;
 
+    @Autowired
+    private LoanOutTailAfterMapper loanOutTailAfterMapper;
+
+    @Autowired
+    private LoanRiskManagementTitleRelationMapper loanRiskManagementTitleRelationMapper;
+
     @Value(value = "${pay.interest.fee}")
     private double defaultFee;
 
@@ -273,6 +279,10 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             }
         }
 
+        if (loanModel.getPledgeType() == PledgeType.NONE && Lists.newArrayList(LoanStatus.OVERDUE, LoanStatus.REPAYING).contains(loanModel.getStatus())) {
+            disclosureDtoList.add(convertLoanOutTailAfterFromLoan(loanOutTailAfterMapper.findByLoanId(loanModel.getId())));
+        }
+
         dataDto.setDisclosures(disclosureDtoList);
         dataDto.setInvestFeeRate(String.valueOf(investFeeRate));
         List<EvidenceResponseDataDto> evidence = getEvidenceByLoanId(loanModel.getId());
@@ -310,6 +320,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             dataDto.setExtraRates(extraLoanRateDtos);
         }
 
+        dataDto.setRiskManagement(loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId()));
 
         return dataDto;
     }
@@ -373,7 +384,7 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         ItemDto ageItemDto = new ItemDto("年龄", String.valueOf(model.getAge()));
         ItemDto marriageItemDto = new ItemDto("婚姻状况", model.getMarriage().getDescription());
         ItemDto employmentStatusItemDto = new ItemDto("从业情况", model.getEmploymentStatus());
-        ItemDto incomeItemDto = new ItemDto("年收入", model.getIncome());
+        ItemDto incomeItemDto = new ItemDto("收入水平", model.getIncome());
         ItemDto purposeItemDto = new ItemDto("借款用途", model.getPurpose());
         ItemDto overdueRateItemDto = new ItemDto("逾期笔数", overdueCount);
         ItemDto sourceItemDto = new ItemDto("还款来源", model.getSource());
@@ -523,4 +534,15 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
         return LoanerEnterpriseInfoDisclosureDto;
     }
 
+    private DisclosureDto convertLoanOutTailAfterFromLoan(LoanOutTailAfterModel model) {
+        DisclosureDto loanOutTailAfterDisclosureDto = new DisclosureDto();
+        loanOutTailAfterDisclosureDto.setTitle("贷后跟踪");
+        loanOutTailAfterDisclosureDto.setItems(Lists.newArrayList(
+                new ItemDto("经营及财务状况", model == null ? "良好" : model.getFinanceState()),
+                new ItemDto("还款能力变化", model == null ? "无变化" : model.getRepayPower()),
+                new ItemDto("是否逾期", model == null || !model.isOverdue() ? "否" : "是"),
+                new ItemDto("是否受行政处罚", model == null || !model.isAdministrativePenalty() ? "否" : "是"),
+                new ItemDto("资金运用情况", model == null ? "按照借款用途使用" : model.getAmountUsage())));
+        return loanOutTailAfterDisclosureDto;
+    }
 }

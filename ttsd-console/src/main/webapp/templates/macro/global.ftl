@@ -14,8 +14,8 @@
                 "header":{"text":"系统首页","link":"/"},
                 "sidebar":
                 [
-                    {"name":"","class":"sub-title-1","text":"我的任务","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN'"},
-                        {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN'"}
+                    {"name":"","class":"sub-title-1","text":"我的任务","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN', 'RISK_CONTROL_STAFF'"},
+                        {"name":"myTasks","text":"我的任务","link":"/","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE', 'ASK_ADMIN','FINANCE_ADMIN', 'RISK_CONTROL_STAFF'"}
                 ]
             },
             {
@@ -27,6 +27,8 @@
                         {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"start","text":"发起借款","link":"/project-manage/loan","role":"'ADMIN','OPERATOR'"},
                         {"name":"repaymentInfoList","text":"项目还款明细表","link":"/project-manage/loan-repay","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"","class":"sub-title-1","text":"消费借款申请","link":"","role":"'ADMIN','RISK_CONTROL_STAFF','OPERATOR_ADMIN','OPERATOR'"},
+                        {"name":"loanApplicationList","text":"借款申请列表","link":"/loan-application/consume-list","role":"'ADMIN','RISK_CONTROL_STAFF','OPERATOR_ADMIN','OPERATOR'"},
                     {"name":"","class":"sub-title-1","text":"转让项目管理","link":"","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"transfer-list","text":"所有的转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
                         {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/transfer-rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
@@ -68,10 +70,10 @@
                     {"name":"","class":"sub-title-1","text":"联动优势账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                         {"name":"transferBill","text":"用户联动优势交易流水","link":"/finance-manage/transfer-bill","role":"'ADMIN'"},
-                        {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                        {"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                        {"name":"bankMange","text":"银行卡管理","link":"/finance-manage/bank-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    <#--{"name":"","class":"sub-title-1","text":"信用贷标的账户管理","link":"","role":"'ADMIN','CUSTOMER_SERVICE','OPERATOR','OPERATOR_ADMIN'"},-->
+                        <#--{"name":"creditLoanBill","text":"信用贷标的账户查询","link":"/finance-manage/credit-loan-bill","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},-->
+                        <#--{"name":"creditLoanRecharge","text":"信用贷标的账户充值","link":"/finance-manage/credit-loan-recharge","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}-->
                 ]
             },
             {
@@ -248,6 +250,7 @@
     <link href="${applicationContext}/style/index.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/jquery.pageflip.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
+    <link href="${applicationContext}/js/libs/layer/skin/layer.css" rel="stylesheet"/><!--layer-->
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
     </#if>

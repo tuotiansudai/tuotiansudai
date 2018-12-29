@@ -50,6 +50,7 @@
         <result column="expected_repay_amount" property="expectedRepayAmount"/>
         <result column="actual_repay_amount" property="actualRepayAmount"/>
         <result column="update_time" property="updateTime"/>
+        <result column="loan_contract_no" property="loanContractNo"/>
     </resultMap>
 
     <resultMap id="loanAchievementView" type="LoanAchievementView">
@@ -95,17 +96,17 @@
         loan temp left join loan_details on temp.id = loan_details.loan_id
         WHERE
         1 = 1
-        and temp.status not in ('WAITING_VERIFY','CANCEL')
+        and temp.status not in ('WAITING_VERIFY','CANCEL', 'DRAFT')
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
         'EXPERIENCE')
         <if test="name !=null and name!=''">
-            and temp.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+            and temp.name LIKE CONCAT(CONCAT('', #{name}),'%')
         </if>
         <if test="status != null">
             and temp.status = #{status}
         </if>
         <if test="status == null">
-            and temp.status != 'WAITING_VERIFY' and temp.status != 'CANCEL'
+            and temp.status != 'WAITING_VERIFY' and temp.status != 'CANCEL' and temp.status != 'DRAFT'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
@@ -142,13 +143,13 @@
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or t.product_type =
         'EXPERIENCE')
         <if test="name !=null and name != ''">
-            and t.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+            and t.name LIKE CONCAT(CONCAT('', #{name}),'%')
         </if>
         <if test="status != null">
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status != 'WAITING_VERIFY' and t.status != 'CANCEL'
+            and t.status != 'WAITING_VERIFY' and t.status != 'CANCEL' and t.status != 'DRAFT'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
@@ -177,7 +178,7 @@
         1 = 1
         and (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or temp.product_type =
         'EXPERIENCE')
-        and temp.status not in ('WAITING_VERIFY','CANCEL')
+        and temp.status not in ('WAITING_VERIFY','CANCEL','DRAFT')
         <if test="productType !=null">
             and temp.product_type = #{productType}
         </if>
@@ -221,7 +222,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status != 'WAITING_VERIFY'
+            and t.status != 'WAITING_VERIFY' and t.status != 'DRAFT'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
@@ -419,6 +420,10 @@
         update loan set status = #{status} where id = #{loanId}
     </update>
 
+    <update id="updateDeadline" parameterType="map">
+        update loan set deadline = #{deadline} where id = #{loanId} and pledge_type = 'NONE'
+    </update>
+
     <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
         select * from loan t
         <where>
@@ -471,7 +476,7 @@
 
     <select id="findHomeNewbieLoan" resultMap="loanResultMap">
         select * from loan
-        where loan.status not in ('WAITING_VERIFY', 'CANCEL')
+        where loan.status not in ('WAITING_VERIFY', 'CANCEL','DRAFT')
         and loan.activity_type = 'NEWBIE'
         and loan.id != 1
         order by
@@ -485,7 +490,7 @@
     <select id="findHomePreferableLoans" resultMap="loanResultMap">
         select * from loan left join loan_details on loan.id = loan_details.loan_id
         where (loan_details.activity_desc &lt;&gt;'0元购' or loan_details.activity_desc is null or loan.product_type = 'EXPERIENCE')
-        and loan.status not in ('WAITING_VERIFY', 'CANCEL')
+        and loan.status not in ('WAITING_VERIFY', 'CANCEL','DRAFT')
         and loan.activity_type = 'NORMAL'
         and pledge_type in ('HOUSE', 'VEHICLE')
         order by
@@ -498,7 +503,7 @@
 
     <select id="findHomeEnterpriseLoan" resultMap="loanResultMap">
         select * from loan
-        where loan.status not in ('WAITING_VERIFY', 'CANCEL')
+        where loan.status not in ('WAITING_VERIFY', 'CANCEL','DRAFT')
         and loan.activity_type = 'NORMAL'
         and pledge_type LIKE 'ENTERPRISE%'
         order by
@@ -706,7 +711,7 @@
     <select id="findLoanCountByYear" resultType="long">
         SELECT COUNT(id) FROM loan
         WHERE DATE_FORMAT(created_time,'%Y') = #{createdTime}
-        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE' or pledgeType.name() == 'PERSONAL_CAPITAL_TURNOVER' or pledgeType.name() == 'ENTERPRISE_CAPITAL_TURNOVER')">
+        <if test="pledgeType != null and (pledgeType.name() == 'HOUSE' or pledgeType.name() == 'VEHICLE' or pledgeType.name() == 'PERSONAL_CAPITAL_TURNOVER' or pledgeType.name() == 'ENTERPRISE_CAPITAL_TURNOVER' or pledgeType.name() == 'NONE')">
             and pledge_type = #{pledgeType}
         </if>
         <if test="pledgeType != null and (pledgeType.name() == 'ENTERPRISE_FACTORING' or pledgeType.name() == 'ENTERPRISE_BILL' or pledgeType.name() == 'ENTERPRISE_CREDIT' or pledgeType.name() == 'ENTERPRISE_PLEDGE')">
@@ -726,9 +731,8 @@
         group by loaner_identity_number order by sum(loan_amount) desc limit 0, 10
     </select>
 
-    <select id="findOverdueLoanList" resultMap="loanResultMap">
-        SELECT * from loan where id in ('79777480751792', '104438859020640', '80399115846496', '81091061832208', '104913327294896',
-        '81275462694528', '93220109314848', '97113887852272', '92786417826144','93392074303536','81807142366272')
-    </select>
+    <update id="updateLoanServiceContractNo" parameterType="map">
+        update loan set loan_contract_no = #{contractNo} where id = #{loanId}
+    </update>
 
 </mapper>

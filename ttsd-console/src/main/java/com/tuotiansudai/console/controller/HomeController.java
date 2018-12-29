@@ -116,10 +116,13 @@ public class HomeController {
         baseDto.setData(baseDataDto);
 
         String ip = RequestIPParser.parse(request);
+        boolean operatorAdminTask = redisWrapperClient.hexists(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+        boolean operatorTask = redisWrapperClient.hexists(TaskConstant.TASK_KEY + Role.OPERATOR, taskId);
 
-        if (redisWrapperClient.hexists(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        if (operatorAdminTask || operatorTask) {
 
-            OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask task = operatorAdminTask ? (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) :
+                    (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR, taskId);
 
             OperationTask notify = new OperationTask();
             String notifyId = taskId;
@@ -141,7 +144,7 @@ public class HomeController {
 
             notify.setDescription(senderRealName + " 拒绝了您 " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
 
-            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + (operatorAdminTask ? Role.OPERATOR_ADMIN : Role.OPERATOR), taskId);
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
 
             if (task.getOperationType().equals(OperationType.BAND_CARD)) {

@@ -152,13 +152,44 @@
             <dd><span class="span-l">企业征信报告</span><span class="span-r">验资报告</span></dd>
             <dd><span class="span-l">不动产明细</span><span class="span-r">企业授信余额</span></dd>
             <dd><span class="span-l">银行流水查证</span><span class="span-r">税务缴纳</span></dd>
-        <#else>
+        <#elseif (loan.riskManagementTitleNames?size=0)>
             <dd><span class="span-l">身份认证</span><span class="span-r">手机认证</span></dd>
-            <dd><span class="span-l">婚姻状况认证</span><span class="span-r">房产认证</span></dd>
+            <dd><span class="span-l">婚姻状况认证</span><span class="span-r">资产认证</span></dd>
             <dd><span class="span-l">住址信息认证</span><span class="span-r">收入证明</span></dd>
+        <#else>
+            <#list loan.riskManagementTitleNames as t>
+                <#if ((t_index + 1) % 2) gt 0>
+                    <dd>
+                </#if>
+                    <span class="span-l">${t}</span>
+                <#if !t_has_next && ((t_index + 1) % 2) gt 0>
+                    <span class="span-l"></span>
+                </#if>
+                <#if !t_has_next || ((t_index + 1) % 2) == 0>
+                    </dd>
+                </#if>
+            </#list>
         </#if>
         </dl>
     </div>
+
+
+<#if loan.pledgeType == "NONE" && ['REPAYING','OVERDUE']?seq_contains(loan.loanStatus)>
+    <div class="section">
+        <div class="title">贷后跟踪</div>
+        <#if loan.loanOutTailAfter??>
+            <dl>
+                <#list ['经营及财务状况','还款能力变化', '是否逾期', '是否受行政处罚', '资金运用情况'] as key>
+                    <#if loan.loanOutTailAfter[key]?? && loan.loanOutTailAfter[key] != ''>
+                        <dd><span>${key}：</span><span>${loan.loanOutTailAfter[key]}</span></dd>
+                    </#if>
+                </#list>
+            </dl>
+        </#if>
+    </div>
+</#if>
+
+
     <div class="look-apply-material">
         <a href="javascript:;" id="apply_materal_btn" class="btn-look">查看申请资料</a>
     </div>
@@ -173,9 +204,7 @@
                         <a href="${commonStaticServer}${title}" class="js-img-viwer" data-group="0">
                             <img src="${commonStaticServer}${title}" alt="${loanTitle.title}"/>
                         </a>
-
                     </#list>
-
                     </dd>
                 </dl>
                 </#if>

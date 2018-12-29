@@ -17,6 +17,7 @@ $topBanner.find('.top-images-phone').attr('src',mobileBanner);
 //show tip
 $loanTip.on('click', function(event) {
 	event.preventDefault();
+	let $this = $(this);
     if ($('.header-login').data('wechat-login-name')) {
         location.href = '/login?redirect=' + location.href;
         return;
@@ -24,30 +25,41 @@ $loanTip.on('click', function(event) {
     pageTitle = $(this).data('type');
 	$.when(commonFun.isUserLogin())
 		.done(function() {
-			if ($('#userName').val() != '') {
-                var ifChecked = $('.risk-checkbox').prop('checked');
-                if (ifChecked) {
-                    $('#risk-confirm-btn').removeClass('disabled');
+            if ($('#userName').val() != '') {
+                if ($this.hasClass('consume') && $('#isAuthenticationRequired').val()==='false') {
+                    layer.open({
+                        type: 1,
+                        btn: 0,
+                        area: ['auto', 'auto'],
+                        title: '温馨提示',
+                        content: $('#toAnXinSign')
+                    });
                 }
-				else {
-                    $('#risk-confirm-btn').addClass('disabled');
-				}
+                else {
+                    var ifChecked = $('.risk-checkbox').prop('checked');
+                    if (ifChecked) {
+                        $('#risk-confirm-btn').removeClass('disabled');
+                    }
+                    else {
+                        $('#risk-confirm-btn').addClass('disabled');
+                    }
+                    layer.open({
+                        type: 1,
+                        btn: 0,
+                        area: ['auto', 'auto'],
+                        title: '温馨提示',
+                        content: $('#riskTip')
+                    });
+                }
+            } else {
                 layer.open({
                     type: 1,
                     btn: 0,
                     area: ['auto', 'auto'],
                     title: '温馨提示',
-                    content: $('#riskTip')
+                    content: $('#isUser')
                 });
-			} else {
-				layer.open({
-					type: 1,
-					btn: 0,
-					area: ['auto', 'auto'],
-					title: '温馨提示',
-					content: $('#isUser')
-				});
-			}
+            }
 		})
 		.fail(function() {
 			//判断是否需要弹框登陆

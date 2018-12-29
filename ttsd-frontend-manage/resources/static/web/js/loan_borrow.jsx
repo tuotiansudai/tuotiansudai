@@ -2,13 +2,13 @@ require('webStyle/investment/loan_borrow.scss');
 let commonFun= require('publicJs/commonFun');
 
 $(function () {
-    let isMarried, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
+    let marriage, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, elsePledge = '';
     let workPosition = '';
     let pledgeType = $('#pledgeType').val();
     let sesameCredit = '';
 
     $('input:radio[name="isMarried"]').on('click',function () {
-        isMarried = $('input:radio[name="isMarried"]:checked').val();
+        marriage = $('input:radio[name="isMarried"]:checked').val();
         btnLightUp();
     });
 
@@ -64,7 +64,7 @@ $(function () {
     });
 
     function btnLightUp() {
-        if (isMarried && haveCreditReport && amount && period && homeIncome && loanUsage && pledgeInfo) {
+        if (marriage && haveCreditReport && amount && period && homeIncome && loanUsage && pledgeInfo) {
             $('.confirm_btn').removeClass('disabled');
         }
         else {
@@ -78,7 +78,7 @@ $(function () {
     }
 
     function submitFormData() {
-        let data = { isMarried, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, workPosition, elsePledge, sesameCredit, pledgeType};
+        let data = { marriage, haveCreditReport, amount, period, homeIncome, loanUsage, pledgeInfo, workPosition, elsePledge, sesameCredit, pledgeType};
         console.log(data);
         commonFun.useAjax({
             type: 'POST',

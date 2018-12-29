@@ -75,6 +75,10 @@ public class LoanDetailDto extends BaseDataDto {
 
     private Map<String, String> enterpriseInfo;
 
+    private List<String> riskManagementTitleNames;
+
+    private Map<String, String> loanOutTailAfter;
+
     private String declaration;
 
     private String basicInfo;
@@ -362,5 +366,21 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setEstimateLevel(int estimateLevel) {
         this.estimateLevel = estimateLevel;
+    }
+
+    public List<String> getRiskManagementTitleNames() {
+        return riskManagementTitleNames;
+    }
+
+    public void setRiskManagementTitleNames(List<String> riskManagementTitleNames) {
+        this.riskManagementTitleNames = riskManagementTitleNames;
+    }
+
+    public Map<String, String> getLoanOutTailAfter() {
+        return loanOutTailAfter;
+    }
+
+    public void setLoanOutTailAfter(Map<String, String> loanOutTailAfter) {
+        this.loanOutTailAfter = loanOutTailAfter;
     }
 }

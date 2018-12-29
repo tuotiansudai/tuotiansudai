@@ -24,11 +24,12 @@
                 <input name="id" type="hidden" value="${loan.loan.id?c}"/>
                 <input name="pledgeType" type="hidden" value="${loan.loan.pledgeType}"/>
                 <input name="status" type="hidden" value="${loan.loan.status}"/>
+                <input id="loanApplicationId" type="hidden" value="${loanApplicationId!}"/>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">借款项目名称:</label>
                     <div class="col-sm-4">
-                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                        <select name="name" class="selectpicker" id="projectName" <#if loan.loan.status != "WAITING_VERIFY" || loan.loan.pledgeType == "NONE">disabled="disabled"</#if>>
                             <option value="房产抵押借款" data-pledgeType="HOUSE" <#if loan.loan.pledgeType == "HOUSE">selected</#if>>房产抵押借款</option>
                             <option value="车辆消费借款" data-pledgeType="VEHICLE" <#if loan.loan.pledgeType == "VEHICLE">selected</#if>>车辆消费借款</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_CREDIT" <#if loan.loan.pledgeType == "ENTERPRISE_CREDIT">selected</#if>>税易经营性借款信用类</option>
@@ -36,16 +37,17 @@
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_FACTORING" <#if loan.loan.pledgeType == "ENTERPRISE_FACTORING">selected</#if>>企业经营性借款—保理</option>
                             <option value="经营性借款" data-pledgeType="ENTERPRISE_BILL" <#if loan.loan.pledgeType == "ENTERPRISE_BILL">selected</#if>>企业经营性借款—票据</option>
                             <option value="个人资金周转" data-pledgeType="PERSONAL_CAPITAL_TURNOVER" <#if loan.loan.pledgeType == "PERSONAL_CAPITAL_TURNOVER">selected</#if>>个人资金周转</option>
+                            <#if loan.loan.pledgeType == "NONE"> <option value="消费借款" data-pledgeType="NONE" selected>消费借款</option></#if>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">权证人:</label>
+                    <label class="col-sm-2 control-label">借款人:</label>
 
                     <div class="col-sm-2">
                         <input name="agent" type="text" value="${loan.loan.agent!}" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                               errormsg="权证人不能为空" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="借款人不能为空" <#if loan.loan.status != "WAITING_VERIFY" || loan.loan.pledgeType == "NONE">disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -53,7 +55,7 @@
                     <label class="col-sm-2 control-label">标的类型:</label>
 
                     <div class="col-sm-4">
-                        <select name="loanType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
+                        <select name="loanType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY","DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                             <#list loanTypes as loanType>
                                 <option value="${loanType.name()}" <#if loanType==loan.loan.loanType>selected="selected"</#if>>${loanType.getName()}</option>
                             </#list>
@@ -71,26 +73,28 @@
                     </div>
                 </div>
 
-                <div class="form-group input-append">
-                    <label class="col-sm-2 control-label">借款截止时间: </label>
+                <#if loan.loan.pledgeType != 'NONE' || (loan.loan.pledgeType == 'NONE' && ['REPAYING', 'OVERDUE']?seq_contains(loan.loan.status))>
+                    <div class="form-group input-append">
+                        <label class="col-sm-2 control-label">借款截止时间: </label>
 
-                    <div class="col-sm-3">
-                        <div class='input-group date' id='deadline'>
-                            <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
-                                   <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
-                                   errormsg="借款截止时间需要正确填写"/>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                        <div class="col-sm-3">
+                            <div class='input-group date' id='deadline'>
+                                <input name="deadline" type='text' class="form-control" datatype="date" value="${(loan.loan.deadline?string('yyyy-MM-dd'))!}"
+                                       <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                                       errormsg="借款截止时间需要正确填写"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </#if>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">映射旧版本期限（天）:</label>
 
                     <div class="col-sm-4">
-                        <select name="productType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
+                        <select name="productType" class="selectpicker b-width" <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                             <#list productTypes as productType>
                                 <option value="${productType.name()}" <#if productType == loan.loan.productType>selected="selected"</#if>>
                                 ${productType.getDuration()}
@@ -105,7 +109,7 @@
 
                     <div class="col-sm-4">
                         <input name="loanAmount" type="text" class="form-control amount" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/"
-                               errormsg="预计出借金额需要正确填写" value="${loan.loan.loanAmount}" <#if loan.loan.status != "WAITING_VERIFY">disabled="disabled"</#if>>
+                               errormsg="预计出借金额需要正确填写" value="${loan.loan.loanAmount}" <#if !(["WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                     </div>
                 </div>
 
@@ -171,7 +175,7 @@
                     <label class="col-sm-2 control-label">基本利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="baseRate" type="text" class="form-control rate" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="baseRate" type="text" class="form-control rate" datatype="/^([1-9]\d*(\.\d{1,2})?)|(0\.\d*[1-9]\d*)$/" <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="基本利率需要正确填写" value="${((loan.loan.baseRate?number)*100)?string('0.00')}">
                     </div>
                 </div>
@@ -180,7 +184,7 @@
                     <label class="col-sm-2 control-label">活动利率（%）:</label>
 
                     <div class="col-sm-4">
-                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                        <input name="activityRate" type="text" class="form-control rate" datatype="/^\d+(\.\d{1,2})?$/" <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                errormsg="活动利率需要正确填写" value="${((loan.loan.activityRate?number)*100)?string('0.00')}">
                     </div>
                 </div>
@@ -192,7 +196,7 @@
                         <div class='input-group date' id='fundraisingStartTime'>
                             <input name="fundraisingStartTime" type='text' class="form-control" datatype="date" errormsg="筹款启动时间需要正确填写"
                                    value="${(loan.loan.fundraisingStartTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if "WAITING_VERIFY" != loan.loan.status>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -207,7 +211,7 @@
                         <div class='input-group date' id='fundraisingEndTime'>
                             <input name="fundraisingEndTime" type='text' class="form-control" datatype="date" errormsg="筹款截止时间需要正确填写"
                                    value="${(loan.loan.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}"
-                                   <#if !(["WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
+                                   <#if !(["WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -239,7 +243,7 @@
                 <div class="col-sm-4 checkbox">
                     <label for="extra">
                         <input type="checkbox" id="extra"
-                                <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                                <#if !(["PREHEAT", "WAITING_VERIFY","DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                 <#if extraLoanRates?has_content>checked="checked"</#if>>选中后此标的采用投资奖励
                     </label>
                 </div>
@@ -275,7 +279,7 @@
                 <div class="col-sm-2 checkbox" id="extraSource">
                     <#list extraSources as source>
                         <label>
-                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if> <#if loan.loanDetails.extraSource??><#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if></#if>>${source.name()}</input>
+                            <input name="extraSource" type="checkbox" value="${source.name()}" <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if> <#if loan.loanDetails.extraSource??><#if loan.loanDetails.extraSource?seq_contains(source)>checked="checked"</#if></#if>>${source.name()}</input>
                         </label>
                     </#list>
                 </div>
@@ -287,7 +291,7 @@
                 <div class="col-sm-4 checkbox">
                     <label for="extra">
                         <input type="checkbox" id="nonTransferable" name="nonTransferable"
-                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                <#if loan.loanDetails?? && loan.loanDetails.nonTransferable>checked="checked"</#if> value="true" />（选中后投资此标的不允许债权转让）
                     </label>
                 </div>
@@ -299,7 +303,7 @@
                 <div class="col-sm-4 checkbox">
                     <label for="extra">
                         <input type="checkbox" id="disableCoupon" name="disableCoupon"
-                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                <#if loan.loanDetails?? && loan.loanDetails.disableCoupon>checked="checked"</#if> value="true" />（选中后投资此标的不允许使用任何优惠券）
                     </label>
                 </div>
@@ -311,7 +315,7 @@
                 <div class="col-sm-1 checkbox">
                     <label for="grantReward">
                         <input type="checkbox" name="grantReward"
-                               <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
+                               <#if !(["PREHEAT", "WAITING_VERIFY", "DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>
                                <#if loan.loanDetails?? && loan.loanDetails.grantReward>checked="checked"</#if> value="true" />
                     </label>
                 </div>
@@ -350,7 +354,9 @@
         </section>
 
         <section id="section-two">
-            <#if ['HOUSE', 'VEHICLE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
+            <#if loanApplicationId?? && loanerDto?? && loan.loan.pledgeType == 'NONE' && loan.loan.status='DRAFT'>
+                <#include 'loan-consume-loaner-details.ftl'>
+            <#elseif ['HOUSE', 'VEHICLE','NONE', 'PERSONAL_CAPITAL_TURNOVER']?seq_contains(loan.loan.pledgeType)>
                 <#include 'loan-edit-loaner-details.ftl'>
             </#if>
 
@@ -424,7 +430,7 @@
                 <label class="col-sm-2 control-label">推送消息</label>
 
                 <div class="col-sm-3">
-                    <input name="pushMessage" type="text" class="form-control" value="${(loan.loanDetails.pushMessage)!}" <#if !(["PREHEAT", "WAITING_VERIFY"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
+                    <input name="pushMessage" type="text" class="form-control" value="${(loan.loanDetails.pushMessage)!}" <#if !(["PREHEAT", "WAITING_VERIFY","DRAFT"]?seq_contains(loan.loan.status))>disabled="disabled"</#if>>
                 </div>
             </div>
         </div>
@@ -468,9 +474,15 @@
             <div class="col-sm-4">
                 <input name="contractId" type="hidden" value="${loan.loan.contractId?c}"/><!-- 默认合同ID -->
 
-                <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                    <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
-                </@security.authorize>
+                <#if loan.loan.pledgeType=='NONE' && loan.loan.status=='DRAFT'>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN','RISK_CONTROL_STAFF')">
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
+                    </@security.authorize>
+                <#else>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <button type="button" class="btn form-submit-btn btn-primary" data-url="/project-manage/loan/update">保存</button>
+                    </@security.authorize>
+                </#if>
 
                 <#if loan.loan.status == "WAITING_VERIFY">
                     <@security.authorize access="hasAnyAuthority('OPERATOR')">

@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanApplicationDto;
+import com.tuotiansudai.enums.LoanApplicationStatus;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,8 +24,8 @@ public class LoanApplicationModel implements Serializable {
     private String identityNumber;
     private String address;
     private short age;
-    //是否结婚
-    private boolean isMarried;
+
+    private Marriage marriage;
     //是否有信用报告
     private boolean haveCreditReport;
     //工作职位
@@ -40,6 +41,10 @@ public class LoanApplicationModel implements Serializable {
     //性别
     private String sex;
 
+    private Long loanId;  //生成的标的
+    private LoanApplicationStatus status; //审核状态
+    private String togetherLoaner;
+    private String togetherLoanerIdentity;
 
     public LoanApplicationModel() {
     }
@@ -50,14 +55,14 @@ public class LoanApplicationModel implements Serializable {
         this.amount = loanApplicationDto.getAmount();
         this.period = loanApplicationDto.getPeriod();
         this.pledgeType = loanApplicationDto.getPledgeType();
-        this.pledgeInfo = loanApplicationDto.getPledgeInfo();
+        this.pledgeInfo = loanApplicationDto.getPledgeInfo() == null ? "" : loanApplicationDto.getPledgeInfo();
         this.createdTime = new Date();
         this.updatedBy = loanApplicationDto.getLoginName();
         this.updatedTime = new Date();
         this.identityNumber = loanApplicationDto.getIdentityNumber();
         this.address = loanApplicationDto.getAddress();
         this.age = loanApplicationDto.getAge();
-        this.isMarried = loanApplicationDto.getIsMarried();
+        this.marriage = loanApplicationDto.getMarriage();
         this.haveCreditReport = loanApplicationDto.getHaveCreditReport();
         this.workPosition = loanApplicationDto.getWorkPosition();
         this.sesameCredit = loanApplicationDto.getSesameCredit();
@@ -65,6 +70,9 @@ public class LoanApplicationModel implements Serializable {
         this.loanUsage = loanApplicationDto.getLoanUsage();
         this.elsePledge = loanApplicationDto.getElsePledge();
         this.sex = loanApplicationDto.getSex();
+        this.togetherLoaner = loanApplicationDto.getTogetherLoaner();
+        this.togetherLoanerIdentity = loanApplicationDto.getTogetherLoanerIdentity();
+        this.status = LoanApplicationStatus.WAITING;
     }
 
     public long getId() {
@@ -195,12 +203,12 @@ public class LoanApplicationModel implements Serializable {
         this.age = age;
     }
 
-    public boolean getIsMarried() {
-        return isMarried;
+    public Marriage getMarriage() {
+        return marriage;
     }
 
-    public void setIsMarried(boolean married) {
-        isMarried = married;
+    public void setMarriage(Marriage marriage) {
+        this.marriage = marriage;
     }
 
     public boolean getHaveCreditReport() {
@@ -257,5 +265,37 @@ public class LoanApplicationModel implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public Long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public LoanApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanApplicationStatus status) {
+        this.status = status;
+    }
+
+    public String getTogetherLoaner() {
+        return togetherLoaner;
+    }
+
+    public void setTogetherLoaner(String togetherLoaner) {
+        this.togetherLoaner = togetherLoaner;
+    }
+
+    public String getTogetherLoanerIdentity() {
+        return togetherLoanerIdentity;
+    }
+
+    public void setTogetherLoanerIdentity(String togetherLoanerIdentity) {
+        this.togetherLoanerIdentity = togetherLoanerIdentity;
     }
 }

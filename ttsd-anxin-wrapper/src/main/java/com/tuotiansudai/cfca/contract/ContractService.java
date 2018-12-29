@@ -13,5 +13,7 @@ public interface ContractService {
 
     Map<String, String> collectInvestorContractModel(String investorLoginName, long loanId, long investId);
 
+    Map<String, String> collectLoanerServiceContractModel(long loanId);
+
     byte[] printContractPdf(AnxinContractType anxinContractType, String loginName, long OrderId, Long investId);
 }

@@ -21,17 +21,19 @@ public class Test3202 {
 
         Tx3202ReqVO tx3202ReqVO = new Tx3202ReqVO();
         HeadVO head = new HeadVO();
-        head.setTxTime("20160102235959");
+        head.setTxTime("20181221235959");
 
         List<CreateContractVO> createContractlist = new ArrayList<CreateContractVO>();
 
 //        CreateContractVO createContract = loanContract();
-        CreateContractVO createContract = transferContract();
+//        CreateContractVO createContract = transferContract();
+//        CreateContractVO createContract = loanServiceContract();
+        CreateContractVO createContract = loanConsumeContract();
 
         createContractlist.add(createContract);
 
         tx3202ReqVO.setHead(head);
-        tx3202ReqVO.setBatchNo("B2018111510");
+        tx3202ReqVO.setBatchNo("B2018122108");
         tx3202ReqVO.setCreateContracts(createContractlist.toArray(new CreateContractVO[1]));
 
         JsonObjectMapper jsonObjectMapper = new JsonObjectMapper();
@@ -135,6 +137,80 @@ public class Test3202 {
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
         createContractVO.setTemplateId("JK_2315");
+        createContractVO.setIsSign(1);
+        return createContractVO;
+    }
+
+    private static CreateContractVO loanServiceContract(){
+        CreateContractVO createContractVO = new CreateContractVO();
+        Map<String, String> dataModel = new HashMap<>();
+        dataModel.put("loanerName", "朱坤");
+        dataModel.put("loanerIdentityNumber", "111111111111111111");
+        dataModel.put("loanerMobile", "11111111111");
+        dataModel.put("loanAmountChinese", "十万元整");
+        dataModel.put("loanAmount", "100000.00");
+        dataModel.put("duration", "360");
+        dataModel.put("periods1", "12");
+        dataModel.put("serviceAmountChinese", "零");
+        dataModel.put("serviceAmount", "0.00");
+        dataModel.put("avgServiceAmountChinese", "零");
+        dataModel.put("avgServiceAmount", "0");
+        dataModel.put("periods2", "12");
+        dataModel.put("signDate", "2018-12-21");
+
+        createContractVO.setInvestmentInfo(dataModel);
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId("40C1F3CB74D35AE3E05312016B0AA49B");
+        agentSignInfo.setAuthorizationTime("20160214171200");
+        agentSignInfo.setLocation("172.16.10.1");
+        agentSignInfo.setSignLocation("loaner");
+        agentSignInfo.setProjectCode("8735358083014a0dbe88e2cbf711c734");
+        agentSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo});
+        createContractVO.setTemplateId("JK_2496");
+        createContractVO.setIsSign(1);
+        return createContractVO;
+    }
+
+    private static CreateContractVO loanConsumeContract(){
+        CreateContractVO createContractVO = new CreateContractVO();
+        Map<String, String> dataModel = new HashMap<>();
+        dataModel.put("investorMobile", "11111111111");
+        dataModel.put("investorIdentityNumber", "111111111111111111");
+        dataModel.put("agentIdentityNumber", "222222222222222222");
+        dataModel.put("loanerUserName", "朱坤");
+        dataModel.put("loanerIdentityNumber", "222222222222222222");
+        dataModel.put("purpose", "娶媳妇");
+        dataModel.put("amount", "100000.00");
+        dataModel.put("amountChinese", "十万元整");
+        dataModel.put("periods", "12");
+        dataModel.put("remark", "");
+        dataModel.put("overdueRate1", "0");
+        dataModel.put("overdueRate2", "0");
+        dataModel.put("overdueDays", "0");
+
+        createContractVO.setInvestmentInfo(dataModel);
+
+        SignInfoVO agentSignInfo = new SignInfoVO();
+        agentSignInfo.setUserId("40C1F3CB74D35AE3E05312016B0AA49B");
+        agentSignInfo.setAuthorizationTime("20160214171200");
+        agentSignInfo.setLocation("172.16.10.1");
+        agentSignInfo.setSignLocation("agentUserName");
+        agentSignInfo.setProjectCode("8735358083014a0dbe88e2cbf711c734");
+        agentSignInfo.setIsProxySign(1);
+
+        SignInfoVO investorSignInfo = new SignInfoVO();
+        investorSignInfo.setUserId("4074F0BDDC1263F9E05311016B0A0D35");
+        investorSignInfo.setAuthorizationTime("20160214171200");
+        investorSignInfo.setLocation("118.187.56.162");
+        investorSignInfo.setSignLocation("investorUserName");
+        investorSignInfo.setProjectCode("f337f9748c5146ed9c520d26f02e06b1");
+        investorSignInfo.setIsProxySign(1);
+
+        createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
+        createContractVO.setTemplateId("JK_2497");
         createContractVO.setIsSign(1);
         return createContractVO;
     }
