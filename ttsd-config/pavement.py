@@ -28,6 +28,17 @@ def flush_etcd(options):
     with open('{}/src/main/resources/ttsd-env.properties'.format(os.path.dirname(os.path.abspath(__file__)))) as f:
         raw_content += f.readlines()
 
+    file_names = []
+    for root, dirs, files in os.walk('../config-properties'):
+        for file in files:
+            print file
+            if os.path.splitext(file)[1] == '.properties':
+                file_names.append('{0}/{1}.properties'.format(root, os.path.splitext(file)[0]))
+
+    for file in file_names:
+        with open(file) as f:
+            raw_content += f.readlines()
+
     for line in raw_content:
         line = line.strip()
         if line and line[0] != '#':

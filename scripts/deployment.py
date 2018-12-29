@@ -2,6 +2,7 @@ import os
 from paver.shell import sh
 import config_deploy
 import etcd_client
+import config_properties_deploy
 
 
 class Deployment(object):
@@ -134,6 +135,7 @@ class Deployment(object):
     def config_file(self):
         print "Generate config file..."
         config_deploy.deploy(self.etcd, self.env, self.pay_fake)
+        config_properties_deploy.flush_qa_properties(self.etcd)
 
     def migrate(self):
         from scripts import migrate_db

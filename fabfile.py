@@ -5,6 +5,7 @@ from fabric.api import *
 from fabric.contrib.project import upload_project
 from scripts import migrate_db
 from scripts import etcd_client
+from scripts import config_properties_deploy
 
 config_path = os.getenv('TTSD_CONFIG_PATH', '/workspace/deploy-config')
 
@@ -33,6 +34,10 @@ etcd3 = etcd_client.client('prod')
 
 def migrate():
     migrate_db.migrate('/opt/gradle/latest/bin/gradle', etcd3, local)
+
+
+def flush_prod_properties():
+    config_properties_deploy.flush_prod_properties(etcd3)
 
 
 def mk_war(targets=None):
@@ -265,6 +270,7 @@ def pre_deploy(skip_package, target=None):
     if skip_package == 'False':
         compile(target)
         migrate()
+        flush_prod_properties()
         local('TTSD_ETCD_ENV=prod /opt/gradle/latest/bin/gradle ttsd-mq-client:initMQ')
 
 
