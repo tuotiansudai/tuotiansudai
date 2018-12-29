@@ -320,7 +320,11 @@ public class MobileAppLoanDetailV3ServiceImpl implements MobileAppLoanDetailV3Se
             dataDto.setExtraRates(extraLoanRateDtos);
         }
 
-        dataDto.setRiskManagement(loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId()));
+        List<String> riskManagements = loanRiskManagementTitleRelationMapper.findTitleNameByLoanId(loanModel.getId());
+
+        if (CollectionUtils.isNotEmpty(riskManagements)){
+            dataDto.setRiskManagement(riskManagements);
+        }
 
         return dataDto;
     }
