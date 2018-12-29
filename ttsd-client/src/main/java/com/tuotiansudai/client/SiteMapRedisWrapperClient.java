@@ -41,13 +41,17 @@ public class SiteMapRedisWrapperClient {
         try {
             jedis = getJedis(this.sitemapRedisDb);
             return jedisAction.action(jedis);
+        }catch (Exception ex) {
+            logger.error(ex.getLocalizedMessage(), ex);
+            return null;
         } finally {
             closeResource(jedis);
         }
     }
 
     public boolean exists(final String key) {
-        return execute(jedis -> jedis.exists(key));
+        Boolean isExisted=execute(jedis -> jedis.exists(key));
+        return  isExisted != null && isExisted;
     }
 
     public Long hset(final String key, final String hkey, final String value) {
@@ -70,7 +74,8 @@ public class SiteMapRedisWrapperClient {
     }
 
     public boolean hexists(final String key, final String field) {
-        return execute(jedis -> jedis.hexists(key, field));
+        Boolean  isExisted=execute(jedis -> jedis.hexists(key, field));
+        return isExisted != null && isExisted;
     }
 
     public String get(final String key) {
@@ -104,7 +109,8 @@ public class SiteMapRedisWrapperClient {
     }
 
     public boolean del(final String... keys) {
-        return execute(jedis -> jedis.del(keys) == keys.length);
+        Boolean isDel=execute(jedis -> jedis.del(keys) == keys.length);
+        return isDel!=null && isDel;
     }
 
     protected JedisPool getJedisPool() {

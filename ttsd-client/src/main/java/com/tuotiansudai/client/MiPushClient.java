@@ -122,7 +122,7 @@ public class MiPushClient {
     }
 
     public static void main(String[] args) {
-        MiPushClient client = new MiPushClient("U4h5OF72+DCYbxM3qsmHJA==", "LX98vLqcQn7v6aS+i+UgeA==", Environment.QA);
+        MiPushClient client = new MiPushClient("U4h5OF72+DCYbxM3qsmHJA==", "LX98vLqcQn7v6aS+i+UgeA==", Environment.QA1);
         PushMessage pushMessage = new PushMessage();
         pushMessage.setLoginNames(Arrays.asList("lixuchen"));
         pushMessage.setContent("aaaaa");

@@ -1,5 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
+
+import java.text.MessageFormat;
 import java.util.stream.Stream;
 
 public enum MessageQueue {
@@ -80,13 +83,13 @@ public enum MessageQueue {
     ;
 
     private final String queueName;
-
+    private final String ENV = ETCDConfigReader.getReader().getValue("common.environment");
     MessageQueue(String queueName) {
         this.queueName = queueName;
     }
 
     public String getQueueName() {
-        return queueName;
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? queueName : MessageFormat.format("{0}-{1}", ENV.toLowerCase(), queueName);
     }
 
     public static boolean contains(String queueName) {

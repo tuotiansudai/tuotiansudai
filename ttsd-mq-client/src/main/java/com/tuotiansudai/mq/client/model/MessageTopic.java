@@ -1,5 +1,8 @@
 package com.tuotiansudai.mq.client.model;
 
+import com.tuotiansudai.etcd.ETCDConfigReader;
+
+import java.text.MessageFormat;
 import java.util.stream.Stream;
 
 public enum MessageTopic {
@@ -27,6 +30,7 @@ public enum MessageTopic {
 
     final String topicName;
     final MessageQueue[] queues;
+    private final String ENV = ETCDConfigReader.getReader().getValue("common.environment");
 
     MessageTopic(String topicName, MessageQueue... queues) {
         this.topicName = topicName;
@@ -34,7 +38,7 @@ public enum MessageTopic {
     }
 
     public String getTopicName() {
-        return topicName;
+        return "PRODUCTION".equalsIgnoreCase(ENV) ? topicName : MessageFormat.format("{0}-{1}", ENV.toLowerCase(), topicName);
     }
 
     public MessageQueue[] getQueues() {
