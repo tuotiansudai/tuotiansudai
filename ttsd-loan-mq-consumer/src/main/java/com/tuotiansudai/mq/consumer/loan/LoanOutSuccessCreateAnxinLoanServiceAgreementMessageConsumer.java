@@ -15,6 +15,8 @@ import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AnxinContractType;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.PledgeType;
 import com.tuotiansudai.util.JsonConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -36,6 +38,9 @@ public class LoanOutSuccessCreateAnxinLoanServiceAgreementMessageConsumer implem
 
     @Autowired
     private MQWrapperClient mqWrapperClient;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     public MessageQueue queue() {
@@ -63,6 +68,10 @@ public class LoanOutSuccessCreateAnxinLoanServiceAgreementMessageConsumer implem
         }
 
         long loanId = loanOutInfo.getLoanId();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel.getPledgeType() != PledgeType.NONE){
+            return;
+        }
         logger.info("[标的放款MQ] LoanOutSuccess_GenerateLoanServiceAgreement createLoanContracts is executing, loanId:{}", String.valueOf(loanId));
         BaseDto<AnxinDataDto> baseDto = anxinWrapperClient.createLoanServiceAgreement(loanId);
         if (!baseDto.isSuccess() || !baseDto.getData().getStatus()) {
