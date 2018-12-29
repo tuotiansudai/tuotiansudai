@@ -111,8 +111,8 @@ public class AnxinSignServiceImpl implements AnxinSignService {
     @Value(value = "${anxin.loan.service.agreement.template}")
     private String loanServiceAgreementTemplate;
 
-    @Value(value = "${anxin.loan.contract.template.v2}")
-    private String loanTemplateV2;
+    @Value(value = "${anxin.loan.credit.contract.template}")
+    private String loanCreditTemplate;
 
     @Value("#{'${anxin.contract.notify.mobileList}'.split('\\|')}")
     private List<String> mobileList;
@@ -602,7 +602,7 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         investorSignInfo.setIsProxySign(1);
 
         createContractVO.setSignInfos(new SignInfoVO[]{agentSignInfo, investorSignInfo});
-        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.NONE ?  loanTemplateV2 : loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
+        createContractVO.setTemplateId(loanModel.getPledgeType() == PledgeType.NONE ?  loanCreditTemplate : loanModel.getPledgeType() == PledgeType.VEHICLE ? loanConsumeTemplate : loanTemplate);
         createContractVO.setIsSign(1);
         return createContractVO;
     }
