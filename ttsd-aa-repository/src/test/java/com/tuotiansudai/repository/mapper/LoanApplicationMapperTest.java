@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.enums.LoanApplicationStatus;
 import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -77,6 +78,7 @@ public class LoanApplicationMapperTest {
         loanApplicationModel.setHaveCreditReport(true);
         loanApplicationModel.setHomeIncome(100);
         loanApplicationModel.setLoanUsage("loanUsage");
+        loanApplicationModel.setStatus(LoanApplicationStatus.WAITING);
         loanApplicationMapper.create(loanApplicationModel);
         return loanApplicationModel;
     }
