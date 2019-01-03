@@ -28,8 +28,7 @@ public class LoginLogMapperTest {
     public void shouldCreateAndFindAndGetPaginationData() {
         String loginName = "aaaa";
         LoginLogModel loginLogModel = fakeLoginLogModel(loginName);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
-        String table = "login_log_" + simpleDateFormat.format(new Date());
+        String table = "login_log_201801";
         loginLogMapper.create(table, loginLogModel);
 
         long count = loginLogMapper.count(loginName, "1932", true, table, null);

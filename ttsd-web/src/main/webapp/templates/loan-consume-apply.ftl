@@ -104,7 +104,7 @@
         <div class="info_wrapper">
             <div class="evidence_item" id="identityProveUrls">
                 <span class="required-icon">*</span>
-                <span class="item_text">身份证明：要求拍摄的身份证件照片四角完整，亮度均匀，文字清晰</span>
+                <span class="item_text">身份证明：要求上传4张身份证件照，拍摄的照片需四角完整，亮度均匀，文字清晰</span>
                 <div class="imgWrapper">
                     <div class="img-item positive">
                         <div class="upload-desc">
@@ -140,7 +140,7 @@
         <div class="info_wrapper">
             <div class="evidence_item" id="incomeProveUrls">
                 <span class="required-icon">*</span>
-                <span class="item_text">收入证明：要求上传收入证明或者银行流水等能证明收入的材料</span>
+                <span class="item_text">收入证明：要求上传收入证明或者银行流水等能证明收入的材料，最多可上传8张</span>
                 <div class="imgWrapper">
                     <div class="img-item">
                         <div class="upload-desc">
@@ -155,7 +155,7 @@
         <div class="info_wrapper">
             <div class="evidence_item" id="creditProveUrls">
                 <span class="required-icon">*</span>
-                <span class="item_text">信用报告：要求上传人民银行征信报告材料</span>
+                <span class="item_text">信用报告：要求上传人民银行征信报告材料，最多可上传8张</span>
                 <div class="imgWrapper">
                     <div class="img-item">
                         <div class="upload-desc">
@@ -185,7 +185,7 @@
         <div class="info_wrapper">
             <div class="evidence_item" id="propertyProveUrls">
                 <span class="required-icon">*</span>
-                <span class="item_text">资产证明：要求上传个人或配偶名下房产或车辆证明，若在配偶名下需提供关系证明</span>
+                <span class="item_text">资产证明：要求上传个人或者配偶名下房产或车辆证明，若在配偶名下需提供关系证明（若已上传婚姻状况证明可不必重复上传）</span>
                 <div class="imgWrapper">
                     <div class="img-item">
                         <div class="upload-desc">
@@ -204,7 +204,7 @@
                 <input type="radio" name="togetherLoaner" class="check_radio" id="noLoaner" value="noLoaner" style="margin-left: 13px"/><label for="noLoaner" class="check_label">无共同借款人</label>
                 <input type="radio" name="togetherLoaner" class="check_radio" id="loaner" value="loaner"/><label for="loaner" class="check_label">有共同借款人</label>
                 <div id="togetherLoaner">
-                    <div>若有共同借款人，则要求填写共同借款人的姓名、身份证号并上传共同借款人的身份证照片</div>
+                    <div>若有共同借款人，要求填写共同借款人姓名、身份证号并上传2张共同借款人的身份证件照</div>
                     <div style="margin: 20px auto"><span style="margin-right: 33px">姓名：</span><input type="text" placeholder="请输入共同借款人姓名" class="togetherLoaner item-input" maxlength="50"/></div>
                     <div style="margin-bottom: 20px"><span style="margin-right: 7px">身份证号：</span><input type="text" placeholder="请输入共同借款人身份证号" class="togetherLoanerIdentity item-input" maxlength="18"/></div>
                     <div class="imgWrapper">
