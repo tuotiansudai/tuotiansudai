@@ -62,7 +62,7 @@
 
               (select ifnull(sum(coupon_repay.expected_interest), 0) - ifnull(sum(coupon_repay.expected_fee), 0)
               from coupon_repay
-              where login_name = #{loginName} and status = 'REPAYING') as expected_coupon_interest,
+              where login_name = #{loginName} and status in ('REPAYING', 'OVERDUE')) as expected_coupon_interest,
 
               (select ifnull(sum(expected_interest), 0) - ifnull(sum(expected_fee), 0)
               from invest_extra_rate
