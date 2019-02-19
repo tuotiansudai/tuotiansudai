@@ -22,7 +22,7 @@
             <li class="f-title">联系我们</li>
             <li>客服电话：400-169-1188（服务时间：9:00－20:00）</li>
             <li>客服邮箱：kefu@tuotiansudai.com</li>
-            <li>商务合作：010-57167320 <a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
+            <li>商务合作：<a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦5层</li>
         </ul>
         <ul class="last">

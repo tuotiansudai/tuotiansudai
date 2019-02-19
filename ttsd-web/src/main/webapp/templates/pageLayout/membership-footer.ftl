@@ -19,7 +19,6 @@
         <dl class="list-contact">
             <dt>联系我们</dt>
             <dd><a href="javascript:void(0)" style="cursor: default;">客服电话：<span>400-169-1188</span> ( 服务时间：9:00-20:00 )</a></dd>
-            <dd><a href="javascript:void(0)" style="cursor: default;">商务合作：<span>010-57167320</span></a></dd>
         </dl>
         <div class="images-app">
             <i class="img-app-download"></i>
