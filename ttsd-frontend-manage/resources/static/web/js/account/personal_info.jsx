@@ -71,7 +71,7 @@ $updateBankCard.on('click', function(){
                         area: ['600px', '180px'],
                         btn:['我已联系客服，确认更换'],
                         shadeClose: true,
-                        content: '<p class="tc" style="margin-top:20px;line-height:20px">您的账户余额或待收本息不为0，为了您的资金安全，请先联系客服<br />并提交相关材料后再点击更换，否则无法更换成功。</p><p class="tc" style="margin-top:20px;line-height:20px">客服电话：400-169-1188（服务时间：9:00－20:00）</p>',
+                        content: '<p class="tc" style="margin-top:20px;line-height:20px">您的账户余额或待收本息不为0，为了您的资金安全，请先联系客服<br />并提交相关材料后再点击更换，否则无法更换成功。</p><p class="tc" style="margin-top:20px;line-height:20px">客服电话：400-169-1188（服务时间：9:00－18:00）</p>',
                         btn1:function(){
                             location.href = url;
                         }

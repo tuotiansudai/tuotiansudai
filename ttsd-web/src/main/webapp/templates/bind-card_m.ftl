@@ -36,7 +36,7 @@
         为了您的账户资金安全
         只能绑定持卡人的银行储蓄卡
     </div>
-    <div class="service bind-card">客服电话：400-169-1188（服务时间：9:00-20:00）</div>
+    <div class="service bind-card">客服电话：400-169-1188（服务时间：9:00-18:00）</div>
 </div>
 
 

@@ -101,7 +101,7 @@
         <p>投资时将享受服务费7折优惠</p>
         <#break>
 </#switch>
-    <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-20:00）</p>
+    <p class="fix-nav">客服电话：400-169-1188（服务时间：9:00-18:00）</p>
 </div>
 <a href="${href}" class="btn-disabled" id="Btn">3s</a>
 
