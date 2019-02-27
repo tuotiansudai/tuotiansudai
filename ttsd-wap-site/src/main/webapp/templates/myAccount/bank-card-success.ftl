@@ -28,7 +28,7 @@
     </div>
         <div class="button-note">
             <a href="#" class="btn-wap-normal next-step" >确定</a>
-            <span>客服电话：400-169-1188（服务时间：9:00-20:00）</span>
+            <span>客服电话：400-169-1188（服务时间：工作日 9:00-18:00）</span>
         </div>
 
 

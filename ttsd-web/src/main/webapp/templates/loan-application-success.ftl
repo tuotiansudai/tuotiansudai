@@ -4,7 +4,7 @@
         <div class="success-tip-icon"></div>
         <h2 class="tip-title">借款申请提交成功</h2>
         <p class="tip-text">我们会尽快审核您的申请资料，并通知您审核结果，请保持通话畅通！</p>
-        <p class="tip-text tel">客服电话：400-169-1188 （服务时间：9：00-20：00）</p>
+        <p class="tip-text tel">客服电话：400-169-1188 （服务时间：工作日 9：00-18：00）</p>
         <div class="confirm_btn">我知道了</div>
     </div>
 </@global.main>

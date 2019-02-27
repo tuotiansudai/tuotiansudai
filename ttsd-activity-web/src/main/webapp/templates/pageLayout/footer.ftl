@@ -20,7 +20,7 @@
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
-            <li>客服电话：400-169-1188（服务时间：9:00－18:00）</li>
+            <li>客服电话：400-169-1188（服务时间：工作日 9:00－18:00）</li>
             <li>客服邮箱：kefu@tuotiansudai.com</li>
             <li>商务合作：<a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦5层</li>
@@ -75,7 +75,7 @@
             <li><a href="/about/guide">新手指引</a></li>
             <li><a href="/about/assurance">安全保障</a></li>
         </ul>
-        <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
+        <p>客服电话:400-169-1188(服务时间:工作日 9:00-18:00)</p>
         <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>
     </div>
 </div>

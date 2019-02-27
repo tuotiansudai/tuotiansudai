@@ -6,7 +6,7 @@
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
     </div>
     <div class="header-top page-width">
-        <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－18:00）</time></span>
+        <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：工作日 9:00－18:00）</time></span>
         <ul class="fr">
             <li class="membership-store">
                 <a href="/point-shop" target="_blank">积分商城</a>
