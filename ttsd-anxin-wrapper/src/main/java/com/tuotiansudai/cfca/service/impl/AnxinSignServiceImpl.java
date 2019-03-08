@@ -582,6 +582,16 @@ public class AnxinSignServiceImpl implements AnxinSignService {
         }
 
         Map<String, String> dataModel = contractService.collectInvestorContractModel(investModel.getLoginName(), loanId, investModel.getId());
+        if(loanModel.getPledgeType() != PledgeType.NONE){
+            dataModel.put("loanAmount1", dataModel.get("loanAmount"));
+            dataModel.put("loanAmount2", dataModel.get("investAmount"));
+            dataModel.put("periods1", dataModel.get("agentPeriods"));
+            dataModel.put("periods2", dataModel.get("leftPeriods"));
+            dataModel.put("recheckTime1", dataModel.get("recheckTime"));
+            dataModel.put("recheckTime2", dataModel.get("recheckTime"));
+            dataModel.put("endTime1", dataModel.get("endTime"));
+            dataModel.put("endTime2", dataModel.get("endTime"));
+        }
         dataModel.put("orderId", String.valueOf(investId));
         createContractVO.setInvestmentInfo(dataModel);
 
