@@ -29,4 +29,5 @@ include 'ttsd-anxin-wrapper'
 include 'ttsd-amount-mq-consumer'
 include 'ttsd-etcd'
 include 'ttsd-sms-mq-consumer'
+include 'ttsd-borrow-wrapper'
 
